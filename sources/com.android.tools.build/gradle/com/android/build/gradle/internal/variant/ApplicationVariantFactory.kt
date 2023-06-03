@@ -32,10 +32,10 @@ import com.android.build.api.variant.impl.VariantOutputConfigurationImpl
 import com.android.build.api.variant.impl.VariantOutputImpl
 import com.android.build.api.variant.impl.VariantOutputList
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
+import com.android.build.gradle.internal.component.features.NativeBuildCreationConfig
 import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.core.dsl.ApplicationVariantDslInfo
 import com.android.build.gradle.internal.dependency.VariantDependencies
-import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.scope.AndroidTestBuildFeatureValuesImpl
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.BuildFeatureValuesImpl
@@ -55,7 +55,6 @@ import com.android.builder.errors.IssueReporter
 import com.android.ide.common.build.GenericBuiltArtifact
 import com.android.ide.common.build.GenericBuiltArtifactsSplitOutputMatcher
 import com.android.ide.common.build.GenericFilterConfiguration
-import com.android.resources.Density
 import com.google.common.base.Joiner
 import com.google.common.base.Strings
 import java.util.Arrays
@@ -95,7 +94,6 @@ class ApplicationVariantFactory(
         artifacts: ArtifactsImpl,
         variantData: BaseVariantData,
         taskContainer: MutableTaskContainer,
-        transformManager: TransformManager,
         variantServices: VariantServices,
         taskCreationServices: TaskCreationServices,
         globalConfig: GlobalTaskCreationConfig,
@@ -113,7 +111,6 @@ class ApplicationVariantFactory(
                 variantData,
                 taskContainer,
                 variantBuilder.dependenciesInfo,
-                transformManager,
                 variantServices,
                 taskCreationServices,
                 globalConfig,
@@ -167,7 +164,8 @@ class ApplicationVariantFactory(
                 null // means whatever is default.
             },
             mlModelBindingOverride = false,
-            includeAndroidResources = includeAndroidResources
+            includeAndroidResources = includeAndroidResources,
+            testedComponent = componentType
         )
     }
 
@@ -200,12 +198,11 @@ class ApplicationVariantFactory(
         globalConfig: GlobalTaskCreationConfig,
     ) {
         variant.calculateFilters(globalConfig.splits)
-        val densities =
-            variant.getFilters(VariantOutput.FilterType.DENSITY)
-        val abis =
-            variant.getFilters(VariantOutput.FilterType.ABI)
-        checkSplitsConflicts(appVariant, abis, globalConfig)
-        if (!densities.isEmpty()) {
+        val densities = variant.getFilters(VariantOutput.FilterType.DENSITY)
+        val abis = variant.getFilters(VariantOutput.FilterType.ABI)
+        val nativeBuildCreationConfig = appVariant.nativeBuildCreationConfig!!
+        checkSplitsConflicts(nativeBuildCreationConfig, abis, globalConfig)
+        if (densities.isNotEmpty()) {
             variant.compatibleScreens = globalConfig.splits.density
                 .compatibleScreens
         }
@@ -213,9 +210,9 @@ class ApplicationVariantFactory(
             populateMultiApkOutputs(abis, densities, globalConfig)
         variantOutputs.forEach { appVariant.addVariantOutput(it) }
         restrictEnabledOutputs(
-                appVariant,
-                appVariant.outputs,
-                globalConfig
+            nativeBuildCreationConfig,
+            appVariant.outputs,
+            globalConfig
         )
     }
 
@@ -296,7 +293,7 @@ class ApplicationVariantFactory(
     }
 
     private fun checkSplitsConflicts(
-        component: ApplicationCreationConfig,
+        component: NativeBuildCreationConfig,
         abiFilters: Set<String?>,
         globalConfig: GlobalTaskCreationConfig,
     ) { // if we don't have any ABI splits, nothing is conflicting.
@@ -325,7 +322,7 @@ class ApplicationVariantFactory(
     }
 
     private fun restrictEnabledOutputs(
-        component: ApplicationCreationConfig,
+        component: NativeBuildCreationConfig,
         variantOutputs: VariantOutputList,
         globalConfig: GlobalTaskCreationConfig
     ) {
@@ -336,9 +333,6 @@ class ApplicationVariantFactory(
                 || globalConfig.splits.abi.isEnable
             ) projectOptions[StringOption.IDE_BUILD_TARGET_ABI] else null)
                 ?: return
-        val buildTargetDensity =
-            projectOptions[StringOption.IDE_BUILD_TARGET_DENSITY]
-        val density = Density.getEnum(buildTargetDensity)
         val genericBuiltArtifacts = variantOutputs
             .map { variantOutput ->
                 GenericBuiltArtifact(

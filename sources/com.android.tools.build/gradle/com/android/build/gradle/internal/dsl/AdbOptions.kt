@@ -17,35 +17,40 @@
 package com.android.build.gradle.internal.dsl
 
 import com.android.build.api.dsl.Installation
-import com.google.common.collect.ImmutableList
+import com.android.build.gradle.internal.services.DslServices
 import javax.inject.Inject
 
 /** Options for the adb tool. */
-open class AdbOptions @Inject constructor() : com.android.builder.model.AdbOptions,
+abstract class AdbOptions @Inject constructor(
+    val dslServices: DslServices,
+) : com.android.builder.model.AdbOptions,
     com.android.build.api.dsl.AdbOptions,
     Installation {
 
-    override var timeOutInMs: Int = 0
-
-    override var installOptions: Collection<String>? = null
+    abstract override val installOptions: MutableList<String>
+    abstract override var timeOutInMs: Int
 
     open fun timeOutInMs(timeOutInMs: Int) {
         this.timeOutInMs = timeOutInMs
     }
 
     fun setInstallOptions(option: String) {
-        installOptions = ImmutableList.of(option)
+        installOptions.clear()
+        installOptions.add(option)
     }
 
     fun setInstallOptions(vararg options: String) {
-        installOptions = ImmutableList.copyOf(options)
+        installOptions.clear()
+        installOptions.addAll(options)
     }
 
     override fun installOptions(option: String) {
-        installOptions = ImmutableList.of(option)
+        installOptions.clear()
+        installOptions.add(option)
     }
 
     override fun installOptions(vararg options: String) {
-        installOptions = ImmutableList.copyOf(options)
+        installOptions.clear()
+        installOptions.addAll(options)
     }
 }

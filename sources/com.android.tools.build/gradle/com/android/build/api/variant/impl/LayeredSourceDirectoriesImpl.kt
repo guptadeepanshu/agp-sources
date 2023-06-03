@@ -16,9 +16,13 @@
 
 package com.android.build.api.variant.impl
 
+import com.android.SdkConstants
 import com.android.build.api.variant.SourceDirectories
 import com.android.build.gradle.internal.services.VariantServices
+import com.android.builder.core.BuilderConstants
+import com.android.ide.common.resources.AssetSet
 import org.gradle.api.file.Directory
+import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.util.PatternFilterable
@@ -55,6 +59,8 @@ open class LayeredSourceDirectoriesImpl(
         // we check first if we have existing instance of [DirectoryEntries] under the name
         // provided by the passed [DirectoryEntry]. If we do, we just add it to the list of
         // directories under that name to respect the priority.
+        // This is dependent on the DirectoryEntry object for e.g. main being distinct from the
+        // DirectoryEntries objects for each variant
         // otherwise, we just add a new one.
         val existingDirectories = variantSources.get().find { entries -> entries.name == directoryEntry.name }
         if (existingDirectories != null) {
@@ -64,14 +70,15 @@ open class LayeredSourceDirectoriesImpl(
                 directoryEntry.name, mutableListOf(directoryEntry)
             ))
             variantServices.newListPropertyForInternalUse(Directory::class.java).also {
-            it.addAll(
-                directoryEntry.asFiles(
-                  variantServices.provider {
-                      variantServices.projectInfo.projectDirectory
-                  }
+                it.addAll(
+                    directoryEntry.asFiles(
+                        variantServices.provider {
+                            variantServices.projectInfo.projectDirectory
+                        }
+                    )
                 )
-            )
-            directories.add(it)}
+                directories.add(it)
+            }
         }
     }
 
@@ -81,9 +88,9 @@ open class LayeredSourceDirectoriesImpl(
             sources.directoryEntries.forEach { directoryEntry ->
                 it.addAll(
                     directoryEntry.asFiles(
-                      variantServices.provider {
-                          variantServices.projectInfo.projectDirectory
-                      }
+                        variantServices.provider {
+                            variantServices.projectInfo.projectDirectory
+                        }
                     )
                 )
             }
@@ -105,8 +112,8 @@ open class LayeredSourceDirectoriesImpl(
      */
     fun getLocalSources(): Map<String, Provider<out Collection<Directory>>> =
         getVariantSources().associate { directoryEntries ->
-                val projectDir = variantServices.provider {
-                        variantServices.projectInfo.projectDirectory
+            val projectDir = variantServices.provider {
+                variantServices.projectInfo.projectDirectory
             }
 
             // each [DirectoryEntries] contains a list of [DirectoryEntry] but we need
@@ -116,12 +123,12 @@ open class LayeredSourceDirectoriesImpl(
             // up providers together and flatten the list of list into just one list.
             var currentZippedValue: Provider<out Collection<Directory>>? = null
             directoryEntries.directoryEntries
-                            .filterNot { it.isUserAdded || it.isGenerated}
-                            .forEach {
+                .filterNot { it.isUserAdded || it.isGenerated }
+                .forEach {
                     currentZippedValue = if (currentZippedValue == null) {
                         it.asFiles(projectDir)
-                              } else {
-                                  currentZippedValue!!.zip(it.asFiles(projectDir)) {
+                    } else {
+                        currentZippedValue!!.zip(it.asFiles(projectDir)) {
                                 d1: Collection<Directory>, d2: Collection<Directory> ->
                             mutableListOf<Directory>().also { result ->
                                 result.addAll(d1)
@@ -129,9 +136,9 @@ open class LayeredSourceDirectoriesImpl(
                             }
                         }
                     }
-                              }
-                            directoryEntries.name to (currentZippedValue ?:
-                        variantServices.provider { listOf() })
+                }
+            directoryEntries.name to (currentZippedValue ?:
+                variantServices.provider { listOf() })
         }
 
     /*
@@ -148,9 +155,9 @@ open class LayeredSourceDirectoriesImpl(
                     files.add(it.directoryProvider.get().asFile)
                 } else {
                     val asDirectoriesProperty = it.asFiles(
-                      variantServices.provider {
-                          variantServices.projectInfo.projectDirectory
-                      }
+                        variantServices.provider {
+                            variantServices.projectInfo.projectDirectory
+                        }
                     )
                     if (asDirectoriesProperty.isPresent) {
                         files.addAll(asDirectoriesProperty.get().map { directory ->
@@ -162,4 +169,37 @@ open class LayeredSourceDirectoriesImpl(
         return files
     }
 
+    /**
+     * Returns the dynamic list of [AssetSet] based on the current list of [DirectoryEntry]
+     *
+     * The list is ordered in ascending order of importance, meaning the first set is meant to be
+     * overridden by the 2nd one and so on. This is meant to facilitate usage of the list in an
+     * asset merger
+     *
+     * @param aaptEnv the value of "ANDROID_AAPT_IGNORE" environment variable.
+     * @return a [Provider] of a [List] of [Provider] of [AssetSet].
+     */
+    fun getAscendingOrderAssetSets(
+        aaptEnv: Provider<String>
+    ): Provider<List<Provider<AssetSet>>> {
+
+        return variantSources.map { allDirectories ->
+            allDirectories.map { directoryEntries ->
+                val assetName = if (directoryEntries.name == SdkConstants.FD_MAIN)
+                    BuilderConstants.MAIN else directoryEntries.name
+
+                directoryEntries.directoryEntries.map { directoryEntry ->
+                    directoryEntry.asFiles(
+                        variantServices.provider {
+                            variantServices.projectInfo.projectDirectory
+                        }
+                    ).map {
+                        AssetSet(assetName, aaptEnv.orNull).also { assetSet ->
+                            assetSet.addSources(it.map { it.asFile })
+                        }
+                    }
+                }
+            }.flatten()
+        }
+    }
 }

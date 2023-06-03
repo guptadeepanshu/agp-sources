@@ -249,4 +249,96 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9;</code>
    */
   com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetailsOrBuilder getErrorDetailsOrBuilder();
+
+  /**
+   * <pre>
+   * set when type = ISSUE_STATUS_CHANGED
+   * </pre>
+   *
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10;</code>
+   * @return Whether the issueChangedDetails field is set.
+   */
+  boolean hasIssueChangedDetails();
+  /**
+   * <pre>
+   * set when type = ISSUE_STATUS_CHANGED
+   * </pre>
+   *
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10;</code>
+   * @return The issueChangedDetails.
+   */
+  com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails getIssueChangedDetails();
+  /**
+   * <pre>
+   * set when type = ISSUE_STATUS_CHANGED
+   * </pre>
+   *
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10;</code>
+   */
+  com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetailsOrBuilder getIssueChangedDetailsOrBuilder();
+
+  /**
+   * <pre>
+   * set when type = NOTE
+   * </pre>
+   *
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11;</code>
+   * @return Whether the notesDetails field is set.
+   */
+  boolean hasNotesDetails();
+  /**
+   * <pre>
+   * set when type = NOTE
+   * </pre>
+   *
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11;</code>
+   * @return The notesDetails.
+   */
+  com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails getNotesDetails();
+  /**
+   * <pre>
+   * set when type = NOTE
+   * </pre>
+   *
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11;</code>
+   */
+  com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetailsOrBuilder getNotesDetailsOrBuilder();
+
+  /**
+   * <pre>
+   * This event occurred while AQI was in offline mode
+   * </pre>
+   *
+   * <code>optional bool is_offline = 12;</code>
+   * @return Whether the isOffline field is set.
+   */
+  boolean hasIsOffline();
+  /**
+   * <pre>
+   * This event occurred while AQI was in offline mode
+   * </pre>
+   *
+   * <code>optional bool is_offline = 12;</code>
+   * @return The isOffline.
+   */
+  boolean getIsOffline();
+
+  /**
+   * <pre>
+   * set when type = MODE_TRANSITION
+   * </pre>
+   *
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsModeTransitionDetails mode_transition_details = 13;</code>
+   * @return Whether the modeTransitionDetails field is set.
+   */
+  boolean hasModeTransitionDetails();
+  /**
+   * <pre>
+   * set when type = MODE_TRANSITION
+   * </pre>
+   *
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsModeTransitionDetails mode_transition_details = 13;</code>
+   * @return The modeTransitionDetails.
+   */
+  com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsModeTransitionDetails getModeTransitionDetails();
 }

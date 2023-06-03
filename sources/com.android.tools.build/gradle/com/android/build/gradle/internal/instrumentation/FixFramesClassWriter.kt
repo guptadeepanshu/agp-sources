@@ -16,7 +16,6 @@
 
 package com.android.build.gradle.internal.instrumentation
 
-import org.gradle.api.logging.Logging
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 
@@ -24,20 +23,26 @@ import org.objectweb.asm.ClassWriter
 open class FixFramesClassWriter : ClassWriter {
 
     private val objectClassInternalName = "java/lang/Object"
-    private val logger = Logging.getLogger(this::class.java)
 
+    private val issueHandler: InstrumentationIssueHandler?
     val classesHierarchyResolver: ClassesHierarchyResolver
 
-    constructor(flags: Int, classesHierarchyResolver: ClassesHierarchyResolver) : super(flags) {
+    constructor(
+        flags: Int,
+        classesHierarchyResolver: ClassesHierarchyResolver
+    ) : super(flags) {
         this.classesHierarchyResolver = classesHierarchyResolver
+        this.issueHandler = null
     }
 
     constructor(
-            classReader: ClassReader,
-            flags: Int,
-            classesHierarchyResolver: ClassesHierarchyResolver
+        classReader: ClassReader,
+        flags: Int,
+        classesHierarchyResolver: ClassesHierarchyResolver,
+        issueHandler: InstrumentationIssueHandler?
     ) : super(classReader, flags) {
         this.classesHierarchyResolver = classesHierarchyResolver
+        this.issueHandler = issueHandler
     }
 
     private fun isAssignableFrom(
@@ -135,7 +140,15 @@ open class FixFramesClassWriter : ClassWriter {
             }
         }
 
-        logger.warn("Unable to find common super type for $firstType and $secondType.")
+        // Unable to find common super type, check which class is the cause of this
+        issueHandler?.let {
+            if (firstTypeSuperClasses.isEmpty() && firstType != objectClassInternalName) {
+                issueHandler.warnAboutClassNotOnTheClasspath(firstType)
+            }
+            if (secondTypeSuperClasses.isEmpty() && secondType != objectClassInternalName) {
+                issueHandler.warnAboutClassNotOnTheClasspath(secondType)
+            }
+        }
 
         return objectClassInternalName
     }

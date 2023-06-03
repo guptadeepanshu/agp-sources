@@ -143,7 +143,7 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public boolean containsManifestPlaceholders(
       java.lang.String key) {
-    if (key == null) { throw new java.lang.NullPointerException(); }
+    if (key == null) { throw new NullPointerException("map key"); }
     return internalGetManifestPlaceholders().getMap().containsKey(key);
   }
   /**
@@ -170,7 +170,7 @@ private static final long serialVersionUID = 0L;
   public java.lang.String getManifestPlaceholdersOrDefault(
       java.lang.String key,
       java.lang.String defaultValue) {
-    if (key == null) { throw new java.lang.NullPointerException(); }
+    if (key == null) { throw new NullPointerException("map key"); }
     java.util.Map<java.lang.String, java.lang.String> map =
         internalGetManifestPlaceholders().getMap();
     return map.containsKey(key) ? map.get(key) : defaultValue;
@@ -182,7 +182,7 @@ private static final long serialVersionUID = 0L;
 
   public java.lang.String getManifestPlaceholdersOrThrow(
       java.lang.String key) {
-    if (key == null) { throw new java.lang.NullPointerException(); }
+    if (key == null) { throw new NullPointerException("map key"); }
     java.util.Map<java.lang.String, java.lang.String> map =
         internalGetManifestPlaceholders().getMap();
     if (!map.containsKey(key)) {
@@ -564,7 +564,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean containsManifestPlaceholders(
         java.lang.String key) {
-      if (key == null) { throw new java.lang.NullPointerException(); }
+      if (key == null) { throw new NullPointerException("map key"); }
       return internalGetManifestPlaceholders().getMap().containsKey(key);
     }
     /**
@@ -591,7 +591,7 @@ private static final long serialVersionUID = 0L;
     public java.lang.String getManifestPlaceholdersOrDefault(
         java.lang.String key,
         java.lang.String defaultValue) {
-      if (key == null) { throw new java.lang.NullPointerException(); }
+      if (key == null) { throw new NullPointerException("map key"); }
       java.util.Map<java.lang.String, java.lang.String> map =
           internalGetManifestPlaceholders().getMap();
       return map.containsKey(key) ? map.get(key) : defaultValue;
@@ -603,7 +603,7 @@ private static final long serialVersionUID = 0L;
 
     public java.lang.String getManifestPlaceholdersOrThrow(
         java.lang.String key) {
-      if (key == null) { throw new java.lang.NullPointerException(); }
+      if (key == null) { throw new NullPointerException("map key"); }
       java.util.Map<java.lang.String, java.lang.String> map =
           internalGetManifestPlaceholders().getMap();
       if (!map.containsKey(key)) {
@@ -623,7 +623,7 @@ private static final long serialVersionUID = 0L;
 
     public Builder removeManifestPlaceholders(
         java.lang.String key) {
-      if (key == null) { throw new java.lang.NullPointerException(); }
+      if (key == null) { throw new NullPointerException("map key"); }
       internalGetMutableManifestPlaceholders().getMutableMap()
           .remove(key);
       return this;
@@ -642,8 +642,11 @@ private static final long serialVersionUID = 0L;
     public Builder putManifestPlaceholders(
         java.lang.String key,
         java.lang.String value) {
-      if (key == null) { throw new java.lang.NullPointerException(); }
-      if (value == null) { throw new java.lang.NullPointerException(); }
+      if (key == null) { throw new NullPointerException("map key"); }
+      if (value == null) {
+  throw new NullPointerException("map value");
+}
+
       internalGetMutableManifestPlaceholders().getMutableMap()
           .put(key, value);
       return this;

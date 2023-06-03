@@ -16,42 +16,33 @@
 package com.android.build.gradle.internal.core.dsl
 
 import com.android.build.api.dsl.Lint
-import com.android.build.api.dsl.PackagingOptions
-import com.android.build.gradle.internal.core.MergedNdkConfig
-import com.android.build.gradle.internal.core.NativeBuiltType
-import com.android.build.gradle.internal.dsl.CoreExternalNativeBuildOptions
-import org.gradle.api.file.RegularFile
-import org.gradle.api.provider.ListProperty
+import com.android.build.api.dsl.Packaging
+import com.android.build.api.variant.impl.MutableAndroidVersion
+import com.android.build.gradle.internal.core.dsl.features.NativeBuildDslInfo
 
 /**
  * Contains the final dsl info computed from the DSL object model (extension, default config,
  * build type, flavors) that are needed by main variants.
  */
 interface VariantDslInfo: ComponentDslInfo, ConsumableComponentDslInfo {
-
-    val nativeBuildSystem: NativeBuiltType?
-
-    val ndkConfig: MergedNdkConfig
-
-    val externalNativeBuildOptions: CoreExternalNativeBuildOptions
-
-    /**
-     * Returns the ABI filters associated with the artifact, or empty set if there are no filters.
-     *
-     * If the list contains values, then the artifact only contains these ABIs and excludes
-     * others.
-     */
-    val supportedAbis: Set<String>
-
-    fun getProguardFiles(into: ListProperty<RegularFile>)
-
-    val isJniDebuggable: Boolean
-
     val lintOptions: Lint
 
-    val packaging: PackagingOptions
+    val packaging: Packaging
 
     val experimentalProperties: Map<String, Any>
 
-    val externalNativeExperimentalProperties: Map<String, Any>
+    val nativeBuildDslInfo: NativeBuildDslInfo?
+
+    val maxSdkVersion: Int?
+
+    /**
+     * Return the targetSdkVersion for this variant.
+     *
+     *
+     * This uses both the value from the manifest (if present), and the override coming from the
+     * flavor(s) (if present).
+     *
+     * @return the targetSdkVersion
+     */
+    val targetSdkVersion: MutableAndroidVersion?
 }

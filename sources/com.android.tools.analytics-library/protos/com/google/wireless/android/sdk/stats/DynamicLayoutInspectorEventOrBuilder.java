@@ -133,4 +133,31 @@ public interface DynamicLayoutInspectorEventOrBuilder extends
    * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfoOrBuilder getAutoConnectInfoOrBuilder();
+
+  /**
+   * <pre>
+   * An error from the transport that prevents Layout Inspector from starting
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+   * @return Whether the transportError field is set.
+   */
+  boolean hasTransportError();
+  /**
+   * <pre>
+   * An error from the transport that prevents Layout Inspector from starting
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+   * @return The transportError.
+   */
+  com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError getTransportError();
+  /**
+   * <pre>
+   * An error from the transport that prevents Layout Inspector from starting
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+   */
+  com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportErrorOrBuilder getTransportErrorOrBuilder();
 }

@@ -20,7 +20,7 @@ import com.android.build.api.dsl.LibraryBuildFeatures
 import com.android.build.api.dsl.LibraryBuildType
 import com.android.build.api.dsl.LibraryDefaultConfig
 import com.android.build.api.dsl.LibraryProductFlavor
-import com.android.build.api.dsl.PrefabPackagingOptions
+import com.android.build.api.dsl.Prefab
 import com.android.build.gradle.internal.plugins.DslContainerProvider
 import com.android.build.gradle.internal.services.DslServices
 import org.gradle.api.NamedDomainObjectContainer
@@ -62,9 +62,9 @@ abstract class LibraryExtensionImpl @Inject constructor(
             field.addAll(value)
         }
 
-    override val prefab: NamedDomainObjectContainer<PrefabPackagingOptions> =
+    override val prefab: NamedDomainObjectContainer<Prefab> =
         dslServices.domainObjectContainer(
-            PrefabPackagingOptions::class.java,
+            Prefab::class.java,
             PrefabModuleFactory(dslServices)
         )
 }

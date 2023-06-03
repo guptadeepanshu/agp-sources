@@ -18,13 +18,12 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants.FN_CLASSES_JAR
 import com.android.build.api.artifact.ScopedArtifact
+import com.android.build.api.artifact.impl.InternalScopedArtifacts
 import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.databinding.DataBindingExcludeDelegate
 import com.android.build.gradle.internal.databinding.configureFrom
 import com.android.build.gradle.internal.dependency.getClassesDirFormat
-import com.android.build.gradle.internal.packaging.JarCreatorFactory
-import com.android.build.gradle.internal.packaging.JarCreatorType
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.CLASSES_DIR
@@ -36,9 +35,10 @@ import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.tasks.toSerializable
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.dexing.isJarFile
 import com.android.builder.files.SerializableFileChanges
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.builder.packaging.JarFlinger
 import com.android.utils.FileUtils
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
@@ -81,9 +81,6 @@ interface BundleLibraryClassesInputs {
     @get:Nested
     @get:Optional
     val dataBindingExcludeDelegate: Property<DataBindingExcludeDelegate>
-
-    @get:Input
-    val jarCreatorType: Property<JarCreatorType>
 }
 
 private fun BundleLibraryClassesInputs.configure(
@@ -99,7 +96,6 @@ private fun BundleLibraryClassesInputs.configure(
         )
     }
     this.packageRClass.setDisallowChanges(packageRClass)
-    jarCreatorType.setDisallowChanges(creationConfig.global.jarCreatorType)
 
     dataBindingExcludeDelegate.configureFrom(creationConfig)
 }
@@ -125,7 +121,6 @@ private fun BundleLibraryClassesInputs.configureWorkerActionParams(
     params.incremental.set(inputChanges?.isIncremental ?: false)
     params.inputChanges.set(incrementalChanges.toSerializable())
     params.packageRClass.set(packageRClass)
-    params.jarCreatorType.set(jarCreatorType)
 }
 
 /**
@@ -161,20 +156,6 @@ abstract class BundleLibraryClassesDir: NewIncrementalTask(), BundleLibraryClass
     ) : VariantTaskCreationAction<BundleLibraryClassesDir, ComponentCreationConfig>(
         creationConfig
     ) {
-
-        private val inputs: FileCollection
-
-        init {
-            // Because ordering matters for TransformAPI, we need to fetch classes from the
-            // transform pipeline as soon as this creation action is instantiated.
-            @Suppress("DEPRECATION") // Legacy support
-            inputs =
-                creationConfig.transformManager.getPipelineOutputAsFileCollection { types, scopes ->
-                    types.contains(com.android.build.api.transform.QualifiedContent.DefaultContentType.CLASSES)
-                            && scopes.size == 1 && scopes.contains(com.android.build.api.transform.QualifiedContent.Scope.PROJECT)
-                }
-        }
-
         override val name: String = creationConfig.computeTaskName("bundleLibRuntimeToDir")
 
         override val type: Class<BundleLibraryClassesDir> = BundleLibraryClassesDir::class.java
@@ -188,7 +169,11 @@ abstract class BundleLibraryClassesDir: NewIncrementalTask(), BundleLibraryClass
 
         override fun configure(task: BundleLibraryClassesDir) {
             super.configure(task)
-            task.configure(creationConfig, inputs, false)
+            task.configure(
+                creationConfig,
+                creationConfig.artifacts.forScope(ScopedArtifacts.Scope.PROJECT)
+                    .getFinalArtifacts(ScopedArtifact.CLASSES),
+                false)
         }
     }
 }
@@ -223,29 +208,6 @@ abstract class BundleLibraryClassesJar : NonIncrementalTask(), BundleLibraryClas
     ) : VariantTaskCreationAction<BundleLibraryClassesJar, ComponentCreationConfig>(
         creationConfig
     ) {
-
-        private val inputs: FileCollection
-
-        init {
-            check(
-                publishedType == PublishedConfigType.API_ELEMENTS
-                        || publishedType == PublishedConfigType.RUNTIME_ELEMENTS
-            ) { "Library classes bundling is supported only for api and runtime." }
-            // Because ordering matters for TransformAPI, we need to fetch classes from the
-            // transform pipeline as soon as this creation action is instantiated.
-            @Suppress("DEPRECATION") // Legacy support
-            inputs = if (publishedType == PublishedConfigType.RUNTIME_ELEMENTS) {
-                creationConfig.transformManager.getPipelineOutputAsFileCollection { types, scopes ->
-                    types.contains(com.android.build.api.transform.QualifiedContent.DefaultContentType.CLASSES)
-                            && scopes.size == 1 && scopes.contains(com.android.build.api.transform.QualifiedContent.Scope.PROJECT)
-                }
-            } else {
-                creationConfig.artifacts
-                    .forScope(ScopedArtifacts.Scope.PROJECT)
-                    .getFinalArtifacts(ScopedArtifact.CLASSES)
-            }
-        }
-
         override val name: String = creationConfig.computeTaskName(
             if (publishedType == PublishedConfigType.API_ELEMENTS) {
                 "bundleLibCompileToJar"
@@ -280,6 +242,11 @@ abstract class BundleLibraryClassesJar : NonIncrementalTask(), BundleLibraryClas
                 creationConfig.services.projectOptions[BooleanOption.COMPILE_CLASSPATH_LIBRARY_R_CLASSES] &&
                         publishedType == PublishedConfigType.API_ELEMENTS &&
                         creationConfig.buildFeatures.androidResources
+
+            val inputs = creationConfig.artifacts
+                    .forScope(ScopedArtifacts.Scope.PROJECT)
+                    .getFinalArtifacts(ScopedArtifact.CLASSES)
+
             task.configure(creationConfig, inputs, packageRClass)
         }
     }
@@ -295,7 +262,6 @@ abstract class BundleLibraryClassesWorkAction : ProfileAwareWorkAction<BundleLib
         abstract val incremental: Property<Boolean>
         abstract val inputChanges: Property<SerializableFileChanges>
         abstract val packageRClass: Property<Boolean>
-        abstract val jarCreatorType: Property<JarCreatorType>
     }
 
     override fun run() {
@@ -314,7 +280,7 @@ abstract class BundleLibraryClassesWorkAction : ProfileAwareWorkAction<BundleLib
 
 
         if (isJarFile(parameters.output.get())) {
-            zipFilesNonIncrementally(parameters.input.files, parameters.output.get(), predicate, parameters.jarCreatorType.get())
+            zipFilesNonIncrementally(parameters.input.files, parameters.output.get(), predicate)
         } else {
             when (getClassesDirFormat(parameters.input.files)) {
                 CONTAINS_SINGLE_JAR -> {
@@ -324,7 +290,6 @@ abstract class BundleLibraryClassesWorkAction : ProfileAwareWorkAction<BundleLib
                         parameters.input.files,
                         parameters.output.get().resolve(FN_CLASSES_JAR),
                         predicate,
-                        parameters.jarCreatorType.get()
                     )
                 }
                 CONTAINS_CLASS_FILES_ONLY -> {
@@ -362,11 +327,10 @@ abstract class BundleLibraryClassesWorkAction : ProfileAwareWorkAction<BundleLib
         input: Set<File>,
         outputJar: File,
         filter: Predicate<String>,
-        jarCreatorType: JarCreatorType
     ) {
         FileUtils.deleteIfExists(outputJar)
         FileUtils.mkdirs(outputJar.parentFile)
-        JarCreatorFactory.make(outputJar.toPath(), filter, jarCreatorType).use { jarCreator ->
+        JarFlinger(outputJar.toPath(), filter).use { jarCreator ->
             // Don't compress because compressing takes extra time, and this jar doesn't go into any
             // APKs or AARs
             jarCreator.setCompressionLevel(Deflater.NO_COMPRESSION)

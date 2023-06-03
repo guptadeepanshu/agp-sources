@@ -17,11 +17,14 @@
 package com.android.apksig;
 
 import static com.android.apksig.apk.ApkUtils.SOURCE_STAMP_CERTIFICATE_HASH_ZIP_ENTRY_NAME;
+import static com.android.apksig.internal.apk.v3.V3SchemeConstants.MIN_SDK_WITH_V31_SUPPORT;
+import static com.android.apksig.internal.apk.v3.V3SchemeConstants.MIN_SDK_WITH_V3_SUPPORT;
 
 import com.android.apksig.apk.ApkFormatException;
 import com.android.apksig.apk.ApkSigningBlockNotFoundException;
 import com.android.apksig.apk.ApkUtils;
 import com.android.apksig.apk.MinSdkVersionException;
+import com.android.apksig.internal.apk.v3.V3SchemeConstants;
 import com.android.apksig.internal.util.ByteBufferDataSource;
 import com.android.apksig.internal.zip.CentralDirectoryRecord;
 import com.android.apksig.internal.zip.EocdRecord;
@@ -46,6 +49,7 @@ import java.security.PrivateKey;
 import java.security.SignatureException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -80,16 +84,25 @@ public class ApkSigner {
 
     private static final short ANDROID_COMMON_PAGE_ALIGNMENT_BYTES = 4096;
 
+    private static final short ANDROID_FILE_ALIGNMENT_BYTES = 4096;
+
     /** Name of the Android manifest ZIP entry in APKs. */
     private static final String ANDROID_MANIFEST_ZIP_ENTRY_NAME = "AndroidManifest.xml";
 
     private final List<SignerConfig> mSignerConfigs;
     private final SignerConfig mSourceStampSignerConfig;
+    private final SigningCertificateLineage mSourceStampSigningCertificateLineage;
+    private final boolean mForceSourceStampOverwrite;
+    private final boolean mSourceStampTimestampEnabled;
     private final Integer mMinSdkVersion;
+    private final int mRotationMinSdkVersion;
+    private final boolean mRotationTargetsDevRelease;
     private final boolean mV1SigningEnabled;
     private final boolean mV2SigningEnabled;
     private final boolean mV3SigningEnabled;
     private final boolean mV4SigningEnabled;
+    private final boolean mAlignFileSize;
+    private final boolean mVerityEnabled;
     private final boolean mV4ErrorReportingEnabled;
     private final boolean mDebuggableApkPermitted;
     private final boolean mOtherSignersSignaturesPreserved;
@@ -111,11 +124,18 @@ public class ApkSigner {
     private ApkSigner(
             List<SignerConfig> signerConfigs,
             SignerConfig sourceStampSignerConfig,
+            SigningCertificateLineage sourceStampSigningCertificateLineage,
+            boolean forceSourceStampOverwrite,
+            boolean sourceStampTimestampEnabled,
             Integer minSdkVersion,
+            int rotationMinSdkVersion,
+            boolean rotationTargetsDevRelease,
             boolean v1SigningEnabled,
             boolean v2SigningEnabled,
             boolean v3SigningEnabled,
             boolean v4SigningEnabled,
+            boolean alignFileSize,
+            boolean verityEnabled,
             boolean v4ErrorReportingEnabled,
             boolean debuggableApkPermitted,
             boolean otherSignersSignaturesPreserved,
@@ -131,11 +151,18 @@ public class ApkSigner {
 
         mSignerConfigs = signerConfigs;
         mSourceStampSignerConfig = sourceStampSignerConfig;
+        mSourceStampSigningCertificateLineage = sourceStampSigningCertificateLineage;
+        mForceSourceStampOverwrite = forceSourceStampOverwrite;
+        mSourceStampTimestampEnabled = sourceStampTimestampEnabled;
         mMinSdkVersion = minSdkVersion;
+        mRotationMinSdkVersion = rotationMinSdkVersion;
+        mRotationTargetsDevRelease = rotationTargetsDevRelease;
         mV1SigningEnabled = v1SigningEnabled;
         mV2SigningEnabled = v2SigningEnabled;
         mV3SigningEnabled = v3SigningEnabled;
         mV4SigningEnabled = v4SigningEnabled;
+        mAlignFileSize = alignFileSize;
+        mVerityEnabled = verityEnabled;
         mV4ErrorReportingEnabled = v4ErrorReportingEnabled;
         mDebuggableApkPermitted = debuggableApkPermitted;
         mOtherSignersSignaturesPreserved = otherSignersSignaturesPreserved;
@@ -170,7 +197,7 @@ public class ApkSigner {
      */
     public void sign()
             throws IOException, ApkFormatException, NoSuchAlgorithmException, InvalidKeyException,
-            SignatureException, IllegalStateException {
+                    SignatureException, IllegalStateException {
         Closeable in = null;
         DataSource inputApk;
         try {
@@ -216,7 +243,7 @@ public class ApkSigner {
 
     private void sign(DataSource inputApk, DataSink outputApkOut, DataSource outputApkIn)
             throws IOException, ApkFormatException, NoSuchAlgorithmException, InvalidKeyException,
-            SignatureException {
+                    SignatureException {
         // Step 1. Find input APK's main ZIP sections
         ApkUtils.ZipSections inputZipSections;
         try {
@@ -272,9 +299,10 @@ public class ApkSigner {
             for (SignerConfig signerConfig : mSignerConfigs) {
                 engineSignerConfigs.add(
                         new DefaultApkSignerEngine.SignerConfig.Builder(
-                                signerConfig.getName(),
-                                signerConfig.getPrivateKey(),
-                                signerConfig.getCertificates())
+                                        signerConfig.getName(),
+                                        signerConfig.getPrivateKey(),
+                                        signerConfig.getCertificates(),
+                                        signerConfig.getDeterministicDsaSigning())
                                 .build());
             }
             DefaultApkSignerEngine.Builder signerEngineBuilder =
@@ -282,19 +310,28 @@ public class ApkSigner {
                             .setV1SigningEnabled(mV1SigningEnabled)
                             .setV2SigningEnabled(mV2SigningEnabled)
                             .setV3SigningEnabled(mV3SigningEnabled)
+                            .setVerityEnabled(mVerityEnabled)
                             .setDebuggableApkPermitted(mDebuggableApkPermitted)
                             .setOtherSignersSignaturesPreserved(mOtherSignersSignaturesPreserved)
-                            .setSigningCertificateLineage(mSigningCertificateLineage);
+                            .setSigningCertificateLineage(mSigningCertificateLineage)
+                            .setMinSdkVersionForRotation(mRotationMinSdkVersion)
+                            .setRotationTargetsDevRelease(mRotationTargetsDevRelease);
             if (mCreatedBy != null) {
                 signerEngineBuilder.setCreatedBy(mCreatedBy);
             }
             if (mSourceStampSignerConfig != null) {
                 signerEngineBuilder.setStampSignerConfig(
                         new DefaultApkSignerEngine.SignerConfig.Builder(
-                                mSourceStampSignerConfig.getName(),
-                                mSourceStampSignerConfig.getPrivateKey(),
-                                mSourceStampSignerConfig.getCertificates())
+                                        mSourceStampSignerConfig.getName(),
+                                        mSourceStampSignerConfig.getPrivateKey(),
+                                        mSourceStampSignerConfig.getCertificates(),
+                                        mSourceStampSignerConfig.getDeterministicDsaSigning())
                                 .build());
+                signerEngineBuilder.setSourceStampTimestampEnabled(mSourceStampTimestampEnabled);
+            }
+            if (mSourceStampSigningCertificateLineage != null) {
+                signerEngineBuilder.setSourceStampSigningCertificateLineage(
+                        mSourceStampSigningCertificateLineage);
             }
             signerEngine = signerEngineBuilder.build();
         }
@@ -317,12 +354,23 @@ public class ApkSigner {
         int lastModifiedTimeForNewEntries = -1;
         long inputOffset = 0;
         long outputOffset = 0;
+        byte[] sourceStampCertificateDigest = null;
         Map<String, CentralDirectoryRecord> outputCdRecordsByName =
                 new HashMap<>(inputCdRecords.size());
         for (final CentralDirectoryRecord inputCdRecord : inputCdRecordsSortedByLfhOffset) {
             String entryName = inputCdRecord.getName();
             if (Hints.PIN_BYTE_RANGE_ZIP_ENTRY_NAME.equals(entryName)) {
                 continue; // We'll re-add below if needed.
+            }
+            if (SOURCE_STAMP_CERTIFICATE_HASH_ZIP_ENTRY_NAME.equals(entryName)) {
+                try {
+                    sourceStampCertificateDigest =
+                            LocalFileRecord.getUncompressedData(
+                                    inputApkLfhSection, inputCdRecord, inputApkLfhSection.size());
+                } catch (ZipFormatException ex) {
+                    throw new ApkFormatException("Bad source stamp entry");
+                }
+                continue; // Existing source stamp is handled below as needed.
             }
             ApkSignerEngine.InputJarEntryInstructions entryInstructions =
                     signerEngine.inputJarEntry(entryName);
@@ -375,7 +423,7 @@ public class ApkSigner {
                 if ((lastModifiedDateForNewEntries == -1)
                         || (lastModifiedDate > lastModifiedDateForNewEntries)
                         || ((lastModifiedDate == lastModifiedDateForNewEntries)
-                        && (lastModifiedTime > lastModifiedTimeForNewEntries))) {
+                                && (lastModifiedTime > lastModifiedTimeForNewEntries))) {
                     lastModifiedDateForNewEntries = lastModifiedDate;
                     lastModifiedTimeForNewEntries = lastModifiedTime;
                 }
@@ -462,15 +510,48 @@ public class ApkSigner {
         // records.
         if (signerEngine.isEligibleForSourceStamp()) {
             byte[] uncompressedData = signerEngine.generateSourceStampCertificateDigest();
+            if (mForceSourceStampOverwrite
+                    || sourceStampCertificateDigest == null
+                    || Arrays.equals(uncompressedData, sourceStampCertificateDigest)) {
+                outputOffset +=
+                        outputDataToOutputApk(
+                                SOURCE_STAMP_CERTIFICATE_HASH_ZIP_ENTRY_NAME,
+                                uncompressedData,
+                                outputOffset,
+                                outputCdRecords,
+                                lastModifiedTimeForNewEntries,
+                                lastModifiedDateForNewEntries,
+                                outputApkOut);
+            } else {
+                throw new ApkFormatException(
+                        String.format(
+                                "Cannot generate SourceStamp. APK contains an existing entry with"
+                                    + " the name: %s, and it is different than the provided source"
+                                    + " stamp certificate",
+                                SOURCE_STAMP_CERTIFICATE_HASH_ZIP_ENTRY_NAME));
+            }
+        }
+
+        // Step 7.5. Generate pinlist.meta file if necessary.
+        // This has to be before the step 8 so that the file is signed.
+        if (pinByteRanges != null) {
+            // Covers JAR signature and zip central dir entry.
+            // The signature files don't have to be pinned, but pinning them isn't that wasteful
+            // since the total size is small.
+            pinByteRanges.add(new Hints.ByteRange(outputOffset, Long.MAX_VALUE));
+            String entryName = Hints.PIN_BYTE_RANGE_ZIP_ENTRY_NAME;
+            byte[] uncompressedData = Hints.encodeByteRangeList(pinByteRanges);
+
+            requestOutputEntryInspection(signerEngine, entryName, uncompressedData);
             outputOffset +=
-                    outputDataToOutputApk(
-                            SOURCE_STAMP_CERTIFICATE_HASH_ZIP_ENTRY_NAME,
-                            uncompressedData,
-                            outputOffset,
-                            outputCdRecords,
-                            lastModifiedTimeForNewEntries,
-                            lastModifiedDateForNewEntries,
-                            outputApkOut);
+                outputDataToOutputApk(
+                    entryName,
+                    uncompressedData,
+                    outputOffset,
+                    outputCdRecords,
+                    lastModifiedTimeForNewEntries,
+                    lastModifiedDateForNewEntries,
+                    outputApkOut);
         }
 
         // Step 8. Generate and output JAR signatures, if necessary. This may output more Local File
@@ -483,15 +564,7 @@ public class ApkSigner {
                 String entryName = entry.getName();
                 byte[] uncompressedData = entry.getData();
 
-                ApkSignerEngine.InspectJarEntryRequest inspectEntryRequest =
-                        signerEngine.outputJarEntry(entryName);
-                if (inspectEntryRequest != null) {
-                    inspectEntryRequest
-                            .getDataSink()
-                            .consume(uncompressedData, 0, uncompressedData.length);
-                    inspectEntryRequest.done();
-                }
-
+                requestOutputEntryInspection(signerEngine, entryName, uncompressedData);
                 outputOffset +=
                         outputDataToOutputApk(
                                 entryName,
@@ -503,21 +576,6 @@ public class ApkSigner {
                                 outputApkOut);
             }
             outputJarSignatureRequest.done();
-        }
-
-        if (pinByteRanges != null) {
-            pinByteRanges.add(new Hints.ByteRange(outputOffset, Long.MAX_VALUE)); // central dir
-            String entryName = Hints.PIN_BYTE_RANGE_ZIP_ENTRY_NAME;
-            byte[] uncompressedData = Hints.encodeByteRangeList(pinByteRanges);
-            outputOffset +=
-                    outputDataToOutputApk(
-                            entryName,
-                            uncompressedData,
-                            outputOffset,
-                            outputCdRecords,
-                            lastModifiedTimeForNewEntries,
-                            lastModifiedDateForNewEntries,
-                            outputApkOut);
         }
 
         // Step 9. Construct output ZIP Central Directory in an in-memory buffer
@@ -541,6 +599,9 @@ public class ApkSigner {
         int outputCentralDirRecordCount = outputCdRecords.size();
 
         // Step 10. Construct output ZIP End of Central Directory record in an in-memory buffer
+        // because it can be adjusted in Step 11 due to signing block.
+        //   - CD offset (it's shifted by signing block)
+        //   - Comments (when the output file needs to be sized 4k-aligned)
         ByteBuffer outputEocd =
                 EocdRecord.createWithModifiedCentralDirectoryInfo(
                         inputZipSections.getZipEndOfCentralDirectory(),
@@ -559,13 +620,39 @@ public class ApkSigner {
 
         if (outputApkSigningBlockRequest != null) {
             int padding = outputApkSigningBlockRequest.getPaddingSizeBeforeApkSigningBlock();
-            outputApkOut.consume(ByteBuffer.allocate(padding));
             byte[] outputApkSigningBlock = outputApkSigningBlockRequest.getApkSigningBlock();
+            outputApkSigningBlockRequest.done();
+
+            long fileSize =
+                    outputCentralDirStartOffset
+                            + outputCentralDirDataSource.size()
+                            + padding
+                            + outputApkSigningBlock.length
+                            + outputEocd.remaining();
+            if (mAlignFileSize && (fileSize % ANDROID_FILE_ALIGNMENT_BYTES != 0)) {
+                int eocdPadding =
+                        (int)
+                                (ANDROID_FILE_ALIGNMENT_BYTES
+                                        - fileSize % ANDROID_FILE_ALIGNMENT_BYTES);
+                // Replace EOCD with padding one so that output file size can be the multiples of
+                // alignment.
+                outputEocd = EocdRecord.createWithPaddedComment(outputEocd, eocdPadding);
+
+                // Since EoCD has changed, we need to regenerate signing block as well.
+                outputApkSigningBlockRequest =
+                        signerEngine.outputZipSections2(
+                                outputApkIn,
+                                new ByteBufferDataSource(outputCentralDir),
+                                DataSources.asDataSource(outputEocd));
+                outputApkSigningBlock = outputApkSigningBlockRequest.getApkSigningBlock();
+                outputApkSigningBlockRequest.done();
+            }
+
+            outputApkOut.consume(ByteBuffer.allocate(padding));
             outputApkOut.consume(outputApkSigningBlock, 0, outputApkSigningBlock.length);
             ZipUtils.setZipEocdCentralDirectoryOffset(
                     outputEocd,
                     outputCentralDirStartOffset + padding + outputApkSigningBlock.length);
-            outputApkSigningBlockRequest.done();
         }
 
         // Step 12. Output ZIP Central Directory and ZIP End of Central Directory
@@ -576,6 +663,20 @@ public class ApkSigner {
         // Step 13. Generate and output APK Signature Scheme v4 signatures, if necessary.
         if (mV4SigningEnabled) {
             signerEngine.signV4(outputApkIn, mOutputV4File, !mV4ErrorReportingEnabled);
+        }
+    }
+
+    private static void requestOutputEntryInspection(
+            ApkSignerEngine signerEngine,
+            String entryName,
+            byte[] uncompressedData)
+            throws IOException {
+        ApkSignerEngine.InspectJarEntryRequest inspectEntryRequest =
+                signerEngine.outputJarEntry(entryName);
+        if (inspectEntryRequest != null) {
+            inspectEntryRequest.getDataSink().consume(
+                    uncompressedData, 0, uncompressedData.length);
+            inspectEntryRequest.done();
         }
     }
 
@@ -651,7 +752,7 @@ public class ApkSigner {
         int dataAlignmentMultiple = getInputJarEntryDataAlignmentMultiple(inputRecord);
         if ((dataAlignmentMultiple <= 1)
                 || ((inputOffset % dataAlignmentMultiple)
-                == (outputOffset % dataAlignmentMultiple))) {
+                        == (outputOffset % dataAlignmentMultiple))) {
             // This record's data will be aligned same as in the input APK.
             return new OutputSizeAndDataOffset(
                     inputRecord.outputRecord(inputLfhSection, outputLfhSection),
@@ -917,14 +1018,18 @@ public class ApkSigner {
         private final String mName;
         private final PrivateKey mPrivateKey;
         private final List<X509Certificate> mCertificates;
+        private boolean mDeterministicDsaSigning;
 
         private SignerConfig(
-                String name, PrivateKey privateKey, List<X509Certificate> certificates) {
+                String name,
+                PrivateKey privateKey,
+                List<X509Certificate> certificates,
+                boolean deterministicDsaSigning) {
             mName = name;
             mPrivateKey = privateKey;
             mCertificates = Collections.unmodifiableList(new ArrayList<>(certificates));
+            mDeterministicDsaSigning = deterministicDsaSigning;
         }
-
         /** Returns the name of this signer. */
         public String getName() {
             return mName;
@@ -943,11 +1048,20 @@ public class ApkSigner {
             return mCertificates;
         }
 
+
+        /**
+         * If this signer is a DSA signer, whether or not the signing is done deterministically.
+         */
+        public boolean getDeterministicDsaSigning() {
+            return mDeterministicDsaSigning;
+        }
+
         /** Builder of {@link SignerConfig} instances. */
         public static class Builder {
             private final String mName;
             private final PrivateKey mPrivateKey;
             private final List<X509Certificate> mCertificates;
+            private final boolean mDeterministicDsaSigning;
 
             /**
              * Constructs a new {@code Builder}.
@@ -958,13 +1072,36 @@ public class ApkSigner {
              * @param certificates list of one or more X.509 certificates. The subject public key of
              *     the first certificate must correspond to the {@code privateKey}.
              */
-            public Builder(String name, PrivateKey privateKey, List<X509Certificate> certificates) {
+            public Builder(
+                    String name,
+                    PrivateKey privateKey,
+                    List<X509Certificate> certificates) {
+                this(name, privateKey, certificates, false);
+            }
+
+            /**
+             * Constructs a new {@code Builder}.
+             *
+             * @param name signer's name. The name is reflected in the name of files comprising the
+             *     JAR signature of the APK.
+             * @param privateKey signing key
+             * @param certificates list of one or more X.509 certificates. The subject public key of
+             *     the first certificate must correspond to the {@code privateKey}.
+             * @param deterministicDsaSigning When signing using DSA, whether or not the
+             *     deterministic variant (RFC6979) should be used.
+             */
+            public Builder(
+                    String name,
+                    PrivateKey privateKey,
+                    List<X509Certificate> certificates,
+                    boolean deterministicDsaSigning) {
                 if (name.isEmpty()) {
                     throw new IllegalArgumentException("Empty name");
                 }
                 mName = name;
                 mPrivateKey = privateKey;
                 mCertificates = new ArrayList<>(certificates);
+                mDeterministicDsaSigning = deterministicDsaSigning;
             }
 
             /**
@@ -972,7 +1109,8 @@ public class ApkSigner {
              * this builder.
              */
             public SignerConfig build() {
-                return new SignerConfig(mName, mPrivateKey, mCertificates);
+                return new SignerConfig(mName, mPrivateKey, mCertificates,
+                        mDeterministicDsaSigning);
             }
         }
     }
@@ -992,15 +1130,22 @@ public class ApkSigner {
     public static class Builder {
         private final List<SignerConfig> mSignerConfigs;
         private SignerConfig mSourceStampSignerConfig;
+        private SigningCertificateLineage mSourceStampSigningCertificateLineage;
+        private boolean mForceSourceStampOverwrite = false;
+        private boolean mSourceStampTimestampEnabled = true;
         private boolean mV1SigningEnabled = true;
         private boolean mV2SigningEnabled = true;
         private boolean mV3SigningEnabled = true;
         private boolean mV4SigningEnabled = false;
+        private boolean mAlignFileSize = false;
+        private boolean mVerityEnabled = false;
         private boolean mV4ErrorReportingEnabled = false;
         private boolean mDebuggableApkPermitted = true;
         private boolean mOtherSignersSignaturesPreserved;
         private String mCreatedBy;
         private Integer mMinSdkVersion;
+        private int mRotationMinSdkVersion = V3SchemeConstants.DEFAULT_ROTATION_MIN_SDK_VERSION;
+        private boolean mRotationTargetsDevRelease = false;
 
         private final ApkSignerEngine mSignerEngine;
 
@@ -1065,6 +1210,35 @@ public class ApkSigner {
         /** Sets the signing configuration of the source stamp to be embedded in the APK. */
         public Builder setSourceStampSignerConfig(SignerConfig sourceStampSignerConfig) {
             mSourceStampSignerConfig = sourceStampSignerConfig;
+            return this;
+        }
+
+        /**
+         * Sets the source stamp {@link SigningCertificateLineage}. This structure provides proof of
+         * signing certificate rotation for certificates previously used to sign source stamps.
+         */
+        public Builder setSourceStampSigningCertificateLineage(
+                SigningCertificateLineage sourceStampSigningCertificateLineage) {
+            mSourceStampSigningCertificateLineage = sourceStampSigningCertificateLineage;
+            return this;
+        }
+
+        /**
+         * Sets whether the APK should overwrite existing source stamp, if found.
+         *
+         * @param force {@code true} to require the APK to be overwrite existing source stamp
+         */
+        public Builder setForceSourceStampOverwrite(boolean force) {
+            mForceSourceStampOverwrite = force;
+            return this;
+        }
+
+        /**
+         * Sets whether the source stamp should contain the timestamp attribute with the time
+         * at which the source stamp was signed.
+         */
+        public Builder setSourceStampTimestampEnabled(boolean value) {
+            mSourceStampTimestampEnabled = value;
             return this;
         }
 
@@ -1189,6 +1363,58 @@ public class ApkSigner {
         }
 
         /**
+         * Sets the minimum Android platform version (API Level) for which an APK's rotated signing
+         * key should be used to produce the APK's signature. The original signing key for the APK
+         * will be used for all previous platform versions. If a rotated key with signing lineage is
+         * not provided then this method is a noop. This method is useful for overriding the
+         * default behavior where Android T is set as the minimum API level for rotation.
+         *
+         * <p><em>Note:</em>Specifying a {@code minSdkVersion} value <= 32 (Android Sv2) will result
+         * in the original V3 signing block being used without platform targeting.
+         *
+         * <p><em>Note:</em> This method may only be invoked when this builder is not initialized
+         * with an {@link ApkSignerEngine}.
+         *
+         * @throws IllegalStateException if this builder was initialized with an {@link
+         *     ApkSignerEngine}
+         */
+        public Builder setMinSdkVersionForRotation(int minSdkVersion) {
+            checkInitializedWithoutEngine();
+            // If the provided SDK version does not support v3.1, then use the default SDK version
+            // with rotation support.
+            if (minSdkVersion < MIN_SDK_WITH_V31_SUPPORT) {
+                mRotationMinSdkVersion = MIN_SDK_WITH_V3_SUPPORT;
+            } else {
+                mRotationMinSdkVersion = minSdkVersion;
+            }
+            return this;
+        }
+
+        /**
+         * Sets whether the rotation-min-sdk-version is intended to target a development release;
+         * this is primarily required after the T SDK is finalized, and an APK needs to target U
+         * during its development cycle for rotation.
+         *
+         * <p>This is only required after the T SDK is finalized since S and earlier releases do
+         * not know about the V3.1 block ID, but once T is released and work begins on U, U will
+         * use the SDK version of T during development. Specifying a rotation-min-sdk-version of T's
+         * SDK version along with setting {@code enabled} to true will allow an APK to use the
+         * rotated key on a device running U while causing this to be bypassed for T.
+         *
+         * <p><em>Note:</em>If the rotation-min-sdk-version is less than or equal to 32 (Android
+         * Sv2), then the rotated signing key will be used in the v3.0 signing block and this call
+         * will be a noop.
+         *
+         * <p><em>Note:</em> This method may only be invoked when this builder is not initialized
+         * with an {@link ApkSignerEngine}.
+         */
+        public Builder setRotationTargetsDevRelease(boolean enabled) {
+            checkInitializedWithoutEngine();
+            mRotationTargetsDevRelease = enabled;
+            return this;
+        }
+
+        /**
          * Sets whether the APK should be signed using JAR signing (aka v1 signature scheme).
          *
          * <p>By default, whether APK is signed using JAR signing is determined by {@code
@@ -1273,7 +1499,7 @@ public class ApkSigner {
          * <p>V4 signing requires that the APK be v2 or v3 signed.
          *
          * @param enabled {@code true} to require the APK to be signed using APK Signature Scheme v2
-         * or v3 and generate an v4 signature file
+         *     or v3 and generate an v4 signature file
          */
         public Builder setV4SigningEnabled(boolean enabled) {
             checkInitializedWithoutEngine();
@@ -1291,11 +1517,39 @@ public class ApkSigner {
          * the user did not explicitly request the v4 signing.
          *
          * @param enabled {@code false} to prevent errors encountered during the V4 signing from
-         * halting the signing process
+         *     halting the signing process
          */
         public Builder setV4ErrorReportingEnabled(boolean enabled) {
             checkInitializedWithoutEngine();
             mV4ErrorReportingEnabled = enabled;
+            return this;
+        }
+
+       /**
+         * Sets whether the output APK files should be sized as multiples of 4K.
+         *
+         * <p><em>Note:</em> This method may only be invoked when this builder is not initialized
+         * with an {@link ApkSignerEngine}.
+         *
+         * @throws IllegalStateException if this builder was initialized with an {@link
+         *     ApkSignerEngine}
+         */
+        public Builder setAlignFileSize(boolean alignFileSize) {
+            checkInitializedWithoutEngine();
+            mAlignFileSize = alignFileSize;
+            return this;
+        }
+
+        /**
+         * Sets whether to enable the verity signature algorithm for the v2 and v3 signature
+         * schemes.
+         *
+         * @param enabled {@code true} to enable the verity signature algorithm for inclusion in the
+         *     v2 and v3 signature blocks.
+         */
+        public Builder setVerityEnabled(boolean enabled) {
+            checkInitializedWithoutEngine();
+            mVerityEnabled = enabled;
             return this;
         }
 
@@ -1400,8 +1654,8 @@ public class ApkSigner {
                     mV4SigningEnabled = false;
                 } else {
                     throw new IllegalStateException(
-                        "APK Signature Scheme v4 signing requires at least "
-                            + "v2 or v3 signing to be enabled");
+                            "APK Signature Scheme v4 signing requires at least "
+                                    + "v2 or v3 signing to be enabled");
                 }
             }
 
@@ -1410,11 +1664,18 @@ public class ApkSigner {
             return new ApkSigner(
                     mSignerConfigs,
                     mSourceStampSignerConfig,
+                    mSourceStampSigningCertificateLineage,
+                    mForceSourceStampOverwrite,
+                    mSourceStampTimestampEnabled,
                     mMinSdkVersion,
+                    mRotationMinSdkVersion,
+                    mRotationTargetsDevRelease,
                     mV1SigningEnabled,
                     mV2SigningEnabled,
                     mV3SigningEnabled,
                     mV4SigningEnabled,
+                    mAlignFileSize,
+                    mVerityEnabled,
                     mV4ErrorReportingEnabled,
                     mDebuggableApkPermitted,
                     mOtherSignersSignaturesPreserved,

@@ -36,9 +36,9 @@ import com.android.build.gradle.internal.tasks.factory.features.RenderscriptTask
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.Version
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.internal.compiler.DirectoryWalker
 import com.android.builder.internal.compiler.RenderScriptProcessor
-import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.ide.common.process.LoggedProcessOutputHandler
 import com.android.ide.common.process.ProcessOutputHandler
 import com.android.repository.Revision
@@ -70,7 +70,6 @@ import org.gradle.api.tasks.TaskProvider
 import org.gradle.process.ExecOperations
 import java.io.File
 import java.io.IOException
-import java.util.concurrent.Callable
 import javax.inject.Inject
 import kotlin.math.min
 
@@ -166,9 +165,9 @@ abstract class RenderscriptCompile : NdkTask() {
 
     override fun doTaskAction() {
         logger.warn(
-            "The RenderScript APIs are deprecated. They will be removed in Android Gradle plugin " +
-                    "${Version.VERSION_9_0.versionString}. See the following link for a guide to " +
-                    "migrate from RenderScript: " +
+            "RenderScript APIs are deprecated starting in Android 12. RenderScript support will " +
+                    "be removed in a future version of the Android Gradle plugin. See the " +
+                    "following link for a guide to migrate from RenderScript: " +
                     "https://developer.android.com/guide/topics/renderscript/migrate"
         )
         // this is full run (always), clean the previous outputs
@@ -344,9 +343,12 @@ abstract class RenderscriptCompile : NdkTask() {
             task.ndkMode.setDisallowChanges(renderscriptCreationConfig.renderscript.ndkModeEnabled)
             task.optimLevel.setDisallowChanges(renderscriptCreationConfig.renderscript.optimLevel)
 
-            task.sourceDirs =
-                creationConfig.services.fileCollection(Callable {
-                    creationConfig.sources.renderscript?.all })
+            task.sourceDirs = creationConfig.services.fileCollection().also { fileCollection ->
+                creationConfig.sources.renderscript {
+                    fileCollection.from(it.all)
+                }
+            }
+
             task.importDirs = creationConfig.variantDependencies.getArtifactFileCollection(
                 COMPILE_CLASSPATH, ALL, RENDERSCRIPT
             )

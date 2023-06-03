@@ -16,13 +16,9 @@
 
 package com.android.build.gradle.internal.dsl
 
-import com.android.build.api.dsl.DexPackagingOptions
-import com.android.build.api.dsl.JniLibsPackagingOptions
-import com.android.build.api.dsl.ResourcesPackagingOptions
 import com.android.build.gradle.internal.dsl.decorator.annotation.WithLazyInitialization
 import com.android.build.gradle.internal.packaging.defaultExcludes
 import com.android.build.gradle.internal.packaging.defaultMerges
-import org.gradle.api.Action
 import javax.inject.Inject
 
 /**
@@ -145,7 +141,7 @@ import javax.inject.Inject
 abstract class PackagingOptions
 @Inject @WithLazyInitialization("lazyInit") constructor() :
     com.android.builder.model.PackagingOptions,
-    com.android.build.api.dsl.PackagingOptions {
+    com.android.build.api.dsl.Packaging {
 
     protected fun lazyInit() {
         setExcludes(defaultExcludes)

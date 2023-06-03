@@ -30,10 +30,13 @@ import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
 import com.android.build.gradle.internal.component.legacy.OldVariantApiLegacySupport
 import com.android.build.gradle.internal.core.MergedFlavor
+import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.core.dsl.ApkProducingComponentDslInfo
 import com.android.build.gradle.internal.core.dsl.ComponentDslInfo
+import com.android.build.gradle.internal.core.dsl.MultiVariantComponentDslInfo
+import com.android.build.gradle.internal.core.dsl.features.ManifestPlaceholdersDslInfo
 import com.android.build.gradle.internal.core.dsl.impl.ComponentDslInfoImpl
-import com.android.build.gradle.internal.core.dsl.impl.getManifestPlaceholders
+import com.android.build.gradle.internal.core.dsl.impl.features.ManifestPlaceholdersDslInfoImpl
 import com.android.build.gradle.internal.dependency.ArtifactCollectionWithExtraArtifact
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.PublishingSpecs.Companion.getVariantPublishingSpec
@@ -53,20 +56,24 @@ import java.io.Serializable
 class OldVariantApiLegacySupportImpl(
     private val component: ComponentCreationConfig,
     private val dslInfo: ComponentDslInfo,
-    override val variantData: BaseVariantData
+    override val variantData: BaseVariantData,
+    override val variantSources: VariantSources
 ): OldVariantApiLegacySupport {
 
     override val buildTypeObj: BuildType
         get() = (dslInfo as ComponentDslInfoImpl).buildTypeObj
     override val productFlavorList: List<ProductFlavor>
-        get() = dslInfo.productFlavorList
+        get() = (dslInfo as MultiVariantComponentDslInfo).productFlavorList
     override val mergedFlavor: MergedFlavor
         get() = (dslInfo as ComponentDslInfoImpl).mergedFlavor
     override val dslSigningConfig: com.android.build.gradle.internal.dsl.SigningConfig? =
         (dslInfo as? ApkProducingComponentDslInfo)?.signingConfig
 
-    override val manifestPlaceholders: Map<String, String> by lazy(LazyThreadSafetyMode.NONE) {
-        getManifestPlaceholders(mergedFlavor, buildTypeObj)
+    override val manifestPlaceholdersDslInfo: ManifestPlaceholdersDslInfo? by lazy(LazyThreadSafetyMode.NONE) {
+        ManifestPlaceholdersDslInfoImpl(
+                mergedFlavor,
+                buildTypeObj
+        )
     }
 
     /**
@@ -204,42 +211,46 @@ class OldVariantApiLegacySupportImpl(
         if (allRawAndroidResources != null) {
             return allRawAndroidResources!!
         }
-        allRawAndroidResources = component.services.fileCollection()
+        allRawAndroidResources = component.services.fileCollection().also { fileCollection ->
+            fileCollection.from(
+                component.variantDependencies
+                    .getArtifactCollection(
+                        AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
+                        AndroidArtifacts.ArtifactScope.ALL,
+                        AndroidArtifacts.ArtifactType.ANDROID_RES
+                    )
+                    .artifactFiles
+            )
 
-        allRawAndroidResources!!.from(
-            component.variantDependencies
-                .getArtifactCollection(
-                    AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
-                    AndroidArtifacts.ArtifactScope.ALL,
-                    AndroidArtifacts.ArtifactType.ANDROID_RES
+            fileCollection.from(
+                component.services.fileCollection(
+                    variantData.extraGeneratedResFolders
+                ).builtBy(listOfNotNull(variantData.extraGeneratedResFolders.builtBy))
+            )
+
+            component.taskContainer.generateApkDataTask?.let {
+                fileCollection.from(component.artifacts.get(InternalArtifactType.MICRO_APK_RES))
+            }
+
+            component.sources.res { resSources ->
+                fileCollection.from(
+                    resSources.getVariantSources().map { directoryEntries ->
+                        directoryEntries.directoryEntries
+                            .map {
+                                if (it is TaskProviderBasedDirectoryEntryImpl) {
+                                    it.directoryProvider
+                                } else {
+                                    it.asFiles(
+                                      component.services.provider {
+                                          component.services.projectInfo.projectDirectory
+                                      })
+                                }
+                            }
+                    }
                 )
-                .artifactFiles
-        )
-
-        allRawAndroidResources!!.from(
-            component.services.fileCollection(
-                variantData.extraGeneratedResFolders
-            ).builtBy(listOfNotNull(variantData.extraGeneratedResFolders.builtBy))
-        )
-
-        component.taskContainer.generateApkDataTask?.let {
-            allRawAndroidResources!!.from(component.artifacts.get(InternalArtifactType.MICRO_APK_RES))
+            }
         }
 
-        allRawAndroidResources!!.from(component.sources.res.getVariantSources().map {  directoryEntries ->
-                directoryEntries.getEntries()
-                    .map {
-                        if (it is TaskProviderBasedDirectoryEntryImpl) {
-                            it.directoryProvider
-                        } else {
-                            it.asFiles(
-                              component.services.provider {
-                                  component.services.projectInfo.projectDirectory
-                              })
-
-                    }
-            }
-        })
         return allRawAndroidResources!!
     }
 

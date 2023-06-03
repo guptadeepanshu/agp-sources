@@ -676,6 +676,35 @@ public interface TestLibrariesOrBuilder extends
 
   /**
    * <pre>
+   * "androidx.test.espresso:espresso-device"
+   * </pre>
+   *
+   * <code>optional string espresso_device_version = 41;</code>
+   * @return Whether the espressoDeviceVersion field is set.
+   */
+  boolean hasEspressoDeviceVersion();
+  /**
+   * <pre>
+   * "androidx.test.espresso:espresso-device"
+   * </pre>
+   *
+   * <code>optional string espresso_device_version = 41;</code>
+   * @return The espressoDeviceVersion.
+   */
+  java.lang.String getEspressoDeviceVersion();
+  /**
+   * <pre>
+   * "androidx.test.espresso:espresso-device"
+   * </pre>
+   *
+   * <code>optional string espresso_device_version = 41;</code>
+   * @return The bytes for espressoDeviceVersion.
+   */
+  com.google.protobuf.ByteString
+      getEspressoDeviceVersionBytes();
+
+  /**
+   * <pre>
    * "androidx.fragment:fragment-testing".
    * </pre>
    *

@@ -20,6 +20,7 @@ import com.android.build.api.variant.impl.DirectoryEntries
 import com.android.build.api.variant.impl.DirectoryEntry
 import com.android.build.api.variant.impl.FlatSourceDirectoriesImpl
 import com.android.build.api.variant.impl.LayeredSourceDirectoriesImpl
+import java.io.File
 
 /**
  * Interface to calculate the default list of sources [DirectoryEntry] per source type.
@@ -42,7 +43,7 @@ interface DefaultSourcesProvider {
      * The [List] is ordered in ascending order of importance, meaning the first set is meant to be
      * overridden by the 2nd one and so on.
      */
-    fun getRes(lateAdditionsDelegate: LayeredSourceDirectoriesImpl): List<DirectoryEntries>
+    fun getRes(lateAdditionsDelegate: LayeredSourceDirectoriesImpl): List<DirectoryEntries>?
 
     /**
      * the list of sources [DirectoryEntry] for java resources.
@@ -84,10 +85,23 @@ interface DefaultSourcesProvider {
      * The [List] is ordered in ascending order of importance, meaning the first set is meant to be
      * overridden by the 2nd one and so on.
      */
-    fun getMlModels(lateAdditionsDelegate: LayeredSourceDirectoriesImpl): List<DirectoryEntries>
+    fun getMlModels(lateAdditionsDelegate: LayeredSourceDirectoriesImpl): List<DirectoryEntries>?
 
     /**
      * the list of sources [DirectoryEntry] for renderscript or null if the feature is disabled.
      */
     fun getRenderscript(lateAdditionsDelegate: FlatSourceDirectoriesImpl): List<DirectoryEntry>?
+
+    /**
+     * the list of sources [DirectoryEntry] for baseline profiles
+     */
+    fun getBaselineProfiles(lateAdditionsDelegate: FlatSourceDirectoriesImpl): List<DirectoryEntry>
+
+    val artProfile: File
+
+    val mainManifestFile: File
+
+    val manifestOverlays: List<File>
+
+    val sourceProvidersNames: List<String>
 }

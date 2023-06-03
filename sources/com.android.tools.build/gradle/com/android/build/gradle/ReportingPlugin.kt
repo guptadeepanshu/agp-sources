@@ -30,3 +30,4 @@ class ReportingPlugin: Plugin<Project> {
 }
 
 private val INTERNAL_PLUGIN_ID = mapOf("plugin" to "com.android.internal.reporting")
+internal val VERSION_CHECK_PLUGIN_ID = mapOf("plugin" to "com.android.internal.version-check")

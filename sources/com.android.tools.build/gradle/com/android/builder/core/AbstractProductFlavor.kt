@@ -522,10 +522,10 @@ abstract class AbstractProductFlavor(
         multiDexKeepFile = chooseNotNull(overlay.multiDexKeepFile, multiDexKeepFile)
         multiDexKeepProguard = chooseNotNull(overlay.multiDexKeepProguard, multiDexKeepProguard)
         vectorDrawables
-                .setGeneratedDensities(
-                        chooseNotNull(
-                                overlay.vectorDrawables.generatedDensities,
-                                vectorDrawables.generatedDensities))
+            .setGeneratedDensities(
+                chooseNotNull(
+                    overlay.vectorDrawables.generatedDensities,
+                    vectorDrawables.generatedDensities))
         vectorDrawables.useSupportLibrary = chooseNotNull(
                 overlay.vectorDrawables.useSupportLibrary,
                 vectorDrawables.useSupportLibrary)

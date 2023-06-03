@@ -18,24 +18,25 @@ package com.android.build.gradle.internal.transforms
 
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
-import com.android.build.gradle.internal.res.shrinker.LoggerAndFileDebugReporter
-import com.android.build.gradle.internal.res.shrinker.ResourceShrinkerImpl
-import com.android.build.gradle.internal.res.shrinker.gatherer.ProtoResourceTableGatherer
-import com.android.build.gradle.internal.res.shrinker.graph.ProtoResourcesGraphBuilder
-import com.android.build.gradle.internal.res.shrinker.obfuscation.ProguardMappingsRecorder
-import com.android.build.gradle.internal.res.shrinker.usages.DexUsageRecorder
-import com.android.build.gradle.internal.res.shrinker.usages.ProtoAndroidManifestUsageRecorder
-import com.android.build.gradle.internal.res.shrinker.usages.ToolsAttributeUsageRecorder
+import com.android.build.shrinker.LoggerAndFileDebugReporter
+import com.android.build.shrinker.ResourceShrinkerImpl
+import com.android.build.shrinker.gatherer.ProtoResourceTableGatherer
+import com.android.build.shrinker.graph.ProtoResourcesGraphBuilder
+import com.android.build.shrinker.obfuscation.ProguardMappingsRecorder
+import com.android.build.shrinker.usages.DexUsageRecorder
+import com.android.build.shrinker.usages.ProtoAndroidManifestUsageRecorder
+import com.android.build.shrinker.usages.ToolsAttributeUsageRecorder
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.featuresplit.FeatureSetMetadata
 import com.android.build.gradle.options.BooleanOption
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.utils.FileUtils
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.logging.Logging
+import org.gradle.api.logging.LogLevel
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
@@ -68,7 +69,7 @@ abstract class ShrinkAppBundleResourcesTask : NonIncrementalTask() {
     abstract val shrunkBundle: RegularFileProperty
 
     @get:InputFile
-    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
     abstract val originalBundle: RegularFileProperty
 
     @get:Input
@@ -82,7 +83,7 @@ abstract class ShrinkAppBundleResourcesTask : NonIncrementalTask() {
     abstract val featureSetMetadata: RegularFileProperty
 
     @get:InputFiles
-    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
     @get:Optional
     abstract val mappingFileSrc: RegularFileProperty
 
@@ -193,7 +194,19 @@ private abstract class ShrinkAppBundleResourcesAction @Inject constructor() :
               obfuscationMappingsRecorder,
               usageRecorders,
               graphBuilders,
-              debugReporter = LoggerAndFileDebugReporter(logger, reportFile),
+              debugReporter = LoggerAndFileDebugReporter(
+                    logDebug = { debugMessage ->
+                        if (logger.isEnabled(LogLevel.DEBUG)) {
+                            logger.log(LogLevel.DEBUG, debugMessage)
+                        }
+                    },
+                    logInfo = { infoMessage ->
+                        if (logger.isEnabled(LogLevel.DEBUG)) {
+                            logger.log(LogLevel.DEBUG, infoMessage)
+                        }
+                    },
+                    reportFile
+                ),
               supportMultipackages = true,
               usePreciseShrinking = parameters.usePreciseShrinking.get()
             ).use { shrinker ->

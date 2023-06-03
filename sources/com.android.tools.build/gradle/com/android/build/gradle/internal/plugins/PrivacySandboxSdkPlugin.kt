@@ -35,6 +35,7 @@ import com.android.build.gradle.internal.res.PrivacySandboxSdkLinkAndroidResourc
 import com.android.build.gradle.internal.services.Aapt2DaemonBuildService
 import com.android.build.gradle.internal.services.Aapt2ThreadPoolBuildService
 import com.android.build.gradle.internal.services.DslServices
+import com.android.build.gradle.internal.services.SymbolTableBuildService
 import com.android.build.gradle.internal.services.TaskCreationServicesImpl
 import com.android.build.gradle.internal.services.VersionedSdkLoaderService
 import com.android.build.gradle.internal.tasks.AppMetadataTask
@@ -48,6 +49,9 @@ import com.android.build.gradle.tasks.FusedLibraryMergeClasses
 import com.android.build.gradle.tasks.GeneratePrivacySandboxAsar
 import com.android.build.gradle.tasks.PackagePrivacySandboxSdkBundle
 import com.android.build.gradle.tasks.PrivacySandboxSdkDexTask
+import com.android.build.gradle.tasks.PrivacySandboxSdkGenerateRPackageDexTask
+import com.android.build.gradle.tasks.PrivacySandboxSdkGenerateJarStubsTask
+import com.android.build.gradle.tasks.PrivacySandboxSdkGenerateRClassTask
 import com.android.build.gradle.tasks.PrivacySandboxSdkManifestGeneratorTask
 import com.android.build.gradle.tasks.PrivacySandboxSdkManifestMergerTask
 import com.android.build.gradle.tasks.PrivacySandboxSdkMergeDexTask
@@ -61,6 +65,7 @@ import org.gradle.api.artifacts.Configuration
 import org.gradle.api.attributes.Usage
 import org.gradle.api.component.SoftwareComponentFactory
 import org.gradle.api.file.RegularFile
+import org.gradle.api.plugins.JvmEcosystemPlugin
 import org.gradle.build.event.BuildEventsListenerRegistry
 import javax.inject.Inject
 
@@ -116,9 +121,13 @@ class PrivacySandboxSdkPlugin @Inject constructor(
     }
 
     override fun configureProject(project: Project) {
+        // workaround for https://github.com/gradle/gradle/issues/20145
+        project.plugins.apply(JvmEcosystemPlugin::class.java)
+
         val projectOptions = projectServices.projectOptions
         Aapt2ThreadPoolBuildService.RegistrationAction(project, projectOptions).execute()
         Aapt2DaemonBuildService.RegistrationAction(project, projectOptions).execute()
+        SymbolTableBuildService.RegistrationAction(project).execute()
     }
 
     override fun configureExtension(project: Project) {
@@ -129,8 +138,8 @@ class PrivacySandboxSdkPlugin @Inject constructor(
         super.basePluginApply(project)
         if (!projectServices.projectOptions[BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT]) {
             throw GradleException(
-                    "Privacy Sandbox SDKs are not supported in Android Gradle plugin 7.4.x.\n" +
-                            "To build privacy sandbox SDKs, please use Android Gradle plugin 8.0.0-alpha01 or later."
+                    "Privacy Sandbox SDKs are not supported in Android Gradle plugin 8.0.x.\n" +
+                    "To build privacy sandbox SDKs, please use Android Gradle plugin 8.1.0-alpha01 or later."
             )
         }
 
@@ -217,18 +226,9 @@ class PrivacySandboxSdkPlugin @Inject constructor(
                 elements: Configuration,
                 usage: String,
                 artifacts: ArtifactsImpl,
-                publicationArtifact: Artifact.Single<RegularFile>,
-                publicationArtifactType: AndroidArtifacts.ArtifactType
+                publications: List<Pair<Artifact.Single<RegularFile>, AndroidArtifacts.ArtifactType>>
         ) {
-            // we are only interested in the last provider in the chain of transformers for this bundle.
-            // Obviously, this is theoretical at this point since there is no variant API to replace
-            // artifacts, there is always only one.
-            val bundleTaskProvider = publicationArtifact.let {
-                artifacts
-                        .getArtifactContainer(it)
-                        .getTaskProviders()
-                        .last()
-            }
+
             elements.attributes.attribute(
                     Usage.USAGE_ATTRIBUTE,
                     project.objects.named(Usage::class.java, usage)
@@ -238,11 +238,23 @@ class PrivacySandboxSdkPlugin @Inject constructor(
             elements.isTransitive = true
 
             elements.outgoing.variants { variants ->
-                variants.create(publicationArtifactType.type) { variant ->
-                    variant.artifact(bundleTaskProvider) { artifact ->
-                        artifact.type = publicationArtifactType.type
+                for (publication in publications) {
+                    // we are only interested in the last provider in the chain of transformers for this bundle.
+                    // Obviously, this is theoretical at this point since there is no variant API to replace
+                    // artifacts, there is always only one.
+                    val bundleTaskProvider = publication.first.let {
+                        artifacts
+                            .getArtifactContainer(it)
+                            .getTaskProviders()
+                            .last()
+                    }
+                    variants.create(publication.second.type) { variant ->
+                        variant.artifact(bundleTaskProvider) { artifact ->
+                            artifact.type = publication.second.type
+                        }
                     }
                 }
+
             }
         }
         project.configurations.create("apiElements") { apiElements ->
@@ -250,8 +262,13 @@ class PrivacySandboxSdkPlugin @Inject constructor(
                     apiElements,
                     Usage.JAVA_API,
                     variantScope.artifacts,
-                    PrivacySandboxSdkInternalArtifactType.ASAR,
-                    AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_ARCHIVE)
+                    listOf(
+                        PrivacySandboxSdkInternalArtifactType.ASAR to
+                                AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_ARCHIVE,
+                        PrivacySandboxSdkInternalArtifactType.STUB_JAR to
+                                AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_INTERFACE_DESCRIPTOR,
+                    )
+            )
 
             apiElements.extendsFrom(includedApiUnmerged)
         }
@@ -262,8 +279,14 @@ class PrivacySandboxSdkPlugin @Inject constructor(
                     runtimeElements,
                     Usage.JAVA_RUNTIME,
                     variantScope.artifacts,
-                    PrivacySandboxSdkInternalArtifactType.ASAR,
-                    AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_ARCHIVE)
+                    listOf(
+                        PrivacySandboxSdkInternalArtifactType.ASAR to
+                                AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_ARCHIVE,
+                        PrivacySandboxSdkInternalArtifactType.STUB_JAR to
+                                AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_INTERFACE_DESCRIPTOR,
+                    )
+            )
+
             runtimeElements.extendsFrom(includeRuntimeUnmerged)
         }
         val configurationsToAdd = listOf(includeApiClasspath, includeRuntimeClasspath)
@@ -302,12 +325,15 @@ class PrivacySandboxSdkPlugin @Inject constructor(
                         FusedLibraryMergeClasses.PrivacySandboxSdkCreationAction(variantScope),
                         GeneratePrivacySandboxAsar.CreationAction(variantScope),
                         MergeJavaResourceTask.PrivacySandboxSdkCreationAction(variantScope),
+                        PrivacySandboxSdkGenerateJarStubsTask.CreationAction(variantScope),
                         PrivacySandboxSdkMergeResourcesTask.CreationAction(variantScope),
                         PrivacySandboxSdkManifestGeneratorTask.CreationAction(variantScope),
                         PrivacySandboxSdkManifestMergerTask.CreationAction(variantScope),
                         PrivacySandboxSdkLinkAndroidResourcesTask.CreationAction(variantScope),
                         PrivacySandboxSdkDexTask.CreationAction(variantScope),
                         PrivacySandboxSdkMergeDexTask.CreationAction(variantScope),
+                        PrivacySandboxSdkGenerateRPackageDexTask.CreationAction(variantScope),
+                        PrivacySandboxSdkGenerateRClassTask.CreationAction(variantScope),
                         PerModuleBundleTask.PrivacySandboxSdkCreationAction(variantScope),
                         PackagePrivacySandboxSdkBundle.CreationAction(variantScope),
                         ValidateSigningTask.PrivacySandboxSdkCreationAction(variantScope),

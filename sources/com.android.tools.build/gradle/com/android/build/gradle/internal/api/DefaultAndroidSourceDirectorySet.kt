@@ -16,7 +16,6 @@
 
 package com.android.build.gradle.internal.api
 
-import com.android.build.api.variant.impl.FileBasedDirectoryEntryImpl
 import com.android.build.api.variant.impl.ProviderBasedDirectoryEntryImpl
 import com.android.build.api.variant.impl.SourceDirectoriesImpl
 import com.android.build.gradle.api.AndroidSourceDirectorySet
@@ -35,6 +34,7 @@ import org.gradle.api.specs.Spec
 import org.gradle.api.tasks.util.PatternFilterable
 import org.gradle.api.tasks.util.PatternSet
 import java.io.File
+import java.nio.file.Path
 import java.util.ArrayList
 import java.util.concurrent.Callable
 
@@ -65,7 +65,7 @@ class DefaultAndroidSourceDirectorySet(
     fun getSourceSetName() = name
 
     override fun srcDir(srcDir: Any): AndroidSourceDirectorySet {
-        if (srcDir is Iterable<*>) {
+        if (srcDir is Iterable<*> && srcDir !is Path) {
             srcDir.forEach { src ->
                 src?.let { srcDir(it) }
             }
@@ -153,71 +153,71 @@ class DefaultAndroidSourceDirectorySet(
 
     override fun toString()= "${super.toString()}, type=${type}, source=$source"
 
-    @Deprecated("To be removed in 8.0")
+    @Deprecated("To be removed in 9.0")
     override fun getIncludes(): Set<String> {
         return filter.includes
     }
 
-    @Deprecated("To be removed in 8.0")
+    @Deprecated("To be removed in 9.0")
     override fun getExcludes(): Set<String> {
         return filter.excludes
     }
 
-    @Deprecated("To be removed in 8.0")
+    @Deprecated("To be removed in 9.0")
     override fun setIncludes(includes: Iterable<String>): PatternFilterable {
         filter.setIncludes(includes)
         return this
     }
 
-    @Deprecated("To be removed in 8.0")
+    @Deprecated("To be removed in 9.0")
     override fun setExcludes(excludes: Iterable<String>): PatternFilterable {
         filter.setExcludes(excludes)
         return this
     }
 
-    @Deprecated("To be removed in 8.0")
+    @Deprecated("To be removed in 9.0")
     override fun include(vararg includes: String): PatternFilterable {
         filter.include(*includes)
         return this
     }
 
-    @Deprecated("To be removed in 8.0")
+    @Deprecated("To be removed in 9.0")
     override fun include(includes: Iterable<String>): PatternFilterable {
         filter.include(includes)
         return this
     }
 
-    @Deprecated("To be removed in 8.0")
+    @Deprecated("To be removed in 9.0")
     override fun include(includeSpec: Spec<FileTreeElement>): PatternFilterable {
         filter.include(includeSpec)
         return this
     }
 
-    @Deprecated("To be removed in 8.0")
+    @Deprecated("To be removed in 9.0")
     override fun include(includeSpec: Closure<*>): PatternFilterable {
         filter.include(includeSpec)
         return this
     }
 
-    @Deprecated("To be removed in 8.0")
+    @Deprecated("To be removed in 9.0")
     override fun exclude(excludes: Iterable<String>): PatternFilterable {
         filter.exclude(excludes)
         return this
     }
 
-    @Deprecated("To be removed in 8.0")
+    @Deprecated("To be removed in 9.0")
     override fun exclude(vararg excludes: String): PatternFilterable {
         filter.exclude(*excludes)
         return this
     }
 
-    @Deprecated("To be removed in 8.0")
+    @Deprecated("To be removed in 9.0")
     override fun exclude(excludeSpec: Spec<FileTreeElement>): PatternFilterable {
         filter.exclude(excludeSpec)
         return this
     }
 
-    @Deprecated("To be removed in 8.0")
+    @Deprecated("To be removed in 9.0")
     override fun exclude(excludeSpec: Closure<*>): PatternFilterable {
         filter.exclude(excludeSpec)
         return this

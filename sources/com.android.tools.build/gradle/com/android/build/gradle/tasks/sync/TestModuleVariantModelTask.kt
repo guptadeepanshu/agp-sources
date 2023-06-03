@@ -19,7 +19,7 @@ package com.android.build.gradle.tasks.sync
 import com.android.build.gradle.internal.component.TestVariantCreationConfig
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.ide.common.build.filebasedproperties.variant.VariantProperties
 import org.gradle.work.DisableCachingByDefault
 
@@ -37,9 +37,9 @@ abstract class TestModuleVariantModelTask: ModuleVariantModelTask() {
         super.addVariantContent(variant.testVariantPropertiesBuilder.artifactOutputPropertiesBuilder)
     }
 
-    class CreationAction(private val testVariantCreationConfig: TestVariantCreationConfig):
+    class CreationAction(creationConfig: TestVariantCreationConfig):
             AbstractVariantModelTask.CreationAction<TestModuleVariantModelTask, TestVariantCreationConfig>(
-                    creationConfig = testVariantCreationConfig,
+                creationConfig,
             ) {
 
         override val type: Class<TestModuleVariantModelTask>
@@ -48,7 +48,8 @@ abstract class TestModuleVariantModelTask: ModuleVariantModelTask() {
         override fun configure(task: TestModuleVariantModelTask) {
             super.configure(task)
             task.manifestPlaceholders.setDisallowChanges(
-                testVariantCreationConfig.manifestPlaceholders
+                creationConfig.manifestPlaceholdersCreationConfig?.placeholders,
+                handleNullable = { empty() }
             )
         }
     }

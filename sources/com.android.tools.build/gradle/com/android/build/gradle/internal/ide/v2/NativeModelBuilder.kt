@@ -17,11 +17,13 @@
 package com.android.build.gradle.internal.ide.v2
 
 import com.android.build.gradle.internal.component.ComponentCreationConfig
+import com.android.build.gradle.internal.cxx.configure.NativeLocationsBuildService
 import com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome
 import com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome.Outcome.FAILED_DURING_GENERATE
 import com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome.Outcome.NO_CONFIGURATION_MODELS
 import com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome.Outcome.SUCCESS
 import com.android.build.gradle.internal.cxx.configure.encode
+import com.android.build.gradle.internal.cxx.configure.rewriteWithLocations
 import com.android.build.gradle.internal.cxx.gradle.generator.CxxMetadataGenerator
 import com.android.build.gradle.internal.cxx.gradle.generator.createCxxMetadataGenerator
 import com.android.build.gradle.internal.cxx.logging.IssueReporterLoggingEnvironment
@@ -82,9 +84,11 @@ class NativeModelBuilder(
         return generators.computeIfAbsent(abi) { model ->
             val analyticsService =
                 getBuildService(project.gradle.sharedServices, AnalyticsService::class.java).get()
+            val nativeLocationsBuildService =
+                getBuildService(project.gradle.sharedServices, NativeLocationsBuildService::class.java).get()
             IssueReporterLoggingEnvironment(issueReporter, analyticsService, abi.variant).use {
                 createCxxMetadataGenerator(
-                    abi,
+                    abi = abi.rewriteWithLocations(nativeLocationsBuildService),
                     analyticsService
                 )
             }

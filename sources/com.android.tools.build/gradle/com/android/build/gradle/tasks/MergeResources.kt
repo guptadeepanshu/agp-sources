@@ -50,8 +50,8 @@ import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.SyncOptions
 import com.android.build.gradle.options.SyncOptions.ErrorFormatMode
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.png.VectorDrawableRenderer
-import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.ide.common.blame.MergingLog
 import com.android.ide.common.resources.ANDROID_AAPT_IGNORE
 import com.android.ide.common.resources.CopyToOutputDirectoryResourceCompilationService
@@ -169,9 +169,6 @@ abstract class MergeResources : NewIncrementalTask() {
      */
     @get:Input
     abstract val resourceDirsOutsideRootProjectDir: SetProperty<String>
-
-    @get:Input
-    abstract val relativePathsEnabled: Property<Boolean>
 
     @get:Input
     abstract val pseudoLocalesEnabled: Property<Boolean>
@@ -490,14 +487,14 @@ abstract class MergeResources : NewIncrementalTask() {
     private fun getRelativeSourceSetMap(
         resourceSets: List<ResourceSet>, destinationDir: File, incrementalFolder: File
     ): Map<String, String> {
-        if (!relativePathsEnabled.get()) {
-            return emptyMap()
-        }
         val sourceSets: MutableList<File> =
             resourceSets.flatMap(ResourceSet::getSourceFiles).toMutableList()
 
         if (generatedPngsOutputDir.isPresent) {
             sourceSets.add(generatedPngsOutputDir.get().asFile)
+        }
+        mergedNotCompiledResourcesOutputDirectory?.let {
+            if (it.exists()) { sourceSets.add(it) }
         }
         sourceSets.add(destinationDir)
         sourceSets.add(FileUtils.join(incrementalFolder, SdkConstants.FD_MERGED_DOT_DIR))
@@ -556,15 +553,17 @@ abstract class MergeResources : NewIncrementalTask() {
                 val rootProjectDir = projectRootDir.asFile.get()
                 val normalizedInputFile: RelativizableFile
                 if (FileUtils.isFileInDirectory(inputFile, rootProjectDir)) {
-                    // Check that the input file's absolute path has NOT been
-                    // annotated as @Input via this task's
-                    // getResourceDirsOutsideRootProjectDir() input file property.
-                    Preconditions.checkState(
+                    // Check that the layout file's absolute path is not an @Input (i.e., it must
+                    // not be located in resourceDirsOutsideRootProjectDir, which is an @Input)
+                    check(
                         !resourceIsInResourceDirs(
                             inputFile, resourceDirsOutsideRootProjectDir.get()
-                        ),
-                        inputFile.absolutePath + " should not be annotated as @Input"
-                    )
+                        )
+                    ) {
+                        "Layout file ${inputFile.canonicalPath} is not expected be located in " +
+                                resourceDirsOutsideRootProjectDir.get()
+                                    .joinToString(", ", "[", "]") { File(it).canonicalPath }
+                    }
 
                     // The base directory of the relative path has to be the root
                     // project directory, not the current project directory, because
@@ -575,15 +574,17 @@ abstract class MergeResources : NewIncrementalTask() {
                     )
                     Preconditions.checkState(normalizedInputFile.relativeFile != null)
                 } else {
-                    // Check that the input file's absolute path has been annotated
-                    // as @Input via this task's
-                    // getResourceDirsOutsideRootProjectDir() input file property.
-                    Preconditions.checkState(
+                    // Check that the layout file's absolute path is an @Input (i.e., it must be
+                    // located in resourceDirsOutsideRootProjectDir, which is an @Input)
+                    check(
                         resourceIsInResourceDirs(
                             inputFile, resourceDirsOutsideRootProjectDir.get()
-                        ),
-                        inputFile.absolutePath + " is not annotated as @Input"
-                    )
+                        )
+                    ) {
+                        "Layout file ${inputFile.canonicalPath} is not located in " +
+                                resourceDirsOutsideRootProjectDir.get()
+                                    .joinToString(", ", "[", "]") { File(it).canonicalPath }
+                    }
                     normalizedInputFile =
                         RelativizableFile.fromAbsoluteFile(inputFile.canonicalFile, null)
                     Preconditions.checkState(normalizedInputFile.relativeFile == null)
@@ -888,15 +889,12 @@ abstract class MergeResources : NewIncrementalTask() {
             task.renderscriptGeneratedResDir.setDisallowChanges(
                 creationConfig.artifacts.get(InternalArtifactType.RENDERSCRIPT_GENERATED_RES))
 
-            val relativeLocalResources = !processResources ||
-                    creationConfig.services
-                        .projectOptions[BooleanOption.ENABLE_SOURCE_SET_PATHS_MAP]
-
             task.resourcesComputer.initFromVariantScope(
-                creationConfig,
-                microApk,
-                libraryArtifacts,
-                relativeLocalResources
+                creationConfig = creationConfig,
+                androidResourcesCreationConfig = androidResourcesCreationConfig,
+                microApkResDir = microApk,
+                libraryDependencies = libraryArtifacts,
+                relativeLocalResources = true
             )
             val features = creationConfig.buildFeatures
             val isDataBindingEnabled = features.dataBinding
@@ -949,12 +947,6 @@ abstract class MergeResources : NewIncrementalTask() {
                         .getEnvVariable(ANDROID_AAPT_IGNORE)
                 )
             task.projectRootDir.set(task.project.rootDir)
-            task.relativePathsEnabled
-                .set(
-                    creationConfig
-                        .services
-                        .projectOptions[BooleanOption.ENABLE_SOURCE_SET_PATHS_MAP]
-                )
         }
 
         companion object {

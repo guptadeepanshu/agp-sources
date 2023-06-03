@@ -16,8 +16,6 @@
 
 package com.android.build.api.dsl
 
-import org.gradle.api.Incubating
-
 interface LibraryBaseFlavor :
     BaseFlavor,
     LibraryVariantDimension {
@@ -34,12 +32,9 @@ interface LibraryBaseFlavor :
      * See [uses-sdk element documentation](http://developer.android.com/guide/topics/manifest/uses-sdk-element.html).
      */
     @Deprecated("Will be removed from library DSL in v9.0")
-    @get:Incubating
-    @set:Incubating
     var targetSdk: Int?
 
     @Deprecated("Replaced by targetSdk property")
-    @Incubating
     fun targetSdkVersion(targetSdkVersion: Int)
 
     /**
@@ -54,15 +49,11 @@ interface LibraryBaseFlavor :
      * See [uses-sdk element documentation](http://developer.android.com/guide/topics/manifest/uses-sdk-element.html).
      */
     @Deprecated("Will be removed from library DSL in v9.0")
-    @get:Incubating
-    @set:Incubating
     var targetSdkPreview: String?
 
     @Deprecated("Replaced by targetSdkPreview property")
-    @Incubating
     fun setTargetSdkVersion(targetSdkVersion: String?)
 
     @Deprecated("Replaced by targetSdkPreview property")
-    @Incubating
     fun targetSdkVersion(targetSdkVersion: String?)
 }

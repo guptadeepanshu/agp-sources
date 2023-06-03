@@ -186,7 +186,7 @@ public final class IceboxOutputProto {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!getAppPackageBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(appPackage_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, appPackage_);
       }
       unknownFields.writeTo(output);
@@ -198,7 +198,7 @@ public final class IceboxOutputProto {
       if (size != -1) return size;
 
       size = 0;
-      if (!getAppPackageBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(appPackage_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, appPackage_);
       }
       size += unknownFields.getSerializedSize();

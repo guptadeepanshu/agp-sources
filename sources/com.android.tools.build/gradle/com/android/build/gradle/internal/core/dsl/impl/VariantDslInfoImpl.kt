@@ -20,29 +20,19 @@ import com.android.build.api.dsl.ApplicationProductFlavor
 import com.android.build.api.dsl.BuildType
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.Lint
-import com.android.build.api.dsl.PackagingOptions
+import com.android.build.api.dsl.Packaging
 import com.android.build.api.dsl.ProductFlavor
 import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.impl.MutableAndroidVersion
-import com.android.build.gradle.BaseExtension
-import com.android.build.gradle.internal.ProguardFileType
-import com.android.build.gradle.internal.core.MergedExternalNativeBuildOptions
-import com.android.build.gradle.internal.core.MergedNdkConfig
-import com.android.build.gradle.internal.core.NativeBuiltType
 import com.android.build.gradle.internal.core.dsl.VariantDslInfo
-import com.android.build.gradle.internal.cxx.configure.ninja
-import com.android.build.gradle.internal.dsl.CoreExternalNativeBuildOptions
-import com.android.build.gradle.internal.dsl.CoreNdkOptions
+import com.android.build.gradle.internal.core.dsl.impl.features.NativeBuildDslInfoImpl
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import com.android.build.gradle.internal.manifest.ManifestDataProvider
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.builder.core.ComponentType
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.file.RegularFile
-import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
-import java.io.File
 
 internal abstract class VariantDslInfoImpl internal constructor(
     componentIdentity: ComponentIdentity,
@@ -53,7 +43,6 @@ internal abstract class VariantDslInfoImpl internal constructor(
     protected val dataProvider: ManifestDataProvider,
     services: VariantServices,
     buildDirectory: DirectoryProperty,
-    oldExtension: BaseExtension?,
     extension: CommonExtension<*, *, *, *>
 ) : ConsumableComponentDslInfoImpl(
     componentIdentity,
@@ -63,42 +52,8 @@ internal abstract class VariantDslInfoImpl internal constructor(
     productFlavorList,
     services,
     buildDirectory,
-    oldExtension,
     extension
 ), VariantDslInfo {
-
-    // merged options
-
-    override val ndkConfig: MergedNdkConfig = MergedNdkConfig()
-    override val externalNativeBuildOptions = MergedExternalNativeBuildOptions()
-
-    override val externalNativeExperimentalProperties: Map<String, Any>
-        get() {
-            // merge global and variant properties
-            val mergedProperties = mutableMapOf<String, Any>()
-            mergedProperties.putAll(extension.externalNativeBuild.experimentalProperties)
-            mergedProperties.putAll(
-                externalNativeBuildOptions.externalNativeExperimentalProperties
-            )
-            return mergedProperties
-        }
-
-    init {
-        mergeOptions()
-    }
-
-    private fun mergeOptions() {
-        computeMergedOptions(
-            ndkConfig,
-            { ndk as CoreNdkOptions },
-            { ndk as CoreNdkOptions }
-        )
-        computeMergedOptions(
-            externalNativeBuildOptions,
-            { externalNativeBuild as CoreExternalNativeBuildOptions },
-            { externalNativeBuild as CoreExternalNativeBuildOptions }
-        )
-    }
 
     // merged flavor delegates
 
@@ -114,23 +69,24 @@ internal abstract class VariantDslInfoImpl internal constructor(
         // value. If there's no value set, then return null
         get() =  mergedFlavor.targetSdkVersion?.let { MutableAndroidVersion(it.apiLevel, it.codename) }
 
-    // build type delegates
-
-    override val isJniDebuggable: Boolean
-        get() = buildTypeObj.isJniDebuggable
-
     // extension delegates
 
-    // For main variants we get the namespace from the DSL or read it from the manifest.
-    override val namespace: Provider<String> by lazy {
-        extension.namespace?.let { services.provider { it } }
-            ?: dataProvider.manifestData.map {
-                it.packageName
-                    ?: throw RuntimeException(
-                        getMissingPackageNameErrorMessage(dataProvider.manifestLocation)
-                    )
-            }
-    }
+    // For main variants we get the namespace from the DSL.
+    override val namespace: Provider<String>
+        get() = extension.namespace?.let { services.provider { it } }
+            ?: throw RuntimeException(
+                "Namespace not specified. Please specify a namespace in the module's " +
+                        "build.gradle file like so:\n\n" +
+                        "android {\n" +
+                        "    namespace 'com.example.namespace'\n" +
+                        "}\n\n" +
+                        "If the package attribute is specified in the source " +
+                        "AndroidManifest.xml, it can be migrated automatically to the namespace " +
+                        "value in the build.gradle file using the AGP Upgrade Assistant; please " +
+                        "refer to " +
+                        "https://developer.android.com/studio/build/agp-upgrade-assistant for " +
+                        "more information."
+            )
 
     override val applicationId: Property<String> by lazy {
         services.newPropertyBackingDeprecatedApi(
@@ -139,36 +95,21 @@ internal abstract class VariantDslInfoImpl internal constructor(
         )
     }
 
-    override val nativeBuildSystem: NativeBuiltType?
-        get() {
-            if (externalNativeExperimentalProperties.ninja.path != null) return NativeBuiltType.NINJA
-            if (extension.externalNativeBuild.ndkBuild.path != null) return NativeBuiltType.NDK_BUILD
-            if (extension.externalNativeBuild.cmake.path != null) return NativeBuiltType.CMAKE
-            return null
-        }
-
-    override val supportedAbis: Set<String>
-        get() = if (componentType.isDynamicFeature) setOf() else ndkConfig.abiFilters
-
-    override fun getProguardFiles(into: ListProperty<RegularFile>) {
-        val result: MutableList<File> = ArrayList(gatherProguardFiles(ProguardFileType.EXPLICIT))
-        if (result.isEmpty()) {
-            result.addAll(postProcessingOptions.getDefaultProguardFiles())
-        }
-
-        val projectDir = services.projectInfo.projectDirectory
-        result.forEach { file ->
-            into.add(projectDir.file(file.absolutePath))
-        }
-    }
-
-
     override val lintOptions: Lint
         get() = extension.lint
-    override val packaging: PackagingOptions
+    override val packaging: Packaging
         get() = extension.packagingOptions
     override val experimentalProperties: Map<String, Any>
         get() = extension.experimentalProperties
+    override val nativeBuildDslInfo by lazy(LazyThreadSafetyMode.NONE) {
+        NativeBuildDslInfoImpl(
+            componentType,
+            defaultConfig,
+            buildTypeObj,
+            productFlavorList,
+            extension
+        )
+    }
 
     // helper methods
 
@@ -183,9 +124,7 @@ internal abstract class VariantDslInfoImpl internal constructor(
                 ?: defaultConfig.applicationId
 
         return if (appIdFromFlavors == null) {
-            // No appId value set from DSL; use the namespace value from the DSL or manifest.
-            // using map will allow us to keep task dependency should the manifest be generated
-            // or transformed via a task.
+            // No appId value set from DSL; use the namespace value from the DSL.
             namespace.map { "$it${computeApplicationIdSuffix()}" }
         } else {
             // use value from flavors/defaultConfig
@@ -194,12 +133,4 @@ internal abstract class VariantDslInfoImpl internal constructor(
             services.provider { "$finalAppIdFromFlavors${computeApplicationIdSuffix()}" }
         }
     }
-
-    protected fun getMissingPackageNameErrorMessage(manifestLocation: String): String =
-        "Package Name not found in $manifestLocation, and namespace not specified. Please " +
-                "specify a namespace for the generated R and BuildConfig classes via " +
-                "android.namespace in the module's build.gradle file like so:\n\n" +
-                "android {\n" +
-                "    namespace 'com.example.namespace'\n" +
-                "}\n\n"
 }

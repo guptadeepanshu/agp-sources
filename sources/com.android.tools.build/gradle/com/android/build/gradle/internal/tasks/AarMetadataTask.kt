@@ -28,9 +28,8 @@ import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.parseTargetHash
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.build.gradle.internal.tasks.TaskCategory
-import com.android.ide.common.repository.GradleVersion.parseAndroidGradlePluginVersion
-import com.android.ide.common.repository.GradleVersion.tryParseStableAndroidGradlePluginVersion
+import com.android.buildanalyzer.common.TaskCategory
+import com.android.ide.common.repository.AgpVersion
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
@@ -153,13 +152,13 @@ abstract class AarMetadataWorkAction: ProfileAwareWorkAction<AarMetadataWorkPara
 
     override fun run() {
         val minAgpVersion = parameters.minAgpVersion.get()
-        val parsedMinAgpVersion = tryParseStableAndroidGradlePluginVersion(minAgpVersion)
+        val parsedMinAgpVersion = AgpVersion.tryParseStable(minAgpVersion)
             ?: throw RuntimeException(
                 "The specified minAgpVersion ($minAgpVersion) is not valid. The minAgpVersion " +
                         "must be a stable AGP version, formatted with major, minor, and micro " +
                         "values (for example \"4.0.0\")."
             )
-        val currentAgpVersion = parseAndroidGradlePluginVersion(ANDROID_GRADLE_PLUGIN_VERSION)
+        val currentAgpVersion = AgpVersion.parse(ANDROID_GRADLE_PLUGIN_VERSION)
         if (parsedMinAgpVersion > currentAgpVersion) {
             throw RuntimeException(
                 "The specified minAgpVersion ($minAgpVersion) is not valid because it is a later " +

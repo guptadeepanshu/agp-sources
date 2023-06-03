@@ -20,9 +20,9 @@ import com.android.build.gradle.internal.services.ServiceRegistrationAction
 import com.android.build.gradle.internal.tasks.CheckJetifierTask
 import com.android.build.gradle.options.ProjectOptions
 import com.android.build.gradle.options.StringOption
+import com.android.buildanalyzer.common.CheckJetifierProjectResult
+import com.android.buildanalyzer.common.CheckJetifierResult
 import com.android.builder.utils.SynchronizedFile
-import com.android.ide.common.attribution.CheckJetifierProjectResult
-import com.android.ide.common.attribution.CheckJetifierResult
 import com.android.utils.FileUtils
 import org.gradle.api.Project
 import org.gradle.api.file.RegularFileProperty

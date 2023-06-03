@@ -30,7 +30,7 @@ import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.manifest.mergeManifests
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.manifmerger.ManifestMerger2
 import com.android.utils.FileUtils
 import org.gradle.api.file.DirectoryProperty
@@ -69,7 +69,7 @@ abstract class ProcessMultiApkApplicationManifest: ManifestProcessorTask() {
     @get:Input
     abstract val namespace: Property<String>
 
-    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
     @get:InputFile
     abstract val mainMergedManifest: RegularFileProperty
 
@@ -158,7 +158,8 @@ abstract class ProcessMultiApkApplicationManifest: ManifestProcessorTask() {
             listOf(),
             listOf(),
             null,
-            LoggerWrapper.getLogger(ProcessApplicationManifest::class.java)
+            LoggerWrapper.getLogger(ProcessApplicationManifest::class.java),
+            checkIfPackageInMainManifest = false
         )
         return mergedManifestOutputFile
     }

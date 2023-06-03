@@ -19,7 +19,7 @@ import static com.android.build.gradle.external.gnumake.CommandClassifierUtilsKt
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
-import com.android.build.gradle.internal.cxx.os.OsBehavior;
+import com.android.utils.cxx.os.OsBehavior;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;

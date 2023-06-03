@@ -155,6 +155,10 @@ enum class ArtProfileSerializer(
             }
         }
 
+        override fun skipInlineCaches(src: InputStream) {
+            src.skipInlineCacheV015S()
+        }
+
         private fun readFileSections(src: InputStream): Map<FileSectionType, ReadableFileSection> {
             src.use {
                 val fileSectionCount = src.readUInt32()
@@ -312,7 +316,7 @@ enum class ArtProfileSerializer(
                     // Profile key
                     val profileKey = profileKey(dexFile.name, apkName, "!")
                     // Profile key size
-                    expectedSize += UINT_16_SIZE;
+                    expectedSize += UINT_16_SIZE
                     out.writeUInt16(profileKey.utf8Length)
                     expectedSize += UINT_8_SIZE * profileKey.utf8Length
                     out.writeString(profileKey)
@@ -409,7 +413,7 @@ enum class ArtProfileSerializer(
                     // followingDataSize includes the method flag which is a UINT_16
                     dexFileData.hotMethodRegionSize =
                         followingDataSize.toInt() - (UINT_16_SIZE + methodBitMapSize)
-                    src.readHotMethodRegion(dexFileData)
+                    src.readHotMethodRegion(dexFileData, this@V0_1_5_S::skipInlineCaches)
                 }
             }
         }
@@ -600,6 +604,10 @@ enum class ArtProfileSerializer(
             dataStream.readUncompressedBody(numberOfDexFiles)
         }
 
+        override fun skipInlineCaches(src: InputStream) {
+            // Does nothing
+        }
+
         private fun InputStream.readUncompressedBody(numberOfDexFiles: Int): Map<DexFile, DexFileData> {
             // If the uncompressed profile data stream is empty then we have nothing more to do.
             if (available() == 0) {
@@ -688,7 +696,7 @@ enum class ArtProfileSerializer(
                     out.writeUInt16(index)
                     // Profile Key Size
                     val profileKey = profileKey(dexFile.name, apkName, "!")
-                    expectedSize += UINT_16_SIZE;
+                    expectedSize += UINT_16_SIZE
                     out.writeUInt16(profileKey.utf8Length)
                     // Profile Key
                     expectedSize += UINT_8_SIZE * profileKey.utf8Length
@@ -776,6 +784,10 @@ enum class ArtProfileSerializer(
 
                 }
             }
+        }
+
+        override fun skipInlineCaches(src: InputStream) {
+            // Does nothing
         }
     },
 
@@ -901,6 +913,10 @@ enum class ArtProfileSerializer(
             dataStream.readUncompressedBody(numberOfDexFiles)
         }
 
+        override fun skipInlineCaches(src: InputStream) {
+            src.skipInlineCacheUntilV010P()
+        }
+
         private fun InputStream.readUncompressedBody(numberOfDexFiles: Int): Map<DexFile, DexFileData> {
             // If the uncompressed profile data stream is empty then we have nothing more to do.
             if (available() == 0) {
@@ -944,7 +960,7 @@ enum class ArtProfileSerializer(
                 // Keep a copy of the stream hot methods. We need it in case this is a merge so we
                 // do not increase the aggregation counter again when we parse the method bitmap.
                 // If this is a non merge operation the set will be empty.
-                readHotMethodRegion(data)
+                readHotMethodRegion(data, this@V0_1_0_P::skipInlineCaches)
 
                 // Load the classes.
                 readIntsAsDeltas(data.typeIdSetSize, data.typeIdSet)
@@ -1000,7 +1016,6 @@ enum class ArtProfileSerializer(
             writeUInt32(profileBytes.size.toLong())
             writeCompressed(profileBytes)
         }
-
 
         /**
          * Serializes the profile data in a byte array. This methods only serializes the actual
@@ -1073,6 +1088,10 @@ enum class ArtProfileSerializer(
             dataStream.readUncompressedBody(numberOfDexFiles)
         }
 
+        override fun skipInlineCaches(src: InputStream) {
+            src.skipInlineCacheUntilV010P()
+        }
+
         private fun InputStream.readUncompressedBody(numberOfDexFiles: Int): Map<DexFile, DexFileData> {
             // If the uncompressed profile data stream is empty then we have nothing more to do.
             if (available() == 0) {
@@ -1112,7 +1131,7 @@ enum class ArtProfileSerializer(
                 // Keep a copy of the stream hot methods. We need it in case this is a merge so we
                 // do not increase the aggregation counter again when we parse the method bitmap.
                 // If this is a non merge operation the set will be empty.
-                readHotMethodRegion(data)
+                readHotMethodRegion(data, this@V0_0_9_OMR1::skipInlineCaches)
 
                 // Load the classes.
                 readIntsAsDeltas(data.typeIdSetSize, data.typeIdSet)
@@ -1121,9 +1140,9 @@ enum class ArtProfileSerializer(
                 readMethodBitmap(data)
                 data
             }
-            return dexFileData.map {
+            return dexFileData.associate {
                 it.dexFile to it.asDexFileData()
-            }.toMap()
+            }
         }
 
     },
@@ -1176,7 +1195,6 @@ enum class ArtProfileSerializer(
                 }
             }
         }
-
         override fun read(src: InputStream): Map<DexFile, DexFileData> = with(src) {
             val numberOfDexFiles = readUInt8()
             // If the uncompressed profile data stream is empty then we have nothing more to do.
@@ -1217,6 +1235,9 @@ enum class ArtProfileSerializer(
                 it.dexFile to it.asDexFileData()
             }.toMap()
         }
+        override fun skipInlineCaches(src: InputStream) {
+            src.skipInlineCacheUntilV010P()
+        }
         private fun InputStream.readHotMethods(data: MutableDexFileData) {
             val expectedBytesAvailableAfterRead = available() - data.hotMethodRegionSize
             println("readHotMethods: $expectedBytesAvailableAfterRead")
@@ -1235,7 +1256,7 @@ enum class ArtProfileSerializer(
                 // Read the inline caches.
                 var inlineCacheSize = readUInt16()
                 while (inlineCacheSize > 0) {
-                    skipInlineCache()
+                    skipInlineCaches(this)
                     --inlineCacheSize
                 }
             }
@@ -1342,16 +1363,34 @@ enum class ArtProfileSerializer(
                 it.dexFile to it.asDexFileData()
             }.toMap()
         }
+
+        override fun skipInlineCaches(src: InputStream) {
+            // Does nothing
+        }
     };
 
     internal abstract fun write(os: OutputStream, profileData: Map<DexFile, DexFileData>, apkName: String)
     internal abstract fun read(src: InputStream): Map<DexFile, DexFileData>
+    internal abstract fun skipInlineCaches(src: InputStream)
+    internal fun InputStream.skipInlineCacheV015S() {
+        /* val dexPc = */readUInt16()
+        var dexPcMapSize = readUInt8()
 
-    /**
-     * Skips the data for a single method's inline cache, since we do not need inline cache data for profgen.
-     * This method is valid to use for P/O but not N
-     */
-    internal fun InputStream.skipInlineCache() {
+        // Check for missing type encoding.
+        if (dexPcMapSize == INLINE_CACHE_MISSING_TYPES_ENCODING) {
+            return
+        }
+        // Check for megamorphic encoding.
+        if (dexPcMapSize == INLINE_CACHE_MEGAMORPHIC_ENCODING) {
+            return
+        }
+
+        while (dexPcMapSize > 0) {
+            /* val classDexIndexDiff = */ readUInt16()
+            --dexPcMapSize
+        }
+    }
+    internal fun InputStream.skipInlineCacheUntilV010P() {
         /* val dexPc = */readUInt16()
         var dexPcMapSize = readUInt8()
 
@@ -1567,7 +1606,10 @@ enum class ArtProfileSerializer(
         return Integer.numberOfTrailingZeros(x)
     }
 
-    internal fun InputStream.readHotMethodRegion(data: MutableDexFileData) {
+    internal fun InputStream.readHotMethodRegion(
+            data: MutableDexFileData,
+            skipInlineCaches: (src: InputStream) -> Unit
+    ) {
         val expectedBytesAvailableAfterRead = available() - data.hotMethodRegionSize
         var lastMethodIndex = 0
 
@@ -1584,7 +1626,7 @@ enum class ArtProfileSerializer(
             // Read the inline caches.
             var inlineCacheSize = readUInt16()
             while (inlineCacheSize > 0) {
-                skipInlineCache()
+                skipInlineCaches(this)
                 --inlineCacheSize
             }
             // Update the last method index.

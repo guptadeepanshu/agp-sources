@@ -23,11 +23,10 @@ import com.android.build.gradle.internal.component.ConsumableCreationConfig;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
 import com.android.build.gradle.internal.utils.HasConfigurableValuesKt;
+import com.android.buildanalyzer.common.TaskCategory;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.android.build.gradle.internal.tasks.TaskCategory;
 import org.gradle.api.InvalidUserDataException;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.file.RegularFile;
@@ -108,7 +107,8 @@ public abstract class CheckProguardFiles extends NonIncrementalTask {
         public void configure(@NonNull CheckProguardFiles task) {
             super.configure(task);
 
-            task.getProguardFiles().set(creationConfig.getProguardFiles());
+            task.getProguardFiles()
+                    .set(creationConfig.getOptimizationCreationConfig().getProguardFiles());
             task.getExtractedProguardFile()
                     .set(
                             creationConfig

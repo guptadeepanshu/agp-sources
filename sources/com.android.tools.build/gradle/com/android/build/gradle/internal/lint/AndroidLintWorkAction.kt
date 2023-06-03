@@ -45,6 +45,7 @@ abstract class AndroidLintWorkAction : WorkAction<AndroidLintWorkAction.LintWork
         abstract val runInProcess: Property<Boolean>
         abstract val returnValueOutputFile: RegularFileProperty
         abstract val lintMode: Property<LintMode>
+        abstract val hasBaseline: Property<Boolean>
     }
 
     override fun execute() {
@@ -73,7 +74,8 @@ abstract class AndroidLintWorkAction : WorkAction<AndroidLintWorkAction.LintWork
             parameters.android.get(),
             parameters.fatalOnly.get(),
             parameters.lintMode.get(),
-            abbreviatedLintOutput = null
+            abbreviatedLintOutput = null,
+            parameters.hasBaseline.get()
         )
     }
 
@@ -217,13 +219,14 @@ abstract class AndroidLintWorkAction : WorkAction<AndroidLintWorkAction.LintWork
             android: Boolean,
             fatalOnly: Boolean,
             lintMode: LintMode,
-            abbreviatedLintOutput: String?
+            abbreviatedLintOutput: String?,
+            hasBaseline: Boolean
         ) {
             when (execResult) {
                 ERRNO_SUCCESS -> {}
                 ERRNO_ERRORS -> {
                     throw RuntimeException(
-                        getErrorMessage(android, fatalOnly, abbreviatedLintOutput)
+                        getErrorMessage(android, fatalOnly, abbreviatedLintOutput, hasBaseline)
                     )
                 }
                 ERRNO_USAGE -> throw IllegalStateException("Internal Error: Unexpected lint usage")
@@ -243,54 +246,46 @@ abstract class AndroidLintWorkAction : WorkAction<AndroidLintWorkAction.LintWork
         private fun getErrorMessage(
             android: Boolean,
             fatalOnly: Boolean,
-            abbreviatedLintOutput: String?
-        ) : String = when {
-            !android -> """
-                Lint found errors in the project; aborting build.
-
-                Fix the issues identified by lint, or create a baseline to see only new errors:
-                ```
-                lint {
-                    baseline = file("lint-baseline.xml")
+            abbreviatedLintOutput: String?,
+            hasBaseline: Boolean
+        ) : String {
+            val prefix =
+                if (fatalOnly && android) {
+                    "Lint found fatal errors while assembling a release target."
+                } else {
+                    "Lint found errors in the project; aborting build."
                 }
-                ```
-
-                For more details, see https://developer.android.com/studio/write/lint#snapshot
-
-                ${abbreviatedLintOutput ?: ""}
-            """.trimIndent()
-            fatalOnly -> """
-                Lint found fatal errors while assembling a release target.
-
-                Fix the issues identified by lint, or create a baseline to see only new errors:
-                ```
-                android {
-                    lint {
-                        baseline = file("lint-baseline.xml")
-                    }
+            val suggestion =
+                when {
+                    hasBaseline ->
+                        "Fix the issues identified by lint, or add the issues to the lint baseline via `gradlew updateLintBaseline`."
+                    android ->
+                        """
+                            Fix the issues identified by lint, or create a baseline to see only new errors.
+                            To create a baseline, run `gradlew updateLintBaseline` after adding the following to the module's build.gradle file:
+                            ```
+                            android {
+                                lint {
+                                    baseline = file("lint-baseline.xml")
+                                }
+                            }
+                            ```
+                        """.trimIndent()
+                    else ->
+                        """
+                            Fix the issues identified by lint, or create a baseline to see only new errors.
+                            To create a baseline, run `gradlew updateLintBaseline` after adding the following to the module's build.gradle file:
+                            ```
+                            lint {
+                                baseline = file("lint-baseline.xml")
+                            }
+                            ```
+                        """.trimIndent()
                 }
-                ```
-
-                For more details, see https://developer.android.com/studio/write/lint#snapshot
-
-                ${abbreviatedLintOutput ?: ""}
-            """.trimIndent()
-            else -> """
-                Lint found errors in the project; aborting build.
-
-                Fix the issues identified by lint, or create a baseline to see only new errors:
-                ```
-                android {
-                    lint {
-                        baseline = file("lint-baseline.xml")
-                    }
-                }
-                ```
-
-                For more details, see https://developer.android.com/studio/write/lint#snapshot
-
-                ${abbreviatedLintOutput ?: ""}
-            """.trimIndent()
+            val moreInfo =
+                "For more details, see https://developer.android.com/studio/write/lint#snapshot"
+            val suffix = abbreviatedLintOutput ?: ""
+            return prefix + "\n\n" + suggestion + "\n" + moreInfo + "\n\n" + suffix
         }
     }
 }

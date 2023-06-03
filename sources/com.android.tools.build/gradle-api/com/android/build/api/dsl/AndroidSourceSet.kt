@@ -27,7 +27,6 @@ import org.gradle.api.Named
 interface AndroidSourceSet : Named {
 
     /** Returns the name of this source set. */
-    @Incubating
     override fun getName(): String
 
     /** The Java source for this source-set */
@@ -70,6 +69,13 @@ interface AndroidSourceSet : Named {
     /** The Android RenderScript source directory for this source set. */
     fun renderscript(action: AndroidSourceDirectorySet.() -> Unit)
 
+    /** The Android Baseline Profiles source directory for this source set. */
+    @get:Incubating
+    val baselineProfiles: AndroidSourceDirectorySet
+    /** The Android Baseline Profiles source directory for this source set. */
+    @Incubating
+    fun baselineProfiles(action: AndroidSourceDirectorySet.() -> Unit)
+
     /**
      * The Android JNI source directory for this source set.
      * @deprecated This is unused and will be removed in AGP 8.0
@@ -103,37 +109,31 @@ interface AndroidSourceSet : Named {
     fun mlModels(action: AndroidSourceDirectorySet.() -> Unit)
 
     /** Returns the name of the api configuration for this source set.  */
-    @get:Incubating
     val apiConfigurationName: String
 
     /**
      * Returns the name of the compileOnly configuration for this source set.
      */
-    @get:Incubating
     val compileOnlyConfigurationName: String
 
     /**
      * Returns the name of the implementation configuration for this source set.
      */
-    @get:Incubating
     val implementationConfigurationName: String
 
     /**
      * Returns the name of the implementation configuration for this source set.
      */
-    @get:Incubating
     val runtimeOnlyConfigurationName: String
 
     /**
      * Returns the name of the wearApp configuration for this source set.
      */
-    @get:Incubating
     val wearAppConfigurationName: String
 
     /**
      * Returns the name of the annotation processing tool classpath for this source set.
      */
-    @get:Incubating
     val annotationProcessorConfigurationName: String
 
     /**
@@ -145,6 +145,5 @@ interface AndroidSourceSet : Named {
      *
      * @param path the root directory path to use.
      */
-    @Incubating
     fun setRoot(path: String): Any
 }

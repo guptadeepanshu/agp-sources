@@ -16,6 +16,7 @@
 
 package com.android.manifmerger;
 
+import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.google.common.base.Joiner;
@@ -32,7 +33,7 @@ import java.util.regex.Pattern;
  */
 class AttributeModel {
 
-    @NonNull private final XmlNode.NodeName mName;
+    @NonNull private final XmlNode.NodeName mXmlNodeName;
     private final boolean mIsPackageDependent;
     @Nullable private final String mDefaultValue;
     @Nullable private final Validator mOnReadValidator;
@@ -42,19 +43,20 @@ class AttributeModel {
     /**
      * Define a new attribute with specific characteristics.
      *
-     * @param name name of the attribute, so far assumed to be in the
-     *             {@link com.android.SdkConstants#ANDROID_URI} namespace.
+     * @param xmlNodeName namespaced name of the attribute, as created by e.g.
+     *     XmlNode.fromNSName(SdkConstants.ANDROID_URI, "android", attributeName));
      * @param isPackageDependent true if the attribute support smart substitution of package name.
      * @param defaultValue an optional default value.
      * @param onReadValidator an optional validator to validate values against.
      */
-    private AttributeModel(@NonNull XmlNode.NodeName name,
+    private AttributeModel(
+            @NonNull XmlNode.NodeName xmlNodeName,
             boolean isPackageDependent,
             @Nullable String defaultValue,
             @Nullable Validator onReadValidator,
             @Nullable Validator onWriteValidator,
             @NonNull MergingPolicy mergingPolicy) {
-        mName = name;
+        mXmlNodeName = xmlNodeName;
         mIsPackageDependent = isPackageDependent;
         mDefaultValue = defaultValue;
         mOnReadValidator = onReadValidator;
@@ -64,7 +66,7 @@ class AttributeModel {
 
     @NonNull
     XmlNode.NodeName getName() {
-        return mName;
+        return mXmlNodeName;
     }
 
     /**
@@ -119,13 +121,12 @@ class AttributeModel {
      */
     @NonNull
     static Builder newModel(String attributeName) {
-        return new Builder(attributeName);
+        return new Builder(XmlNode.fromNSName(SdkConstants.ANDROID_URI, "android", attributeName));
     }
 
 
     static class Builder {
-
-        private final String mName;
+        private final XmlNode.NodeName mXmlNodeName;
         private boolean mIsPackageDependent = false;
         private String mDefaultValue;
         private Validator mOnReadValidator;
@@ -133,8 +134,8 @@ class AttributeModel {
         @NonNull
         private MergingPolicy mMergingPolicy = STRICT_MERGING_POLICY;
 
-        Builder(String name) {
-            this.mName = name;
+        Builder(XmlNode.NodeName xmlNodeName) {
+            mXmlNodeName = xmlNodeName;
         }
 
         /**
@@ -189,7 +190,7 @@ class AttributeModel {
         @NonNull
         AttributeModel build() {
             return new AttributeModel(
-                    XmlNode.fromXmlName("android:" + mName),
+                    mXmlNodeName,
                     mIsPackageDependent,
                     mDefaultValue,
                     mOnReadValidator,
@@ -283,6 +284,22 @@ class AttributeModel {
             return higherPriority;
         }
     };
+
+    static final MergingPolicy AND_MERGING_POLICY =
+            new MergingPolicy() {
+                @Override
+                public boolean shouldMergeDefaultValues() {
+                    return true;
+                }
+
+                @Nullable
+                @Override
+                public String merge(@NonNull String higherPriority, @NonNull String lowerPriority) {
+                    return Boolean.toString(
+                            BooleanValidator.isTrue(higherPriority)
+                                    && BooleanValidator.isTrue(lowerPriority));
+                }
+            };
 
     /**
      * Decode a decimal or hexadecimal {@link String} into an {@link Integer}.

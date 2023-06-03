@@ -16,11 +16,10 @@
 
 package com.android.build.gradle.tasks
 
-import com.android.build.gradle.internal.cxx.hashing.sha256Of
 import com.android.build.gradle.internal.cxx.hashing.shortSha256Of
 import com.android.build.gradle.internal.cxx.io.writeTextIfDifferent
 import com.android.build.gradle.internal.cxx.json.writeJsonFileIfDifferent
-import com.android.build.gradle.internal.cxx.logging.PassThroughDeduplicatingLoggingEnvironment
+import com.android.build.gradle.internal.cxx.logging.PassThroughRecordingLoggingEnvironment
 import com.android.build.gradle.internal.cxx.logging.errorln
 import com.android.build.gradle.internal.cxx.logging.infoln
 import com.android.build.gradle.internal.cxx.logging.lifecycleln
@@ -265,7 +264,7 @@ fun reportErrors(stderr : File) {
     if (!stderr.isFile) return
     var relevantLibrary = ""
     var errorPresent = false
-    PassThroughDeduplicatingLoggingEnvironment().use { logger ->
+    PassThroughRecordingLoggingEnvironment().use { logger ->
         stderr.forEachLine { line ->
             if (logger.errors.isNotEmpty()) {
                 // Everything after the first error is logged as lifecycle

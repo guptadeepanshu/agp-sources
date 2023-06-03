@@ -19,6 +19,7 @@ package com.android.build.gradle.internal
 import com.android.build.gradle.internal.services.AndroidLocationsBuildService
 import com.android.build.gradle.internal.services.ServiceRegistrationAction
 import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.internal.testing.AdbHelper
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.IntegerOption
 import com.android.build.gradle.options.ProjectOptions
@@ -39,6 +40,7 @@ import org.gradle.api.services.BuildServiceParameters
 
 // TODO(b/233249957): find a way to compute the default based on resources.
 private const val DEFAULT_MAX_GMDS = 4
+private const val SECONDS_PER_MINUTE = 60L
 
 /**
  * Build Service for loading and creating Android Virtual Devices.
@@ -64,11 +66,18 @@ abstract class AvdComponentsBuildService @Inject constructor(
 
     private val avdManager: AvdManager by lazy {
         val locationsService = parameters.androidLocationsService.get()
+        val versionedSdkLoader = parameters.sdkService.map {
+            it.sdkLoader(parameters.compileSdkVersion, parameters.buildToolsRevision)
+        }
+        val adbHelper = AdbHelper(versionedSdkLoader)
+        val snapshotTimeoutSecs = if (parameters.deviceSetupTimeoutMinutes.isPresent()) {
+            parameters.deviceSetupTimeoutMinutes.get() * SECONDS_PER_MINUTE
+        } else {
+            null
+        }
         AvdManager(
             parameters.avdLocation.get().asFile,
-            parameters.sdkService.map {
-                it.sdkLoader(parameters.compileSdkVersion, parameters.buildToolsRevision)
-            },
+            versionedSdkLoader,
             AndroidSdkHandler.getInstance(
                 locationsService,
                 parameters.sdkService.get().sdkDirectoryProvider.get().asFile.toPath()
@@ -76,12 +85,14 @@ abstract class AvdComponentsBuildService @Inject constructor(
             locationsService,
             AvdSnapshotHandler(
                 parameters.showEmulatorKernelLogging.get(),
-                parameters.deviceSetupTimeoutMinutes.getOrNull()
+                snapshotTimeoutSecs,
+                adbHelper
             ),
             ManagedVirtualDeviceLockManager(
                 locationsService,
                 parameters.maxConcurrentDevices.getOrElse(DEFAULT_MAX_GMDS)
-            )
+            ),
+            adbHelper
         )
     }
 
@@ -151,6 +162,16 @@ abstract class AvdComponentsBuildService @Inject constructor(
      */
     fun ensureLoadableSnapshot(deviceName: String, emulatorGpuMode: String) {
         avdManager.loadSnapshotIfNeeded(deviceName, emulatorGpuMode)
+    }
+
+    /** Closes all active emulators having an id with the given prefix. This should be used to close
+     * emulators that may remain after a crashed UTP test run.
+     *
+     * @param idPrefix the prefix that is looke for to close the active emulators. All emulators
+     * that have an id not starting with this prefix are ignored.
+     */
+    fun closeOpenEmulators(idPrefix: String) {
+        avdManager.closeOpenEmulators(idPrefix)
     }
 
     class RegistrationAction(

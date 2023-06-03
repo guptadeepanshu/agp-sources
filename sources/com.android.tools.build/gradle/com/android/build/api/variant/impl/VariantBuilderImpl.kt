@@ -120,7 +120,7 @@ abstract class VariantBuilderImpl(
             // if the field has been set, always use  that value, otherwise, calculate it each
             // time in case minSdkVersion changes.
             if (field != -1) return field
-            val targetApi = (dslInfo as VariantDslInfo).renderscriptTarget
+            val targetApi = (dslInfo as VariantDslInfo).renderscriptDslInfo?.renderscriptTarget ?: -1
             // default to -1 if not in build.gradle file.
             val minSdk = mutableMinSdk.getFeatureLevel()
             return if (targetApi > minSdk) targetApi else minSdk
@@ -152,7 +152,8 @@ abstract class VariantBuilderImpl(
         newValue: Boolean,
         setter: (Boolean) -> Unit
     ) {
-        if (dslInfo.postProcessingOptions.hasPostProcessingConfiguration())
+        if ((dslInfo as VariantDslInfo).optimizationDslInfo
+                .postProcessingOptions.hasPostProcessingConfiguration())
             variantBuilderServices.issueReporter.reportWarning(
                 IssueReporter.Type.GENERIC,
                 "You cannot set $varName via Variant API as build uses postprocessing{...} " +

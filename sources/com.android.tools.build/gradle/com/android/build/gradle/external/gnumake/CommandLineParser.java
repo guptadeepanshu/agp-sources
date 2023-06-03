@@ -17,7 +17,7 @@ package com.android.build.gradle.external.gnumake;
 
 
 import com.android.annotations.NonNull;
-import com.android.build.gradle.internal.cxx.os.OsBehavior;
+import com.android.utils.cxx.os.OsBehavior;
 import java.util.ArrayList;
 import java.util.List;
 

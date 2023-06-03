@@ -21,7 +21,7 @@ import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.tools.profgen.HumanReadableProfile
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.InputFiles
@@ -44,7 +44,7 @@ import java.lang.RuntimeException
 abstract class ProcessLibraryArtProfileTask: NonIncrementalTask() {
 
     // Use InputFiles rather than InputFile to allow the file not to exist
-    @get:[InputFiles PathSensitive(PathSensitivity.RELATIVE)]
+    @get:[InputFiles PathSensitive(PathSensitivity.NAME_ONLY)]
     abstract val profileSource: RegularFileProperty
 
     @get:OutputFile
@@ -83,9 +83,8 @@ abstract class ProcessLibraryArtProfileTask: NonIncrementalTask() {
 
         override fun configure(task: ProcessLibraryArtProfileTask) {
             super.configure(task)
-            val variantSources = creationConfig.variantSources
             task.profileSource
-                .fileProvider(creationConfig.services.provider(variantSources::artProfile))
+                .fileProvider(creationConfig.sources.artProfile)
             task.profileSource.disallowChanges()
         }
     }

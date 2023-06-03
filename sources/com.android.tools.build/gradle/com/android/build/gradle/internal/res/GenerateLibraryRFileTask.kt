@@ -16,10 +16,7 @@
 package com.android.build.gradle.internal.res
 
 import com.android.SdkConstants
-import com.android.build.api.variant.FilterConfiguration
-import com.android.build.api.variant.impl.BuiltArtifactImpl
-import com.android.build.api.variant.impl.BuiltArtifactsImpl
-import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
+import com.android.build.api.artifact.SingleArtifact
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.UnitTestCreationConfig
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
@@ -36,8 +33,8 @@ import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.tasks.ProcessAndroidResources
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.symbols.processLibraryMainSymbolTable
-import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.ide.common.symbols.IdProvider
 import com.android.ide.common.symbols.SymbolIo
 import com.android.ide.common.symbols.SymbolTable
@@ -83,6 +80,10 @@ abstract class GenerateLibraryRFileTask : ProcessAndroidResources() {
     @get:Optional
     abstract val symbolsWithPackageNameOutputFile: RegularFileProperty
 
+    @get:InputFile
+    @get:PathSensitive(PathSensitivity.NONE)
+    abstract val mergedManifestFile: RegularFileProperty
+
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.NONE) abstract val dependencies: ConfigurableFileCollection
 
@@ -94,7 +95,7 @@ abstract class GenerateLibraryRFileTask : ProcessAndroidResources() {
     abstract val platformAttrRTxt: ConfigurableFileCollection
 
     @get:InputFile
-    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
     abstract val localResourcesFile: RegularFileProperty
 
     @get:Input
@@ -109,10 +110,14 @@ abstract class GenerateLibraryRFileTask : ProcessAndroidResources() {
     @get:Internal
     abstract val symbolTableBuildService: Property<SymbolTableBuildService>
 
+    @Internal
+    override fun getManifestFile(): File? {
+        return mergedManifestFile.get().asFile
+    }
+
     override fun doTaskAction(inputChanges: InputChanges) {
-        val manifestBuiltArtifacts = BuiltArtifactsLoaderImpl().load(manifestFiles)
-            ?: throw RuntimeException("Cannot load generated manifests, file a bug")
-        val manifest = File(chooseOutput(manifestBuiltArtifacts).outputFile)
+        val manifest = mergedManifestFile.asFile.get()
+        if (!manifest.exists()) throw RuntimeException("Cannot load generated manifests, file a bug")
 
         workerExecutor.noIsolation().submit(GenerateLibRFileRunnable::class.java) {
             it.initializeFromAndroidVariantTask(this)
@@ -130,11 +135,6 @@ abstract class GenerateLibraryRFileTask : ProcessAndroidResources() {
             it.symbolTableBuildService.set(symbolTableBuildService)
         }
     }
-
-    private fun chooseOutput(manifestBuiltArtifacts: BuiltArtifactsImpl): BuiltArtifactImpl =
-        manifestBuiltArtifacts.elements
-            .firstOrNull() { output -> output.getFilter(FilterConfiguration.FilterType.DENSITY) == null }
-            ?: throw RuntimeException("No non-density apk found")
 
     abstract class GenerateLibRFileParams : ProfileAwareWorkAction.Parameters() {
         abstract val localResourcesFile: RegularFileProperty
@@ -273,10 +273,7 @@ abstract class GenerateLibraryRFileTask : ProcessAndroidResources() {
             task.namespace.setDisallowChanges(creationConfig.namespace)
 
             creationConfig.artifacts.setTaskInputToFinalProduct(
-                InternalArtifactType.PACKAGED_MANIFESTS, task.manifestFiles)
-
-            creationConfig.artifacts.setTaskInputToFinalProduct(
-                InternalArtifactType.MERGED_MANIFESTS, task.mergedManifestFiles)
+                SingleArtifact.MERGED_MANIFEST, task.mergedManifestFile)
 
             task.mainSplit = creationConfig.outputs.getMainSplit()
 
@@ -342,7 +339,7 @@ abstract class GenerateLibraryRFileTask : ProcessAndroidResources() {
 
             creationConfig.onTestedVariant {
                 it.artifacts.setTaskInputToFinalProduct(
-                    InternalArtifactType.PACKAGED_MANIFESTS, task.manifestFiles
+                    SingleArtifact.MERGED_MANIFEST, task.mergedManifestFile
                 )
 
                 it.artifacts.setTaskInputToFinalProduct(

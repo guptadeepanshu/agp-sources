@@ -20,8 +20,9 @@ import com.android.build.api.dsl.ApplicationBuildType
 import com.android.build.api.dsl.BuildType
 import com.android.build.api.dsl.ProductFlavor
 import com.android.build.api.variant.ComponentIdentity
-import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.core.dsl.TestProjectVariantDslInfo
+import com.android.build.gradle.internal.core.dsl.features.DexingDslInfo
+import com.android.build.gradle.internal.core.dsl.impl.features.DexingDslInfoImpl
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import com.android.build.gradle.internal.dsl.InternalTestExtension
 import com.android.build.gradle.internal.dsl.SigningConfig
@@ -47,7 +48,6 @@ internal class TestProjectVariantDslInfoImpl(
     services: VariantServices,
     buildDirectory: DirectoryProperty,
     private val signingConfigOverride: SigningConfig?,
-    oldExtension: BaseExtension?,
     extension: InternalTestExtension
 ) : VariantDslInfoImpl(
     componentIdentity,
@@ -58,57 +58,17 @@ internal class TestProjectVariantDslInfoImpl(
     dataProvider,
     services,
     buildDirectory,
-    oldExtension,
     extension
 ), TestProjectVariantDslInfo {
-
-    override val namespace: Provider<String> by lazy {
-        // -------------
-        // Special case for separate test sub-projects
-        // If there is no namespace from the DSL or package attribute in the manifest, we use
-        // testApplicationId, if present. This allows the test project to not have a manifest if
-        // all is declared in the DSL.
-        // TODO(b/170945282, b/172361895) Remove this special case - users should use namespace
-        //  DSL instead of testApplicationId DSL for this... currently a warning
-        if (extension.namespace != null) {
-            services.provider { extension.namespace!! }
-        } else {
-            val testAppIdFromFlavors =
-                productFlavorList.asSequence().map { it.testApplicationId }
-                    .firstOrNull { it != null }
-                    ?: defaultConfig.testApplicationId
-
-            dataProvider.manifestData.map {
-                it.packageName
-                    ?: testAppIdFromFlavors?.also {
-                        val message =
-                            "Namespace not specified. Please specify a namespace for " +
-                                    "the generated R and BuildConfig classes via " +
-                                    "android.namespace in the test module's " +
-                                    "build.gradle file. Currently, this test module " +
-                                    "uses the testApplicationId " +
-                                    "($testAppIdFromFlavors) as its namespace, but " +
-                                    "version ${Version.VERSION_8_0} of the Android " +
-                                    "Gradle Plugin will require that a namespace be " +
-                                    "specified explicitly like so:\n\n" +
-                                    "android {\n" +
-                                    "    namespace '$testAppIdFromFlavors'\n" +
-                                    "}\n\n"
-                        services.issueReporter
-                            .reportWarning(IssueReporter.Type.GENERIC, message)
-                    }
-                    ?: throw RuntimeException(
-                        getMissingPackageNameErrorMessage(dataProvider.manifestLocation)
-                    )
-            }
-        }
-    }
 
     override val applicationId: Property<String> =
         services.newPropertyBackingDeprecatedApi(
             String::class.java,
-            initTestApplicationId(defaultConfig, services)
+            initTestApplicationId(productFlavorList, defaultConfig, services)
         )
+
+    override val isAndroidTestCoverageEnabled: Boolean
+        get() = instrumentedTestDelegate.isAndroidTestCoverageEnabled
 
     // TODO: Test project doesn't have isDebuggable dsl in the build type, we should only have
     //  `debug` variants be debuggable
@@ -134,6 +94,7 @@ internal class TestProjectVariantDslInfoImpl(
 
     private val instrumentedTestDelegate by lazy {
         InstrumentedTestDslInfoImpl(
+            buildTypeObj,
             productFlavorList,
             defaultConfig,
             dataProvider,
@@ -154,4 +115,10 @@ internal class TestProjectVariantDslInfoImpl(
         get() = instrumentedTestDelegate.functionalTest
     override val testLabel: Provider<String?>
         get() = instrumentedTestDelegate.testLabel
+
+    override val dexingDslInfo: DexingDslInfo by lazy {
+        DexingDslInfoImpl(
+            buildTypeObj, mergedFlavor, services
+        )
+    }
 }

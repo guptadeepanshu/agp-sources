@@ -31,6 +31,7 @@ import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.StringOption
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.internal.packaging.AabFlinger
 import com.android.ide.common.signing.KeystoreHelper
 import com.android.tools.build.bundletool.commands.AddTransparencyCommand

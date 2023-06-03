@@ -384,7 +384,7 @@ private static final long serialVersionUID = 0L;
     if (key_ != null) {
       output.writeMessage(1, getKey());
     }
-    if (!getBuildFolderBytes().isEmpty()) {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(buildFolder_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 2, buildFolder_);
     }
     for (int i = 0; i < library_.size(); i++) {
@@ -412,7 +412,7 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(1, getKey());
     }
-    if (!getBuildFolderBytes().isEmpty()) {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(buildFolder_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, buildFolder_);
     }
     {

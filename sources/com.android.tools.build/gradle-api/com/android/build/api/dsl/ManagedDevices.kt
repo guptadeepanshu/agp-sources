@@ -16,12 +16,10 @@
 
 package com.android.build.api.dsl
 
-import org.gradle.api.Incubating
 import org.gradle.api.ExtensiblePolymorphicDomainObjectContainer
 import org.gradle.api.NamedDomainObjectContainer
 
 /** Options for Managed Devices */
-@Incubating
 interface ManagedDevices {
 
     /**

@@ -57,6 +57,7 @@ import com.android.build.gradle.internal.cxx.model.ModelField.CXX_MODULE_MODEL_C
 import com.android.build.gradle.internal.cxx.model.ModelField.CXX_MODULE_MODEL_CMAKE_SETTINGS_FILE
 import com.android.build.gradle.internal.cxx.model.ModelField.CXX_MODULE_MODEL_CMAKE_TOOLCHAIN_FILE
 import com.android.build.gradle.internal.cxx.model.ModelField.CXX_MODULE_MODEL_CXX_FOLDER
+import com.android.build.gradle.internal.cxx.model.ModelField.CXX_MODULE_MODEL_HAS_BUILD_TIME_INFORMATION
 import com.android.build.gradle.internal.cxx.model.ModelField.CXX_MODULE_MODEL_INTERMEDIATES_BASE_FOLDER
 import com.android.build.gradle.internal.cxx.model.ModelField.CXX_MODULE_MODEL_INTERMEDIATES_FOLDER
 import com.android.build.gradle.internal.cxx.model.ModelField.CXX_MODULE_MODEL_MAKE_FILE
@@ -82,6 +83,8 @@ import com.android.build.gradle.internal.cxx.settings.Environment.GRADLE
 import com.android.build.gradle.internal.cxx.settings.Environment.MICROSOFT_BUILT_IN
 import com.android.build.gradle.internal.cxx.settings.Environment.NDK
 import com.android.build.gradle.internal.cxx.settings.Environment.NDK_EXPOSED_BY_HOST
+import com.android.build.gradle.internal.cxx.settings.AvailabilityPhase.BUILD
+import com.android.build.gradle.internal.cxx.settings.AvailabilityPhase.CONFIGURATION
 
 /**
  * Define built-in macros for CMakeSettings.json. Built-in means they're defined by the host
@@ -108,7 +111,9 @@ enum class Macro(
     // Set if this macro value maps to specific CMake properties.
     val cmakeProperties: List<CmakeProperty> = listOf(),
     // If ndk-build has a different value than CMake, then this holds the ndk-build example
-    val ndkBuildExample: String? = null) {
+    val ndkBuildExample: String? = null,
+    // The Gradle phase that this property becomes available in.
+    val available: AvailabilityPhase = CONFIGURATION) {
 
     NDK_CONFIGURATION_HASH(
         description = "First eight characters of \${ndk.fullConfigurationHash}.",
@@ -232,6 +237,7 @@ enum class Macro(
         tag = "moduleCmakeExecutable",
         example = "${NDK_PROJECT_SDK_DIR.ref}/cmake/$defaultCmakeVersion/bin/cmake",
         ndkBuildExample = "",
+        available = BUILD,
         bind = CXX_CMAKE_MODULE_MODEL_CMAKE_EXE),
     NDK_MODULE_NINJA_EXECUTABLE(
         description = "Path to Ninja executable if one was found by Gradle. Otherwise, it expands" +
@@ -241,6 +247,7 @@ enum class Macro(
         example = "${NDK_PROJECT_SDK_DIR.ref}/cmake/$defaultCmakeVersion/bin/ninja",
         ndkBuildExample = "",
         cmakeProperties = listOf(CMAKE_MAKE_PROGRAM),
+        available = BUILD,
         bind = CXX_MODULE_MODEL_NINJA_EXE),
     NDK_MODULE_CMAKE_GENERATOR(
         description = "Name of the generator used by CMake.",
@@ -249,6 +256,13 @@ enum class Macro(
         example = "Ninja",
         ndkBuildExample = "",
         bind = CXX_MODULE_MODEL_CMAKE_GENERATOR),
+    NDK_MODULE_HAS_BUILD_TIME_INFORMATION(
+        description = "Whether build-time information is available. If false, then only " +
+                "configuration-time information is available.",
+        environment = GRADLE,
+        tag = "moduleHasBuildTimeInformation",
+        example = "true",
+        bind = CXX_MODULE_MODEL_HAS_BUILD_TIME_INFORMATION),
     NDK_MODULE_NDK_VERSION(
         description = "Version of NDK.",
         environment = GRADLE,
@@ -441,6 +455,15 @@ enum class Macro(
      */
     val qualifiedName get() = "${environment.namespace}.$tag"
 
+    /**
+     * Placeholder to use for build-time values during configuration time.
+     */
+    val configurationPlaceholder : String get() {
+        if (available != BUILD) {
+            error("Should only need configurationPlaceholder for build-time available Macro [$name]")
+        }
+        return "{configuration-time-placeholder:$name}"
+    }
 
     /**
      * A built-in property that just returns "1".
@@ -482,6 +505,21 @@ enum class Macro(
                 .flatMap { macro -> macro.cmakeProperties.map { cmake -> cmake to macro} }
                 .groupBy({ (cmake, _) -> cmake.name }, { (_, macro) -> macro })
     }
+}
+
+
+/**
+ * The Gradle phase that a macro value becomes available.
+ */
+enum class AvailabilityPhase {
+    /**
+     * Macro value is available during Gradle configuration.
+     */
+    CONFIGURATION,
+    /**
+     * Macro value is available during Gradle build.
+     */
+    BUILD
 }
 
 /**

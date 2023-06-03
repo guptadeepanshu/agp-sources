@@ -43,16 +43,16 @@ class TaskProviderBasedDirectoryEntryImpl(
      */
     override val filter: PatternFilterable? = null
     override fun asFiles(
-        projectDir: Provider<Directory>
+      projectDir: Provider<Directory>
     ): Provider<out Collection<Directory>> =
         directoryProvider.map { listOf(it) }
 
     override fun asFileTree(
             fileTreeCreator: () -> ConfigurableFileTree,
     ): Provider<List<ConfigurableFileTree>> =
-            directoryProvider.map {
-                listOf(fileTreeCreator().setDir(directoryProvider).builtBy(directoryProvider))
-            }
+        directoryProvider.map {
+            listOf(fileTreeCreator().setDir(directoryProvider).builtBy(directoryProvider))
+        }
 
     override fun asFileTreeWithoutTaskDependency(
             fileTreeCreator: () -> ConfigurableFileTree,

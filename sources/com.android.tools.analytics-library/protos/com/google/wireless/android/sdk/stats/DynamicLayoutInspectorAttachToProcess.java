@@ -21,6 +21,7 @@ private static final long serialVersionUID = 0L;
   }
   private DynamicLayoutInspectorAttachToProcess() {
     clientType_ = 0;
+    composeErrorCode_ = 0;
   }
 
   @java.lang.Override
@@ -82,6 +83,38 @@ private static final long serialVersionUID = 0L;
               errorInfo_ = subBuilder.buildPartial();
             }
             bitField0_ |= 0x00000004;
+            break;
+          }
+          case 32: {
+            int rawValue = input.readEnum();
+              @SuppressWarnings("deprecation")
+            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode value = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode.valueOf(rawValue);
+            if (value == null) {
+              unknownFields.mergeVarintField(4, rawValue);
+            } else {
+              bitField0_ |= 0x00000008;
+              composeErrorCode_ = rawValue;
+            }
+            break;
+          }
+          case 40: {
+            bitField0_ |= 0x00000010;
+            multipleProjectsOpen_ = input.readBool();
+            break;
+          }
+          case 48: {
+            bitField0_ |= 0x00000020;
+            debuggerAttached_ = input.readBool();
+            break;
+          }
+          case 56: {
+            bitField0_ |= 0x00000040;
+            debuggerPausedDuringAttach_ = input.readBool();
+            break;
+          }
+          case 64: {
+            bitField0_ |= 0x00000080;
+            autoConnectEnabled_ = input.readBool();
             break;
           }
           default: {
@@ -359,6 +392,141 @@ private static final long serialVersionUID = 0L;
     return errorInfo_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.getDefaultInstance() : errorInfo_;
   }
 
+  public static final int COMPOSE_ERROR_CODE_FIELD_NUMBER = 4;
+  private int composeErrorCode_;
+  /**
+   * <pre>
+   * Error information if the compose inspector failed
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo.AttachErrorCode compose_error_code = 4;</code>
+   * @return Whether the composeErrorCode field is set.
+   */
+  @java.lang.Override public boolean hasComposeErrorCode() {
+    return ((bitField0_ & 0x00000008) != 0);
+  }
+  /**
+   * <pre>
+   * Error information if the compose inspector failed
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo.AttachErrorCode compose_error_code = 4;</code>
+   * @return The composeErrorCode.
+   */
+  @java.lang.Override public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode getComposeErrorCode() {
+    @SuppressWarnings("deprecation")
+    com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode.valueOf(composeErrorCode_);
+    return result == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode.UNKNOWN_ERROR_CODE : result;
+  }
+
+  public static final int MULTIPLE_PROJECTS_OPEN_FIELD_NUMBER = 5;
+  private boolean multipleProjectsOpen_;
+  /**
+   * <pre>
+   * When we attached to a process, were the multiple projects open?
+   * </pre>
+   *
+   * <code>optional bool multiple_projects_open = 5;</code>
+   * @return Whether the multipleProjectsOpen field is set.
+   */
+  @java.lang.Override
+  public boolean hasMultipleProjectsOpen() {
+    return ((bitField0_ & 0x00000010) != 0);
+  }
+  /**
+   * <pre>
+   * When we attached to a process, were the multiple projects open?
+   * </pre>
+   *
+   * <code>optional bool multiple_projects_open = 5;</code>
+   * @return The multipleProjectsOpen.
+   */
+  @java.lang.Override
+  public boolean getMultipleProjectsOpen() {
+    return multipleProjectsOpen_;
+  }
+
+  public static final int DEBUGGER_ATTACHED_FIELD_NUMBER = 6;
+  private boolean debuggerAttached_;
+  /**
+   * <pre>
+   * Was the debugger running for this session
+   * </pre>
+   *
+   * <code>optional bool debugger_attached = 6;</code>
+   * @return Whether the debuggerAttached field is set.
+   */
+  @java.lang.Override
+  public boolean hasDebuggerAttached() {
+    return ((bitField0_ & 0x00000020) != 0);
+  }
+  /**
+   * <pre>
+   * Was the debugger running for this session
+   * </pre>
+   *
+   * <code>optional bool debugger_attached = 6;</code>
+   * @return The debuggerAttached.
+   */
+  @java.lang.Override
+  public boolean getDebuggerAttached() {
+    return debuggerAttached_;
+  }
+
+  public static final int DEBUGGER_PAUSED_DURING_ATTACH_FIELD_NUMBER = 7;
+  private boolean debuggerPausedDuringAttach_;
+  /**
+   * <pre>
+   * Was the debugger paused during the attach
+   * </pre>
+   *
+   * <code>optional bool debugger_paused_during_attach = 7;</code>
+   * @return Whether the debuggerPausedDuringAttach field is set.
+   */
+  @java.lang.Override
+  public boolean hasDebuggerPausedDuringAttach() {
+    return ((bitField0_ & 0x00000040) != 0);
+  }
+  /**
+   * <pre>
+   * Was the debugger paused during the attach
+   * </pre>
+   *
+   * <code>optional bool debugger_paused_during_attach = 7;</code>
+   * @return The debuggerPausedDuringAttach.
+   */
+  @java.lang.Override
+  public boolean getDebuggerPausedDuringAttach() {
+    return debuggerPausedDuringAttach_;
+  }
+
+  public static final int AUTO_CONNECT_ENABLED_FIELD_NUMBER = 8;
+  private boolean autoConnectEnabled_;
+  /**
+   * <pre>
+   * Was auto connect enabled for this session
+   * </pre>
+   *
+   * <code>optional bool auto_connect_enabled = 8;</code>
+   * @return Whether the autoConnectEnabled field is set.
+   */
+  @java.lang.Override
+  public boolean hasAutoConnectEnabled() {
+    return ((bitField0_ & 0x00000080) != 0);
+  }
+  /**
+   * <pre>
+   * Was auto connect enabled for this session
+   * </pre>
+   *
+   * <code>optional bool auto_connect_enabled = 8;</code>
+   * @return The autoConnectEnabled.
+   */
+  @java.lang.Override
+  public boolean getAutoConnectEnabled() {
+    return autoConnectEnabled_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -382,6 +550,21 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000004) != 0)) {
       output.writeMessage(3, getErrorInfo());
     }
+    if (((bitField0_ & 0x00000008) != 0)) {
+      output.writeEnum(4, composeErrorCode_);
+    }
+    if (((bitField0_ & 0x00000010) != 0)) {
+      output.writeBool(5, multipleProjectsOpen_);
+    }
+    if (((bitField0_ & 0x00000020) != 0)) {
+      output.writeBool(6, debuggerAttached_);
+    }
+    if (((bitField0_ & 0x00000040) != 0)) {
+      output.writeBool(7, debuggerPausedDuringAttach_);
+    }
+    if (((bitField0_ & 0x00000080) != 0)) {
+      output.writeBool(8, autoConnectEnabled_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -402,6 +585,26 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000004) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(3, getErrorInfo());
+    }
+    if (((bitField0_ & 0x00000008) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(4, composeErrorCode_);
+    }
+    if (((bitField0_ & 0x00000010) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(5, multipleProjectsOpen_);
+    }
+    if (((bitField0_ & 0x00000020) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(6, debuggerAttached_);
+    }
+    if (((bitField0_ & 0x00000040) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(7, debuggerPausedDuringAttach_);
+    }
+    if (((bitField0_ & 0x00000080) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(8, autoConnectEnabled_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -432,6 +635,30 @@ private static final long serialVersionUID = 0L;
       if (!getErrorInfo()
           .equals(other.getErrorInfo())) return false;
     }
+    if (hasComposeErrorCode() != other.hasComposeErrorCode()) return false;
+    if (hasComposeErrorCode()) {
+      if (composeErrorCode_ != other.composeErrorCode_) return false;
+    }
+    if (hasMultipleProjectsOpen() != other.hasMultipleProjectsOpen()) return false;
+    if (hasMultipleProjectsOpen()) {
+      if (getMultipleProjectsOpen()
+          != other.getMultipleProjectsOpen()) return false;
+    }
+    if (hasDebuggerAttached() != other.hasDebuggerAttached()) return false;
+    if (hasDebuggerAttached()) {
+      if (getDebuggerAttached()
+          != other.getDebuggerAttached()) return false;
+    }
+    if (hasDebuggerPausedDuringAttach() != other.hasDebuggerPausedDuringAttach()) return false;
+    if (hasDebuggerPausedDuringAttach()) {
+      if (getDebuggerPausedDuringAttach()
+          != other.getDebuggerPausedDuringAttach()) return false;
+    }
+    if (hasAutoConnectEnabled() != other.hasAutoConnectEnabled()) return false;
+    if (hasAutoConnectEnabled()) {
+      if (getAutoConnectEnabled()
+          != other.getAutoConnectEnabled()) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -455,6 +682,30 @@ private static final long serialVersionUID = 0L;
     if (hasErrorInfo()) {
       hash = (37 * hash) + ERROR_INFO_FIELD_NUMBER;
       hash = (53 * hash) + getErrorInfo().hashCode();
+    }
+    if (hasComposeErrorCode()) {
+      hash = (37 * hash) + COMPOSE_ERROR_CODE_FIELD_NUMBER;
+      hash = (53 * hash) + composeErrorCode_;
+    }
+    if (hasMultipleProjectsOpen()) {
+      hash = (37 * hash) + MULTIPLE_PROJECTS_OPEN_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getMultipleProjectsOpen());
+    }
+    if (hasDebuggerAttached()) {
+      hash = (37 * hash) + DEBUGGER_ATTACHED_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getDebuggerAttached());
+    }
+    if (hasDebuggerPausedDuringAttach()) {
+      hash = (37 * hash) + DEBUGGER_PAUSED_DURING_ATTACH_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getDebuggerPausedDuringAttach());
+    }
+    if (hasAutoConnectEnabled()) {
+      hash = (37 * hash) + AUTO_CONNECT_ENABLED_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getAutoConnectEnabled());
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -604,6 +855,16 @@ private static final long serialVersionUID = 0L;
         errorInfoBuilder_.clear();
       }
       bitField0_ = (bitField0_ & ~0x00000004);
+      composeErrorCode_ = 0;
+      bitField0_ = (bitField0_ & ~0x00000008);
+      multipleProjectsOpen_ = false;
+      bitField0_ = (bitField0_ & ~0x00000010);
+      debuggerAttached_ = false;
+      bitField0_ = (bitField0_ & ~0x00000020);
+      debuggerPausedDuringAttach_ = false;
+      bitField0_ = (bitField0_ & ~0x00000040);
+      autoConnectEnabled_ = false;
+      bitField0_ = (bitField0_ & ~0x00000080);
       return this;
     }
 
@@ -647,6 +908,26 @@ private static final long serialVersionUID = 0L;
           result.errorInfo_ = errorInfoBuilder_.build();
         }
         to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        to_bitField0_ |= 0x00000008;
+      }
+      result.composeErrorCode_ = composeErrorCode_;
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.multipleProjectsOpen_ = multipleProjectsOpen_;
+        to_bitField0_ |= 0x00000010;
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.debuggerAttached_ = debuggerAttached_;
+        to_bitField0_ |= 0x00000020;
+      }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.debuggerPausedDuringAttach_ = debuggerPausedDuringAttach_;
+        to_bitField0_ |= 0x00000040;
+      }
+      if (((from_bitField0_ & 0x00000080) != 0)) {
+        result.autoConnectEnabled_ = autoConnectEnabled_;
+        to_bitField0_ |= 0x00000080;
       }
       result.bitField0_ = to_bitField0_;
       onBuilt();
@@ -705,6 +986,21 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasErrorInfo()) {
         mergeErrorInfo(other.getErrorInfo());
+      }
+      if (other.hasComposeErrorCode()) {
+        setComposeErrorCode(other.getComposeErrorCode());
+      }
+      if (other.hasMultipleProjectsOpen()) {
+        setMultipleProjectsOpen(other.getMultipleProjectsOpen());
+      }
+      if (other.hasDebuggerAttached()) {
+        setDebuggerAttached(other.getDebuggerAttached());
+      }
+      if (other.hasDebuggerPausedDuringAttach()) {
+        setDebuggerPausedDuringAttach(other.getDebuggerPausedDuringAttach());
+      }
+      if (other.hasAutoConnectEnabled()) {
+        setAutoConnectEnabled(other.getAutoConnectEnabled());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -1004,6 +1300,285 @@ private static final long serialVersionUID = 0L;
         errorInfo_ = null;
       }
       return errorInfoBuilder_;
+    }
+
+    private int composeErrorCode_ = 0;
+    /**
+     * <pre>
+     * Error information if the compose inspector failed
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo.AttachErrorCode compose_error_code = 4;</code>
+     * @return Whether the composeErrorCode field is set.
+     */
+    @java.lang.Override public boolean hasComposeErrorCode() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <pre>
+     * Error information if the compose inspector failed
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo.AttachErrorCode compose_error_code = 4;</code>
+     * @return The composeErrorCode.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode getComposeErrorCode() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode.valueOf(composeErrorCode_);
+      return result == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode.UNKNOWN_ERROR_CODE : result;
+    }
+    /**
+     * <pre>
+     * Error information if the compose inspector failed
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo.AttachErrorCode compose_error_code = 4;</code>
+     * @param value The composeErrorCode to set.
+     * @return This builder for chaining.
+     */
+    public Builder setComposeErrorCode(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00000008;
+      composeErrorCode_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Error information if the compose inspector failed
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo.AttachErrorCode compose_error_code = 4;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearComposeErrorCode() {
+      bitField0_ = (bitField0_ & ~0x00000008);
+      composeErrorCode_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private boolean multipleProjectsOpen_ ;
+    /**
+     * <pre>
+     * When we attached to a process, were the multiple projects open?
+     * </pre>
+     *
+     * <code>optional bool multiple_projects_open = 5;</code>
+     * @return Whether the multipleProjectsOpen field is set.
+     */
+    @java.lang.Override
+    public boolean hasMultipleProjectsOpen() {
+      return ((bitField0_ & 0x00000010) != 0);
+    }
+    /**
+     * <pre>
+     * When we attached to a process, were the multiple projects open?
+     * </pre>
+     *
+     * <code>optional bool multiple_projects_open = 5;</code>
+     * @return The multipleProjectsOpen.
+     */
+    @java.lang.Override
+    public boolean getMultipleProjectsOpen() {
+      return multipleProjectsOpen_;
+    }
+    /**
+     * <pre>
+     * When we attached to a process, were the multiple projects open?
+     * </pre>
+     *
+     * <code>optional bool multiple_projects_open = 5;</code>
+     * @param value The multipleProjectsOpen to set.
+     * @return This builder for chaining.
+     */
+    public Builder setMultipleProjectsOpen(boolean value) {
+      bitField0_ |= 0x00000010;
+      multipleProjectsOpen_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * When we attached to a process, were the multiple projects open?
+     * </pre>
+     *
+     * <code>optional bool multiple_projects_open = 5;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearMultipleProjectsOpen() {
+      bitField0_ = (bitField0_ & ~0x00000010);
+      multipleProjectsOpen_ = false;
+      onChanged();
+      return this;
+    }
+
+    private boolean debuggerAttached_ ;
+    /**
+     * <pre>
+     * Was the debugger running for this session
+     * </pre>
+     *
+     * <code>optional bool debugger_attached = 6;</code>
+     * @return Whether the debuggerAttached field is set.
+     */
+    @java.lang.Override
+    public boolean hasDebuggerAttached() {
+      return ((bitField0_ & 0x00000020) != 0);
+    }
+    /**
+     * <pre>
+     * Was the debugger running for this session
+     * </pre>
+     *
+     * <code>optional bool debugger_attached = 6;</code>
+     * @return The debuggerAttached.
+     */
+    @java.lang.Override
+    public boolean getDebuggerAttached() {
+      return debuggerAttached_;
+    }
+    /**
+     * <pre>
+     * Was the debugger running for this session
+     * </pre>
+     *
+     * <code>optional bool debugger_attached = 6;</code>
+     * @param value The debuggerAttached to set.
+     * @return This builder for chaining.
+     */
+    public Builder setDebuggerAttached(boolean value) {
+      bitField0_ |= 0x00000020;
+      debuggerAttached_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Was the debugger running for this session
+     * </pre>
+     *
+     * <code>optional bool debugger_attached = 6;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearDebuggerAttached() {
+      bitField0_ = (bitField0_ & ~0x00000020);
+      debuggerAttached_ = false;
+      onChanged();
+      return this;
+    }
+
+    private boolean debuggerPausedDuringAttach_ ;
+    /**
+     * <pre>
+     * Was the debugger paused during the attach
+     * </pre>
+     *
+     * <code>optional bool debugger_paused_during_attach = 7;</code>
+     * @return Whether the debuggerPausedDuringAttach field is set.
+     */
+    @java.lang.Override
+    public boolean hasDebuggerPausedDuringAttach() {
+      return ((bitField0_ & 0x00000040) != 0);
+    }
+    /**
+     * <pre>
+     * Was the debugger paused during the attach
+     * </pre>
+     *
+     * <code>optional bool debugger_paused_during_attach = 7;</code>
+     * @return The debuggerPausedDuringAttach.
+     */
+    @java.lang.Override
+    public boolean getDebuggerPausedDuringAttach() {
+      return debuggerPausedDuringAttach_;
+    }
+    /**
+     * <pre>
+     * Was the debugger paused during the attach
+     * </pre>
+     *
+     * <code>optional bool debugger_paused_during_attach = 7;</code>
+     * @param value The debuggerPausedDuringAttach to set.
+     * @return This builder for chaining.
+     */
+    public Builder setDebuggerPausedDuringAttach(boolean value) {
+      bitField0_ |= 0x00000040;
+      debuggerPausedDuringAttach_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Was the debugger paused during the attach
+     * </pre>
+     *
+     * <code>optional bool debugger_paused_during_attach = 7;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearDebuggerPausedDuringAttach() {
+      bitField0_ = (bitField0_ & ~0x00000040);
+      debuggerPausedDuringAttach_ = false;
+      onChanged();
+      return this;
+    }
+
+    private boolean autoConnectEnabled_ ;
+    /**
+     * <pre>
+     * Was auto connect enabled for this session
+     * </pre>
+     *
+     * <code>optional bool auto_connect_enabled = 8;</code>
+     * @return Whether the autoConnectEnabled field is set.
+     */
+    @java.lang.Override
+    public boolean hasAutoConnectEnabled() {
+      return ((bitField0_ & 0x00000080) != 0);
+    }
+    /**
+     * <pre>
+     * Was auto connect enabled for this session
+     * </pre>
+     *
+     * <code>optional bool auto_connect_enabled = 8;</code>
+     * @return The autoConnectEnabled.
+     */
+    @java.lang.Override
+    public boolean getAutoConnectEnabled() {
+      return autoConnectEnabled_;
+    }
+    /**
+     * <pre>
+     * Was auto connect enabled for this session
+     * </pre>
+     *
+     * <code>optional bool auto_connect_enabled = 8;</code>
+     * @param value The autoConnectEnabled to set.
+     * @return This builder for chaining.
+     */
+    public Builder setAutoConnectEnabled(boolean value) {
+      bitField0_ |= 0x00000080;
+      autoConnectEnabled_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Was auto connect enabled for this session
+     * </pre>
+     *
+     * <code>optional bool auto_connect_enabled = 8;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearAutoConnectEnabled() {
+      bitField0_ = (bitField0_ & ~0x00000080);
+      autoConnectEnabled_ = false;
+      onChanged();
+      return this;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

@@ -31,8 +31,8 @@ import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.tasks.getChangesInSerializableForm
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.files.SerializableInputChanges
-import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.ide.common.process.LoggedProcessOutputHandler
 import com.android.ide.common.process.ProcessInfoBuilder
 import com.android.ide.common.resources.FileStatus.CHANGED

@@ -334,4 +334,46 @@ public interface GradleBuildDetailsOrBuilder extends
    */
   com.google.protobuf.ByteString
       getAppIdBytes();
+
+  /**
+   * <pre>
+   * The number of modules in the project (In the case of a build system that
+   * produces different modules for tests and production code, these modules are
+   * counted as one).
+   * </pre>
+   *
+   * <code>optional int64 module_count = 11;</code>
+   * @return Whether the moduleCount field is set.
+   */
+  boolean hasModuleCount();
+  /**
+   * <pre>
+   * The number of modules in the project (In the case of a build system that
+   * produces different modules for tests and production code, these modules are
+   * counted as one).
+   * </pre>
+   *
+   * <code>optional int64 module_count = 11;</code>
+   * @return The moduleCount.
+   */
+  long getModuleCount();
+
+  /**
+   * <pre>
+   * The number of distinct external dependencies in this project.
+   * </pre>
+   *
+   * <code>optional int64 lib_count = 12;</code>
+   * @return Whether the libCount field is set.
+   */
+  boolean hasLibCount();
+  /**
+   * <pre>
+   * The number of distinct external dependencies in this project.
+   * </pre>
+   *
+   * <code>optional int64 lib_count = 12;</code>
+   * @return The libCount.
+   */
+  long getLibCount();
 }

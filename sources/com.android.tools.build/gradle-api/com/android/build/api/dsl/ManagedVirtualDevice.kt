@@ -22,10 +22,25 @@ interface ManagedVirtualDevice : Device {
 
     /**
      * The api level of Android to be run on the device.
+     * Setting this it will override previous calls of [apiLevel] or [apiPreview] setters.
+     * Only one of [apiLevel] and [apiPreview] should be set.
      *
-     * This will default to the target api level of the application.
+     * See [uses-sdk element documentation](http://developer.android.com/guide/topics/manifest/uses-sdk-element.html)
+     * for a list of valid values.
      */
     var apiLevel: Int
+
+    /**
+     * The api version code of Android to be run on the device.
+     * Setting this it will override previous calls of [apiLevel] or [apiPreview] setters.
+     * Only one of [apiLevel] and [apiPreview] should be set.
+     *
+     * See [uses-sdk element documentation](http://developer.android.com/guide/topics/manifest/uses-sdk-element.html)
+     * for a list of valid values.
+     */
+    @get: Incubating
+    @set: Incubating
+    var apiPreview: String?
 
     /**
      * Which source the system image should come from. Either "google", "google-atd", "aosp", or

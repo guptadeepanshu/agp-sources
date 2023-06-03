@@ -25,10 +25,10 @@ import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.internal.variant.ComponentInfo
 import com.android.build.gradle.options.BooleanOption
-import com.android.ide.common.attribution.CheckJetifierProjectResult
-import com.android.ide.common.attribution.DependencyPath
-import com.android.ide.common.attribution.FullDependencyPath
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.CheckJetifierProjectResult
+import com.android.buildanalyzer.common.DependencyPath
+import com.android.buildanalyzer.common.FullDependencyPath
+import com.android.buildanalyzer.common.TaskCategory
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.gradle.api.artifacts.result.DependencyResult

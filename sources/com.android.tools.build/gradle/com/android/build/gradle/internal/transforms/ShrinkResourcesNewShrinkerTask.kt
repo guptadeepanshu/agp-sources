@@ -21,16 +21,17 @@ import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.variant.BuiltArtifact
 import com.android.build.api.variant.impl.VariantOutputImpl
 import com.android.build.gradle.internal.LoggerWrapper
+import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
-import com.android.build.gradle.internal.res.shrinker.LinkedResourcesFormat
-import com.android.build.gradle.internal.res.shrinker.LoggerAndFileDebugReporter
-import com.android.build.gradle.internal.res.shrinker.ResourceShrinkerImpl
-import com.android.build.gradle.internal.res.shrinker.gatherer.ProtoResourceTableGatherer
-import com.android.build.gradle.internal.res.shrinker.graph.ProtoResourcesGraphBuilder
-import com.android.build.gradle.internal.res.shrinker.obfuscation.ProguardMappingsRecorder
-import com.android.build.gradle.internal.res.shrinker.usages.DexUsageRecorder
-import com.android.build.gradle.internal.res.shrinker.usages.ProtoAndroidManifestUsageRecorder
-import com.android.build.gradle.internal.res.shrinker.usages.ToolsAttributeUsageRecorder
+import com.android.build.shrinker.LinkedResourcesFormat
+import com.android.build.shrinker.LoggerAndFileDebugReporter
+import com.android.build.shrinker.ResourceShrinkerImpl
+import com.android.build.shrinker.gatherer.ProtoResourceTableGatherer
+import com.android.build.shrinker.graph.ProtoResourcesGraphBuilder
+import com.android.build.shrinker.obfuscation.ProguardMappingsRecorder
+import com.android.build.shrinker.usages.DexUsageRecorder
+import com.android.build.shrinker.usages.ProtoAndroidManifestUsageRecorder
+import com.android.build.shrinker.usages.ToolsAttributeUsageRecorder
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalMultipleArtifactType
 import com.android.build.gradle.internal.services.Aapt2DaemonServiceKey
@@ -44,13 +45,16 @@ import com.android.build.gradle.internal.workeractions.DecoratedWorkParameters
 import com.android.build.gradle.internal.workeractions.WorkActionAdapter
 import com.android.build.gradle.options.BooleanOption
 import com.android.builder.internal.aapt.AaptConvertConfig
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.build.gradle.tasks.PackageAndroidArtifact
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.utils.FileUtils
 import com.google.common.io.Files
+import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.logging.Logging
+import org.gradle.api.logging.LogLevel
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
@@ -87,7 +91,7 @@ abstract class ShrinkResourcesNewShrinkerTask : NonIncrementalTask() {
     abstract val originalResources: DirectoryProperty
 
     @get:InputFile
-    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
     @get:Optional
     abstract val originalResourcesForBundle: RegularFileProperty
 
@@ -98,7 +102,7 @@ abstract class ShrinkResourcesNewShrinkerTask : NonIncrementalTask() {
     abstract val variantOutputs: ListProperty<VariantOutputImpl>
 
     @get:InputFiles
-    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
     @get:Optional
     abstract val mappingFileSrc: RegularFileProperty
 
@@ -108,7 +112,7 @@ abstract class ShrinkResourcesNewShrinkerTask : NonIncrementalTask() {
 
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
-    abstract val dex: ListProperty<Directory>
+    abstract val dex: ConfigurableFileCollection
 
     @get:Input
     abstract val usePreciseShrinking: Property<Boolean>
@@ -155,7 +159,7 @@ abstract class ShrinkResourcesNewShrinkerTask : NonIncrementalTask() {
                 }
             }
 
-            parameters.dex.set(dex)
+            parameters.dex.from(dex)
             parameters.mappingFileSrc.set(mappingFileSrc)
             parameters.resourceDir.set(resourceDir)
 
@@ -220,7 +224,13 @@ abstract class ShrinkResourcesNewShrinkerTask : NonIncrementalTask() {
 
             task.artifactTransformationRequest.set(transformationRequest)
 
-            task.dex.addAll(creationConfig.artifacts.getAll(InternalMultipleArtifactType.DEX))
+            when (creationConfig) {
+                is ApkCreationConfig ->
+                    task.dex.from(
+                        PackageAndroidArtifact.CreationAction.getDexFolders(creationConfig))
+                else ->
+                    task.dex.from(creationConfig.artifacts.getAll(InternalMultipleArtifactType.DEX))
+            }
 
             creationConfig.services.initializeAapt2Input(task.aapt)
         }
@@ -242,7 +252,7 @@ abstract class ShrinkProtoResourcesParams : DecoratedWorkParameters {
     abstract val mappingFileSrc: RegularFileProperty
 
     abstract val resourceDir: DirectoryProperty
-    abstract val dex: ListProperty<Directory>
+    abstract val dex: ConfigurableFileCollection
 
     abstract val aapt2ServiceKey: Property<Aapt2DaemonServiceKey>
 
@@ -277,7 +287,7 @@ abstract class ShrinkProtoResourcesAction @Inject constructor() :
         }
 
         FileUtils.createZipFilesystem(originalProtoFile.toPath()).use { fs ->
-            val dexRecorders = parameters.dex.get().map { DexUsageRecorder(it.asFile.toPath()) }
+            val dexRecorders = parameters.dex.files.map { DexUsageRecorder(it.toPath()) }
             val manifestRecorder =
                 ProtoAndroidManifestUsageRecorder(fs.getPath("AndroidManifest.xml"))
             val toolsRecorder =
@@ -296,7 +306,16 @@ abstract class ShrinkProtoResourcesAction @Inject constructor() :
                 usageRecorders = dexRecorders + manifestRecorder + toolsRecorder,
                 graphBuilders = listOf(graphBuilder),
                 debugReporter = LoggerAndFileDebugReporter(
-                    logger,
+                    logDebug = { debugMessage ->
+                        if (logger.isEnabled(LogLevel.DEBUG)) {
+                            logger.log(LogLevel.DEBUG, debugMessage)
+                        }
+                    },
+                    logInfo = { infoMessage ->
+                        if (logger.isEnabled(LogLevel.DEBUG)) {
+                            logger.log(LogLevel.DEBUG, infoMessage)
+                        }
+                    },
                     parameters.reportFile.orNull?.asFile
                 ),
                 supportMultipackages = false,

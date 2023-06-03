@@ -19,11 +19,10 @@ package com.android.build.gradle.internal.cxx.configure
 import com.android.SdkConstants.FD_CMAKE
 import com.android.build.gradle.external.cmake.CmakeUtils
 import com.android.build.gradle.external.cmake.CmakeUtils.keepWhileNumbersAndDots
-import com.android.build.gradle.internal.cxx.logging.PassThroughDeduplicatingLoggingEnvironment
+import com.android.build.gradle.internal.cxx.logging.PassThroughRecordingLoggingEnvironment
 import com.android.build.gradle.internal.cxx.logging.ThreadLoggingEnvironment
 import com.android.build.gradle.internal.cxx.logging.errorln
 import com.android.build.gradle.internal.cxx.logging.warnln
-import com.android.build.gradle.internal.cxx.os.exe
 import com.android.prefs.AndroidLocationsProvider
 import com.android.repository.Revision
 import com.android.repository.api.LocalPackage
@@ -33,6 +32,8 @@ import com.android.utils.cxx.CxxDiagnosticCode.CMAKE_IS_MISSING
 import com.android.utils.cxx.CxxDiagnosticCode.CMAKE_PACKAGES_SDK
 import com.android.utils.cxx.CxxDiagnosticCode.CMAKE_VERSION_IS_INVALID
 import com.android.utils.cxx.CxxDiagnosticCode.CMAKE_VERSION_IS_UNSUPPORTED
+import com.android.utils.cxx.os.exe
+import com.android.utils.cxx.os.getEnvironmentPaths
 import java.io.File
 import java.io.IOException
 import java.util.function.Consumer
@@ -184,21 +185,6 @@ internal val forkCmakeSdkVersionRevision = Revision.parseRevision(CMakeVersion.F
 internal val forkCmakeReportedVersion = Revision.parseRevision(CMakeVersion.FORK.version)
 
 val defaultCmakeVersion = Revision.parseRevision(CMakeVersion.DEFAULT.version)
-
-/**
- * @return list of folders (as Files) retrieved from PATH environment variable and from Sdk
- * cmake folder.
- */
-fun getEnvironmentPaths(): List<File> {
-    val envPath = System.getenv("PATH") ?: ""
-    val pathSeparator = System.getProperty("path.separator").toRegex()
-    return envPath
-        .split(pathSeparator)
-        .asSequence()
-        .filter { it.isNotEmpty() }
-        .map { File(it) }
-        .toList()
-}
 
 /**
  * @return list of folders (as Files) for CMakes in the SDK.
@@ -377,15 +363,33 @@ fun findCmakePathLogic(
 
     val cmakePaths = mutableSetOf<String>()
 
-    // Gather acceptable environment paths
-    for (environmentPath in environmentPaths()) {
-        if (cmakePaths.contains(environmentPath.path)) continue
-        val version = versionGetter(environmentPath) ?: continue
+    // Gather acceptable SDK package paths
+    for (localPackage in repositoryPackages()) {
+        val packagePath = localPackage.location.resolve("bin")
+        if (cmakePaths.contains(packagePath.toString())) continue
+        val version = if (localPackage.version == forkCmakeSdkVersionRevision) {
+            forkCmakeReportedVersion
+        } else {
+            localPackage.version
+        }
         if (!dsl.isSatisfiedBy(version)) {
-            nonsatisfiers += "'$version' found in PATH"
+            nonsatisfiers += "'$version' found in SDK"
             continue
         }
-        cmakePaths.add(environmentPath.path)
+        cmakePaths.add(packagePath.toString())
+    }
+
+    // Gather acceptable environment paths
+    if (cmakePaths.isEmpty()) {
+        for (environmentPath in environmentPaths()) {
+            if (cmakePaths.contains(environmentPath.path)) continue
+            val version = versionGetter(environmentPath) ?: continue
+            if (!dsl.isSatisfiedBy(version)) {
+                nonsatisfiers += "'$version' found in PATH"
+                continue
+            }
+            cmakePaths.add(environmentPath.path)
+        }
     }
 
     // This is a fallback case for backward compatibility. In the past,
@@ -410,23 +414,7 @@ fun findCmakePathLogic(
     }
 
 
-    if (cmakePaths.isEmpty()) {
-        // Gather acceptable SDK package paths
-        for (localPackage in repositoryPackages()) {
-            val packagePath = localPackage.location.resolve("bin")
-            if (cmakePaths.contains(packagePath.toString())) continue
-            val version = if (localPackage.version == forkCmakeSdkVersionRevision) {
-                forkCmakeReportedVersion
-            } else {
-                localPackage.version
-            }
-            if (!dsl.isSatisfiedBy(version)) {
-                nonsatisfiers += "'$version' found in SDK"
-                continue
-            }
-            cmakePaths.add(packagePath.toString())
-        }
-    }
+
 
     // Handle case where there is no match.
     if (cmakePaths.isEmpty()) {
@@ -478,15 +466,15 @@ fun Revision.isCmakeForkVersion() = major == 3 && minor == 6 && micro == 0
 class CmakeLocator {
     fun findCmakePath(
         cmakeVersionFromDsl: String?,
-        cmakeFile: File?,
+        localPropertiesCMakeDir: File?,
         androidLocationsProvider: AndroidLocationsProvider,
         sdkFolder: File?,
         versionExecutor: (File) -> String,
         downloader: Consumer<String>): File? {
-        PassThroughDeduplicatingLoggingEnvironment().use {
+        PassThroughRecordingLoggingEnvironment().use {
             return findCmakePathLogic(
                     cmakeVersionFromDsl,
-                    cmakeFile,
+                    localPropertiesCMakeDir,
                     downloader,
                     { getEnvironmentPaths() },
                     { getSdkCmakeFolders(sdkFolder) },

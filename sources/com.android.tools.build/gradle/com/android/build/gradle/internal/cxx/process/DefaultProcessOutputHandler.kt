@@ -19,6 +19,8 @@ package com.android.build.gradle.internal.cxx.process
 import com.android.build.gradle.internal.cxx.logging.lifecycleln
 import com.android.ide.common.process.ProcessOutput
 import com.android.ide.common.process.ProcessOutputHandler
+import com.android.utils.cxx.process.LineOutputStream
+import com.android.utils.cxx.process.NativeBuildOutputClassifier
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -40,34 +42,23 @@ class DefaultProcessOutputHandler(
     var stderr: FileOutputStream? = null
     var stdout: FileOutputStream? = null
 
-    /**
-     * The most recent line containing "ninja: Entering directory ...". When `logFullStdout` is
-     * false, this line is only printed when there is at least one output from the C/C++ compiler.
-     */
-    private var ninjaDirectoryLine: String? = null
-
     override fun createOutput(): ProcessOutput {
         val singleStderr = FileOutputStream(stderrFile, true)
         val singleStdout = FileOutputStream(stdoutFile, true)
         val stderrReceivers = mutableListOf<OutputStream>(singleStderr)
         val stdoutReceivers = mutableListOf<OutputStream>(singleStdout)
         if (logStderr) {
-            stderrReceivers.add(ChunkBytesToLineOutputStream(logPrefix, { lifecycleln(it) }))
+            stderrReceivers.add(ChunkBytesToLineOutputStream(logPrefix, LifecycleLineOutputStream()))
         }
         if (logStdout) {
-            stdoutReceivers.add(ChunkBytesToLineOutputStream(logPrefix, { line ->
-                if (isNinjaWorkingDirectoryLine(line)) {
-                    ninjaDirectoryLine = line
-                }
-                if (logFullStdout) lifecycleln(line)
-                else if (shouldElevateToLifeCycle(line)) {
-                    ninjaDirectoryLine?.let { ninjaDirectoryLine ->
-                        lifecycleln(ninjaDirectoryLine)
-                        this.ninjaDirectoryLine = null
-                    }
-                    lifecycleln(line)
-                }
-            }))
+            if (logFullStdout) {
+                stdoutReceivers.add(ChunkBytesToLineOutputStream(logPrefix, LifecycleLineOutputStream()))
+            } else {
+                stdoutReceivers.add(ChunkBytesToLineOutputStream(logPrefix,
+                    NativeBuildOutputClassifier { message ->
+                        message.lines.forEach(::lifecycleln)
+                    }))
+            }
         }
         return DefaultProcessOutput(
             singleStderr,
@@ -83,4 +74,9 @@ class DefaultProcessOutputHandler(
         stderr = output.stderr
         stdout = output.stdout
     }
+}
+
+class LifecycleLineOutputStream : LineOutputStream {
+    override fun consume(line: String) = lifecycleln(line)
+    override fun close() { }
 }

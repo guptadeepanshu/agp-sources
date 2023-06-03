@@ -16,12 +16,14 @@
 
 package com.android.build.api.component.impl
 
-import com.android.build.api.artifact.MultipleArtifact
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.component.analytics.AnalyticsEnabledAndroidTest
 import com.android.build.api.component.impl.features.AndroidResourcesCreationConfigImpl
 import com.android.build.api.component.impl.features.BuildConfigCreationConfigImpl
+import com.android.build.api.component.impl.features.DexingCreationConfigImpl
+import com.android.build.api.component.impl.features.OptimizationCreationConfigImpl
 import com.android.build.api.component.impl.features.RenderscriptCreationConfigImpl
+import com.android.build.api.component.impl.features.ShadersCreationConfigImpl
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
 import com.android.build.api.variant.AndroidResources
@@ -39,21 +41,22 @@ import com.android.build.api.variant.VariantBuilder
 import com.android.build.api.variant.impl.ApkPackagingImpl
 import com.android.build.api.variant.impl.ResValueKeyImpl
 import com.android.build.api.variant.impl.SigningConfigImpl
-import com.android.build.gradle.internal.PostprocessingFeatures
-import com.android.build.gradle.internal.ProguardFileType
 import com.android.build.gradle.internal.component.AndroidTestCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.component.features.AndroidResourcesCreationConfig
 import com.android.build.gradle.internal.component.features.BuildConfigCreationConfig
+import com.android.build.gradle.internal.component.features.DexingCreationConfig
 import com.android.build.gradle.internal.component.features.FeatureNames
 import com.android.build.gradle.internal.component.features.ManifestPlaceholdersCreationConfig
+import com.android.build.gradle.internal.component.features.NativeBuildCreationConfig
+import com.android.build.gradle.internal.component.features.OptimizationCreationConfig
 import com.android.build.gradle.internal.component.features.RenderscriptCreationConfig
+import com.android.build.gradle.internal.component.features.ShadersCreationConfig
 import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.core.dsl.AndroidTestComponentDslInfo
+import com.android.build.gradle.internal.core.dsl.features.ManifestPlaceholdersDslInfo
 import com.android.build.gradle.internal.dependency.VariantDependencies
-import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.scope.BuildFeatureValues
-import com.android.build.gradle.internal.scope.Java8LangSupport
 import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
@@ -62,14 +65,12 @@ import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
 import com.android.build.gradle.options.IntegerOption
-import com.android.builder.dexing.DexingType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
-import org.gradle.api.provider.SetProperty
 import java.io.Serializable
 import javax.inject.Inject
 
@@ -84,7 +85,6 @@ open class AndroidTestImpl @Inject constructor(
     variantData: BaseVariantData,
     taskContainer: MutableTaskContainer,
     mainVariant: VariantCreationConfig,
-    transformManager: TransformManager,
     variantServices: VariantServices,
     taskCreationServices: TaskCreationServices,
     global: GlobalTaskCreationConfig,
@@ -99,24 +99,10 @@ open class AndroidTestImpl @Inject constructor(
     variantData,
     taskContainer,
     mainVariant,
-    transformManager,
     variantServices,
     taskCreationServices,
     global,
 ), AndroidTest, AndroidTestCreationConfig {
-
-    init {
-        dslInfo.multiDexKeepProguard?.let {
-            artifacts.getArtifactContainer(MultipleArtifact.MULTIDEX_KEEP_PROGUARD)
-                .addInitialProvider(null, internalServices.toRegularFileProvider(it))
-        }
-    }
-
-    private val delegate by lazy {
-        AndroidTestCreationConfigImpl(
-            this, dslInfo
-        )
-    }
 
     // ---------------------------------------------------------------------------------------------
     // PUBLIC API
@@ -124,8 +110,6 @@ open class AndroidTestImpl @Inject constructor(
 
     override val debuggable: Boolean
         get() = dslInfo.isDebuggable
-
-    override val namespaceForR: Provider<String> = dslInfo.namespaceForR
 
     override val minSdkVersion: AndroidVersion
         get() = mainVariant.minSdkVersion
@@ -148,37 +132,18 @@ open class AndroidTestImpl @Inject constructor(
 
     override val packaging: ApkPackaging by lazy {
         ApkPackagingImpl(
-            dslInfo.testedVariantDslInfo.packaging,
+            dslInfo.mainVariantDslInfo.packaging,
             variantServices,
             minSdkVersion.apiLevel
         )
     }
 
-    override val minifiedEnabled: Boolean
-        get() {
-            return when {
-                mainVariant.componentType.isAar -> false
-                !dslInfo.postProcessingOptions.hasPostProcessingConfiguration() ->
-                    mainVariant.minifiedEnabled
-                else -> dslInfo.postProcessingOptions.codeShrinkerEnabled()
-            }
-        }
-
-    override val resourcesShrink: Boolean
-        get() {
-            return when {
-                mainVariant.componentType.isAar -> false
-                !dslInfo.postProcessingOptions.hasPostProcessingConfiguration() ->
-                    mainVariant.resourcesShrink
-                else -> dslInfo.postProcessingOptions.resourcesShrinkingEnabled()
-            }
-        }
-
-    override val instrumentationRunner: Property<String> =
+    override val instrumentationRunner: Property<String> by lazy {
         internalServices.propertyOf(
             String::class.java,
-            dslInfo.getInstrumentationRunner(dexingType)
+            dslInfo.getInstrumentationRunner(dexingCreationConfig.dexingType)
         )
+    }
 
     override val handleProfiling: Property<Boolean> =
         internalServices.propertyOf(Boolean::class.java, dslInfo.handleProfiling)
@@ -197,7 +162,7 @@ open class AndroidTestImpl @Inject constructor(
                 value = internalServices.mapPropertyOf(
                     String::class.java,
                     BuildConfigField::class.java,
-                    dslInfo.getBuildConfigFields()
+                    dslInfo.buildConfigDslInfo!!.getBuildConfigFields()
                 )
             )
     }
@@ -220,16 +185,8 @@ open class AndroidTestImpl @Inject constructor(
         renderscriptCreationConfig?.renderscript
     }
 
-    override val proguardFiles: ListProperty<RegularFile> by lazy {
-        variantServices.listPropertyOf(RegularFile::class.java) {
-            val projectDir = services.projectInfo.projectDirectory
-            it.addAll(
-                dslInfo.gatherProguardFiles(ProguardFileType.TEST).map { file ->
-                    projectDir.file(file.absolutePath)
-                }
-            )
-        }
-    }
+    override val proguardFiles: ListProperty<RegularFile>
+        get() = optimizationCreationConfig.proguardFiles
 
     override fun makeResValueKey(type: String, name: String): ResValue.Key =
         ResValueKeyImpl(type, name)
@@ -242,7 +199,7 @@ open class AndroidTestImpl @Inject constructor(
                 value = internalServices.mapPropertyOf(
                     ResValue.Key::class.java,
                     ResValue::class.java,
-                    dslInfo.getResValues()
+                    dslInfo.androidResourcesDsl!!.getResValues()
                 )
             )
     }
@@ -261,6 +218,7 @@ open class AndroidTestImpl @Inject constructor(
         AndroidResourcesCreationConfigImpl(
             this,
             dslInfo,
+            dslInfo.androidResourcesDsl!!,
             internalServices,
         )
     }
@@ -269,7 +227,7 @@ open class AndroidTestImpl @Inject constructor(
         if (buildFeatures.buildConfig) {
             BuildConfigCreationConfigImpl(
                 this,
-                dslInfo,
+                dslInfo.buildConfigDslInfo!!,
                 internalServices
             )
         } else {
@@ -278,13 +236,14 @@ open class AndroidTestImpl @Inject constructor(
     }
 
     override val manifestPlaceholdersCreationConfig: ManifestPlaceholdersCreationConfig by lazy(LazyThreadSafetyMode.NONE) {
-        createManifestPlaceholdersCreationConfig(dslInfo.manifestPlaceholders)
+        createManifestPlaceholdersCreationConfig(
+                dslInfo.manifestPlaceholdersDslInfo?.placeholders)
     }
 
     override val renderscriptCreationConfig: RenderscriptCreationConfig? by lazy(LazyThreadSafetyMode.NONE) {
         if (buildFeatures.renderScript) {
             RenderscriptCreationConfigImpl(
-                dslInfo,
+                dslInfo.renderscriptDslInfo!!,
                 internalServices,
                 renderscriptTargetApi = mainVariant.renderscriptCreationConfig!!.renderscriptTargetApi
             )
@@ -292,6 +251,36 @@ open class AndroidTestImpl @Inject constructor(
             null
         }
     }
+
+    override val dexingCreationConfig: DexingCreationConfig by lazy(LazyThreadSafetyMode.NONE) {
+        DexingCreationConfigImpl(
+            this,
+            dslInfo.dexingDslInfo,
+            internalServices
+        )
+    }
+
+    override val isCoreLibraryDesugaringEnabledLintCheck: Boolean
+        get() = dexingCreationConfig.isCoreLibraryDesugaringEnabled
+
+    override val shadersCreationConfig: ShadersCreationConfig by lazy(LazyThreadSafetyMode.NONE) {
+        ShadersCreationConfigImpl(
+            dslInfo.shadersDslInfo!!
+        )
+    }
+
+    final override val optimizationCreationConfig: OptimizationCreationConfig by lazy(LazyThreadSafetyMode.NONE) {
+        OptimizationCreationConfigImpl(
+            this,
+            dslInfo.optimizationDslInfo,
+            null,
+            null,
+            internalServices
+        )
+    }
+
+    override val nativeBuildCreationConfig: NativeBuildCreationConfig?
+        get() = mainVariant.nativeBuildCreationConfig
 
     override val targetSdkVersionOverride: AndroidVersion?
         get() = mainVariant.targetSdkVersionOverride
@@ -316,40 +305,6 @@ open class AndroidTestImpl @Inject constructor(
     override val instrumentationRunnerArguments: Map<String, String>
         get() = dslInfo.instrumentationRunnerArguments
 
-    override val isTestCoverageEnabled: Boolean
-        get() = dslInfo.isAndroidTestCoverageEnabled
-
-    /**
-     * Package desugar_lib DEX for base feature androidTest only if the base packages shrunk
-     * desugar_lib. This should be fixed properly by analyzing the test code when generating L8
-     * keep rules, and thus packaging desugar_lib dex in the tested APK only which contains
-     * necessary classes used both in test and tested APKs.
-     */
-    override val shouldPackageDesugarLibDex: Boolean
-        get() = when {
-            !isCoreLibraryDesugaringEnabled -> false
-            mainVariant.componentType.isAar -> true
-            else -> mainVariant.componentType.isBaseModule && needsShrinkDesugarLibrary
-        }
-
-    override val minSdkVersionForDexing: AndroidVersion =
-        mainVariant.minSdkVersionForDexing
-
-    override val isMultiDexEnabled: Boolean =
-        mainVariant.isMultiDexEnabled
-
-    override val needsShrinkDesugarLibrary: Boolean
-        get() = delegate.needsShrinkDesugarLibrary
-
-    override val isCoreLibraryDesugaringEnabled: Boolean
-        get() = delegate.isCoreLibraryDesugaringEnabled
-
-    override val dexingType: DexingType
-        get() = delegate.dexingType
-
-    override val needsMainDexListForBundle: Boolean
-        get() = false
-
     override fun <T : Component> createUserVisibleVariantObject(
         projectServices: ProjectServices,
         operationsRegistrar: VariantApiOperationsRegistrar<out CommonExtension<*, *, *, *>, out VariantBuilder, out Variant>,
@@ -369,36 +324,16 @@ open class AndroidTestImpl @Inject constructor(
 
     override val advancedProfilingTransforms: List<String> = emptyList()
 
-    override val needsMergedJavaResStream: Boolean =
-        delegate.getNeedsMergedJavaResStream()
-
-    override fun getJava8LangSupportType(): Java8LangSupport = delegate.getJava8LangSupportType()
-
-    override val defaultGlslcArgs: List<String>
-        get() = dslInfo.defaultGlslcArgs
-    override val scopedGlslcArgs: Map<String, List<String>>
-        get() = dslInfo.scopedGlslcArgs
-
-    override val ignoredLibraryKeepRules: SetProperty<String>
-        get() = internalServices.setPropertyOf(
-            String::class.java,
-            dslInfo.ignoredLibraryKeepRules
-        )
-
-    override val ignoreAllLibraryKeepRules: Boolean
-        get() = dslInfo.ignoreAllLibraryKeepRules
+    override val isAndroidTestCoverageEnabled: Boolean
+        get() = dslInfo.isAndroidTestCoverageEnabled
 
     // Only instrument library androidTests. In app modules, the main classes are instrumented.
     override val useJacocoTransformInstrumentation: Boolean
-        get() = isTestCoverageEnabled && mainVariant.componentType.isAar
+        get() = dslInfo.isAndroidTestCoverageEnabled && mainVariant.componentType.isAar
 
-    override val postProcessingFeatures: PostprocessingFeatures?
-        get() = dslInfo.postProcessingOptions.getPostprocessingFeatures()
-
-    // ---------------------------------------------------------------------------------------------
-    // DO NOT USE, Deprecated DSL APIs.
-    // ---------------------------------------------------------------------------------------------
-
-    override val multiDexKeepFile = dslInfo.multiDexKeepFile
+    // Only include the jacoco agent if coverage is enabled in library test components
+    // as in apps it will have already been included in the tested application.
+    override val packageJacocoRuntime: Boolean
+        get() = dslInfo.isAndroidTestCoverageEnabled && mainVariant.componentType.isAar
 }
 

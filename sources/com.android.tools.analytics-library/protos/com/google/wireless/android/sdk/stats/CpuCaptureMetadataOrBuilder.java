@@ -176,4 +176,23 @@ public interface CpuCaptureMetadataOrBuilder extends
    * @return The stoppingTimeMs.
    */
   int getStoppingTimeMs();
+
+  /**
+   * <pre>
+   * Whether the trace contains Compose Tracing nodes
+   * </pre>
+   *
+   * <code>optional bool has_compose_tracing_nodes = 9;</code>
+   * @return Whether the hasComposeTracingNodes field is set.
+   */
+  boolean hasHasComposeTracingNodes();
+  /**
+   * <pre>
+   * Whether the trace contains Compose Tracing nodes
+   * </pre>
+   *
+   * <code>optional bool has_compose_tracing_nodes = 9;</code>
+   * @return The hasComposeTracingNodes.
+   */
+  boolean getHasComposeTracingNodes();
 }

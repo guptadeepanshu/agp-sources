@@ -26,9 +26,9 @@ import com.android.build.gradle.internal.tasks.factory.features.AndroidResources
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationActionImpl
 import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.internal.packaging.ApkFlinger
 import com.android.builder.packaging.PackagingUtils
-import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.tools.build.apkzlib.zfile.ApkCreatorFactory
 import com.android.tools.build.apkzlib.zfile.NativeLibrariesPackagingMode
 import com.android.utils.FileUtils

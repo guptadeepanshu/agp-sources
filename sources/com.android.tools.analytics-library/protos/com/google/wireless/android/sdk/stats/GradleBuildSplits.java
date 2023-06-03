@@ -388,6 +388,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional bool density_auto = 2 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the densityAuto field is set.
    */
   @java.lang.Override
@@ -402,6 +403,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional bool density_auto = 2 [deprecated = true];</code>
+   * @deprecated
    * @return The densityAuto.
    */
   @java.lang.Override
@@ -557,6 +559,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional bool language_auto = 6 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the languageAuto field is set.
    */
   @java.lang.Override
@@ -571,6 +574,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional bool language_auto = 6 [deprecated = true];</code>
+   * @deprecated
    * @return The languageAuto.
    */
   @java.lang.Override
@@ -1396,6 +1400,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool density_auto = 2 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the densityAuto field is set.
      */
     @java.lang.Override
@@ -1410,6 +1415,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool density_auto = 2 [deprecated = true];</code>
+     * @deprecated
      * @return The densityAuto.
      */
     @java.lang.Override
@@ -1424,6 +1430,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool density_auto = 2 [deprecated = true];</code>
+     * @deprecated
      * @param value The densityAuto to set.
      * @return This builder for chaining.
      */
@@ -1441,6 +1448,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool density_auto = 2 [deprecated = true];</code>
+     * @deprecated
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder clearDensityAuto() {
@@ -1784,6 +1792,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool language_auto = 6 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the languageAuto field is set.
      */
     @java.lang.Override
@@ -1798,6 +1807,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool language_auto = 6 [deprecated = true];</code>
+     * @deprecated
      * @return The languageAuto.
      */
     @java.lang.Override
@@ -1812,6 +1822,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool language_auto = 6 [deprecated = true];</code>
+     * @deprecated
      * @param value The languageAuto to set.
      * @return This builder for chaining.
      */
@@ -1829,6 +1840,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool language_auto = 6 [deprecated = true];</code>
+     * @deprecated
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder clearLanguageAuto() {

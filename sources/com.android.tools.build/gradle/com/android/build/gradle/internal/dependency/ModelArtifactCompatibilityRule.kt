@@ -32,6 +32,7 @@ class ModelArtifactCompatibilityRule : AttributeCompatibilityRule<String> {
                 when (producerValue) {
                     AndroidArtifacts.ArtifactType.AAR.type -> details.compatible()
                     AndroidArtifacts.ArtifactType.JAR.type -> details.compatible()
+                    AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_ARCHIVE.type -> details.compatible()
                 }
             }
             AndroidArtifacts.ArtifactType.LOCAL_EXPLODED_AAR_FOR_LINT.type -> {

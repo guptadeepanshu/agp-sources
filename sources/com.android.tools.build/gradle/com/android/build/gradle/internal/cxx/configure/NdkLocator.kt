@@ -24,7 +24,7 @@ import com.android.build.gradle.internal.SdkHandler
 import com.android.build.gradle.internal.SdkLocator
 import com.android.build.gradle.internal.cxx.caching.cache
 import com.android.build.gradle.internal.cxx.configure.SdkSourceProperties.Companion.SdkSourceProperty.SDK_PKG_REVISION
-import com.android.build.gradle.internal.cxx.logging.PassThroughDeduplicatingLoggingEnvironment
+import com.android.build.gradle.internal.cxx.logging.PassThroughRecordingLoggingEnvironment
 import com.android.build.gradle.internal.cxx.logging.PassThroughPrefixingLoggingEnvironment
 import com.android.build.gradle.internal.cxx.logging.errorln
 import com.android.build.gradle.internal.cxx.logging.infoln
@@ -419,7 +419,7 @@ fun findNdkPathImpl(
     // Result of NDK location could be cached at machine level.
     // Here, it's cached at module level instead because uncleanable caches can lead to difficult bugs.
     return cache(key, {
-        PassThroughDeduplicatingLoggingEnvironment().use {
+        PassThroughRecordingLoggingEnvironment().use {
             findNdkPathImpl(
                 key,
                 getNdkSourceProperties,

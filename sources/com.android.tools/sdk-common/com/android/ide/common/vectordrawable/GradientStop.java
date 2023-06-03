@@ -19,8 +19,8 @@ import com.android.annotations.NonNull;
 
 /** Represents an SVG gradient stop or Android's GradientColorItem. */
 public class GradientStop {
-    private String color;
-    private String offset;
+    private final String color;
+    private final String offset;
     private String opacity = "";
 
     GradientStop(@NonNull String color, @NonNull String offset) {

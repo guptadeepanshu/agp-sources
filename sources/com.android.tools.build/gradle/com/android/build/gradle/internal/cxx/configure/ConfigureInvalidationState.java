@@ -882,7 +882,7 @@ private static final long serialVersionUID = 0L;
     if (forceConfigure_ != false) {
       output.writeBool(1, forceConfigure_);
     }
-    if (!getFingerPrintFileBytes().isEmpty()) {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(fingerPrintFile_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 2, fingerPrintFile_);
     }
     for (int i = 0; i < inputFiles_.size(); i++) {
@@ -934,7 +934,7 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeBoolSize(1, forceConfigure_);
     }
-    if (!getFingerPrintFileBytes().isEmpty()) {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(fingerPrintFile_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, fingerPrintFile_);
     }
     {

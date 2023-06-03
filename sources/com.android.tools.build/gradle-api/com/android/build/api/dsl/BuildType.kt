@@ -54,8 +54,6 @@ interface BuildType : Named, VariantDimension, ExtensionAware, HasInitWith<Build
      * enableAndroidTestCoverage instead which allow you to enable coverage
      * separately for unit and instrumentation tests.
      */
-    @get:Incubating
-    @set:Incubating
     @Deprecated("Replaced with: enableUnitTestCoverage and or enableAndroidTestCoverage.")
     var isTestCoverageEnabled: Boolean
 
@@ -66,8 +64,6 @@ interface BuildType : Named, VariantDimension, ExtensionAware, HasInitWith<Build
      * by the Jacoco plugin. This can avoid unwanted build time instrumentation required to collect
      * coverage data from other test types such as connected tests.
     */
-    @get:Incubating
-    @set:Incubating
     var enableUnitTestCoverage: Boolean
 
     /**
@@ -77,8 +73,6 @@ interface BuildType : Named, VariantDimension, ExtensionAware, HasInitWith<Build
      * dependent library classes and module classes. This allows for code coverage reports to be
      * generated.
      */
-    @get:Incubating
-    @set:Incubating
     var enableAndroidTestCoverage: Boolean
 
     /**
@@ -112,27 +106,28 @@ interface BuildType : Named, VariantDimension, ExtensionAware, HasInitWith<Build
      * To learn more, read
      * [Test Your App with Pseudolocales](https://d.android.com/guide/topics/resources/pseudolocales.html).
      */
-    @get:Incubating
-    @set:Incubating
     var isPseudoLocalesEnabled: Boolean
 
     /**
      * Whether this build type is configured to generate an APK with debuggable native code.
      */
-    @get:Incubating
-    @set:Incubating
     var isJniDebuggable: Boolean
 
     /**
      * Whether the build type is configured to generate an apk with debuggable RenderScript code.
+     *
+     * RenderScript APIs are deprecated starting in Android 12.
+     * For more information about how to migrate, see
+     * [https://developer.android.com/guide/topics/renderscript/migrate]
      */
-    @get:Incubating
-    @set:Incubating
     var isRenderscriptDebuggable: Boolean
 
-    /** Optimization level to use by the renderscript compiler.  */
-    @get:Incubating
-    @set:Incubating
+    /**
+     * Optimization level to use by the renderscript compiler.
+     * RenderScript APIs are deprecated starting in Android 12.
+     * For more information about how to migrate, see
+     * [https://developer.android.com/guide/topics/renderscript/migrate]
+     */
     var renderscriptOptimLevel: Int
 
     /**
@@ -144,8 +139,6 @@ interface BuildType : Named, VariantDimension, ExtensionAware, HasInitWith<Build
      * To learn more, read
      * [Shrink Your Code and Resources](https://developer.android.com/studio/build/shrink-code.html).
      */
-    @get:Incubating
-    @set:Incubating
     var isMinifyEnabled: Boolean
 
     /**
@@ -154,8 +147,6 @@ interface BuildType : Named, VariantDimension, ExtensionAware, HasInitWith<Build
      * To learn more, read
      * [Shrink Your Code and Resources](https://developer.android.com/studio/build/shrink-code.html).
      */
-    @get:Incubating
-    @set:Incubating
     var isShrinkResources: Boolean
 
     /**
@@ -212,11 +203,11 @@ interface BuildType : Named, VariantDimension, ExtensionAware, HasInitWith<Build
      *
      * @return the names of product flavors to use, in descending priority order
      */
-    @get:Incubating
     val matchingFallbacks: MutableList<String>
 
     @get:Incubating
     val postprocessing: PostProcessing
+
     @Incubating
     fun postprocessing(action: PostProcessing.() -> Unit)
 
@@ -234,19 +225,14 @@ interface BuildType : Named, VariantDimension, ExtensionAware, HasInitWith<Build
      * }
      * ```
      */
-    @Incubating
     override fun initWith(that: BuildType)
 
-    @Incubating
     @Deprecated("Replaced with property matchingFallbacks")
     fun setMatchingFallbacks(vararg fallbacks: String)
 
-    @Incubating
     @Deprecated("Replaced with property matchingFallbacks")
     fun setMatchingFallbacks(fallbacks: List<String>)
 
-    @get:Incubating
-    @set:Incubating
     @Deprecated("Changing the value of isZipAlignEnabled no longer has any effect")
     var isZipAlignEnabled: Boolean
 }

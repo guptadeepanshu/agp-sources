@@ -44,6 +44,16 @@ public final class CxxConfigure {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_EncodedNativeModelBuilderOutcome_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_CreateCxxModel_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_CreateCxxModel_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_EncodedCreateCxxModel_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_EncodedCreateCxxModel_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -104,12 +114,15 @@ public final class CxxConfigure {
       "\030\004 \001(\005\022\036\n\026available_variant_abis\030\005 \001(\005\022," +
       "\n$successfully_configured_variant_abis\030\006" +
       " \001(\005\022%\n\035failed_configure_variant_abis\030\007 " +
-      "\001(\005\022!\n\031failed_configure_messages\030\010 \001(\005*e" +
-      "\n\rConfigureType\022\032\n\026UNKNOWN_CONFIGURE_TYP" +
-      "E\020\000\022\020\n\014NO_CONFIGURE\020\001\022\022\n\016SOFT_CONFIGURE\020" +
-      "\002\022\022\n\016HARD_CONFIGURE\020\003B3\n/com.android.bui" +
-      "ld.gradle.internal.cxx.configureP\001b\006prot" +
-      "o3"
+      "\001(\005\022!\n\031failed_configure_messages\030\010 \001(\005\";" +
+      "\n\016CreateCxxModel\022\023\n\013gradle_path\030\001 \001(\t\022\024\n" +
+      "\014variant_name\030\002 \001(\t\"B\n\025EncodedCreateCxxM" +
+      "odel\022\023\n\013gradle_path\030\001 \001(\005\022\024\n\014variant_nam" +
+      "e\030\002 \001(\005*e\n\rConfigureType\022\032\n\026UNKNOWN_CONF" +
+      "IGURE_TYPE\020\000\022\020\n\014NO_CONFIGURE\020\001\022\022\n\016SOFT_C" +
+      "ONFIGURE\020\002\022\022\n\016HARD_CONFIGURE\020\003B3\n/com.an" +
+      "droid.build.gradle.internal.cxx.configur" +
+      "eP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -151,6 +164,18 @@ public final class CxxConfigure {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_EncodedNativeModelBuilderOutcome_descriptor,
         new java.lang.String[] { "Outcome", "GradlePath", "RequestedAbis", "RequestedVariants", "AvailableVariantAbis", "SuccessfullyConfiguredVariantAbis", "FailedConfigureVariantAbis", "FailedConfigureMessages", });
+    internal_static_CreateCxxModel_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+    internal_static_CreateCxxModel_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_CreateCxxModel_descriptor,
+        new java.lang.String[] { "GradlePath", "VariantName", });
+    internal_static_EncodedCreateCxxModel_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+    internal_static_EncodedCreateCxxModel_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_EncodedCreateCxxModel_descriptor,
+        new java.lang.String[] { "GradlePath", "VariantName", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

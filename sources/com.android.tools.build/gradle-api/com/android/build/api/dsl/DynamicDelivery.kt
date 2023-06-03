@@ -15,11 +15,9 @@
  */
 package com.android.build.api.dsl
 
-import org.gradle.api.Incubating
 import org.gradle.api.provider.Property
 
 /** DSL object to configure dynamic delivery of an asset pack. */
-@Incubating
 interface DynamicDelivery {
     /**
      * Identifies the delivery type {install-time, fast-follow, on-demand}

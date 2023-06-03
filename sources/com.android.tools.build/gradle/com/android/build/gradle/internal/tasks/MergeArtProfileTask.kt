@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 The Android Open Source Project
+ * Copyright (C) 2022 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,13 +22,15 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.buildanalyzer.common.TaskCategory
 import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.file.Directory
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
-import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.work.DisableCachingByDefault
 
@@ -36,18 +38,24 @@ import org.gradle.work.DisableCachingByDefault
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.ART_PROFILE, secondaryTaskCategories = [TaskCategory.MERGING])
 abstract class MergeArtProfileTask: MergeFileTask() {
 
-    @get:[InputFiles PathSensitive(PathSensitivity.RELATIVE)]
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract override val inputFiles: ConfigurableFileCollection
 
     // Use InputFiles rather than InputFile to allow the file not to exist
-    @get:[InputFiles PathSensitive(PathSensitivity.RELATIVE)]
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
     abstract val profileSource: RegularFileProperty
 
-    @TaskAction
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val profileSourceDirectories: ListProperty<Directory>
+
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(MergeFilesWorkAction::class.java) {
             it.initializeFromAndroidVariantTask(this)
             it.inputFiles.from(inputFiles)
+            it.inputFiles.from(profileSourceDirectories.get().map(Directory::getAsFileTree))
             if (profileSource.get().asFile.isFile) {
                 it.inputFiles.from(profileSource)
             }
@@ -67,7 +75,7 @@ abstract class MergeArtProfileTask: MergeFileTask() {
     }
 
     class CreationAction(
-            creationConfig: ApkCreationConfig
+        creationConfig: ApkCreationConfig
     ) : VariantTaskCreationAction<MergeArtProfileTask, ApkCreationConfig>(creationConfig) {
 
         override val name: String
@@ -78,27 +86,31 @@ abstract class MergeArtProfileTask: MergeFileTask() {
         override fun handleProvider(taskProvider: TaskProvider<MergeArtProfileTask>) {
             super.handleProvider(taskProvider)
             creationConfig.artifacts.setInitialProvider(
-                    taskProvider,
-                    MergeFileTask::outputFile
+                taskProvider,
+                MergeFileTask::outputFile
             ).on(InternalArtifactType.MERGED_ART_PROFILE)
         }
 
         override fun configure(task: MergeArtProfileTask) {
             super.configure(task)
             val aarProfilesArtifactCollection = creationConfig
-                    .variantDependencies
-                    .getArtifactCollection(
-                            AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
-                            AndroidArtifacts.ArtifactScope.ALL,
-                            AndroidArtifacts.ArtifactType.ART_PROFILE
-                    )
+                .variantDependencies
+                .getArtifactCollection(
+                    AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
+                    AndroidArtifacts.ArtifactScope.ALL,
+                    AndroidArtifacts.ArtifactType.ART_PROFILE
+                )
             task.inputFiles.fromDisallowChanges(aarProfilesArtifactCollection.artifactFiles)
 
-            task.profileSource
-                .fileProvider(
-                    creationConfig.services.provider(creationConfig.variantSources::artProfile)
-                )
+            // for backwards compat we need to keep reading the old location for baseline profile
+            val artProfile = creationConfig.sources.artProfile
+
+            task.profileSource.fileProvider(artProfile)
             task.profileSource.disallowChanges()
+
+            creationConfig.sources.baselineProfiles {
+                task.profileSourceDirectories.setDisallowChanges(it.all)
+            }
         }
     }
 }

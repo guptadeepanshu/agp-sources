@@ -16,12 +16,9 @@
 
 package com.android.build.api.dsl
 
-import org.gradle.api.Incubating
-
 /**
  * DSL object for per-variant NDK settings, such as the ABI filter.
  */
-@Incubating
 interface Ndk {
     /** The module name */
     var moduleName: String?

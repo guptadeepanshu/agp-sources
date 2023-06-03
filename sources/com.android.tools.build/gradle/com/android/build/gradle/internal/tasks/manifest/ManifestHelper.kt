@@ -24,6 +24,8 @@ import com.android.manifmerger.ManifestMerger2
 import com.android.manifmerger.ManifestProvider
 import com.android.manifmerger.ManifestSystemProperty
 import com.android.manifmerger.MergingReport
+import com.android.manifmerger.MergingReport.MergedManifestKind.AAPT_SAFE
+import com.android.manifmerger.MergingReport.MergedManifestKind.MERGED
 import com.android.utils.ILogger
 import com.google.common.base.Charsets
 import com.google.common.io.Files
@@ -59,7 +61,8 @@ fun mergeManifests(
     optionalFeatures: Collection<ManifestMerger2.Invoker.Feature>,
     dependencyFeatureNames: Collection<String>,
     reportFile: File?,
-    logger: ILogger
+    logger: ILogger,
+    checkIfPackageInMainManifest: Boolean = true
 ): MergingReport {
 
     try {
@@ -74,7 +77,13 @@ fun mergeManifests(
             .setFeatureName(featureName)
             .addDependencyFeatureNames(dependencyFeatureNames)
             .setNamespace(namespace)
-            .withFeatures(ManifestMerger2.Invoker.Feature.WARN_IF_PACKAGE_IN_SOURCE_MANIFEST)
+
+        if (checkIfPackageInMainManifest) {
+            manifestMergerInvoker.withFeatures(
+                ManifestMerger2.Invoker.Feature.CHECK_IF_PACKAGE_IN_MAIN_MANIFEST
+            )
+        }
+
         val isAppMerge = mergeType == ManifestMerger2.MergeType.APPLICATION
         val injectProfileable = isAppMerge && profileable
 
@@ -116,10 +125,10 @@ fun mergeManifests(
 
         if (outAaptSafeManifestLocation != null) {
             save(
-                mergingReport.getMergedDocument(MergingReport.MergedManifestKind.AAPT_SAFE),
-                File(
-                    outAaptSafeManifestLocation
-                )
+                mergingReport.getMergedDocument(
+                    if (mergingReport.isAaptSafeManifestUnchanged) MERGED else AAPT_SAFE
+                ),
+                File(outAaptSafeManifestLocation)
             )
         }
         return mergingReport

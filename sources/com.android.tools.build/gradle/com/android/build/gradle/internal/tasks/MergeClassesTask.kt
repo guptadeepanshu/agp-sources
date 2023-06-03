@@ -17,23 +17,21 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants.DOT_JAR
+import com.android.build.api.artifact.ScopedArtifact
+import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.internal.TaskManager
 import com.android.build.gradle.internal.component.ComponentCreationConfig
-import com.android.build.gradle.internal.packaging.JarCreatorFactory
-import com.android.build.gradle.internal.packaging.JarCreatorType
-import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.dexing.ClassFileInput.CLASS_MATCHER
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.builder.packaging.JarFlinger
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Classpath
-import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskProvider
 import java.util.zip.Deflater
@@ -55,16 +53,11 @@ abstract class MergeClassesTask : NonIncrementalTask() {
     @get:OutputFile
     abstract val outputFile: RegularFileProperty
 
-    @get:Input
-    lateinit var jarCreatorType: JarCreatorType
-        private set
-
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(MergeClassesWorkAction::class.java) {
             it.initializeFromAndroidVariantTask(this)
             it.inputFiles.from(inputFiles)
             it.outputFile.set(outputFile)
-            it.jarCreatorType.set(jarCreatorType)
         }
     }
 
@@ -73,14 +66,12 @@ abstract class MergeClassesTask : NonIncrementalTask() {
         abstract class Parameters : ProfileAwareWorkAction.Parameters() {
             abstract val inputFiles: ConfigurableFileCollection
             abstract val outputFile: RegularFileProperty
-            abstract val jarCreatorType: Property<JarCreatorType>
         }
 
         override fun run() {
-            JarCreatorFactory.make(
+            JarFlinger(
                 parameters.outputFile.asFile.get().toPath(),
-                CLASS_MATCHER,
-                parameters.jarCreatorType.get()
+                CLASS_MATCHER
             ).use { out ->
                 // Don't compress because compressing takes extra time, and this jar doesn't go
                 // into any APKs or AARs.
@@ -103,17 +94,12 @@ abstract class MergeClassesTask : NonIncrementalTask() {
     ) {
         override val type = MergeClassesTask::class.java
         override val name: String = computeTaskName("merge", "Classes")
-
-        // Because ordering matters for the transform pipeline, we need to fetch the classes as soon
-        // as this creation action is instantiated.
-        @Suppress("DEPRECATION") // Legacy support
-        private val inputFiles =
-            creationConfig
-                .transformManager
-                .getPipelineOutputAsFileCollection { contentTypes, scopes ->
-                    contentTypes.contains(com.android.build.api.transform.QualifiedContent.DefaultContentType.CLASSES)
-                            && scopes.intersect(TransformManager.SCOPE_FULL_PROJECT).isNotEmpty()
-                }
+        private val inputFiles = creationConfig.services.fileCollection().run {
+            from(
+                creationConfig.artifacts.forScope(ScopedArtifacts.Scope.ALL)
+                    .getFinalArtifacts(ScopedArtifact.CLASSES)
+            )
+        }
 
         override fun handleProvider(
             taskProvider: TaskProvider<MergeClassesTask>
@@ -134,7 +120,6 @@ abstract class MergeClassesTask : NonIncrementalTask() {
         ) {
             super.configure(task)
             task.inputFiles.fromDisallowChanges(inputFiles)
-            task.jarCreatorType = creationConfig.global.jarCreatorType
         }
     }
 }

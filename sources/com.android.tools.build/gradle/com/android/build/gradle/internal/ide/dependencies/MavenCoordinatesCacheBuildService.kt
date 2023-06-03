@@ -33,6 +33,7 @@ import java.io.File
 
 const val LOCAL_AAR_GROUPID = "__local_aars__"
 const val WRAPPED_AAR_GROUPID = "__wrapped_aars__"
+const val LOCAL_ASAR_GROUPID = "__local_asars__"
 
 /** Build service used to cache maven coordinates for libraries. */
 abstract class MavenCoordinatesCacheBuildService :

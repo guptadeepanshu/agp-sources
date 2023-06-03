@@ -46,6 +46,7 @@ public interface EmulatorFeaturesOrBuilder extends
    * </pre>
    *
    * <code>optional bool container_launch = 4 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the containerLaunch field is set.
    */
   @java.lang.Deprecated boolean hasContainerLaunch();
@@ -55,6 +56,7 @@ public interface EmulatorFeaturesOrBuilder extends
    * </pre>
    *
    * <code>optional bool container_launch = 4 [deprecated = true];</code>
+   * @deprecated
    * @return The containerLaunch.
    */
   @java.lang.Deprecated boolean getContainerLaunch();

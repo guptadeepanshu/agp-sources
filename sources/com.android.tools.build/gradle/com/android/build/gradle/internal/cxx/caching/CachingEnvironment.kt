@@ -20,7 +20,7 @@ import com.android.build.gradle.internal.cxx.hashing.shortSha256Of
 import com.android.build.gradle.internal.cxx.json.readJsonFile
 import com.android.build.gradle.internal.cxx.json.writeJsonFile
 import com.android.build.gradle.internal.cxx.logging.LoggingMessage
-import com.android.build.gradle.internal.cxx.logging.PassThroughDeduplicatingLoggingEnvironment
+import com.android.build.gradle.internal.cxx.logging.PassThroughRecordingLoggingEnvironment
 import com.android.utils.FileUtils.join
 import com.google.common.base.Charsets
 import java.io.ByteArrayOutputStream
@@ -64,7 +64,7 @@ inline fun <TKey, reified TValue> cache(
     )
     if (prior != null) return prior
 
-    PassThroughDeduplicatingLoggingEnvironment().use { logger ->
+    PassThroughRecordingLoggingEnvironment().use { logger ->
         try {
             val computed = action()
             ThreadCachingEnvironment.writeInCurrentEnvironment(

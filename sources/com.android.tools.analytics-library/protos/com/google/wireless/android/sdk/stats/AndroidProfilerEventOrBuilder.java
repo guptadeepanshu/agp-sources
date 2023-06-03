@@ -52,6 +52,7 @@ public interface AndroidProfilerEventOrBuilder extends
    * </pre>
    *
    * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the cpuConfig field is set.
    */
   @java.lang.Deprecated boolean hasCpuConfig();
@@ -62,6 +63,7 @@ public interface AndroidProfilerEventOrBuilder extends
    * </pre>
    *
    * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true];</code>
+   * @deprecated
    * @return The cpuConfig.
    */
   @java.lang.Deprecated com.google.wireless.android.sdk.stats.CpuProfilingConfig getCpuConfig();
@@ -625,4 +627,58 @@ public interface AndroidProfilerEventOrBuilder extends
    * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24;</code>
    */
   com.google.wireless.android.sdk.stats.RunWithProfilingMetadataOrBuilder getRunWithProfilingMetadataOrBuilder();
+
+  /**
+   * <pre>
+   * Set if |type| is |PERFETTO_SDK_HANDSHAKE|
+   * </pre>
+   *
+   * <code>optional .android_studio.PerfettoSdkHandshakeMetadata perfetto_sdk_handshake_metadata = 25;</code>
+   * @return Whether the perfettoSdkHandshakeMetadata field is set.
+   */
+  boolean hasPerfettoSdkHandshakeMetadata();
+  /**
+   * <pre>
+   * Set if |type| is |PERFETTO_SDK_HANDSHAKE|
+   * </pre>
+   *
+   * <code>optional .android_studio.PerfettoSdkHandshakeMetadata perfetto_sdk_handshake_metadata = 25;</code>
+   * @return The perfettoSdkHandshakeMetadata.
+   */
+  com.google.wireless.android.sdk.stats.PerfettoSdkHandshakeMetadata getPerfettoSdkHandshakeMetadata();
+  /**
+   * <pre>
+   * Set if |type| is |PERFETTO_SDK_HANDSHAKE|
+   * </pre>
+   *
+   * <code>optional .android_studio.PerfettoSdkHandshakeMetadata perfetto_sdk_handshake_metadata = 25;</code>
+   */
+  com.google.wireless.android.sdk.stats.PerfettoSdkHandshakeMetadataOrBuilder getPerfettoSdkHandshakeMetadataOrBuilder();
+
+  /**
+   * <pre>
+   * Set if |type| is |RESOLVE_COMPOSE_TRACING_CODE_LOCATION|
+   * </pre>
+   *
+   * <code>optional .android_studio.ResolveComposeTracingCodeLocationMetadata resolve_compose_tracing_code_location_metadata = 26;</code>
+   * @return Whether the resolveComposeTracingCodeLocationMetadata field is set.
+   */
+  boolean hasResolveComposeTracingCodeLocationMetadata();
+  /**
+   * <pre>
+   * Set if |type| is |RESOLVE_COMPOSE_TRACING_CODE_LOCATION|
+   * </pre>
+   *
+   * <code>optional .android_studio.ResolveComposeTracingCodeLocationMetadata resolve_compose_tracing_code_location_metadata = 26;</code>
+   * @return The resolveComposeTracingCodeLocationMetadata.
+   */
+  com.google.wireless.android.sdk.stats.ResolveComposeTracingCodeLocationMetadata getResolveComposeTracingCodeLocationMetadata();
+  /**
+   * <pre>
+   * Set if |type| is |RESOLVE_COMPOSE_TRACING_CODE_LOCATION|
+   * </pre>
+   *
+   * <code>optional .android_studio.ResolveComposeTracingCodeLocationMetadata resolve_compose_tracing_code_location_metadata = 26;</code>
+   */
+  com.google.wireless.android.sdk.stats.ResolveComposeTracingCodeLocationMetadataOrBuilder getResolveComposeTracingCodeLocationMetadataOrBuilder();
 }

@@ -39,7 +39,6 @@ import com.android.ide.common.blame.SourceFilePosition;
 import com.android.ide.common.blame.SourcePosition;
 import com.google.common.base.CharMatcher;
 import com.google.common.collect.Sets;
-import com.google.common.io.Files;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -49,6 +48,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -451,7 +451,19 @@ public class XmlUtils {
      */
     @NonNull
     public static Reader getUtfReader(@NonNull File file) throws IOException {
-        byte[] bytes = Files.toByteArray(file);
+        return getUtfReader(file.toPath());
+    }
+
+    /**
+     * Returns a character reader for the given file, which must be a UTF encoded file.
+     *
+     * <p>The reader does not need to be closed by the caller (because the file is read in full in
+     * one shot and the resulting array is then wrapped in a byte array input stream, which does not
+     * need to be closed.)
+     */
+    @NonNull
+    public static Reader getUtfReader(@NonNull Path file) throws IOException {
+        byte[] bytes = java.nio.file.Files.readAllBytes(file);
         int length = bytes.length;
         if (length == 0) {
             return new StringReader("");

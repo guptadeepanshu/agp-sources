@@ -173,7 +173,7 @@ fun compareFileContents(
                     return@compareFileContents SAME_CONTENT
                 }
                 val size2 = input2.read(buffer2)
-                assert(size1 == size2)
+                check(size1 == size2)
                 if (!(buffer1 contentEquals buffer2)) {
                     return@compareFileContents NOT_SAME_CONTENT
                 }

@@ -21,8 +21,8 @@ import com.android.build.gradle.internal.dependency.JAR_JNI_PATTERN
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.utils.isValidZipEntryName
-import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.utils.FileUtils
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty

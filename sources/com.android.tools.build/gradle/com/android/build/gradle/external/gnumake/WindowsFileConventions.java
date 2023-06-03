@@ -16,9 +16,9 @@
 
 package com.android.build.gradle.external.gnumake;
 
-import static com.android.build.gradle.internal.cxx.os.OsBehaviorKt.createWindowsBehavior;
+import static com.android.utils.cxx.os.OsBehaviorKt.createWindowsBehavior;
 
-import com.android.build.gradle.internal.cxx.os.OsBehavior;
+import com.android.utils.cxx.os.OsBehavior;
 import org.jetbrains.annotations.NotNull;
 
 /** File conventions for Windows. */

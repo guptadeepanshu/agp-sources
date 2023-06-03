@@ -82,20 +82,20 @@ abstract class AbstractTestDataImpl(
     override var animationsDisabled = creationConfig.services.provider { false }
 
     override val testCoverageEnabled =
-        creationConfig.services.provider { creationConfig.isTestCoverageEnabled }
+        creationConfig.services.provider { creationConfig.isAndroidTestCoverageEnabled }
 
     override val minSdkVersion = creationConfig.services.provider { creationConfig.minSdkVersion }
 
     override val flavorName = creationConfig.services.provider { creationConfig.flavorName ?: "" }
 
     override val testDirectories: ConfigurableFileCollection =
-        creationConfig.services.fileCollection().from(
+        creationConfig.services.fileCollection().also { fileCollection ->
             // For now we check if there are any test sources. We could inspect the test classes and
             // apply JUnit logic to see if there's something to run, but that would not catch the case
             // where user makes a typo in a test name or forgets to inherit from a JUnit class
-            creationConfig.sources.java.all
-            // TODO : Add kotlin sources when available through the variant API ?
-        )
+            creationConfig.sources.java { javaSources -> fileCollection.from(javaSources.all) }
+            creationConfig.sources.kotlin { kotlinSources -> fileCollection.from(kotlinSources.all) }
+        }
 
     override fun getAsStaticData(): StaticTestData {
         return StaticTestData(

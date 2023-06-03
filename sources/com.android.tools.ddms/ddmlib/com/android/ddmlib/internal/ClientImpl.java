@@ -17,9 +17,11 @@
 package com.android.ddmlib.internal;
 
 import com.android.annotations.NonNull;
+import com.android.ddmlib.AndroidDebugBridge;
 import com.android.ddmlib.AndroidDebugBridge.IClientChangeListener;
 import com.android.ddmlib.Client;
 import com.android.ddmlib.ClientData;
+import com.android.ddmlib.DDMLibJdwpTracer;
 import com.android.ddmlib.DdmConstants;
 import com.android.ddmlib.DdmPreferences;
 import com.android.ddmlib.DebugViewDumpHandler;
@@ -101,6 +103,10 @@ public class ClientImpl extends JdwpPipe implements Client {
     private static final int ST_ERROR = 20;
     private static final int ST_DISCONNECTED = 21;
 
+    // JDWP events are forwarded to this tracer. In the default DDMLib configuration this is a
+    // no-op.
+    private final DDMLibJdwpTracer jdwpTracer;
+
     /**
      * Create an object for a new client connection.
      *
@@ -121,6 +127,8 @@ public class ClientImpl extends JdwpPipe implements Client {
         mThreadUpdateEnabled = DdmPreferences.getInitialThreadUpdate();
         mHeapInfoUpdateEnabled = DdmPreferences.getInitialHeapUpdate();
         mHeapSegmentUpdateEnabled = DdmPreferences.getInitialHeapUpdate();
+
+        jdwpTracer = AndroidDebugBridge.newJdwpTracer();
     }
 
     /** Returns a string representation of the {@link ClientImpl} object. */
@@ -584,6 +592,8 @@ public class ClientImpl extends JdwpPipe implements Client {
             return;
         }
 
+        jdwpTracer.onPacket(ByteBuffer.wrap(packet.getPayload().array(), 0, packet.getLength()));
+
         packet.log("Client: sending jdwp packet to Android Device");
         // Synchronizing on this variable is still useful as we do not want more than one
         // thread writing at the same time to the same channel, and the only change that
@@ -714,7 +724,12 @@ public class ClientImpl extends JdwpPipe implements Client {
             if (mReadBuffer.position() != 0) {
                 if (Log.Config.LOGV) Log.v("ddms", "Checking " + mReadBuffer.position() + " bytes");
             }
-            return JdwpPacket.findPacket(mReadBuffer);
+            JdwpPacket packet = JdwpPacket.findPacket(mReadBuffer);
+            if (packet != null) {
+                jdwpTracer.onPacket(
+                        ByteBuffer.wrap(packet.getPayload().array(), 0, packet.getLength()));
+            }
+            return packet;
         } else {
             /*
              * Not expecting data when in this state.

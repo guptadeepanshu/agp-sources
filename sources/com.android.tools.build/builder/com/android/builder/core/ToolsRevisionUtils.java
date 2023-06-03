@@ -16,6 +16,8 @@
 
 package com.android.builder.core;
 
+import static com.android.sdklib.SdkVersionInfo.HIGHEST_SUPPORTED_API;
+
 import com.android.SdkConstants;
 import com.android.repository.Revision;
 import com.android.sdklib.AndroidVersion;
@@ -49,5 +51,6 @@ public class ToolsRevisionUtils {
      * <p>The build system will warn if the compile SDK version is greater than this value to
      * encourage build authors to upgrade the Android Gradle Plugin.
      */
-    public static final AndroidVersion MAX_RECOMMENDED_COMPILE_SDK_VERSION = new AndroidVersion(33);
+    public static final AndroidVersion MAX_RECOMMENDED_COMPILE_SDK_VERSION =
+            new AndroidVersion(HIGHEST_SUPPORTED_API);
 }

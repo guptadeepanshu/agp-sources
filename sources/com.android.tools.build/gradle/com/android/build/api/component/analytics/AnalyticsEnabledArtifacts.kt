@@ -65,6 +65,14 @@ open class AnalyticsEnabledArtifacts @Inject constructor(
         return delegate.getAll(type)
     }
 
+    override fun <FileTypeT: FileSystemLocation> add(
+            type: MultipleArtifact<FileTypeT>,
+            artifact: FileTypeT) {
+        stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.ADD_ARTIFACTS_VALUE
+        delegate.add(type, artifact)
+    }
+
     @Suppress("UNCHECKED_CAST")
     override fun <TaskT : Task> use(taskProvider: TaskProvider<TaskT>): TaskBasedOperation<TaskT> {
         stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =

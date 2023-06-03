@@ -129,6 +129,16 @@ private static final long serialVersionUID = 0L;
             appId_ = bs;
             break;
           }
+          case 88: {
+            bitField0_ |= 0x00000040;
+            moduleCount_ = input.readInt64();
+            break;
+          }
+          case 96: {
+            bitField0_ |= 0x00000080;
+            libCount_ = input.readInt64();
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -683,6 +693,64 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int MODULE_COUNT_FIELD_NUMBER = 11;
+  private long moduleCount_;
+  /**
+   * <pre>
+   * The number of modules in the project (In the case of a build system that
+   * produces different modules for tests and production code, these modules are
+   * counted as one).
+   * </pre>
+   *
+   * <code>optional int64 module_count = 11;</code>
+   * @return Whether the moduleCount field is set.
+   */
+  @java.lang.Override
+  public boolean hasModuleCount() {
+    return ((bitField0_ & 0x00000040) != 0);
+  }
+  /**
+   * <pre>
+   * The number of modules in the project (In the case of a build system that
+   * produces different modules for tests and production code, these modules are
+   * counted as one).
+   * </pre>
+   *
+   * <code>optional int64 module_count = 11;</code>
+   * @return The moduleCount.
+   */
+  @java.lang.Override
+  public long getModuleCount() {
+    return moduleCount_;
+  }
+
+  public static final int LIB_COUNT_FIELD_NUMBER = 12;
+  private long libCount_;
+  /**
+   * <pre>
+   * The number of distinct external dependencies in this project.
+   * </pre>
+   *
+   * <code>optional int64 lib_count = 12;</code>
+   * @return Whether the libCount field is set.
+   */
+  @java.lang.Override
+  public boolean hasLibCount() {
+    return ((bitField0_ & 0x00000080) != 0);
+  }
+  /**
+   * <pre>
+   * The number of distinct external dependencies in this project.
+   * </pre>
+   *
+   * <code>optional int64 lib_count = 12;</code>
+   * @return The libCount.
+   */
+  @java.lang.Override
+  public long getLibCount() {
+    return libCount_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -726,6 +794,12 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00000020) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 10, appId_);
+    }
+    if (((bitField0_ & 0x00000040) != 0)) {
+      output.writeInt64(11, moduleCount_);
+    }
+    if (((bitField0_ & 0x00000080) != 0)) {
+      output.writeInt64(12, libCount_);
     }
     unknownFields.writeTo(output);
   }
@@ -772,6 +846,14 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00000020) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, appId_);
+    }
+    if (((bitField0_ & 0x00000040) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt64Size(11, moduleCount_);
+    }
+    if (((bitField0_ & 0x00000080) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt64Size(12, libCount_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -826,6 +908,16 @@ private static final long serialVersionUID = 0L;
       if (!getAppId()
           .equals(other.getAppId())) return false;
     }
+    if (hasModuleCount() != other.hasModuleCount()) return false;
+    if (hasModuleCount()) {
+      if (getModuleCount()
+          != other.getModuleCount()) return false;
+    }
+    if (hasLibCount() != other.hasLibCount()) return false;
+    if (hasLibCount()) {
+      if (getLibCount()
+          != other.getLibCount()) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -879,6 +971,16 @@ private static final long serialVersionUID = 0L;
     if (hasAppId()) {
       hash = (37 * hash) + APP_ID_FIELD_NUMBER;
       hash = (53 * hash) + getAppId().hashCode();
+    }
+    if (hasModuleCount()) {
+      hash = (37 * hash) + MODULE_COUNT_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getModuleCount());
+    }
+    if (hasLibCount()) {
+      hash = (37 * hash) + LIB_COUNT_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getLibCount());
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -1057,6 +1159,10 @@ private static final long serialVersionUID = 0L;
       }
       appId_ = "";
       bitField0_ = (bitField0_ & ~0x00000200);
+      moduleCount_ = 0L;
+      bitField0_ = (bitField0_ & ~0x00000400);
+      libCount_ = 0L;
+      bitField0_ = (bitField0_ & ~0x00000800);
       return this;
     }
 
@@ -1145,6 +1251,14 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000020;
       }
       result.appId_ = appId_;
+      if (((from_bitField0_ & 0x00000400) != 0)) {
+        result.moduleCount_ = moduleCount_;
+        to_bitField0_ |= 0x00000040;
+      }
+      if (((from_bitField0_ & 0x00000800) != 0)) {
+        result.libCount_ = libCount_;
+        to_bitField0_ |= 0x00000080;
+      }
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -1321,6 +1435,12 @@ private static final long serialVersionUID = 0L;
         bitField0_ |= 0x00000200;
         appId_ = other.appId_;
         onChanged();
+      }
+      if (other.hasModuleCount()) {
+        setModuleCount(other.getModuleCount());
+      }
+      if (other.hasLibCount()) {
+        setLibCount(other.getLibCount());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -3101,6 +3221,124 @@ private static final long serialVersionUID = 0L;
   }
   bitField0_ |= 0x00000200;
       appId_ = value;
+      onChanged();
+      return this;
+    }
+
+    private long moduleCount_ ;
+    /**
+     * <pre>
+     * The number of modules in the project (In the case of a build system that
+     * produces different modules for tests and production code, these modules are
+     * counted as one).
+     * </pre>
+     *
+     * <code>optional int64 module_count = 11;</code>
+     * @return Whether the moduleCount field is set.
+     */
+    @java.lang.Override
+    public boolean hasModuleCount() {
+      return ((bitField0_ & 0x00000400) != 0);
+    }
+    /**
+     * <pre>
+     * The number of modules in the project (In the case of a build system that
+     * produces different modules for tests and production code, these modules are
+     * counted as one).
+     * </pre>
+     *
+     * <code>optional int64 module_count = 11;</code>
+     * @return The moduleCount.
+     */
+    @java.lang.Override
+    public long getModuleCount() {
+      return moduleCount_;
+    }
+    /**
+     * <pre>
+     * The number of modules in the project (In the case of a build system that
+     * produces different modules for tests and production code, these modules are
+     * counted as one).
+     * </pre>
+     *
+     * <code>optional int64 module_count = 11;</code>
+     * @param value The moduleCount to set.
+     * @return This builder for chaining.
+     */
+    public Builder setModuleCount(long value) {
+      bitField0_ |= 0x00000400;
+      moduleCount_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * The number of modules in the project (In the case of a build system that
+     * produces different modules for tests and production code, these modules are
+     * counted as one).
+     * </pre>
+     *
+     * <code>optional int64 module_count = 11;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearModuleCount() {
+      bitField0_ = (bitField0_ & ~0x00000400);
+      moduleCount_ = 0L;
+      onChanged();
+      return this;
+    }
+
+    private long libCount_ ;
+    /**
+     * <pre>
+     * The number of distinct external dependencies in this project.
+     * </pre>
+     *
+     * <code>optional int64 lib_count = 12;</code>
+     * @return Whether the libCount field is set.
+     */
+    @java.lang.Override
+    public boolean hasLibCount() {
+      return ((bitField0_ & 0x00000800) != 0);
+    }
+    /**
+     * <pre>
+     * The number of distinct external dependencies in this project.
+     * </pre>
+     *
+     * <code>optional int64 lib_count = 12;</code>
+     * @return The libCount.
+     */
+    @java.lang.Override
+    public long getLibCount() {
+      return libCount_;
+    }
+    /**
+     * <pre>
+     * The number of distinct external dependencies in this project.
+     * </pre>
+     *
+     * <code>optional int64 lib_count = 12;</code>
+     * @param value The libCount to set.
+     * @return This builder for chaining.
+     */
+    public Builder setLibCount(long value) {
+      bitField0_ |= 0x00000800;
+      libCount_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * The number of distinct external dependencies in this project.
+     * </pre>
+     *
+     * <code>optional int64 lib_count = 12;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearLibCount() {
+      bitField0_ = (bitField0_ & ~0x00000800);
+      libCount_ = 0L;
       onChanged();
       return this;
     }

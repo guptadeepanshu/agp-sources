@@ -47,6 +47,7 @@ import com.android.build.gradle.internal.component.ConsumableCreationConfig;
 import com.android.build.gradle.internal.component.NestedComponentCreationConfig;
 import com.android.build.gradle.internal.component.UnitTestCreationConfig;
 import com.android.build.gradle.internal.component.VariantCreationConfig;
+import com.android.build.gradle.internal.component.legacy.ModelV1LegacySupport;
 import com.android.build.gradle.internal.core.VariantSources;
 import com.android.build.gradle.internal.dsl.BuildType;
 import com.android.build.gradle.internal.dsl.DefaultConfig;
@@ -113,6 +114,7 @@ import com.android.builder.model.ViewBindingOptions;
 import com.android.builder.model.level2.DependencyGraphs;
 import com.android.builder.model.level2.GlobalLibraryMap;
 import com.android.utils.Pair;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -140,6 +142,7 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+import kotlin.Unit;
 import org.gradle.StartParameter;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.ArtifactCollection;
@@ -322,8 +325,6 @@ public class ModelBuilder<Extension extends BaseExtension>
                     "This Gradle plugin requires a newer IDE able to request IDE model level 3. For Android Studio this means version 3.0+");
         }
 
-        StudioVersions.verifyIDEIsNotOld(projectOptions);
-
         modelWithFullDependency =
                 projectOptions.get(BooleanOption.IDE_BUILD_MODEL_FEATURE_FULL_DEPENDENCIES);
 
@@ -458,12 +459,9 @@ public class ModelBuilder<Extension extends BaseExtension>
             // them. For AndroidTest we take the first non-null variant as well.
             namespace = variant.getNamespace().get();
             if (variant instanceof HasAndroidTest) {
-                // TODO(b/176931684) Use AndroidTest.namespace instead after we stop
-                //  supporting using applicationId to namespace the test component R class.
-
                 AndroidTestCreationConfig test = ((HasAndroidTest) variant).getAndroidTest();
                 if (test != null) {
-                    androidTestNamespace = test.getNamespaceForR().get();
+                    androidTestNamespace = test.getNamespace().get();
                 }
             }
         }
@@ -593,13 +591,14 @@ public class ModelBuilder<Extension extends BaseExtension>
         return regularFile != null ? regularFile.getAsFile().getAbsolutePath() : null;
     }
 
-    protected boolean inspectManifestForInstantTag(@NonNull ComponentCreationConfig component) {
+    protected boolean inspectManifestForInstantTag(
+            @NonNull ModelV1LegacySupport modelLegacySupport) {
         int projectType = variantModel.getProjectTypeV1();
         if (projectType != PROJECT_TYPE_APP && projectType != PROJECT_TYPE_DYNAMIC_FEATURE) {
             return false;
         }
 
-        VariantSources variantSources = component.getVariantSources();
+        VariantSources variantSources = modelLegacySupport.getVariantSources();
 
         List<File> manifests = new ArrayList<>(variantSources.getManifestOverlays());
         File mainManifest = variantSources.getMainManifestIfExists();
@@ -697,11 +696,10 @@ public class ModelBuilder<Extension extends BaseExtension>
         artifacts.addAll(variant.getExtraJavaArtifacts());
 
         Set<String> sourceGenerationTasks =
-                artifacts
-                        .stream()
+                artifacts.stream()
                         .map(BaseArtifact::getIdeSetupTaskNames)
                         .flatMap(Collection::stream)
-                        .map(taskName -> project.getPath() + ":" + taskName)
+                        .map(taskName -> TaskManager.getTaskPath(project, taskName))
                         .collect(Collectors.toSet());
 
         try {
@@ -717,8 +715,10 @@ public class ModelBuilder<Extension extends BaseExtension>
     @NonNull
     private VariantImpl createVariant(@NonNull ComponentCreationConfig component) {
         AndroidArtifact mainArtifact = createAndroidArtifact(ARTIFACT_MAIN, component);
+        ModelV1LegacySupport modelLegacySupport =
+                Preconditions.checkNotNull(component.getModelV1LegacySupport());
 
-        File manifest = component.getVariantSources().getMainManifestIfExists();
+        File manifest = modelLegacySupport.getVariantSources().getMainManifestIfExists();
         if (manifest != null) {
             ManifestAttributeSupplier attributeSupplier =
                     new DefaultManifestParser(
@@ -801,13 +801,13 @@ public class ModelBuilder<Extension extends BaseExtension>
                 component.getBuildType(),
                 getProductFlavorNames(component),
                 new ProductFlavorImpl(
-                        component.getModelV1LegacySupport().getMergedFlavor(),
-                        component.getModelV1LegacySupport().getDslApplicationId()),
+                        modelLegacySupport.getMergedFlavor(),
+                        modelLegacySupport.getDslApplicationId()),
                 mainArtifact,
                 extraAndroidArtifacts,
                 clonedExtraJavaArtifacts,
                 testTargetVariants,
-                inspectManifestForInstantTag(component),
+                inspectManifestForInstantTag(modelLegacySupport),
                 ImmutableList.of());
     }
 
@@ -817,7 +817,8 @@ public class ModelBuilder<Extension extends BaseExtension>
         boolean isDynamicFeature = component.getComponentType().isDynamicFeature();
 
         if (!isBaseModule) {
-            List<File> consumerProguardFiles = component.getConsumerProguardFiles();
+            List<File> consumerProguardFiles =
+                    component.getOptimizationCreationConfig().getConsumerProguardFiles();
 
             ExportConsumerProguardFilesTask.checkProguardFiles(
                     project.getLayout().getBuildDirectory(),
@@ -1057,12 +1058,19 @@ public class ModelBuilder<Extension extends BaseExtension>
 
         MutableTaskContainer taskContainer = component.getTaskContainer();
         ArtifactsImpl artifacts = component.getArtifacts();
-        final CodeShrinker codeShrinker;
-        if (component instanceof ConsumableCreationConfig
-                && ((ConsumableCreationConfig) component).getMinifiedEnabled()) {
-            codeShrinker = CodeShrinker.R8;
-        } else {
-            codeShrinker = null;
+        CodeShrinker codeShrinker = null;
+        Set<String> supportedAbis = Collections.emptySet();
+        if (component instanceof ConsumableCreationConfig) {
+            ConsumableCreationConfig creationConfig = ((ConsumableCreationConfig) component);
+            if (creationConfig.getOptimizationCreationConfig().getMinifiedEnabled()) {
+                codeShrinker = CodeShrinker.R8;
+            }
+            if (creationConfig.getNativeBuildCreationConfig() != null) {
+                supportedAbis =
+                        ((ConsumableCreationConfig) component)
+                                .getNativeBuildCreationConfig()
+                                .getSupportedAbis();
+            }
         }
 
         return new AndroidArtifactImpl(
@@ -1091,7 +1099,7 @@ public class ModelBuilder<Extension extends BaseExtension>
                 additionalRuntimeApks,
                 sourceProviders.variantSourceProvider,
                 sourceProviders.multiFlavorSourceProvider,
-                component.getSupportedAbis(),
+                supportedAbis,
                 instantRun,
                 testOptions,
                 taskContainer.getConnectedTestTask() == null
@@ -1136,10 +1144,9 @@ public class ModelBuilder<Extension extends BaseExtension>
 
     private static SourceProviders determineSourceProviders(
             @NonNull ComponentCreationConfig component) {
-        SourceProvider variantSourceProvider =
-                component.getVariantSources().getVariantSourceProvider();
+        SourceProvider variantSourceProvider = component.getSources().getVariantSourceProvider();
         SourceProvider multiFlavorSourceProvider =
-                component.getVariantSources().getMultiFlavorSourceProvider();
+                component.getSources().getMultiFlavorSourceProvider();
 
         return new SourceProviders(
                 variantSourceProvider != null
@@ -1168,14 +1175,19 @@ public class ModelBuilder<Extension extends BaseExtension>
     private static FileCollection getGeneratedSourceFoldersFileCollectionForUnitTests(
             @NonNull ComponentCreationConfig component) {
         ConfigurableFileCollection fileCollection = component.getServices().fileCollection();
-        fileCollection.from(
-                component
-                        .getSources()
-                        .getJava()
-                        .variantSourcesForModel$gradle_core(
-                                directoryEntry ->
-                                        directoryEntry.isGenerated()
-                                                && directoryEntry.getShouldBeAddedToIdeModel()));
+
+        component
+                .getSources()
+                .java(
+                        javaSources -> {
+                            fileCollection.from(
+                                    javaSources.variantSourcesForModel$gradle_core(
+                                            directoryEntry ->
+                                                    directoryEntry.isGenerated()
+                                                            && directoryEntry
+                                                                    .getShouldBeAddedToIdeModel()));
+                            return Unit.INSTANCE;
+                        });
         if (component.getOldVariantApiLegacySupport() != null) {
             fileCollection.from(
                     component

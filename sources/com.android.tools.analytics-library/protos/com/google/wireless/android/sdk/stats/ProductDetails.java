@@ -893,6 +893,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional bool preview = 4 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the preview field is set.
    */
   @java.lang.Override
@@ -906,6 +907,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional bool preview = 4 [deprecated = true];</code>
+   * @deprecated
    * @return The preview.
    */
   @java.lang.Override
@@ -1894,6 +1896,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool preview = 4 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the preview field is set.
      */
     @java.lang.Override
@@ -1907,6 +1910,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool preview = 4 [deprecated = true];</code>
+     * @deprecated
      * @return The preview.
      */
     @java.lang.Override
@@ -1920,6 +1924,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool preview = 4 [deprecated = true];</code>
+     * @deprecated
      * @param value The preview to set.
      * @return This builder for chaining.
      */
@@ -1936,6 +1941,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool preview = 4 [deprecated = true];</code>
+     * @deprecated
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder clearPreview() {

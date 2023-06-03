@@ -66,6 +66,7 @@ class AsmInstrumentationManager(
     private val visitors: List<AsmClassVisitorFactory<*>>,
     private val apiVersion: Int,
     private val classesHierarchyResolver: ClassesHierarchyResolver,
+    private val issueHandler: InstrumentationIssueHandler,
     private val framesComputationMode: FramesComputationMode,
     excludes: Set<String>,
     profilingTransforms: List<String> = emptyList()
@@ -201,7 +202,8 @@ class AsmInstrumentationManager(
             FixFramesClassWriter(
                 classReader,
                 getClassWriterFlags(containsJsrOrRetInstruction),
-                classesHierarchyResolver
+                classesHierarchyResolver,
+                issueHandler
             )
         var nextVisitor: ClassVisitor = classWriter
 

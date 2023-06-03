@@ -22,6 +22,7 @@ import com.android.build.gradle.internal.cxx.logging.StructuredLogRecord.RecordC
 import com.android.build.gradle.internal.cxx.string.StringDecoder
 import com.android.build.gradle.internal.cxx.string.StringEncoder
 import com.android.build.gradle.internal.cxx.string.StringTable
+import com.google.common.base.Preconditions
 import com.google.protobuf.CodedInputStream
 import com.google.protobuf.GeneratedMessageV3
 import java.io.BufferedOutputStream
@@ -95,7 +96,7 @@ class CxxStructuredLogEncoder(
     init {
         // Create the file if it doesn't already exist.
         if (!file.exists()) {
-            assert(file.parentFile.isDirectory)
+            Preconditions.checkArgument(file.parentFile.isDirectory)
             DataOutputStream(BufferedOutputStream(FileOutputStream(file))).use { output ->
                 output.write(MAGIC)
             }

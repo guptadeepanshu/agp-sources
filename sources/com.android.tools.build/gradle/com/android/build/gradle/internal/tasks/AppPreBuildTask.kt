@@ -18,15 +18,16 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.build.gradle.internal.TaskManager
 import com.android.build.gradle.internal.component.ComponentCreationConfig
-import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL
-import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.MANIFEST
-import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH
-import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH
 import com.android.build.gradle.internal.ide.dependencies.getIdString
-import org.gradle.api.artifacts.ArtifactCollection
+import com.android.build.gradle.internal.utils.setDisallowChanges
+import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
-import org.gradle.api.artifacts.result.ResolvedArtifactResult
+import org.gradle.api.artifacts.result.ResolvedComponentResult
+import org.gradle.api.artifacts.result.ResolvedDependencyResult
+import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.provider.Provider
+import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.internal.component.local.model.OpaqueComponentArtifactIdentifier
@@ -44,27 +45,18 @@ import java.io.File
 @DisableCachingByDefault
 abstract class AppPreBuildTask : NonIncrementalTask() {
 
-    // list of Android only compile and runtime classpath.
-    private lateinit var compileManifests: ArtifactCollection
-    private lateinit var runtimeManifests: ArtifactCollection
-
     @get:OutputDirectory
-    lateinit var fakeOutputDirectory: File
-        private set
+    abstract val fakeOutputDirectory: DirectoryProperty
 
     @get:Input
-    val compileDependencies: Set<String> by lazy {
-        getAndroidDependencies(compileManifests)
-    }
+    abstract val compileDependencies: SetProperty<String>
 
     @get:Input
-    val runtimeDependencies: Set<String> by lazy {
-        getAndroidDependencies(runtimeManifests)
-    }
+    abstract val runtimeDependencies: SetProperty<String>
 
     override fun doTaskAction() {
-        val compileDeps = compileDependencies.toMutableSet()
-        compileDeps.removeAll(runtimeDependencies)
+        val compileDeps = compileDependencies.get().toMutableSet()
+        compileDeps.removeAll(runtimeDependencies.get())
 
         if (compileDeps.isNotEmpty()) {
             val formattedDependencies = compileDeps.joinToString(
@@ -96,16 +88,17 @@ abstract class AppPreBuildTask : NonIncrementalTask() {
             task: AppPreBuildTask
         ) {
             super.configure(task)
-
-            task.compileManifests =
-                creationConfig.variantDependencies.getArtifactCollection(COMPILE_CLASSPATH, ALL, MANIFEST)
-            task.runtimeManifests =
-                creationConfig.variantDependencies.getArtifactCollection(RUNTIME_CLASSPATH, ALL, MANIFEST)
-
-            task.fakeOutputDirectory = File(
+            task.compileDependencies.setDisallowChanges(
+                    creationConfig.variantDependencies.compileClasspath.toIdStrings()
+            )
+            task.runtimeDependencies.setDisallowChanges(
+                    creationConfig.variantDependencies.runtimeClasspath.toIdStrings()
+            )
+            task.fakeOutputDirectory.set(File(
                 creationConfig.services.projectInfo.getIntermediatesDir(),
                 "prebuild/${creationConfig.dirName}"
-            )
+            ))
+            task.fakeOutputDirectory.disallowChanges()
         }
     }
 
@@ -122,12 +115,27 @@ abstract class AppPreBuildTask : NonIncrementalTask() {
     }
 }
 
-private fun getAndroidDependencies(artifactView: ArtifactCollection): Set<String> {
-    return artifactView.artifacts.asSequence().mapNotNull { it.toIdString() }.toSortedSet()
+private fun ResolvedComponentResult.flatten(): Set<ResolvedComponentResult> {
+    val allComponents = mutableSetOf<ResolvedComponentResult>()
+    fun collectAll(node: ResolvedComponentResult) {
+        if (allComponents.add(node)) {
+            for (dependency in node.dependencies) {
+                if (dependency is ResolvedDependencyResult) {
+                    collectAll(dependency.selected)
+                }
+            }
+        }
+    }
+    collectAll(this)
+    return allComponents
 }
 
-private fun ResolvedArtifactResult.toIdString(): String? {
-    return when (val id = id.componentIdentifier) {
+private fun Configuration.toIdStrings(): Provider<Set<String>> {
+    return this.incoming.resolutionResult.rootComponent.map { root -> root.flatten().mapNotNull { it.toIdString() }.toSortedSet() }
+}
+
+private fun ResolvedComponentResult.toIdString(): String? {
+    return when (val id = id) {
         is ProjectComponentIdentifier -> id.getIdString()
         is ModuleComponentIdentifier -> id.toString()
         is OpaqueComponentArtifactIdentifier -> {

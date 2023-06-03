@@ -3025,7 +3025,7 @@ public final class ConfigurationOuterClass {
       if (mnc_ != 0) {
         output.writeUInt32(2, mnc_);
       }
-      if (!getLocaleBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(locale_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, locale_);
       }
       if (layoutDirection_ != com.android.aapt.ConfigurationOuterClass.Configuration.LayoutDirection.LAYOUT_DIRECTION_UNSET.getNumber()) {
@@ -3091,7 +3091,7 @@ public final class ConfigurationOuterClass {
       if (sdkVersion_ != 0) {
         output.writeUInt32(24, sdkVersion_);
       }
-      if (!getProductBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(product_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 25, product_);
       }
       unknownFields.writeTo(output);
@@ -3111,7 +3111,7 @@ public final class ConfigurationOuterClass {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(2, mnc_);
       }
-      if (!getLocaleBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(locale_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, locale_);
       }
       if (layoutDirection_ != com.android.aapt.ConfigurationOuterClass.Configuration.LayoutDirection.LAYOUT_DIRECTION_UNSET.getNumber()) {
@@ -3198,7 +3198,7 @@ public final class ConfigurationOuterClass {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(24, sdkVersion_);
       }
-      if (!getProductBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(product_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(25, product_);
       }
       size += unknownFields.getSerializedSize();

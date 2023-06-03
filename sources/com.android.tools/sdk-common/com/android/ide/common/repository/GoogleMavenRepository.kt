@@ -165,6 +165,11 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
         return artifactInfo.getGradleVersions().toSet()
     }
 
+    fun getAgpVersions(): Set<AgpVersion> {
+        val artifactInfo = findArtifact("com.android.tools.build", "gradle") ?: return emptySet()
+        return artifactInfo.getAgpVersions().toSet()
+    }
+
     fun findCompileDependencies(
         groupId: String,
         artifactId: String,
@@ -197,6 +202,11 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
         fun getGradleVersions(): Sequence<GradleVersion> =
             versions.splitToSequence(",")
                 .map { GradleVersion.tryParse(it) }
+                .filterNotNull()
+
+        fun getAgpVersions(): Sequence<AgpVersion> =
+            versions.splitToSequence(",")
+                .map { AgpVersion.tryParse(it) }
                 .filterNotNull()
 
         fun findVersion(filter: ((GradleVersion) -> Boolean)?, allowPreview: Boolean = false):

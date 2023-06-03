@@ -79,6 +79,11 @@ private static final long serialVersionUID = 0L;
             }
             break;
           }
+          case 24: {
+            bitField0_ |= 0x00000004;
+            hasComposeTracingNodes_ = input.readBool();
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -261,6 +266,10 @@ private static final long serialVersionUID = 0L;
      * <code>ATRACE_TECHNOLOGY = 3;</code>
      */
     ATRACE_TECHNOLOGY(3),
+    /**
+     * <code>PERFETTO_TECHNOLOGY = 4;</code>
+     */
+    PERFETTO_TECHNOLOGY(4),
     ;
 
     /**
@@ -279,6 +288,10 @@ private static final long serialVersionUID = 0L;
      * <code>ATRACE_TECHNOLOGY = 3;</code>
      */
     public static final int ATRACE_TECHNOLOGY_VALUE = 3;
+    /**
+     * <code>PERFETTO_TECHNOLOGY = 4;</code>
+     */
+    public static final int PERFETTO_TECHNOLOGY_VALUE = 4;
 
 
     public final int getNumber() {
@@ -305,6 +318,7 @@ private static final long serialVersionUID = 0L;
         case 1: return ART_TECHNOLOGY;
         case 2: return SIMPLEPERF_TECHNOLOGY;
         case 3: return ATRACE_TECHNOLOGY;
+        case 4: return PERFETTO_TECHNOLOGY;
         default: return null;
       }
     }
@@ -411,6 +425,33 @@ private static final long serialVersionUID = 0L;
     return result == null ? com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.Technology.UNKNOWN_TECHNOLOGY : result;
   }
 
+  public static final int HAS_COMPOSE_TRACING_NODES_FIELD_NUMBER = 3;
+  private boolean hasComposeTracingNodes_;
+  /**
+   * <pre>
+   * Whether the trace contains Compose Tracing nodes
+   * </pre>
+   *
+   * <code>optional bool has_compose_tracing_nodes = 3;</code>
+   * @return Whether the hasComposeTracingNodes field is set.
+   */
+  @java.lang.Override
+  public boolean hasHasComposeTracingNodes() {
+    return ((bitField0_ & 0x00000004) != 0);
+  }
+  /**
+   * <pre>
+   * Whether the trace contains Compose Tracing nodes
+   * </pre>
+   *
+   * <code>optional bool has_compose_tracing_nodes = 3;</code>
+   * @return The hasComposeTracingNodes.
+   */
+  @java.lang.Override
+  public boolean getHasComposeTracingNodes() {
+    return hasComposeTracingNodes_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -431,6 +472,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000002) != 0)) {
       output.writeEnum(2, technology_);
     }
+    if (((bitField0_ & 0x00000004) != 0)) {
+      output.writeBool(3, hasComposeTracingNodes_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -447,6 +491,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000002) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(2, technology_);
+    }
+    if (((bitField0_ & 0x00000004) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(3, hasComposeTracingNodes_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -471,6 +519,11 @@ private static final long serialVersionUID = 0L;
     if (hasTechnology()) {
       if (technology_ != other.technology_) return false;
     }
+    if (hasHasComposeTracingNodes() != other.hasHasComposeTracingNodes()) return false;
+    if (hasHasComposeTracingNodes()) {
+      if (getHasComposeTracingNodes()
+          != other.getHasComposeTracingNodes()) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -489,6 +542,11 @@ private static final long serialVersionUID = 0L;
     if (hasTechnology()) {
       hash = (37 * hash) + TECHNOLOGY_FIELD_NUMBER;
       hash = (53 * hash) + technology_;
+    }
+    if (hasHasComposeTracingNodes()) {
+      hash = (37 * hash) + HAS_COMPOSE_TRACING_NODES_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getHasComposeTracingNodes());
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -631,6 +689,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000001);
       technology_ = 0;
       bitField0_ = (bitField0_ & ~0x00000002);
+      hasComposeTracingNodes_ = false;
+      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -667,6 +727,10 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000002;
       }
       result.technology_ = technology_;
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.hasComposeTracingNodes_ = hasComposeTracingNodes_;
+        to_bitField0_ |= 0x00000004;
+      }
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -721,6 +785,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasTechnology()) {
         setTechnology(other.getTechnology());
+      }
+      if (other.hasHasComposeTracingNodes()) {
+        setHasComposeTracingNodes(other.getHasComposeTracingNodes());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -870,6 +937,61 @@ private static final long serialVersionUID = 0L;
     public Builder clearTechnology() {
       bitField0_ = (bitField0_ & ~0x00000002);
       technology_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private boolean hasComposeTracingNodes_ ;
+    /**
+     * <pre>
+     * Whether the trace contains Compose Tracing nodes
+     * </pre>
+     *
+     * <code>optional bool has_compose_tracing_nodes = 3;</code>
+     * @return Whether the hasComposeTracingNodes field is set.
+     */
+    @java.lang.Override
+    public boolean hasHasComposeTracingNodes() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <pre>
+     * Whether the trace contains Compose Tracing nodes
+     * </pre>
+     *
+     * <code>optional bool has_compose_tracing_nodes = 3;</code>
+     * @return The hasComposeTracingNodes.
+     */
+    @java.lang.Override
+    public boolean getHasComposeTracingNodes() {
+      return hasComposeTracingNodes_;
+    }
+    /**
+     * <pre>
+     * Whether the trace contains Compose Tracing nodes
+     * </pre>
+     *
+     * <code>optional bool has_compose_tracing_nodes = 3;</code>
+     * @param value The hasComposeTracingNodes to set.
+     * @return This builder for chaining.
+     */
+    public Builder setHasComposeTracingNodes(boolean value) {
+      bitField0_ |= 0x00000004;
+      hasComposeTracingNodes_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Whether the trace contains Compose Tracing nodes
+     * </pre>
+     *
+     * <code>optional bool has_compose_tracing_nodes = 3;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearHasComposeTracingNodes() {
+      bitField0_ = (bitField0_ & ~0x00000004);
+      hasComposeTracingNodes_ = false;
       onChanged();
       return this;
     }

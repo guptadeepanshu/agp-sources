@@ -20,7 +20,6 @@ import com.android.build.api.dsl.BuildType
 import com.android.build.api.dsl.LibraryVariantDimension
 import com.android.build.api.dsl.ProductFlavor
 import com.android.build.api.variant.ComponentIdentity
-import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.core.MergedAarMetadata
 import com.android.build.gradle.internal.core.dsl.LibraryVariantDslInfo
 import com.android.build.gradle.internal.dsl.DefaultConfig
@@ -43,7 +42,6 @@ internal class LibraryVariantDslInfoImpl internal constructor(
     services: VariantServices,
     buildDirectory: DirectoryProperty,
     override val publishInfo: VariantPublishingInfo,
-    oldExtension: BaseExtension?,
     extension: InternalLibraryExtension
 ) : TestedVariantDslInfoImpl(
     componentIdentity,
@@ -54,7 +52,6 @@ internal class LibraryVariantDslInfoImpl internal constructor(
     dataProvider,
     services,
     buildDirectory,
-    oldExtension,
     extension
 ), LibraryVariantDslInfo {
 
@@ -66,6 +63,9 @@ internal class LibraryVariantDslInfoImpl internal constructor(
 
     private fun mergeOptions() {
         computeMergedOptions(
+            defaultConfig,
+            buildTypeObj,
+            productFlavorList,
             aarMetadata,
             { (this as LibraryVariantDimension).aarMetadata },
             { (this as LibraryVariantDimension).aarMetadata }

@@ -17,6 +17,7 @@ package com.android.build.gradle.internal
 
 import com.android.SdkConstants.FD_RES_VALUES
 import com.android.build.gradle.internal.component.ComponentCreationConfig
+import com.android.build.gradle.internal.component.features.AndroidResourcesCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
@@ -57,24 +58,11 @@ abstract class DependencyResourcesComputer {
      * fingerprinting.
     */
     abstract class ResourceSourceSetInput {
-        @get:Internal
-        abstract val relative: Property<Boolean>
-
-        @get:Internal
-        val sourceDirectories: ConfigurableFileCollection
-            get() = if(relative.get()) sourceDirectoriesRelative else sourceDirectoriesAbsolute
-
         @get:InputFiles
         @get:PathSensitive(PathSensitivity.RELATIVE)
         @get:Incremental
         @get:IgnoreEmptyDirectories
-        abstract val sourceDirectoriesRelative: ConfigurableFileCollection
-
-        @get:InputFiles
-        @get:PathSensitive(PathSensitivity.ABSOLUTE)
-        @get:Incremental
-        @get:IgnoreEmptyDirectories
-        abstract val sourceDirectoriesAbsolute: ConfigurableFileCollection
+        abstract val sourceDirectories: ConfigurableFileCollection
     }
 
     /** Local resources from within this project */
@@ -170,7 +158,6 @@ abstract class DependencyResourcesComputer {
         // add the folder based next
         resourceSetList.addAll(sourceFolderSets)
 
-        // We add the generated folders to the main set
         val generatedResFolders = mutableListOf<File>()
 
         if (renderscriptResOutputDir.isPresent) {
@@ -181,15 +168,13 @@ abstract class DependencyResourcesComputer {
         generatedResFolders.addAll(extraGeneratedResFolders.files)
         generatedResFolders.addAll(microApkResDirectory.files)
 
-        // add the generated files to the main set.
-        if (sourceFolderSets.isNotEmpty()) {
-            val mainResourceSet = sourceFolderSets[0]
-            assert(
-                mainResourceSet.configName == BuilderConstants.MAIN ||
-                        // The main source set will not be included when building app android test
-                        mainResourceSet.configName == BuilderConstants.ANDROID_TEST
-            )
-            mainResourceSet.addSources(generatedResFolders)
+        // if generated res files exist, add them to the generated source set.
+        if (generatedResFolders.isNotEmpty() && sourceFolderSets.isNotEmpty()) {
+            val generatedResourceSet = sourceFolderSets.find {
+                it.configName.equals(BuilderConstants.GENERATED)
+            } ?: throw RuntimeException("Generated resource set does not exist")
+
+            generatedResourceSet.addSources(generatedResFolders)
         }
 
         return resourceSetList
@@ -208,6 +193,7 @@ abstract class DependencyResourcesComputer {
 
     fun initFromVariantScope(
         creationConfig: ComponentCreationConfig,
+        androidResourcesCreationConfig: AndroidResourcesCreationConfig,
         microApkResDir: FileCollection,
         libraryDependencies: ArtifactCollection?,
         relativeLocalResources: Boolean,
@@ -223,31 +209,32 @@ abstract class DependencyResourcesComputer {
         this.libraries.disallowChanges()
         this.librarySourceSets.disallowChanges()
 
-        addResourceSets(
-            creationConfig.sources.res.getLocalSources(),
-            relativeLocalResources
-        ) {
-            services.newInstance(ResourceSourceSetInput::class.java)
+        creationConfig.sources.res { resSources ->
+            addResourceSets(
+                resSources.getLocalSources()
+            ) {
+                services.newInstance(ResourceSourceSetInput::class.java)
+            }
+
+            // Add the user added generated directories to the extraGeneratedResFolders.
+            // this should be cleaned up once the old variant API is removed.
+            resSources.getVariantSources().forEach { directoryEntries ->
+                directoryEntries.directoryEntries
+                    .filter {
+                        it.isUserAdded && it.isGenerated
+                    }
+                    .forEach {
+                        extraGeneratedResFolders.from(
+                            it.asFiles(
+                              creationConfig.services.provider {
+                                  creationConfig.services.projectInfo.projectDirectory
+                              }
+                            )
+                        )
+                    }
+            }
         }
         resources.disallowChanges()
-
-        // Add the user added generated directories to the extraGeneratedResFolders.
-        // this should be cleaned up once the old variant API is removed.
-        creationConfig.sources.res.getVariantSources().forEach { directoryEntries ->
-            directoryEntries.getEntries()
-                .filter {
-                    it.isUserAdded && it.isGenerated
-                }
-                .forEach {
-                    extraGeneratedResFolders.from(
-                        it.asFiles(
-                          creationConfig.services.provider {
-                              creationConfig.services.projectInfo.projectDirectory
-                          }
-                        )
-                    )
-                }
-        }
 
         creationConfig.oldVariantApiLegacySupport?.variantData?.extraGeneratedResFolders?.let {
             extraGeneratedResFolders.from(it)
@@ -268,12 +255,10 @@ abstract class DependencyResourcesComputer {
     @VisibleForTesting
     fun addResourceSets(
         resourcesMap: Map<String, Provider<out Collection<Directory>>>,
-        relative: Boolean,
         blockFactory: () -> ResourceSourceSetInput
     ) {
         resourcesMap.forEach{(name, providerOfDirectories) ->
             resources.put(name, blockFactory().also {
-                it.relative.set(relative)
                 it.sourceDirectories.fromDisallowChanges(providerOfDirectories)
             })
         }

@@ -22,6 +22,7 @@ import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.ComposeOptions
 import com.android.build.api.dsl.Installation
 import com.android.build.api.dsl.Lint
+import com.android.build.api.dsl.Packaging
 import com.android.build.api.dsl.TestCoverage
 import org.gradle.api.Action
 import org.gradle.api.NamedDomainObjectContainer
@@ -32,7 +33,7 @@ import com.android.build.gradle.internal.dsl.AdbOptions as AdbOptionsImpl
 import com.android.build.gradle.internal.dsl.DataBindingOptions as DataBindingOptionsImpl
 import com.android.build.gradle.internal.dsl.ExternalNativeBuild as ExternalNativeBuildImpl
 import com.android.build.gradle.internal.dsl.LintOptions as LintOptionsImpl
-import com.android.build.gradle.internal.dsl.PackagingOptions as PackagingOptionsImpl
+import com.android.build.gradle.internal.dsl.PackagingOptions as PackagingImpl
 import com.android.build.gradle.internal.dsl.Splits as SplitsImpl
 import com.android.build.gradle.internal.dsl.TestOptions as TestOptionsImpl
 
@@ -61,7 +62,7 @@ interface InternalCommonExtension<
     override val viewBinding: ViewBindingOptionsImpl
     override val jacoco: JacocoOptionsImpl
     override val lintOptions: LintOptionsImpl
-    override val packagingOptions: PackagingOptionsImpl
+    override val packagingOptions: PackagingImpl
     override val externalNativeBuild: ExternalNativeBuildImpl
     override val testOptions: TestOptionsImpl
     override val splits: SplitsImpl
@@ -87,7 +88,8 @@ interface InternalCommonExtension<
     fun jacoco(action: Action<JacocoOptionsImpl>)
     fun lint(action: Action<Lint>)
     fun lintOptions(action: Action<LintOptionsImpl>)
-    fun packagingOptions(action: Action<PackagingOptionsImpl>)
+    fun packaging(action: Action<Packaging>)
+    fun packagingOptions(action: Action<PackagingImpl>)
     fun sourceSets(action: Action<NamedDomainObjectContainer<com.android.build.gradle.api.AndroidSourceSet>>)
     fun splits(action: Action<SplitsImpl>)
     fun testCoverage(action: Action<TestCoverage>)

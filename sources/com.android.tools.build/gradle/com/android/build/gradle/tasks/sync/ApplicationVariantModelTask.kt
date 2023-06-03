@@ -20,7 +20,7 @@ import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.ide.common.build.filebasedproperties.variant.VariantProperties
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
@@ -44,9 +44,9 @@ abstract class ApplicationVariantModelTask: ModuleVariantModelTask() {
         variant.applicationVariantPropertiesBuilder.applicationId = applicationId.get()
     }
 
-    class CreationAction(private val applicationCreationConfig: ApplicationCreationConfig) :
+    class CreationAction(creationConfig: ApplicationCreationConfig) :
         AbstractVariantModelTask.CreationAction<ApplicationVariantModelTask, VariantCreationConfig>(
-            creationConfig = applicationCreationConfig,
+            creationConfig,
         ) {
 
         override val type: Class<ApplicationVariantModelTask>
@@ -54,8 +54,11 @@ abstract class ApplicationVariantModelTask: ModuleVariantModelTask() {
 
         override fun configure(task: ApplicationVariantModelTask) {
             super.configure(task)
-            task.applicationId.setDisallowChanges(applicationCreationConfig.applicationId)
-            task.manifestPlaceholders.setDisallowChanges(applicationCreationConfig.manifestPlaceholders)
+            task.applicationId.setDisallowChanges(creationConfig.applicationId)
+            task.manifestPlaceholders.setDisallowChanges(
+                creationConfig.manifestPlaceholdersCreationConfig?.placeholders,
+                handleNullable = { empty() }
+            )
         }
     }
 }

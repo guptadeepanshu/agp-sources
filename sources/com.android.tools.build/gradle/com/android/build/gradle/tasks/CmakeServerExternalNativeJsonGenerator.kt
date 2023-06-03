@@ -56,6 +56,7 @@ import com.android.utils.cxx.CxxDiagnosticCode
 import com.android.utils.cxx.CxxDiagnosticCode.CMAKE_SERVER_INTERACTIVE_ERROR
 import com.android.utils.cxx.CxxDiagnosticCode.CMAKE_SERVER_SOURCE_DIRECTORY_MISSING
 import com.google.common.annotations.VisibleForTesting
+import com.google.common.base.Preconditions
 import com.google.common.collect.Maps
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import com.google.wireless.android.sdk.stats.GradleNativeAndroidModule.NativeBuildSystemType.CMAKE
@@ -273,13 +274,12 @@ internal class CmakeServerExternalNativeJsonGenerator(
     ): NativeBuildConfigValue {
         val nativeBuildConfigValue =
             createDefaultNativeBuildConfigValue()
-        assert(nativeBuildConfigValue.buildFiles != null)
+        Preconditions.checkNotNull(nativeBuildConfigValue.buildFiles)
         nativeBuildConfigValue.buildFiles!!.addAll(getBuildFiles(cmakeServer))
-        assert(nativeBuildConfigValue.cleanCommandsComponents != null)
+        Preconditions.checkNotNull(nativeBuildConfigValue.cleanCommandsComponents)
         nativeBuildConfigValue.cleanCommandsComponents!!.add(
             abi.createNinjaCommand("clean")
         )
-        assert(nativeBuildConfigValue.buildTargetsCommandComponents != null)
         nativeBuildConfigValue.buildTargetsCommandComponents =
             abi.createNinjaCommand(BUILD_TARGETS_PLACEHOLDER)
         val codeModel = cmakeServer.codemodel()
@@ -292,9 +292,9 @@ internal class CmakeServerExternalNativeJsonGenerator(
               )
             )
         }
-        assert(nativeBuildConfigValue.cFileExtensions != null)
+        Preconditions.checkNotNull(nativeBuildConfigValue.cFileExtensions)
         nativeBuildConfigValue.cFileExtensions!!.addAll(CmakeUtils.getCExtensionSet(codeModel))
-        assert(nativeBuildConfigValue.cppFileExtensions != null)
+        Preconditions.checkNotNull(nativeBuildConfigValue.cppFileExtensions)
         nativeBuildConfigValue.cppFileExtensions!!.addAll(CmakeUtils.getCppExtensionSet(codeModel))
         abi.additionalProjectFilesIndexFile.parentFile.mkdirs()
         abi.additionalProjectFilesIndexFile.bufferedWriter(StandardCharsets.UTF_8).use { additionalProjectFilesIndexWriter ->
@@ -309,7 +309,7 @@ internal class CmakeServerExternalNativeJsonGenerator(
                         }
                         val nativeLibraryValue = getNativeLibraryValue(abi, target, additionalProjectFilesIndexWriter)
                         val libraryName = target.name + "-" + config.name + "-" + abi.abi.tag
-                        assert(nativeBuildConfigValue.libraries != null)
+                        Preconditions.checkNotNull(nativeBuildConfigValue.libraries)
                         nativeBuildConfigValue.libraries!![libraryName] = nativeLibraryValue
                     } // target
                 } // project

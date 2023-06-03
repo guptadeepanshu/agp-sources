@@ -30,7 +30,6 @@ import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig
 import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.core.dsl.DynamicFeatureVariantDslInfo
 import com.android.build.gradle.internal.dependency.VariantDependencies
-import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.scope.AndroidTestBuildFeatureValuesImpl
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.BuildFeatureValuesImpl
@@ -78,7 +77,6 @@ internal class DynamicFeatureVariantFactory(
         artifacts: ArtifactsImpl,
         variantData: BaseVariantData,
         taskContainer: MutableTaskContainer,
-        transformManager: TransformManager,
         variantServices: VariantServices,
         taskCreationServices: TaskCreationServices,
         globalConfig: GlobalTaskCreationConfig,
@@ -95,7 +93,6 @@ internal class DynamicFeatureVariantFactory(
                 artifacts,
                 variantData,
                 taskContainer,
-                transformManager,
                 variantServices,
                 taskCreationServices,
                 globalConfig,
@@ -152,7 +149,8 @@ internal class DynamicFeatureVariantFactory(
                 null // means whatever is default.
             },
             mlModelBindingOverride = false,
-            includeAndroidResources = includeAndroidResources
+            includeAndroidResources = includeAndroidResources,
+            testedComponent = componentType
         )
     }
 

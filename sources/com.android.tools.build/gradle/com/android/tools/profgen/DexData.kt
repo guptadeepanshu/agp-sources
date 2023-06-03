@@ -32,18 +32,38 @@ fun Apk(bytes: ByteArray, name: String = ""): Apk {
         val dexes = mutableListOf<DexFile>()
         var zipEntry: ZipEntry? = zis.nextEntry
         while (zipEntry != null) {
+            // Check if the file name is one of the DEX files, but for AAB it can be within a subdirectory
             val fileName = zipEntry.name
-            if (!fileName.startsWith("classes") || !fileName.endsWith(".dex")) {
+
+            // Fast path to skip any non-dex files
+            if (!fileName.endsWith(".dex")) {
                 zipEntry = zis.nextEntry
                 continue
             }
-            val dex = parseDexFile(zis.readBytes(), fileName)
+
+            // Match the whole pattern and remember the file name part
+            val fileNameMatches = dexClassesPattern.matchEntire(fileName)
+            if (fileNameMatches == null) {
+                zipEntry = zis.nextEntry
+                continue
+            }
+            // Take just the filename without the path, which is later compared with the one from the profile itself
+            val (dexFileName) = fileNameMatches.destructured
+            val dex = parseDexFile(zis.readBytes(), dexFileName)
             dexes.add(dex)
             zipEntry = zis.nextEntry
         }
         Apk(dexes, name)
     }
 }
+
+/**
+ * Pattern for finding DEX files in a file name with any prefix.
+ * Matches
+ * - classes(N).dex
+ * - base/dex/classes(N).dex      // for AAB dex files
+ */
+private val dexClassesPattern = Regex(".*/?(classes[0-9]*\\.dex)$")
 
 /**
  * Slimmed-down in-memory representation of a Dex file. This data structure contains the minimal amount of information
@@ -55,15 +75,18 @@ class DexFile internal constructor(
     val dexChecksum: Long,
     val name: String,
 ) {
+
     internal val stringPool = ArrayList<String>(header.stringIds.size)
     internal val typePool = ArrayList<String>(header.typeIds.size)
     internal val protoPool = ArrayList<DexPrototype>(header.prototypeIds.size)
     internal val methodPool = ArrayList<DexMethod>(header.methodIds.size)
+
     // we don't really care about any of the details of classes, just what index it corresponds to in the
     // type pool, and we can use the type pool to determine its descriptor, so in this case we only need an IntArray.
     internal val classDefPool = IntArray(header.classDefs.size)
 
     companion object : Comparator<DexFile> {
+
         override fun compare(o1: DexFile?, o2: DexFile?): Int {
             return when {
                 o1 == null && o2 == null -> 0
@@ -87,7 +110,9 @@ internal class DexHeader(
     val classDefs: Span,
     val data: Span,
 ) {
+
     internal companion object {
+
         val Empty = DexHeader(
             stringIds = Span.Empty,
             typeIds = Span.Empty,
@@ -104,6 +129,7 @@ internal data class DexMethod(
     val name: String,
     val prototype: DexPrototype,
 ) {
+
     val returnType: String get() = prototype.returnType
     val parameters: String = prototype.parameters.joinToString("")
     fun print(os: Appendable): Appendable = with(os) {
@@ -141,15 +167,18 @@ internal class Span(
      */
     val offset: Int
 ) {
+
     fun includes(value: Long): Boolean {
         return value >= offset && value < offset + size
     }
+
     internal companion object {
+
         val Empty = Span(0, 0)
     }
 }
 
-internal class DexFileData(
+class DexFileData(
     val typeIndexes: Set<Int>,
     val classIndexes: Set<Int>,
     val methods: Map<Int, MethodData>,
@@ -158,9 +187,9 @@ internal class DexFileData(
 internal operator fun DexFileData.plus(other: DexFileData?): DexFileData {
     if (other == null) return this
     return DexFileData(
-            typeIndexes + other.typeIndexes,
-            classIndexes + other.classIndexes,
-            methods + other.methods
+        typeIndexes + other.typeIndexes,
+        classIndexes + other.classIndexes,
+        methods + other.methods
     )
 }
 
@@ -174,19 +203,23 @@ internal class MutableDexFileData(
     val typeIdSet: MutableSet<Int>,
     val methods: MutableMap<Int, MethodData>,
 ) {
+
     fun asDexFileData() = DexFileData(
-            typeIdSet,
-            classIdSet,
-            methods
+        typeIdSet,
+        classIdSet,
+        methods
     )
 }
 
-internal data class MethodData(var flags: Int) {
+data class MethodData(var flags: Int) {
+
     inline val isHot: Boolean get() = isFlagSet(MethodFlags.HOT)
+
     @Suppress("NOTHING_TO_INLINE")
     inline fun isFlagSet(flag: Int): Boolean {
         return flags and flag == flag
     }
+
     fun print(os: Appendable) = with(os) {
         if (isFlagSet(MethodFlags.HOT)) append(HOT)
         if (isFlagSet(MethodFlags.STARTUP)) append(STARTUP)
@@ -195,7 +228,7 @@ internal data class MethodData(var flags: Int) {
 }
 
 // TODO(lmr): refactor to not use iteration and first/last flag strategy for this
-internal object MethodFlags {
+object MethodFlags {
     // Implementation note: DO NOT CHANGE THESE VALUES without adjusting the parsing.
     // To simplify the implementation we use the MethodHotness flag values as indexes into the
     // internal bitmap representation. As such, they should never change unless the profile version
@@ -253,6 +286,7 @@ internal enum class FileSectionType(val value: Long) {
     AGGREGATION_COUNT(4L);
 
     companion object {
+
         fun parse(value: Long): FileSectionType {
             val type = values().firstOrNull {
                 it.value == value

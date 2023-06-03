@@ -30,10 +30,10 @@ import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationActionImpl
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.core.ComponentTypeImpl
 import com.android.builder.internal.aapt.AaptOptions
 import com.android.builder.internal.aapt.AaptPackageConfig
-import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.utils.FileUtils
 import com.google.common.collect.ImmutableList
 import org.gradle.api.file.Directory
@@ -68,7 +68,7 @@ abstract class ProcessAndroidAppResourcesTask : NonIncrementalTask() {
 
     @get:InputFiles @get:Optional @get:PathSensitive(PathSensitivity.RELATIVE) lateinit var aaptFriendlyManifestFileDirectory: Provider<Directory> private set
     @get:InputFiles @get:PathSensitive(PathSensitivity.RELATIVE) lateinit var manifestFileDirectory: Provider<Directory> private set
-    @get:InputFiles @get:PathSensitive(PathSensitivity.RELATIVE) abstract val thisSubProjectStaticLibrary: RegularFileProperty
+    @get:InputFiles @get:PathSensitive(PathSensitivity.NAME_ONLY) abstract val thisSubProjectStaticLibrary: RegularFileProperty
     @get:InputFiles @get:PathSensitive(PathSensitivity.NONE) lateinit var libraryDependencies: FileCollection private set
 
     @get:InputFiles @get:PathSensitive(PathSensitivity.NONE) lateinit var sharedLibraryDependencies: FileCollection private set

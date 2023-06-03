@@ -16,7 +16,6 @@
 
 package com.android.build.api.dsl
 
-import org.gradle.api.Incubating
 import org.gradle.api.plugins.ExtensionAware
 
 /**
@@ -29,16 +28,10 @@ interface BuildFeatures : ExtensionAware {
      * Flag to enable AIDL compilation.
      *
      * Setting the value to `null` resets to the default value.
-     * Default value is `true`.
+     * Default value is `false`.
      *
-     * You can override the default for this for all projects in your build by adding the line
-     *     `android.defaults.buildfeatures.aidl=true`
-     * in the gradle.properties file at the root project of your build.
-
      * More information about this feature at: TBD
      */
-    @get:Incubating
-    @set:Incubating
     var aidl: Boolean?
 
     /**
@@ -49,24 +42,16 @@ interface BuildFeatures : ExtensionAware {
      *
      * More information available about this feature at: TBD
      **/
-    @get:Incubating
-    @set:Incubating
     var compose: Boolean?
 
     /**
      * Flag to enable/disable generation of the `BuildConfig` class.
      *
      * Setting the value to `null` resets to the default value.
-     * Default value is `true`.
-     *
-     * You can override the default for this for all projects in your build by adding the line
-     *     android.defaults.buildfeatures.buildconfig=true
-     * in the gradle.properties file at the root project of your build.
+     * Default value is `false`.
      *
      * More information about this feature at: TBD
      */
-    @get:Incubating
-    @set:Incubating
     var buildConfig: Boolean?
 
     /**
@@ -85,24 +70,16 @@ interface BuildFeatures : ExtensionAware {
      *
      * More information about this feature at: TBD
      */
-    @get:Incubating
-    @set:Incubating
     var prefab: Boolean?
 
     /**
      * Flag to enable RenderScript compilation.
      *
      * Setting the value to `null` resets to the default value.
-     * Default value is `true`.
+     * Default value is `false`.
      *
-     * You can override the default for this for all projects in your build by adding the line
-     *     `android.defaults.buildfeatures.renderscript=true`
-     * in the gradle.properties file at the root project of your build.
-
      * More information about this feature at: TBD
      */
-    @get:Incubating
-    @set:Incubating
     var renderScript: Boolean?
 
     /**
@@ -117,8 +94,6 @@ interface BuildFeatures : ExtensionAware {
 
      * More information about this feature at: TBD
      */
-    @get:Incubating
-    @set:Incubating
     var resValues: Boolean?
 
     /**
@@ -133,8 +108,6 @@ interface BuildFeatures : ExtensionAware {
 
      * More information about this feature at: TBD
      */
-    @get:Incubating
-    @set:Incubating
     var shaders: Boolean?
 
     /**
@@ -149,7 +122,5 @@ interface BuildFeatures : ExtensionAware {
 
      * More information about this feature at: TBD
      */
-    @get:Incubating
-    @set:Incubating
     var viewBinding: Boolean?
 }

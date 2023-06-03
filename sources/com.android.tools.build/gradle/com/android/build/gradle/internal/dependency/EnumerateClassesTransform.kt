@@ -23,8 +23,7 @@ import org.gradle.api.artifacts.transform.InputArtifact
 import org.gradle.api.artifacts.transform.TransformOutputs
 import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.provider.Provider
-import org.gradle.api.tasks.PathSensitive
-import org.gradle.api.tasks.PathSensitivity
+import org.gradle.api.tasks.Classpath
 
 /**
  * A Gradle Artifact [TransformAction] that enumerates the classes in each module,
@@ -32,7 +31,7 @@ import org.gradle.api.tasks.PathSensitivity
  */
 @CacheableTransform
 abstract class EnumerateClassesTransform : TransformAction<GenericTransformParameters> {
-    @get:PathSensitive(PathSensitivity.NAME_ONLY)
+    @get:Classpath
     @get:InputArtifact
     abstract val classesJar: Provider<FileSystemLocation>
 

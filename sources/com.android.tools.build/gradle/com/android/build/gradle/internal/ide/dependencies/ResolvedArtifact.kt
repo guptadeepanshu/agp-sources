@@ -17,6 +17,7 @@
 package com.android.build.gradle.internal.ide.dependencies
 
 import com.android.SdkConstants.EXT_AAR
+import com.android.SdkConstants.EXT_ASAR
 import com.android.SdkConstants.EXT_JAR
 import com.android.builder.dependency.MavenCoordinatesImpl
 import com.android.builder.internal.StringCachingService
@@ -44,8 +45,9 @@ data class ResolvedArtifact internal constructor(
     val artifactFile: File?,
     val isTestFixturesArtifact: Boolean,
     /**
-     * An optional sub-result that represents the bundle file, when the current result
-     * represents an exploded aar
+     * An optional sub-result, it can
+     * - represent the bundle file, when the current result represents an exploded aar
+     * - represent the asar jar, when the current result represent an asar artifact
      */
     val extractedFolder: File?,
     /** optional published lint jar */
@@ -80,6 +82,7 @@ data class ResolvedArtifact internal constructor(
     enum class DependencyType constructor(val extension: String) {
         JAVA(EXT_JAR),
         ANDROID(EXT_AAR),
+        ANDROID_SANDBOX_SDK(EXT_ASAR),
         RELOCATED_ARTIFACT(""),
         // An artifact without file, but it may contain dependencies.
         NO_ARTIFACT_FILE(""),
@@ -103,7 +106,7 @@ data class ResolvedArtifact internal constructor(
                     val pattern = "^$module-$version-(.+)\\.$extension$"
 
                     val p = Pattern.compile(pattern)
-                    val m = p.matcher(artifactFile!!.name)
+                    val m = p.matcher(artifactFile.name)
                     if (m.matches()) {
                         classifier = m.group(1)
                     }
@@ -129,20 +132,10 @@ data class ResolvedArtifact internal constructor(
             }
 
             is OpaqueComponentArtifactIdentifier -> {
-                // We have a file based dependency
-                if (dependencyType == DependencyType.JAVA) {
-                    MavenCoordinatesCacheBuildService.getMavenCoordForLocalFile(
-                        artifactFile!!,
-                        stringCachingService
-                    )
-                } else {
-                    // local aar?
-                    assert(artifactFile!!.isDirectory)
-                    MavenCoordinatesCacheBuildService.getMavenCoordForLocalFile(
-                        artifactFile!!,
-                        stringCachingService
-                    )
-                }
+                MavenCoordinatesCacheBuildService.getMavenCoordForLocalFile(
+                    artifactFile!!,
+                    stringCachingService
+                )
             }
 
             else -> {

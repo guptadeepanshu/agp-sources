@@ -36,7 +36,7 @@ import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.configureVariantProperties
 import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.utils.usLocaleCapitalize
 import org.gradle.api.attributes.Usage
 import org.gradle.api.file.ConfigurableFileCollection
@@ -152,13 +152,13 @@ abstract class FusedLibraryMergeArtifactTask : NonIncrementalTask() {
                     creationConfig.artifacts.setInitialProvider(
                             taskProvider,
                             FusedLibraryMergeArtifactTask::outputDir
-                    ).withName(androidArtifactType.name.toLowerCase())
+                    ).withName(androidArtifactType.name.lowercase())
                             .on(internalArtifactType as Artifact.Single<Directory>)
                 ArtifactKind.FILE ->
                     creationConfig.artifacts.setInitialProvider(
                             taskProvider,
                             FusedLibraryMergeArtifactTask::outputFile
-                    ).withName(androidArtifactType.name.toLowerCase())
+                    ).withName(androidArtifactType.name.lowercase())
                             .on(internalArtifactType as Artifact.Single<RegularFile>)
             }
         }
@@ -195,13 +195,13 @@ abstract class FusedLibraryMergeArtifactTask : NonIncrementalTask() {
                     creationConfig.artifacts.setInitialProvider(
                             taskProvider,
                             FusedLibraryMergeArtifactTask::outputDir
-                    ).withName(androidArtifactType.name.toLowerCase())
+                    ).withName(androidArtifactType.name.lowercase())
                             .on(internalArtifactType as Artifact.Single<Directory>)
                 ArtifactKind.FILE ->
                     creationConfig.artifacts.setInitialProvider(
                             taskProvider,
                             FusedLibraryMergeArtifactTask::outputFile
-                    ).withName(androidArtifactType.name.toLowerCase())
+                    ).withName(androidArtifactType.name.lowercase())
                             .on(internalArtifactType as Artifact.Single<RegularFile>)
             }
         }

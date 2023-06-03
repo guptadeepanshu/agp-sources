@@ -610,6 +610,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional int64 gc_count = 12 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the gcCount field is set.
    */
   @java.lang.Override
@@ -623,6 +624,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional int64 gc_count = 12 [deprecated = true];</code>
+   * @deprecated
    * @return The gcCount.
    */
   @java.lang.Override
@@ -639,6 +641,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional int64 gc_time = 13 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the gcTime field is set.
    */
   @java.lang.Override
@@ -652,6 +655,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional int64 gc_time = 13 [deprecated = true];</code>
+   * @deprecated
    * @return The gcTime.
    */
   @java.lang.Override
@@ -2664,6 +2668,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int64 gc_count = 12 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the gcCount field is set.
      */
     @java.lang.Override
@@ -2677,6 +2682,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int64 gc_count = 12 [deprecated = true];</code>
+     * @deprecated
      * @return The gcCount.
      */
     @java.lang.Override
@@ -2690,6 +2696,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int64 gc_count = 12 [deprecated = true];</code>
+     * @deprecated
      * @param value The gcCount to set.
      * @return This builder for chaining.
      */
@@ -2706,6 +2713,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int64 gc_count = 12 [deprecated = true];</code>
+     * @deprecated
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder clearGcCount() {
@@ -2723,6 +2731,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int64 gc_time = 13 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the gcTime field is set.
      */
     @java.lang.Override
@@ -2736,6 +2745,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int64 gc_time = 13 [deprecated = true];</code>
+     * @deprecated
      * @return The gcTime.
      */
     @java.lang.Override
@@ -2749,6 +2759,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int64 gc_time = 13 [deprecated = true];</code>
+     * @deprecated
      * @param value The gcTime to set.
      * @return This builder for chaining.
      */
@@ -2765,6 +2776,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int64 gc_time = 13 [deprecated = true];</code>
+     * @deprecated
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder clearGcTime() {

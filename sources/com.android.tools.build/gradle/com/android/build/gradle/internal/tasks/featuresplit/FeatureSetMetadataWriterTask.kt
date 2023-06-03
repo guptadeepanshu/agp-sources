@@ -26,7 +26,7 @@ import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.options.IntegerOption
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.TaskCategory
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
@@ -84,7 +84,9 @@ abstract class FeatureSetMetadataWriterTask : NonIncrementalTask() {
         override fun run() {
             val features = mutableListOf<FeatureSplitDeclaration>()
 
-            val featureMetadata = FeatureSetMetadata(parameters.maxNumberOfFeaturesBeforeOreo.get())
+            val featureMetadata = FeatureSetMetadata.Builder(
+                    parameters.minSdkVersion.get(),
+                    parameters.maxNumberOfFeaturesBeforeOreo.get())
 
             for (file in parameters.featureFiles.asFileTree.files) {
                 try {
@@ -98,7 +100,6 @@ abstract class FeatureSetMetadataWriterTask : NonIncrementalTask() {
 
             for (feature in features) {
                 featureMetadata.addFeatureSplit(
-                    parameters.minSdkVersion.get(),
                     feature.modulePath,
                     featureNameMap[feature.modulePath]!!,
                     feature.namespace

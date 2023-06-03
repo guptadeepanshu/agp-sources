@@ -51,6 +51,17 @@ open class AnalyticsEnabledSources @Inject constructor(
                 objectFactory)
         }
 
+    override val baselineProfiles: SourceDirectories.Flat?
+        get()  = delegate.baselineProfiles?.let {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.SOURCES_BASELINE_PROFILES_ACCESS_VALUE
+            return objectFactory.newInstance(
+                AnalyticsEnabledFlat::class.java,
+                it,
+                stats,
+                objectFactory)
+        }
+
     override val res: SourceDirectories.Layered
         get() {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =

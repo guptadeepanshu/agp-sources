@@ -23,7 +23,7 @@ import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.configureVariantProperties
 import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.TaskCategory
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskProvider

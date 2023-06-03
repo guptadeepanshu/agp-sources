@@ -71,4 +71,99 @@ public interface DynamicLayoutInspectorAttachToProcessOrBuilder extends
    * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 3;</code>
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfoOrBuilder getErrorInfoOrBuilder();
+
+  /**
+   * <pre>
+   * Error information if the compose inspector failed
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo.AttachErrorCode compose_error_code = 4;</code>
+   * @return Whether the composeErrorCode field is set.
+   */
+  boolean hasComposeErrorCode();
+  /**
+   * <pre>
+   * Error information if the compose inspector failed
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo.AttachErrorCode compose_error_code = 4;</code>
+   * @return The composeErrorCode.
+   */
+  com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode getComposeErrorCode();
+
+  /**
+   * <pre>
+   * When we attached to a process, were the multiple projects open?
+   * </pre>
+   *
+   * <code>optional bool multiple_projects_open = 5;</code>
+   * @return Whether the multipleProjectsOpen field is set.
+   */
+  boolean hasMultipleProjectsOpen();
+  /**
+   * <pre>
+   * When we attached to a process, were the multiple projects open?
+   * </pre>
+   *
+   * <code>optional bool multiple_projects_open = 5;</code>
+   * @return The multipleProjectsOpen.
+   */
+  boolean getMultipleProjectsOpen();
+
+  /**
+   * <pre>
+   * Was the debugger running for this session
+   * </pre>
+   *
+   * <code>optional bool debugger_attached = 6;</code>
+   * @return Whether the debuggerAttached field is set.
+   */
+  boolean hasDebuggerAttached();
+  /**
+   * <pre>
+   * Was the debugger running for this session
+   * </pre>
+   *
+   * <code>optional bool debugger_attached = 6;</code>
+   * @return The debuggerAttached.
+   */
+  boolean getDebuggerAttached();
+
+  /**
+   * <pre>
+   * Was the debugger paused during the attach
+   * </pre>
+   *
+   * <code>optional bool debugger_paused_during_attach = 7;</code>
+   * @return Whether the debuggerPausedDuringAttach field is set.
+   */
+  boolean hasDebuggerPausedDuringAttach();
+  /**
+   * <pre>
+   * Was the debugger paused during the attach
+   * </pre>
+   *
+   * <code>optional bool debugger_paused_during_attach = 7;</code>
+   * @return The debuggerPausedDuringAttach.
+   */
+  boolean getDebuggerPausedDuringAttach();
+
+  /**
+   * <pre>
+   * Was auto connect enabled for this session
+   * </pre>
+   *
+   * <code>optional bool auto_connect_enabled = 8;</code>
+   * @return Whether the autoConnectEnabled field is set.
+   */
+  boolean hasAutoConnectEnabled();
+  /**
+   * <pre>
+   * Was auto connect enabled for this session
+   * </pre>
+   *
+   * <code>optional bool auto_connect_enabled = 8;</code>
+   * @return The autoConnectEnabled.
+   */
+  boolean getAutoConnectEnabled();
 }

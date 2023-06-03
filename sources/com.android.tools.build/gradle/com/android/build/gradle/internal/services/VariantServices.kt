@@ -328,6 +328,9 @@ interface VariantServices : BaseServices {
     fun fileCollection(vararg files: Any): ConfigurableFileCollection
     fun fileTree(dir: Any): ConfigurableFileTree
 
+    /** Configuration cache compatible factory for creating [ConfigurableFileTree]. */
+    fun fileTreeFactory(): () -> ConfigurableFileTree
+
     fun regularFileProperty(): RegularFileProperty
     fun directoryProperty(): DirectoryProperty
     fun fileTree(): ConfigurableFileTree

@@ -17,7 +17,8 @@
 package com.android.build.gradle.internal.plugins
 
 import com.android.Version
-import com.android.build.gradle.internal.attribution.BuildAttributionService
+import com.android.build.gradle.internal.attribution.BuildAnalyzerConfiguratorService
+import com.android.build.gradle.internal.attribution.BuildAnalyzerService
 import com.android.build.gradle.internal.errors.DeprecationReporterImpl
 import com.android.build.gradle.internal.errors.SyncIssueReporterImpl
 import com.android.build.gradle.internal.lint.LintFromMaven.Companion.from
@@ -131,8 +132,13 @@ abstract class AndroidPluginBaseServices(
         val attributionFileLocation =
             projectOptions.get(StringOption.IDE_ATTRIBUTION_FILE_LOCATION)
         if (attributionFileLocation != null) {
-            BuildAttributionService.RegistrationAction(
-                project, attributionFileLocation, listenerRegistry
+            BuildAnalyzerService.RegistrationAction(
+                project,
+                attributionFileLocation,
+                listenerRegistry,
+                BuildAnalyzerConfiguratorService.RegistrationAction(
+                    project
+                ).execute().get()
             ).execute()
         }
         configuratorService.getProjectBuilder(project.path)?.let {
@@ -189,7 +195,7 @@ abstract class AndroidPluginBaseServices(
 
     protected open fun checkMinJvmVersion() {
         val current: JavaVersion = JavaVersion.current()
-        val minRequired: JavaVersion = JavaVersion.VERSION_11
+        val minRequired: JavaVersion = JavaVersion.VERSION_17
         if (!current.isCompatibleWith(minRequired)) {
             syncIssueReporter.reportError(
                 Type.AGP_USED_JAVA_VERSION_TOO_LOW,

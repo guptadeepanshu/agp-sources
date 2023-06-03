@@ -53,7 +53,5 @@ interface VectorDrawables {
      *
      * See [Vector Asset Studio](http://developer.android.com/tools/help/vector-asset-studio.html).
      */
-    @get:Incubating
-    @set:Incubating
     var useSupportLibrary: Boolean?
 }

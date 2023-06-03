@@ -216,6 +216,7 @@ public interface GradleBuildProfileOrBuilder extends
    * </pre>
    *
    * <code>optional int64 gc_count = 12 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the gcCount field is set.
    */
   @java.lang.Deprecated boolean hasGcCount();
@@ -226,6 +227,7 @@ public interface GradleBuildProfileOrBuilder extends
    * </pre>
    *
    * <code>optional int64 gc_count = 12 [deprecated = true];</code>
+   * @deprecated
    * @return The gcCount.
    */
   @java.lang.Deprecated long getGcCount();
@@ -237,6 +239,7 @@ public interface GradleBuildProfileOrBuilder extends
    * </pre>
    *
    * <code>optional int64 gc_time = 13 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the gcTime field is set.
    */
   @java.lang.Deprecated boolean hasGcTime();
@@ -247,6 +250,7 @@ public interface GradleBuildProfileOrBuilder extends
    * </pre>
    *
    * <code>optional int64 gc_time = 13 [deprecated = true];</code>
+   * @deprecated
    * @return The gcTime.
    */
   @java.lang.Deprecated long getGcTime();

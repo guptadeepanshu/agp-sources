@@ -16,16 +16,19 @@
 
 package com.android.build.gradle.internal.cxx.process
 
+import com.android.build.gradle.internal.cxx.logging.lifecycleln
+import com.android.utils.cxx.process.LineOutputStream
 import java.io.OutputStream
 import java.nio.charset.Charset
 
 /**
- * This OutputStream receives bytes and splits them into lines which are then sent to the 'print'
- * function. This class accounts for lines that span multiple write(byte[], int, int) blocks.
+ * This OutputStream receives bytes and splits them into lines which are then sent to the
+ * LineOutputStream. This class accounts for lines that span multiple write(byte[], int, int)
+ * blocks.
  */
 class ChunkBytesToLineOutputStream(
     private val logPrefix: String,
-    private val print: (String) -> Unit,
+    private val printer: LineOutputStream,
     initialBufferSize : Int = 256) : OutputStream() {
     private var buffer = ByteArray(initialBufferSize)
     private var nextByteIndex = 0
@@ -52,6 +55,7 @@ class ChunkBytesToLineOutputStream(
 
     override fun close() {
         writeBufferToInfo()
+        printer.close()
     }
 
     private fun writeByteToBuffer(b: Int) {
@@ -69,7 +73,7 @@ class ChunkBytesToLineOutputStream(
         val line =
             String(buffer, 0, nextByteIndex, Charset.forName("UTF-8"))
 
-        print(logPrefix + line)
+        printer.consume(logPrefix + line)
         nextByteIndex = 0
     }
 }

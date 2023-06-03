@@ -414,13 +414,13 @@ private static final long serialVersionUID = 0L;
     if (level_ != com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.INFO.getNumber()) {
       output.writeEnum(1, level_);
     }
-    if (!getMessageBytes().isEmpty()) {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(message_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 2, message_);
     }
-    if (!getFileBytes().isEmpty()) {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(file_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 3, file_);
     }
-    if (!getTagBytes().isEmpty()) {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(tag_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 4, tag_);
     }
     if (diagnosticCode_ != 0) {
@@ -439,13 +439,13 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(1, level_);
     }
-    if (!getMessageBytes().isEmpty()) {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(message_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, message_);
     }
-    if (!getFileBytes().isEmpty()) {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(file_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, file_);
     }
-    if (!getTagBytes().isEmpty()) {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(tag_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, tag_);
     }
     if (diagnosticCode_ != 0) {

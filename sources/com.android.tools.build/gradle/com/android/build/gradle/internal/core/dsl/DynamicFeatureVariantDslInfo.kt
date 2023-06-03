@@ -16,6 +16,8 @@
 
 package com.android.build.gradle.internal.core.dsl
 
+import com.android.build.gradle.internal.core.dsl.features.AndroidResourcesDslInfo
+
 /**
  * Represents the dsl info for a dynamic feature variant, initialized from the DSL object model
  * (extension, default config, build type, flavors)
@@ -29,6 +31,9 @@ package com.android.build.gradle.internal.core.dsl
 interface DynamicFeatureVariantDslInfo:
     VariantDslInfo,
     ApkProducingComponentDslInfo,
-    TestedVariantDslInfo {
+    TestedVariantDslInfo,
+    MultiVariantComponentDslInfo {
     val isMultiDexSetFromDsl: Boolean
+
+    override val androidResourcesDsl: AndroidResourcesDslInfo
 }

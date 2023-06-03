@@ -120,6 +120,7 @@ public abstract class BaseTestRunner implements TestRunner {
             @NonNull String projectName,
             @NonNull String variantName,
             @NonNull StaticTestData testData,
+            @NonNull Set<File> dependencyApks,
             @NonNull Set<File> helperApks,
             @NonNull List<? extends DeviceConnector> deviceList,
             int timeoutInMs,
@@ -153,8 +154,7 @@ public abstract class BaseTestRunner implements TestRunner {
                     // now look for a matching output file
                     List<File> testedApks = ImmutableList.of();
                     if (!testData.isLibrary()) {
-                        testedApks =
-                                testData.getTestedApkFinder().invoke(deviceConfigProvider, logger);
+                        testedApks = testData.getTestedApkFinder().invoke(deviceConfigProvider);
 
                         if (testedApks.isEmpty()) {
                             logger.info(
@@ -186,6 +186,7 @@ public abstract class BaseTestRunner implements TestRunner {
                             variantName,
                             testData,
                             apksForDevice,
+                            dependencyApks,
                             helperApks,
                             timeoutInMs,
                             installOptions,
@@ -220,6 +221,7 @@ public abstract class BaseTestRunner implements TestRunner {
             @NonNull String variantName,
             @NonNull StaticTestData testData,
             @NonNull Map<DeviceConnector, ImmutableList<File>> apksForDevice,
+            @NonNull Set<File> dependencyApks,
             @NonNull Set<File> helperApks,
             int timeoutInMs,
             @NonNull Collection<String> installOptions,

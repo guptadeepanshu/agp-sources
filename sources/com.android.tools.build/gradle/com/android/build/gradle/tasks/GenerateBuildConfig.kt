@@ -32,8 +32,9 @@ import com.android.build.gradle.internal.generators.BuildConfigGenerator
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.factory.features.BuildConfigTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.features.BuildConfigTaskCreationActionImpl
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.utils.FileUtils
+import com.google.common.base.Preconditions
 import com.google.common.collect.Lists
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
@@ -196,7 +197,7 @@ abstract class GenerateBuildConfig : NonIncrementalTask() {
     }
 
     private fun sanitizeFlavorDimension(name: String): String {
-        assert(name.isNotEmpty())
+        Preconditions.checkArgument(name.isNotEmpty())
         // Replace invalid characters
         return name.replace("[^a-zA-Z0-9_\$]".toRegex(), "_")
     }
@@ -234,7 +235,7 @@ abstract class GenerateBuildConfig : NonIncrementalTask() {
                 creationConfig.artifacts.setInitialProvider(
                                 taskProvider,
                                 GenerateBuildConfig::sourceOutputDir
-                        ).atLocation { creationConfig.paths.buildConfigSourceOutputDir }
+                        ).atLocation(creationConfig.paths.buildConfigSourceOutputDir)
                         .on(InternalArtifactType.GENERATED_BUILD_CONFIG_JAVA)
             }
         }

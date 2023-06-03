@@ -20,7 +20,6 @@ import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
 import com.android.build.gradle.internal.component.AndroidTestCreationConfig
 import com.android.build.gradle.internal.test.BuiltArtifactsSplitOutputMatcher.computeBestOutput
 import com.android.builder.testing.api.DeviceConfigProvider
-import com.android.utils.ILogger
 import com.google.common.collect.ImmutableList
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
@@ -56,11 +55,10 @@ class TestDataImpl(
         testConfig.services.provider { testConfig.mainVariant.componentType.isAar }
 
     @get:Input
-    val supportedAbis: Set<String> = testConfig.supportedAbis
+    val supportedAbis: Set<String> =
+        testConfig.nativeBuildCreationConfig?.supportedAbis ?: emptySet()
 
-    override fun findTestedApks(
-        deviceConfigProvider: DeviceConfigProvider, logger: ILogger
-    ): List<File> {
+    override fun findTestedApks(deviceConfigProvider: DeviceConfigProvider): List<File> {
         testedApksDir ?: return emptyList()
         val apks = ImmutableList.builder<File>()
         val builtArtifacts = BuiltArtifactsLoaderImpl().load(testedApksDir)

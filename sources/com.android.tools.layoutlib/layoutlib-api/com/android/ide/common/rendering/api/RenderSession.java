@@ -20,6 +20,7 @@ import static com.android.ide.common.rendering.api.Result.Status.NOT_IMPLEMENTED
 
 import com.android.annotations.Nullable;
 import com.android.ide.common.rendering.api.Result.Status;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Map;
@@ -244,10 +245,14 @@ public class RenderSession {
     public void triggerTouchEvent(TouchEventType type, int x, int y) {}
 
     /**
-     * Discards the layout. No more actions can be called on this object.
+     * Inform RenderSession that a key event happened.
+     *
+     * @param event the Java key event to pass to layoutlib
      */
-    public void dispose() {
-    }
+    public void triggerKeyEvent(KeyEvent event) {}
+
+    /** Discards the layout. No more actions can be called on this object. */
+    public void dispose() {}
 
     /** Returns validation data if it exists. */
     @Nullable

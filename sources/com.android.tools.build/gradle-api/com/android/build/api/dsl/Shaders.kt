@@ -17,12 +17,10 @@
 package com.android.build.api.dsl
 
 import com.google.common.collect.ListMultimap
-import org.gradle.api.Incubating
 
 /**
  * Options for configuring scoped shader options.
  */
-@Incubating
 interface Shaders {
     /**
      * The list of glslc args.

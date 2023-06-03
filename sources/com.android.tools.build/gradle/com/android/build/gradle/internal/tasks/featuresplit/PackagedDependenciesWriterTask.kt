@@ -27,7 +27,7 @@ import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.utils.FileUtils
 import com.google.common.base.Joiner
 import org.gradle.api.Action
@@ -63,9 +63,18 @@ abstract class PackagedDependenciesWriterTask : NonIncrementalTask() {
 
     private lateinit var runtimeAarOrJarDeps: ArtifactCollection
 
+    /**
+     * Deduplication of entries is needed because Gradle resolves to two (or more)
+     * ResolvedArtifactResult pointing to the same id and file but different variants
+     *
+     * This leads to an error in dynamic feature modules when running :app:checkDebugLibraries
+     *
+     * See b/247843123, b/246529493
+     * See https://github.com/gradle/gradle/issues/23604
+     */
     @get:Input
     val content: List<String>
-       get() = runtimeAarOrJarDeps.map { it.toIdString() }.sorted()
+       get() = runtimeAarOrJarDeps.map { it.toIdString() }.distinct().sorted()
 
     // the list of packaged dependencies by transitive dependencies.
     private lateinit var transitivePackagedDeps : ArtifactCollection

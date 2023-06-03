@@ -25,7 +25,7 @@ import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.TaskCategory
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.logging.Logging
@@ -257,10 +257,9 @@ abstract class JavaDocGenerationTask : NonIncrementalTask() {
             )
             task.dokkaCoreClasspath.fromDisallowChanges(dokkaCore)
 
-            task.sources.fromDisallowChanges(
-                creationConfig.sources.java.all,
-                creationConfig.sources.kotlin.all,
-            )
+            creationConfig.sources.java { javaSources -> task.sources.from(javaSources.all) }
+            creationConfig.sources.kotlin { kotlinSources -> task.sources.from(kotlinSources.all) }
+            task.sources.disallowChanges()
 
             task.classpath.fromDisallowChanges(
                 creationConfig.global.bootClasspath,

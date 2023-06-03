@@ -46,7 +46,7 @@ interface AndroidResources {
      * uncompressed in the APK. Adding an empty extension (i.e., `noCompress('')`) will disable
      * compression for all Android resources, assets, and Java resources.
      */
-    @Incubating
+    @Deprecated("Replaced with property noCompress")
     fun noCompress(noCompress: String)
 
     /**
@@ -54,7 +54,7 @@ interface AndroidResources {
      * uncompressed in the APK. Adding an empty extension (e.g., `noCompress('')`) will disable
      * compression for all Android resources, assets, and Java resources.
      */
-    @Incubating
+    @Deprecated("Replaced with property noCompress")
     fun noCompress(vararg noCompress: String)
 
     /**
@@ -65,15 +65,14 @@ interface AndroidResources {
     var failOnMissingConfigEntry: Boolean
 
     /** List of additional parameters to pass to `aapt`. */
-    @get:Incubating
     val additionalParameters: MutableList<String>
 
     /** Adds additional parameters to be passed to `aapt`. */
-    @Incubating
+    @Deprecated("Replaced with property additionalParameters")
     fun additionalParameters(params: String)
 
     /** Adds additional parameters to be passed to `aapt`. */
-    @Incubating
+    @Deprecated("Replaced with property additionalParameters")
     fun additionalParameters(vararg params: String)
 
     /**

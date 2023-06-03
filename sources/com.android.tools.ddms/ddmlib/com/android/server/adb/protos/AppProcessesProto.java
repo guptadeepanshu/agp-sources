@@ -241,7 +241,7 @@ public final class AppProcessesProto {
       if (profileable_ != false) {
         output.writeBool(3, profileable_);
       }
-      if (!getArchitectureBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(architecture_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 4, architecture_);
       }
       unknownFields.writeTo(output);
@@ -265,7 +265,7 @@ public final class AppProcessesProto {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(3, profileable_);
       }
-      if (!getArchitectureBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(architecture_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, architecture_);
       }
       size += unknownFields.getSerializedSize();

@@ -39,12 +39,11 @@ import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.provider.SetProperty
+import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.CompileClasspath
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
-import org.gradle.api.tasks.PathSensitive
-import org.gradle.api.tasks.PathSensitivity
 
 @CacheableTransform
 abstract class AsmClassesTransform : TransformAction<AsmClassesTransform.Parameters> {
@@ -115,7 +114,7 @@ abstract class AsmClassesTransform : TransformAction<AsmClassesTransform.Paramet
     @get:InputArtifactDependencies
     abstract val classpath: FileCollection
 
-    @get:PathSensitive(PathSensitivity.NAME_ONLY)
+    @get:Classpath
     @get:InputArtifact
     abstract val inputArtifact: Provider<FileSystemLocation>
 
@@ -134,6 +133,7 @@ abstract class AsmClassesTransform : TransformAction<AsmClassesTransform.Paramet
             parameters.visitorsList.get(),
             parameters.asmApiVersion.get(),
             classesHierarchyResolver,
+            parameters.classesHierarchyBuildService.get().issueHandler,
             parameters.framesComputationMode.get(),
             parameters.excludes.get(),
             parameters.profilingTransforms.get()

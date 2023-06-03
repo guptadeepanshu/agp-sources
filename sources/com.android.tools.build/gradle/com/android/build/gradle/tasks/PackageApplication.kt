@@ -25,7 +25,7 @@ import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.APK_IDE_MODEL
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.options.BooleanOption
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.TaskCategory
 import com.google.wireless.android.sdk.stats.GradleBuildProjectMetrics
 import org.gradle.api.file.Directory
 import org.gradle.api.provider.Provider
@@ -104,11 +104,10 @@ abstract class PackageApplication : PackageAndroidArtifact() {
             transformationRequest?.let {
                 task?.let { t -> t.transformationRequest = it }
             }
-
             creationConfig
                 .artifacts
                 .setInitialProvider(taskProvider, PackageApplication::getIdeModelOutputFile)
-                .atLocation { obj: PackageApplication -> obj.outputDirectory }
+                .atLocation(outputDirectory)
                 .withName(BuiltArtifactsImpl.METADATA_FILE_NAME)
                 .on(APK_IDE_MODEL)
         }

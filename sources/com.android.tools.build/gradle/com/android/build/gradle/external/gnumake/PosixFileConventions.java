@@ -16,9 +16,9 @@
 
 package com.android.build.gradle.external.gnumake;
 
-import static com.android.build.gradle.internal.cxx.os.OsBehaviorKt.createLinuxBehavior;
+import static com.android.utils.cxx.os.OsBehaviorKt.createLinuxBehavior;
 
-import com.android.build.gradle.internal.cxx.os.OsBehavior;
+import com.android.utils.cxx.os.OsBehavior;
 import org.jetbrains.annotations.NotNull;
 
 /** File conventions for Linux. */

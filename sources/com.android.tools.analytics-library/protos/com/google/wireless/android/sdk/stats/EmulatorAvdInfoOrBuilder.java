@@ -13,6 +13,7 @@ public interface EmulatorAvdInfoOrBuilder extends
    * </pre>
    *
    * <code>optional string name = 1 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the name field is set.
    */
   @java.lang.Deprecated boolean hasName();
@@ -22,6 +23,7 @@ public interface EmulatorAvdInfoOrBuilder extends
    * </pre>
    *
    * <code>optional string name = 1 [deprecated = true];</code>
+   * @deprecated
    * @return The name.
    */
   @java.lang.Deprecated java.lang.String getName();
@@ -31,6 +33,7 @@ public interface EmulatorAvdInfoOrBuilder extends
    * </pre>
    *
    * <code>optional string name = 1 [deprecated = true];</code>
+   * @deprecated
    * @return The bytes for name.
    */
   @java.lang.Deprecated com.google.protobuf.ByteString

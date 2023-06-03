@@ -4843,6 +4843,14 @@ private static final long serialVersionUID = 0L;
        * <code>AGENT_LOAD_FAILED = 7;</code>
        */
       AGENT_LOAD_FAILED(7),
+      /**
+       * <pre>
+       * Power saving mode is enabled, report
+       * </pre>
+       *
+       * <code>POWER_SAVING_MODE_ENABLED = 8;</code>
+       */
+      POWER_SAVING_MODE_ENABLED(8),
       ;
 
       /**
@@ -4901,6 +4909,14 @@ private static final long serialVersionUID = 0L;
        * <code>AGENT_LOAD_FAILED = 7;</code>
        */
       public static final int AGENT_LOAD_FAILED_VALUE = 7;
+      /**
+       * <pre>
+       * Power saving mode is enabled, report
+       * </pre>
+       *
+       * <code>POWER_SAVING_MODE_ENABLED = 8;</code>
+       */
+      public static final int POWER_SAVING_MODE_ENABLED_VALUE = 8;
 
 
       public final int getNumber() {
@@ -4931,6 +4947,7 @@ private static final long serialVersionUID = 0L;
           case 5: return WRONG_ROOT_OBJECT_ID;
           case 6: return LOW_MEMORY;
           case 7: return AGENT_LOAD_FAILED;
+          case 8: return POWER_SAVING_MODE_ENABLED;
           default: return null;
         }
       }

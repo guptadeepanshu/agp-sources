@@ -22,9 +22,8 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts;
 import com.android.build.gradle.internal.tasks.BuildAnalyzer;
 import com.android.build.gradle.internal.tasks.NonIncrementalTask;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
+import com.android.buildanalyzer.common.TaskCategory;
 import java.io.File;
-
-import com.android.build.gradle.internal.tasks.TaskCategory;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.tasks.InputFiles;
 import org.gradle.api.tasks.Optional;

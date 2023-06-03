@@ -24,7 +24,6 @@ import com.google.common.base.Splitter;
 import com.google.common.base.Verify;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -43,7 +42,7 @@ import org.jetbrains.annotations.NotNull;
  * A version can also be a "previewType" (e.g. 1-alpha1, 1.0.0-rc2) or an unreleased version (or
  * "snapshot") (e.g. 1-SNAPSHOT, 1.0.0-alpha1-SNAPSHOT).
  */
-public class GradleVersion implements Comparable<GradleVersion>, Serializable {
+public class GradleVersion implements Comparable<GradleVersion> {
     private static final String PLUS = "+";
 
     // TODO(b/242691473): This pattern is not inclusive for all the possible versions.
@@ -129,6 +128,7 @@ public class GradleVersion implements Comparable<GradleVersion>, Serializable {
      * @throws IllegalArgumentException if the given value does not conform with any of the
      *                                  supported version formats.
      */
+
     @NonNull
     public static GradleVersion parse(@NonNull String value) {
         String version = value;
@@ -265,20 +265,6 @@ public class GradleVersion implements Comparable<GradleVersion>, Serializable {
             @Nullable Throwable cause) {
         return new IllegalArgumentException(String.format("'%1$s' is not a valid version", value),
                 cause);
-    }
-
-    // Used for serialization by the IDE.
-    @SuppressWarnings("unused")
-    GradleVersion() {
-        mRawValue = "";
-        mMajorSegment = new VersionSegment();
-        mMinorSegment = new VersionSegment();
-        mMicroSegment = new VersionSegment();
-        mPreview = 0;
-        mPreviewType = null;
-        mSnapshot = false;
-        mAdditionalSegments = Collections.emptyList();
-        mQualifiers = null;
     }
 
     public GradleVersion(int major, int minor) {
@@ -500,15 +486,6 @@ public class GradleVersion implements Comparable<GradleVersion>, Serializable {
         return mRawValue;
     }
 
-    /**
-     * @return version segments present after the "micro" segments. For example, parsing "1.2.3.4.5"
-     * will result in "4" and "5" to be considered "additional" version segments.
-     */
-    @NonNull
-    public List<VersionSegment> getAdditionalSegments() {
-        return mAdditionalSegments;
-    }
-
     /** Returns the max of the two versions */
     @Nullable
     public static GradleVersion max(@Nullable GradleVersion version1, @Nullable GradleVersion version2) {
@@ -523,7 +500,7 @@ public class GradleVersion implements Comparable<GradleVersion>, Serializable {
         }
     }
 
-    public static class VersionSegment implements Serializable {
+    public static class VersionSegment {
         @NonNull
         private final String mText;
 
@@ -609,7 +586,11 @@ public class GradleVersion implements Comparable<GradleVersion>, Serializable {
      * @return the created {@link GradleVersion} instance, or {@code null} if the given string does
      *     not represent a valid Android Gradle plugin version.
      * @see #tryParse(String)
+     * @deprecated in favour of {@link AgpVersion#tryParse(String)} for internal Studio and AGP
+     *     use only; Gradle plugin authors should use
+     *     <a href="https://developer.android.com/reference/tools/gradle-api/current/com/android/build/api/AndroidPluginVersion">{@code AndroidPluginVersion}</a>.
      */
+    @Deprecated
     @Nullable
     public static GradleVersion tryParseAndroidGradlePluginVersion(@NonNull String value) {
         if (value.matches("\\d+\\.\\d+\\.\\d+(-(((alpha|beta|rc)\\d+)|(dev\\d*)))?")) {
@@ -634,7 +615,11 @@ public class GradleVersion implements Comparable<GradleVersion>, Serializable {
      * @return the created {@link GradleVersion} instance, or {@code null} if the given string does
      *     not represent a valid stable Android Gradle plugin version.
      * @see #tryParseAndroidGradlePluginVersion(String)
+     * @deprecated in favour of {@link AgpVersion#tryParseStable(String)} for internal Studio and AGP
+     *     use only; Gradle plugin authors should use
+     *     <a href="https://developer.android.com/reference/tools/gradle-api/current/com/android/build/api/AndroidPluginVersion">{@code AndroidPluginVersion}</a>.
      */
+    @Deprecated
     @Nullable
     public static GradleVersion tryParseStableAndroidGradlePluginVersion(@NonNull String value) {
         if (value.matches("\\d+\\.\\d+\\.\\d+")) {
@@ -646,6 +631,17 @@ public class GradleVersion implements Comparable<GradleVersion>, Serializable {
         }
     }
 
+    /**
+     *
+     * @param value the string to parse
+     * @return the created {@link GradleVersion} instance
+     * @throws IllegalArgumentException if the string does not represent a valid stable Android
+     *         Gradle plugin version.
+     * @deprecated in favour of {@link AgpVersion#parse(String)} for internal Studio and AGP
+     *     use only; Gradle plugin authors should use
+     *     <a href="https://developer.android.com/reference/tools/gradle-api/current/com/android/build/api/AndroidPluginVersion">{@code AndroidPluginVersion}</a>.
+     */
+    @Deprecated
     @NonNull
     public static GradleVersion parseAndroidGradlePluginVersion(@NonNull String value) {
         GradleVersion version = tryParseAndroidGradlePluginVersion(value);

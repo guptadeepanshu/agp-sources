@@ -20,7 +20,7 @@ import com.android.build.gradle.internal.AndroidDependenciesRenderer
 import com.android.build.gradle.internal.component.NestedComponentCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.ide.dependencies.MavenCoordinatesCacheBuildService
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.TaskCategory
 import org.gradle.api.DefaultTask
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
@@ -61,5 +61,6 @@ abstract class DependencyReportTask : DefaultTask() {
             renderer.startComponent(component)
             renderer.render(component)
         }
+        logger.warn("DependencyReportTask has been deprecated and will be removed in AGP 9.0")
     }
 }

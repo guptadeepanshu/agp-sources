@@ -134,6 +134,8 @@ public class AndroidDebugBridge {
     private static final Set<IClientChangeListener> sClientListeners =
             Sets.newCopyOnWriteArraySet();
 
+    private static JdwpTracerFactory sJdwpTracerFactory = new DefaultJdwpTracerFactory();
+
     /**
      * Classes which implement this interface provide a method that deals with {@link
      * AndroidDebugBridge} changes (including restarts).
@@ -1691,5 +1693,14 @@ public class AndroidDebugBridge {
                 }
             }
         }
+    }
+
+    public static void setJdwpTracerFactory(@NonNull JdwpTracerFactory factory) {
+        sJdwpTracerFactory = factory;
+    }
+
+    @NonNull
+    public static DDMLibJdwpTracer newJdwpTracer() {
+        return sJdwpTracerFactory.newJwpTracer();
     }
 }

@@ -16,7 +16,7 @@
 
 package com.android.build.gradle.internal.tasks
 
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.TaskCategory
 
 /***
  * Annotation class that is used for Category-Based Task Analyzer for Build Analyzer.
@@ -26,12 +26,12 @@ import com.android.build.gradle.internal.tasks.TaskCategory
 @Retention(value = AnnotationRetention.RUNTIME)
 @Target(allowedTargets = [AnnotationTarget.CLASS])
 annotation class BuildAnalyzer(
-        /***
-         * Main execution category of the task
-         */
-        val primaryTaskCategory: TaskCategory,
-        /***
-         * Other possible groupings for the task, does not have to be set
-         */
-        val secondaryTaskCategories: Array<TaskCategory> = []
+    /***
+     * Main execution category of the task
+     */
+    val primaryTaskCategory: TaskCategory,
+    /***
+     * Other possible groupings for the task, does not have to be set
+     */
+    val secondaryTaskCategories: Array<TaskCategory> = []
 )

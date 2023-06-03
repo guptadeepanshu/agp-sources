@@ -36,6 +36,7 @@ import org.objectweb.asm.ClassWriter
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
+import java.lang.RuntimeException
 import java.nio.file.InvalidPathException
 import java.nio.file.attribute.FileTime
 import java.util.zip.CRC32
@@ -55,7 +56,7 @@ import java.util.zip.ZipOutputStream
  */
 class FixStackFramesDelegate(
     val classesDir: File,
-    val jarsDir: File,
+    val jarsDir: File?,
     val bootClasspath: Set<File>,
     val referencedClasses: Set<File>,
     val classesOutDir: File,
@@ -146,10 +147,13 @@ class FixStackFramesDelegate(
                     params.classesHierarchyBuildService.set(
                         classesHierarchyBuildServiceProvider
                     )
+                    val jars = jarsDir?.listFiles()?.toSet()
+                        ?: emptySet()
+
                     params.classpath.set(
                         listOf(
                             bootClasspath,
-                            jarsDir.listFiles()!!.toSet(),
+                            jars,
                             referencedClasses
                         ).flatten()
                     )
@@ -194,7 +198,9 @@ class FixStackFramesDelegate(
         FileUtils.cleanOutputDir(classesOutDir)
         FileUtils.cleanOutputDir(jarsOutDir)
 
-        processJars(jarsDir.listFiles()!!.map { it to ChangeType.ADDED }.toMap())
+        jarsDir?.listFiles()?.associate { it to ChangeType.ADDED }?.let {
+            processJars(it)
+        }
         processClasses(FileUtils.getAllFiles(classesDir).toMap { ChangeType.ADDED })
     }
 

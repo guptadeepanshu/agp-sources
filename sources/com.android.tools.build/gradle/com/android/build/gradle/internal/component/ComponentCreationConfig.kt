@@ -19,14 +19,15 @@ package com.android.build.gradle.internal.component
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
+import com.android.build.api.component.impl.features.ManifestPlaceholdersCreationConfigImpl
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.Component
 import com.android.build.api.variant.ComponentIdentity
+import com.android.build.api.variant.InternalSources
 import com.android.build.api.variant.JavaCompilation
 import com.android.build.api.variant.Variant
 import com.android.build.api.variant.VariantBuilder
 import com.android.build.api.variant.VariantOutputConfiguration
-import com.android.build.api.variant.impl.SourcesImpl
 import com.android.build.api.variant.impl.VariantOutputList
 import com.android.build.gradle.internal.component.features.AndroidResourcesCreationConfig
 import com.android.build.gradle.internal.component.features.AssetsCreationConfig
@@ -37,9 +38,8 @@ import com.android.build.gradle.internal.component.features.ResValuesCreationCon
 import com.android.build.gradle.internal.component.legacy.ModelV1LegacySupport
 import com.android.build.gradle.internal.component.legacy.OldVariantApiLegacySupport
 import com.android.build.gradle.internal.core.ProductFlavor
-import com.android.build.gradle.internal.core.VariantSources
+import com.android.build.gradle.internal.core.dsl.features.ManifestPlaceholdersDslInfo
 import com.android.build.gradle.internal.dependency.VariantDependencies
-import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.MutableTaskContainer
@@ -81,7 +81,6 @@ interface ComponentCreationConfig : ComponentIdentity {
     val applicationId: Provider<String>
     val namespace: Provider<String>
     val debuggable: Boolean
-    val supportedAbis: Set<String>
 
     val minSdkVersion: AndroidVersion
     val targetSdkVersion: AndroidVersion
@@ -109,19 +108,10 @@ interface ComponentCreationConfig : ComponentIdentity {
     val buildFeatures: BuildFeatureValues
     val variantDependencies: VariantDependencies
     val artifacts: ArtifactsImpl
-    val sources: SourcesImpl
+    val sources: InternalSources
     val taskContainer: MutableTaskContainer
-    val transformManager: TransformManager
     val paths: VariantPathHelper
     val services: TaskCreationServices
-
-    /**
-     * DO NOT USE, this is still present to support ModelBuilder v1 code that should be deleted
-     * soon. Instead, use [sources] API.
-     */
-
-    val variantSources: VariantSources
-
 
     /**
      * Access to the global task creation configuration
@@ -145,8 +135,6 @@ interface ComponentCreationConfig : ComponentIdentity {
 
     val providedOnlyClasspath: FileCollection
 
-    val packageJacocoRuntime: Boolean
-
     val javaCompilation: JavaCompilation
 
     fun addVariantOutput(
@@ -162,15 +150,6 @@ interface ComponentCreationConfig : ComponentIdentity {
      * Returns the artifact name modified depending on the component type.
      */
     fun getArtifactName(name: String): String
-
-    val needsJavaResStreams: Boolean
-
-    // ---------------------------------------------------------------------------------------------
-    // VARIANT DSL INFO REPLACEMENTS
-    // ---------------------------------------------------------------------------------------------
-    // TODO: Figure out if we should be exposing any of the below
-
-    val isAndroidTestCoverageEnabled: Boolean
 
     /** Publish intermediate artifacts in the BuildArtifactsHolder based on PublishingSpecs.  */
     fun publishBuildArtifacts()

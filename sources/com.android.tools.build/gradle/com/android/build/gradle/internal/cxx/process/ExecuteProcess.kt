@@ -26,8 +26,8 @@ import com.android.build.gradle.internal.cxx.logging.infoln
 import com.android.build.gradle.internal.cxx.logging.logStructured
 import com.android.build.gradle.internal.cxx.model.CxxAbiModel
 import com.android.build.gradle.internal.cxx.model.logsFolder
-import com.android.build.gradle.internal.cxx.os.bat
-import com.android.build.gradle.internal.cxx.os.quoteCommandLineArgument
+import com.android.utils.cxx.os.bat
+import com.android.utils.cxx.os.quoteCommandLineArgument
 import com.android.build.gradle.internal.cxx.timing.time
 import com.android.build.gradle.internal.process.GradleProcessExecutor
 import com.android.ide.common.process.ProcessException

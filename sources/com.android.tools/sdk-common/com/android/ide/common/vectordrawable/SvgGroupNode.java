@@ -15,12 +15,15 @@
  */
 package com.android.ide.common.vectordrawable;
 
+import static com.android.ide.common.vectordrawable.Svg2Vector.parseFloatOrDefault;
+
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.w3c.dom.Element;
@@ -50,6 +53,42 @@ class SvgGroupNode extends SvgNode {
         for (SvgNode child : from.mChildren) {
             addChild(child.deepCopy());
         }
+    }
+
+    /**
+     * Resolves the 'href' reference to a different group element in this 'use' group node.
+     * Propagates any attributes of the 'use' group node to its children.
+     *
+     * @return true if the reference has been resolved, or false if it cannot be resolved at this
+     *     time due to a dependency on an unresolved node
+     */
+    boolean resolveHref(@NonNull SvgTree svgTree) {
+        String id = getHrefId();
+        SvgNode referencedNode = id.isEmpty() ? null : svgTree.getSvgNodeFromId(id);
+        if (referencedNode == null) {
+            if (id.isEmpty() || !svgTree.isIdIgnored(id)) {
+                svgTree.logError("Referenced id not found", mDocumentElement);
+            }
+        } else {
+            //noinspection SuspiciousMethodCalls
+            if (svgTree.getPendingUseSet().contains(referencedNode)) {
+                // Cannot process this node, because referencedNode it depends upon
+                // hasn't been processed yet.
+                return false;
+            }
+            SvgNode copiedNode = referencedNode.deepCopy();
+            addChild(copiedNode);
+            for (Map.Entry<String, String> entry : mVdAttributesMap.entrySet()) {
+                String key = entry.getKey();
+                copiedNode.fillPresentationAttributes(key, entry.getValue());
+            }
+            fillEmptyAttributes(mVdAttributesMap);
+
+            float x = parseFloatOrDefault(mDocumentElement.getAttribute("x"), 0);
+            float y = parseFloatOrDefault(mDocumentElement.getAttribute("y"), 0);
+            transformIfNeeded(new AffineTransform(1, 0, 0, 1, x, y));
+        }
+        return true;
     }
 
     public void addChild(@NonNull SvgNode child) {

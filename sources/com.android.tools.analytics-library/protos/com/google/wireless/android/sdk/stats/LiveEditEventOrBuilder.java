@@ -82,4 +82,23 @@ public interface LiveEditEventOrBuilder extends
    * @return The pushDurationMs.
    */
   long getPushDurationMs();
+
+  /**
+   * <pre>
+   * How the LiveEdit push was triggered
+   * </pre>
+   *
+   * <code>optional .android_studio.LiveEditEvent.Mode mode = 5;</code>
+   * @return Whether the mode field is set.
+   */
+  boolean hasMode();
+  /**
+   * <pre>
+   * How the LiveEdit push was triggered
+   * </pre>
+   *
+   * <code>optional .android_studio.LiveEditEvent.Mode mode = 5;</code>
+   * @return The mode.
+   */
+  com.google.wireless.android.sdk.stats.LiveEditEvent.Mode getMode();
 }

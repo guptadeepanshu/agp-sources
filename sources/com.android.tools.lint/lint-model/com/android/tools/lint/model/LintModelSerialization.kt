@@ -21,7 +21,7 @@ package com.android.tools.lint.model
 import com.android.SdkConstants.DOT_XML
 import com.android.SdkConstants.FD_PLATFORMS
 import com.android.SdkConstants.VALUE_TRUE
-import com.android.ide.common.repository.GradleVersion
+import com.android.ide.common.repository.AgpVersion
 import com.android.repository.impl.manager.LocalRepoLoaderImpl.PACKAGE_XML_FN
 import com.android.sdklib.AndroidTargetHash.PLATFORM_HASH_PREFIX
 import com.android.sdklib.AndroidVersion
@@ -595,7 +595,7 @@ private open class LintModelWriter(
         indent(indent)
         printer.print("<")
         printer.print(tag)
-        printer.printFile("manifest", sourceProvider.manifestFile, indent)
+        printer.printFiles("manifests", sourceProvider.manifestFiles, indent)
         printer.printFiles("javaDirectories", sourceProvider.javaDirectories, indent)
         printer.printFiles("resDirectories", sourceProvider.resDirectories, indent)
         printer.printFiles("assetsDirectories", sourceProvider.assetsDirectories, indent)
@@ -636,7 +636,7 @@ private class LintModelModuleWriter(
         createdBy?.let { printer.printAttribute("createdBy", it, indent) }
 
         module.mavenName?.let { printer.printAttribute("maven", it.toString(), indent) }
-        module.gradleVersion?.let { printer.printAttribute("gradle", it.toString(), indent) }
+        module.agpVersion?.let { printer.printAttribute("agpVersion", it.toString(), indent) }
         printer.printFile("buildFolder", module.buildFolder, indent)
         module.resourcePrefix?.let { printer.printAttribute("resourcePrefix", it, indent) }
         printer.printStrings("dynamicFeatures", module.dynamicFeatures, indent)
@@ -932,6 +932,7 @@ private class LintModelVariantWriter(
                 artifact.generatedResourceFolders,
                 indent
             )
+            printer.printFiles("desugaredMethodsFiles", artifact.desugaredMethodsFiles, indent)
         }
         printer.println(">")
 
@@ -1261,7 +1262,10 @@ private abstract class LintModelReader(
 
     protected fun readSourceProvider(tag: String = "sourceProvider"): LintModelSourceProvider {
         expectTag(tag)
-        val manifestFile = getRequiredFile("manifest")
+        val manifestFiles = getFiles("manifests").ifEmpty {
+            // This field exists for backward compatibility as old AGP versions will write a single manifest entry
+            listOf(getRequiredFile("manifest"))
+        }
         val javaDirectories = getFiles("javaDirectories")
         val resDirectories = getFiles("resDirectories")
         val assetsDirectories = getFiles("assetsDirectories")
@@ -1271,7 +1275,7 @@ private abstract class LintModelReader(
         finishTag(tag)
 
         return DefaultLintModelSourceProvider(
-            manifestFile = manifestFile,
+            manifestFiles = manifestFiles,
             javaDirectories = javaDirectories,
             resDirectories = resDirectories,
             assetsDirectories = assetsDirectories,
@@ -1434,7 +1438,11 @@ private class LintModelModuleReader(
             val mavenString = getOptionalAttribute("maven")?.let {
                 LintModelMavenName.parse(it)
             }
-            val gradleVersion = getOptionalAttribute("gradle")?.let { (GradleVersion.tryParse(it)) }
+            val agpVersion =
+                getOptionalAttribute("agpVersion")?.let { (AgpVersion.tryParse(it)) }
+                    // Delete this backward-compatibility alternative when there's not much chance of
+                    // finding pre-8.0.0 serialized lint models in the wild.
+                    ?: getOptionalAttribute("gradle")?.let { (AgpVersion.tryParse(it)) }
 
             val buildFolder = getRequiredFile("buildFolder")
             val resourcePrefix = getOptionalAttribute("resourcePrefix")
@@ -1469,7 +1477,7 @@ private class LintModelModuleReader(
                 modulePath = name,
                 type = type,
                 mavenName = mavenString,
-                gradleVersion = gradleVersion,
+                agpVersion = agpVersion,
                 buildFolder = buildFolder,
                 lintOptions = lintOptions!!,
                 lintRuleJars = lintRuleJars,
@@ -1647,14 +1655,18 @@ private class LintModelVariantReader(
         val applicationId: String
         val generatedSourceFolders: Collection<File>
         val generatedResourceFolders: Collection<File>
+        val desugaredMethodsFiles: Collection<File>
+
         if (android) {
             applicationId = getRequiredAttribute("applicationId")
             generatedSourceFolders = getFiles("generatedSourceFolders")
             generatedResourceFolders = getFiles("generatedResourceFolders")
+            desugaredMethodsFiles = getFiles("desugaredMethodsFiles")
         } else {
             applicationId = ""
             generatedSourceFolders = emptyList()
             generatedResourceFolders = emptyList()
+            desugaredMethodsFiles = emptyList()
         }
         finishTag(tag)
 
@@ -1680,6 +1692,7 @@ private class LintModelVariantReader(
                 applicationId = applicationId,
                 generatedResourceFolders = generatedResourceFolders,
                 generatedSourceFolders = generatedSourceFolders,
+                desugaredMethodsFiles = desugaredMethodsFiles,
                 classOutputs = classOutputs,
                 dependencies = dependencies
             )

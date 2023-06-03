@@ -22,6 +22,7 @@ import com.android.build.gradle.internal.cxx.ninja.Record.Path
 import com.android.build.gradle.internal.cxx.ninja.Record.Version
 import com.android.build.gradle.internal.cxx.string.StringTable
 import com.google.common.annotations.VisibleForTesting
+import com.google.common.base.Preconditions
 import com.google.common.primitives.Longs
 import java.io.BufferedOutputStream
 import java.io.DataOutputStream
@@ -223,7 +224,7 @@ private class NinjaDepsDecoder(private val buffer : ByteBuffer) {
             }
         }
         schemaVersion = buffer.int
-        assert(schemaVersion == 3 || schemaVersion == 4)
+        Preconditions.checkArgument(schemaVersion == 3 || schemaVersion == 4)
         sizeOfTimestamp = if (schemaVersion == 3) 4 else 8
         return Version(schemaVersion)
     }

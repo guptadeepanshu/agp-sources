@@ -442,16 +442,16 @@ public final class GradleAndroidTestResultListenerConfigProto {
       if (resultListenerServerPort_ != 0) {
         output.writeInt32(1, resultListenerServerPort_);
       }
-      if (!getResultListenerClientCertFilePathBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(resultListenerClientCertFilePath_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, resultListenerClientCertFilePath_);
       }
-      if (!getResultListenerClientPrivateKeyFilePathBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(resultListenerClientPrivateKeyFilePath_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, resultListenerClientPrivateKeyFilePath_);
       }
-      if (!getTrustCertCollectionFilePathBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(trustCertCollectionFilePath_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 4, trustCertCollectionFilePath_);
       }
-      if (!getDeviceIdBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(deviceId_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 5, deviceId_);
       }
       unknownFields.writeTo(output);
@@ -467,16 +467,16 @@ public final class GradleAndroidTestResultListenerConfigProto {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(1, resultListenerServerPort_);
       }
-      if (!getResultListenerClientCertFilePathBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(resultListenerClientCertFilePath_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, resultListenerClientCertFilePath_);
       }
-      if (!getResultListenerClientPrivateKeyFilePathBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(resultListenerClientPrivateKeyFilePath_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, resultListenerClientPrivateKeyFilePath_);
       }
-      if (!getTrustCertCollectionFilePathBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(trustCertCollectionFilePath_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, trustCertCollectionFilePath_);
       }
-      if (!getDeviceIdBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(deviceId_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, deviceId_);
       }
       size += unknownFields.getSerializedSize();

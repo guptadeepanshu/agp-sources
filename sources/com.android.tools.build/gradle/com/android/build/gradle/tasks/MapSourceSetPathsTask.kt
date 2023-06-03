@@ -10,7 +10,7 @@ import com.android.build.gradle.internal.tasks.factory.features.AndroidResources
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationActionImpl
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.ide.common.resources.writeIdentifiedSourceSetsFile
 import com.android.utils.FileUtils
 import org.gradle.api.file.ConfigurableFileCollection
@@ -43,6 +43,10 @@ abstract class MapSourceSetPathsTask : NonIncrementalTask() {
     @get:Input
     @get:Optional
     abstract val generatedPngsOutputDir: Property<String>
+
+    @get:Input
+    @get:Optional
+    abstract val mergedNotCompiledDir: Property<String>
 
     @get:Input
     @get:Optional
@@ -84,6 +88,7 @@ abstract class MapSourceSetPathsTask : NonIncrementalTask() {
             generatedResDir.orNull,
             renderscriptResOutputDir.orNull,
             mergeResourcesOutputDir.orNull,
+            mergedNotCompiledDir.orNull
         )
         writeIdentifiedSourceSetsFile(
             resourceSourceSets = listConfigurationSourceSets(uncreatedSourceSets, allGeneratedRes.get()),
@@ -172,6 +177,12 @@ abstract class MapSourceSetPathsTask : NonIncrementalTask() {
                     it.asFile.absolutePath
                 }
             )
+            task.mergedNotCompiledDir.setDisallowChanges(
+                    (creationConfig.artifacts.get(InternalArtifactType.MERGED_NOT_COMPILED_RES)
+                            as DefaultFilePropertyFactory.DefaultDirectoryVar).locationOnly.map {
+                        it.asFile.absolutePath
+                    }
+            )
             task.namespace.setDisallowChanges(creationConfig.namespace)
             if (includeDependencies) {
                 task.librarySourceSets.setFrom(
@@ -183,23 +194,25 @@ abstract class MapSourceSetPathsTask : NonIncrementalTask() {
                 )
             }
 
-            creationConfig.sources.res.getVariantSources().forEach { directoryEntries ->
-                directoryEntries.getEntries()
-                    .filter { it.isGenerated }
-                    .forEach { directoryEntry ->
-                        val asFiles =
-                            directoryEntry.asFiles(task.project.provider { task.project.layout.projectDirectory })
-                                .map { directories ->
-                                    directories.map { directory -> directory.asFile.absolutePath }
-                                }
-                        task.allGeneratedRes.addAll(asFiles)
-                    }
-            }
-            creationConfig.registerPostOldVariantApiAction {
-                creationConfig.sources.res.getLocalSources().values.forEach {
-                    task.localResources.addAll(it)
+            creationConfig.sources.res { resSources ->
+                resSources.getVariantSources().forEach { directoryEntries ->
+                    directoryEntries.directoryEntries
+                        .filter { it.isGenerated }
+                        .forEach { directoryEntry ->
+                            val asFiles =
+                                directoryEntry.asFiles(task.project.provider { task.project.layout.projectDirectory })
+                                    .map { directories ->
+                                        directories.map { directory -> directory.asFile.absolutePath }
+                                    }
+                            task.allGeneratedRes.addAll(asFiles)
+                        }
                 }
-                task.localResources.disallowChanges()
+                creationConfig.registerPostOldVariantApiAction {
+                    resSources.getLocalSources().values.forEach {
+                        task.localResources.addAll(it)
+                    }
+                    task.localResources.disallowChanges()
+                }
             }
             task.allGeneratedRes.disallowChanges()
             if (androidResourcesCreationConfig.vectorDrawables.useSupportLibrary == false) {

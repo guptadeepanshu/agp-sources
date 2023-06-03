@@ -25,7 +25,7 @@ import java.io.PrintWriter
 class PassThroughPrintWriterLoggingEnvironment(
     val log : PrintWriter,
     val prefix : String)
-    : PassThroughDeduplicatingLoggingEnvironment() {
+    : PassThroughRecordingLoggingEnvironment() {
     private val parent : LoggingEnvironment = parentLogger()
 
     override fun log(message: LoggingMessage) {

@@ -797,10 +797,10 @@ public final class IceboxPluginProto {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!getAppPackageBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(appPackage_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, appPackage_);
       }
-      if (!getEmulatorGrpcAddressBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(emulatorGrpcAddress_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, emulatorGrpcAddress_);
       }
       if (emulatorGrpcPort_ != 0) {
@@ -818,7 +818,7 @@ public final class IceboxPluginProto {
       if (snapshotCompression_ != com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.Compression.NONE.getNumber()) {
         output.writeEnum(7, snapshotCompression_);
       }
-      if (!getEmulatorGrpcTokenBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(emulatorGrpcToken_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 8, emulatorGrpcToken_);
       }
       if (setupStrategy_ != com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.IceboxSetupStrategy.UNSPECIFIED.getNumber()) {
@@ -833,10 +833,10 @@ public final class IceboxPluginProto {
       if (size != -1) return size;
 
       size = 0;
-      if (!getAppPackageBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(appPackage_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, appPackage_);
       }
-      if (!getEmulatorGrpcAddressBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(emulatorGrpcAddress_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, emulatorGrpcAddress_);
       }
       if (emulatorGrpcPort_ != 0) {
@@ -859,7 +859,7 @@ public final class IceboxPluginProto {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(7, snapshotCompression_);
       }
-      if (!getEmulatorGrpcTokenBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(emulatorGrpcToken_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, emulatorGrpcToken_);
       }
       if (setupStrategy_ != com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.IceboxSetupStrategy.UNSPECIFIED.getNumber()) {

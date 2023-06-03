@@ -35,17 +35,17 @@ import com.android.build.api.dsl.CompileOptions
 import com.android.build.api.dsl.DataBinding
 import com.android.build.api.dsl.DensitySplit
 import com.android.build.api.dsl.DependenciesInfo
-import com.android.build.api.dsl.DexPackagingOptions
+import com.android.build.api.dsl.DexPackaging
 import com.android.build.api.dsl.ExternalNativeBuild
 import com.android.build.api.dsl.FusedLibraryExtension
 import com.android.build.api.dsl.JavaCompileOptions
-import com.android.build.api.dsl.JniLibsPackagingOptions
+import com.android.build.api.dsl.JniLibsPackaging
 import com.android.build.api.dsl.KeepRules
 import com.android.build.api.dsl.Lint
 import com.android.build.api.dsl.NdkBuild
-import com.android.build.api.dsl.PackagingOptions
+import com.android.build.api.dsl.Packaging
 import com.android.build.api.dsl.Optimization
-import com.android.build.api.dsl.ResourcesPackagingOptions
+import com.android.build.api.dsl.ResourcesPackaging
 import com.android.build.api.dsl.SigningConfig
 import com.android.build.api.dsl.Split
 import com.android.build.api.dsl.Splits
@@ -71,17 +71,17 @@ import com.android.build.gradle.internal.dsl.CmakeOptions
 import com.android.build.gradle.internal.dsl.DataBindingOptions
 import com.android.build.gradle.internal.dsl.DensitySplitOptions
 import com.android.build.gradle.internal.dsl.DependenciesInfoImpl
-import com.android.build.gradle.internal.dsl.DexPackagingOptionsImpl
+import com.android.build.gradle.internal.dsl.DexPackagingImpl
 import com.android.build.gradle.internal.dsl.FusedLibraryExtensionImpl
 import com.android.build.gradle.internal.dsl.ExternalNativeBuild as ExternalNativeBuildImpl
 import com.android.build.gradle.internal.dsl.LintImpl
 import com.android.build.gradle.internal.dsl.JavaCompileOptions as JavaCompileOptionsImpl
-import com.android.build.gradle.internal.dsl.JniLibsPackagingOptionsImpl
+import com.android.build.gradle.internal.dsl.JniLibsPackagingImpl
 import com.android.build.gradle.internal.dsl.LibraryPublishingImpl
 import com.android.build.gradle.internal.dsl.NdkBuildOptions
 import com.android.build.gradle.internal.dsl.PrivacySandboxSdkBundleImpl
 import com.android.build.gradle.internal.dsl.PrivacySandboxSdkExtensionImpl
-import com.android.build.gradle.internal.dsl.ResourcesPackagingOptionsImpl
+import com.android.build.gradle.internal.dsl.ResourcesPackagingImpl
 import com.android.build.gradle.internal.dsl.SplitOptions
 import com.android.build.gradle.internal.dsl.ViewBindingOptionsImpl
 import org.gradle.api.JavaVersion
@@ -118,18 +118,18 @@ val AGP_SUPPORTED_PROPERTY_TYPES: List<SupportedPropertyType> = listOf(
     SupportedPropertyType.Block(CompileOptions::class.java, com.android.build.gradle.internal.CompileOptions::class.java),
     SupportedPropertyType.Block(DataBinding::class.java, DataBindingOptions::class.java),
     SupportedPropertyType.Block(DensitySplit::class.java, DensitySplitOptions::class.java),
-    SupportedPropertyType.Block(DexPackagingOptions::class.java, DexPackagingOptionsImpl::class.java),
+    SupportedPropertyType.Block(DexPackaging::class.java, DexPackagingImpl::class.java),
     SupportedPropertyType.Block(DependenciesInfo::class.java, DependenciesInfoImpl::class.java),
     SupportedPropertyType.Block(ExternalNativeBuild::class.java, ExternalNativeBuildImpl::class.java),
     SupportedPropertyType.Block(JavaCompileOptions::class.java, JavaCompileOptionsImpl::class.java),
-    SupportedPropertyType.Block(JniLibsPackagingOptions::class.java, JniLibsPackagingOptionsImpl::class.java),
+    SupportedPropertyType.Block(JniLibsPackaging::class.java, JniLibsPackagingImpl::class.java),
     SupportedPropertyType.Block(KeepRules::class.java, com.android.build.gradle.internal.dsl.KeepRulesImpl::class.java),
     SupportedPropertyType.Block(LibraryPublishing::class.java, LibraryPublishingImpl::class.java),
     SupportedPropertyType.Block(Lint::class.java, LintImpl::class.java),
     SupportedPropertyType.Block(NdkBuild::class.java, NdkBuildOptions::class.java),
-    SupportedPropertyType.Block(PackagingOptions::class.java, com.android.build.gradle.internal.dsl.PackagingOptions::class.java),
+    SupportedPropertyType.Block(Packaging::class.java, com.android.build.gradle.internal.dsl.PackagingOptions::class.java),
     SupportedPropertyType.Block(Optimization::class.java, com.android.build.gradle.internal.dsl.OptimizationImpl::class.java),
-    SupportedPropertyType.Block(ResourcesPackagingOptions::class.java, ResourcesPackagingOptionsImpl::class.java),
+    SupportedPropertyType.Block(ResourcesPackaging::class.java, ResourcesPackagingImpl::class.java),
     SupportedPropertyType.Block(SigningConfig::class.java, com.android.build.gradle.internal.dsl.SigningConfigImpl::class.java),
     SupportedPropertyType.Block(Split::class.java, SplitOptions::class.java),
     SupportedPropertyType.Block(Splits::class.java, com.android.build.gradle.internal.dsl.Splits::class.java),

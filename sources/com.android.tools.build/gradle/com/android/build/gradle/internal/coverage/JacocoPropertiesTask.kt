@@ -16,14 +16,13 @@
 package com.android.build.gradle.internal.coverage
 
 import com.android.build.gradle.internal.component.ComponentCreationConfig
-import com.android.build.gradle.internal.pipeline.OriginalStream
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.utils.zipEntry
-import com.android.build.gradle.internal.tasks.TaskCategory
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskProvider
@@ -80,22 +79,6 @@ abstract class JacocoPropertiesTask : NonIncrementalTask() {
         override val name: String =
             creationConfig.computeTaskName("generate", "JacocoPropertiesFile")
         override val type: Class<JacocoPropertiesTask> get() = JacocoPropertiesTask::class.java
-
-        init {
-            // Do immediately as transform API is sensitive to the execution order.
-            if (creationConfig.needsJavaResStreams) {
-                val taskOutput =
-                    creationConfig.artifacts.get(InternalArtifactType.JACOCO_CONFIG_RESOURCES_JAR)
-                @Suppress("DEPRECATION") // Legacy support
-                creationConfig.transformManager.addStream(
-                    OriginalStream.builder("jacoco-properties-file")
-                        .addContentType(com.android.build.api.transform.QualifiedContent.DefaultContentType.RESOURCES)
-                        .addScope(com.android.build.api.transform.QualifiedContent.Scope.PROJECT)
-                        .setFileCollection(creationConfig.services.fileCollection(taskOutput))
-                        .build()
-                )
-            }
-        }
 
         override fun handleProvider(taskProvider: TaskProvider<JacocoPropertiesTask>) {
             creationConfig.artifacts

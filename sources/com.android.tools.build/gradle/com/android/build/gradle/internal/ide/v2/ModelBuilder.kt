@@ -50,7 +50,6 @@ import com.android.build.gradle.internal.ide.dependencies.LibraryService
 import com.android.build.gradle.internal.ide.dependencies.LibraryServiceImpl
 import com.android.build.gradle.internal.ide.dependencies.computeBuildMapping
 import com.android.build.gradle.internal.ide.dependencies.getVariantName
-import com.android.build.gradle.internal.ide.verifyIDEIsNotOld
 import com.android.build.gradle.internal.lint.getLocalCustomLintChecksForModel
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.PROVIDED_CLASSPATH
@@ -217,9 +216,6 @@ class ModelBuilder<
             getBuildService(project.gradle.sharedServices, ProjectOptionService::class.java)
                 .get().projectOptions
 
-        // FIXME: remove?
-        verifyIDEIsNotOld(projectOptions)
-
         val sdkSetupCorrectly = variantModel.versionedSdkLoader.get().sdkSetupCorrectly.get()
 
         // Get the boot classpath. This will ensure the target is configured.
@@ -352,9 +348,7 @@ class ModelBuilder<
             namespace = it.namespace.get()
             if (androidTestNamespace == null && it is HasAndroidTest) {
                 it.androidTest?.let { androidTest ->
-                    // TODO(b/176931684) Use AndroidTest.namespace instead after we stop
-                    //  supporting using applicationId to namespace the test component R class.
-                    androidTestNamespace = androidTest.namespaceForR.get()
+                    androidTestNamespace = androidTest.namespace.get()
                 }
             }
             if (testFixturesNamespace == null && it is HasTestFixtures) {
@@ -380,16 +374,13 @@ class ModelBuilder<
             namespace = namespace ?: "",
             androidTestNamespace = androidTestNamespace,
             testFixturesNamespace = testFixturesNamespace,
-
             variants = variantList,
-
             javaCompileOptions = extension.compileOptions.convert(),
             resourcePrefix = extension.resourcePrefix,
             dynamicFeatures = (extension as? ApplicationExtension)?.dynamicFeatures?.toImmutableSet(),
             viewBindingOptions = ViewBindingOptionsImpl(
                 variantModel.variants.any { it.buildFeatures.viewBinding }
             ),
-
             flags = getFlags(),
             lintChecksJars = getLocalCustomLintChecksForModel(project, variantModel.syncIssueReporter),
             modelSyncFiles = modelSyncFiles,
@@ -582,11 +573,11 @@ class ModelBuilder<
         component: ComponentCreationConfig,
         features: BuildFeatureValues
     ): BasicArtifact {
-        val sourceProviders = component.variantSources
-
         return BasicArtifactImpl(
-            variantSourceProvider = sourceProviders.variantSourceProvider?.convert(features, component.sources),
-            multiFlavorSourceProvider = sourceProviders.multiFlavorSourceProvider?.convert(
+            variantSourceProvider = component.sources.variantSourceProvider?.convert(
+                component.sources
+            ),
+            multiFlavorSourceProvider = component.sources.multiFlavorSourceProvider?.convert(
                 features
             ),
         )
@@ -595,7 +586,7 @@ class ModelBuilder<
     private fun createVariant(
         variant: VariantCreationConfig,
         instantAppResultMap: MutableMap<File, Boolean>
-    ): com.android.build.gradle.internal.ide.v2.VariantImpl {
+    ): VariantImpl {
         return VariantImpl(
             name = variant.name,
             displayName = variant.baseName,
@@ -613,10 +604,9 @@ class ModelBuilder<
             isInstantAppCompatible = inspectManifestForInstantTag(variant, instantAppResultMap),
             desugaredMethods = getDesugaredMethods(
                 variant.services,
-                variant.isCoreLibraryDesugaringEnabled,
-                variant.minSdkVersionForDexing,
-                variant.global.compileSdkHashString,
-                variant.global.bootClasspath
+                variant.isCoreLibraryDesugaringEnabledLintCheck,
+                variant.minSdkVersion,
+                variant.global
             ).files.toList(),
         )
     }
@@ -702,21 +692,27 @@ class ModelBuilder<
             listOf()
         }
 
+        val coreLibDesugaring = (component as? ConsumableCreationConfig)?.isCoreLibraryDesugaringEnabledLintCheck
+                ?: false
+        val outputsAreSigned = component.oldVariantApiLegacySupport?.variantData?.outputsAreSigned ?: false
+        val isSigned = (signingConfig?.hasConfig() ?: false) || outputsAreSigned
+
         return AndroidArtifactImpl(
             minSdkVersion = minSdkVersion,
             targetSdkVersionOverride = targetSdkVersionOverride,
             maxSdkVersion = maxSdkVersion,
 
             signingConfigName = signingConfig?.name,
-            isSigned = signingConfig?.hasConfig() ?: false,
+            isSigned = isSigned,
 
             applicationId = getApplicationId(component),
 
-            abiFilters = component.supportedAbis,
+            abiFilters = (component as? ConsumableCreationConfig)?.nativeBuildCreationConfig?.supportedAbis ?: emptySet(),
             testInfo = testInfo,
             bundleInfo = getBundleInfo(component),
             codeShrinker = CodeShrinker.R8.takeIf {
-                component is ConsumableCreationConfig && component.minifiedEnabled
+                component is ConsumableCreationConfig &&
+                        component.optimizationCreationConfig.minifiedEnabled
             },
 
             assembleTaskName = taskContainer.assembleTask.name,
@@ -733,7 +729,13 @@ class ModelBuilder<
             else
                 null,
             modelSyncFiles = modelSyncFiles,
-            privacySandboxSdkInfo = createPrivacySandboxSdkInfo(component)
+            privacySandboxSdkInfo = createPrivacySandboxSdkInfo(component),
+            desugaredMethodsFiles = getDesugaredMethods(
+                component.services,
+                coreLibDesugaring,
+                component.minSdkVersion,
+                component.global
+            ).files.toList()
         )
     }
 
@@ -875,12 +877,13 @@ class ModelBuilder<
             return false
         }
 
-        val variantSources = component.variantSources
-
         // get the manifest in descending order of priority. First one to return
         val manifests = mutableListOf<File>()
-        manifests.addAll(variantSources.manifestOverlays)
-        variantSources.mainManifestIfExists?.let { manifests.add(it) }
+        manifests.addAll(component.sources.manifestOverlays.map { it.get() })
+        val mainManifest = component.sources.manifestFile.get()
+        if (mainManifest.isFile) {
+            manifests.add(mainManifest)
+        }
 
         if (manifests.isEmpty()) {
             return false

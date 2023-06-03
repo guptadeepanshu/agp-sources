@@ -20,12 +20,10 @@ import com.android.build.api.dsl.BuildType
 import com.android.build.api.dsl.ProductFlavor
 import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.impl.MutableAndroidVersion
-import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.core.dsl.TestedVariantDslInfo
 import com.android.build.gradle.internal.core.dsl.UnitTestComponentDslInfo
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import com.android.build.gradle.internal.dsl.InternalTestedExtension
-import com.android.build.gradle.internal.manifest.ManifestDataProvider
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.builder.core.ComponentType
 import org.gradle.api.file.DirectoryProperty
@@ -38,11 +36,9 @@ internal class UnitTestComponentDslInfoImpl(
     defaultConfig: DefaultConfig,
     buildTypeObj: BuildType,
     productFlavorList: List<ProductFlavor>,
-    dataProvider: ManifestDataProvider,
     services: VariantServices,
     buildDirectory: DirectoryProperty,
-    override val testedVariantDslInfo: TestedVariantDslInfo,
-    oldExtension: BaseExtension?,
+    override val mainVariantDslInfo: TestedVariantDslInfo,
     extension: InternalTestedExtension<*, *, *, *>
 ) : ComponentDslInfoImpl(
     componentIdentity,
@@ -52,26 +48,21 @@ internal class UnitTestComponentDslInfoImpl(
     productFlavorList,
     services,
     buildDirectory,
-    oldExtension,
     extension
 ), UnitTestComponentDslInfo {
 
     override val namespace: Provider<String> by lazy {
-        getTestComponentNamespace(extension, services, dataProvider)
+        getTestComponentNamespace(extension, services)
     }
 
     override val applicationId: Property<String> =
         services.newPropertyBackingDeprecatedApi(
             String::class.java,
-            initTestApplicationId(defaultConfig, services)
+            initTestApplicationId(productFlavorList, defaultConfig, services)
         )
 
     override val minSdkVersion: MutableAndroidVersion
-        get() = testedVariantDslInfo.minSdkVersion
-    override val maxSdkVersion: Int?
-        get() = testedVariantDslInfo.maxSdkVersion
-    override val targetSdkVersion: MutableAndroidVersion?
-        get() = testedVariantDslInfo.targetSdkVersion
+        get() = mainVariantDslInfo.minSdkVersion
 
     override val isUnitTestCoverageEnabled: Boolean
         get() = buildTypeObj.enableUnitTestCoverage || buildTypeObj.isTestCoverageEnabled

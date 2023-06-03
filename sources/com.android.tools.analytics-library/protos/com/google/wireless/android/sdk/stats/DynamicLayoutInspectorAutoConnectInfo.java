@@ -19,6 +19,7 @@ private static final long serialVersionUID = 0L;
     handshakeResult_ = 0;
     handshakeConversion_ = 0;
     reasonNotSupported_ = 0;
+    handshakeConversionInfo_ = 0;
   }
 
   @java.lang.Override
@@ -86,6 +87,23 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000004;
               reasonNotSupported_ = rawValue;
             }
+            break;
+          }
+          case 32: {
+            int rawValue = input.readEnum();
+              @SuppressWarnings("deprecation")
+            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion value = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion.valueOf(rawValue);
+            if (value == null) {
+              unknownFields.mergeVarintField(4, rawValue);
+            } else {
+              bitField0_ |= 0x00000008;
+              handshakeConversionInfo_ = rawValue;
+            }
+            break;
+          }
+          case 40: {
+            bitField0_ |= 0x00000010;
+            isRecoveryHandshake_ = input.readBool();
             break;
           }
           default: {
@@ -264,7 +282,7 @@ private static final long serialVersionUID = 0L;
 
   /**
    * <pre>
-   * To what a SUPPORT_UNKNOWN handshake converted to
+   * Deprecated, use HandshakeConversion instead
    * </pre>
    *
    * Protobuf enum {@code android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion}
@@ -393,6 +411,165 @@ private static final long serialVersionUID = 0L;
     }
 
     // @@protoc_insertion_point(enum_scope:android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion)
+  }
+
+  /**
+   * <pre>
+   * Indicates when a handshake state converts to another
+   * </pre>
+   *
+   * Protobuf enum {@code android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion}
+   */
+  public enum HandshakeConversion
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>UNSPECIFIED_CONVERSION = 0;</code>
+     */
+    UNSPECIFIED_CONVERSION(0),
+    /**
+     * <pre>
+     * A device with SUPPORT_UNKNOWN state converted to SUPPORTED
+     * </pre>
+     *
+     * <code>FROM_UNKNOWN_TO_SUPPORTED = 1;</code>
+     */
+    FROM_UNKNOWN_TO_SUPPORTED(1),
+    /**
+     * <pre>
+     * A device with SUPPORT_UNKNOWN state converted to NOT_SUPPORTED
+     * </pre>
+     *
+     * <code>FROM_UNKNOWN_TO_NOT_SUPPORTED = 2;</code>
+     */
+    FROM_UNKNOWN_TO_NOT_SUPPORTED(2),
+    /**
+     * <pre>
+     * A device with SUPPORT_UNKNOWN state was unplugged before converting
+     * </pre>
+     *
+     * <code>FROM_UNKNOWN_TO_DISCONNECTED = 3;</code>
+     */
+    FROM_UNKNOWN_TO_DISCONNECTED(3),
+    /**
+     * <pre>
+     * A device with NOT_SUPPORTED state converted to SUPPORTED (false negative)
+     * </pre>
+     *
+     * <code>FROM_NOT_SUPPORTED_TO_SUPPORTED = 4;</code>
+     */
+    FROM_NOT_SUPPORTED_TO_SUPPORTED(4),
+    ;
+
+    /**
+     * <code>UNSPECIFIED_CONVERSION = 0;</code>
+     */
+    public static final int UNSPECIFIED_CONVERSION_VALUE = 0;
+    /**
+     * <pre>
+     * A device with SUPPORT_UNKNOWN state converted to SUPPORTED
+     * </pre>
+     *
+     * <code>FROM_UNKNOWN_TO_SUPPORTED = 1;</code>
+     */
+    public static final int FROM_UNKNOWN_TO_SUPPORTED_VALUE = 1;
+    /**
+     * <pre>
+     * A device with SUPPORT_UNKNOWN state converted to NOT_SUPPORTED
+     * </pre>
+     *
+     * <code>FROM_UNKNOWN_TO_NOT_SUPPORTED = 2;</code>
+     */
+    public static final int FROM_UNKNOWN_TO_NOT_SUPPORTED_VALUE = 2;
+    /**
+     * <pre>
+     * A device with SUPPORT_UNKNOWN state was unplugged before converting
+     * </pre>
+     *
+     * <code>FROM_UNKNOWN_TO_DISCONNECTED = 3;</code>
+     */
+    public static final int FROM_UNKNOWN_TO_DISCONNECTED_VALUE = 3;
+    /**
+     * <pre>
+     * A device with NOT_SUPPORTED state converted to SUPPORTED (false negative)
+     * </pre>
+     *
+     * <code>FROM_NOT_SUPPORTED_TO_SUPPORTED = 4;</code>
+     */
+    public static final int FROM_NOT_SUPPORTED_TO_SUPPORTED_VALUE = 4;
+
+
+    public final int getNumber() {
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static HandshakeConversion valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static HandshakeConversion forNumber(int value) {
+      switch (value) {
+        case 0: return UNSPECIFIED_CONVERSION;
+        case 1: return FROM_UNKNOWN_TO_SUPPORTED;
+        case 2: return FROM_UNKNOWN_TO_NOT_SUPPORTED;
+        case 3: return FROM_UNKNOWN_TO_DISCONNECTED;
+        case 4: return FROM_NOT_SUPPORTED_TO_SUPPORTED;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<HandshakeConversion>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        HandshakeConversion> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<HandshakeConversion>() {
+            public HandshakeConversion findValueByNumber(int number) {
+              return HandshakeConversion.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.getDescriptor().getEnumTypes().get(2);
+    }
+
+    private static final HandshakeConversion[] VALUES = values();
+
+    public static HandshakeConversion valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private HandshakeConversion(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion)
   }
 
   /**
@@ -531,7 +708,7 @@ private static final long serialVersionUID = 0L;
     }
     public static final com.google.protobuf.Descriptors.EnumDescriptor
         getDescriptor() {
-      return com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.getDescriptor().getEnumTypes().get(2);
+      return com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.getDescriptor().getEnumTypes().get(3);
     }
 
     private static final AutoConnectReasonNotSupported[] VALUES = values();
@@ -586,24 +763,26 @@ private static final long serialVersionUID = 0L;
   private int handshakeConversion_;
   /**
    * <pre>
-   * If the handshake was initially SUPPORT_UNKNOWN, to what did it convert to?
+   * Deprecated, use handshake_conversion_info instead
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion handshake_conversion = 2;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion handshake_conversion = 2 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the handshakeConversion field is set.
    */
-  @java.lang.Override public boolean hasHandshakeConversion() {
+  @java.lang.Override @java.lang.Deprecated public boolean hasHandshakeConversion() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
    * <pre>
-   * If the handshake was initially SUPPORT_UNKNOWN, to what did it convert to?
+   * Deprecated, use handshake_conversion_info instead
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion handshake_conversion = 2;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion handshake_conversion = 2 [deprecated = true];</code>
+   * @deprecated
    * @return The handshakeConversion.
    */
-  @java.lang.Override public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion getHandshakeConversion() {
+  @java.lang.Override @java.lang.Deprecated public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion getHandshakeConversion() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion.valueOf(handshakeConversion_);
     return result == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion.UNKNOWN_TO_SUPPORTED : result;
@@ -636,6 +815,60 @@ private static final long serialVersionUID = 0L;
     return result == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.AutoConnectReasonNotSupported.UNSPECIFIED_REASON : result;
   }
 
+  public static final int HANDSHAKE_CONVERSION_INFO_FIELD_NUMBER = 4;
+  private int handshakeConversionInfo_;
+  /**
+   * <pre>
+   * Indicates when a handshake state converts to another
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion handshake_conversion_info = 4;</code>
+   * @return Whether the handshakeConversionInfo field is set.
+   */
+  @java.lang.Override public boolean hasHandshakeConversionInfo() {
+    return ((bitField0_ & 0x00000008) != 0);
+  }
+  /**
+   * <pre>
+   * Indicates when a handshake state converts to another
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion handshake_conversion_info = 4;</code>
+   * @return The handshakeConversionInfo.
+   */
+  @java.lang.Override public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion getHandshakeConversionInfo() {
+    @SuppressWarnings("deprecation")
+    com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion.valueOf(handshakeConversionInfo_);
+    return result == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion.UNSPECIFIED_CONVERSION : result;
+  }
+
+  public static final int IS_RECOVERY_HANDSHAKE_FIELD_NUMBER = 5;
+  private boolean isRecoveryHandshake_;
+  /**
+   * <pre>
+   * Indicates whether this auto-connect info is about a recovery handshake
+   * </pre>
+   *
+   * <code>optional bool is_recovery_handshake = 5;</code>
+   * @return Whether the isRecoveryHandshake field is set.
+   */
+  @java.lang.Override
+  public boolean hasIsRecoveryHandshake() {
+    return ((bitField0_ & 0x00000010) != 0);
+  }
+  /**
+   * <pre>
+   * Indicates whether this auto-connect info is about a recovery handshake
+   * </pre>
+   *
+   * <code>optional bool is_recovery_handshake = 5;</code>
+   * @return The isRecoveryHandshake.
+   */
+  @java.lang.Override
+  public boolean getIsRecoveryHandshake() {
+    return isRecoveryHandshake_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -659,6 +892,12 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000004) != 0)) {
       output.writeEnum(3, reasonNotSupported_);
     }
+    if (((bitField0_ & 0x00000008) != 0)) {
+      output.writeEnum(4, handshakeConversionInfo_);
+    }
+    if (((bitField0_ & 0x00000010) != 0)) {
+      output.writeBool(5, isRecoveryHandshake_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -679,6 +918,14 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000004) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(3, reasonNotSupported_);
+    }
+    if (((bitField0_ & 0x00000008) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(4, handshakeConversionInfo_);
+    }
+    if (((bitField0_ & 0x00000010) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(5, isRecoveryHandshake_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -707,6 +954,15 @@ private static final long serialVersionUID = 0L;
     if (hasReasonNotSupported()) {
       if (reasonNotSupported_ != other.reasonNotSupported_) return false;
     }
+    if (hasHandshakeConversionInfo() != other.hasHandshakeConversionInfo()) return false;
+    if (hasHandshakeConversionInfo()) {
+      if (handshakeConversionInfo_ != other.handshakeConversionInfo_) return false;
+    }
+    if (hasIsRecoveryHandshake() != other.hasIsRecoveryHandshake()) return false;
+    if (hasIsRecoveryHandshake()) {
+      if (getIsRecoveryHandshake()
+          != other.getIsRecoveryHandshake()) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -729,6 +985,15 @@ private static final long serialVersionUID = 0L;
     if (hasReasonNotSupported()) {
       hash = (37 * hash) + REASON_NOT_SUPPORTED_FIELD_NUMBER;
       hash = (53 * hash) + reasonNotSupported_;
+    }
+    if (hasHandshakeConversionInfo()) {
+      hash = (37 * hash) + HANDSHAKE_CONVERSION_INFO_FIELD_NUMBER;
+      hash = (53 * hash) + handshakeConversionInfo_;
+    }
+    if (hasIsRecoveryHandshake()) {
+      hash = (37 * hash) + IS_RECOVERY_HANDSHAKE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getIsRecoveryHandshake());
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -869,6 +1134,10 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000002);
       reasonNotSupported_ = 0;
       bitField0_ = (bitField0_ & ~0x00000004);
+      handshakeConversionInfo_ = 0;
+      bitField0_ = (bitField0_ & ~0x00000008);
+      isRecoveryHandshake_ = false;
+      bitField0_ = (bitField0_ & ~0x00000010);
       return this;
     }
 
@@ -909,6 +1178,14 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000004;
       }
       result.reasonNotSupported_ = reasonNotSupported_;
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        to_bitField0_ |= 0x00000008;
+      }
+      result.handshakeConversionInfo_ = handshakeConversionInfo_;
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.isRecoveryHandshake_ = isRecoveryHandshake_;
+        to_bitField0_ |= 0x00000010;
+      }
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -966,6 +1243,12 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasReasonNotSupported()) {
         setReasonNotSupported(other.getReasonNotSupported());
+      }
+      if (other.hasHandshakeConversionInfo()) {
+        setHandshakeConversionInfo(other.getHandshakeConversionInfo());
+      }
+      if (other.hasIsRecoveryHandshake()) {
+        setIsRecoveryHandshake(other.getIsRecoveryHandshake());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -1059,39 +1342,42 @@ private static final long serialVersionUID = 0L;
     private int handshakeConversion_ = 0;
     /**
      * <pre>
-     * If the handshake was initially SUPPORT_UNKNOWN, to what did it convert to?
+     * Deprecated, use handshake_conversion_info instead
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion handshake_conversion = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion handshake_conversion = 2 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the handshakeConversion field is set.
      */
-    @java.lang.Override public boolean hasHandshakeConversion() {
+    @java.lang.Override @java.lang.Deprecated public boolean hasHandshakeConversion() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
      * <pre>
-     * If the handshake was initially SUPPORT_UNKNOWN, to what did it convert to?
+     * Deprecated, use handshake_conversion_info instead
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion handshake_conversion = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion handshake_conversion = 2 [deprecated = true];</code>
+     * @deprecated
      * @return The handshakeConversion.
      */
     @java.lang.Override
-    public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion getHandshakeConversion() {
+    @java.lang.Deprecated public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion getHandshakeConversion() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion.valueOf(handshakeConversion_);
       return result == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion.UNKNOWN_TO_SUPPORTED : result;
     }
     /**
      * <pre>
-     * If the handshake was initially SUPPORT_UNKNOWN, to what did it convert to?
+     * Deprecated, use handshake_conversion_info instead
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion handshake_conversion = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion handshake_conversion = 2 [deprecated = true];</code>
+     * @deprecated
      * @param value The handshakeConversion to set.
      * @return This builder for chaining.
      */
-    public Builder setHandshakeConversion(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion value) {
+    @java.lang.Deprecated public Builder setHandshakeConversion(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion value) {
       if (value == null) {
         throw new NullPointerException();
       }
@@ -1102,13 +1388,14 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * If the handshake was initially SUPPORT_UNKNOWN, to what did it convert to?
+     * Deprecated, use handshake_conversion_info instead
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion handshake_conversion = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion handshake_conversion = 2 [deprecated = true];</code>
+     * @deprecated
      * @return This builder for chaining.
      */
-    public Builder clearHandshakeConversion() {
+    @java.lang.Deprecated public Builder clearHandshakeConversion() {
       bitField0_ = (bitField0_ & ~0x00000002);
       handshakeConversion_ = 0;
       onChanged();
@@ -1170,6 +1457,120 @@ private static final long serialVersionUID = 0L;
     public Builder clearReasonNotSupported() {
       bitField0_ = (bitField0_ & ~0x00000004);
       reasonNotSupported_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int handshakeConversionInfo_ = 0;
+    /**
+     * <pre>
+     * Indicates when a handshake state converts to another
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion handshake_conversion_info = 4;</code>
+     * @return Whether the handshakeConversionInfo field is set.
+     */
+    @java.lang.Override public boolean hasHandshakeConversionInfo() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <pre>
+     * Indicates when a handshake state converts to another
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion handshake_conversion_info = 4;</code>
+     * @return The handshakeConversionInfo.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion getHandshakeConversionInfo() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion.valueOf(handshakeConversionInfo_);
+      return result == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion.UNSPECIFIED_CONVERSION : result;
+    }
+    /**
+     * <pre>
+     * Indicates when a handshake state converts to another
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion handshake_conversion_info = 4;</code>
+     * @param value The handshakeConversionInfo to set.
+     * @return This builder for chaining.
+     */
+    public Builder setHandshakeConversionInfo(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00000008;
+      handshakeConversionInfo_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Indicates when a handshake state converts to another
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion handshake_conversion_info = 4;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearHandshakeConversionInfo() {
+      bitField0_ = (bitField0_ & ~0x00000008);
+      handshakeConversionInfo_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private boolean isRecoveryHandshake_ ;
+    /**
+     * <pre>
+     * Indicates whether this auto-connect info is about a recovery handshake
+     * </pre>
+     *
+     * <code>optional bool is_recovery_handshake = 5;</code>
+     * @return Whether the isRecoveryHandshake field is set.
+     */
+    @java.lang.Override
+    public boolean hasIsRecoveryHandshake() {
+      return ((bitField0_ & 0x00000010) != 0);
+    }
+    /**
+     * <pre>
+     * Indicates whether this auto-connect info is about a recovery handshake
+     * </pre>
+     *
+     * <code>optional bool is_recovery_handshake = 5;</code>
+     * @return The isRecoveryHandshake.
+     */
+    @java.lang.Override
+    public boolean getIsRecoveryHandshake() {
+      return isRecoveryHandshake_;
+    }
+    /**
+     * <pre>
+     * Indicates whether this auto-connect info is about a recovery handshake
+     * </pre>
+     *
+     * <code>optional bool is_recovery_handshake = 5;</code>
+     * @param value The isRecoveryHandshake to set.
+     * @return This builder for chaining.
+     */
+    public Builder setIsRecoveryHandshake(boolean value) {
+      bitField0_ |= 0x00000010;
+      isRecoveryHandshake_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Indicates whether this auto-connect info is about a recovery handshake
+     * </pre>
+     *
+     * <code>optional bool is_recovery_handshake = 5;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearIsRecoveryHandshake() {
+      bitField0_ = (bitField0_ & ~0x00000010);
+      isRecoveryHandshake_ = false;
       onChanged();
       return this;
     }

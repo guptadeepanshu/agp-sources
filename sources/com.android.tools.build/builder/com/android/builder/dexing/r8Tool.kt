@@ -39,14 +39,23 @@ import com.android.tools.r8.ProgramResource
 import com.android.tools.r8.ProgramResourceProvider
 import com.android.tools.r8.R8
 import com.android.tools.r8.R8Command
-import com.android.tools.r8.R8Command.Builder
 import com.android.tools.r8.StringConsumer
+import com.android.tools.r8.TextInputStream
+import com.android.tools.r8.TextOutputStream
 import com.android.tools.r8.Version
 import com.android.tools.r8.origin.Origin
+import com.android.tools.r8.origin.PathOrigin
+import com.android.tools.r8.profile.art.ArtProfileBuilder
+import com.android.tools.r8.profile.art.ArtProfileConsumer
+import com.android.tools.r8.profile.art.ArtProfileProvider
 import com.android.tools.r8.utils.ArchiveResourceProvider
 import com.google.common.io.ByteStreams
 import java.io.BufferedOutputStream
 import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStream
+import java.nio.charset.Charset
+import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.Locale
@@ -90,7 +99,9 @@ fun runR8(
     featureDexDir: Path?,
     featureJavaResourceOutputDir: Path?,
     libConfiguration: String? = null,
-    outputKeepRules: Path? = null
+    outputKeepRules: Path? = null,
+    inputArtProfile: Path? = null,
+    outputArtProfile: Path? = null,
 ) {
     val logger: Logger = Logger.getLogger("R8")
     if (logger.isLoggable(Level.FINE)) {
@@ -299,6 +310,11 @@ fun runR8(
         }
     }
 
+    // handle art-profile rewriting if enabled
+    if (inputArtProfile != null && outputArtProfile != null) {
+        wireArtProfileRewriting(r8CommandBuilder, inputArtProfile, outputArtProfile)
+    }
+
     // Enable workarounds for missing library APIs in R8 (see b/231547906).
     r8CommandBuilder.setEnableExperimentalMissingLibraryApiModeling(true);
     ClassFileProviderFactory(libraries).use { libraryClasses ->
@@ -315,6 +331,46 @@ fun runR8(
             Files.createFile(it)
         }
     }
+}
+
+private fun wireArtProfileRewriting(
+    r8CommandBuilder: R8Command.Builder,
+    inputArtProfile: Path?,
+    outputArtProfile: Path?
+) {
+
+    // Supply the ART profile to the compiler by supplying an instance of ArtProfileProvider.
+    val artProfileProvider: ArtProfileProvider = object : ArtProfileProvider {
+        override fun getArtProfile(profileBuilder: ArtProfileBuilder) {
+            profileBuilder.addHumanReadableArtProfile(
+                object : TextInputStream {
+                    override fun getInputStream(): InputStream = Files.newInputStream(inputArtProfile)
+
+                    override fun getCharset(): Charset = StandardCharsets.UTF_8
+                }
+            ) {}
+        }
+
+        override fun getOrigin(): Origin {
+            return PathOrigin(inputArtProfile)
+        }
+    }
+
+    // Create a consumer for retrieving the residual ART profile from the compiler.
+    val residualArtProfileConsumer: ArtProfileConsumer = object : ArtProfileConsumer {
+        override fun getHumanReadableArtProfileConsumer(): TextOutputStream {
+            return object : TextOutputStream {
+                override fun getOutputStream(): OutputStream =
+                    Files.newOutputStream(outputArtProfile)
+
+                override fun getCharset(): Charset = StandardCharsets.UTF_8
+            }
+        }
+
+        override fun finished(handler: DiagnosticsHandler) {}
+    }
+
+    r8CommandBuilder.addArtProfileForRewriting(artProfileProvider, residualArtProfileConsumer)
 }
 
 enum class R8OutputType {

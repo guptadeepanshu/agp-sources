@@ -16,9 +16,6 @@
 
 package com.android.build.gradle.tasks;
 
-import static com.android.AndroidXConstants.INT_DEF_ANNOTATION;
-import static com.android.AndroidXConstants.LONG_DEF_ANNOTATION;
-import static com.android.AndroidXConstants.STRING_DEF_ANNOTATION;
 import static com.android.SdkConstants.DOT_JAVA;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.EXTERNAL;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.CLASSES_JAR;
@@ -39,7 +36,7 @@ import com.android.build.gradle.internal.tasks.NonIncrementalTask;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
 import com.android.build.gradle.internal.utils.AndroidXDependency;
 import com.android.build.gradle.internal.utils.HasConfigurableValuesKt;
-import com.android.build.gradle.internal.tasks.TaskCategory;
+import com.android.buildanalyzer.common.TaskCategory;
 import com.android.utils.FileUtils;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
@@ -52,6 +49,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import kotlin.Unit;
 import org.gradle.api.artifacts.ArtifactCollection;
 import org.gradle.api.artifacts.component.ComponentIdentifier;
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier;
@@ -109,8 +107,6 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
     private String encoding;
 
     private ArtifactCollection libraries;
-
-    private final List<Object> sources = new ArrayList<>();
     private FileTree sourcesFileTree;
 
     @Nested
@@ -126,11 +122,6 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
 
     @CompileClasspath
     public abstract ConfigurableFileCollection getClasspath();
-
-    /** Used by the variant API */
-    public void source(Object source) {
-        sources.add(source);
-    }
 
     /** Boot classpath: typically android.jar */
     @CompileClasspath
@@ -276,12 +267,9 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
                 return lines.anyMatch(
                         line ->
                                 line.contains("Def")
-                                        && (line.contains(INT_DEF_ANNOTATION.oldName())
-                                                || line.contains(INT_DEF_ANNOTATION.newName())
-                                                || line.contains(LONG_DEF_ANNOTATION.oldName())
-                                                || line.contains(LONG_DEF_ANNOTATION.newName())
-                                                || line.contains(STRING_DEF_ANNOTATION.oldName())
-                                                || line.contains(STRING_DEF_ANNOTATION.newName())));
+                                        && (line.contains("@IntDef")
+                                                || line.contains("@LongDef")
+                                                || line.contains("@StringDef")));
             }
         } catch (IOException e) {
             return false;
@@ -367,7 +355,6 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
             HasConfigurableValuesKt.setDisallowChanges(
                     task.getStrictTypedefRetention(), strictTypedefRetention);
 
-            task.source(creationConfig.getSources().getJava().getAll());
             task.setEncoding(creationConfig.getGlobal().getCompileOptions().getEncoding());
             task.getClasspath().from(creationConfig.getCompileClasspath()).disallowChanges();
 
@@ -384,10 +371,16 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
                             .fileCollection(creationConfig.getGlobal().getFilteredBootClasspath()));
 
             task.getLintTool().initialize(creationConfig.getServices());
-            task.sourcesFileTree =
-                    task.getProject()
-                            .files(creationConfig.getSources().getJava().getAll())
-                            .getAsFileTree();
+
+            ConfigurableFileCollection files = creationConfig.getServices().fileCollection();
+            creationConfig
+                    .getSources()
+                    .java(
+                            javaSources -> {
+                                files.from(javaSources.getAll());
+                                return Unit.INSTANCE;
+                            });
+            task.sourcesFileTree = files.getAsFileTree();
 
             HasConfigurableValuesKt.setDisallowChanges(
                     task.getLintClassLoaderBuildService(),

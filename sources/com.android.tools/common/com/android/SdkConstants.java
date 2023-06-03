@@ -230,8 +230,8 @@ public final class SdkConstants {
     public static final String FN_ART_PROFILE = "baseline-prof.txt";
 
     public static final String FN_BINART_ART_PROFILE_FOLDER_IN_APK = "assets/dexopt";
-    // Temporary workaround for b/261981611, was "com.android.tools.build.profiles"
-    public static final String FN_BINART_ART_PROFILE_FOLDER_IN_AAB = "assets.dexopt";
+    public static final String FN_BINART_ART_PROFILE_FOLDER_IN_AAB =
+            "com.android.tools.build.profiles";
     public static final String FN_BINARY_ART_PROFILE = "baseline.prof";
     public static final String FN_BINARY_ART_PROFILE_METADATA = "baseline.profm";
 
@@ -1343,6 +1343,8 @@ public final class SdkConstants {
     public static final String ATTR_PADDING_LEFT = "paddingLeft";
     public static final String ATTR_PADDING_START = "paddingStart";
     public static final String ATTR_PADDING_END = "paddingEnd";
+    public static final String ATTR_PADDING_HORIZONTAL = "paddingHorizontal";
+    public static final String ATTR_PADDING_VERTICAL = "paddingVertical";
     public static final String ATTR_FOREGROUND = "foreground";
     public static final String ATTR_BACKGROUND = "background";
     public static final String ATTR_ORIENTATION = "orientation";
@@ -1483,8 +1485,8 @@ public final class SdkConstants {
     // android.view.ViewGroup
     public static final String ATTR_LAYOUT_MARGIN_HORIZONTAL = "layout_marginHorizontal";
     public static final String ATTR_LAYOUT_MARGIN_VERTICAL = "layout_marginVertical";
-    public static final String ATTR_PADDING_HORIZONTAL = "layout_paddingHorizontal";
-    public static final String ATTR_PADDING_VERTICAL = "layout_paddingVertical";
+    public static final String ATTR_LAYOUT_PADDING_HORIZONTAL = "layout_paddingHorizontal";
+    public static final String ATTR_LAYOUT_PADDING_VERTICAL = "layout_paddingVertical";
 
     // AutoCompleteTextView
     public static final String ATTR_DROP_DOWN_ANCHOR = "dropDownAnchor";
@@ -2105,6 +2107,8 @@ public final class SdkConstants {
     public static final String EXT_ASAR = "asar";
     /** Extension for Android Privacy Sandbox Sdk bundles */
     public static final String EXT_ASB = "asb";
+    /** Extension for APKs file containing multiple APKs */
+    public static final String EXT_APKS = "apks";
     /** Extension for Android atom files. */
     public static final String EXT_ATOM = "atom";
     /** Extension of java files, i.e. "java" */
@@ -2166,6 +2170,8 @@ public final class SdkConstants {
     public static final String DOT_ASAR = DOT + EXT_ASAR;
     /** Extension for Android Privacy Sandbox Sdk bundles */
     public static final String DOT_ASB = DOT + EXT_ASB;
+    /** Extension for APKs file containing multiple APKs */
+    public static final String DOT_APKS = DOT + EXT_APKS;
     /** Dot-Extension of zip files, i.e. ".zip" */
     public static final String DOT_ZIP = DOT + EXT_ZIP;
     /** Dot-Extension of aidl files, i.e. ".aidl" */
@@ -2767,21 +2773,29 @@ public final class SdkConstants {
     public static final String VALUE_HORIZONTAL = "horizontal";
 
     public static final String GRADLE_PLUGIN_NAME = "com.android.tools.build:gradle:";
+
     /** The minimum version of Gradle that this version of Studio will support. */
     public static final String GRADLE_MINIMUM_VERSION = "4.8.1";
+
     /**
      * The minimum version of Gradle that this version of the Gradle plugin will support. This also
      * happens to be a version of Gradle that is embedded and distributed along with the Android
      * Studio product. It need not actually be the latest version of Gradle, but it will most likely
      * be fairly recent.
      */
-    public static final String GRADLE_LATEST_VERSION = "7.5";
+    public static final String GRADLE_LATEST_VERSION = "8.0";
 
     /**
      * The minimum released version of the Android Gradle Plugin that this version of Studio will
      * support. (Support of the development series leading up to it is unknown.)
      */
     public static final String GRADLE_PLUGIN_MINIMUM_VERSION = "3.2.0";
+
+    /**
+     * The minimum released version of the Android Gradle Plugin that the next version of Studio
+     * will support.
+     */
+    public static final String GRADLE_PLUGIN_NEXT_MINIMUM_VERSION = "4.0.0";
 
     /**
      * A version of the Android Gradle Plugin that this version of Studio and associated tools (e.g.
@@ -2794,7 +2808,7 @@ public final class SdkConstants {
      * The version of NDK to use as default. If no specific version of NDK is specified in
      * build.gradle then this is the version that will be used.
      */
-    public static final String NDK_DEFAULT_VERSION = "23.1.7779620";
+    public static final String NDK_DEFAULT_VERSION = "25.1.8937393";
 
     /** use api or implementation */
     @Deprecated public static final String GRADLE_COMPILE_CONFIGURATION = "compile";
@@ -2905,14 +2919,17 @@ public final class SdkConstants {
                         + "by third-party plugins) should be removed.");
     }
 
+    public static final String META_INF = "meta-inf";
+    public static final String PROGUARD_RULES_FOLDER_NAME = "proguard";
     /** Folder where proguard rules are located in jar, aar and project generated resources */
-    public static final String PROGUARD_RULES_FOLDER = "meta-inf/proguard";
+    public static final String PROGUARD_RULES_FOLDER = META_INF + "/" + PROGUARD_RULES_FOLDER_NAME;
 
     /** Folder where configuration files for R8 and other tools are located in jar files */
     public static final String COM_ANDROID_TOOLS_FOLDER = "com.android.tools";
 
     /** Folder where configuration files for R8 and other tools are located in jar files */
-    public static final String TOOLS_CONFIGURATION_FOLDER = "meta-inf/" + COM_ANDROID_TOOLS_FOLDER;
+    public static final String TOOLS_CONFIGURATION_FOLDER =
+            META_INF + "/" + COM_ANDROID_TOOLS_FOLDER;
 
     public static final String FD_PREFAB_PACKAGE = "prefab";
 }

@@ -41,14 +41,22 @@ import com.google.wireless.android.sdk.stats.GradleBuildProfileSpan
 import com.google.wireless.android.sdk.stats.GradleBuildProject
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import com.google.wireless.android.sdk.stats.GradlePluginData
+import com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState
+import com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState.DID_WORK_INCREMENTAL
+import com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState.DID_WORK_NON_INCREMENTAL
+import com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState.FAILED
+import com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState.FROM_CACHE
+import com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState.SKIPPED
+import com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState.UNKNOWN
+import com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState.UP_TO_DATE
 import com.google.wireless.android.sdk.stats.GradleTransformExecution
 import org.gradle.api.Project
 import org.gradle.api.execution.TaskExecutionGraph
 import org.gradle.api.invocation.Gradle
-import org.gradle.api.provider.ProviderFactory
 import org.gradle.tooling.events.FinishEvent
 import org.gradle.tooling.events.task.TaskFailureResult
 import org.gradle.tooling.events.task.TaskFinishEvent
+import org.gradle.tooling.events.task.TaskOperationResult
 import org.gradle.tooling.events.task.TaskSkippedResult
 import org.gradle.tooling.events.task.TaskSuccessResult
 import java.io.File
@@ -165,12 +173,20 @@ class AnalyticsResourceManager constructor(
         val taskType = getTaskExecutionType(typeName)
         val taskResult = finishEvent.result
 
-        taskRecord.spanBuilder.taskBuilder
-            .setType(taskType.number)
-            .setDidWork(taskResult !is TaskSkippedResult)
-            .setSkipped(taskResult is TaskSkippedResult)
-            .setUpToDate(taskResult is TaskSuccessResult && taskResult.isUpToDate)
-            .setFailed(taskResult is TaskFailureResult)
+        val taskBuilder = taskRecord.spanBuilder.taskBuilder
+        taskBuilder.type = taskType.number
+
+        val taskState = taskResult.getTaskState()
+        taskBuilder.taskState = taskState
+        taskBuilder.apply {
+            when (taskState) {
+                UP_TO_DATE -> upToDate = true
+                FROM_CACHE, DID_WORK_INCREMENTAL, DID_WORK_NON_INCREMENTAL -> didWork = true
+                SKIPPED -> skipped = true
+                FAILED -> failed = true
+                UNKNOWN -> Unit
+            }
+        }
 
         taskRecord.setTaskStartTime(taskResult.startTime)
         taskRecord.setTaskEndTime(taskResult.endTime)
@@ -516,6 +532,24 @@ data class TaskMetadata(
     val variantName: String?,
     val typeName: String
 ) : Serializable
+
+fun TaskOperationResult.getTaskState(): TaskState {
+    return when (this) {
+        is TaskSuccessResult -> when {
+            // Note: The order of the checks below is important. For example, when
+            // isFromCache() == true, Gradle also returns isUpToDate() == true
+            // (see https://github.com/gradle/gradle/issues/5252), so we need to check isFromCache()
+            // before isUpToDate().
+            isFromCache -> FROM_CACHE
+            isUpToDate -> UP_TO_DATE
+            isIncremental -> DID_WORK_INCREMENTAL
+            else -> DID_WORK_NON_INCREMENTAL
+        }
+        is TaskSkippedResult -> SKIPPED
+        is TaskFailureResult -> FAILED
+        else -> UNKNOWN
+    }
+}
 
 /**
  * The default variant id for [GradleBuildProfileSpan] record when variantName is not specified

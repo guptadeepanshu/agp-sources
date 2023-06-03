@@ -667,6 +667,46 @@ private static final long serialVersionUID = 0L;
      * <code>APP_INSPECTION_ARTIFACT_NOT_FOUND = 207;</code>
      */
     APP_INSPECTION_ARTIFACT_NOT_FOUND(207),
+    /**
+     * <pre>
+     * The compose:ui:ui version file was missing
+     * </pre>
+     *
+     * <code>APP_INSPECTION_VERSION_FILE_NOT_FOUND = 208;</code>
+     */
+    APP_INSPECTION_VERSION_FILE_NOT_FOUND(208),
+    /**
+     * <pre>
+     * Snapshot version used, but use.snapshot.jar flag is not set
+     * </pre>
+     *
+     * <code>APP_INSPECTION_SNAPSHOT_NOT_SPECIFIED = 209;</code>
+     */
+    APP_INSPECTION_SNAPSHOT_NOT_SPECIFIED(209),
+    /**
+     * <pre>
+     * Compose inspector not found.
+     * </pre>
+     *
+     * <code>APP_INSPECTION_COMPOSE_INSPECTOR_NOT_FOUND = 210;</code>
+     */
+    APP_INSPECTION_COMPOSE_INSPECTOR_NOT_FOUND(210),
+    /**
+     * <pre>
+     * Failed to download compose inspector from maven
+     * </pre>
+     *
+     * <code>APP_INSPECTION_FAILED_MAVEN_DOWNLOAD = 211;</code>
+     */
+    APP_INSPECTION_FAILED_MAVEN_DOWNLOAD(211),
+    /**
+     * <code>TRANSPORT_UNKNOWN_ERROR = 301;</code>
+     */
+    TRANSPORT_UNKNOWN_ERROR(301),
+    /**
+     * <code>TRANSPORT_PUSH_FAILED_FILE_NOT_FOUND = 302;</code>
+     */
+    TRANSPORT_PUSH_FAILED_FILE_NOT_FOUND(302),
     ;
 
     /**
@@ -769,6 +809,46 @@ private static final long serialVersionUID = 0L;
      * <code>APP_INSPECTION_ARTIFACT_NOT_FOUND = 207;</code>
      */
     public static final int APP_INSPECTION_ARTIFACT_NOT_FOUND_VALUE = 207;
+    /**
+     * <pre>
+     * The compose:ui:ui version file was missing
+     * </pre>
+     *
+     * <code>APP_INSPECTION_VERSION_FILE_NOT_FOUND = 208;</code>
+     */
+    public static final int APP_INSPECTION_VERSION_FILE_NOT_FOUND_VALUE = 208;
+    /**
+     * <pre>
+     * Snapshot version used, but use.snapshot.jar flag is not set
+     * </pre>
+     *
+     * <code>APP_INSPECTION_SNAPSHOT_NOT_SPECIFIED = 209;</code>
+     */
+    public static final int APP_INSPECTION_SNAPSHOT_NOT_SPECIFIED_VALUE = 209;
+    /**
+     * <pre>
+     * Compose inspector not found.
+     * </pre>
+     *
+     * <code>APP_INSPECTION_COMPOSE_INSPECTOR_NOT_FOUND = 210;</code>
+     */
+    public static final int APP_INSPECTION_COMPOSE_INSPECTOR_NOT_FOUND_VALUE = 210;
+    /**
+     * <pre>
+     * Failed to download compose inspector from maven
+     * </pre>
+     *
+     * <code>APP_INSPECTION_FAILED_MAVEN_DOWNLOAD = 211;</code>
+     */
+    public static final int APP_INSPECTION_FAILED_MAVEN_DOWNLOAD_VALUE = 211;
+    /**
+     * <code>TRANSPORT_UNKNOWN_ERROR = 301;</code>
+     */
+    public static final int TRANSPORT_UNKNOWN_ERROR_VALUE = 301;
+    /**
+     * <code>TRANSPORT_PUSH_FAILED_FILE_NOT_FOUND = 302;</code>
+     */
+    public static final int TRANSPORT_PUSH_FAILED_FILE_NOT_FOUND_VALUE = 302;
 
 
     public final int getNumber() {
@@ -804,6 +884,12 @@ private static final long serialVersionUID = 0L;
         case 205: return APP_INSPECTION_MISSING_LIBRARY;
         case 206: return APP_INSPECTION_PROGUARDED_APP;
         case 207: return APP_INSPECTION_ARTIFACT_NOT_FOUND;
+        case 208: return APP_INSPECTION_VERSION_FILE_NOT_FOUND;
+        case 209: return APP_INSPECTION_SNAPSHOT_NOT_SPECIFIED;
+        case 210: return APP_INSPECTION_COMPOSE_INSPECTOR_NOT_FOUND;
+        case 211: return APP_INSPECTION_FAILED_MAVEN_DOWNLOAD;
+        case 301: return TRANSPORT_UNKNOWN_ERROR;
+        case 302: return TRANSPORT_PUSH_FAILED_FILE_NOT_FOUND;
         default: return null;
       }
     }

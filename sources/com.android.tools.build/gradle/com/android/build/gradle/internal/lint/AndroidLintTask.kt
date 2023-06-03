@@ -35,7 +35,7 @@ import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.ide.common.repository.GradleVersion
 import com.android.tools.lint.model.LintModelSerialization
 import com.android.utils.FileUtils
@@ -216,19 +216,21 @@ abstract class AndroidLintTask : NonIncrementalTask() {
             )
         }
         writeLintModelFile()
+        val baselineFile = projectInputs.lintOptions.baseline.orNull?.asFile
+        var originalBaselineFileText: String? = null
+        var originalBaselineFileLines: List<String>? = null
         if (lintMode.get() == LintMode.UPDATE_BASELINE) {
-            val baselineFile = projectInputs.lintOptions.outputBaselineFile.orNull?.asFile
             // Warn and return early if no baseline file is specified.
             if (baselineFile == null) {
                 logger.warn(getUpdateBaselineWarning())
                 return
             }
+            if (baselineFile.isFile) {
+                originalBaselineFileText = baselineFile.readText()
+                originalBaselineFileLines = baselineFile.readLines()
+            }
             // Delete existing baseline file if running the updateLintBaseline task.
-            projectInputs.lintOptions
-                .outputBaselineFile
-                .orNull
-                ?.asFile
-                ?.let { FileUtils.deleteIfExists(it) }
+            FileUtils.deleteIfExists(baselineFile)
         }
         workerExecutor.noIsolation().submit(AndroidLintLauncherWorkAction::class.java) { parameters ->
             parameters.arguments.set(generateCommandLineArguments())
@@ -238,6 +240,18 @@ abstract class AndroidLintTask : NonIncrementalTask() {
             parameters.lintFixBuildService.set(lintFixBuildService)
             parameters.returnValueOutputFile.set(returnValueOutputFile)
             parameters.lintMode.set(lintMode)
+            parameters.hasBaseline.set(projectInputs.lintOptions.baseline.orNull != null)
+        }
+        if (lintMode.get() == LintMode.UPDATE_BASELINE
+            && originalBaselineFileText != null
+            && originalBaselineFileLines != null
+            && baselineFile != null) {
+            workerExecutor.await()
+            // Don't change the baseline file if the only changes are the lint or AGP versions
+            // listed in the file (b/248338457).
+            if (!isBaselineChanged(originalBaselineFileLines, baselineFile)) {
+                baselineFile.writeText(originalBaselineFileText)
+            }
         }
     }
 
@@ -257,6 +271,7 @@ abstract class AndroidLintTask : NonIncrementalTask() {
             abstract val lintFixBuildService: Property<LintFixBuildService>
             abstract val returnValueOutputFile: RegularFileProperty
             abstract val lintMode: Property<LintMode>
+            abstract val hasBaseline: Property<Boolean>
         }
 
         @get:Inject
@@ -272,6 +287,7 @@ abstract class AndroidLintTask : NonIncrementalTask() {
                 fatalOnly = parameters.fatalOnly.get(),
                 await = lintFixBuildService != null, // Allow only one lintFix to execute at a time.
                 lintMode = parameters.lintMode.get(),
+                hasBaseline = parameters.hasBaseline.get(),
                 returnValueOutputFile = parameters.returnValueOutputFile.orNull?.asFile
             )
         }
@@ -576,6 +592,7 @@ abstract class AndroidLintTask : NonIncrementalTask() {
             task.description = description
 
             task.initializeGlobalInputs(
+                variant.main.services,
                 isAndroid = true,
                 lintMode
             )
@@ -616,7 +633,7 @@ abstract class AndroidLintTask : NonIncrementalTask() {
                 // Workaround for b/193244776
                 // Ensure the task runs if inputBaselineFile is set and the file doesn't exist,
                 // unless missingBaselineIsEmptyBaseline is true.
-                task.projectInputs.lintOptions.inputBaselineFile.orNull?.asFile?.exists() ?: true
+                task.projectInputs.lintOptions.baseline.orNull?.asFile?.exists() ?: true
                         || task.missingBaselineIsEmptyBaseline.get()
             }
             val hasDynamicFeatures = creationConfig.global.hasDynamicFeatures
@@ -797,6 +814,7 @@ abstract class AndroidLintTask : NonIncrementalTask() {
     }
 
     private fun initializeGlobalInputs(
+        services: TaskCreationServices,
         isAndroid: Boolean,
         lintMode: LintMode
     ) {
@@ -824,7 +842,10 @@ abstract class AndroidLintTask : NonIncrementalTask() {
         } else {
             printStackTrace.setDisallowChanges(
                 project.providers.environmentVariable(LINT_PRINT_STACKTRACE_ENVIRONMENT_VARIABLE)
-                    .map { it.equals("true", ignoreCase = true) }.orElse(false)
+                    .map { it.equals("true", ignoreCase = true) }
+                    .orElse(
+                        services.projectOptions.getProvider(BooleanOption.PRINT_LINT_STACK_TRACE)
+                    )
             )
         }
         systemPropertyInputs.initialize(project.providers, lintMode)
@@ -844,6 +865,7 @@ abstract class AndroidLintTask : NonIncrementalTask() {
     ) {
         val projectInfo = taskCreationServices.projectInfo
         initializeGlobalInputs(
+            taskCreationServices,
             isAndroid = false,
             lintMode
         )
@@ -864,13 +886,15 @@ abstract class AndroidLintTask : NonIncrementalTask() {
         this.lintTool.initialize(taskCreationServices)
         this.projectInputs
             .initializeForStandalone(project, javaPluginExtension, lintOptions, lintMode)
+        // Workaround for b/193244776 - Ensure the task runs if a baseline file is set and the file
+        // doesn't exist, unless missingBaselineIsEmptyBaseline is true.
         this.outputs.upToDateWhen {
-            // Workaround for b/193244776
-            // Ensure the task runs if inputBaselineFile is set and the file doesn't exist, unless
-            // missingBaselineIsEmptyBaseline is true.
-            this.projectInputs.lintOptions.inputBaselineFile.orNull?.asFile?.exists() ?: true
+            this.projectInputs.lintOptions.baseline.orNull?.asFile?.exists() ?: true
                     || this.missingBaselineIsEmptyBaseline.get()
         }
+        // The updateLintBaseline task should never be UP-TO-DATE because the baseline file is not
+        // annotated as an output
+        this.outputs.upToDateWhen { this.lintMode.get() != LintMode.UPDATE_BASELINE }
         // Do not support check dependencies in the standalone lint plugin
         this.variantInputs
             .initializeForStandalone(
@@ -928,5 +952,32 @@ abstract class AndroidLintTask : NonIncrementalTask() {
     companion object {
         private const val LINT_PRINT_STACKTRACE_ENVIRONMENT_VARIABLE = "LINT_PRINT_STACKTRACE"
         private const val ANDROID_LINT_JARS_ENVIRONMENT_VARIABLE = "ANDROID_LINT_JARS"
+
+        /**
+         * Return whether [newBaselineFile] has different content than [originalBaselineFileLines],
+         * ignoring changes to the attributes of the <issues> element (b/248338457).
+         */
+        private fun isBaselineChanged(
+            originalBaselineFileLines: List<String>,
+            newBaselineFile: File
+        ): Boolean {
+            if (!newBaselineFile.isFile) {
+                return true
+            }
+            val newBaselineFileLines = newBaselineFile.readLines()
+            if (originalBaselineFileLines.size != newBaselineFileLines.size) {
+                return true
+            }
+            newBaselineFileLines.forEachIndexed { i, newLine ->
+                // ignore changes to the attributes of the <issues> element
+                if (!newLine.startsWith("<issues")) {
+                    val originalLine = originalBaselineFileLines[i]
+                    if (originalLine.trim() != newLine.trim()) {
+                        return true
+                    }
+                }
+            }
+            return false
+        }
     }
 }

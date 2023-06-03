@@ -63,13 +63,12 @@ internal fun ComponentImpl<*>.getAndroidResources(): AndroidResources {
 internal fun ApkCreationConfig.isTestApk(): Boolean {
     val projectOptions = services.projectOptions
 
-    return projectOptions.get(OptionalBooleanOption.IDE_TEST_ONLY) ?:
+    return projectOptions.get(OptionalBooleanOption.IDE_TEST_ONLY) ?: (
             !Strings.isNullOrEmpty(projectOptions.get(StringOption.IDE_BUILD_TARGET_ABI))
-            || !Strings.isNullOrEmpty(projectOptions.get(StringOption.IDE_BUILD_TARGET_DENSITY))
             || projectOptions.get(IntegerOption.IDE_TARGET_DEVICE_API) != null
             || AndroidTargetHash.getVersionFromHash(global.compileSdkHashString)?.isPreview == true
             || minSdkVersion.codename != null
-            || targetSdkVersion.codename != null
+            || targetSdkVersion.codename != null)
 }
 
 internal fun<T> ComponentCreationConfig.warnAboutAccessingVariantApiValueForDisabledFeature(

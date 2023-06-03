@@ -19,6 +19,8 @@ package com.android.manifmerger;
 import static com.android.SdkConstants.ANDROID_URI;
 import static com.android.SdkConstants.ATTR_NAME;
 import static com.android.SdkConstants.ATTR_PACKAGE;
+import static com.android.SdkConstants.ATTR_TAG;
+import static com.android.manifmerger.AttributeModel.AND_MERGING_POLICY;
 import static com.android.manifmerger.AttributeModel.Hexadecimal32BitsWithMinimumValue;
 import static com.android.manifmerger.AttributeModel.OR_MERGING_POLICY;
 import static com.android.manifmerger.AttributeModel.STRICT_MERGING_POLICY;
@@ -666,16 +668,54 @@ public class ManifestModel implements DocumentModel<ManifestModel.NodeTypes> {
          * <b>See also : </b> {@link <a
          * href=http://developer.android.com/guide/topics/manifest/uses-permission-element.html>
          * Uses-permission Xml documentation</a>}
+         *
+         * <p>The attribute model for {@code tools:requiredByPrivacySandboxSdk} attributes is
+         * somewhat unusual, as these elements are not intended for developers to use directly, but
+         * rather a way for AGP and bundle tool to collaborate to inject additional permissions
+         * required by privacy sandbox SDKs only when needed for backward compatibility.
+         *
+         * <p>Permissions required by privacy sandbox SDKs are tagged {@code
+         * tools:requiredByPrivacySandboxSdk="true"}. Only attributes with 'true' are kept at the
+         * end, so if the app or an ordinary library uses the same permission then it will not be
+         * tagged.
+         *
+         * <p>Bundle tool then only keeps these elements when creating the APKs for backward
+         * compatibility, and does not include any tagged permissions when deploying to devices
+         * which support the privacy sandbox.
          */
-        USES_PERMISSION(MergeType.MERGE, DEFAULT_NAME_ATTRIBUTE_RESOLVER),
+        USES_PERMISSION(
+                MergeType.MERGE,
+                DEFAULT_NAME_ATTRIBUTE_RESOLVER,
+                new AttributeModel.Builder(
+                                XmlNode.fromNSName(
+                                        SdkConstants.TOOLS_URI,
+                                        "tools",
+                                        NodeOperationType
+                                                .REQUIRED_BY_PRIVACY_SANDBOX_SDK_ATTRIBUTE_NAME))
+                        .setDefaultValue(SdkConstants.VALUE_FALSE)
+                        .setOnReadValidator(BOOLEAN_VALIDATOR)
+                        .setMergingPolicy(AND_MERGING_POLICY)),
 
         /**
          * Uses-permission-sdk-23 (contained in manifest) <br>
          * <b>See also : </b> {@link <a
          * href=http://developer.android.com/guide/topics/manifest/uses-permission-sdk-23-element.html>
          * Uses-permission Xml documentation</a>}
+         *
+         * <p>See information about the attribute model in {@code USES_PERMISSION}
          */
-        USES_PERMISSION_SDK_23(MergeType.MERGE, DEFAULT_NAME_ATTRIBUTE_RESOLVER),
+        USES_PERMISSION_SDK_23(
+                MergeType.MERGE,
+                DEFAULT_NAME_ATTRIBUTE_RESOLVER,
+                new AttributeModel.Builder(
+                                XmlNode.fromNSName(
+                                        SdkConstants.TOOLS_URI,
+                                        "tools",
+                                        NodeOperationType
+                                                .REQUIRED_BY_PRIVACY_SANDBOX_SDK_ATTRIBUTE_NAME))
+                        .setDefaultValue(SdkConstants.VALUE_FALSE)
+                        .setOnReadValidator(BOOLEAN_VALIDATOR)
+                        .setMergingPolicy(AND_MERGING_POLICY)),
 
         /**
          * Uses-sdk (contained in manifest)
@@ -696,7 +736,7 @@ public class ManifestModel implements DocumentModel<ManifestModel.NodeTypes> {
         ),
 
         /** attribution (contained in manifest) */
-        ATTRIBUTION(MergeType.MERGE, DEFAULT_NO_KEY_NODE_RESOLVER),
+        ATTRIBUTION(MergeType.MERGE, new AttributeBasedNodeKeyResolver(ANDROID_URI, ATTR_TAG)),
 
         /**
          * Custom tag for any application specific element

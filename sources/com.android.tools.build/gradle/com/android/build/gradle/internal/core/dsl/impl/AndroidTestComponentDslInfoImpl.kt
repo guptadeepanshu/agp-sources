@@ -21,10 +21,11 @@ import com.android.build.api.dsl.BuildType
 import com.android.build.api.dsl.ProductFlavor
 import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.impl.MutableAndroidVersion
-import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.core.dsl.AndroidTestComponentDslInfo
 import com.android.build.gradle.internal.core.dsl.DynamicFeatureVariantDslInfo
 import com.android.build.gradle.internal.core.dsl.TestedVariantDslInfo
+import com.android.build.gradle.internal.core.dsl.features.DexingDslInfo
+import com.android.build.gradle.internal.core.dsl.impl.features.DexingDslInfoImpl
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import com.android.build.gradle.internal.dsl.InternalTestedExtension
 import com.android.build.gradle.internal.dsl.SigningConfig
@@ -47,14 +48,8 @@ internal class AndroidTestComponentDslInfoImpl(
     dataProvider: ManifestDataProvider,
     services: VariantServices,
     buildDirectory: DirectoryProperty,
-    override val testedVariantDslInfo: TestedVariantDslInfo,
-    /**
-     *  Whether there are inconsistent applicationId in the test.
-     *  This trigger a mode where the namespaceForR just returns the same as namespace.
-     */
-    private val inconsistentTestAppId: Boolean,
+    override val mainVariantDslInfo: TestedVariantDslInfo,
     private val signingConfigOverride: SigningConfig?,
-    oldExtension: BaseExtension?,
     extension: InternalTestedExtension<*, *, *, *>
 ) : ConsumableComponentDslInfoImpl(
     componentIdentity,
@@ -64,40 +59,23 @@ internal class AndroidTestComponentDslInfoImpl(
     productFlavorList,
     services,
     buildDirectory,
-    oldExtension,
     extension
 ), AndroidTestComponentDslInfo {
     override val namespace: Provider<String> by lazy {
-        getTestComponentNamespace(extension, services, dataProvider)
+        getTestComponentNamespace(extension, services)
     }
 
     override val applicationId: Property<String> =
         services.newPropertyBackingDeprecatedApi(
             String::class.java,
-            initTestApplicationId(defaultConfig, services)
+            initTestApplicationId(productFlavorList, defaultConfig, services)
         )
 
     override val minSdkVersion: MutableAndroidVersion
-        get() = testedVariantDslInfo.minSdkVersion
-    override val maxSdkVersion: Int?
-        get() = testedVariantDslInfo.maxSdkVersion
-    override val targetSdkVersion: MutableAndroidVersion?
-        get() = testedVariantDslInfo.targetSdkVersion
+        get() = mainVariantDslInfo.minSdkVersion
 
-    override val namespaceForR: Provider<String> by lazy {
-        if (inconsistentTestAppId) {
-            namespace
-        } else {
-            // For legacy reason, this code does the following:
-            // - If testNamespace is set, use it.
-            // - If android.namespace is set, use it with .test added
-            // - else, use the variant applicationId.
-            // TODO(b/176931684) Remove this and use [namespace] directly everywhere.
-            extension.testNamespace?.let { services.provider { it } }
-                ?: extension.namespace?.let { services.provider { it }.map { "$it.test" } }
-                ?: applicationId
-        }
-    }
+    override val isAndroidTestCoverageEnabled: Boolean
+        get() = instrumentedTestDelegate.isAndroidTestCoverageEnabled
 
     // TODO: Android Test doesn't have isDebuggable dsl in the build type, we should move to using
     //  the value from the tested type
@@ -109,7 +87,7 @@ internal class AndroidTestComponentDslInfoImpl(
             ?: false
 
     override val signingConfig: SigningConfig? by lazy {
-        if (testedVariantDslInfo is DynamicFeatureVariantDslInfo) {
+        if (mainVariantDslInfo is DynamicFeatureVariantDslInfo) {
             null
         } else {
             getSigningConfig(
@@ -127,11 +105,18 @@ internal class AndroidTestComponentDslInfoImpl(
 
     private val instrumentedTestDelegate by lazy {
         InstrumentedTestDslInfoImpl(
+            buildTypeObj,
             productFlavorList,
             defaultConfig,
             dataProvider,
             services,
-            testedVariantDslInfo.testInstrumentationRunnerArguments
+            mainVariantDslInfo.testInstrumentationRunnerArguments
+        )
+    }
+
+    override val dexingDslInfo: DexingDslInfo by lazy {
+        DexingDslInfoImpl(
+            buildTypeObj, mergedFlavor, services
         )
     }
 

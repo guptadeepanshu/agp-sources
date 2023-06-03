@@ -31,6 +31,7 @@ import com.android.build.gradle.internal.cxx.logging.PassThroughPrefixingLogging
 import com.android.build.gradle.internal.cxx.logging.ThreadLoggingEnvironment.Companion.requireExplicitLogger
 import com.android.build.gradle.internal.cxx.logging.errorln
 import com.android.build.gradle.internal.cxx.logging.infoln
+import com.android.build.gradle.internal.cxx.logging.lifecycleln
 import com.android.build.gradle.internal.cxx.logging.logStructured
 import com.android.build.gradle.internal.cxx.logging.toJsonString
 import com.android.build.gradle.internal.cxx.model.CxxAbiModel
@@ -53,20 +54,18 @@ import com.android.build.gradle.internal.cxx.model.ninjaBuildLocationFile
 import com.android.build.gradle.internal.cxx.model.predictableRepublishFolder
 import com.android.build.gradle.internal.cxx.model.prefabClassPath
 import com.android.build.gradle.internal.cxx.model.prefabConfigFile
-import com.android.build.gradle.internal.cxx.model.prefabPackageConfigurationDirectoryList
+import com.android.build.gradle.internal.cxx.model.prefabPackageConfigurationList
 import com.android.build.gradle.internal.cxx.model.prefabPackageDirectoryList
 import com.android.build.gradle.internal.cxx.model.shouldGeneratePrefabPackages
 import com.android.build.gradle.internal.cxx.model.symbolFolderIndexFile
 import com.android.build.gradle.internal.cxx.model.writeJsonToFile
-import com.android.build.gradle.internal.cxx.os.which
+import com.android.utils.cxx.os.which
 import com.android.build.gradle.internal.cxx.process.ExecuteProcessCommand
 import com.android.build.gradle.internal.cxx.timing.TimingEnvironment
 import com.android.build.gradle.internal.cxx.timing.time
 import com.android.build.gradle.internal.profile.AnalyticsUtil
 import com.android.ide.common.process.ProcessException
 import com.android.utils.FileUtils
-import com.android.utils.cxx.CxxDiagnosticCode
-import com.android.utils.cxx.CxxDiagnosticCode.METADATA_GENERATION_FAILURE
 import com.android.utils.cxx.CxxDiagnosticCode.METADATA_GENERATION_GRADLE_EXCEPTION
 import com.android.utils.cxx.CxxDiagnosticCode.METADATA_GENERATION_PROCESS_FAILURE
 import com.google.common.base.Charsets
@@ -96,7 +95,7 @@ abstract class ExternalNativeJsonGenerator internal constructor(
         requireExplicitLogger()
         // These are lazily initialized values that can only be computed from a Gradle managed
         // thread. Compute now so that we don't in the worker threads that we'll be running as.
-        abi.variant.prefabPackageConfigurationDirectoryList
+        abi.variant.prefabPackageConfigurationList
         abi.variant.prefabPackageDirectoryList
         abi.variant.prefabClassPath
         try {
@@ -355,16 +354,8 @@ abstract class ExternalNativeJsonGenerator internal constructor(
                     ?: abi.variant.module.configureScript)
         }
 
-        // If anything in the prefab package changes, re-run. Note that this also depends on the
-        // directories, so added/removed files will also trigger a re-run.
-        for (pkgDir in abi.variant.prefabPackageDirectoryList + abi.variant.prefabPackageConfigurationDirectoryList) {
-            if (pkgDir.isDirectory) {
-                Files.walk(pkgDir.toPath())
-                    .forEach {
-                        result.add(it.toFile())
-                    }
-            }
-        }
+        // Add prefab_publication.json files
+        result.addAll(abi.variant.prefabPackageConfigurationList)
 
         // We're going to read the mini-config json file to get the list of input files. The
         // mini-config is derived from jsonFile so we check for that file's existing before

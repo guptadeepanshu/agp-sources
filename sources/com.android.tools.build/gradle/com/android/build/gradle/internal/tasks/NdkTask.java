@@ -18,10 +18,9 @@ package com.android.build.gradle.internal.tasks;
 
 import com.android.annotations.Nullable;
 import com.android.build.gradle.internal.dsl.CoreNdkOptions;
+import com.android.buildanalyzer.common.TaskCategory;
 import java.util.List;
 import java.util.Set;
-
-import com.android.build.gradle.internal.tasks.TaskCategory;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Optional;

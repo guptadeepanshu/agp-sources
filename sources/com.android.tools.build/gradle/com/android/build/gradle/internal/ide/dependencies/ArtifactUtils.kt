@@ -270,6 +270,13 @@ class ArtifactCollections(
         AndroidArtifacts.ArtifactType.EXPLODED_AAR
     )
 
+    @get:Internal
+    var asarJarsCollection: ArtifactCollection = variantDependencies.getArtifactCollectionForToolingModel(
+        consumedConfigType,
+        AndroidArtifacts.ArtifactScope.ALL,
+        AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_INTERFACE_DESCRIPTOR
+    )
+
     @get:Classpath
     val explodedAarFileCollection: FileCollection
         get() = explodedAars.artifactFiles
@@ -350,6 +357,8 @@ private fun getAllArtifacts(
 
     val lintJars = collections.lintJar.asMap { it.file }
 
+    val asarJars = collections.asarJarsCollection.asMap { it.file }
+
     val projectList = collections.projectJars
 
     /** See [ArtifactCollections.projectJars]. */
@@ -393,7 +402,7 @@ private fun getAllArtifacts(
         // ResolvedArtifactResult.
         val dependencyType: ResolvedArtifact.DependencyType
 
-        val extractedAar: File? = explodedAars[variantKey]
+        val extractedAar: File? = explodedAars[variantKey] ?: asarJars[variantKey]
 
         val manifest = manifests[variantKey]
 
@@ -409,6 +418,13 @@ private fun getAllArtifacts(
                 dependencyType = ResolvedArtifact.DependencyType.ANDROID
                 mainArtifacts = listOf(resolvedComponentResult)
                 publishedLintJar = lintJars[variantKey]
+            }
+            AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_ARCHIVE.type -> {
+                // When the dependency is ASAR, the resolved artifact needs to be the jar inside it
+                // extractedAar will be pointing to that location of that jar
+                dependencyType = ResolvedArtifact.DependencyType.ANDROID_SANDBOX_SDK
+                mainArtifacts = listOf(resolvedComponentResult)
+                publishedLintJar = null
             }
             AndroidArtifacts.ArtifactType.JAR.type ->
                 if (manifest != null) {
@@ -427,6 +443,7 @@ private fun getAllArtifacts(
                     }
                     publishedLintJar = null
                 }
+
             else -> throw IllegalStateException("Internal error: Artifact type $artifactType not expected, only jar or aar are handled.")
         }
 

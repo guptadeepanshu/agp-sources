@@ -68,6 +68,11 @@ private static final long serialVersionUID = 0L;
             toolingApiBuildFinishedEventLatencyMs_ = input.readInt64();
             break;
           }
+          case 32: {
+            bitField0_ |= 0x00000008;
+            numberOfGeneratedPartialResults_ = input.readInt32();
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -186,6 +191,37 @@ private static final long serialVersionUID = 0L;
     return toolingApiBuildFinishedEventLatencyMs_;
   }
 
+  public static final int NUMBER_OF_GENERATED_PARTIAL_RESULTS_FIELD_NUMBER = 4;
+  private int numberOfGeneratedPartialResults_;
+  /**
+   * <pre>
+   * The number of partial result files generated in AGP which corresponds to
+   * the number of build services created per the build, which corresponds to
+   * the number of classloaders.
+   * </pre>
+   *
+   * <code>optional int32 number_of_generated_partial_results = 4;</code>
+   * @return Whether the numberOfGeneratedPartialResults field is set.
+   */
+  @java.lang.Override
+  public boolean hasNumberOfGeneratedPartialResults() {
+    return ((bitField0_ & 0x00000008) != 0);
+  }
+  /**
+   * <pre>
+   * The number of partial result files generated in AGP which corresponds to
+   * the number of build services created per the build, which corresponds to
+   * the number of classloaders.
+   * </pre>
+   *
+   * <code>optional int32 number_of_generated_partial_results = 4;</code>
+   * @return The numberOfGeneratedPartialResults.
+   */
+  @java.lang.Override
+  public int getNumberOfGeneratedPartialResults() {
+    return numberOfGeneratedPartialResults_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -209,6 +245,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000004) != 0)) {
       output.writeInt64(3, toolingApiBuildFinishedEventLatencyMs_);
     }
+    if (((bitField0_ & 0x00000008) != 0)) {
+      output.writeInt32(4, numberOfGeneratedPartialResults_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -229,6 +268,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000004) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt64Size(3, toolingApiBuildFinishedEventLatencyMs_);
+    }
+    if (((bitField0_ & 0x00000008) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(4, numberOfGeneratedPartialResults_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -260,6 +303,11 @@ private static final long serialVersionUID = 0L;
       if (getToolingApiBuildFinishedEventLatencyMs()
           != other.getToolingApiBuildFinishedEventLatencyMs()) return false;
     }
+    if (hasNumberOfGeneratedPartialResults() != other.hasNumberOfGeneratedPartialResults()) return false;
+    if (hasNumberOfGeneratedPartialResults()) {
+      if (getNumberOfGeneratedPartialResults()
+          != other.getNumberOfGeneratedPartialResults()) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -285,6 +333,10 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + TOOLING_API_BUILD_FINISHED_EVENT_LATENCY_MS_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getToolingApiBuildFinishedEventLatencyMs());
+    }
+    if (hasNumberOfGeneratedPartialResults()) {
+      hash = (37 * hash) + NUMBER_OF_GENERATED_PARTIAL_RESULTS_FIELD_NUMBER;
+      hash = (53 * hash) + getNumberOfGeneratedPartialResults();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -429,6 +481,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000002);
       toolingApiBuildFinishedEventLatencyMs_ = 0L;
       bitField0_ = (bitField0_ & ~0x00000004);
+      numberOfGeneratedPartialResults_ = 0;
+      bitField0_ = (bitField0_ & ~0x00000008);
       return this;
     }
 
@@ -468,6 +522,10 @@ private static final long serialVersionUID = 0L;
       if (((from_bitField0_ & 0x00000004) != 0)) {
         result.toolingApiBuildFinishedEventLatencyMs_ = toolingApiBuildFinishedEventLatencyMs_;
         to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.numberOfGeneratedPartialResults_ = numberOfGeneratedPartialResults_;
+        to_bitField0_ |= 0x00000008;
       }
       result.bitField0_ = to_bitField0_;
       onBuilt();
@@ -526,6 +584,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasToolingApiBuildFinishedEventLatencyMs()) {
         setToolingApiBuildFinishedEventLatencyMs(other.getToolingApiBuildFinishedEventLatencyMs());
+      }
+      if (other.hasNumberOfGeneratedPartialResults()) {
+        setNumberOfGeneratedPartialResults(other.getNumberOfGeneratedPartialResults());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -726,6 +787,69 @@ private static final long serialVersionUID = 0L;
     public Builder clearToolingApiBuildFinishedEventLatencyMs() {
       bitField0_ = (bitField0_ & ~0x00000004);
       toolingApiBuildFinishedEventLatencyMs_ = 0L;
+      onChanged();
+      return this;
+    }
+
+    private int numberOfGeneratedPartialResults_ ;
+    /**
+     * <pre>
+     * The number of partial result files generated in AGP which corresponds to
+     * the number of build services created per the build, which corresponds to
+     * the number of classloaders.
+     * </pre>
+     *
+     * <code>optional int32 number_of_generated_partial_results = 4;</code>
+     * @return Whether the numberOfGeneratedPartialResults field is set.
+     */
+    @java.lang.Override
+    public boolean hasNumberOfGeneratedPartialResults() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <pre>
+     * The number of partial result files generated in AGP which corresponds to
+     * the number of build services created per the build, which corresponds to
+     * the number of classloaders.
+     * </pre>
+     *
+     * <code>optional int32 number_of_generated_partial_results = 4;</code>
+     * @return The numberOfGeneratedPartialResults.
+     */
+    @java.lang.Override
+    public int getNumberOfGeneratedPartialResults() {
+      return numberOfGeneratedPartialResults_;
+    }
+    /**
+     * <pre>
+     * The number of partial result files generated in AGP which corresponds to
+     * the number of build services created per the build, which corresponds to
+     * the number of classloaders.
+     * </pre>
+     *
+     * <code>optional int32 number_of_generated_partial_results = 4;</code>
+     * @param value The numberOfGeneratedPartialResults to set.
+     * @return This builder for chaining.
+     */
+    public Builder setNumberOfGeneratedPartialResults(int value) {
+      bitField0_ |= 0x00000008;
+      numberOfGeneratedPartialResults_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * The number of partial result files generated in AGP which corresponds to
+     * the number of build services created per the build, which corresponds to
+     * the number of classloaders.
+     * </pre>
+     *
+     * <code>optional int32 number_of_generated_partial_results = 4;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearNumberOfGeneratedPartialResults() {
+      bitField0_ = (bitField0_ & ~0x00000008);
+      numberOfGeneratedPartialResults_ = 0;
       onChanged();
       return this;
     }

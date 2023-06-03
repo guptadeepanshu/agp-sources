@@ -343,6 +343,11 @@ class VariantServicesImpl(
         return result
     }
 
+    override fun fileTreeFactory(): () -> ConfigurableFileTree {
+        val objectFactory = projectServices.objectFactory
+        return { objectFactory.fileTree() }
+    }
+
     override fun lockProperties() {
         for (property in properties) {
             property.disallowChanges()

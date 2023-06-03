@@ -21,6 +21,7 @@ import com.android.build.api.dsl.BuildFeatures
 import com.android.build.api.dsl.ComposeOptions
 import com.android.build.api.dsl.DefaultConfig
 import com.android.build.api.dsl.Installation
+import com.android.build.api.dsl.Packaging
 import com.android.build.api.dsl.SdkComponents
 import com.android.build.api.dsl.TestCoverage
 import com.android.build.api.dsl.ViewBinding
@@ -94,7 +95,10 @@ abstract class CommonExtensionImpl<
         action.execute(aaptOptions)
     }
 
-    override val installation: Installation = dslServices.newInstance(AdbOptions::class.java)
+    override val installation: Installation = dslServices.newDecoratedInstance(
+        AdbOptions::class.java,
+        dslServices
+    )
 
     override fun installation(action: Installation.() -> Unit) {
         action.invoke(installation)
@@ -338,13 +342,23 @@ abstract class CommonExtensionImpl<
         dslServices.newInstance(LintOptions::class.java, dslServices, lint)
     }
 
-
     override fun lintOptions(action: com.android.build.api.dsl.LintOptions.() -> Unit) {
         action.invoke(lintOptions)
     }
 
     override fun lintOptions(action: Action<LintOptions>) {
         action.execute(lintOptions)
+    }
+
+    override val packagingOptions: com.android.build.gradle.internal.dsl.PackagingOptions
+        get() = packaging as com.android.build.gradle.internal.dsl.PackagingOptions
+
+    override fun packagingOptions(action: Packaging.() -> Unit) {
+        action.invoke(packaging)
+    }
+
+    override fun packagingOptions(action: Action<com.android.build.gradle.internal.dsl.PackagingOptions>) {
+        action.execute(packaging as com.android.build.gradle.internal.dsl.PackagingOptions)
     }
 
     override fun productFlavors(action: Action<NamedDomainObjectContainer<ProductFlavor>>) {

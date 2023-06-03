@@ -20,7 +20,7 @@ import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.featuresplit.removeVariantNameFromId
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.utils.FileUtils
 import com.google.common.io.Files
 import org.apache.commons.io.Charsets
@@ -68,7 +68,8 @@ abstract class CheckMultiApkLibrariesTask : NonIncrementalTask() {
             val projectPath =
                     (artifact.id.componentIdentifier as ProjectComponentIdentifier).projectPath
             if (artifact.file.isFile) {
-                found = found || updateLibraryMap(artifact.file, projectPath, map)
+                val newlyFound = checkAndUpdateLibraryMap(artifact.file, projectPath, map)
+                found = found || newlyFound
             }
         }
 
@@ -128,7 +129,7 @@ abstract class CheckMultiApkLibrariesTask : NonIncrementalTask() {
         }
     }
 
-    private fun updateLibraryMap(
+    private fun checkAndUpdateLibraryMap(
         file: File,
         projectPath: String,
         map: MutableMap<String, MutableList<String>>

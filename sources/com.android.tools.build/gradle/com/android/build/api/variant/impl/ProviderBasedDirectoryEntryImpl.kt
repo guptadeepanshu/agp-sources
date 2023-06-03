@@ -56,7 +56,7 @@ class ProviderBasedDirectoryEntryImpl(
 
     private fun asConfigurableFileTrees(
             fileTreeCreator: () -> ConfigurableFileTree,
-            directories: List<Directory>
+            directories: Collection<Directory>
     ) = directories.map { directory ->
         fileTreeCreator()
                 .from(directory)

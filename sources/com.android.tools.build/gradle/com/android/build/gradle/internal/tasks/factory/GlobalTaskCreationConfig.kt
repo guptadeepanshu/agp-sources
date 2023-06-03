@@ -24,19 +24,17 @@ import com.android.build.api.dsl.DataBinding
 import com.android.build.api.dsl.ExternalNativeBuild
 import com.android.build.api.dsl.Installation
 import com.android.build.api.dsl.Lint
-import com.android.build.api.dsl.PrefabPackagingOptions
+import com.android.build.api.dsl.Prefab
 import com.android.build.api.dsl.Splits
 import com.android.build.api.dsl.TestCoverage
 import com.android.build.api.dsl.TestOptions
-import com.android.build.api.transform.Transform
 import com.android.build.gradle.internal.SdkComponentsBuildService
+import com.android.build.gradle.internal.attribution.BuildAnalyzerIssueReporter
 import com.android.build.gradle.internal.core.SettingsOptions
 import com.android.build.gradle.internal.dsl.LanguageSplitOptions
-import com.android.build.gradle.internal.packaging.JarCreatorType
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.BaseServices
 import com.android.builder.core.LibraryRequest
-import com.android.builder.internal.packaging.ApkCreatorType
 import com.android.builder.testing.api.DeviceProvider
 import com.android.builder.testing.api.TestServer
 import com.android.repository.Revision
@@ -84,14 +82,12 @@ interface GlobalTaskCreationConfig: BootClasspathConfig {
     val installationOptions: Installation
     val libraryRequests: Collection<LibraryRequest>
     val lintOptions: Lint
-    val prefab: Set<PrefabPackagingOptions>
+    val prefab: Set<Prefab>
     val resourcePrefix: String?
     val splits: Splits
     val testCoverage: TestCoverage
     val testOptions: TestOptions
     val testServers: List<TestServer>
-    val transforms: List<Transform>
-    val transformsDependencies: List<List<Any>>
 
     // processed access to some DSL values
 
@@ -100,7 +96,7 @@ interface GlobalTaskCreationConfig: BootClasspathConfig {
     val legacyLanguageSplitOptions: LanguageSplitOptions
 
     /** the same as [prefab] but returns an empty set on unsupported variants */
-    val prefabOrEmpty: Set<PrefabPackagingOptions>
+    val prefabOrEmpty: Set<Prefab>
 
     val hasNoBuildTypeMinified: Boolean
 
@@ -132,11 +128,14 @@ interface GlobalTaskCreationConfig: BootClasspathConfig {
     // configurations that may need to be accessible
     val lintPublish: Configuration
     val lintChecks: Configuration
-
-    val jarCreatorType: JarCreatorType
-
-    val apkCreatorType: ApkCreatorType
+    //  configuration with an empty jar as input, to allow deriving of things depending
+    //  on AGP itself in a cacheable way by custom Gradle artifact transforms
+    val fakeDependency: Configuration
 
     // Options from the settings plugin
     val settingsOptions: SettingsOptions
+
+    val buildAnalyzerIssueReporter: BuildAnalyzerIssueReporter?
+
+    val enableGlobalSynthetics: Boolean
 }

@@ -91,6 +91,8 @@ import org.gradle.api.file.ProjectLayout
 import org.gradle.api.provider.ProviderFactory
 import java.io.File
 import com.android.Version
+import com.android.build.gradle.internal.cxx.model.ModelField.CXX_MODULE_MODEL_HAS_BUILD_TIME_INFORMATION
+import com.android.build.gradle.internal.cxx.model.minimumCmakeVersion
 
 /**
  * Rewrite the CxxAbiModel in three phases:
@@ -502,7 +504,8 @@ private fun CxxModuleModel.rewrite(rewrite : (property: ModelField, value: Strin
         ndkFolder = rewrite(CXX_MODULE_MODEL_NDK_FOLDER, ndkFolder.path).toFile(),
         ninjaExe = rewrite.fileOrNull(CXX_MODULE_MODEL_NINJA_EXE, ninjaExe),
         makeFile = rewrite.fileOrNull(CXX_MODULE_MODEL_MAKE_FILE, makeFile)!!,
-        configureScript = rewrite.fileOrNull(CXX_MODULE_MODEL_CONFIGURE_SCRIPT, configureScript)
+        configureScript = rewrite.fileOrNull(CXX_MODULE_MODEL_CONFIGURE_SCRIPT, configureScript),
+        hasBuildTimeInformation = rewrite.booleanOrNull(CXX_MODULE_MODEL_HAS_BUILD_TIME_INFORMATION, hasBuildTimeInformation)!!
 )
 
 // Rewriter for CxxVariantModel

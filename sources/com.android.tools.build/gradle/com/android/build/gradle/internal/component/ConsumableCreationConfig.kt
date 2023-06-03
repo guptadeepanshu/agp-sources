@@ -16,72 +16,30 @@
 
 package com.android.build.gradle.internal.component
 
-import com.android.build.api.component.impl.ApkCreationConfigImpl
-import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.Packaging
-import com.android.build.gradle.internal.PostprocessingFeatures
+import com.android.build.gradle.internal.component.features.NativeBuildCreationConfig
+import com.android.build.gradle.internal.component.features.OptimizationCreationConfig
 import com.android.build.gradle.internal.component.features.RenderscriptCreationConfig
-import com.android.build.gradle.internal.scope.Java8LangSupport
-import com.android.builder.dexing.DexingType
-import org.gradle.api.file.RegularFile
-import org.gradle.api.provider.ListProperty
-import org.gradle.api.provider.MapProperty
-import org.gradle.api.provider.Provider
+import com.android.build.gradle.internal.component.features.ShadersCreationConfig
 
 /**
  * CreationConfig for variants that produces an artifact that is directly install-able to devices
  * like APKs or AABs or used by other projects as a versioned reusable logic like AARs.
  */
 interface ConsumableCreationConfig: ComponentCreationConfig {
-    val renderscriptCreationConfig: RenderscriptCreationConfig?
-
     val packaging: Packaging
 
-    /**
-     * Returns the minimum SDK version for which is used for dexing this variant.
-     * See [ApkCreationConfigImpl.minSdkVersionForDexing] for details.
-     */
-    val minSdkVersionForDexing: AndroidVersion
+    val optimizationCreationConfig: OptimizationCreationConfig
 
-    val isMultiDexEnabled: Boolean
-
-    val isCoreLibraryDesugaringEnabled: Boolean
-
-    val proguardFiles: ListProperty<RegularFile>
+    val isAndroidTestCoverageEnabled: Boolean
 
     /**
-     * Returns the component ids of those library dependencies whose keep rules are ignored when
-     * building the project.
+     * Used by lint to run checks related to core library desugaring.
      */
-    val ignoredLibraryKeepRules: Provider<Set<String>>
+    val isCoreLibraryDesugaringEnabledLintCheck: Boolean
 
-    /**
-     * Returns whether to ignore all keep rules from external library dependencies.
-     */
-    val ignoreAllLibraryKeepRules: Boolean
-
-    val dexingType: DexingType
-
-    val minifiedEnabled: Boolean
-    val resourcesShrink: Boolean
-
-    /** Returns whether we need to create a stream from the merged java resources */
-    val needsMergedJavaResStream: Boolean
-
-    fun getJava8LangSupportType(): Java8LangSupport
-
-    val postProcessingFeatures: PostprocessingFeatures?
-
-    /**
-     * Returns if we need to shrink desugar lib when desugaring Core Library.
-     */
-    val needsShrinkDesugarLibrary: Boolean
-
-    val needsMainDexListForBundle: Boolean
-
-    val defaultGlslcArgs: List<String>
-
-    val scopedGlslcArgs: Map<String, List<String>>
-
-    val manifestPlaceholders: MapProperty<String, String>
+    // optional features
+    val renderscriptCreationConfig: RenderscriptCreationConfig?
+    val shadersCreationConfig: ShadersCreationConfig?
+    val nativeBuildCreationConfig: NativeBuildCreationConfig?
 }

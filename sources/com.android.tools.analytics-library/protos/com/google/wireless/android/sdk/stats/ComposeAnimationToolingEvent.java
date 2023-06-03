@@ -208,6 +208,14 @@ private static final long serialVersionUID = 0L;
      * <code>DRAG_TIMELINE_LINE = 23;</code>
      */
     DRAG_TIMELINE_LINE(23),
+    /**
+     * <pre>
+     * Open the picker to change the state of the animation.
+     * </pre>
+     *
+     * <code>OPEN_PICKER = 24;</code>
+     */
+    OPEN_PICKER(24),
     ;
 
     /**
@@ -310,6 +318,14 @@ private static final long serialVersionUID = 0L;
      * <code>DRAG_TIMELINE_LINE = 23;</code>
      */
     public static final int DRAG_TIMELINE_LINE_VALUE = 23;
+    /**
+     * <pre>
+     * Open the picker to change the state of the animation.
+     * </pre>
+     *
+     * <code>OPEN_PICKER = 24;</code>
+     */
+    public static final int OPEN_PICKER_VALUE = 24;
 
 
     public final int getNumber() {
@@ -356,6 +372,7 @@ private static final long serialVersionUID = 0L;
         case 21: return UNLOCK_ANIMATION;
         case 22: return RESET_TIMELINE;
         case 23: return DRAG_TIMELINE_LINE;
+        case 24: return OPEN_PICKER;
         default: return null;
       }
     }

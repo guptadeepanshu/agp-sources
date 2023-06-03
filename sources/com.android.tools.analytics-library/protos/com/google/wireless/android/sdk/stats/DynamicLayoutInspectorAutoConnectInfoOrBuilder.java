@@ -28,22 +28,24 @@ public interface DynamicLayoutInspectorAutoConnectInfoOrBuilder extends
 
   /**
    * <pre>
-   * If the handshake was initially SUPPORT_UNKNOWN, to what did it convert to?
+   * Deprecated, use handshake_conversion_info instead
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion handshake_conversion = 2;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion handshake_conversion = 2 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the handshakeConversion field is set.
    */
-  boolean hasHandshakeConversion();
+  @java.lang.Deprecated boolean hasHandshakeConversion();
   /**
    * <pre>
-   * If the handshake was initially SUPPORT_UNKNOWN, to what did it convert to?
+   * Deprecated, use handshake_conversion_info instead
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion handshake_conversion = 2;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion handshake_conversion = 2 [deprecated = true];</code>
+   * @deprecated
    * @return The handshakeConversion.
    */
-  com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion getHandshakeConversion();
+  @java.lang.Deprecated com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion getHandshakeConversion();
 
   /**
    * <pre>
@@ -63,4 +65,42 @@ public interface DynamicLayoutInspectorAutoConnectInfoOrBuilder extends
    * @return The reasonNotSupported.
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.AutoConnectReasonNotSupported getReasonNotSupported();
+
+  /**
+   * <pre>
+   * Indicates when a handshake state converts to another
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion handshake_conversion_info = 4;</code>
+   * @return Whether the handshakeConversionInfo field is set.
+   */
+  boolean hasHandshakeConversionInfo();
+  /**
+   * <pre>
+   * Indicates when a handshake state converts to another
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion handshake_conversion_info = 4;</code>
+   * @return The handshakeConversionInfo.
+   */
+  com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion getHandshakeConversionInfo();
+
+  /**
+   * <pre>
+   * Indicates whether this auto-connect info is about a recovery handshake
+   * </pre>
+   *
+   * <code>optional bool is_recovery_handshake = 5;</code>
+   * @return Whether the isRecoveryHandshake field is set.
+   */
+  boolean hasIsRecoveryHandshake();
+  /**
+   * <pre>
+   * Indicates whether this auto-connect info is about a recovery handshake
+   * </pre>
+   *
+   * <code>optional bool is_recovery_handshake = 5;</code>
+   * @return The isRecoveryHandshake.
+   */
+  boolean getIsRecoveryHandshake();
 }

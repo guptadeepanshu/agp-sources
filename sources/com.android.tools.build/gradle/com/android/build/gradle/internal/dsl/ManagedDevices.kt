@@ -26,7 +26,7 @@ import javax.inject.Inject
 open class ManagedDevices @Inject constructor(dslServices: DslServices) :
     com.android.build.api.dsl.ManagedDevices {
 
-    override var devices: ExtensiblePolymorphicDomainObjectContainer<Device> =
+    override val devices: ExtensiblePolymorphicDomainObjectContainer<Device> =
         dslServices.polymorphicDomainObjectContainer(Device::class.java).apply {
             registerBinding(
                 com.android.build.api.dsl.ManagedVirtualDevice::class.java,

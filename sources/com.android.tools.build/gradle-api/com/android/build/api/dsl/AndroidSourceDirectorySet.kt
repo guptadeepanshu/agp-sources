@@ -16,11 +16,7 @@
 
 package com.android.build.api.dsl
 
-import org.gradle.api.Incubating
 import org.gradle.api.Named
-import org.gradle.api.tasks.util.PatternFilterable
-import org.gradle.api.tasks.util.PatternSet
-import java.io.File
 
 /**
  * An AndroidSourceDirectorySet represents a set of directory inputs for an Android project.
@@ -30,7 +26,6 @@ interface AndroidSourceDirectorySet : Named {
     /**
      * A concise name for the source directory (typically used to identify it in a collection).
      */
-    @Incubating
     override fun getName(): String
 
     /**
@@ -40,7 +35,6 @@ interface AndroidSourceDirectorySet : Named {
      *
      * This method has a return value for legacy reasons.
      */
-    @Incubating
     fun srcDir(srcDir: Any): Any
 
     /**
@@ -50,7 +44,6 @@ interface AndroidSourceDirectorySet : Named {
      *
      * This method has a return value for legacy reasons.
      */
-    @Incubating
     fun srcDirs(vararg srcDirs: Any): Any
 
     /**
@@ -61,6 +54,5 @@ interface AndroidSourceDirectorySet : Named {
      *
      *  This method has a return value for legacy reasons.
      */
-    @Incubating
     fun setSrcDirs(srcDirs: Iterable<*>): Any
 }

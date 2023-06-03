@@ -21,7 +21,6 @@ import com.android.build.api.dsl.BuildFeatures
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.ExecutionProfile
 import com.android.build.api.dsl.SettingsExtension
-import com.android.build.api.dsl.SingleVariant
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
 import com.android.build.api.variant.AndroidComponentsExtension
 import com.android.build.api.variant.Variant
@@ -53,12 +52,9 @@ import com.android.build.gradle.internal.dependency.CONFIG_NAME_ANDROID_JDK_IMAG
 import com.android.build.gradle.internal.dependency.JacocoInstrumentationService
 import com.android.build.gradle.internal.dependency.SourceSetManager
 import com.android.build.gradle.internal.dependency.VariantDependencies
-import com.android.build.gradle.internal.dsl.AbstractPublishing
 import com.android.build.gradle.internal.dsl.BuildType
 import com.android.build.gradle.internal.dsl.CommonExtensionImpl
 import com.android.build.gradle.internal.dsl.DefaultConfig
-import com.android.build.gradle.internal.dsl.InternalApplicationExtension
-import com.android.build.gradle.internal.dsl.InternalLibraryExtension
 import com.android.build.gradle.internal.dsl.ProductFlavor
 import com.android.build.gradle.internal.dsl.SigningConfig
 import com.android.build.gradle.internal.errors.DeprecationReporterImpl
@@ -79,6 +75,7 @@ import com.android.build.gradle.internal.services.AndroidLocationsBuildService
 import com.android.build.gradle.internal.services.ClassesHierarchyBuildService
 import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.services.DslServicesImpl
+import com.android.build.gradle.internal.services.FakeDependencyJarBuildService
 import com.android.build.gradle.internal.services.LintClassLoaderBuildService
 import com.android.build.gradle.internal.services.StringCachingBuildService
 import com.android.build.gradle.internal.services.SymbolTableBuildService
@@ -92,7 +89,6 @@ import com.android.build.gradle.internal.tasks.factory.TaskManagerConfig
 import com.android.build.gradle.internal.tasks.factory.TaskManagerConfigImpl
 import com.android.build.gradle.internal.utils.enforceMinimumVersionsOfPlugins
 import com.android.build.gradle.internal.utils.getKotlinPluginVersion
-import com.android.build.gradle.internal.utils.publishingFeatureOptIn
 import com.android.build.gradle.internal.utils.syncAgpAndKgpSources
 import com.android.build.gradle.internal.variant.ComponentInfo
 import com.android.build.gradle.internal.variant.LegacyVariantInputManager
@@ -215,6 +211,7 @@ abstract class BasePlugin<
                 createCustomLintPublishConfig(project),
                 createCustomLintChecksConfig(project),
                 createAndroidJarConfig(project),
+                createFakeDependencyConfig(project),
                 createSettingsOptions()
             )
         }
@@ -399,6 +396,8 @@ abstract class BasePlugin<
         LintClassLoaderBuildService.RegistrationAction(project).execute()
         JacocoInstrumentationService.RegistrationAction(project).execute()
 
+        FakeDependencyJarBuildService.RegistrationAction(project).execute()
+
         projectOptions
             .allOptions
             .forEach(projectServices.deprecationReporter::reportOptionIssuesIfAny)
@@ -464,6 +463,15 @@ abstract class BasePlugin<
             androidJarConfig.description = "Configuration providing various types of Android JAR file"
             androidJarConfig.isCanBeConsumed = false
             return androidJarConfig
+        }
+        private fun createFakeDependencyConfig(project: Project): Configuration {
+            val fakeJarService = getBuildService(
+                project.gradle.sharedServices,
+                FakeDependencyJarBuildService::class.java,
+            ).get()
+
+            val fakeDependency = project.dependencies.create(project.files(fakeJarService.lazyCachedFakeJar))
+            return project.configurations.detachedConfiguration(fakeDependency)
         }
     }
 
@@ -630,7 +638,6 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
                             .reportWarning(Type.GENERIC, warningMsg)
                     }
                 })
-        checkMavenPublishing(project)
 
         // don't do anything if the project was not initialized.
         // Unless TEST_SDK_DIR is set in which case this is unit tests and we don't return.
@@ -700,8 +707,17 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
             .configureGeneralTransforms(globalConfig.namespacedAndroidResources)
             .configureVariantTransforms(variants, variantManager.nestedComponents, globalConfig)
             .configureAttributeMatchingStrategies(variantInputModel)
-            .configureJacocoTransforms()
             .configureCalculateStackFramesTransforms(globalConfig)
+            .configurePrivacySandboxSdkConsumerTransforms(
+                    globalConfig.compileSdkHashString, globalConfig.buildToolsRevision, globalConfig)
+                .apply {
+                    // Registering Jacoco transforms causes the jacoco configuration to be created.
+                    // Ensure there are is at least one variant with enableAndroidTestCoverage
+                    // enabled before registering the transforms.
+                    if (variants.any { it.variant.isAndroidTestCoverageEnabled }) {
+                        configureJacocoTransforms()
+                    }
+                }
 
         // Run the old Variant API, after the variants and tasks have been created.
         @Suppress("DEPRECATION")
@@ -920,37 +936,5 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
         configuration.description = "Additional APKs used during instrumentation testing."
         configuration.isCanBeConsumed = false
         configuration.isCanBeResolved = true
-    }
-
-    private fun checkMavenPublishing(project: Project) {
-        if (project.plugins.hasPlugin("maven-publish")) {
-            @Suppress("DEPRECATION")
-            if (extension is InternalApplicationExtension) {
-                @Suppress("UNCHECKED_CAST")
-                checkSoftwareComponents(
-                    (extension as InternalApplicationExtension).publishing as AbstractPublishing<SingleVariant>
-                )
-            }
-            @Suppress("DEPRECATION")
-            if (extension is InternalLibraryExtension) {
-                @Suppress("UNCHECKED_CAST")
-                checkSoftwareComponents(
-                    (extension as InternalLibraryExtension).publishing as AbstractPublishing<SingleVariant>
-                )
-            }
-        }
-    }
-
-    private fun checkSoftwareComponents(publishing: AbstractPublishing<SingleVariant>) {
-        val optIn: Boolean =
-            publishingFeatureOptIn(publishing, dslServices.projectOptions)
-        if (!optIn) {
-            val warning = ("Software Components will not be created automatically for "
-                    + "Maven publishing from Android Gradle Plugin 8.0. To opt-in to the "
-                    + "future behavior, set the Gradle property "
-                    + "android.disableAutomaticComponentCreation=true in the "
-                    + "`gradle.properties` file or use the new publishing DSL.")
-            dslServices.issueReporter.reportWarning(Type.GENERIC, warning)
-        }
     }
 }

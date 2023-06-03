@@ -24,7 +24,6 @@ import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.core.dsl.TestComponentDslInfo
 import com.android.build.gradle.internal.dependency.VariantDependencies
-import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.TaskCreationServices
@@ -46,7 +45,6 @@ abstract class TestComponentImpl<DslInfoT: TestComponentDslInfo> @Inject constru
     variantData: BaseVariantData,
     taskContainer: MutableTaskContainer,
     override val mainVariant: VariantCreationConfig,
-    transformManager: TransformManager,
     variantServices: VariantServices,
     taskCreationServices: TaskCreationServices,
     global: GlobalTaskCreationConfig,
@@ -60,16 +58,10 @@ abstract class TestComponentImpl<DslInfoT: TestComponentDslInfo> @Inject constru
     artifacts,
     variantData,
     taskContainer,
-    transformManager,
     variantServices,
     taskCreationServices,
     global
 ), TestComponent, TestComponentCreationConfig {
-
-    // Only include the jacoco agent if coverage is enabled in library test components
-    // as in apps it will have already been included in the tested application.
-    override val packageJacocoRuntime: Boolean
-        get() = dslInfo.isAndroidTestCoverageEnabled && mainVariant.componentType.isAar
 
     override val description: String
         get() {
@@ -102,7 +94,4 @@ abstract class TestComponentImpl<DslInfoT: TestComponentDslInfo> @Inject constru
     override fun <T> onTestedVariant(action: (VariantCreationConfig) -> T): T {
         return action(mainVariant)
     }
-
-    override val supportedAbis: Set<String>
-        get() = mainVariant.supportedAbis
 }

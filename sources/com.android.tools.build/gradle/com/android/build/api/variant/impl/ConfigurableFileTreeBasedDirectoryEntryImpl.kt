@@ -37,7 +37,7 @@ class ConfigurableFileTreeBasedDirectoryEntryImpl(
         projectDir: Provider<Directory>,
     ): Provider<out Collection<Directory>> =
         configurableFileTree.elements.zip(projectDir) { _, projectDir ->
-                listOf(projectDir.dir(configurableFileTree.dir.absolutePath))
+            listOf(projectDir.dir(configurableFileTree.dir.absolutePath))
         }
 
     override val isGenerated: Boolean = true

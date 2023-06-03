@@ -37,78 +37,113 @@ public interface GradleTaskExecutionOrBuilder extends
    * Whether the task did work (TaskState#getDidWork())
    * This is not necessarily the inverse of up_to_date: see
    * https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/TaskState.html#getDidWork()
+   * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
    * </pre>
    *
-   * <code>optional bool did_work = 2;</code>
+   * <code>optional bool did_work = 2 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the didWork field is set.
    */
-  boolean hasDidWork();
+  @java.lang.Deprecated boolean hasDidWork();
   /**
    * <pre>
    * Whether the task did work (TaskState#getDidWork())
    * This is not necessarily the inverse of up_to_date: see
    * https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/TaskState.html#getDidWork()
+   * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
    * </pre>
    *
-   * <code>optional bool did_work = 2;</code>
+   * <code>optional bool did_work = 2 [deprecated = true];</code>
+   * @deprecated
    * @return The didWork.
    */
-  boolean getDidWork();
+  @java.lang.Deprecated boolean getDidWork();
 
   /**
    * <pre>
    * Whether the task was skipped (TaskState#getSkipped())
+   * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
    * </pre>
    *
-   * <code>optional bool skipped = 3;</code>
+   * <code>optional bool skipped = 3 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the skipped field is set.
    */
-  boolean hasSkipped();
+  @java.lang.Deprecated boolean hasSkipped();
   /**
    * <pre>
    * Whether the task was skipped (TaskState#getSkipped())
+   * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
    * </pre>
    *
-   * <code>optional bool skipped = 3;</code>
+   * <code>optional bool skipped = 3 [deprecated = true];</code>
+   * @deprecated
    * @return The skipped.
    */
-  boolean getSkipped();
+  @java.lang.Deprecated boolean getSkipped();
 
   /**
    * <pre>
    * Whether the task was up to date (TaskState#getUpToDate())
+   * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
    * </pre>
    *
-   * <code>optional bool up_to_date = 4;</code>
+   * <code>optional bool up_to_date = 4 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the upToDate field is set.
    */
-  boolean hasUpToDate();
+  @java.lang.Deprecated boolean hasUpToDate();
   /**
    * <pre>
    * Whether the task was up to date (TaskState#getUpToDate())
+   * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
    * </pre>
    *
-   * <code>optional bool up_to_date = 4;</code>
+   * <code>optional bool up_to_date = 4 [deprecated = true];</code>
+   * @deprecated
    * @return The upToDate.
    */
-  boolean getUpToDate();
+  @java.lang.Deprecated boolean getUpToDate();
 
   /**
    * <pre>
    * Whether the task failed
+   * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
    * </pre>
    *
-   * <code>optional bool failed = 5;</code>
+   * <code>optional bool failed = 5 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the failed field is set.
    */
-  boolean hasFailed();
+  @java.lang.Deprecated boolean hasFailed();
   /**
    * <pre>
    * Whether the task failed
+   * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
    * </pre>
    *
-   * <code>optional bool failed = 5;</code>
+   * <code>optional bool failed = 5 [deprecated = true];</code>
+   * @deprecated
    * @return The failed.
    */
-  boolean getFailed();
+  @java.lang.Deprecated boolean getFailed();
+
+  /**
+   * <pre>
+   * State of the task during the build
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleTaskExecution.TaskState task_state = 6;</code>
+   * @return Whether the taskState field is set.
+   */
+  boolean hasTaskState();
+  /**
+   * <pre>
+   * State of the task during the build
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleTaskExecution.TaskState task_state = 6;</code>
+   * @return The taskState.
+   */
+  com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState getTaskState();
 }

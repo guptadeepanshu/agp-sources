@@ -16,13 +16,13 @@
 
 package com.android.build.api.variant.impl
 
-import com.android.build.api.dsl.PackagingOptions
+import com.android.build.api.dsl.Packaging
 import com.android.build.api.variant.DexPackagingOptions
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.sdklib.AndroidVersion.VersionCodes.P
 
 class DexPackagingOptionsImpl(
-    dslPackagingOptions: PackagingOptions,
+    dslPackaging: Packaging,
     variantServices: VariantServices,
     minSdk: Int
 ) : DexPackagingOptions {
@@ -32,6 +32,6 @@ class DexPackagingOptionsImpl(
     override val useLegacyPackaging =
             variantServices.propertyOf(
                     Boolean::class.java,
-                    dslPackagingOptions.dex.useLegacyPackaging ?: (minSdk < P)
+                    dslPackaging.dex.useLegacyPackaging ?: (minSdk < P)
             )
 }

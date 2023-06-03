@@ -15,7 +15,7 @@
  */
 package com.android.build.gradle.internal.tasks
 
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.utils.FileUtils
 import com.google.common.base.Charsets
 import com.google.common.io.Files

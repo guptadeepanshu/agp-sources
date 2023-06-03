@@ -35,8 +35,6 @@ interface DynamicFeatureBuildFeatures : BuildFeatures {
      *
      * More information about this feature at: TBD
      */
-    @get:Incubating
-    @set:Incubating
     var dataBinding: Boolean?
 
     /**
@@ -51,7 +49,5 @@ interface DynamicFeatureBuildFeatures : BuildFeatures {
      *
      * More information about this feature at: TBD
      */
-    @get:Incubating
-    @set:Incubating
     var mlModelBinding: Boolean?
 }

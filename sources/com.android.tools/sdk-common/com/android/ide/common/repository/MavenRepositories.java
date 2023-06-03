@@ -83,29 +83,6 @@ public class MavenRepositories {
     }
 
     /**
-     * Finds the best matching {@link GradleVersion}. Like {@link
-     * #getHighestInstalledVersion(String, String, Path, Predicate, boolean)} but operates on {@link
-     * GradleVersion} instead of {@link GradleCoordinate}.
-     *
-     * @param groupId the artifact group id
-     * @param artifactId the artifact id
-     * @param repository the path to the m2repository directory
-     * @param filter an optional filter which the matched version must satisfy
-     * @param allowPreview whether preview versions are allowed to match
-     * @return the best (highest version) matching version, or null if none were found
-     */
-    @Nullable
-    public static GradleVersion getHighestInstalledVersionNumber(
-            @NonNull String groupId,
-            @NonNull String artifactId,
-            @NonNull Path repository,
-            @Nullable Predicate<GradleVersion> filter,
-            boolean allowPreview) {
-        Path versionDir = getArtifactIdDirectory(repository, groupId, artifactId);
-        return getHighestVersion(versionDir, filter, allowPreview);
-    }
-
-    /**
      * Given a directory containing version numbers returns the highest version number matching the
      * given filter
      *

@@ -24,7 +24,6 @@ import com.android.tools.r8.CompilationMode;
 import com.android.tools.r8.D8;
 import com.android.tools.r8.D8Command;
 import com.android.tools.r8.Diagnostic;
-import com.android.tools.r8.OutputMode;
 import com.android.tools.r8.StringConsumer.FileConsumer;
 import com.android.tools.r8.errors.UnsupportedFeatureDiagnostic;
 import com.google.common.util.concurrent.MoreExecutors;
@@ -58,7 +57,8 @@ final class D8DexArchiveBuilder extends DexArchiveBuilder {
     @Override
     public void convert(
             @NonNull Stream<ClassFileEntry> input,
-            @NonNull Path output,
+            @NonNull Path dexOutput,
+            @Nullable Path globalSyntheticsOutput,
             @Nullable DependencyGraphUpdater<File> desugarGraphUpdater)
             throws DexArchiveBuilderException {
         InterceptingDiagnosticsHandler diagnosticsHandler = new InterceptingDiagnosticsHandler();
@@ -84,15 +84,21 @@ final class D8DexArchiveBuilder extends DexArchiveBuilder {
                     .setMinApiLevel(dexParams.getMinSdkVersion())
                     .setIntermediate(true)
                     .setOutput(
-                            output,
-                            dexParams.getDexPerClass()
-                                    ? OutputMode.DexFilePerClassFile
-                                    : OutputMode.DexIndexed)
+                            dexOutput,
+                            (dexParams.getDexPerClass()
+                                            ? DexFilePerClassFile.INSTANCE
+                                            : DexIndexed.INSTANCE)
+                                    .getR8OutputMode())
                     .setIncludeClassesChecksum(dexParams.getDebuggable());
 
             if (dexParams.getDebuggable()) {
                 builder.addAssertionsConfiguration(
                         AssertionsConfiguration.Builder::compileTimeEnableAllAssertions);
+            }
+
+            if (globalSyntheticsOutput != null) {
+                builder.setGlobalSyntheticsConsumer(
+                        new D8GlobalSyntheticsConsumer(globalSyntheticsOutput));
             }
 
             if (dexParams.getWithDesugaring()) {

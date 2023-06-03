@@ -40,7 +40,6 @@ import com.android.build.gradle.internal.component.legacy.OldVariantApiLegacySup
 import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.core.dsl.TestFixturesComponentDslInfo
 import com.android.build.gradle.internal.dependency.VariantDependencies
-import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.publishing.VariantPublishingInfo
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.MutableTaskContainer
@@ -70,7 +69,6 @@ open class TestFixturesImpl @Inject constructor(
     artifacts: ArtifactsImpl,
     taskContainer: MutableTaskContainer,
     override val mainVariant: VariantCreationConfig,
-    transformManager: TransformManager,
     variantServices: VariantServices,
     taskCreationServices: TaskCreationServices,
     global: GlobalTaskCreationConfig
@@ -83,7 +81,6 @@ open class TestFixturesImpl @Inject constructor(
     paths,
     artifacts,
     taskContainer = taskContainer,
-    transformManager = transformManager,
     internalServices = variantServices,
     services = taskCreationServices,
     global = global
@@ -168,7 +165,7 @@ open class TestFixturesImpl @Inject constructor(
                 value = internalServices.mapPropertyOf(
                     ResValue.Key::class.java,
                     ResValue::class.java,
-                    dslInfo.getResValues()
+                    dslInfo.androidResourcesDsl!!.getResValues()
                 )
             )
     }
@@ -182,7 +179,7 @@ open class TestFixturesImpl @Inject constructor(
                 apiName = "pseudoLocalesEnabled",
                 value = internalServices.newPropertyBackingDeprecatedApi(
                     Boolean::class.java,
-                    dslInfo.isPseudoLocalesEnabled
+                    dslInfo.androidResourcesDsl!!.isPseudoLocalesEnabled
                 )
             )
     }
@@ -190,11 +187,4 @@ open class TestFixturesImpl @Inject constructor(
     override fun getArtifactName(name: String): String {
         return "$testFixturesFeatureName-$name"
     }
-
-    // ---------------------------------------------------------------------------------------------
-    // Private stuff
-    // ---------------------------------------------------------------------------------------------
-
-    override val supportedAbis: Set<String>
-        get() = mainVariant.supportedAbis
 }

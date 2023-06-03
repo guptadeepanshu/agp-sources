@@ -1971,6 +1971,19 @@ private static final long serialVersionUID = 0L;
             bitField4_ |= 0x00020000;
             break;
           }
+          case 1226: {
+            com.google.wireless.android.sdk.stats.ManifestMergerStats.Builder subBuilder = null;
+            if (((bitField4_ & 0x00040000) != 0)) {
+              subBuilder = manifestMergerStats_.toBuilder();
+            }
+            manifestMergerStats_ = input.readMessage(com.google.wireless.android.sdk.stats.ManifestMergerStats.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(manifestMergerStats_);
+              manifestMergerStats_ = subBuilder.buildPartial();
+            }
+            bitField4_ |= 0x00040000;
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -4597,6 +4610,22 @@ private static final long serialVersionUID = 0L;
      * <code>MEMORY_USAGE_REPORT_EVENT = 264;</code>
      */
     MEMORY_USAGE_REPORT_EVENT(264),
+    /**
+     * <pre>
+     * A sync between Android Studio and Gradle was cancelled.
+     * </pre>
+     *
+     * <code>GRADLE_SYNC_CANCELLED = 265;</code>
+     */
+    GRADLE_SYNC_CANCELLED(265),
+    /**
+     * <pre>
+     * Event containing latency stats for manifest merge run from the IDE
+     * </pre>
+     *
+     * <code>MANIFEST_MERGER_STATS = 266;</code>
+     */
+    MANIFEST_MERGER_STATS(266),
     ;
 
     /**
@@ -6545,6 +6574,22 @@ private static final long serialVersionUID = 0L;
      * <code>MEMORY_USAGE_REPORT_EVENT = 264;</code>
      */
     public static final int MEMORY_USAGE_REPORT_EVENT_VALUE = 264;
+    /**
+     * <pre>
+     * A sync between Android Studio and Gradle was cancelled.
+     * </pre>
+     *
+     * <code>GRADLE_SYNC_CANCELLED = 265;</code>
+     */
+    public static final int GRADLE_SYNC_CANCELLED_VALUE = 265;
+    /**
+     * <pre>
+     * Event containing latency stats for manifest merge run from the IDE
+     * </pre>
+     *
+     * <code>MANIFEST_MERGER_STATS = 266;</code>
+     */
+    public static final int MANIFEST_MERGER_STATS_VALUE = 266;
 
 
     public final int getNumber() {
@@ -6827,6 +6872,8 @@ private static final long serialVersionUID = 0L;
         case 262: return DEVICE_MIRRORING_SESSION;
         case 263: return FAST_PREVIEW_EVENT;
         case 264: return MEMORY_USAGE_REPORT_EVENT;
+        case 265: return GRADLE_SYNC_CANCELLED;
+        case 266: return MANIFEST_MERGER_STATS;
         default: return null;
       }
     }
@@ -9319,6 +9366,14 @@ private static final long serialVersionUID = 0L;
      * <code>TYPE_REMOVED_API = 60;</code>
      */
     TYPE_REMOVED_API(60),
+    /**
+     * <pre>
+     * KMP projects with java plugin creates incorrect sourceSets in IDE
+     * </pre>
+     *
+     * <code>TYPE_KMP_INCORRECT_PLATFORM_SOURCE_SET = 61;</code>
+     */
+    TYPE_KMP_INCORRECT_PLATFORM_SOURCE_SET(61),
     ;
 
     /**
@@ -9750,6 +9805,14 @@ private static final long serialVersionUID = 0L;
      * <code>TYPE_REMOVED_API = 60;</code>
      */
     public static final int TYPE_REMOVED_API_VALUE = 60;
+    /**
+     * <pre>
+     * KMP projects with java plugin creates incorrect sourceSets in IDE
+     * </pre>
+     *
+     * <code>TYPE_KMP_INCORRECT_PLATFORM_SOURCE_SET = 61;</code>
+     */
+    public static final int TYPE_KMP_INCORRECT_PLATFORM_SOURCE_SET_VALUE = 61;
 
 
     public final int getNumber() {
@@ -9833,6 +9896,7 @@ private static final long serialVersionUID = 0L;
         case 58: return TYPE_ACCESSING_DISABLED_FEATURE_VARIANT_API;
         case 59: return TYPE_APPLICATION_ID_MUST_NOT_BE_DYNAMIC;
         case 60: return TYPE_REMOVED_API;
+        case 61: return TYPE_KMP_INCORRECT_PLATFORM_SOURCE_SET;
         default: return null;
       }
     }
@@ -15527,6 +15591,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional .android_studio.AndroidStudioEvent.MonitorType monitor_type = 5 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the monitorType field is set.
    */
   @java.lang.Override @java.lang.Deprecated public boolean hasMonitorType() {
@@ -15539,6 +15604,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional .android_studio.AndroidStudioEvent.MonitorType monitor_type = 5 [deprecated = true];</code>
+   * @deprecated
    * @return The monitorType.
    */
   @java.lang.Override @java.lang.Deprecated public com.google.wireless.android.sdk.stats.AndroidStudioEvent.MonitorType getMonitorType() {
@@ -15556,6 +15622,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional bool monitor_paused = 6 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the monitorPaused field is set.
    */
   @java.lang.Override
@@ -15569,6 +15636,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional bool monitor_paused = 6 [deprecated = true];</code>
+   * @deprecated
    * @return The monitorPaused.
    */
   @java.lang.Override
@@ -15585,6 +15653,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional .android_studio.AndroidStudioEvent.ProfilerCaptureType profiler_capture_type = 7 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the profilerCaptureType field is set.
    */
   @java.lang.Override @java.lang.Deprecated public boolean hasProfilerCaptureType() {
@@ -15597,6 +15666,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional .android_studio.AndroidStudioEvent.ProfilerCaptureType profiler_capture_type = 7 [deprecated = true];</code>
+   * @deprecated
    * @return The profilerCaptureType.
    */
   @java.lang.Override @java.lang.Deprecated public com.google.wireless.android.sdk.stats.AndroidStudioEvent.ProfilerCaptureType getProfilerCaptureType() {
@@ -15701,6 +15771,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional .android_studio.AndroidStudioEvent.RunConfigurationType run_configuration_type = 10 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the runConfigurationType field is set.
    */
   @java.lang.Override @java.lang.Deprecated public boolean hasRunConfigurationType() {
@@ -15713,6 +15784,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional .android_studio.AndroidStudioEvent.RunConfigurationType run_configuration_type = 10 [deprecated = true];</code>
+   * @deprecated
    * @return The runConfigurationType.
    */
   @java.lang.Override @java.lang.Deprecated public com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType getRunConfigurationType() {
@@ -15730,6 +15802,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional .android_studio.AndroidStudioEvent.DebuggerType debugger_type = 11 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the debuggerType field is set.
    */
   @java.lang.Override @java.lang.Deprecated public boolean hasDebuggerType() {
@@ -15742,6 +15815,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional .android_studio.AndroidStudioEvent.DebuggerType debugger_type = 11 [deprecated = true];</code>
+   * @deprecated
    * @return The debuggerType.
    */
   @java.lang.Override @java.lang.Deprecated public com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType getDebuggerType() {
@@ -16329,6 +16403,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional .android_studio.EmulatorUiEvent emulator_ui_event = 25 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the emulatorUiEvent field is set.
    */
   @java.lang.Override
@@ -16342,6 +16417,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional .android_studio.EmulatorUiEvent emulator_ui_event = 25 [deprecated = true];</code>
+   * @deprecated
    * @return The emulatorUiEvent.
    */
   @java.lang.Override
@@ -16558,7 +16634,7 @@ private static final long serialVersionUID = 0L;
   private volatile java.lang.Object projectId_;
   /**
    * <pre>
-   * Client-side salted (rotating every 28 days), sha256 of the project id.
+   * Client-side salted (rotating every 532 days), sha256 of the project id.
    * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
    * </pre>
    *
@@ -16571,7 +16647,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * Client-side salted (rotating every 28 days), sha256 of the project id.
+   * Client-side salted (rotating every 532 days), sha256 of the project id.
    * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
    * </pre>
    *
@@ -16595,7 +16671,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * Client-side salted (rotating every 28 days), sha256 of the project id.
+   * Client-side salted (rotating every 532 days), sha256 of the project id.
    * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
    * </pre>
    *
@@ -17732,6 +17808,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional .android_studio.WhatsNewAssistantEvent whats_new_assistant_event = 60 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the whatsNewAssistantEvent field is set.
    */
   @java.lang.Override
@@ -17745,6 +17822,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional .android_studio.WhatsNewAssistantEvent whats_new_assistant_event = 60 [deprecated = true];</code>
+   * @deprecated
    * @return The whatsNewAssistantEvent.
    */
   @java.lang.Override
@@ -17955,6 +18033,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional .android_studio.StudioRunEvent studio_run_event = 65 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the studioRunEvent field is set.
    */
   @java.lang.Override
@@ -17967,6 +18046,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional .android_studio.StudioRunEvent studio_run_event = 65 [deprecated = true];</code>
+   * @deprecated
    * @return The studioRunEvent.
    */
   @java.lang.Override
@@ -19984,6 +20064,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional .android_studio.AutoImportEvent auto_import_event = 117 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the autoImportEvent field is set.
    */
   @java.lang.Override
@@ -19997,6 +20078,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional .android_studio.AutoImportEvent auto_import_event = 117 [deprecated = true];</code>
+   * @deprecated
    * @return The autoImportEvent.
    */
   @java.lang.Override
@@ -21397,6 +21479,44 @@ private static final long serialVersionUID = 0L;
     return sdkIndexLoadingDetails_ == null ? com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails.getDefaultInstance() : sdkIndexLoadingDetails_;
   }
 
+  public static final int MANIFEST_MERGER_STATS_FIELD_NUMBER = 153;
+  private com.google.wireless.android.sdk.stats.ManifestMergerStats manifestMergerStats_;
+  /**
+   * <pre>
+   * set when kind = MANIFEST_MERGER_STATS
+   * </pre>
+   *
+   * <code>optional .android_studio.ManifestMergerStats manifest_merger_stats = 153;</code>
+   * @return Whether the manifestMergerStats field is set.
+   */
+  @java.lang.Override
+  public boolean hasManifestMergerStats() {
+    return ((bitField4_ & 0x00040000) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = MANIFEST_MERGER_STATS
+   * </pre>
+   *
+   * <code>optional .android_studio.ManifestMergerStats manifest_merger_stats = 153;</code>
+   * @return The manifestMergerStats.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.ManifestMergerStats getManifestMergerStats() {
+    return manifestMergerStats_ == null ? com.google.wireless.android.sdk.stats.ManifestMergerStats.getDefaultInstance() : manifestMergerStats_;
+  }
+  /**
+   * <pre>
+   * set when kind = MANIFEST_MERGER_STATS
+   * </pre>
+   *
+   * <code>optional .android_studio.ManifestMergerStats manifest_merger_stats = 153;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.ManifestMergerStatsOrBuilder getManifestMergerStatsOrBuilder() {
+    return manifestMergerStats_ == null ? com.google.wireless.android.sdk.stats.ManifestMergerStats.getDefaultInstance() : manifestMergerStats_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -21866,6 +21986,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField4_ & 0x00020000) != 0)) {
       output.writeMessage(152, getSdkIndexLoadingDetails());
+    }
+    if (((bitField4_ & 0x00040000) != 0)) {
+      output.writeMessage(153, getManifestMergerStats());
     }
     unknownFields.writeTo(output);
   }
@@ -22489,6 +22612,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField4_ & 0x00020000) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(152, getSdkIndexLoadingDetails());
+    }
+    if (((bitField4_ & 0x00040000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(153, getManifestMergerStats());
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -23236,6 +23363,11 @@ private static final long serialVersionUID = 0L;
       if (!getSdkIndexLoadingDetails()
           .equals(other.getSdkIndexLoadingDetails())) return false;
     }
+    if (hasManifestMergerStats() != other.hasManifestMergerStats()) return false;
+    if (hasManifestMergerStats()) {
+      if (!getManifestMergerStats()
+          .equals(other.getManifestMergerStats())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -23857,6 +23989,10 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + SDK_INDEX_LOADING_DETAILS_FIELD_NUMBER;
       hash = (53 * hash) + getSdkIndexLoadingDetails().hashCode();
     }
+    if (hasManifestMergerStats()) {
+      hash = (37 * hash) + MANIFEST_MERGER_STATS_FIELD_NUMBER;
+      hash = (53 * hash) + getManifestMergerStats().hashCode();
+    }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -24114,6 +24250,7 @@ private static final long serialVersionUID = 0L;
         getFastPreviewEventFieldBuilder();
         getMemoryUsageReportEventFieldBuilder();
         getSdkIndexLoadingDetailsFieldBuilder();
+        getManifestMergerStatsFieldBuilder();
       }
     }
     @java.lang.Override
@@ -24939,6 +25076,12 @@ private static final long serialVersionUID = 0L;
         sdkIndexLoadingDetailsBuilder_.clear();
       }
       bitField4_ = (bitField4_ & ~0x00800000);
+      if (manifestMergerStatsBuilder_ == null) {
+        manifestMergerStats_ = null;
+      } else {
+        manifestMergerStatsBuilder_.clear();
+      }
+      bitField4_ = (bitField4_ & ~0x01000000);
       return this;
     }
 
@@ -26105,6 +26248,14 @@ private static final long serialVersionUID = 0L;
         }
         to_bitField4_ |= 0x00020000;
       }
+      if (((from_bitField4_ & 0x01000000) != 0)) {
+        if (manifestMergerStatsBuilder_ == null) {
+          result.manifestMergerStats_ = manifestMergerStats_;
+        } else {
+          result.manifestMergerStats_ = manifestMergerStatsBuilder_.build();
+        }
+        to_bitField4_ |= 0x00040000;
+      }
       result.bitField0_ = to_bitField0_;
       result.bitField1_ = to_bitField1_;
       result.bitField2_ = to_bitField2_;
@@ -26718,6 +26869,9 @@ private static final long serialVersionUID = 0L;
       if (other.hasSdkIndexLoadingDetails()) {
         mergeSdkIndexLoadingDetails(other.getSdkIndexLoadingDetails());
       }
+      if (other.hasManifestMergerStats()) {
+        mergeManifestMergerStats(other.getManifestMergerStats());
+      }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -27223,6 +27377,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.AndroidStudioEvent.MonitorType monitor_type = 5 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the monitorType field is set.
      */
     @java.lang.Override @java.lang.Deprecated public boolean hasMonitorType() {
@@ -27235,6 +27390,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.AndroidStudioEvent.MonitorType monitor_type = 5 [deprecated = true];</code>
+     * @deprecated
      * @return The monitorType.
      */
     @java.lang.Override
@@ -27250,6 +27406,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.AndroidStudioEvent.MonitorType monitor_type = 5 [deprecated = true];</code>
+     * @deprecated
      * @param value The monitorType to set.
      * @return This builder for chaining.
      */
@@ -27269,6 +27426,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.AndroidStudioEvent.MonitorType monitor_type = 5 [deprecated = true];</code>
+     * @deprecated
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder clearMonitorType() {
@@ -27286,6 +27444,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool monitor_paused = 6 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the monitorPaused field is set.
      */
     @java.lang.Override
@@ -27299,6 +27458,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool monitor_paused = 6 [deprecated = true];</code>
+     * @deprecated
      * @return The monitorPaused.
      */
     @java.lang.Override
@@ -27312,6 +27472,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool monitor_paused = 6 [deprecated = true];</code>
+     * @deprecated
      * @param value The monitorPaused to set.
      * @return This builder for chaining.
      */
@@ -27328,6 +27489,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool monitor_paused = 6 [deprecated = true];</code>
+     * @deprecated
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder clearMonitorPaused() {
@@ -27345,6 +27507,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.AndroidStudioEvent.ProfilerCaptureType profiler_capture_type = 7 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the profilerCaptureType field is set.
      */
     @java.lang.Override @java.lang.Deprecated public boolean hasProfilerCaptureType() {
@@ -27357,6 +27520,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.AndroidStudioEvent.ProfilerCaptureType profiler_capture_type = 7 [deprecated = true];</code>
+     * @deprecated
      * @return The profilerCaptureType.
      */
     @java.lang.Override
@@ -27372,6 +27536,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.AndroidStudioEvent.ProfilerCaptureType profiler_capture_type = 7 [deprecated = true];</code>
+     * @deprecated
      * @param value The profilerCaptureType to set.
      * @return This builder for chaining.
      */
@@ -27391,6 +27556,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.AndroidStudioEvent.ProfilerCaptureType profiler_capture_type = 7 [deprecated = true];</code>
+     * @deprecated
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder clearProfilerCaptureType() {
@@ -27571,6 +27737,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.AndroidStudioEvent.RunConfigurationType run_configuration_type = 10 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the runConfigurationType field is set.
      */
     @java.lang.Override @java.lang.Deprecated public boolean hasRunConfigurationType() {
@@ -27583,6 +27750,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.AndroidStudioEvent.RunConfigurationType run_configuration_type = 10 [deprecated = true];</code>
+     * @deprecated
      * @return The runConfigurationType.
      */
     @java.lang.Override
@@ -27598,6 +27766,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.AndroidStudioEvent.RunConfigurationType run_configuration_type = 10 [deprecated = true];</code>
+     * @deprecated
      * @param value The runConfigurationType to set.
      * @return This builder for chaining.
      */
@@ -27617,6 +27786,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.AndroidStudioEvent.RunConfigurationType run_configuration_type = 10 [deprecated = true];</code>
+     * @deprecated
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder clearRunConfigurationType() {
@@ -27634,6 +27804,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.AndroidStudioEvent.DebuggerType debugger_type = 11 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the debuggerType field is set.
      */
     @java.lang.Override @java.lang.Deprecated public boolean hasDebuggerType() {
@@ -27646,6 +27817,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.AndroidStudioEvent.DebuggerType debugger_type = 11 [deprecated = true];</code>
+     * @deprecated
      * @return The debuggerType.
      */
     @java.lang.Override
@@ -27661,6 +27833,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.AndroidStudioEvent.DebuggerType debugger_type = 11 [deprecated = true];</code>
+     * @deprecated
      * @param value The debuggerType to set.
      * @return This builder for chaining.
      */
@@ -27680,6 +27853,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.AndroidStudioEvent.DebuggerType debugger_type = 11 [deprecated = true];</code>
+     * @deprecated
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder clearDebuggerType() {
@@ -29411,6 +29585,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.EmulatorUiEvent emulator_ui_event = 25 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the emulatorUiEvent field is set.
      */
     @java.lang.Deprecated public boolean hasEmulatorUiEvent() {
@@ -29423,6 +29598,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.EmulatorUiEvent emulator_ui_event = 25 [deprecated = true];</code>
+     * @deprecated
      * @return The emulatorUiEvent.
      */
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.EmulatorUiEvent getEmulatorUiEvent() {
@@ -30358,7 +30534,7 @@ private static final long serialVersionUID = 0L;
     private java.lang.Object projectId_ = "";
     /**
      * <pre>
-     * Client-side salted (rotating every 28 days), sha256 of the project id.
+     * Client-side salted (rotating every 532 days), sha256 of the project id.
      * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
      * </pre>
      *
@@ -30370,7 +30546,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * Client-side salted (rotating every 28 days), sha256 of the project id.
+     * Client-side salted (rotating every 532 days), sha256 of the project id.
      * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
      * </pre>
      *
@@ -30393,7 +30569,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * Client-side salted (rotating every 28 days), sha256 of the project id.
+     * Client-side salted (rotating every 532 days), sha256 of the project id.
      * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
      * </pre>
      *
@@ -30415,7 +30591,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * Client-side salted (rotating every 28 days), sha256 of the project id.
+     * Client-side salted (rotating every 532 days), sha256 of the project id.
      * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
      * </pre>
      *
@@ -30435,7 +30611,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * Client-side salted (rotating every 28 days), sha256 of the project id.
+     * Client-side salted (rotating every 532 days), sha256 of the project id.
      * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
      * </pre>
      *
@@ -30450,7 +30626,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * Client-side salted (rotating every 28 days), sha256 of the project id.
+     * Client-side salted (rotating every 532 days), sha256 of the project id.
      * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
      * </pre>
      *
@@ -34951,6 +35127,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.WhatsNewAssistantEvent whats_new_assistant_event = 60 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the whatsNewAssistantEvent field is set.
      */
     @java.lang.Deprecated public boolean hasWhatsNewAssistantEvent() {
@@ -34963,6 +35140,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.WhatsNewAssistantEvent whats_new_assistant_event = 60 [deprecated = true];</code>
+     * @deprecated
      * @return The whatsNewAssistantEvent.
      */
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.WhatsNewAssistantEvent getWhatsNewAssistantEvent() {
@@ -35709,6 +35887,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.StudioRunEvent studio_run_event = 65 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the studioRunEvent field is set.
      */
     @java.lang.Deprecated public boolean hasStudioRunEvent() {
@@ -35720,6 +35899,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.StudioRunEvent studio_run_event = 65 [deprecated = true];</code>
+     * @deprecated
      * @return The studioRunEvent.
      */
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.StudioRunEvent getStudioRunEvent() {
@@ -44049,6 +44229,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.AutoImportEvent auto_import_event = 117 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the autoImportEvent field is set.
      */
     @java.lang.Deprecated public boolean hasAutoImportEvent() {
@@ -44061,6 +44242,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.AutoImportEvent auto_import_event = 117 [deprecated = true];</code>
+     * @deprecated
      * @return The autoImportEvent.
      */
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.AutoImportEvent getAutoImportEvent() {
@@ -49703,6 +49885,162 @@ private static final long serialVersionUID = 0L;
         sdkIndexLoadingDetails_ = null;
       }
       return sdkIndexLoadingDetailsBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.ManifestMergerStats manifestMergerStats_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.ManifestMergerStats, com.google.wireless.android.sdk.stats.ManifestMergerStats.Builder, com.google.wireless.android.sdk.stats.ManifestMergerStatsOrBuilder> manifestMergerStatsBuilder_;
+    /**
+     * <pre>
+     * set when kind = MANIFEST_MERGER_STATS
+     * </pre>
+     *
+     * <code>optional .android_studio.ManifestMergerStats manifest_merger_stats = 153;</code>
+     * @return Whether the manifestMergerStats field is set.
+     */
+    public boolean hasManifestMergerStats() {
+      return ((bitField4_ & 0x01000000) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = MANIFEST_MERGER_STATS
+     * </pre>
+     *
+     * <code>optional .android_studio.ManifestMergerStats manifest_merger_stats = 153;</code>
+     * @return The manifestMergerStats.
+     */
+    public com.google.wireless.android.sdk.stats.ManifestMergerStats getManifestMergerStats() {
+      if (manifestMergerStatsBuilder_ == null) {
+        return manifestMergerStats_ == null ? com.google.wireless.android.sdk.stats.ManifestMergerStats.getDefaultInstance() : manifestMergerStats_;
+      } else {
+        return manifestMergerStatsBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = MANIFEST_MERGER_STATS
+     * </pre>
+     *
+     * <code>optional .android_studio.ManifestMergerStats manifest_merger_stats = 153;</code>
+     */
+    public Builder setManifestMergerStats(com.google.wireless.android.sdk.stats.ManifestMergerStats value) {
+      if (manifestMergerStatsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        manifestMergerStats_ = value;
+        onChanged();
+      } else {
+        manifestMergerStatsBuilder_.setMessage(value);
+      }
+      bitField4_ |= 0x01000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = MANIFEST_MERGER_STATS
+     * </pre>
+     *
+     * <code>optional .android_studio.ManifestMergerStats manifest_merger_stats = 153;</code>
+     */
+    public Builder setManifestMergerStats(
+        com.google.wireless.android.sdk.stats.ManifestMergerStats.Builder builderForValue) {
+      if (manifestMergerStatsBuilder_ == null) {
+        manifestMergerStats_ = builderForValue.build();
+        onChanged();
+      } else {
+        manifestMergerStatsBuilder_.setMessage(builderForValue.build());
+      }
+      bitField4_ |= 0x01000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = MANIFEST_MERGER_STATS
+     * </pre>
+     *
+     * <code>optional .android_studio.ManifestMergerStats manifest_merger_stats = 153;</code>
+     */
+    public Builder mergeManifestMergerStats(com.google.wireless.android.sdk.stats.ManifestMergerStats value) {
+      if (manifestMergerStatsBuilder_ == null) {
+        if (((bitField4_ & 0x01000000) != 0) &&
+            manifestMergerStats_ != null &&
+            manifestMergerStats_ != com.google.wireless.android.sdk.stats.ManifestMergerStats.getDefaultInstance()) {
+          manifestMergerStats_ =
+            com.google.wireless.android.sdk.stats.ManifestMergerStats.newBuilder(manifestMergerStats_).mergeFrom(value).buildPartial();
+        } else {
+          manifestMergerStats_ = value;
+        }
+        onChanged();
+      } else {
+        manifestMergerStatsBuilder_.mergeFrom(value);
+      }
+      bitField4_ |= 0x01000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = MANIFEST_MERGER_STATS
+     * </pre>
+     *
+     * <code>optional .android_studio.ManifestMergerStats manifest_merger_stats = 153;</code>
+     */
+    public Builder clearManifestMergerStats() {
+      if (manifestMergerStatsBuilder_ == null) {
+        manifestMergerStats_ = null;
+        onChanged();
+      } else {
+        manifestMergerStatsBuilder_.clear();
+      }
+      bitField4_ = (bitField4_ & ~0x01000000);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = MANIFEST_MERGER_STATS
+     * </pre>
+     *
+     * <code>optional .android_studio.ManifestMergerStats manifest_merger_stats = 153;</code>
+     */
+    public com.google.wireless.android.sdk.stats.ManifestMergerStats.Builder getManifestMergerStatsBuilder() {
+      bitField4_ |= 0x01000000;
+      onChanged();
+      return getManifestMergerStatsFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = MANIFEST_MERGER_STATS
+     * </pre>
+     *
+     * <code>optional .android_studio.ManifestMergerStats manifest_merger_stats = 153;</code>
+     */
+    public com.google.wireless.android.sdk.stats.ManifestMergerStatsOrBuilder getManifestMergerStatsOrBuilder() {
+      if (manifestMergerStatsBuilder_ != null) {
+        return manifestMergerStatsBuilder_.getMessageOrBuilder();
+      } else {
+        return manifestMergerStats_ == null ?
+            com.google.wireless.android.sdk.stats.ManifestMergerStats.getDefaultInstance() : manifestMergerStats_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = MANIFEST_MERGER_STATS
+     * </pre>
+     *
+     * <code>optional .android_studio.ManifestMergerStats manifest_merger_stats = 153;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.ManifestMergerStats, com.google.wireless.android.sdk.stats.ManifestMergerStats.Builder, com.google.wireless.android.sdk.stats.ManifestMergerStatsOrBuilder> 
+        getManifestMergerStatsFieldBuilder() {
+      if (manifestMergerStatsBuilder_ == null) {
+        manifestMergerStatsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.ManifestMergerStats, com.google.wireless.android.sdk.stats.ManifestMergerStats.Builder, com.google.wireless.android.sdk.stats.ManifestMergerStatsOrBuilder>(
+                getManifestMergerStats(),
+                getParentForChildren(),
+                isClean());
+        manifestMergerStats_ = null;
+      }
+      return manifestMergerStatsBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

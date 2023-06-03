@@ -21,12 +21,15 @@ import com.android.SdkConstants.DATA_BINDING_KTX_LIB_ARTIFACT
 import com.android.SdkConstants.DOT_JAR
 import com.android.build.api.artifact.Artifact.Single
 import com.android.build.api.artifact.MultipleArtifact
+import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.artifact.SingleArtifact
+import com.android.build.api.artifact.impl.InternalScopedArtifact
+import com.android.build.api.artifact.impl.InternalScopedArtifacts
 import com.android.build.api.dsl.DataBinding
+import com.android.build.api.dsl.Device
 import com.android.build.api.dsl.DeviceGroup
 import com.android.build.api.instrumentation.FramesComputationMode
-import com.android.build.api.artifact.ScopedArtifact
-import com.android.build.api.transform.QualifiedContent
+import com.android.build.api.instrumentation.ManagedDeviceTestRunnerFactory
 import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.api.variant.VariantBuilder
 import com.android.build.api.variant.impl.TaskProviderBasedDirectoryEntryImpl
@@ -59,9 +62,6 @@ import com.android.build.gradle.internal.dsl.ManagedVirtualDevice
 import com.android.build.gradle.internal.ide.dependencies.MavenCoordinatesCacheBuildService
 import com.android.build.gradle.internal.lint.LintTaskManager
 import com.android.build.gradle.internal.packaging.getDefaultDebugKeystoreLocation
-import com.android.build.gradle.internal.pipeline.OriginalStream
-import com.android.build.gradle.internal.pipeline.TransformManager
-import com.android.build.gradle.internal.pipeline.TransformTask
 import com.android.build.gradle.internal.profile.AnalyticsConfiguratorService
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope
@@ -80,11 +80,7 @@ import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.COMPILE_AND_RUNTIME_NOT_NAMESPACED_R_CLASS_JAR
 import com.android.build.gradle.internal.scope.InternalArtifactType.FEATURE_DEX
 import com.android.build.gradle.internal.scope.InternalArtifactType.FEATURE_RESOURCE_PKG
-import com.android.build.gradle.internal.scope.InternalArtifactType.JACOCO_INSTRUMENTED_CLASSES
-import com.android.build.gradle.internal.scope.InternalArtifactType.JACOCO_INSTRUMENTED_JARS
 import com.android.build.gradle.internal.scope.InternalArtifactType.JAVAC
-import com.android.build.gradle.internal.scope.InternalArtifactType.JAVA_RES
-import com.android.build.gradle.internal.scope.InternalArtifactType.MERGED_JAVA_RES
 import com.android.build.gradle.internal.scope.InternalArtifactType.MERGED_RES
 import com.android.build.gradle.internal.scope.InternalArtifactType.PACKAGED_RES
 import com.android.build.gradle.internal.scope.InternalArtifactType.PROCESSED_RES
@@ -120,7 +116,9 @@ import com.android.build.gradle.internal.tasks.DexMergingAction
 import com.android.build.gradle.internal.tasks.DexMergingTask
 import com.android.build.gradle.internal.tasks.ExtractProguardFiles
 import com.android.build.gradle.internal.tasks.FeatureDexMergeTask
+import com.android.build.gradle.internal.tasks.FeatureGlobalSyntheticsMergeTask
 import com.android.build.gradle.internal.tasks.GenerateLibraryProguardRulesTask
+import com.android.build.gradle.internal.tasks.GlobalSyntheticsMergeTask
 import com.android.build.gradle.internal.tasks.InstallVariantTask
 import com.android.build.gradle.internal.tasks.JacocoTask
 import com.android.build.gradle.internal.tasks.L8DexDesugarLibTask
@@ -142,7 +140,6 @@ import com.android.build.gradle.internal.tasks.PrepareLintJarForPublish
 import com.android.build.gradle.internal.tasks.ProcessJavaResTask
 import com.android.build.gradle.internal.tasks.R8Task
 import com.android.build.gradle.internal.tasks.RecalculateStackFramesTask
-import com.android.build.gradle.internal.tasks.ShrinkResourcesOldShrinkerTask
 import com.android.build.gradle.internal.tasks.SigningConfigVersionsWriterTask
 import com.android.build.gradle.internal.tasks.SigningConfigWriterTask
 import com.android.build.gradle.internal.tasks.SigningReportTask
@@ -171,7 +168,6 @@ import com.android.build.gradle.internal.test.BundleTestDataImpl
 import com.android.build.gradle.internal.test.TestDataImpl
 import com.android.build.gradle.internal.testing.utp.TEST_RESULT_PB_FILE_NAME
 import com.android.build.gradle.internal.testing.utp.shouldEnableUtp
-import com.android.build.gradle.internal.transforms.LegacyShrinkBundleModuleResourcesTask
 import com.android.build.gradle.internal.transforms.ShrinkAppBundleResourcesTask
 import com.android.build.gradle.internal.transforms.ShrinkResourcesNewShrinkerTask
 import com.android.build.gradle.internal.utils.KOTLIN_KAPT_PLUGIN_ID
@@ -225,6 +221,7 @@ import com.android.build.gradle.tasks.VerifyLibraryResourcesTask
 import com.android.build.gradle.tasks.ZipMergingTask
 import com.android.build.gradle.tasks.factory.AndroidUnitTest
 import com.android.build.gradle.tasks.registerDataBindingOutputs
+import com.android.buildanalyzer.common.TaskCategoryIssue
 import com.android.builder.core.BuilderConstants
 import com.android.builder.core.ComponentType
 import com.android.builder.dexing.DexingType
@@ -358,8 +355,7 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
             taskFactory,
             globalConfig.services.projectOptions,
             variants,
-            project.providers,
-            project.layout
+            project
         )
 
         // Global tasks required for privacy sandbox sdk consumption
@@ -389,13 +385,13 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
      * This creates tasks common to all variant types.
      */
     private fun createTasksForVariant(
-            variant: ComponentInfo<VariantBuilderT, VariantT>,
+        variant: ComponentInfo<VariantBuilderT, VariantT>,
     ) {
         val variantProperties = variant.variant
         val componentType = variantProperties.componentType
         val variantDependencies = variantProperties.variantDependencies
-        if (variantProperties.dexingType.isLegacyMultiDexMode()
-                && variantProperties.componentType.isApk) {
+        if (variantProperties is ApkCreationConfig &&
+            variantProperties.dexingCreationConfig.dexingType.isLegacyMultiDexMode()) {
             val multiDexDependency =
                     if (variantProperties
                             .services
@@ -529,8 +525,7 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
             ProcessLibraryManifest.CreationAction(
                 testFixturesComponent,
                 targetSdkVersion = null,
-                maxSdkVersion = null,
-                manifestPlaceholders = null
+                maxSdkVersion = null
             )
         )
 
@@ -547,7 +542,6 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
         createMlkitTask(testFixturesComponent)
 
         val javacTask = createJavacTask(testFixturesComponent)
-        addJavacClassesStream(testFixturesComponent)
         setJavaCompilerTask(javacTask, testFixturesComponent)
 
         // Some versions of retrolambda remove the actions from the extract annotations task.
@@ -655,17 +649,11 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
         if (!component.buildFeatures.androidResources) {
             return
         }
-        val compileRClass: FileCollection = project.files(
-            component.artifacts
-                .get(InternalArtifactType.COMPILE_R_CLASS_JAR)
-        )
-        component.transformManager
-            .addStream(
-                OriginalStream.builder("compile-only-r-class")
-                    .addContentTypes(TransformManager.CONTENT_CLASS)
-                    .addScope(com.android.build.api.transform.QualifiedContent.Scope.PROVIDED_ONLY)
-                    .setFileCollection(compileRClass)
-                    .build()
+        component.artifacts.forScope(InternalScopedArtifacts.InternalScope.PROVIDED)
+            .setInitialContent(
+                ScopedArtifact.CLASSES,
+                component.artifacts,
+                InternalArtifactType.COMPILE_R_CLASS_JAR
             )
     }
 
@@ -687,7 +675,7 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
 
         }
         if (testVariant.componentType.isApk) { // ANDROID_TEST
-            if ((testVariant as ApkCreationConfig).dexingType.isLegacyMultiDexMode()) {
+            if ((testVariant as ApkCreationConfig).dexingCreationConfig.dexingType.isLegacyMultiDexMode()) {
                 val multiDexInstrumentationDep = if (testVariant
                                 .services
                                 .projectOptions[BooleanOption.USE_ANDROID_X])
@@ -826,8 +814,6 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
         creationConfig.instrumentationCreationConfig?.configureAndLockAsmClassesVisitors(
             project.objects
         )
-        val transformManager = creationConfig.transformManager
-
         fun getFinalRuntimeClassesJarsFromComponent(
             component: ComponentCreationConfig,
             scope: ArtifactScope
@@ -842,62 +828,52 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
         }
 
         // This might be consumed by RecalculateFixedStackFrames if that's created
-        transformManager.addStream(
-                OriginalStream.builder("ext-libs-classes")
-                        .addContentTypes(TransformManager.CONTENT_CLASS)
-                        .addScope(com.android.build.api.transform.QualifiedContent.Scope.EXTERNAL_LIBRARIES)
-                        .setFileCollection(
-                            getFinalRuntimeClassesJarsFromComponent(
-                                creationConfig,
-                                ArtifactScope.EXTERNAL
-                            )
-                        ).build()
-        )
+        creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS)
+            .setInitialContent(
+                ScopedArtifact.CLASSES,
+                getFinalRuntimeClassesJarsFromComponent(
+                    creationConfig,
+                    ArtifactScope.EXTERNAL
+                )
+            )
 
         // Add stream of external java resources if EXTERNAL_LIBRARIES isn't in the set of java res
         // merging scopes.
         if (!getJavaResMergingScopes(creationConfig)
-                        .contains(com.android.build.api.transform.QualifiedContent.Scope.EXTERNAL_LIBRARIES)) {
-            transformManager.addStream(
-                    OriginalStream.builder("ext-libs-java-res")
-                            .addContentTypes(com.android.build.api.transform.QualifiedContent.DefaultContentType.RESOURCES)
-                            .addScope(com.android.build.api.transform.QualifiedContent.Scope.EXTERNAL_LIBRARIES)
-                            .setArtifactCollection(
-                                    creationConfig
-                                            .variantDependencies
-                                            .getArtifactCollection(ConsumedConfigType.RUNTIME_CLASSPATH,
-                                                    ArtifactScope.EXTERNAL,
-                                                    AndroidArtifacts.ArtifactType.JAVA_RES))
-                            .build())
+                        .contains(InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS)) {
+            creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS)
+                .setInitialContent(
+                    ScopedArtifact.JAVA_RES,
+                    creationConfig
+                        .variantDependencies
+                        .getArtifactFileCollection(ConsumedConfigType.RUNTIME_CLASSPATH,
+                            ArtifactScope.EXTERNAL,
+                            AndroidArtifacts.ArtifactType.JAVA_RES)
+                )
         }
 
         // for the sub modules, new intermediary classes artifact has its own stream
-        transformManager.addStream(
-                OriginalStream.builder("sub-projects-classes")
-                        .addContentTypes(TransformManager.CONTENT_CLASS)
-                        .addScope(com.android.build.api.transform.QualifiedContent.Scope.SUB_PROJECTS)
-                        .setFileCollection(
-                                getFinalRuntimeClassesJarsFromComponent(
-                                    creationConfig,
-                                    ArtifactScope.PROJECT
-                                )
-                        ).build()
-        )
+        creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.SUB_PROJECT)
+            .setInitialContent(
+                ScopedArtifact.CLASSES,
+                getFinalRuntimeClassesJarsFromComponent(
+                    creationConfig,
+                    ArtifactScope.PROJECT
+                )
+            )
 
         // same for the java resources, if SUB_PROJECTS isn't in the set of java res merging scopes.
-        if (!getJavaResMergingScopes(creationConfig).contains(
-                com.android.build.api.transform.QualifiedContent.Scope.SUB_PROJECTS)) {
-            transformManager.addStream(
-                    OriginalStream.builder("sub-projects-java-res")
-                            .addContentTypes(com.android.build.api.transform.QualifiedContent.DefaultContentType.RESOURCES)
-                            .addScope(com.android.build.api.transform.QualifiedContent.Scope.SUB_PROJECTS)
-                            .setArtifactCollection(
-                                    creationConfig
-                                            .variantDependencies
-                                            .getArtifactCollection(ConsumedConfigType.RUNTIME_CLASSPATH,
-                                                    ArtifactScope.PROJECT,
-                                                    AndroidArtifacts.ArtifactType.JAVA_RES))
-                            .build())
+        if (!getJavaResMergingScopes(creationConfig).contains(InternalScopedArtifacts.InternalScope.SUB_PROJECT)) {
+            creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.SUB_PROJECT)
+                .setInitialContent(
+                    ScopedArtifact.JAVA_RES,
+                    creationConfig
+                        .variantDependencies
+                        .getArtifactCollection(ConsumedConfigType.RUNTIME_CLASSPATH,
+                            ArtifactScope.PROJECT,
+                            AndroidArtifacts.ArtifactType.JAVA_RES).artifactFiles
+                )
+
         }
 
         // if consumesFeatureJars, add streams of classes from features or
@@ -905,39 +881,33 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
         // The main dex list calculation for the bundle also needs the feature classes for reference
         // only
         if ((creationConfig as? ApplicationCreationConfig)?.consumesFeatureJars == true ||
-            (creationConfig as? ConsumableCreationConfig)?.needsMainDexListForBundle == true) {
-            transformManager.addStream(
-                    OriginalStream.builder("metadata-classes")
-                            .addContentTypes(TransformManager.CONTENT_CLASS)
-                            .addScope(InternalScope.FEATURES)
-                            .setArtifactCollection(
-                                    creationConfig
-                                            .variantDependencies
-                                            .getArtifactCollection(ConsumedConfigType.REVERSE_METADATA_VALUES,
-                                                    ArtifactScope.PROJECT,
-                                                    AndroidArtifacts.ArtifactType.REVERSE_METADATA_CLASSES))
-                            .build())
+            (creationConfig as? ApkCreationConfig)?.dexingCreationConfig?.needsMainDexListForBundle == true) {
+            creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.FEATURES)
+                .setInitialContent(
+                    ScopedArtifact.CLASSES,
+                    creationConfig
+                        .variantDependencies
+                        .getArtifactCollection(ConsumedConfigType.REVERSE_METADATA_VALUES,
+                            ArtifactScope.PROJECT,
+                            AndroidArtifacts.ArtifactType.REVERSE_METADATA_CLASSES).artifactFiles
+                )
         }
 
         // provided only scopes.
-        transformManager.addStream(
-                OriginalStream.builder("provided-classes")
-                        .addContentTypes(TransformManager.CONTENT_CLASS)
-                        .addScope(com.android.build.api.transform.QualifiedContent.Scope.PROVIDED_ONLY)
-                        .setFileCollection(creationConfig.providedOnlyClasspath)
-                        .build())
-        (creationConfig as? TestComponentCreationConfig)?.onTestedVariant { testedVariant ->
-            val testedCodeDeps = getFinalRuntimeClassesJarsFromComponent(
-                testedVariant,
-                ArtifactScope.ALL
+        creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.PROVIDED)
+            .setInitialContent(
+                ScopedArtifact.CLASSES,
+                creationConfig.providedOnlyClasspath
             )
-            transformManager.addStream(
-                    OriginalStream.builder("tested-code-deps")
-                            .addContentTypes(com.android.build.api.transform.QualifiedContent.DefaultContentType.CLASSES)
-                            .addScope(com.android.build.api.transform.QualifiedContent.Scope.TESTED_CODE)
-                            .setFileCollection(testedCodeDeps)
-                            .build())
-            null
+        (creationConfig as? TestComponentCreationConfig)?.onTestedVariant { testedVariant ->
+            creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.TESTED_CODE)
+                .setInitialContent(
+                    ScopedArtifact.CLASSES,
+                    getFinalRuntimeClassesJarsFromComponent(
+                        testedVariant,
+                        ArtifactScope.ALL
+                    )
+                )
         }
     }
 
@@ -978,21 +948,21 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
                 RenderscriptCompile.
                 CreationAction(
                     creationConfig,
-                    ndkConfig = if (creationConfig is AndroidTestCreationConfig) {
-                        creationConfig.mainVariant.ndkConfig
-                    } else (creationConfig as VariantCreationConfig).ndkConfig
+                    ndkConfig = creationConfig.nativeBuildCreationConfig!!.ndkConfig
                 )
             )
 
             if (!renderscriptCreationConfig.renderscript.ndkModeEnabled.get()) {
-                creationConfig.sources.java.addSource(
-                    TaskProviderBasedDirectoryEntryImpl(
-                        name = "generated_renderscript",
-                        directoryProvider = creationConfig.artifacts.get(
-                            InternalArtifactType.RENDERSCRIPT_SOURCE_OUTPUT_DIR
-                        ),
+                creationConfig.sources.java {
+                    it.addSource(
+                        TaskProviderBasedDirectoryEntryImpl(
+                            name = "generated_renderscript",
+                            directoryProvider = creationConfig.artifacts.get(
+                                InternalArtifactType.RENDERSCRIPT_SOURCE_OUTPUT_DIR
+                            ),
+                        )
                     )
-                )
+                }
             }
             taskContainer.resourceGenTask.dependsOn(rsTask)
             // since rs may generate Java code, always set the dependency.
@@ -1020,15 +990,8 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
                 alsoOutputNotCompiledResources,
                 flags,
                 null /*configCallback*/)
-        if (creationConfig
-                        .services
-                        .projectOptions[BooleanOption.ENABLE_SOURCE_SET_PATHS_MAP]) {
-            taskFactory.register(
-                    MapSourceSetPathsTask.CreateAction(
-                        creationConfig,
-                        includeDependencies
-                    ))
-        }
+        taskFactory.register(
+                MapSourceSetPathsTask.CreateAction(creationConfig, includeDependencies))
     }
 
     /** Defines the merge type for [.basicCreateMergeResourcesTask]  */
@@ -1193,31 +1156,34 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
         val useAaptToGenerateLegacyMultidexMainDexProguardRules =
                 (creationConfig is ApkCreationConfig
                         && creationConfig
+                        .dexingCreationConfig
                         .dexingType
                         .needsMainDexList)
         if (globalConfig.namespacedAndroidResources) {
             // TODO: make sure we generate the proguard rules in the namespaced case.
-            NamespacedResourcesTaskManager(taskFactory, creationConfig)
-                    .createNamespacedResourceTasks(
-                            packageOutputType,
-                            baseName,
-                            useAaptToGenerateLegacyMultidexMainDexProguardRules)
+            NamespacedResourcesTaskManager(
+                taskFactory,
+                creationConfig
+            ).createNamespacedResourceTasks(
+                packageOutputType,
+                baseName,
+                useAaptToGenerateLegacyMultidexMainDexProguardRules
+            )
             val rFiles: FileCollection = project.files(
-                    creationConfig.artifacts.get(RUNTIME_R_CLASS_CLASSES))
-            @Suppress("DEPRECATION") // Legacy support
+                creationConfig.artifacts.get(RUNTIME_R_CLASS_CLASSES))
+            creationConfig.artifacts.forScope(ScopedArtifacts.Scope.PROJECT)
+                .setInitialContent(
+                    ScopedArtifact.CLASSES,
+                    rFiles
+                )
             creationConfig
-                    .transformManager
-                    .addStream(
-                            OriginalStream.builder("final-r-classes")
-                                    .addContentTypes(
-                                            if (creationConfig.needsJavaResStreams) TransformManager.CONTENT_JARS else setOf(
-                                                com.android.build.api.transform.QualifiedContent.DefaultContentType.CLASSES))
-                                    .addScope(com.android.build.api.transform.QualifiedContent.Scope.PROJECT)
-                                    .setFileCollection(rFiles)
-                                    .build())
-            creationConfig
-                    .artifacts
-                    .appendTo(MultipleArtifact.ALL_CLASSES_DIRS, RUNTIME_R_CLASS_CLASSES)
+                .artifacts
+                .forScope(ScopedArtifacts.Scope.PROJECT)
+                .setInitialContent(
+                    ScopedArtifact.CLASSES,
+                    creationConfig.artifacts,
+                    RUNTIME_R_CLASS_CLASSES
+                )
             return
         }
         createNonNamespacedResourceTasks(
@@ -1287,13 +1253,22 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
                             LinkAndroidResForBundleTask.CreationAction(
                                     creationConfig))
                 }
-                artifacts.appendTo(
-                        MultipleArtifact.ALL_CLASSES_JARS,
-                        COMPILE_AND_RUNTIME_NOT_NAMESPACED_R_CLASS_JAR)
+
+                artifacts
+                    .forScope(ScopedArtifacts.Scope.PROJECT)
+                    .setInitialContent(
+                        ScopedArtifact.CLASSES,
+                        artifacts,
+                        COMPILE_AND_RUNTIME_NOT_NAMESPACED_R_CLASS_JAR
+                    )
 
                 if (!creationConfig.debuggable &&
                         !creationConfig.componentType.isForTesting &&
                          projectOptions[BooleanOption.ENABLE_RESOURCE_OPTIMIZATIONS]) {
+                    check(creationConfig is ApkCreationConfig) {
+                        "Expected a component that produces an apk, instead found " +
+                                "${creationConfig.name} of type ${creationConfig::class.java}."
+                    }
                     taskFactory.register(OptimizeResourcesTask.CreateAction(creationConfig))
                 }
             }
@@ -1308,22 +1283,14 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
      * @param contentType the contentType of java resources, must be RESOURCES or NATIVE_LIBS
      * @return the list of scopes for which to merge the java resources.
      */
-    @Suppress("DEPRECATION") // Legacy support
     protected abstract fun getJavaResMergingScopes(
-            creationConfig: ComponentCreationConfig): Set<com.android.build.api.transform.QualifiedContent.ScopeType>
+            creationConfig: ComponentCreationConfig): Set<InternalScopedArtifacts.InternalScope>
 
     /**
      * Creates the java resources processing tasks.
      *
-     *
-     * The java processing will happen in two steps:
-     *
-     *
-     *  * [Sync] task configured with [ProcessJavaResTask.CreationAction] will sync
+     * [Sync] task configured with [ProcessJavaResTask.CreationAction] will sync
      * all source folders into a single folder identified by [InternalArtifactType]
-     *  * [MergeJavaResourceTask] will take the output of this merge plus the dependencies
-     * and will create a single merge with the [PackagingOptions] settings applied.
-     *
      *
      * This sets up only the Sync part. The java res merging is setup via [ ][.createMergeJavaResTask]
      */
@@ -1331,27 +1298,6 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
         // Copy the source folders java resources into the temporary location, mainly to
         // maintain the PluginDsl COPY semantics.
         taskFactory.register(ProcessJavaResTask.CreationAction(creationConfig))
-
-        // create the stream generated from this task, but only if a library with custom transforms,
-        // in which case the custom transforms must be applied before java res merging.
-        if (creationConfig.needsJavaResStreams) {
-            @Suppress("DEPRECATION") // Legacy support
-            creationConfig
-                    .transformManager
-                    .addStream(
-                            OriginalStream.builder("processed-java-res")
-                                    .addContentType(com.android.build.api.transform.QualifiedContent.DefaultContentType.RESOURCES)
-                                    .addScope(com.android.build.api.transform.QualifiedContent.Scope.PROJECT)
-                                    .setFileCollection(
-                                            creationConfig
-                                                    .services
-                                                    .fileCollection(
-                                                            creationConfig
-                                                                    .artifacts
-                                                                    .get(
-                                                                            JAVA_RES)))
-                                    .build())
-        }
     }
 
     /**
@@ -1360,23 +1306,10 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
      * @see .createProcessJavaResTask
      */
     fun createMergeJavaResTask(creationConfig: ConsumableCreationConfig) {
-        val transformManager = creationConfig.transformManager
 
         // Compute the scopes that need to be merged.
-        @Suppress("DEPRECATION") // Legacy support
         val mergeScopes = getJavaResMergingScopes(creationConfig)
         taskFactory.register(MergeJavaResourceTask.CreationAction(mergeScopes, creationConfig))
-
-        // also add a new merged java res stream if needed.
-        if (creationConfig.needsMergedJavaResStream) {
-            val mergedJavaResProvider = creationConfig.artifacts.get(MERGED_JAVA_RES)
-            transformManager.addStream(
-                    OriginalStream.builder("merged-java-res")
-                            .addContentTypes(TransformManager.CONTENT_RESOURCES)
-                            .addScopes(mergeScopes)
-                            .setFileCollection(project.layout.files(mergedJavaResProvider))
-                            .build())
-        }
     }
 
     fun createAidlTask(creationConfig: ConsumableCreationConfig) {
@@ -1409,47 +1342,32 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
         // Once the deprecated types can be removed, all the methods below should use the
         // [ScopedArtifacts.setInitialContent] methods to initialize directly the scoped container.
         creationConfig.oldVariantApiLegacySupport?.variantData?.let { variantData ->
+
             creationConfig
                 .artifacts
-                .appendAll(
-                    MultipleArtifact.ALL_CLASSES_JARS,
-                    variantData.allPreJavacGeneratedBytecode.getRegularFiles(
-                        project.layout.projectDirectory
-                    )
+                .forScope(ScopedArtifacts.Scope.PROJECT)
+                .setInitialContent(
+                    ScopedArtifact.CLASSES,
+                    variantData.allPreJavacGeneratedBytecode
                 )
 
             creationConfig
                 .artifacts
-                .appendAll(
-                    MultipleArtifact.ALL_CLASSES_DIRS,
-                    variantData.allPreJavacGeneratedBytecode.getDirectories(
-                        project.layout.projectDirectory
-                    )
-                )
-
-            creationConfig
-                .artifacts
-                .appendAll(
-                    MultipleArtifact.ALL_CLASSES_JARS,
-                    variantData.allPostJavacGeneratedBytecode.getRegularFiles(
-                        project.layout.projectDirectory
-                    )
-                )
-
-            creationConfig
-                .artifacts
-                .appendAll(
-                    MultipleArtifact.ALL_CLASSES_DIRS,
-                    variantData.allPostJavacGeneratedBytecode.getDirectories(
-                        project.layout.projectDirectory
-                    )
+                .forScope(ScopedArtifacts.Scope.PROJECT)
+                .setInitialContent(
+                    ScopedArtifact.CLASSES,
+                    variantData.allPostJavacGeneratedBytecode
                 )
         }
-        creationConfig
-                .artifacts
-                .appendTo(
-                        MultipleArtifact.ALL_CLASSES_DIRS,
-                        JAVAC)
+
+       creationConfig
+           .artifacts
+           .forScope(ScopedArtifacts.Scope.PROJECT)
+           .setInitialContent(
+               ScopedArtifact.CLASSES,
+               creationConfig.artifacts,
+               JAVAC
+           )
     }
 
     /**
@@ -1473,30 +1391,6 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
             )
         postJavacCreation(creationConfig)
         return javacTask
-    }
-
-    /**
-     * Add stream of classes compiled by javac to transform manager.
-     *
-     *
-     * This should not be called for classes that will also be compiled from source by jack.
-     */
-    @Suppress("DEPRECATION") // Legacy support
-    protected fun addJavacClassesStream(creationConfig: ComponentCreationConfig) {
-        // create separate streams for all the classes coming from javac, pre/post hooks and R.
-        val transformManager = creationConfig.transformManager
-        transformManager.addStream(
-                OriginalStream.builder("all-classes") // Need both classes and resources because some annotation
-                        // processors generate resources
-                        .addContentTypes(
-                                if (creationConfig.needsJavaResStreams) TransformManager.CONTENT_JARS else setOf(
-                                    com.android.build.api.transform.QualifiedContent.DefaultContentType.CLASSES))
-                        .addScope(com.android.build.api.transform.QualifiedContent.Scope.PROJECT)
-                        .setFileCollection(creationConfig
-                            .artifacts
-                            .forScope(ScopedArtifacts.Scope.PROJECT)
-                            .getFinalArtifacts(ScopedArtifact.CLASSES))
-                        .build())
     }
 
     /** Creates the tasks to build unit tests.  */
@@ -1564,9 +1458,6 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
             compileTask.configure { task: Task ->
                 val testConfigInputs = TestConfigInputs(unitTestCreationConfig)
                 val taskInputs = task.inputs
-                taskInputs.property(
-                        "isUseRelativePathEnabled",
-                        testConfigInputs.isUseRelativePathEnabled)
                 taskInputs
                         .files(testConfigInputs.resourceApk)
                         .withPropertyName("resourceApk")
@@ -1603,7 +1494,6 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
         compileTask.dependsOn(taskContainer.processJavaResourcesTask,
                 testedVariant.taskContainer.processJavaResourcesTask)
         val javacTask = createJavacTask(unitTestCreationConfig)
-        addJavacClassesStream(unitTestCreationConfig)
         setJavaCompilerTask(javacTask, unitTestCreationConfig)
         // This should be done automatically by the classpath
         //        TaskFactoryUtils.dependsOn(javacTask,
@@ -1661,9 +1551,7 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
         createDataBindingTasksIfNecessary(androidTestProperties)
 
         // Add a task to compile the test application
-        val javacTask = createJavacTask(androidTestProperties)
-        addJavacClassesStream(androidTestProperties)
-        setJavaCompilerTask(javacTask, androidTestProperties)
+        setJavaCompilerTask(createJavacTask(androidTestProperties), androidTestProperties)
         createPostCompilationTasks(androidTestProperties)
 
         // Add tasks to produce the signing config files
@@ -1684,15 +1572,7 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
         createConnectedTestForVariant(androidTestProperties)
     }
 
-    /** Returns the full path of a task given its name.  */
-    private fun getTaskPath(taskName: String): String {
-        return if (project.rootProject === project) ":$taskName" else project.path + ':' + taskName
-    }
-
     private fun createRunUnitTestTask(unitTestCreationConfig: UnitTestCreationConfig) {
-        val ant = JacocoConfigurations.getJacocoAntTaskConfiguration(
-            project, JacocoTask.getJacocoVersion(unitTestCreationConfig))
-
         if (unitTestCreationConfig.isUnitTestCoverageEnabled) {
            project.pluginManager.apply(JacocoPlugin::class.java)
         }
@@ -1703,6 +1583,8 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
         }
 
         if (unitTestCreationConfig.isUnitTestCoverageEnabled) {
+            val ant = JacocoConfigurations.getJacocoAntTaskConfiguration(
+                    project, JacocoTask.getJacocoVersion(unitTestCreationConfig))
             project.plugins.withType(JacocoPlugin::class.java) {
                 // Jacoco plugin is applied and test coverage enabled, ∴ generate coverage report.
                 taskFactory.register(
@@ -1787,7 +1669,7 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
                     .taskGraph
                     .whenReady { taskGraph: TaskExecutionGraph ->
                         for (reportTask in reportTasks) {
-                            if (taskGraph.hasTask(getTaskPath(reportTask))) {
+                            if (taskGraph.hasTask(getTaskPath(project, reportTask))) {
                                 taskFactory.configure(
                                         reportTask
                                 ) { task: Task -> (task as AndroidReportTask).setWillRun() }
@@ -1813,7 +1695,7 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
                 ManagedDeviceCleanTask.CreationAction(
                     "cleanManagedDevices",
                     globalConfig,
-                    managedDevices))
+                    managedDevices.filterIsInstance<ManagedVirtualDevice>()))
         val allDevices = taskFactory.register(
             ALL_DEVICES_CHECK
         ) { allDevicesCheckTask: Task ->
@@ -1823,11 +1705,16 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
         }
 
         for (device in managedDevices) {
-            val setupTask = taskFactory.register(
-                ManagedDeviceSetupTask.CreationAction(
-                    setupTaskName(device),
-                    device,
-                    globalConfig))
+            val setupTask = when (device) {
+                is ManagedVirtualDevice -> taskFactory.register(
+                    ManagedDeviceSetupTask.CreationAction(
+                        setupTaskName(device),
+                        device,
+                        globalConfig))
+                else -> {
+                    taskFactory.register(setupTaskName(device))
+                }
+            }
             setupTask.configure {
                 it.mustRunAfter(cleanTask)
             }
@@ -1867,7 +1754,6 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
     protected fun createTestDevicesForVariant(
         creationConfig: InstrumentedTestCreationConfig,
         testData: AbstractTestDataImpl,
-        testedVariant: VariantCreationConfig?,
         variantName: String,
         testTaskSuffix: String = ""
     ) {
@@ -1875,7 +1761,7 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
         if (!shouldEnableUtp(
                 globalConfig.services.projectOptions,
                 globalConfig.testOptions,
-                testedVariant?.componentType
+                (creationConfig as? NestedComponentCreationConfig)?.mainVariant?.componentType
             ) ||
                 managedDevices.isEmpty()) {
             return
@@ -1922,6 +1808,12 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
 
         val deviceToProvider = mutableMapOf<String, TaskProvider<out Task>>()
         for (managedDevice in managedDevices) {
+            if (managedDevice !is ManagedVirtualDevice
+                && (managedDevice !is ManagedDeviceTestRunnerFactory
+                        || !globalConfig.services.projectOptions[
+                                BooleanOption.GRADLE_MANAGED_DEVICE_CUSTOM_DEVICE])) {
+                error("Unsupported managed device type: ${managedDevice.javaClass}")
+            }
             val managedDeviceTestTask = taskFactory.register(
                 ManagedDeviceInstrumentationTestTask.CreationAction(
                     creationConfig,
@@ -1931,7 +1823,7 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
                     File(reportDir, managedDevice.name),
                     File(additionalTestOutputDir, managedDevice.name),
                     File(coverageOutputDir, managedDevice.name),
-                    testTaskSuffix
+                    testTaskSuffix,
                 )
             )
             managedDeviceTestTask.dependsOn(setupTaskName(managedDevice))
@@ -1972,8 +1864,8 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
 
         // Register a test coverage report generation task to every managedDeviceCheck
         // task.
-        if ((testedVariant?.isAndroidTestCoverageEnabled == true) &&
-                creationConfig is TestComponentCreationConfig) {
+        if (creationConfig is TestComponentCreationConfig &&
+            creationConfig.isAndroidTestCoverageEnabled) {
             val jacocoAntConfiguration = JacocoConfigurations.getJacocoAntTaskConfiguration(
                 project, JacocoTask.getJacocoVersion(creationConfig)
             )
@@ -1982,7 +1874,7 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
                     creationConfig, jacocoAntConfiguration
                 )
             )
-            testedVariant.taskContainer.coverageReportTask?.dependsOn(reportTask)
+            creationConfig.mainVariant.taskContainer.coverageReportTask?.dependsOn(reportTask)
             // Run the report task after all tests are finished on all devices.
             deviceToProvider.values.forEach { managedDeviceTestTask ->
                 reportTask.dependsOn(managedDeviceTestTask)
@@ -2050,7 +1942,7 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
         taskFactory.configure(
                 CONNECTED_ANDROID_TEST
         ) { connectedAndroidTest: Task -> connectedAndroidTest.dependsOn(connectedTask) }
-        if (testedVariant.isAndroidTestCoverageEnabled) {
+        if (androidTestProperties.isAndroidTestCoverageEnabled) {
             val jacocoAntConfiguration = JacocoConfigurations.getJacocoAntTaskConfiguration(
                     project, JacocoTask.getJacocoVersion(androidTestProperties))
             val reportTask = taskFactory.register(
@@ -2102,7 +1994,6 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
         createTestDevicesForVariant(
             androidTestProperties,
             testData,
-            testedVariant,
             androidTestProperties.mainVariant.name
         )
     }
@@ -2116,7 +2007,6 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
      */
     fun createPostCompilationTasks(creationConfig: ApkCreationConfig) {
         Preconditions.checkNotNull(creationConfig.taskContainer.javacTask)
-        val transformManager = creationConfig.transformManager
         taskFactory.register(MergeGeneratedProguardFilesCreationAction(creationConfig))
 
         // Merge Java Resources.
@@ -2124,64 +2014,69 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
 
         // -----------------------------------------------------------------------------------------
         // The following task registrations MUST follow the order:
-        //   ASM API -> Legacy transforms -> jacoco transforms
+        //   ASM API -> jacoco transforms -> scoped artifacts transform
         // -----------------------------------------------------------------------------------------
 
         maybeCreateTransformClassesWithAsmTask(creationConfig)
 
-        // ----- External Transforms -----
-        val registeredLegacyTransform = addExternalLegacyTransforms(transformManager, creationConfig)
+        // save the state of classes before eventual jacoco instrumentation as some tasks like
+        // jacoco report want to have access to the classes before jacoco instrumentation.
+        creationConfig.artifacts.forScope(ScopedArtifacts.Scope.PROJECT)
+            .publishCurrent(
+                ScopedArtifact.CLASSES,
+                InternalScopedArtifact.PRE_JACOCO_TRANSFORMED_CLASSES,
+            )
 
         // New gradle-transform jacoco instrumentation support.
         if (creationConfig.isAndroidTestCoverageEnabled &&
             !creationConfig.componentType.isForTesting) {
-            if (registeredLegacyTransform) {
-                createJacocoTaskWithLegacyTransformSupport(creationConfig)
-            } else {
                 createJacocoTask(creationConfig)
-            }
         }
 
-        // initialize the all classes scope, at this point we do not consume the classes, just read
-        // the content as folks can be accessing these classes without transforming them and
-        // re-injecting them in the build flow.
+        // initialize the all classes scope
         creationConfig.artifacts.forScope(ScopedArtifacts.Scope.ALL)
             .getScopedArtifactsContainer(ScopedArtifact.CLASSES)
             .initialScopedContent
-            .from(
-                creationConfig
-                    .transformManager
-                    .getPipelineOutputAsFileCollection { contentTypes, scopes ->
-                        contentTypes.contains(com.android.build.api.transform.QualifiedContent.DefaultContentType.CLASSES)
-                                && scopes.intersect(TransformManager.SCOPE_FULL_PROJECT_WITH_LOCAL_JARS).isNotEmpty()
-                    }
-            )
-
-        // let's check if the ALL scoped classes are transformed.
-        if (creationConfig.artifacts.forScope(ScopedArtifacts.Scope.ALL)
-                .getScopedArtifactsContainer(ScopedArtifact.CLASSES).artifactsAltered.get()) {
-
-            // at this point, we need to consume all these streams as they will be provided by the
-            // final producer of the CLASSES artifact.
-            creationConfig.transformManager
-                .consumeStreams(
-                    TransformManager.SCOPE_FULL_PROJECT_WITH_LOCAL_JARS,
-                    setOf(com.android.build.api.transform.QualifiedContent.DefaultContentType.CLASSES)
+            .run {
+                from(
+                    creationConfig.artifacts.forScope(ScopedArtifacts.Scope.PROJECT)
+                        .getFinalArtifacts(ScopedArtifact.CLASSES)
                 )
-
-            // and register the final transformed version back into the transform pipeline.
-            creationConfig.transformManager
-                .addStream(
-                    OriginalStream.builder("variant-api-transformed-classes")
-                        .addContentTypes(TransformManager.CONTENT_CLASS)
-                        .addScope(QualifiedContent.Scope.PROJECT)
-                        .setFileCollection(
-                            creationConfig.artifacts.forScope(ScopedArtifacts.Scope.ALL)
-                                .getFinalArtifacts(ScopedArtifact.CLASSES)
-                        )
-                        .build()
+                from(
+                    creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.SUB_PROJECT)
+                        .getFinalArtifacts(ScopedArtifact.CLASSES)
                 )
-        }
+                from(
+                    creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS)
+                        .getFinalArtifacts(ScopedArtifact.CLASSES)
+                )
+                from(
+                    creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.LOCAL_DEPS)
+                        .getFinalArtifacts(ScopedArtifact.CLASSES)
+                )
+            }
+
+        creationConfig.artifacts.forScope(ScopedArtifacts.Scope.ALL)
+            .getScopedArtifactsContainer(ScopedArtifact.JAVA_RES)
+            .initialScopedContent
+            .run {
+                from(
+                    creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.SUB_PROJECT)
+                        .getFinalArtifacts(ScopedArtifact.JAVA_RES)
+                )
+                from(
+                    creationConfig.artifacts.forScope(ScopedArtifacts.Scope.PROJECT)
+                        .getFinalArtifacts(ScopedArtifact.JAVA_RES)
+                )
+                from(
+                    creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS)
+                        .getFinalArtifacts(ScopedArtifact.JAVA_RES)
+                )
+                from(
+                    creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.LOCAL_DEPS)
+                        .getFinalArtifacts(ScopedArtifact.JAVA_RES)
+                )
+            }
 
         // Add a task to create merged runtime classes if this is a dynamic-feature,
         // or a base module consuming feature jars. Merged runtime classes are needed if code
@@ -2201,65 +2096,19 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
         // Since the shrinker (R8) also dexes the class files, if we have minifedEnabled we stop
         // the flow and don't set-up dexing.
         maybeCreateJavaCodeShrinkerTask(creationConfig)
-        if (creationConfig.minifiedEnabled) {
-            maybeCreateDesugarLibTask(creationConfig, false)
+        if (creationConfig.optimizationCreationConfig.minifiedEnabled) {
+            maybeCreateDesugarLibTask(creationConfig, false, false)
             return
         }
 
         // Code Dexing (MonoDex, Legacy Multidex or Native Multidex)
-        if (creationConfig.needsMainDexListForBundle) {
+        if (creationConfig.dexingCreationConfig.needsMainDexListForBundle) {
             taskFactory.register(D8BundleMainDexListTask.CreationAction(creationConfig))
         }
         if (creationConfig.componentType.isDynamicFeature) {
             taskFactory.register(FeatureDexMergeTask.CreationAction(creationConfig))
         }
-        createDexTasks(creationConfig, creationConfig.dexingType, registeredLegacyTransform)
-    }
-
-    /**
-     * Adds any transforms registered in a module build file. Returns true if any transforms have
-     * been added.
-     */
-    private fun addExternalLegacyTransforms(
-        transformManager: TransformManager,
-        creationConfig: ApkCreationConfig
-    ): Boolean {
-        val customTransforms = globalConfig.transforms
-        val customTransformsDependencies = globalConfig.transformsDependencies
-        var registeredLegacyTransform = false
-        for (i in customTransforms.indices) {
-            val transform = customTransforms[i]
-            val deps = customTransformsDependencies[i]
-            registeredLegacyTransform = registeredLegacyTransform or transformManager
-                .addTransform(
-                    taskFactory,
-                    creationConfig,
-                    transform,
-                    null,
-                    object : TaskConfigAction<TransformTask> {
-                        override fun configure(task: TransformTask) {
-                            if (deps.isNotEmpty()) {
-                                task.dependsOn(deps)
-                            }
-                        }
-
-                    },
-                    object : TaskProviderCallback<TransformTask> {
-                        override fun handleProvider(taskProvider: TaskProvider<TransformTask>) {
-                            // if the task is a no-op then we make assemble task depend
-                            // on it.
-                            if (transform.scopes.isEmpty()) {
-                                creationConfig
-                                    .taskContainer
-                                    .assembleTask.dependsOn<Task>(taskProvider)
-                            }
-                        }
-
-                    }
-                )
-                .isPresent
-        }
-        return registeredLegacyTransform
+        createDexTasks(creationConfig, creationConfig.dexingCreationConfig.dexingType)
     }
 
     /**
@@ -2268,9 +2117,8 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
      */
     private fun createDexTasks(
             creationConfig: ApkCreationConfig,
-            dexingType: DexingType,
-            registeredLegacyTransforms: Boolean) {
-        val java8LangSupport = creationConfig.getJava8LangSupportType()
+            dexingType: DexingType) {
+        val java8LangSupport = creationConfig.dexingCreationConfig.java8LangSupportType
         val supportsDesugaringViaArtifactTransform =
                 (java8LangSupport == Java8LangSupport.UNUSED
                         || (java8LangSupport == Java8LangSupport.D8
@@ -2288,13 +2136,11 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
         val enableDexingArtifactTransform = (creationConfig
                 .services
                 .projectOptions[BooleanOption.ENABLE_DEXING_ARTIFACT_TRANSFORM]
-                && !registeredLegacyTransforms
                 && supportsDesugaringViaArtifactTransform)
                 && !classesAlteredTroughVariantAPI
         val classpathUtils = ClassesClasspathUtils(
             creationConfig,
             enableDexingArtifactTransform,
-            registeredLegacyTransforms,
             classesAlteredTroughVariantAPI
         )
         taskFactory.register(
@@ -2304,8 +2150,52 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
                 )
         )
 
-        maybeCreateDesugarLibTask(creationConfig, enableDexingArtifactTransform)
-        createDexMergingTasks(creationConfig, dexingType, enableDexingArtifactTransform, classesAlteredTroughVariantAPI)
+        // When desugaring, The file dependencies are dexed in a task with the whole
+        // remote classpath present, as they lack dependency information to desugar
+        // them correctly in an artifact transform.
+        // This should only be passed to Legacy Multidex MERGE_ALL or MERGE_EXTERNAL_LIBS of
+        // other dexing modes, otherwise it will cause the output of DexFileDependenciesTask
+        // to be included multiple times and will cause the build to fail because of same types
+        // being defined multiple times in the final dex.
+        val separateFileDependenciesDexingTask =
+            (creationConfig.dexingCreationConfig.java8LangSupportType == Java8LangSupport.D8
+                    && enableDexingArtifactTransform)
+
+        maybeCreateDesugarLibTask(
+            creationConfig,
+            enableDexingArtifactTransform,
+            separateFileDependenciesDexingTask
+        )
+
+        createDexMergingTasks(
+            creationConfig,
+            dexingType,
+            enableDexingArtifactTransform,
+            classesAlteredTroughVariantAPI,
+            separateFileDependenciesDexingTask
+        )
+
+        if (creationConfig.global.enableGlobalSynthetics) {
+            if (dexingType == DexingType.NATIVE_MULTIDEX) {
+                taskFactory.register(
+                    GlobalSyntheticsMergeTask.CreationAction(
+                        creationConfig,
+                        enableDexingArtifactTransform,
+                        separateFileDependenciesDexingTask
+                    )
+                )
+            }
+
+            if (creationConfig.componentType.isDynamicFeature) {
+                taskFactory.register(
+                    FeatureGlobalSyntheticsMergeTask.CreationAction(
+                        creationConfig,
+                        enableDexingArtifactTransform,
+                        separateFileDependenciesDexingTask
+                    )
+                )
+            }
+        }
     }
 
     /**
@@ -2334,8 +2224,8 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
             dexingType: DexingType,
             dexingUsingArtifactTransforms: Boolean,
             classesAlteredThroughVariantAPI: Boolean,
+            separateFileDependenciesDexingTask: Boolean
     ) {
-
         // if classes were altered at the ALL scoped level, we just need to merge the single jar
         // file resulting.
         if (classesAlteredThroughVariantAPI) {
@@ -2347,16 +2237,6 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
             return
         }
 
-        // When desugaring, The file dependencies are dexed in a task with the whole
-        // remote classpath present, as they lack dependency information to desugar
-        // them correctly in an artifact transform.
-        // This should only be passed to Legacy Multidex MERGE_ALL or MERGE_EXTERNAL_LIBS of
-        // other dexing modes, otherwise it will cause the output of DexFileDependenciesTask
-        // to be included multiple times and will cause the build to fail because of same types
-        // being defined multiple times in the final dex.
-        val separateFileDependenciesDexingTask =
-                (creationConfig.getJava8LangSupportType() == Java8LangSupport.D8
-                        && dexingUsingArtifactTransforms)
         if (separateFileDependenciesDexingTask) {
             val desugarFileDeps = DexFileDependenciesTask.CreationAction(creationConfig)
             taskFactory.register(desugarFileDeps)
@@ -2443,8 +2323,8 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
         }
     }
 
-    protected fun handleJacocoDependencies(creationConfig: ComponentCreationConfig) {
-        if (creationConfig.packageJacocoRuntime) {
+    private fun handleJacocoDependencies(creationConfig: ComponentCreationConfig) {
+        if (creationConfig is ApkCreationConfig && creationConfig.packageJacocoRuntime) {
             val jacocoAgentRuntimeDependency = JacocoConfigurations.getAgentRuntimeDependency(
                     JacocoTask.getJacocoVersion(creationConfig))
             project.dependencies
@@ -2463,65 +2343,24 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
         }
     }
 
-    private fun createJacocoTaskWithLegacyTransformSupport(creationConfig: ComponentCreationConfig) {
-        // Assume the following is true
-        // * test coverage is enabled
-        // * BooleanOption ENABLE_JACOCO_TRANSFORM_INSTRUMENTATION=true
-        // * a legacy transform is registered
-
-        val classesFromLegacyTransforms =
-            creationConfig.transformManager.getPipelineOutputAsFileCollection(
-                { _, _ -> true},
-                { types, _ -> types.contains(
-                    com.android.build.api.transform.QualifiedContent.DefaultContentType.CLASSES) }
+    open fun createJacocoTask(creationConfig: ComponentCreationConfig) {
+        val jacocoTask = taskFactory.register(JacocoTask.CreationAction(creationConfig))
+        // in case of application, we want to package the jacoco instrumented classes
+        // so we basically transform the classes scoped artifact and republish it
+        // untouched as the jacoco transformed artifact so the jacoco report task can
+        // find them.
+        creationConfig.artifacts.forScope(ScopedArtifacts.Scope.PROJECT)
+            .use(jacocoTask)
+            .toTransform(
+                ScopedArtifact.CLASSES,
+                { a ->  a.jarsWithIdentity.inputJars },
+                JacocoTask::classesDir,
+                JacocoTask::outputForJars,
+                JacocoTask::outputForDirs,
             )
 
-        if (creationConfig is ApplicationCreationConfig) {
-        taskFactory.register(
-            JacocoTask.CreationActionLegacyTransform(creationConfig, classesFromLegacyTransforms))
-        }
-    }
-
-    fun createJacocoTask(creationConfig: ComponentCreationConfig) {
-        @Suppress("DEPRECATION") // Legacy support
-        creationConfig
-            .transformManager
-            .consumeStreams(
-                mutableSetOf(com.android.build.api.transform.QualifiedContent.Scope.PROJECT),
-                setOf(com.android.build.api.transform.QualifiedContent.DefaultContentType.CLASSES)
-            )
-        // Instrumented refers to ASM and not Jacoco in this case.
-        if (creationConfig.instrumentationCreationConfig?.projectClassesAreInstrumented == true) {
-            taskFactory.register(JacocoTask.CreationActionWithTransformAsmClasses(creationConfig))
-        } else {
-            taskFactory.register(JacocoTask.CreationActionWithNoTransformAsmClasses(creationConfig))
-        }
-
-        val instrumentedClasses: FileCollection =
-            if (creationConfig.isAndroidTestCoverageEnabled &&
-                    creationConfig !is ApplicationCreationConfig) {
-                // For libraries that can be published,avoid publishing classes
-                // with runtime dependencies on Jacoco.
-                creationConfig.artifacts
-                    .forScope(ScopedArtifacts.Scope.PROJECT)
-                    .getFinalArtifacts(ScopedArtifact.CLASSES)
-            } else {
-                project.files(
-                    creationConfig.artifacts.get(JACOCO_INSTRUMENTED_CLASSES),
-                    project.files(creationConfig.artifacts.get(JACOCO_INSTRUMENTED_JARS)).asFileTree
-                )
-            }
-
-        @Suppress("DEPRECATION") // Legacy support
-        creationConfig
-            .transformManager
-            .addStream(
-                OriginalStream.builder("jacoco-instrumented-classes")
-                    .addContentTypes(com.android.build.api.transform.QualifiedContent.DefaultContentType.CLASSES)
-                    .addScope(com.android.build.api.transform.QualifiedContent.Scope.PROJECT)
-                    .setFileCollection(instrumentedClasses)
-                    .build()
-            )
+        creationConfig.artifacts.forScope(ScopedArtifacts.Scope.PROJECT)
+            .republish(ScopedArtifact.CLASSES, InternalScopedArtifact.JACOCO_TRANSFORMED_CLASSES)
     }
 
     protected fun createDataBindingTasksIfNecessary(creationConfig: ComponentCreationConfig) {
@@ -2549,14 +2388,16 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
                 }
             }
             taskFactory.register(DataBindingTriggerTask.CreationAction(creationConfig))
-            creationConfig.sources.java.addSource(
-                TaskProviderBasedDirectoryEntryImpl(
-                    name = "databinding_generated",
-                    directoryProvider = creationConfig.artifacts.get(
-                        InternalArtifactType.DATA_BINDING_TRIGGER
-                    ),
+            creationConfig.sources.java {
+                it.addSource(
+                    TaskProviderBasedDirectoryEntryImpl(
+                        name = "databinding_generated",
+                        directoryProvider = creationConfig.artifacts.get(
+                            InternalArtifactType.DATA_BINDING_TRIGGER
+                        ),
+                    )
                 )
-            )
+            }
             setDataBindingAnnotationProcessorParams(creationConfig)
         }
     }
@@ -2861,7 +2702,7 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
 
     protected open fun maybeCreateJavaCodeShrinkerTask(
             creationConfig: ConsumableCreationConfig) {
-        if (creationConfig.minifiedEnabled) {
+        if (creationConfig.optimizationCreationConfig.minifiedEnabled) {
             doCreateJavaCodeShrinkerTask(creationConfig)
         }
     }
@@ -2880,7 +2721,7 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
                 && creationConfig.buildFeatures.androidResources)
         val task: TaskProvider<out Task> =
                 createR8Task(creationConfig, isTestApplication, addCompileRClass)
-        if (creationConfig.postProcessingFeatures != null) {
+        if (creationConfig.optimizationCreationConfig.postProcessingFeatures != null) {
             val checkFilesTask =
                     taskFactory.register(CheckProguardFiles.CreationAction(creationConfig))
             task.dependsOn(checkFilesTask)
@@ -2902,6 +2743,12 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
                     InternalArtifactType.FEATURE_SHRUNK_JAVA_RES,
                     AndroidArtifacts.ArtifactType.FEATURE_SHRUNK_JAVA_RES,
                     DOT_JAR)
+        }
+
+        if (creationConfig.debuggable) {
+            globalConfig.buildAnalyzerIssueReporter?.reportIssue(
+                TaskCategoryIssue.MINIFICATION_ENABLED_IN_DEBUG_BUILD
+            )
         }
 
         R8ParallelBuildService.RegistrationAction(
@@ -2975,19 +2822,11 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
             // for base module only.
             return
         }
-        if (creationConfig.services.projectOptions.get(BooleanOption.ENABLE_NEW_RESOURCE_SHRINKER)) {
-            // Shrink resources in APK with a new resource shrinker and produce stripped res
-            // package.
-            taskFactory.register(ShrinkResourcesNewShrinkerTask.CreationAction(creationConfig))
-            // Shrink resources in bundles with new resource shrinker.
-            taskFactory.register(ShrinkAppBundleResourcesTask.CreationAction(creationConfig))
-        } else {
-            // Shrink resources in APK with old resource shrinker and produce stripped res package.
-            taskFactory.register(ShrinkResourcesOldShrinkerTask.CreationAction(creationConfig))
-            // Shrink base module resources in proto format to be packaged to bundle.
-            taskFactory.register(
-                    LegacyShrinkBundleModuleResourcesTask.CreationAction(creationConfig))
-        }
+        // Shrink resources in APK with a new resource shrinker and produce stripped res
+        // package.
+        taskFactory.register(ShrinkResourcesNewShrinkerTask.CreationAction(creationConfig))
+        // Shrink resources in bundles with new resource shrinker.
+        taskFactory.register(ShrinkAppBundleResourcesTask.CreationAction(creationConfig))
     }
 
     private fun createReportTasks() {
@@ -3079,8 +2918,8 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
                 .taskContainer
                 .assetGenTask =
                 taskFactory.register(creationConfig.computeTaskName("generate", "Assets"))
-        if (!creationConfig.componentType.isForTesting
-                && creationConfig.isAndroidTestCoverageEnabled) {
+        // Create anchor task for creating instrumentation test coverage reports
+        if (creationConfig is VariantCreationConfig && creationConfig.isAndroidTestCoverageEnabled) {
             creationConfig
                     .taskContainer
                     .coverageReportTask = taskFactory.register(
@@ -3088,7 +2927,7 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
             ) { task: Task ->
                 task.group = JavaBasePlugin.VERIFICATION_GROUP
                 task.description = String.format(
-                        "Creates test coverage reports for the %s variant.",
+                        "Creates instrumentation test coverage reports for the %s variant.",
                         creationConfig.name)
             }
         }
@@ -3287,10 +3126,10 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
                 .add(
                         "kapt",
                         SdkConstants.DATA_BINDING_ANNOTATION_PROCESSOR_ARTIFACT + ":" + version)
-        var kaptTaskClass: Class<out Task?>? = null
+        var kaptTaskClass: Class<out Task>? = null
         try {
             kaptTaskClass =
-                    Class.forName("org.jetbrains.kotlin.gradle.internal.KaptTask") as Class<out Task?>
+                    Class.forName("org.jetbrains.kotlin.gradle.internal.KaptTask") as Class<out Task>
         } catch (e: ClassNotFoundException) {
             logger.error(
                     "Kotlin plugin is applied to the project "
@@ -3302,21 +3141,21 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
         if (kaptTaskClass == null) {
             return
         }
-        // create a map from kapt task name to variant scope
-        val kaptTaskLookup= allPropertiesList
-                .map{ it.computeTaskName("kapt", "kotlin") to it }
-                .toMap()
-        project.tasks
-                .withType(
-                        kaptTaskClass,
-                        Action { kaptTask: Task ->
-                            // find matching scope.
-                            val matchingComponent = kaptTaskLookup[kaptTask.name]
-                            matchingComponent?.let {
-                                configureKaptTaskInScopeForDataBinding(it,
-                                        kaptTask)
-                            }
-                        } as Action<Task>)
+
+        // Find a matching variant and configure each Kapt task. Note: The task's name could be
+        // kapt${variant}Kotlin, or kapt${variant}KotlinAndroid in KMP projects.
+        val kaptTaskNameOrPrefixToVariant =
+            allPropertiesList.associateBy { it.computeTaskName("kapt", "Kotlin") }
+        project.tasks.withType(kaptTaskClass) { kaptTask: Task ->
+            val variant = kaptTaskNameOrPrefixToVariant
+                .keys.firstOrNull { kaptTask.name.startsWith(it) }
+                ?.let { kaptTaskNameOrPrefixToVariant[it]!! }
+            // If we can't find a matching variant, it could be that this is a Kapt task for JVM in
+            // a KMP project (its name is "kaptKotlinJvm"), which we don't need to handle.
+            variant?.let {
+                configureKaptTaskInScopeForDataBinding(variant, kaptTask)
+            }
+        }
     }
 
     private fun configureKaptTaskInScopeForDataBinding(
@@ -3370,11 +3209,10 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
 
     private fun maybeCreateDesugarLibTask(
             apkCreationConfig: ApkCreationConfig,
-            enableDexingArtifactTransform: Boolean) {
-        val separateFileDependenciesDexingTask =
-                (apkCreationConfig.getJava8LangSupportType() == Java8LangSupport.D8
-                        && enableDexingArtifactTransform)
-        if (apkCreationConfig.shouldPackageDesugarLibDex) {
+            enableDexingArtifactTransform: Boolean,
+            separateFileDependenciesDexingTask: Boolean
+    ) {
+        if (apkCreationConfig.dexingCreationConfig.shouldPackageDesugarLibDex) {
             taskFactory.register(
                     L8DexDesugarLibTask.CreationAction(
                             apkCreationConfig,
@@ -3383,7 +3221,7 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
         }
 
         if(apkCreationConfig.componentType.isDynamicFeature
-            && apkCreationConfig.needsShrinkDesugarLibrary
+            && apkCreationConfig.dexingCreationConfig.needsShrinkDesugarLibrary
         ) {
             taskFactory.register(
                 DesugarLibKeepRulesMergeTask.CreationAction(
@@ -3395,21 +3233,12 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
         }
     }
 
-    private fun getManagedDevices(): List<ManagedVirtualDevice> {
-        val managedDevices = mutableListOf<ManagedVirtualDevice>()
-        // First add devices from within the managed device block in testOptions.
-        extension
+    private fun getManagedDevices(): List<Device> {
+        return extension
             .testOptions
             .managedDevices
             .devices
-            .forEach { device ->
-                if (device is ManagedVirtualDevice) {
-                    managedDevices.add(device)
-                } else {
-                    error("Unsupported managed device type: ${device.javaClass}")
-                }
-            }
-        return managedDevices
+            .toList()
     }
 
     private fun getDeviceGroups(): Collection<DeviceGroup> =
@@ -3421,30 +3250,34 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
     ) {
         val instrumentationCreationConfig = creationConfig.instrumentationCreationConfig ?: return
         if (instrumentationCreationConfig.projectClassesAreInstrumented) {
-            creationConfig
-                    .transformManager
-                    .consumeStreams(
-                            mutableSetOf(com.android.build.api.transform.QualifiedContent.Scope.PROJECT),
-                            setOf(com.android.build.api.transform.QualifiedContent.DefaultContentType.CLASSES))
-            taskFactory.register(
-                    TransformClassesWithAsmTask.CreationAction(
-                        creationConfig
-                    )
+            val transformTask = taskFactory.register(
+                TransformClassesWithAsmTask.CreationAction(
+                    creationConfig
+                )
             )
+            creationConfig.artifacts.forScope(ScopedArtifacts.Scope.PROJECT)
+                .use(transformTask)
+                .toTransform(
+                    ScopedArtifact.CLASSES,
+                    { a ->  a.inputJarsWithIdentity.inputJars },
+                    TransformClassesWithAsmTask::inputClassesDir,
+                    TransformClassesWithAsmTask::jarsOutputDir,
+                    TransformClassesWithAsmTask::classesOutputDir,
+                )
+
             if (instrumentationCreationConfig.asmFramesComputationMode
                     == FramesComputationMode.COMPUTE_FRAMES_FOR_ALL_CLASSES) {
-                taskFactory.register(RecalculateStackFramesTask.CreationAction(creationConfig))
-            }
-            creationConfig
-                    .transformManager
-                    .addStream(
-                            OriginalStream.builder("asm-instrumented-classes")
-                                    .addContentTypes(com.android.build.api.transform.QualifiedContent.DefaultContentType.CLASSES)
-                                    .addScope(com.android.build.api.transform.QualifiedContent.Scope.PROJECT)
-                                    .setFileCollection(
-                                        instrumentationCreationConfig.projectClassesPostInstrumentation
-                                    ).build()
+                val recalculateStackFramesTask = taskFactory.register(RecalculateStackFramesTask.CreationAction(creationConfig))
+                creationConfig.artifacts.forScope(ScopedArtifacts.Scope.PROJECT)
+                    .use(recalculateStackFramesTask)
+                    .toTransform(
+                        ScopedArtifact.CLASSES,
+                        RecalculateStackFramesTask::jarsInputDir,
+                        RecalculateStackFramesTask::classesInputDir,
+                        RecalculateStackFramesTask::jarsOutputDir,
+                        RecalculateStackFramesTask::classesOutputDir,
                     )
+            }
         }
     }
 
@@ -3482,7 +3315,8 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
 
         // Temporary static variables for Kotlin+Compose configuration
         const val KOTLIN_COMPILER_CLASSPATH_CONFIGURATION_NAME = "kotlinCompilerClasspath"
-        const val COMPOSE_KOTLIN_COMPILER_EXTENSION_VERSION = "1.2.0"
+        const val COMPOSE_KOTLIN_COMPILER_EXTENSION_VERSION = "1.3.2"
+        const val COMPOSE_UI_VERSION = "1.3.0"
         const val CREATE_MOCKABLE_JAR_TASK_NAME = "createMockableJar"
 
         /**
@@ -3565,7 +3399,7 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
 
         private fun generatesProguardOutputFile(creationConfig: ComponentCreationConfig): Boolean {
             return ((creationConfig is ConsumableCreationConfig
-                    && creationConfig.minifiedEnabled)
+                    && creationConfig.optimizationCreationConfig.minifiedEnabled)
                     || creationConfig.componentType.isDynamicFeature)
         }
 
@@ -3592,5 +3426,10 @@ abstract class TaskManager<VariantBuilderT : VariantBuilder, VariantT : VariantC
             // Prepend "feature-" to fileName in case a non-base module has module path ":base".
             return "feature-" + sanitizedFeatureName + Strings.nullToEmpty(fileExtension)
         }
+
+        /** Returns the full path of a task given its name.  */
+        @JvmStatic
+        fun getTaskPath(project: Project, taskName: String) =
+            if (project.rootProject === project) ":$taskName" else "${project.path}:$taskName"
     }
 }

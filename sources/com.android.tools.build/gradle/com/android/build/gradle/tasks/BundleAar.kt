@@ -28,9 +28,8 @@ import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.VariantAwareTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.testFixtures.testFixturesClassifier
-import com.android.build.gradle.options.BooleanOption
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.core.BuilderConstants
-import com.android.build.gradle.internal.tasks.TaskCategory
 import org.gradle.api.Action
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.CopySpec
@@ -210,7 +209,7 @@ abstract class BundleAar : Zip(), VariantAwareTask {
             super.handleProvider(taskProvider)
             val propertyProvider = { task: BundleAar -> task.archiveFile }
             creationConfig.artifacts.setInitialProvider(taskProvider,BundleAar::mappedOutput, propertyProvider)
-                .withBuildOutput(creationConfig.paths.aarLocation)
+                .atLocation(creationConfig.paths.aarLocation)
                 .withName(creationConfig.outputs.getMainSplit().outputFileName)
                 .on(SingleArtifact.AAR)
         }
@@ -246,7 +245,7 @@ abstract class BundleAar : Zip(), VariantAwareTask {
 
             creationConfig.artifacts
                 .setInitialProvider(taskProvider, BundleAar::mappedOutput, propertyProvider)
-                    .withBuildOutput(outputFile)
+                    .atLocation(outputFile)
                     .withName("out-${testFixturesClassifier}.aar")
                     .on(InternalArtifactType.LOCAL_AAR_FOR_LINT)
         }
@@ -294,7 +293,7 @@ abstract class BundleAar : Zip(), VariantAwareTask {
             creationConfig.artifacts
                 .setInitialProvider(taskProvider, BundleAar::mappedOutput, propertyProvider)
                 .withName("out.aar")
-                .withBuildOutput(outputFile)
+                .atLocation(outputFile)
                 .on(InternalArtifactType.LOCAL_AAR_FOR_LINT)
         }
 
@@ -329,7 +328,7 @@ abstract class BundleAar : Zip(), VariantAwareTask {
 
             creationConfig.let {
                 it.artifacts.setInitialProvider(taskProvider, BundleAar::mappedOutput) { task: BundleAar -> task.archiveFile }
-                    .withBuildOutput(it.paths.aarLocation)
+                    .atLocation(it.paths.aarLocation)
                     .withName(it.outputs.getMainSplit().outputFileName)
                     .on(SingleArtifact.AAR)
             }
@@ -384,11 +383,8 @@ abstract class BundleAar : Zip(), VariantAwareTask {
                     prependToCopyPath(SdkConstants.FD_PREFAB_PACKAGE)
                 )
             }
-            if (creationConfig.services.projectOptions[BooleanOption.ENABLE_ART_PROFILES]) {
-                task.from(
-                        creationConfig.artifacts.get(InternalArtifactType.LIBRARY_ART_PROFILE)
-                )
-            }
+
+            task.from(creationConfig.artifacts.get(InternalArtifactType.LIBRARY_ART_PROFILE))
         }
     }
 

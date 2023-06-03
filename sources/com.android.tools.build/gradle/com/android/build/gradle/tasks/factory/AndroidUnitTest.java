@@ -36,25 +36,22 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts;
 import com.android.build.gradle.internal.scope.BootClasspathBuilder;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
 import com.android.build.gradle.internal.tasks.BuildAnalyzer;
-import com.android.build.gradle.internal.tasks.TaskCategory;
 import com.android.build.gradle.internal.tasks.VariantAwareTask;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
 import com.android.build.gradle.options.BooleanOption;
 import com.android.build.gradle.options.ProjectOptions;
 import com.android.build.gradle.tasks.AndroidAnalyticsTestListener;
 import com.android.build.gradle.tasks.GenerateTestConfig;
+import com.android.buildanalyzer.common.TaskCategory;
 import com.android.builder.core.ComponentType;
 import com.google.common.collect.ImmutableList;
 import java.io.File;
-import java.io.Serializable;
 import java.util.concurrent.Callable;
-import org.gradle.api.Task;
 import org.gradle.api.artifacts.ArtifactCollection;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.RegularFileProperty;
 import org.gradle.api.plugins.JavaBasePlugin;
 import org.gradle.api.reporting.DirectoryReport;
-import org.gradle.api.specs.Spec;
 import org.gradle.api.tasks.CacheableTask;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Nested;
@@ -146,7 +143,7 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
         @Override
         public void handleProvider(@NotNull TaskProvider<AndroidUnitTest> taskProvider) {
             super.handleProvider(taskProvider);
-            if (unitTestCreationConfig.isTestCoverageEnabled()) {
+            if (unitTestCreationConfig.isUnitTestCoverageEnabled()) {
                 unitTestCreationConfig
                         .getArtifacts()
                         .setInitialProvider(taskProvider,
@@ -161,7 +158,7 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
             super.configure(task);
             unitTestCreationConfig.onTestedVariant(
                     testedConfig -> {
-                        if (unitTestCreationConfig.isTestCoverageEnabled()) {
+                        if (unitTestCreationConfig.isUnitTestCoverageEnabled()) {
                             task.getProject()
                                     .getPlugins()
                                     .withType(
@@ -187,8 +184,6 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
                     testOptions.getUnitTests().isIncludeAndroidResources();
 
             ProjectOptions configOptions = creationConfig.getServices().getProjectOptions();
-            boolean useRelativePathInTestConfig = configOptions
-                    .get(BooleanOption.USE_RELATIVE_PATH_IN_TEST_CONFIG);
 
             // Get projectOptions to determine if the test is invoked from the IDE or the terminal.
             task.isIdeInvoked = configOptions.get(BooleanOption.IDE_INVOKED_FROM_IDE);
@@ -247,19 +242,6 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
 
             ((UnitTestOptions) testOptions.getUnitTests()).applyConfiguration(task);
 
-            // The task is not yet cacheable when includeAndroidResources=true and
-            // android.testConfig.useRelativePath=false (bug 115873047). We set it explicitly here
-            // so Gradle doesn't have to store cache entries that won't be reused.
-            task.getOutputs()
-                    .doNotCacheIf(
-                            "AndroidUnitTest task is not yet cacheable"
-                                    + " when includeAndroidResources=true"
-                                    + " and android.testConfig.useRelativePath=false",
-                            (Spec<? super Task> & Serializable)
-                                    ((thisTask) ->
-                                            includeAndroidResources
-                                                    && !useRelativePathInTestConfig));
-
             task.dependencies =
                     creationConfig
                             .getVariantDependencies()
@@ -284,17 +266,11 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
             }
 
             // 2. the test creationConfig classes and java_res
-            if (creationConfig.getInstrumentationCreationConfig() != null) {
-                collection.from(
-                        creationConfig
-                                .getInstrumentationCreationConfig()
-                                .getProjectClassesPostInstrumentation());
-            } else {
-                collection.from(
-                        artifacts
-                                .forScope(ScopedArtifacts.Scope.PROJECT)
-                                .getFinalArtifacts$gradle_core(ScopedArtifact.CLASSES.INSTANCE));
-            }
+            collection.from(
+                    artifacts
+                            .forScope(ScopedArtifacts.Scope.PROJECT)
+                            .getFinalArtifacts$gradle_core(ScopedArtifact.CLASSES.INSTANCE));
+
             // TODO is this the right thing? this doesn't include the res merging via transform
             // AFAIK
             collection.from(artifacts.get(InternalArtifactType.JAVA_RES.INSTANCE));

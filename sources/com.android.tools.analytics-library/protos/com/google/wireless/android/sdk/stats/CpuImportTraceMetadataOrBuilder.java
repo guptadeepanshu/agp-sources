@@ -46,4 +46,23 @@ public interface CpuImportTraceMetadataOrBuilder extends
    * @return The technology.
    */
   com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.Technology getTechnology();
+
+  /**
+   * <pre>
+   * Whether the trace contains Compose Tracing nodes
+   * </pre>
+   *
+   * <code>optional bool has_compose_tracing_nodes = 3;</code>
+   * @return Whether the hasComposeTracingNodes field is set.
+   */
+  boolean hasHasComposeTracingNodes();
+  /**
+   * <pre>
+   * Whether the trace contains Compose Tracing nodes
+   * </pre>
+   *
+   * <code>optional bool has_compose_tracing_nodes = 3;</code>
+   * @return The hasComposeTracingNodes.
+   */
+  boolean getHasComposeTracingNodes();
 }

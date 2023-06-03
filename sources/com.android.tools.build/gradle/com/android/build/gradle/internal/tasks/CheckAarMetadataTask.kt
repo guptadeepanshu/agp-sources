@@ -30,9 +30,9 @@ import com.android.build.gradle.internal.ide.dependencies.getIdString
 import com.android.build.gradle.internal.tasks.AarMetadataTask.Companion.DEFAULT_MIN_COMPILE_SDK_EXTENSION
 import com.android.build.gradle.internal.utils.parseTargetHash
 import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.core.ToolsRevisionUtils
-import com.android.build.gradle.internal.tasks.TaskCategory
-import com.android.ide.common.repository.GradleVersion
+import com.android.ide.common.repository.AgpVersion
 import com.android.repository.Revision
 import com.android.sdklib.SdkVersionInfo
 import com.google.common.annotations.VisibleForTesting
@@ -378,11 +378,10 @@ abstract class CheckAarMetadataWorkAction: WorkAction<CheckAarMetadataWorkParame
                         }
                     }
                 if (minCompileSdkInt > compileSdkVersionInt) {
-                    // TODO(b/199900566) - change compileSdkVersion to compileSdk for AGP 8.0.
                     val maxRecommendedCompileSdk = parameters.maxRecommendedStableCompileSdkVersionForThisAgp.get()
                     val recommendation = if (minCompileSdkInt <= maxRecommendedCompileSdk) {
                         """
-                            Recommended action: Update this project to use a newer compileSdkVersion
+                            Recommended action: Update this project to use a newer compileSdk
                             of at least $minCompileSdk, for example $maxRecommendedCompileSdk.
                         """.trimIndent()
                     } else {
@@ -392,7 +391,7 @@ abstract class CheckAarMetadataWorkAction: WorkAction<CheckAarMetadataWorkParame
 
                             Recommended action: Update this project's version of the Android Gradle
                             plugin to one that supports $minCompileSdk, then update this project to use
-                            compileSdkVerion of at least $minCompileSdk.
+                            compileSdk of at least $minCompileSdk.
                         """.trimIndent()
                     }
                     errorMessages.add(
@@ -403,10 +402,10 @@ abstract class CheckAarMetadataWorkAction: WorkAction<CheckAarMetadataWorkParame
 
                             ${parameters.projectPath.get()} is currently compiled against $compileSdkVersion.
                         """.trimIndent() + "\n\n" + recommendation + "\n\n" + """
-                            Note that updating a library or application's compileSdkVersion (which
+                            Note that updating a library or application's compileSdk (which
                             allows newer APIs to be used) can be done separately from updating
-                            targetSdkVersion (which opts the app in to new runtime behavior) and
-                            minSdkVersion (which determines which devices the app can be installed
+                            targetSdk (which opts the app in to new runtime behavior) and
+                            minSdk (which determines which devices the app can be installed
                             on).
                         """.trimIndent()
                     )
@@ -450,8 +449,7 @@ abstract class CheckAarMetadataWorkAction: WorkAction<CheckAarMetadataWorkParame
         // check agpVersion
         val minAgpVersion = aarMetadataReader.minAgpVersion
         if (minAgpVersion != null) {
-            val parsedMinAgpVersion =
-                GradleVersion.tryParseStableAndroidGradlePluginVersion(minAgpVersion)
+            val parsedMinAgpVersion = AgpVersion.tryParseStable(minAgpVersion)
             if (parsedMinAgpVersion == null) {
                 errorMessages.add(
                     """
@@ -463,8 +461,7 @@ abstract class CheckAarMetadataWorkAction: WorkAction<CheckAarMetadataWorkParame
                         """.trimIndent()
                 )
             } else {
-                val parsedAgpVersion =
-                    GradleVersion.parseAndroidGradlePluginVersion(parameters.agpVersion.get())
+                val parsedAgpVersion = AgpVersion.parse(parameters.agpVersion.get())
                 if (parsedMinAgpVersion > parsedAgpVersion) {
                     errorMessages.add(
                         """

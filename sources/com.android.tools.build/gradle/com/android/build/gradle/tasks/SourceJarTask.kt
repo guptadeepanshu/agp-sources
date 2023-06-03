@@ -23,7 +23,7 @@ import com.android.build.gradle.internal.scope.getOutputPath
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.VariantAwareTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.TaskCategory
 import org.gradle.api.attributes.DocsType
 import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.tasks.Internal
@@ -72,14 +72,14 @@ abstract class SourceJarTask : Jar(), VariantAwareTask {
             task.isReproducibleFileOrder = true
             task.isPreserveFileTimestamps = false
 
-            val javaSource = computeJavaSource(creationConfig, task.project)
-            val kotlinSource = task.project.files(
-                creationConfig.sources.kotlin.all
-            ).asFileTree.matching(
-                PatternSet().include("**/*.kt")
-            )
-
-            task.from(javaSource, kotlinSource)
+            task.from(computeJavaSource(creationConfig))
+            creationConfig.sources.kotlin { kotlinSources ->
+                task.from(
+                    task.project.files(kotlinSources.all).asFileTree.matching(
+                        PatternSet().include("**/*.kt")
+                    )
+                )
+            }
 
             val outputFile =
                 InternalArtifactType.SOURCE_JAR

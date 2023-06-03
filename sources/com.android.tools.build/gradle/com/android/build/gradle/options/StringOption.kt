@@ -41,7 +41,6 @@ enum class StringOption(
      * STABLE APIs
      */
 
-    IDE_BUILD_TARGET_DENSITY(PROPERTY_BUILD_DENSITY, ApiStage.Stable),
     IDE_BUILD_TARGET_ABI(PROPERTY_BUILD_ABI, ApiStage.Stable),
 
     IDE_ATTRIBUTION_FILE_LOCATION(PROPERTY_ATTRIBUTION_FILE_LOCATION, ApiStage.Stable),
@@ -132,6 +131,11 @@ enum class StringOption(
     // "angle_indirect"
     GRADLE_MANAGED_DEVICE_EMULATOR_GPU_MODE("android.testoptions.manageddevices.emulator.gpu", ApiStage.Experimental),
 
+    ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR("android.privacySandboxSdk.apiGenerator", ApiStage.Experimental),
+
+    ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR_GENERATED_RUNTIME_DEPENDENCIES("android.privacySandboxSdk.apiGenerator.generatedRuntimeDependencies", ApiStage.Experimental),
+
+    ANDROID_PRIVACY_SANDBOX_SDK_API_PACKAGER("android.privacySandboxSdk.apiPackager", ApiStage.Experimental),
     /* ---------------
      * DEPRECATED APIs
      */
@@ -144,6 +148,12 @@ enum class StringOption(
     BUILD_CACHE_DIR(
         "android.buildCacheDir",
         ApiStage.Removed(Version.VERSION_7_0, "The Android-specific build caches were superseded by the Gradle build cache (https://docs.gradle.org/current/userguide/build_cache.html).")
+    ),
+
+    @Suppress("unused")
+    IDE_BUILD_TARGET_DENSITY(
+            PROPERTY_BUILD_DENSITY,
+            ApiStage.Removed(Version.VERSION_8_0, "Density property injection from Android Studio has been removed.")
     ),
 
     ;

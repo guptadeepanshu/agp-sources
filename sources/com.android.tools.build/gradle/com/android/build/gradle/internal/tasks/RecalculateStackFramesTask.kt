@@ -26,7 +26,7 @@ import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.features.InstrumentationTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.features.InstrumentationTaskCreationActionImpl
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.TaskCategory
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Property
@@ -52,11 +52,11 @@ abstract class RecalculateStackFramesTask : NewIncrementalTask() {
 
     @get:Classpath
     @get:Incremental
-    abstract val classesInputDir: DirectoryProperty
+    abstract val classesInputDir: ConfigurableFileCollection
 
     @get:Classpath
     @get:Incremental
-    abstract val jarsInputDir: DirectoryProperty
+    abstract val jarsInputDir: ConfigurableFileCollection
 
     @get:CompileClasspath
     abstract val bootClasspath: ConfigurableFileCollection
@@ -74,8 +74,10 @@ abstract class RecalculateStackFramesTask : NewIncrementalTask() {
     abstract val classesHierarchyBuildService: Property<ClassesHierarchyBuildService>
 
     private fun createDelegate() = FixStackFramesDelegate(
-        classesDir = classesInputDir.get().asFile,
-        jarsDir = jarsInputDir.get().asFile,
+        // TODO : this is very fragile, we should not expect the cardinality of the collection
+        // of classes directories produced by the ASM transform task.
+        classesDir = classesInputDir.singleFile,
+        jarsDir = if (jarsInputDir.isEmpty) null else jarsInputDir.singleFile,
         bootClasspath = bootClasspath.files,
         referencedClasses = referencedClasses.files,
         classesOutDir = classesOutputDir.get().asFile,
@@ -107,35 +109,10 @@ abstract class RecalculateStackFramesTask : NewIncrementalTask() {
         override val name = computeTaskName("fixInstrumented", "ClassesStackFrames")
         override val type = RecalculateStackFramesTask::class.java
 
-        override fun handleProvider(
-            taskProvider: TaskProvider<RecalculateStackFramesTask>
-        ) {
-            super.handleProvider(taskProvider)
-            creationConfig.artifacts.setInitialProvider(
-                taskProvider,
-                RecalculateStackFramesTask::classesOutputDir
-            ).on(InternalArtifactType.FIXED_STACK_FRAMES_ASM_INSTRUMENTED_PROJECT_CLASSES)
-
-            creationConfig.artifacts.setInitialProvider(
-                taskProvider,
-                RecalculateStackFramesTask::jarsOutputDir
-            ).on(InternalArtifactType.FIXED_STACK_FRAMES_ASM_INSTRUMENTED_PROJECT_JARS)
-        }
-
         override fun configure(
             task: RecalculateStackFramesTask
         ) {
             super.configure(task)
-
-            creationConfig.artifacts.setTaskInputToFinalProduct(
-                InternalArtifactType.ASM_INSTRUMENTED_PROJECT_CLASSES,
-                task.classesInputDir
-            )
-
-            creationConfig.artifacts.setTaskInputToFinalProduct(
-                InternalArtifactType.ASM_INSTRUMENTED_PROJECT_JARS,
-                task.jarsInputDir
-            )
 
             task.bootClasspath.from(creationConfig.global.bootClasspath).disallowChanges()
 

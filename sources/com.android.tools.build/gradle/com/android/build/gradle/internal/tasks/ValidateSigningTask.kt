@@ -30,10 +30,10 @@ import com.android.build.gradle.internal.signing.SigningConfigData
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.core.BuilderConstants
 import com.android.builder.signing.DefaultSigningConfig
 import com.android.builder.utils.SynchronizedFile
-import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.utils.FileUtils
 import com.google.common.annotations.VisibleForTesting
 import com.google.common.base.Preconditions.checkState

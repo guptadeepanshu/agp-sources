@@ -1263,6 +1263,30 @@ public enum GradleTaskExecutionType
    * <code>GENERATE_PRIVACY_SANDBOX_SDK_RUNTIME_CONFIG_FILE = 311;</code>
    */
   GENERATE_PRIVACY_SANDBOX_SDK_RUNTIME_CONFIG_FILE(311),
+  /**
+   * <code>PRIVACY_SANDBOX_SDK_GENERATE_JAR_STUBS = 312;</code>
+   */
+  PRIVACY_SANDBOX_SDK_GENERATE_JAR_STUBS(312),
+  /**
+   * <code>PRIVACY_SANDBOX_SDK_GENERATE_R_CLASS = 313;</code>
+   */
+  PRIVACY_SANDBOX_SDK_GENERATE_R_CLASS(313),
+  /**
+   * <code>PRIVACY_SANDBOX_SDK_GENERATE_R_PACKAGE_DEX = 314;</code>
+   */
+  PRIVACY_SANDBOX_SDK_GENERATE_R_PACKAGE_DEX(314),
+  /**
+   * <code>GLOBAL_SYNTHETICS_MERGE = 315;</code>
+   */
+  GLOBAL_SYNTHETICS_MERGE(315),
+  /**
+   * <code>FEATURE_GLOBAL_SYNTHETICS_MERGE = 316;</code>
+   */
+  FEATURE_GLOBAL_SYNTHETICS_MERGE(316),
+  /**
+   * <code>BUILD_ANALYZER = 317;</code>
+   */
+  BUILD_ANALYZER(317),
   UNRECOGNIZED(-1),
   ;
 
@@ -2514,6 +2538,30 @@ public enum GradleTaskExecutionType
    * <code>GENERATE_PRIVACY_SANDBOX_SDK_RUNTIME_CONFIG_FILE = 311;</code>
    */
   public static final int GENERATE_PRIVACY_SANDBOX_SDK_RUNTIME_CONFIG_FILE_VALUE = 311;
+  /**
+   * <code>PRIVACY_SANDBOX_SDK_GENERATE_JAR_STUBS = 312;</code>
+   */
+  public static final int PRIVACY_SANDBOX_SDK_GENERATE_JAR_STUBS_VALUE = 312;
+  /**
+   * <code>PRIVACY_SANDBOX_SDK_GENERATE_R_CLASS = 313;</code>
+   */
+  public static final int PRIVACY_SANDBOX_SDK_GENERATE_R_CLASS_VALUE = 313;
+  /**
+   * <code>PRIVACY_SANDBOX_SDK_GENERATE_R_PACKAGE_DEX = 314;</code>
+   */
+  public static final int PRIVACY_SANDBOX_SDK_GENERATE_R_PACKAGE_DEX_VALUE = 314;
+  /**
+   * <code>GLOBAL_SYNTHETICS_MERGE = 315;</code>
+   */
+  public static final int GLOBAL_SYNTHETICS_MERGE_VALUE = 315;
+  /**
+   * <code>FEATURE_GLOBAL_SYNTHETICS_MERGE = 316;</code>
+   */
+  public static final int FEATURE_GLOBAL_SYNTHETICS_MERGE_VALUE = 316;
+  /**
+   * <code>BUILD_ANALYZER = 317;</code>
+   */
+  public static final int BUILD_ANALYZER_VALUE = 317;
 
 
   public final int getNumber() {
@@ -2852,6 +2900,12 @@ public enum GradleTaskExecutionType
       case 309: return BUILD_PRIVACY_SANDBOX_SDK_APKS;
       case 310: return GENERATE_PRIVACY_SANDBOX_ASAR;
       case 311: return GENERATE_PRIVACY_SANDBOX_SDK_RUNTIME_CONFIG_FILE;
+      case 312: return PRIVACY_SANDBOX_SDK_GENERATE_JAR_STUBS;
+      case 313: return PRIVACY_SANDBOX_SDK_GENERATE_R_CLASS;
+      case 314: return PRIVACY_SANDBOX_SDK_GENERATE_R_PACKAGE_DEX;
+      case 315: return GLOBAL_SYNTHETICS_MERGE;
+      case 316: return FEATURE_GLOBAL_SYNTHETICS_MERGE;
+      case 317: return BUILD_ANALYZER;
       default: return null;
     }
   }

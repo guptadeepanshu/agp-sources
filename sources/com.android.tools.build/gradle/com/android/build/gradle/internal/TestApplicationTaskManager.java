@@ -133,7 +133,6 @@ public class TestApplicationTaskManager
         createTestDevicesForVariant(
                 testVariantProperties,
                 testData,
-                null,
                 testVariantProperties.getName(),
                 ComponentType.ANDROID_TEST_SUFFIX);
     }
@@ -141,7 +140,7 @@ public class TestApplicationTaskManager
     @Override
     protected void maybeCreateJavaCodeShrinkerTask(
             @NonNull ConsumableCreationConfig creationConfig) {
-        if (creationConfig.getMinifiedEnabled()) {
+        if (creationConfig.getOptimizationCreationConfig().getMinifiedEnabled()) {
             doCreateJavaCodeShrinkerTask(creationConfig, true);
         } else {
             TaskProvider<CheckTestedAppObfuscation> checkObfuscation =

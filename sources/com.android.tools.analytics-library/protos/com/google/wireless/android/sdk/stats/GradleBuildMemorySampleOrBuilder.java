@@ -15,6 +15,7 @@ public interface GradleBuildMemorySampleOrBuilder extends
    * </pre>
    *
    * <code>optional int64 gc_time_ms = 1 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the gcTimeMs field is set.
    */
   @java.lang.Deprecated boolean hasGcTimeMs();
@@ -26,6 +27,7 @@ public interface GradleBuildMemorySampleOrBuilder extends
    * </pre>
    *
    * <code>optional int64 gc_time_ms = 1 [deprecated = true];</code>
+   * @deprecated
    * @return The gcTimeMs.
    */
   @java.lang.Deprecated long getGcTimeMs();
@@ -38,6 +40,7 @@ public interface GradleBuildMemorySampleOrBuilder extends
    * </pre>
    *
    * <code>optional int64 gc_count = 2 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the gcCount field is set.
    */
   @java.lang.Deprecated boolean hasGcCount();
@@ -49,6 +52,7 @@ public interface GradleBuildMemorySampleOrBuilder extends
    * </pre>
    *
    * <code>optional int64 gc_count = 2 [deprecated = true];</code>
+   * @deprecated
    * @return The gcCount.
    */
   @java.lang.Deprecated long getGcCount();

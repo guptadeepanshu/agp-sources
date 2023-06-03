@@ -67,4 +67,27 @@ public interface BuildAttributionPerformanceStatsOrBuilder extends
    * @return The toolingApiBuildFinishedEventLatencyMs.
    */
   long getToolingApiBuildFinishedEventLatencyMs();
+
+  /**
+   * <pre>
+   * The number of partial result files generated in AGP which corresponds to
+   * the number of build services created per the build, which corresponds to
+   * the number of classloaders.
+   * </pre>
+   *
+   * <code>optional int32 number_of_generated_partial_results = 4;</code>
+   * @return Whether the numberOfGeneratedPartialResults field is set.
+   */
+  boolean hasNumberOfGeneratedPartialResults();
+  /**
+   * <pre>
+   * The number of partial result files generated in AGP which corresponds to
+   * the number of build services created per the build, which corresponds to
+   * the number of classloaders.
+   * </pre>
+   *
+   * <code>optional int32 number_of_generated_partial_results = 4;</code>
+   * @return The numberOfGeneratedPartialResults.
+   */
+  int getNumberOfGeneratedPartialResults();
 }

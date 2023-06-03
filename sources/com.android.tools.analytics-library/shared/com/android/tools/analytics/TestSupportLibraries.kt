@@ -33,6 +33,7 @@ private val setters = ImmutableTable.Builder<String, String, (Builder, String) -
   put("androidx.test.espresso", "espresso-idling-resource", Builder::setEspressoIdlingResourceVersion)
   put("androidx.test.espresso", "espresso-intents", Builder::setEspressoIntentsVersion)
   put("androidx.test.espresso", "espresso-web", Builder::setEspressoWebVersion)
+  put("androidx.test.espresso", "espresso-device", Builder::setEspressoDeviceVersion)
   put("androidx.test.ext", "junit", Builder::setTestExtJunitVersion)
   put("androidx.test.ext", "junit-ktx", Builder::setTestExtJunitKtxVersion)
   put("androidx.test.ext", "truth", Builder::setTestExtTruthVersion)

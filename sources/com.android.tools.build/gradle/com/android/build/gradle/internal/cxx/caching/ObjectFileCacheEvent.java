@@ -620,10 +620,10 @@ private static final long serialVersionUID = 0L;
     if (outcome_ != com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent.Outcome.UNKNOWN.getNumber()) {
       output.writeEnum(1, outcome_);
     }
-    if (!getKeyDisplayNameBytes().isEmpty()) {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(keyDisplayName_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 2, keyDisplayName_);
     }
-    if (!getKeyHashCodeBytes().isEmpty()) {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(keyHashCode_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 3, keyHashCode_);
     }
     if (compilation_ != null) {
@@ -645,10 +645,10 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(1, outcome_);
     }
-    if (!getKeyDisplayNameBytes().isEmpty()) {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(keyDisplayName_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, keyDisplayName_);
     }
-    if (!getKeyHashCodeBytes().isEmpty()) {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(keyHashCode_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, keyHashCode_);
     }
     if (compilation_ != null) {

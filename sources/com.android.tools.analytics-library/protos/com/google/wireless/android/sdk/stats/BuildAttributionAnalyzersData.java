@@ -162,6 +162,19 @@ private static final long serialVersionUID = 0L;
             bitField0_ |= 0x00000100;
             break;
           }
+          case 82: {
+            com.google.wireless.android.sdk.stats.TaskCategoryIssuesData.Builder subBuilder = null;
+            if (((bitField0_ & 0x00000200) != 0)) {
+              subBuilder = taskCategoryIssuesData_.toBuilder();
+            }
+            taskCategoryIssuesData_ = input.readMessage(com.google.wireless.android.sdk.stats.TaskCategoryIssuesData.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(taskCategoryIssuesData_);
+              taskCategoryIssuesData_ = subBuilder.buildPartial();
+            }
+            bitField0_ |= 0x00000200;
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -526,6 +539,44 @@ private static final long serialVersionUID = 0L;
     return downloadsAnalysisData_ == null ? com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.getDefaultInstance() : downloadsAnalysisData_;
   }
 
+  public static final int TASK_CATEGORY_ISSUES_DATA_FIELD_NUMBER = 10;
+  private com.google.wireless.android.sdk.stats.TaskCategoryIssuesData taskCategoryIssuesData_;
+  /**
+   * <pre>
+   * Data from task category issues
+   * </pre>
+   *
+   * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+   * @return Whether the taskCategoryIssuesData field is set.
+   */
+  @java.lang.Override
+  public boolean hasTaskCategoryIssuesData() {
+    return ((bitField0_ & 0x00000200) != 0);
+  }
+  /**
+   * <pre>
+   * Data from task category issues
+   * </pre>
+   *
+   * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+   * @return The taskCategoryIssuesData.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.TaskCategoryIssuesData getTaskCategoryIssuesData() {
+    return taskCategoryIssuesData_ == null ? com.google.wireless.android.sdk.stats.TaskCategoryIssuesData.getDefaultInstance() : taskCategoryIssuesData_;
+  }
+  /**
+   * <pre>
+   * Data from task category issues
+   * </pre>
+   *
+   * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.TaskCategoryIssuesDataOrBuilder getTaskCategoryIssuesDataOrBuilder() {
+    return taskCategoryIssuesData_ == null ? com.google.wireless.android.sdk.stats.TaskCategoryIssuesData.getDefaultInstance() : taskCategoryIssuesData_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -566,6 +617,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00000100) != 0)) {
       output.writeMessage(9, getDownloadsAnalysisData());
+    }
+    if (((bitField0_ & 0x00000200) != 0)) {
+      output.writeMessage(10, getTaskCategoryIssuesData());
     }
     unknownFields.writeTo(output);
   }
@@ -611,6 +665,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000100) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(9, getDownloadsAnalysisData());
+    }
+    if (((bitField0_ & 0x00000200) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(10, getTaskCategoryIssuesData());
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -672,6 +730,11 @@ private static final long serialVersionUID = 0L;
       if (!getDownloadsAnalysisData()
           .equals(other.getDownloadsAnalysisData())) return false;
     }
+    if (hasTaskCategoryIssuesData() != other.hasTaskCategoryIssuesData()) return false;
+    if (hasTaskCategoryIssuesData()) {
+      if (!getTaskCategoryIssuesData()
+          .equals(other.getTaskCategoryIssuesData())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -719,6 +782,10 @@ private static final long serialVersionUID = 0L;
     if (hasDownloadsAnalysisData()) {
       hash = (37 * hash) + DOWNLOADS_ANALYSIS_DATA_FIELD_NUMBER;
       hash = (53 * hash) + getDownloadsAnalysisData().hashCode();
+    }
+    if (hasTaskCategoryIssuesData()) {
+      hash = (37 * hash) + TASK_CATEGORY_ISSUES_DATA_FIELD_NUMBER;
+      hash = (53 * hash) + getTaskCategoryIssuesData().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -860,6 +927,7 @@ private static final long serialVersionUID = 0L;
         getConfigurationCacheCompatibilityDataFieldBuilder();
         getJetifierUsageDataFieldBuilder();
         getDownloadsAnalysisDataFieldBuilder();
+        getTaskCategoryIssuesDataFieldBuilder();
       }
     }
     @java.lang.Override
@@ -915,6 +983,12 @@ private static final long serialVersionUID = 0L;
         downloadsAnalysisDataBuilder_.clear();
       }
       bitField0_ = (bitField0_ & ~0x00000100);
+      if (taskCategoryIssuesDataBuilder_ == null) {
+        taskCategoryIssuesData_ = null;
+      } else {
+        taskCategoryIssuesDataBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000200);
       return this;
     }
 
@@ -1011,6 +1085,14 @@ private static final long serialVersionUID = 0L;
         }
         to_bitField0_ |= 0x00000100;
       }
+      if (((from_bitField0_ & 0x00000200) != 0)) {
+        if (taskCategoryIssuesDataBuilder_ == null) {
+          result.taskCategoryIssuesData_ = taskCategoryIssuesData_;
+        } else {
+          result.taskCategoryIssuesData_ = taskCategoryIssuesDataBuilder_.build();
+        }
+        to_bitField0_ |= 0x00000200;
+      }
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -1086,6 +1168,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasDownloadsAnalysisData()) {
         mergeDownloadsAnalysisData(other.getDownloadsAnalysisData());
+      }
+      if (other.hasTaskCategoryIssuesData()) {
+        mergeTaskCategoryIssuesData(other.getTaskCategoryIssuesData());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -2418,6 +2503,162 @@ private static final long serialVersionUID = 0L;
         downloadsAnalysisData_ = null;
       }
       return downloadsAnalysisDataBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.TaskCategoryIssuesData taskCategoryIssuesData_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.TaskCategoryIssuesData, com.google.wireless.android.sdk.stats.TaskCategoryIssuesData.Builder, com.google.wireless.android.sdk.stats.TaskCategoryIssuesDataOrBuilder> taskCategoryIssuesDataBuilder_;
+    /**
+     * <pre>
+     * Data from task category issues
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+     * @return Whether the taskCategoryIssuesData field is set.
+     */
+    public boolean hasTaskCategoryIssuesData() {
+      return ((bitField0_ & 0x00000200) != 0);
+    }
+    /**
+     * <pre>
+     * Data from task category issues
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+     * @return The taskCategoryIssuesData.
+     */
+    public com.google.wireless.android.sdk.stats.TaskCategoryIssuesData getTaskCategoryIssuesData() {
+      if (taskCategoryIssuesDataBuilder_ == null) {
+        return taskCategoryIssuesData_ == null ? com.google.wireless.android.sdk.stats.TaskCategoryIssuesData.getDefaultInstance() : taskCategoryIssuesData_;
+      } else {
+        return taskCategoryIssuesDataBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * Data from task category issues
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+     */
+    public Builder setTaskCategoryIssuesData(com.google.wireless.android.sdk.stats.TaskCategoryIssuesData value) {
+      if (taskCategoryIssuesDataBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        taskCategoryIssuesData_ = value;
+        onChanged();
+      } else {
+        taskCategoryIssuesDataBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00000200;
+      return this;
+    }
+    /**
+     * <pre>
+     * Data from task category issues
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+     */
+    public Builder setTaskCategoryIssuesData(
+        com.google.wireless.android.sdk.stats.TaskCategoryIssuesData.Builder builderForValue) {
+      if (taskCategoryIssuesDataBuilder_ == null) {
+        taskCategoryIssuesData_ = builderForValue.build();
+        onChanged();
+      } else {
+        taskCategoryIssuesDataBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00000200;
+      return this;
+    }
+    /**
+     * <pre>
+     * Data from task category issues
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+     */
+    public Builder mergeTaskCategoryIssuesData(com.google.wireless.android.sdk.stats.TaskCategoryIssuesData value) {
+      if (taskCategoryIssuesDataBuilder_ == null) {
+        if (((bitField0_ & 0x00000200) != 0) &&
+            taskCategoryIssuesData_ != null &&
+            taskCategoryIssuesData_ != com.google.wireless.android.sdk.stats.TaskCategoryIssuesData.getDefaultInstance()) {
+          taskCategoryIssuesData_ =
+            com.google.wireless.android.sdk.stats.TaskCategoryIssuesData.newBuilder(taskCategoryIssuesData_).mergeFrom(value).buildPartial();
+        } else {
+          taskCategoryIssuesData_ = value;
+        }
+        onChanged();
+      } else {
+        taskCategoryIssuesDataBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00000200;
+      return this;
+    }
+    /**
+     * <pre>
+     * Data from task category issues
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+     */
+    public Builder clearTaskCategoryIssuesData() {
+      if (taskCategoryIssuesDataBuilder_ == null) {
+        taskCategoryIssuesData_ = null;
+        onChanged();
+      } else {
+        taskCategoryIssuesDataBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000200);
+      return this;
+    }
+    /**
+     * <pre>
+     * Data from task category issues
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+     */
+    public com.google.wireless.android.sdk.stats.TaskCategoryIssuesData.Builder getTaskCategoryIssuesDataBuilder() {
+      bitField0_ |= 0x00000200;
+      onChanged();
+      return getTaskCategoryIssuesDataFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Data from task category issues
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+     */
+    public com.google.wireless.android.sdk.stats.TaskCategoryIssuesDataOrBuilder getTaskCategoryIssuesDataOrBuilder() {
+      if (taskCategoryIssuesDataBuilder_ != null) {
+        return taskCategoryIssuesDataBuilder_.getMessageOrBuilder();
+      } else {
+        return taskCategoryIssuesData_ == null ?
+            com.google.wireless.android.sdk.stats.TaskCategoryIssuesData.getDefaultInstance() : taskCategoryIssuesData_;
+      }
+    }
+    /**
+     * <pre>
+     * Data from task category issues
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.TaskCategoryIssuesData, com.google.wireless.android.sdk.stats.TaskCategoryIssuesData.Builder, com.google.wireless.android.sdk.stats.TaskCategoryIssuesDataOrBuilder> 
+        getTaskCategoryIssuesDataFieldBuilder() {
+      if (taskCategoryIssuesDataBuilder_ == null) {
+        taskCategoryIssuesDataBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.TaskCategoryIssuesData, com.google.wireless.android.sdk.stats.TaskCategoryIssuesData.Builder, com.google.wireless.android.sdk.stats.TaskCategoryIssuesDataOrBuilder>(
+                getTaskCategoryIssuesData(),
+                getParentForChildren(),
+                isClean());
+        taskCategoryIssuesData_ = null;
+      }
+      return taskCategoryIssuesDataBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

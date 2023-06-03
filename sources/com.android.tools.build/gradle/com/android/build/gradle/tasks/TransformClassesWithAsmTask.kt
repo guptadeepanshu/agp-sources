@@ -44,14 +44,15 @@ import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.features.InstrumentationTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.features.InstrumentationTaskCreationActionImpl
 import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.files.SerializableFileChanges
 import com.android.builder.utils.isValidZipEntryName
-import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.ide.common.resources.FileStatus
 import com.android.utils.FileUtils
 import com.google.common.io.ByteStreams
 import com.google.common.io.Files
 import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
@@ -339,6 +340,7 @@ abstract class TransformClassesWithAsmTask : NewIncrementalTask() {
                 visitors = parameters.visitorsList.get(),
                 apiVersion = parameters.asmApiVersion.get(),
                 classesHierarchyResolver = classesHierarchyResolver,
+                issueHandler = parameters.classesHierarchyBuildService.get().issueHandler,
                 framesComputationMode = parameters.framesComputationMode.get(),
                 excludes = parameters.excludes.get(),
                 profilingTransforms = parameters.profilingTransforms.getOrElse(emptyList())
@@ -469,19 +471,6 @@ abstract class TransformClassesWithAsmTask : NewIncrementalTask() {
         override val type: Class<TransformClassesWithAsmTask> =
                 TransformClassesWithAsmTask::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<TransformClassesWithAsmTask>) {
-            super.handleProvider(taskProvider)
-            creationConfig
-                    .artifacts
-                    .setInitialProvider(taskProvider) { it.classesOutputDir }
-                    .on(InternalArtifactType.ASM_INSTRUMENTED_PROJECT_CLASSES)
-
-            creationConfig
-                    .artifacts
-                    .setInitialProvider(taskProvider) { it.jarsOutputDir }
-                    .on(InternalArtifactType.ASM_INSTRUMENTED_PROJECT_JARS)
-        }
-
         override fun configure(task: TransformClassesWithAsmTask) {
             super.configure(task)
             task.incrementalFolder = creationConfig.paths.getIncrementalDir(task.name)
@@ -498,18 +487,6 @@ abstract class TransformClassesWithAsmTask : NewIncrementalTask() {
 
             task.excludes.setDisallowChanges(instrumentationCreationConfig.instrumentation.excludes)
 
-            val projectClasses = creationConfig.artifacts.forScope(ScopedArtifacts.Scope.PROJECT)
-                .getFinalArtifacts(ScopedArtifact.CLASSES)
-            task.inputClassesDir.from(
-                projectClasses.getDirectories(creationConfig.services.projectInfo.projectDirectory)
-            )
-            task.inputClassesDir.disallowChanges()
-
-            task.inputJarsWithIdentity.inputJars.from(
-                projectClasses.getRegularFiles(creationConfig.services.projectInfo.projectDirectory)
-            )
-            task.inputJarsWithIdentity.inputJars.disallowChanges()
-
             task.bootClasspath.from(creationConfig.global.bootClasspath)
             task.bootClasspath.disallowChanges()
 
@@ -519,12 +496,7 @@ abstract class TransformClassesWithAsmTask : NewIncrementalTask() {
                     creationConfig.variantDependencies.getArtifactFileCollection(
                             AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                             AndroidArtifacts.ArtifactScope.ALL,
-                        if (creationConfig.isAndroidTestCoverageEnabled
-                        ) {
-                            AndroidArtifacts.ArtifactType.JACOCO_CLASSES_JAR
-                        } else {
                             AndroidArtifacts.ArtifactType.CLASSES_JAR
-                        }
                     )
             )
             task.runtimeClasspath.disallowChanges()

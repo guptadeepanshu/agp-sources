@@ -28,4 +28,6 @@ sealed class ScopedArtifact: Artifact.Single<RegularFile>(FILE, Category.INTERME
      * scope
      */
     object CLASSES: ScopedArtifact()
+
+    object JAVA_RES: ScopedArtifact()
 }

@@ -26,8 +26,8 @@ import com.android.build.gradle.internal.scope.InternalArtifactType.MERGED_NATIV
 import com.android.build.gradle.internal.scope.InternalArtifactType.STRIPPED_NATIVE_LIBS
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.utils.isValidZipEntryName
-import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.utils.FileUtils
 import com.google.common.base.Joiner
 import com.google.common.base.Preconditions

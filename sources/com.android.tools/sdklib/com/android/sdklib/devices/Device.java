@@ -22,7 +22,6 @@ import com.android.dvlib.DeviceSchema;
 import com.android.resources.ScreenOrientation;
 import com.android.resources.ScreenRound;
 import com.android.sdklib.repository.targets.SystemImage;
-
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -443,12 +442,23 @@ public final class Device {
             if (mMeta == null) {
                 mMeta = new Meta();
             }
+
+            boolean deviceIsRound = false;
             for (State s : mState) {
                 if (s.isDefaultState()) {
                     mDefaultState = s;
-                    break;
+                }
+                Screen screen = s.getHardware().getScreen();
+                if (screen != null && ScreenRound.ROUND.equals(screen.getScreenRound())) {
+                    deviceIsRound = true;
                 }
             }
+
+            if (deviceIsRound) {
+                // Ensure that the roundness is one of the boot properties
+                mBootProps.put(DeviceParser.ROUND_BOOT_PROP, "true");
+            }
+
             if (mDefaultState == null) {
                 throw generateBuildException("Device missing default state");
             }

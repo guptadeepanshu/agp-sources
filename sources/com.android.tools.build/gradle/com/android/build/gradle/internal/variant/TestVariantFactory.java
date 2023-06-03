@@ -48,7 +48,6 @@ import com.android.build.gradle.internal.dsl.DefaultConfig;
 import com.android.build.gradle.internal.dsl.ModulePropertyKeys;
 import com.android.build.gradle.internal.dsl.ProductFlavor;
 import com.android.build.gradle.internal.dsl.SigningConfig;
-import com.android.build.gradle.internal.pipeline.TransformManager;
 import com.android.build.gradle.internal.plugins.DslContainerProvider;
 import com.android.build.gradle.internal.scope.BuildFeatureValues;
 import com.android.build.gradle.internal.scope.BuildFeatureValuesImpl;
@@ -108,7 +107,6 @@ public class TestVariantFactory
             @NonNull ArtifactsImpl artifacts,
             @NonNull BaseVariantData variantData,
             @NonNull MutableTaskContainer taskContainer,
-            @NonNull TransformManager transformManager,
             @NonNull VariantServices variantServices,
             @NonNull TaskCreationServices taskCreationServices,
             @NonNull GlobalTaskCreationConfig globalConfig) {
@@ -125,7 +123,6 @@ public class TestVariantFactory
                         artifacts,
                         variantData,
                         taskContainer,
-                        transformManager,
                         variantServices,
                         taskCreationServices,
                         globalConfig);
@@ -201,7 +198,6 @@ public class TestVariantFactory
             @NonNull ArtifactsImpl artifacts,
             @NonNull MutableTaskContainer taskContainer,
             @NonNull VariantCreationConfig mainVariant,
-            @NonNull TransformManager transformManager,
             @NonNull VariantServices variantServices,
             @NonNull TaskCreationServices taskCreationServices,
             @NonNull GlobalTaskCreationConfig globalConfig) {
@@ -221,7 +217,6 @@ public class TestVariantFactory
             @NonNull TestVariantData variantData,
             @NonNull MutableTaskContainer taskContainer,
             @NonNull VariantCreationConfig testedVariant,
-            @NonNull TransformManager transformManager,
             @NonNull VariantServices variantServices,
             @NonNull TaskCreationServices taskCreationServices,
             @NonNull GlobalTaskCreationConfig globalConfig) {
@@ -241,7 +236,6 @@ public class TestVariantFactory
             @NonNull TestVariantData variantData,
             @NonNull MutableTaskContainer taskContainer,
             @NonNull VariantCreationConfig testedVariant,
-            @NonNull TransformManager transformManager,
             @NonNull VariantServices variantServices,
             @NonNull TaskCreationServices taskCreationServices,
             @NonNull GlobalTaskCreationConfig globalConfig) {

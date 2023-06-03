@@ -903,6 +903,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional int32 build_api_level = 5 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the buildApiLevel field is set.
    */
   @java.lang.Override
@@ -915,6 +916,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional int32 build_api_level = 5 [deprecated = true];</code>
+   * @deprecated
    * @return The buildApiLevel.
    */
   @java.lang.Override
@@ -2291,6 +2293,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 build_api_level = 5 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the buildApiLevel field is set.
      */
     @java.lang.Override
@@ -2303,6 +2306,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 build_api_level = 5 [deprecated = true];</code>
+     * @deprecated
      * @return The buildApiLevel.
      */
     @java.lang.Override
@@ -2315,6 +2319,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 build_api_level = 5 [deprecated = true];</code>
+     * @deprecated
      * @param value The buildApiLevel to set.
      * @return This builder for chaining.
      */
@@ -2330,6 +2335,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 build_api_level = 5 [deprecated = true];</code>
+     * @deprecated
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder clearBuildApiLevel() {

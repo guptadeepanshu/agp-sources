@@ -21,36 +21,67 @@ import java.io.File
 fun dumpProfile(
     os: Appendable,
     profile: ArtProfile,
-    apk: Apk, obf: ObfuscationMap,
+    apk: Apk,
+    obf: ObfuscationMap,
     strict: Boolean = true,
 ) {
     for ((dexFile, dexFileData) in profile.profileData) {
-        val file = apk.dexes.find { it.name == dexFile.name }
+        val file = apk.dexes.find { it.name == extractName(dexFile.name) }
           ?: if (strict) {
               throw IllegalStateException("Cannot find Dex File ${dexFile.name}")
           } else {
               continue
           }
+
         for ((key, method) in dexFileData.methods) {
-            if (method.flags != 0) {
-                val dexMethod = file.methodPool[key]
+            // Method data is not guaranteed to exist given they might be stored as
+            // extra descriptors.
+
+            // Context:
+            // java/com/google/android/art/profiles/ArtProfileLoaderForS.java;l=469;rcl=382185618
+            val dexMethod = file.methodPool.getOrNull(key)
+            if (method.flags != 0 && dexMethod != null) {
                 val deobfuscated = obf.deobfuscate(dexMethod)
                 method.print(os)
                 deobfuscated.print(os)
                 os.append('\n')
             }
         }
+
         for (key in dexFileData.typeIndexes) {
-            val dexClass = file.typePool[key]
-            val deobfuscated = obf.deobfuscate(dexClass)
-            for (type in deobfuscated) {
-                os.append(type)
-                os.append('\n')
+            val dexClass = file.typePool.getOrNull(key)
+            if (dexClass != null) {
+                val deobfuscated = obf.deobfuscate(dexClass)
+                for (type in deobfuscated) {
+                    os.append(type)
+                    os.append('\n')
+                }
             }
         }
     }
 }
 
-fun dumpProfile(file: File, profile: ArtProfile, apk: Apk, obf: ObfuscationMap) {
-    dumpProfile(file.outputStream().bufferedWriter(), profile, apk, obf)
+fun dumpProfile(
+        file: File,
+        profile: ArtProfile,
+        apk: Apk,
+        obf: ObfuscationMap,
+        strict: Boolean = true
+) {
+    dumpProfile(file.outputStream().bufferedWriter(), profile, apk, obf, strict = strict)
+}
+
+/**
+ * Extracts the dex name from the incoming profile key.
+ *
+ * `base.apk!classes.dex` is a typical profile key.
+ *
+ * On Android O or lower, the delimiter used is a `:`.
+ */
+private fun extractName(profileKey: String): String {
+    var index = profileKey.indexOf("!")
+    if (index < 0) {
+        index = profileKey.indexOf(":")
+    }
+    return profileKey.substring(index + 1)
 }

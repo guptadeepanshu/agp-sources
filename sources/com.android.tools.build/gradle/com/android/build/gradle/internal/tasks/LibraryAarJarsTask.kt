@@ -17,18 +17,18 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
+import com.android.build.api.artifact.ScopedArtifact
+import com.android.build.api.artifact.impl.InternalScopedArtifacts
+import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.databinding.DataBindingExcludeDelegate
 import com.android.build.gradle.internal.databinding.configureFrom
-import com.android.build.gradle.internal.packaging.JarCreatorFactory
-import com.android.build.gradle.internal.packaging.JarCreatorType
-import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.packaging.JarCreator
-import com.android.builder.packaging.JarMerger
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.builder.packaging.JarFlinger
 import com.android.tools.lint.typedefs.TypedefRemover
 import com.android.utils.FileUtils
 import org.gradle.api.file.ConfigurableFileCollection
@@ -97,9 +97,6 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
     abstract val localJarsLocation: DirectoryProperty
 
     @get:Input
-    abstract val jarCreatorType: Property<JarCreatorType>
-
-    @get:Input
     abstract val debugBuild: Property<Boolean>
 
     override fun doTaskAction() {
@@ -130,7 +127,6 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
             } else {
                 null
             },
-            jarCreatorType.get(),
             if (debugBuild.get()) Deflater.BEST_SPEED else null
         )
     }
@@ -158,7 +154,6 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
             toFile: File,
             filter: Predicate<String>,
             typedefRemover: JarCreator.Transformer?,
-            jarCreatorType: JarCreatorType,
             compressionLevel: Int?) {
 
             // process main scope.
@@ -168,19 +163,17 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
                 toFile,
                 filter,
                 typedefRemover,
-                jarCreatorType,
                 compressionLevel
             )
 
             // process local scope
-            processLocalJars(localJars, localJarsLocation, jarCreatorType, compressionLevel)
+            processLocalJars(localJars, localJarsLocation, compressionLevel)
         }
 
 
         private fun processLocalJars(
             inputs: MutableSet<File>,
             localJarsLocation: File,
-            jarCreatorType: JarCreatorType,
             compressionLevel: Int?
         ) {
 
@@ -198,22 +191,21 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
             for (jar in jarInputs) {
                 // we need to copy the jars but only take the class files as the resources have
                 // been merged into the main jar.
-                JarCreatorFactory.make(
+                JarFlinger(
                     File(localJarsLocation, jar.name).toPath(),
-                    JarMerger.CLASSES_ONLY,
-                    jarCreatorType
+                    JarCreator.CLASSES_ONLY
                 ).use { jarCreator ->
                     compressionLevel?.let { jarCreator.setCompressionLevel(it) }
-                    jarCreator.addJar(jar.toPath()) }
+                    jarCreator.addJar(jar.toPath())
+                }
             }
 
             // now handle the folders.
             if (dirInputs.isNotEmpty()) {
-                JarCreatorFactory.make(
+                JarFlinger(
                     File(localJarsLocation, "otherclasses.jar").toPath(),
-                    JarMerger.CLASSES_ONLY,
-                    jarCreatorType
-                ).use {jarCreator ->
+                    JarCreator.CLASSES_ONLY
+                ).use { jarCreator ->
                     for (dir in dirInputs) {
                         jarCreator.addDirectory(dir.toPath())
                     }
@@ -227,16 +219,12 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
             toFile: File,
             filter: Predicate<String>,
             typedefRemover: JarCreator.Transformer?,
-            jarCreatorType: JarCreatorType,
             compressionLevel: Int?
         ) {
-            val filterAndOnlyClasses = JarMerger.CLASSES_ONLY.and(filter)
+            val filterAndOnlyClasses = JarCreator.CLASSES_ONLY.and(filter)
 
-            JarCreatorFactory.make(
-                jarFile = toFile.toPath(),
-                type = jarCreatorType
-            ).use { jarCreator ->
-                compressionLevel?.let { jarCreator.setCompressionLevel(it) }
+            JarFlinger(toFile.toPath(), null).use { jarFlinger ->
+                compressionLevel?.let { jarFlinger.setCompressionLevel(it) }
                 // Merge only class files on CLASS type inputs
                 for (input in classFiles) {
                     // Skip if file doesn't exist
@@ -245,10 +233,11 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
                     }
 
                     if (input.name.endsWith(SdkConstants.DOT_JAR)) {
-                        jarCreator.addJar(input.toPath(), filterAndOnlyClasses, null)
+                        jarFlinger.addJar(input.toPath(), filterAndOnlyClasses, null)
                     } else {
-                        jarCreator.addDirectory(
-                            input.toPath(), filterAndOnlyClasses, typedefRemover, null)
+                        jarFlinger.addDirectory(
+                            input.toPath(), filterAndOnlyClasses, typedefRemover, null
+                        )
                     }
                 }
 
@@ -259,10 +248,11 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
                     }
 
                     if (input.name.endsWith(SdkConstants.DOT_JAR)) {
-                        jarCreator.addJar(input.toPath(), filter, null)
+                        jarFlinger.addJar(input.toPath(), filter, null)
                     } else {
-                        jarCreator.addDirectory(
-                            input.toPath(), filter, typedefRemover, null)
+                        jarFlinger.addDirectory(
+                            input.toPath(), filter, typedefRemover, null
+                        )
                     }
                 }
             }
@@ -321,7 +311,6 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
             )
 
             task.namespace.setDisallowChanges(creationConfig.namespace)
-            task.jarCreatorType.setDisallowChanges(creationConfig.global.jarCreatorType)
             task.debugBuild.setDisallowChanges(creationConfig.debuggable)
 
             /*
@@ -338,49 +327,36 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
                     creationConfig.artifacts
                         .get(InternalArtifactType.SHRUNK_CLASSES)
                 } else {
-                    @Suppress("DEPRECATION") // Legacy support
-                    creationConfig.transformManager
-                        .getPipelineOutputAsFileCollection(
-                            { contentTypes, scopes ->
-                                contentTypes.contains(com.android.build.api.transform.QualifiedContent.DefaultContentType.CLASSES)
-                                        && scopes.contains(com.android.build.api.transform.QualifiedContent.Scope.PROJECT)
-                            },
-                            { contentTypes, scopes ->
-                                (contentTypes.contains(com.android.build.api.transform.QualifiedContent.DefaultContentType.CLASSES)
-                                        && !contentTypes.contains(
-                                    com.android.build.api.transform.QualifiedContent.DefaultContentType.RESOURCES))
-                                        && scopes.contains(com.android.build.api.transform.QualifiedContent.Scope.PROJECT)
-                            })
+                    creationConfig.artifacts.forScope(ScopedArtifacts.Scope.PROJECT)
+                        .getFinalArtifacts(ScopedArtifact.CLASSES)
                 }
             )
             task.mainScopeClassFiles.disallowChanges()
 
             task.mainScopeResourceFiles.from(
                 if (minifyEnabled) {
-                    creationConfig.artifacts
-                        .get(InternalArtifactType.SHRUNK_JAVA_RES)
+                    creationConfig.artifacts.get(InternalArtifactType.SHRUNK_JAVA_RES)
                 } else {
-                    @Suppress("DEPRECATION") // Legacy support
-                    creationConfig.transformManager
-                        .getPipelineOutputAsFileCollection { contentTypes, scopes ->
-                            contentTypes.contains(com.android.build.api.transform.QualifiedContent.DefaultContentType.RESOURCES)
-                                    && scopes.contains(com.android.build.api.transform.QualifiedContent.Scope.PROJECT)
-                        }
+                    // this is really brittle. we should really have a pipeline of JAVA_RES that
+                    // will get populated and transformed into merged and shrunk potentially and
+                    // avoid this sort of branching.
+                    if (creationConfig.componentType.isTestFixturesComponent) {
+                        creationConfig.artifacts.get(InternalArtifactType.JAVA_RES)
+                    } else {
+                        creationConfig.artifacts.get(InternalArtifactType.MERGED_JAVA_RES)
+                    }
                 }
             )
             task.mainScopeResourceFiles.disallowChanges()
 
-            @Suppress("DEPRECATION") // Legacy support
-            task.localScopeInputFiles.from(
-                creationConfig.transformManager
-                    .getPipelineOutputAsFileCollection { contentTypes, scopes ->
-                        (contentTypes.contains(com.android.build.api.transform.QualifiedContent.DefaultContentType.CLASSES)
-                                || contentTypes.contains(com.android.build.api.transform.QualifiedContent.DefaultContentType.RESOURCES))
-                                && scopes.intersect(
-                            TransformManager.SCOPE_FULL_LIBRARY_WITH_LOCAL_JARS).isNotEmpty()
-                                && !scopes.contains(com.android.build.api.transform.QualifiedContent.Scope.PROJECT)
-                    }
-            )
+            // if minification is enabled, local deps will be processed by the R8 Task and do not
+            // need to be individually repackaged in the resulting AAR.
+            if (!minifyEnabled) {
+                task.localScopeInputFiles.from(
+                    creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.LOCAL_DEPS)
+                        .getFinalArtifacts(ScopedArtifact.CLASSES)
+                )
+            }
             task.localScopeInputFiles.disallowChanges()
         }
     }

@@ -279,10 +279,10 @@ public final class AndroidAdditionalTestOutputConfigProto {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!getAdditionalOutputDirectoryOnDeviceBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(additionalOutputDirectoryOnDevice_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, additionalOutputDirectoryOnDevice_);
       }
-      if (!getAdditionalOutputDirectoryOnHostBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(additionalOutputDirectoryOnHost_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, additionalOutputDirectoryOnHost_);
       }
       unknownFields.writeTo(output);
@@ -294,10 +294,10 @@ public final class AndroidAdditionalTestOutputConfigProto {
       if (size != -1) return size;
 
       size = 0;
-      if (!getAdditionalOutputDirectoryOnDeviceBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(additionalOutputDirectoryOnDevice_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, additionalOutputDirectoryOnDevice_);
       }
-      if (!getAdditionalOutputDirectoryOnHostBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(additionalOutputDirectoryOnHost_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, additionalOutputDirectoryOnHost_);
       }
       size += unknownFields.getSerializedSize();

@@ -135,6 +135,7 @@ public interface DeviceInfoOrBuilder extends
    * </pre>
    *
    * <code>optional int32 build_api_level = 5 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the buildApiLevel field is set.
    */
   @java.lang.Deprecated boolean hasBuildApiLevel();
@@ -144,6 +145,7 @@ public interface DeviceInfoOrBuilder extends
    * </pre>
    *
    * <code>optional int32 build_api_level = 5 [deprecated = true];</code>
+   * @deprecated
    * @return The buildApiLevel.
    */
   @java.lang.Deprecated int getBuildApiLevel();

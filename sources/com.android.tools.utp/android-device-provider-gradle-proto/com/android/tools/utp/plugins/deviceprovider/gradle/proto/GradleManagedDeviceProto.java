@@ -654,10 +654,10 @@ public final class GradleManagedDeviceProto {
       if (avdFolder_ != null) {
         output.writeMessage(1, getAvdFolder());
       }
-      if (!getAvdNameBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(avdName_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, avdName_);
       }
-      if (!getAvdIdBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(avdId_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, avdId_);
       }
       if (enableDisplay_ != false) {
@@ -666,10 +666,10 @@ public final class GradleManagedDeviceProto {
       if (emulatorPath_ != null) {
         output.writeMessage(5, getEmulatorPath());
       }
-      if (!getGradleDslDeviceNameBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(gradleDslDeviceName_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 6, gradleDslDeviceName_);
       }
-      if (!getEmulatorGpuBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(emulatorGpu_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 7, emulatorGpu_);
       }
       if (showEmulatorKernelLogging_ != false) {
@@ -688,10 +688,10 @@ public final class GradleManagedDeviceProto {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, getAvdFolder());
       }
-      if (!getAvdNameBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(avdName_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, avdName_);
       }
-      if (!getAvdIdBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(avdId_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, avdId_);
       }
       if (enableDisplay_ != false) {
@@ -702,10 +702,10 @@ public final class GradleManagedDeviceProto {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(5, getEmulatorPath());
       }
-      if (!getGradleDslDeviceNameBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(gradleDslDeviceName_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, gradleDslDeviceName_);
       }
-      if (!getEmulatorGpuBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(emulatorGpu_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, emulatorGpu_);
       }
       if (showEmulatorKernelLogging_ != false) {

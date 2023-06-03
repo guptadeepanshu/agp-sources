@@ -372,7 +372,17 @@ public class AnalyticsUtil {
     @VisibleForTesting
     @NonNull
     static String getOtherPluginEnumName(@NonNull String pluginClassName) {
-        return pluginClassName.replace(".", "_").toUpperCase(Locale.US);
+        String name = pluginClassName.replace(".", "_");
+        // Gradle built-in plugins (and any other abstract plugin) is applied by use of a
+        // generated inner class called $Inject.
+        // See Gradle commit ba31fd5079ce2941674699ca23b4c6deb69fb76c.
+        // It is possible that if the applied plugin is an abstract inner class called Inject
+        // this will be followed by a numerical value. We ignore this case for now, it is unlikely.
+        String suffix = "$Inject";
+        if (name.endsWith(suffix)) {
+            name = name.substring(0, name.length() - suffix.length());
+        }
+        return name.toUpperCase(Locale.US);
     }
 
 

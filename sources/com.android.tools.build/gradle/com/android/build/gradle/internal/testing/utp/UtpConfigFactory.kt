@@ -16,8 +16,8 @@
 
 package com.android.build.gradle.internal.testing.utp
 
+import com.android.build.api.instrumentation.StaticTestData
 import com.android.build.gradle.internal.SdkComponentsBuildService
-import com.android.build.gradle.internal.testing.StaticTestData
 import com.android.build.gradle.internal.testing.utp.UtpDependency.ANDROID_DEVICE_PROVIDER_DDMLIB
 import com.android.build.gradle.internal.testing.utp.UtpDependency.ANDROID_DEVICE_PROVIDER_GRADLE
 import com.android.build.gradle.internal.testing.utp.UtpDependency.ANDROID_DRIVER_INSTRUMENTATION
@@ -36,6 +36,7 @@ import com.android.tools.utp.plugins.host.additionaltestoutput.proto.AndroidAddi
 import com.android.tools.utp.plugins.host.coverage.proto.AndroidTestCoverageConfigProto.AndroidTestCoverageConfig
 import com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto
 import com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.IceboxPlugin
+import com.android.tools.utp.plugins.host.logcat.proto.AndroidTestLogcatConfigProto.AndroidTestLogcatConfig
 import com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerConfigProto.GradleAndroidTestResultListenerConfig
 import com.google.protobuf.Any
 import com.google.protobuf.Message
@@ -114,6 +115,7 @@ class UtpConfigFactory {
         resultListenerClientCert: File,
         resultListenerClientPrivateKey: File,
         trustCertCollection: File,
+        installApkTimeout: Int?,
         shardConfig: ShardConfig? = null
     ): RunnerConfigProto.RunnerConfig {
         return RunnerConfigProto.RunnerConfig.newBuilder().apply {
@@ -138,6 +140,7 @@ class UtpConfigFactory {
                         findAdditionalTestOutputDirectoryOnDevice(device, testData)
                     },
                     coverageOutputDir,
+                    installApkTimeout,
                     shardConfig
                 )
             )
@@ -195,6 +198,7 @@ class UtpConfigFactory {
         testResultListenerServerMetadata: UtpTestResultListenerServerMetadata,
         emulatorGpuFlag: String,
         showEmulatorKernelLogging: Boolean,
+        installApkTimeout: Int?,
         shardConfig: ShardConfig? = null
     ): RunnerConfigProto.RunnerConfig {
         return RunnerConfigProto.RunnerConfig.newBuilder().apply {
@@ -210,7 +214,7 @@ class UtpConfigFactory {
                     additionalTestOutputDir?.let {
                         findAdditionalTestOutputDirectoryOnManagedDevice(device, testData)
                     },
-                    coverageOutputDir, shardConfig
+                    coverageOutputDir, installApkTimeout, shardConfig
                 )
             )
             singleDeviceExecutor = createSingleDeviceExecutor(device.id, shardConfig)
@@ -326,6 +330,7 @@ class UtpConfigFactory {
         additionalTestOutputDir: File?,
         additionalTestOutputOnDeviceDir: String?,
         coverageOutputDir: File,
+        installApkTimeout: Int?,
         shardConfig: ShardConfig?
     ): FixtureProto.TestFixture {
         return FixtureProto.TestFixture.newBuilder().apply {
@@ -343,13 +348,9 @@ class UtpConfigFactory {
                     .getOrDefault("debug", "false")
                     .toBoolean())
             if (retentionConfig.enabled && !debug) {
-                val retentionTestData = testData.copy(
-                    instrumentationRunnerArguments = testData.instrumentationRunnerArguments
-                        .toMutableMap()
-                        .apply { put("debug", "true") })
                 testDriver = createTestDriver(
-                    retentionTestData, utpDependencies, useOrchestrator,
-                    additionalTestOutputOnDeviceDir, shardConfig
+                    testData, utpDependencies, useOrchestrator,
+                    additionalTestOutputOnDeviceDir, shardConfig, mapOf("debug" to "true")
                 )
                 addHostPlugin(
                     createIceboxPlugin(
@@ -368,9 +369,10 @@ class UtpConfigFactory {
                                               additionalTestOutputOnDeviceDir, shardConfig)
             }
             addHostPlugin(createAndroidTestPlugin(
-                    testData, appApks, additionalInstallOptions, helperApks, utpDependencies))
+                    testData, appApks, additionalInstallOptions, helperApks, installApkTimeout, utpDependencies))
             addHostPlugin(createAndroidTestDeviceInfoPlugin(utpDependencies))
-            addHostPlugin(createAndroidTestLogcatPlugin(utpDependencies))
+            addHostPlugin(createAndroidTestLogcatPlugin(
+                    testData.instrumentationTargetPackageId, utpDependencies))
             if (testData.isTestCoverageEnabled) {
                 addHostPlugin(createAndroidTestCoveragePlugin(
                     coverageOutputDir, useOrchestrator, testData, utpDependencies
@@ -464,7 +466,8 @@ class UtpConfigFactory {
         useOrchestrator: Boolean,
         additionalTestOutputOnDeviceDir: String?,
         // TODO(b/201577913): remove
-        shardConfig: ShardConfig?
+        shardConfig: ShardConfig?,
+        additionalTestParams: Map<String, String> = mapOf(),
     ): ExtensionProto.Extension {
         return ANDROID_DRIVER_INSTRUMENTATION.toExtensionProto(
             utpDependencies, AndroidInstrumentationDriver::newBuilder) {
@@ -476,6 +479,7 @@ class UtpConfigFactory {
                 }
                 instrumentationArgsBuilder.apply {
                     putAllArgsMap(testData.instrumentationRunnerArguments)
+                    putAllArgsMap(additionalTestParams)
 
                     useTestStorageService = testData.instrumentationRunnerArguments.getOrDefault(
                         "useTestStorageService", "false").toBoolean()
@@ -527,6 +531,7 @@ class UtpConfigFactory {
             appApks: Iterable<File>,
             additionalInstallOptions: Iterable<String>,
             helperApks: Iterable<File>,
+            installApkTimeoutSeconds: Int?,
             utpDependencies: UtpDependencies
     ): ExtensionProto.Extension {
         return ANDROID_TEST_PLUGIN.toExtensionProto(
@@ -566,6 +571,10 @@ class UtpConfigFactory {
                         path = helperApk.absolutePath
                     }
                 }
+            }
+
+            installApkTimeoutBuilder.apply{
+                seconds = installApkTimeoutSeconds?.toLong() ?: 0L
             }
         }
     }
@@ -632,8 +641,13 @@ class UtpConfigFactory {
         }
     }
 
-    private fun createAndroidTestLogcatPlugin(utpDependencies:UtpDependencies): ExtensionProto.Extension {
-        return ANDROID_TEST_LOGCAT_PLUGIN.toExtensionProto(utpDependencies)
+    private fun createAndroidTestLogcatPlugin(
+        testPackageName: String,
+        utpDependencies:UtpDependencies): ExtensionProto.Extension {
+        return ANDROID_TEST_LOGCAT_PLUGIN.toExtensionProto(
+                utpDependencies, AndroidTestLogcatConfig::newBuilder) {
+            targetTestProcessName = testPackageName
+        }
     }
 
     private fun createSingleDeviceExecutor(

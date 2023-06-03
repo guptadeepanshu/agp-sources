@@ -26,21 +26,22 @@ import com.android.build.gradle.internal.cxx.logging.IssueReporterLoggingEnviron
 import com.android.build.gradle.internal.cxx.logging.errorln
 import com.android.build.gradle.internal.cxx.model.CxxAbiModel
 import com.android.build.gradle.internal.cxx.model.CxxVariantModel
-import com.android.build.gradle.internal.cxx.model.objFolder
+import com.android.build.gradle.internal.scope.InternalMultipleArtifactType
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.UnsafeOutputsTask
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.errors.DefaultIssueReporter
 import com.android.utils.cxx.CxxDiagnosticCode.CONFIGURE_MORE_THAN_ONE_SO_FOLDER
-import com.android.build.gradle.internal.tasks.TaskCategory
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.process.ExecOperations
 import javax.inject.Inject
 import org.gradle.work.DisableCachingByDefault
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.tasks.TaskProvider
 
 /**
  * Task that performs a C/C++ build action or refers to a build from a different task.
@@ -56,9 +57,6 @@ abstract class ExternalNativeBuildTask :
 
     @get:Internal
     internal lateinit var variant: CxxVariantModel
-
-    @get:OutputDirectory
-    abstract val objFolder : DirectoryProperty
 
     @get:OutputDirectory
     abstract val soFolder : DirectoryProperty
@@ -105,11 +103,8 @@ fun createRepublishCxxBuildTask(
         if (soParentFolders.size != 1) {
             errorln(CONFIGURE_MORE_THAN_ONE_SO_FOLDER, "More than one SO folder: ${soParentFolders.joinToString { it.path }}")
         }
-        val objFolders = allAbis
-            .map { it.intermediatesParentFolder }
-            .first() // Note: there can be multiple .o folders. We have to choose one for backcompat.
         task.soFolder.set(soParentFolders.single())
-        task.objFolder.set(objFolders)
+        task.soFolder.disallowChanges()
     }
 }
 
@@ -118,18 +113,28 @@ fun createRepublishCxxBuildTask(
  * by [createRepublishCxxBuildTask].
  */
 fun createWorkingCxxBuildTask(
+    coveredVariantConfigurations: List<VariantCreationConfig>,
     creationConfig: GlobalTaskCreationConfig,
-    abi : CxxAbiModel,
-    name : String
+    abi: CxxAbiModel,
+    name: String
 ) = object : GlobalTaskCreationAction<ExternalNativeBuildTask>(creationConfig) {
     override val name = name
     override val type = ExternalNativeBuildTask::class.java
+    override fun handleProvider(
+        taskProvider: TaskProvider<ExternalNativeBuildTask>
+    ) {
+        super.handleProvider(taskProvider)
+        for(variant in coveredVariantConfigurations) {
+            val container = variant.artifacts.getArtifactContainer(InternalMultipleArtifactType.EXTERNAL_NATIVE_BUILD_LIBS)
+            container.addInitialProvider(taskProvider, taskProvider.flatMap { it.soFolder })
+        }
+    }
+
     override fun configure(task: ExternalNativeBuildTask) {
         super.configure(task)
         task.builder = CxxRegularBuilder(abi)
         task.variantName = abi.variant.variantName
         task.variant = abi.variant
         task.soFolder.set(abi.soFolder)
-        task.objFolder.set(abi.objFolder)
     }
 }

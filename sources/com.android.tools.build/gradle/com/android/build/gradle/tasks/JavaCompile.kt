@@ -28,7 +28,6 @@ import com.android.build.gradle.internal.scope.InternalArtifactType.JAVAC
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import org.gradle.api.JavaVersion
-import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileTree
@@ -121,7 +120,7 @@ class JavaCompileCreationAction(
             }
         }
 
-        task.configureProperties(creationConfig, task)
+        task.configureProperties(creationConfig)
         // Set up the annotation processor classpath even when Kapt is used, because Java compiler
         // plugins like ErrorProne share their classpath with annotation processors (see
         // https://github.com/gradle/gradle/issues/6573), and special annotation processors like
@@ -265,22 +264,26 @@ fun computeJavaSourceWithoutDependencies(creationConfig: ComponentCreationConfig
     val javaSourcesFilter = PatternSet().include("**/*.java")
     return creationConfig.services.fileCollection().also { fileCollection ->
         // do not resolve the provider before execution phase, b/117161463.
-       // the KAPT plugin is looking up the JavaCompile.sources and resolving it at
-       // configuration time which requires us to pass the old variant API version.
-       // see b/259343260
-       fileCollection.from(creationConfig.sources.java.getAsFileTreesForOldVariantAPI())
+       creationConfig.sources.java { javaSources ->
+           // the KAPT plugin is looking up the JavaCompile.sources and resolving it at
+           // configuration time which requires us to pass the old variant API version.
+           // see b/259343260
+           fileCollection.from(javaSources.getAsFileTreesForOldVariantAPI())
+       }
     }.asFileTree.matching(javaSourcesFilter)
 }
 
-fun computeJavaSource(creationConfig: ComponentCreationConfig, project: Project): FileTree {
+fun computeJavaSource(creationConfig: ComponentCreationConfig): FileTree {
     // Include only java sources, otherwise we hit b/144249620.
     val javaSourcesFilter = PatternSet().include("**/*.java")
     return creationConfig.services.fileCollection().also { fileCollection ->
         // do not resolve the provider before execution phase, b/117161463.
-        // the KAPT plugin is looking up the JavaCompile.sources and resolving it at
-        // configuration time which requires us to pass the old variant API version.
-        // see b/259343260
-        fileCollection.from(creationConfig.sources.java.getAsFileTrees())
+        creationConfig.sources.java { javaSources ->
+            // the KAPT plugin is looking up the JavaCompile.sources and resolving it at
+            // configuration time which requires us to pass the old variant API version.
+            // see b/259343260
+            fileCollection.from(javaSources.getAsFileTrees())
+        }
     }.asFileTree.matching(javaSourcesFilter)
 }
 

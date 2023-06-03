@@ -23,12 +23,12 @@ import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.configureVariantProperties
 import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.internal.packaging.IncrementalPackager
 import com.android.bundle.Config
 import com.android.bundle.SdkBundleConfigProto
 import com.android.bundle.SdkModulesConfigOuterClass
 import com.android.bundle.SdkModulesConfigOuterClass.SdkModulesConfig
-import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.tools.build.bundletool.commands.BuildSdkBundleCommand
 import com.android.tools.build.bundletool.model.version.BundleToolVersion
 import com.google.common.collect.ImmutableList
@@ -67,6 +67,10 @@ abstract class PackagePrivacySandboxSdkBundle: NonIncrementalTask() {
     @get:PathSensitive(PathSensitivity.NAME_ONLY)
     abstract val appMetadata: RegularFileProperty
 
+    @get:InputFile
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
+    abstract val interfaceDescriptors: RegularFileProperty
+
     @get:Input
     abstract val bundleToolVersion: Property<String>
 
@@ -103,6 +107,8 @@ abstract class PackagePrivacySandboxSdkBundle: NonIncrementalTask() {
                         .build()
                 ).setSdkProviderClassName(
                     sdkBundleProperties.sdkProviderClassName.get()
+                ).setCompatSdkProviderClassName(
+                    sdkBundleProperties.compatSdkProviderClassName.get()
                 ).build()
 
         val sdkBundleConfig =
@@ -128,6 +134,7 @@ abstract class PackagePrivacySandboxSdkBundle: NonIncrementalTask() {
                     .setOutputPath(outputFile.get().asFile.toPath())
                     .setSdkBundleConfig(sdkBundleConfig)
                     .setSdkModulesConfig(sdkModulesConfig)
+                    .setSdkInterfaceDescriptors(interfaceDescriptors.get().asFile.toPath())
 
         command.addMetadataFile(
             "com.android.tools.build.gradle",
@@ -179,11 +186,15 @@ abstract class PackagePrivacySandboxSdkBundle: NonIncrementalTask() {
                     version.minor.setDisallowChanges(bundle.version?.minor ?: -1)
                     version.patch.setDisallowChanges(bundle.version?.patch ?: -1)
                     sdkProviderClassName.setDisallowChanges(bundle.sdkProviderClassName ?: "")
+                    compatSdkProviderClassName.setDisallowChanges(bundle.compatSdkProviderClassName ?: "")
                 }
             }
 
             // TODO: Add DSL for the following
             task.sdkDependencies.setDisallowChanges(emptyList())
+
+            task.interfaceDescriptors.setDisallowChanges(
+                    creationConfig.artifacts.get(PrivacySandboxSdkInternalArtifactType.STUB_JAR))
         }
     }
 
@@ -218,6 +229,9 @@ abstract class PackagePrivacySandboxSdkBundle: NonIncrementalTask() {
 
         @get:Input
         val sdkProviderClassName: Property<String>
+
+        @get:Input
+        val compatSdkProviderClassName: Property<String>
     }
 }
 

@@ -18,6 +18,7 @@ package com.android.build.gradle.internal.services
 
 import com.android.build.gradle.internal.instrumentation.ClassesDataCache
 import com.android.build.gradle.internal.instrumentation.ClassesHierarchyResolver
+import com.android.build.gradle.internal.instrumentation.InstrumentationIssueHandler
 import org.gradle.api.Project
 import org.gradle.api.services.BuildService
 import org.gradle.api.services.BuildServiceParameters
@@ -28,6 +29,8 @@ import org.gradle.api.services.BuildServiceParameters
 abstract class ClassesHierarchyBuildService : BuildService<BuildServiceParameters.None>,
     AutoCloseable {
 
+    val issueHandler = InstrumentationIssueHandler()
+
     private val classesDataCache = ClassesDataCache()
 
     fun getClassesHierarchyResolverBuilder(): ClassesHierarchyResolver.Builder {
@@ -36,6 +39,7 @@ abstract class ClassesHierarchyBuildService : BuildService<BuildServiceParameter
 
     override fun close() {
         classesDataCache.close()
+        issueHandler.close()
     }
 
     class RegistrationAction(project: Project) :

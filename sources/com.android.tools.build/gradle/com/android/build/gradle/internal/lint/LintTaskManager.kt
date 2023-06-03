@@ -1,7 +1,9 @@
 package com.android.build.gradle.internal.lint
 
 import com.android.build.api.dsl.Lint
+import com.android.build.gradle.internal.TaskManager
 import com.android.build.gradle.internal.component.AndroidTestCreationConfig
+import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
 import com.android.build.gradle.internal.component.UnitTestCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
@@ -120,6 +122,7 @@ class LintTaskManager constructor(
             val mainVariant = variantWithTests.main
             if (mainVariant.componentType.isBaseModule &&
                 !mainVariant.debuggable &&
+                !(mainVariant as ApplicationCreationConfig).profileable &&
                 globalTaskCreationConfig.lintOptions.checkReleaseBuilds
             ) {
                 taskFactory.register(
@@ -232,13 +235,9 @@ class LintTaskManager constructor(
         return variantsWithTests
     }
 
-    private fun getTaskPath(task: TaskProvider<out Task>): String {
-        return (getTaskPath(task.name))
-    }
+    private fun getTaskPath(task: TaskProvider<out Task>) = getTaskPath(task.name)
 
-    private fun getTaskPath(taskName: String): String {
-        return if (project.rootProject === project) ":$taskName" else project.path + ':' + taskName
-    }
+    private fun getTaskPath(taskName: String) = TaskManager.getTaskPath(project, taskName)
 
     companion object {
 

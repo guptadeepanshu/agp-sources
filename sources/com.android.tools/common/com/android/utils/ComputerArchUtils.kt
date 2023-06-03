@@ -150,6 +150,9 @@ private fun computeIsRosetta(): Boolean {
     catch (e: ClassNotFoundException) {
         return false
     }
+    catch (e: LinkageError) {
+        return false
+    }
 
     val instanceField = try {
         clazz.getField("INSTANCE")

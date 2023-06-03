@@ -109,6 +109,11 @@ private static final long serialVersionUID = 0L;
             stoppingTimeMs_ = input.readInt32();
             break;
           }
+          case 72: {
+            bitField0_ |= 0x00000100;
+            hasComposeTracingNodes_ = input.readBool();
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -955,6 +960,33 @@ private static final long serialVersionUID = 0L;
     return stoppingTimeMs_;
   }
 
+  public static final int HAS_COMPOSE_TRACING_NODES_FIELD_NUMBER = 9;
+  private boolean hasComposeTracingNodes_;
+  /**
+   * <pre>
+   * Whether the trace contains Compose Tracing nodes
+   * </pre>
+   *
+   * <code>optional bool has_compose_tracing_nodes = 9;</code>
+   * @return Whether the hasComposeTracingNodes field is set.
+   */
+  @java.lang.Override
+  public boolean hasHasComposeTracingNodes() {
+    return ((bitField0_ & 0x00000100) != 0);
+  }
+  /**
+   * <pre>
+   * Whether the trace contains Compose Tracing nodes
+   * </pre>
+   *
+   * <code>optional bool has_compose_tracing_nodes = 9;</code>
+   * @return The hasComposeTracingNodes.
+   */
+  @java.lang.Override
+  public boolean getHasComposeTracingNodes() {
+    return hasComposeTracingNodes_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -992,6 +1024,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00000080) != 0)) {
       output.writeInt32(8, stoppingTimeMs_);
+    }
+    if (((bitField0_ & 0x00000100) != 0)) {
+      output.writeBool(9, hasComposeTracingNodes_);
     }
     unknownFields.writeTo(output);
   }
@@ -1033,6 +1068,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000080) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(8, stoppingTimeMs_);
+    }
+    if (((bitField0_ & 0x00000100) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(9, hasComposeTracingNodes_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -1088,6 +1127,11 @@ private static final long serialVersionUID = 0L;
       if (getStoppingTimeMs()
           != other.getStoppingTimeMs()) return false;
     }
+    if (hasHasComposeTracingNodes() != other.hasHasComposeTracingNodes()) return false;
+    if (hasHasComposeTracingNodes()) {
+      if (getHasComposeTracingNodes()
+          != other.getHasComposeTracingNodes()) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -1133,6 +1177,11 @@ private static final long serialVersionUID = 0L;
     if (hasStoppingTimeMs()) {
       hash = (37 * hash) + STOPPING_TIME_MS_FIELD_NUMBER;
       hash = (53 * hash) + getStoppingTimeMs();
+    }
+    if (hasHasComposeTracingNodes()) {
+      hash = (37 * hash) + HAS_COMPOSE_TRACING_NODES_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getHasComposeTracingNodes());
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -1292,6 +1341,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000040);
       stoppingTimeMs_ = 0;
       bitField0_ = (bitField0_ & ~0x00000080);
+      hasComposeTracingNodes_ = false;
+      bitField0_ = (bitField0_ & ~0x00000100);
       return this;
     }
 
@@ -1355,6 +1406,10 @@ private static final long serialVersionUID = 0L;
       if (((from_bitField0_ & 0x00000080) != 0)) {
         result.stoppingTimeMs_ = stoppingTimeMs_;
         to_bitField0_ |= 0x00000080;
+      }
+      if (((from_bitField0_ & 0x00000100) != 0)) {
+        result.hasComposeTracingNodes_ = hasComposeTracingNodes_;
+        to_bitField0_ |= 0x00000100;
       }
       result.bitField0_ = to_bitField0_;
       onBuilt();
@@ -1428,6 +1483,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasStoppingTimeMs()) {
         setStoppingTimeMs(other.getStoppingTimeMs());
+      }
+      if (other.hasHasComposeTracingNodes()) {
+        setHasComposeTracingNodes(other.getHasComposeTracingNodes());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -2020,6 +2078,61 @@ private static final long serialVersionUID = 0L;
     public Builder clearStoppingTimeMs() {
       bitField0_ = (bitField0_ & ~0x00000080);
       stoppingTimeMs_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private boolean hasComposeTracingNodes_ ;
+    /**
+     * <pre>
+     * Whether the trace contains Compose Tracing nodes
+     * </pre>
+     *
+     * <code>optional bool has_compose_tracing_nodes = 9;</code>
+     * @return Whether the hasComposeTracingNodes field is set.
+     */
+    @java.lang.Override
+    public boolean hasHasComposeTracingNodes() {
+      return ((bitField0_ & 0x00000100) != 0);
+    }
+    /**
+     * <pre>
+     * Whether the trace contains Compose Tracing nodes
+     * </pre>
+     *
+     * <code>optional bool has_compose_tracing_nodes = 9;</code>
+     * @return The hasComposeTracingNodes.
+     */
+    @java.lang.Override
+    public boolean getHasComposeTracingNodes() {
+      return hasComposeTracingNodes_;
+    }
+    /**
+     * <pre>
+     * Whether the trace contains Compose Tracing nodes
+     * </pre>
+     *
+     * <code>optional bool has_compose_tracing_nodes = 9;</code>
+     * @param value The hasComposeTracingNodes to set.
+     * @return This builder for chaining.
+     */
+    public Builder setHasComposeTracingNodes(boolean value) {
+      bitField0_ |= 0x00000100;
+      hasComposeTracingNodes_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Whether the trace contains Compose Tracing nodes
+     * </pre>
+     *
+     * <code>optional bool has_compose_tracing_nodes = 9;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearHasComposeTracingNodes() {
+      bitField0_ = (bitField0_ & ~0x00000100);
+      hasComposeTracingNodes_ = false;
       onChanged();
       return this;
     }

@@ -16,17 +16,19 @@
 
 package com.android.build.gradle.internal.dsl
 
-import com.android.build.api.dsl.CommonExtension
-import org.gradle.api.provider.MapProperty
-
 enum class ModulePropertyKeys(private val keyValue: String, private val defaultValue: Any) {
 
     /**
      * If false - the test APK instruments the target project APK, and the classes are provided.
      * If true - the test APK targets itself (e.g. for macro benchmarks)
      */
-    SELF_INSTRUMENTING("android.experimental.self-instrumenting", false);
+    SELF_INSTRUMENTING("android.experimental.self-instrumenting", false),
 
+    /**
+     * If false -  R8 will not be provided with the merged art-profile
+     * If true - R8 will rewrite the art-profile
+     */
+    ART_PROFILE_R8_REWRITING("android.experimental.art-profile-r8-rewriting", false);
 
     fun getValue(properties: Map<String, Any>): Any {
         return properties[keyValue] ?: return defaultValue

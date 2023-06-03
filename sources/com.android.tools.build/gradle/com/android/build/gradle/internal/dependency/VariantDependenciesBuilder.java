@@ -44,6 +44,7 @@ import com.android.build.gradle.internal.api.DefaultAndroidSourceSet;
 import com.android.build.gradle.internal.attributes.VariantAttr;
 import com.android.build.gradle.internal.component.VariantCreationConfig;
 import com.android.build.gradle.internal.core.dsl.ComponentDslInfo;
+import com.android.build.gradle.internal.core.dsl.MultiVariantComponentDslInfo;
 import com.android.build.gradle.internal.core.dsl.PublishableComponentDslInfo;
 import com.android.build.gradle.internal.core.dsl.VariantDslInfo;
 import com.android.build.gradle.internal.dsl.AbstractPublishing;
@@ -333,6 +334,13 @@ public class VariantDependenciesBuilder {
                         dependencies,
                         true,
                         stringCachingService);
+                if (testedVariant.getComponentType().isApk()) {
+                    ConstraintHandler.checkConfigurationAlignments(
+                            runtimeClasspath,
+                            testedRuntimeClasspath,
+                            issueReporter,
+                            project.getBuildFile());
+                }
             }
         }
 
@@ -808,7 +816,8 @@ public class VariantDependenciesBuilder {
     private Map<Attribute<ProductFlavorAttr>, ProductFlavorAttr> getFlavorAttributes(
             @Nullable Map<Attribute<ProductFlavorAttr>, ProductFlavorAttr> flavorSelection,
             boolean addCompatibilityUnprefixedFlavorDimensionAttributes) {
-        List<ProductFlavor> productFlavors = dslInfo.getProductFlavorList();
+        List<ProductFlavor> productFlavors =
+                ((MultiVariantComponentDslInfo) dslInfo).getProductFlavorList();
         Map<Attribute<ProductFlavorAttr>, ProductFlavorAttr> map =
                 Maps.newHashMapWithExpectedSize(productFlavors.size());
 

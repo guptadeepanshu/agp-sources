@@ -27,32 +27,32 @@ import com.android.build.api.dsl.ExternalNativeBuild
 import com.android.build.api.dsl.Installation
 import com.android.build.api.dsl.LibraryExtension
 import com.android.build.api.dsl.Lint
-import com.android.build.api.dsl.PrefabPackagingOptions
+import com.android.build.api.dsl.Prefab
 import com.android.build.api.dsl.Splits
 import com.android.build.api.dsl.TestCoverage
 import com.android.build.api.dsl.TestOptions
-import com.android.build.api.transform.Transform
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.SdkComponentsBuildService
+import com.android.build.gradle.internal.attribution.BuildAnalyzerIssueReporter
 import com.android.build.gradle.internal.core.SettingsOptions
 import com.android.build.gradle.internal.dsl.CommonExtensionImpl
 import com.android.build.gradle.internal.dsl.LanguageSplitOptions
 import com.android.build.gradle.internal.instrumentation.ASM_API_VERSION_FOR_INSTRUMENTATION
 import com.android.build.gradle.internal.lint.getLocalCustomLintChecks
-import com.android.build.gradle.internal.packaging.JarCreatorType
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.BaseServices
 import com.android.build.gradle.internal.services.VersionedSdkLoaderService
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.options.BooleanOption
+import com.android.build.gradle.options.StringOption
 import com.android.builder.core.LibraryRequest
-import com.android.builder.internal.packaging.ApkCreatorType
 import com.android.builder.testing.api.DeviceProvider
 import com.android.builder.testing.api.TestServer
 import com.android.repository.Revision
 import com.android.utils.HelpfulEnumConverter
 import org.gradle.api.Action
+import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.attributes.AttributeContainer
@@ -70,6 +70,7 @@ class GlobalTaskCreationConfigImpl(
     override val lintPublish: Configuration,
     override val lintChecks: Configuration,
     private val androidJar: Configuration,
+    override val fakeDependency: Configuration,
     override val settingsOptions: SettingsOptions
 ) : GlobalTaskCreationConfig, BootClasspathConfig by bootClasspathConfig {
 
@@ -162,7 +163,7 @@ class GlobalTaskCreationConfigImpl(
     override val splits: Splits
         get() = extension.splits
 
-    override val prefab: Set<PrefabPackagingOptions>
+    override val prefab: Set<Prefab>
         get() = (extension as? LibraryExtension)?.prefab
             ?: throw RuntimeException("calling prefab on non Library variant")
 
@@ -175,12 +176,6 @@ class GlobalTaskCreationConfigImpl(
     override val testServers: List<TestServer>
         get() = oldExtension.testServers
 
-    override val transforms: List<Transform>
-        get() = oldExtension.transforms
-
-    override val transformsDependencies: List<List<Any>>
-        get() = oldExtension.transformsDependencies
-
     override val namespacedAndroidResources: Boolean
         get() = extension.androidResources.namespaced
 
@@ -188,7 +183,7 @@ class GlobalTaskCreationConfigImpl(
         testOptions.execution.toExecutionEnum()
     }
 
-    override val prefabOrEmpty: Set<PrefabPackagingOptions>
+    override val prefabOrEmpty: Set<Prefab>
         get() = (extension as? LibraryExtension)?.prefab ?: setOf()
 
     override val hasNoBuildTypeMinified: Boolean
@@ -240,17 +235,16 @@ class GlobalTaskCreationConfigImpl(
             .versionedNdkHandler(compileSdkHashString, ndkVersion, ndkPath)
     }
 
-    override val jarCreatorType: JarCreatorType
-        get() = if (services.projectOptions.get(BooleanOption.USE_NEW_JAR_CREATOR)) {
-            JarCreatorType.JAR_FLINGER
-        } else {
-            JarCreatorType.JAR_MERGER
+    override val buildAnalyzerIssueReporter: BuildAnalyzerIssueReporter? =
+        services.projectOptions.get(StringOption.IDE_ATTRIBUTION_FILE_LOCATION)?.let {
+            BuildAnalyzerIssueReporter(
+                services.projectOptions,
+                services.buildServiceRegistry
+            )
         }
 
-    override val apkCreatorType: ApkCreatorType
-        get() = if (services.projectOptions.get(BooleanOption.USE_NEW_APK_CREATOR)) {
-            ApkCreatorType.APK_FLINGER
-        } else {
-            ApkCreatorType.APK_Z_FILE_CREATOR
-        }
+    override val enableGlobalSynthetics: Boolean
+        get() = services.projectOptions.get(BooleanOption.ENABLE_GLOBAL_SYNTHETICS)
+                && compileOptions.targetCompatibility.isCompatibleWith(JavaVersion.VERSION_14)
+                && compileOptions.sourceCompatibility.isCompatibleWith(JavaVersion.VERSION_14)
 }

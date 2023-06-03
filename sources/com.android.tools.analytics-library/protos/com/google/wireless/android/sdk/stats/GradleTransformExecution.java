@@ -111,6 +111,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional int32 type = 1 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the type field is set.
    */
   @java.lang.Override
@@ -127,6 +128,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional int32 type = 1 [deprecated = true];</code>
+   * @deprecated
    * @return The type.
    */
   @java.lang.Override
@@ -603,6 +605,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 type = 1 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the type field is set.
      */
     @java.lang.Override
@@ -619,6 +622,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 type = 1 [deprecated = true];</code>
+     * @deprecated
      * @return The type.
      */
     @java.lang.Override
@@ -635,6 +639,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 type = 1 [deprecated = true];</code>
+     * @deprecated
      * @param value The type to set.
      * @return This builder for chaining.
      */
@@ -654,6 +659,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 type = 1 [deprecated = true];</code>
+     * @deprecated
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder clearType() {

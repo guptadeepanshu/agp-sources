@@ -16,12 +16,10 @@
 
 package com.android.build.api.dsl
 
-import org.gradle.api.Incubating
 import org.gradle.api.file.Directory
 import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Provider
 
-@Incubating
 interface SdkComponents {
     /**
      * The path to the Android SDK that Gradle uses for this project.

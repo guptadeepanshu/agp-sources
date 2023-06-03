@@ -27,8 +27,8 @@ import com.android.build.gradle.internal.scope.getRegularFiles
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.tasks.toSerializable
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.files.SerializableChange
-import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.utils.FileUtils
 import com.android.utils.PathUtils
 import com.google.common.base.Preconditions
@@ -37,7 +37,6 @@ import com.google.common.io.ByteStreams
 import com.google.common.io.Files
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
@@ -326,26 +325,12 @@ abstract class JacocoTask : NewIncrementalTask() {
         }
     }
 
-    abstract class AbstractCreationAction(creationConfig: ComponentCreationConfig) :
+    class CreationAction(creationConfig: ComponentCreationConfig) :
         VariantTaskCreationAction<JacocoTask, ComponentCreationConfig>(creationConfig) {
         override val name: String
             get() = computeTaskName("jacoco")
         override val type: Class<JacocoTask>
             get() = JacocoTask::class.java
-
-        override fun handleProvider(taskProvider: TaskProvider<JacocoTask>) {
-            super.handleProvider(taskProvider)
-            creationConfig
-                .artifacts
-                .setInitialProvider(taskProvider) { obj: JacocoTask -> obj.outputForDirs }
-                .withName("out")
-                .on(InternalArtifactType.JACOCO_INSTRUMENTED_CLASSES)
-            creationConfig
-                .artifacts
-                .setInitialProvider(taskProvider) { obj: JacocoTask -> obj.outputForJars }
-                .withName("out")
-                .on(InternalArtifactType.JACOCO_INSTRUMENTED_JARS)
-        }
 
         override fun configure(task: JacocoTask) {
             super.configure(task)
@@ -362,78 +347,8 @@ abstract class JacocoTask : NewIncrementalTask() {
                         .projectOptions[BooleanOption.FORCE_JACOCO_OUT_OF_PROCESS]
                 )
         }
-        }
-
-    class CreationActionWithNoTransformAsmClasses(creationConfig: ComponentCreationConfig) :
-        AbstractCreationAction(creationConfig) {
-
-        override fun configure(task: JacocoTask) {
-            super.configure(task)
-            val projectClasses = creationConfig.artifacts
-                .forScope(ScopedArtifacts.Scope.PROJECT)
-                .getFinalArtifacts(ScopedArtifact.CLASSES)
-
-            task.jarsWithIdentity
-                .inputJars
-                .from(projectClasses
-                        .getRegularFiles(creationConfig.services.projectInfo.projectDirectory)
-                )
-            task.classesDir
-                .from(projectClasses
-                    .getDirectories(creationConfig.services.projectInfo.projectDirectory))
-        }
     }
 
-    class CreationActionWithTransformAsmClasses(creationConfig: ComponentCreationConfig) :
-        AbstractCreationAction(creationConfig) {
-
-        override fun configure(task: JacocoTask) {
-            super.configure(task)
-            task.jarsWithIdentity.inputJars.from(
-                creationConfig.services.fileCollection(
-                    creationConfig.artifacts.get(InternalArtifactType.ASM_INSTRUMENTED_PROJECT_JARS)
-                ).asFileTree
-            )
-            task.classesDir.from(
-                creationConfig.services.fileCollection(
-                    creationConfig.artifacts.get(InternalArtifactType.ASM_INSTRUMENTED_PROJECT_CLASSES)
-                ).asFileTree
-            )
-        }
-    }
-
-    class CreationActionLegacyTransform(
-        creationConfig: ComponentCreationConfig, private val transformClasses: FileCollection
-    ) : AbstractCreationAction(creationConfig) {
-
-        override fun handleProvider(taskProvider: TaskProvider<JacocoTask>) {
-            super.handleProvider(taskProvider)
-            creationConfig
-                .artifacts
-                .setInitialProvider(taskProvider) { obj: JacocoTask -> obj.outputForDirs }
-                .withName("out")
-                .on(InternalArtifactType.LEGACY_TRANSFORMED_JACOCO_INSTRUMENTED_CLASSES)
-            creationConfig
-                .artifacts
-                .setInitialProvider(taskProvider) { obj: JacocoTask -> obj.outputForJars }
-                .on(InternalArtifactType.LEGACY_TRANSFORMED_JACOCO_INSTRUMENTED_JARS)
-        }
-
-        override fun configure(task: JacocoTask) {
-            super.configure(task)
-            val classesFromLegacyTransforms = transformClasses
-
-            task.jarsWithIdentity
-                .inputJars
-                .from(
-                    classesFromLegacyTransforms.getRegularFiles(
-                        creationConfig.services.projectInfo.projectDirectory)
-                )
-            task.classesDir.from(classesFromLegacyTransforms.getDirectories(
-                creationConfig.services.projectInfo.projectDirectory
-            ))
-        }
-    }
     companion object {
         /** Returns which Jacoco version to use.  */
         fun getJacocoVersion(creationConfig: ComponentCreationConfig): String {

@@ -18,7 +18,7 @@ package com.android.build.gradle.internal.tasks
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.TaskCategory
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.tasks.Internal
@@ -74,7 +74,9 @@ abstract class ProcessJavaResTask : Sync(), VariantAwareTask {
         ) {
             super.configure(task)
 
-            task.from(creationConfig.sources.resources.getAsFileTrees())
+            creationConfig.sources.resources {
+                task.from(it.getAsFileTrees())
+            }
             task.duplicatesStrategy = DuplicatesStrategy.INCLUDE
         }
     }

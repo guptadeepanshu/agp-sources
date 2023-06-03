@@ -5,9 +5,12 @@ package com.android.build.gradle.internal.cxx.ninja
 import com.android.SdkConstants.CURRENT_PLATFORM
 import com.android.build.gradle.internal.cxx.collections.ancestors
 import com.android.build.gradle.internal.cxx.collections.breadthFirst
-import com.android.build.gradle.internal.cxx.io.filenameStartsWithIgnoreCase
-import com.android.build.gradle.internal.cxx.io.hasExtensionIgnoreCase
-import com.android.build.gradle.internal.cxx.io.removeExtensionIfPresent
+import com.android.utils.cxx.io.filenameStartsWithIgnoreCase
+import com.android.utils.cxx.io.hasExtensionIgnoreCase
+import com.android.utils.cxx.io.removeExtensionIfPresent
+import com.android.utils.cxx.ninja.streamNinjaBuildCommands
+import com.android.utils.cxx.ninja.writeCompileCommandsJsonBin
+import com.android.utils.cxx.ninja.NinjaBuildUnexpandedCommand
 import com.android.build.gradle.internal.cxx.json.NativeBuildConfigValueMini
 import com.android.build.gradle.internal.cxx.json.NativeLibraryValueMini
 import com.android.build.gradle.internal.cxx.string.StringTable

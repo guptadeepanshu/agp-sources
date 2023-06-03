@@ -20,7 +20,7 @@ import com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel
 import java.io.File
 
 /**
- * [PassThroughDeduplicatingLoggingEnvironment] that attach a filename and/or tag string to the
+ * [PassThroughRecordingLoggingEnvironment] that attach a filename and/or tag string to the
  * message. The point of this is to issue errors that have an associated filename that the user
  * can click on in Android Studio.
  */
@@ -28,7 +28,7 @@ class PassThroughPrefixingLoggingEnvironment(
     val file : File? = null,
     val tag : String? = null,
     val treatAllMessagesAsInfo : Boolean = false)
-    : PassThroughDeduplicatingLoggingEnvironment() {
+    : PassThroughRecordingLoggingEnvironment() {
     override fun log(message: LoggingMessage) {
         val builder = message.toBuilder()
         if (message.file.isBlank() && file != null) builder.file = file.path

@@ -18,7 +18,7 @@
 package com.android.build.gradle.internal.dependency
 
 import com.android.build.gradle.internal.services.StringCachingBuildService
-import com.android.build.gradle.internal.ide.dependencies.getIdString
+import com.android.builder.errors.IssueReporter
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ResolvableDependencies
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
@@ -27,6 +27,7 @@ import org.gradle.api.artifacts.component.ProjectComponentIdentifier
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.api.artifacts.result.ResolvedDependencyResult
 import org.gradle.api.provider.Provider
+import java.io.File
 
 /**
  * Synchronizes this configuration to the specified one, so they resolve to the same dependencies.
@@ -34,10 +35,10 @@ import org.gradle.api.provider.Provider
  * It does that by leveraging [ResolvableDependencies.beforeResolve].
  */
 internal fun Configuration.alignWith(
-    srcConfiguration: Configuration,
-    dependencyHandler: DependencyHandler,
-    isTest: Boolean,
-    cachedStringBuildService: Provider<StringCachingBuildService>
+        srcConfiguration: Configuration,
+        dependencyHandler: DependencyHandler,
+        isTest: Boolean,
+        cachedStringBuildService: Provider<StringCachingBuildService>
 ) {
     incoming.beforeResolve {
         val srcConfigName = srcConfiguration.name
@@ -64,23 +65,57 @@ internal fun Configuration.alignWith(
                             }
                         }
                     }
-                } else if (componentIdentifier is ProjectComponentIdentifier
-                    && componentIdentifier.build.isCurrentBuild
-                    && dependency.requested is ModuleComponentSelector
-                ) {
-                    // Requested external library has been replaced with the project dependency,
-                    // add the same substitution to the target configuration, so it can be chosen
-                    // instead of the external library as well.
-                    // We should avoid doing this for composite builds, so we check if the selected
-                    // project is from the current build.
-                    resolutionStrategy.dependencySubstitution.let { sb ->
-                        sb.substitute(dependency.requested)
-                            .because(stringCachingService.cacheString(
-                                "$srcConfigName uses project ${componentIdentifier.getIdString()}"))
-                            .using(sb.project(componentIdentifier.getIdString()))
-                    }
                 }
             }
         }
+    }
+}
+
+internal fun checkConfigurationAlignments(
+        destConfiguration: Configuration,
+        srcConfiguration: Configuration,
+        issueReporter: IssueReporter,
+        buildFile: File) {
+    destConfiguration.incoming.afterResolve { dest ->
+        val moduleToProjectSubstitutionMap =
+                srcConfiguration.incoming.resolutionResult.allDependencies
+                        .filterIsInstance<ResolvedDependencyResult>()
+                        .filter {
+                            it.selected.id is ProjectComponentIdentifier && it.requested is ModuleComponentSelector
+                        }
+                        .associate {
+                            (it.requested as ModuleComponentSelector).moduleIdentifier to
+                                    (it.selected.id as ProjectComponentIdentifier).projectPath
+                        }
+        // In that case assert the substitution was also done in the aligned configuration
+        val neededAndroidTestProjectDeps = dest.resolutionResult.allDependencies
+                .filterIsInstance<ResolvedDependencyResult>()
+                .filter { dependency ->
+                    val componentIdentifier = dependency.selected.id
+                    // Not aligned if a module has not been substituted for a project in the srcConfig
+                    componentIdentifier is ModuleComponentIdentifier &&
+                            componentIdentifier.moduleIdentifier in moduleToProjectSubstitutionMap
+                }
+                .map { dependency ->
+                    val componentIdentifier =
+                            dependency.selected.id as ModuleComponentIdentifier
+                    moduleToProjectSubstitutionMap[componentIdentifier.moduleIdentifier]
+                }.toSet()
+
+        if (neededAndroidTestProjectDeps.none()) {
+            return@afterResolve
+        }
+        val dependencyNumber =
+                if (neededAndroidTestProjectDeps.size > 1) "dependencies" else "dependency"
+        issueReporter.reportError(
+                IssueReporter.Type.DEPENDENCY_INTERNAL_CONFLICT,
+                RuntimeException("Unable to align dependencies in configurations " +
+                        "'${srcConfiguration.name}' and '${dest.name}', as both require " +
+                        "${neededAndroidTestProjectDeps.joinToString(", ") { "'project $it'" }}.\n" +
+                        "[Recommended action] Add the following $dependencyNumber to $buildFile: \n${
+                            neededAndroidTestProjectDeps.joinToString("\n") { "androidTestImplementation(project(\"$it\"))" }
+                        }"
+                )
+        )
     }
 }

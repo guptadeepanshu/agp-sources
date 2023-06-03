@@ -19,6 +19,7 @@ package com.android.manifmerger;
 import static com.android.SdkConstants.ATTR_NAME;
 import static com.android.SdkConstants.ATTR_SPLIT;
 import static com.android.manifmerger.ManifestModel.NodeTypes.USES_SDK;
+import static com.android.manifmerger.MergingReport.MergedManifestKind.AAPT_SAFE;
 import static com.android.manifmerger.PlaceholderHandler.APPLICATION_ID;
 import static com.android.manifmerger.PlaceholderHandler.KeyBasedValueResolver;
 import static com.android.manifmerger.PlaceholderHandler.PACKAGE_NAME;
@@ -36,8 +37,10 @@ import com.android.utils.FileUtils;
 import com.android.utils.ILogger;
 import com.android.utils.Pair;
 import com.android.utils.XmlUtils;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
@@ -61,9 +64,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMResult;
-import javax.xml.transform.dom.DOMSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -198,22 +198,34 @@ public class ManifestMerger2 {
         final String originalMainManifestPackageName =
                 mainPackageAttribute.map(XmlAttribute::getValue).orElse(null);
 
-        if (mOptionalFeatures.contains(Invoker.Feature.WARN_IF_PACKAGE_IN_SOURCE_MANIFEST)
+        if (mOptionalFeatures.contains(Invoker.Feature.CHECK_IF_PACKAGE_IN_MAIN_MANIFEST)
                 && originalMainManifestPackageName != null) {
-            mLogger.warning(
-                    String.format(
-                            "package=\"%1$s\" found in source AndroidManifest.xml: %2$s.\n"
-                                    + "Setting the namespace via a source AndroidManifest.xml's "
-                                    + "package attribute is deprecated.\n"
-                                    + "Please instead set the namespace (or testNamespace) in the "
-                                    + "module's build.gradle file, as described here: "
-                                    + "https://developer.android.com/studio/build/configure-app-module#set-namespace\n"
-                                    + "This migration can be done automatically using the AGP "
-                                    + "Upgrade Assistant, please refer to "
-                                    + "https://developer.android.com/studio/build/agp-upgrade-assistant "
-                                    + "for more information.",
-                            originalMainManifestPackageName,
-                            loadedMainManifestInfo.getLocation().getAbsolutePath()));
+            if (originalMainManifestPackageName.equals(mNamespace)) {
+                String message =
+                        String.format(
+                                "package=\"%1$s\" found in source AndroidManifest.xml: %2$s.\n"
+                                        + "Setting the namespace via the package attribute in the "
+                                        + "source AndroidManifest.xml is no longer supported, "
+                                        + "and the value is ignored.\n"
+                                        + "Recommendation: remove package=\"%1$s\" from the source "
+                                        + "AndroidManifest.xml: %2$s.",
+                                originalMainManifestPackageName,
+                                loadedMainManifestInfo.getLocation().getAbsolutePath());
+                mLogger.warning(message);
+            } else {
+                String message =
+                        String.format(
+                                "Incorrect package=\"%1$s\" found in source AndroidManifest.xml: "
+                                        + "%2$s.\n"
+                                        + "Setting the namespace via the package attribute in the "
+                                        + "source AndroidManifest.xml is no longer supported.\n"
+                                        + "Recommendation: remove package=\"%1$s\" from the source "
+                                        + "AndroidManifest.xml: %2$s.",
+                                originalMainManifestPackageName,
+                                loadedMainManifestInfo.getLocation().getAbsolutePath());
+                mLogger.error(null, message);
+                throw new RuntimeException(message);
+            }
         }
 
         // load all the libraries xml files early to have a list of all possible node:selector
@@ -637,14 +649,28 @@ public class ManifestMerger2 {
      * friendly encoding and (2) removing any <nav-graph> tags. Saves the modified manifest as part
      * of the merging report. Does not mutate the passed in document.
      */
-    private static void createAaptSafeManifest(
+    @VisibleForTesting
+    static void createAaptSafeManifest(
             @NonNull Document document, @NonNull MergingReport.Builder mergingReport)
             throws MergeFailureException {
-        Document clonedDocument = cloneDocument(document);
-        PlaceholderEncoder.visit(clonedDocument);
-        removeNavGraphs(clonedDocument);
-        mergingReport.setMergedDocument(
-                MergingReport.MergedManifestKind.AAPT_SAFE, prettyPrint(clonedDocument));
+        Pair<Document, Boolean> clonedDocument =
+                cloneAndTransform(
+                        document, PlaceholderEncoder::encode, ManifestMerger2::isNavGraphs);
+        boolean isUpdated = clonedDocument.getSecond();
+        mergingReport.setAaptSafeManifestUnchanged(!isUpdated);
+        if (isUpdated) {
+            mergingReport.setMergedDocument(AAPT_SAFE, prettyPrint(clonedDocument.getFirst()));
+        }
+    }
+
+    /**
+     * Function checks whether the current node is {@link SdkConstants#TAG_NAV_GRAPH}.
+     *
+     * @param node the element to check
+     */
+    private static boolean isNavGraphs(@NonNull Node node) {
+        return (node instanceof Element)
+                && SdkConstants.TAG_NAV_GRAPH.equals(((Element) node).getTagName());
     }
 
     /**
@@ -900,55 +926,62 @@ public class ManifestMerger2 {
                 false /* endWithNewLine */);
     }
 
-    /** Clones an XML document. */
+    /**
+     * Clones and transforms an XML document.
+     *
+     * @return a pair of document and flag on whether new document is differ from original one.
+     */
     @NonNull
-    private static Document cloneDocument(Document document) throws MergeFailureException {
+    static Pair<Document, Boolean> cloneAndTransform(
+            Document document, Predicate<Node> transform, Predicate<Node> shouldRemove)
+            throws MergeFailureException {
         try {
-            DOMResult domResult = new DOMResult();
-            TransformerFactory.newInstance()
-                    .newTransformer()
-                    .transform(new DOMSource(document), domResult);
-            return (Document) domResult.getNode();
+            Document newDocument = (Document) document.cloneNode(false);
+            boolean changeFlag = false;
+            for (Node child = document.getFirstChild();
+                    child != null;
+                    child = child.getNextSibling()) {
+                Pair<Node, Boolean> response =
+                        cloneNode(child, newDocument, transform, shouldRemove);
+                changeFlag |= response.getSecond();
+                if (response.getFirst() != null) newDocument.appendChild(response.getFirst());
+            }
+            return Pair.of(newDocument, changeFlag);
         } catch (Exception e) {
             throw new MergeFailureException(e);
         }
     }
 
     /**
-     * Removes all {@link SdkConstants#TAG_NAV_GRAPH} elements from the document. Useful when
-     * creating an aapt friendly manifest.
+     * Function goes through dom tree in recursive fashion, skipping nodes per predicate
+     * `shouldRemove`, and apply transformation to all others.
      *
-     * @param document the document to clean
+     * @param node - current node to transform or remove
+     * @param newDocument represents cloned document.
+     * @param transform - function that may transform node. Returns true if transformation happened
+     * @param shouldRemove - predicate returns true if need to skip element and all its children
+     * @return Pair of cloned node and a flag. Flag shows whether tree was changed. Node can be null
+     *     when shouldRemove returns true flagging not to clone this node.
      */
-    public static void removeNavGraphs(@NonNull Document document) {
-        removeNavGraphs(document.getDocumentElement());
-    }
+    @NonNull
+    private static Pair<Node, Boolean> cloneNode(
+            @NonNull Node node,
+            @NonNull Document newDocument,
+            @NonNull Predicate<Node> transform,
+            @NonNull Predicate<Node> shouldRemove) {
+        if (!shouldRemove.test(node)) {
+            Node clone = newDocument.importNode(node, false);
+            boolean changeFlag = transform.apply(clone);
 
-    /**
-     * Recursively removes all {@link SdkConstants#TAG_NAV_GRAPH} elements.
-     *
-     * @param element the element to recursively clean
-     */
-    private static void removeNavGraphs(@NonNull Element element) {
-        if (SdkConstants.TAG_NAV_GRAPH.equals(element.getTagName())) {
-            // Delete the entire node
-            element.getParentNode().removeChild(element);
-            return;
-        }
-
-        // make a copy of the element children since we will be removing some during
-        // this process, we don't want side effects.
-        NodeList childNodes = element.getChildNodes();
-        ImmutableList.Builder<Element> childElements = ImmutableList.builder();
-        for (int i = 0; i < childNodes.getLength(); i++) {
-            Node node = childNodes.item(i);
-            if (node.getNodeType() == Node.ELEMENT_NODE) {
-                childElements.add((Element) node);
+            for (Node child = node.getFirstChild(); child != null; child = child.getNextSibling()) {
+                Pair<Node, Boolean> response =
+                        cloneNode(child, newDocument, transform, shouldRemove);
+                changeFlag |= response.getSecond();
+                if (response.getFirst() != null) clone.appendChild(response.getFirst());
             }
+            return Pair.of(clone, changeFlag);
         }
-        for (Element childElement : childElements.build()) {
-            removeNavGraphs(childElement);
-        }
+        return Pair.of(null, true);
     }
 
     /**
@@ -1359,9 +1392,11 @@ public class ManifestMerger2 {
          *
          * @param localName the XML no namespace local name
          */
-        public boolean isKeepToolsAttributeRequired(String localName) {
+        public boolean isKeepToolsAttributeRequired(String localName, String value) {
             return isKeepToolsAttributeRequired
-                    && !NodeOperationType.LIST_OF_ALLOWED_RUNTIME_ATTRIBUTES.contains(localName);
+                    && !(NodeOperationType.REQUIRED_BY_PRIVACY_SANDBOX_SDK_ATTRIBUTE_NAME.equals(
+                                    localName)
+                            && value.equals(SdkConstants.VALUE_TRUE));
         }
 
         public boolean isFullPlaceholderSubstitutionRequired() {
@@ -1708,11 +1743,12 @@ public class ManifestMerger2 {
             DISABLE_MINSDKLIBRARY_CHECK,
 
             /**
-             * Warn if the package attribute is present in a source manifest.
+             * Warn if the package attribute is present in the main manifest, or throw an exception
+             * if it's present and not equal to the component's namespace.
              *
-             * <p>This is used in AGP because users should migrate to the new namespace DSL.
+             * <p>This is used in AGP because users must migrate to the new namespace DSL.
              */
-            WARN_IF_PACKAGE_IN_SOURCE_MANIFEST,
+            CHECK_IF_PACKAGE_IN_MAIN_MANIFEST,
 
             /** Removes target SDK for library manifest */
             DISABLE_STRIP_LIBRARY_TARGET_SDK,

@@ -16,22 +16,24 @@
 
 package com.android.build.gradle.internal.dsl
 
+import com.android.build.api.dsl.ExternalNativeBuildFlags
 import com.android.build.gradle.internal.services.DslServices
 import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.Action
 import javax.inject.Inject
 
-open class ExternalNativeBuildOptions :
-    CoreExternalNativeBuildOptions,
-    com.android.build.api.dsl.ExternalNativeBuildOptions {
+open class ExternalNativeBuildOptions : CoreExternalNativeBuildOptions, ExternalNativeBuildFlags {
+
     final override val ndkBuild: ExternalNativeNdkBuildOptions
     final override val cmake: ExternalNativeCmakeOptions
     final override val experimentalProperties: MutableMap<String, Any> = mutableMapOf()
 
     @VisibleForTesting
     constructor() {
-        ndkBuild = ExternalNativeNdkBuildOptions()
-        cmake = ExternalNativeCmakeOptions()
+        ndkBuild =
+            ExternalNativeNdkBuildOptions()
+        cmake =
+            ExternalNativeCmakeOptions()
     }
 
     @Inject
@@ -61,11 +63,11 @@ open class ExternalNativeBuildOptions :
         action.execute(cmake)
     }
 
-    override fun ndkBuild(action: com.android.build.api.dsl.ExternalNativeNdkBuildOptions.() -> Unit) {
+    override fun ndkBuild(action: com.android.build.api.dsl.NdkBuildFlags.() -> Unit) {
         action.invoke(ndkBuild)
     }
 
-    override fun cmake(action: com.android.build.api.dsl.ExternalNativeCmakeOptions.() -> Unit) {
+    override fun cmake(action: com.android.build.api.dsl.CmakeFlags.() -> Unit) {
         action.invoke(cmake)
     }
 }

@@ -22,18 +22,24 @@ import com.android.build.gradle.internal.cxx.prefab.PrefabPublication
 import com.android.build.gradle.internal.cxx.prefab.buildPrefabPackage
 import com.android.build.gradle.internal.cxx.prefab.copyWithLibraryInformationAdded
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.scope.InternalMultipleArtifactType
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.build.gradle.internal.utils.fromDisallowChanges
+import com.android.buildanalyzer.common.TaskCategory
+import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.internal.file.FileOperations
 import org.gradle.api.provider.Property
+import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.work.DisableCachingByDefault
 import javax.inject.Inject
@@ -57,6 +63,10 @@ abstract class PrefabPackageTask : NonIncrementalTask() {
     @get:Nested
     lateinit var publication: PrefabPublication
         private set
+
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val libraries: ConfigurableFileCollection
 
     @get:OutputDirectory
     abstract val outputDirectory: DirectoryProperty
@@ -98,6 +108,9 @@ abstract class PrefabPackageTask : NonIncrementalTask() {
             task.publication = publication
             task.sdkComponents.setDisallowChanges(
                 getBuildService(creationConfig.services.buildServiceRegistry)
+            )
+            task.libraries.fromDisallowChanges(
+                creationConfig.artifacts.getAll(InternalMultipleArtifactType.EXTERNAL_NATIVE_BUILD_LIBS)
             )
         }
     }

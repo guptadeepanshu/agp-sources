@@ -76,6 +76,10 @@ public enum IntegerOption
    * <code>GRADLE_MANAGED_DEVICE_MAX_CONCURRENT_DEVICES = 16;</code>
    */
   GRADLE_MANAGED_DEVICE_MAX_CONCURRENT_DEVICES(16),
+  /**
+   * <code>INSTALL_APK_TIMEOUT = 17;</code>
+   */
+  INSTALL_APK_TIMEOUT(17),
   UNRECOGNIZED(-1),
   ;
 
@@ -147,6 +151,10 @@ public enum IntegerOption
    * <code>GRADLE_MANAGED_DEVICE_MAX_CONCURRENT_DEVICES = 16;</code>
    */
   public static final int GRADLE_MANAGED_DEVICE_MAX_CONCURRENT_DEVICES_VALUE = 16;
+  /**
+   * <code>INSTALL_APK_TIMEOUT = 17;</code>
+   */
+  public static final int INSTALL_APK_TIMEOUT_VALUE = 17;
 
 
   public final int getNumber() {
@@ -190,6 +198,7 @@ public enum IntegerOption
       case 14: return R8_MAX_WORKERS;
       case 15: return GRADLE_MANAGED_DEVICE_SETUP_TIMEOUT_MINUTES;
       case 16: return GRADLE_MANAGED_DEVICE_MAX_CONCURRENT_DEVICES;
+      case 17: return INSTALL_APK_TIMEOUT;
       default: return null;
     }
   }

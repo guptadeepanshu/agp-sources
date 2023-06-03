@@ -27,6 +27,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.List;
+import kotlin.Pair;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -63,12 +64,12 @@ public class ToolsInstructionsCleaner {
         Preconditions.checkNotNull(document);
         Preconditions.checkNotNull(logger);
         MergingReport.Result result =
-                cleanToolsReferences(mergeType, document.getDocumentElement(), logger);
+                cleanToolsReferences(mergeType, document.getDocumentElement(), logger).getFirst();
         return result == MergingReport.Result.SUCCESS ? Optional.of(document) : Optional.absent();
     }
 
     @NonNull
-    private static MergingReport.Result cleanToolsReferences(
+    private static Pair<MergingReport.Result, Boolean> cleanToolsReferences(
             @NonNull ManifestMerger2.MergeType mergeType,
             @NonNull Element element,
             @NonNull ILogger logger) {
@@ -76,9 +77,27 @@ public class ToolsInstructionsCleaner {
         if (SdkConstants.TOOLS_URI.equals(element.getNamespaceURI())) {
             // Delete the entire node
             element.getParentNode().removeChild(element);
-            return MergingReport.Result.SUCCESS;
+            return new Pair<>(MergingReport.Result.SUCCESS, false);
         }
-
+        boolean needsToolsNamespace = false;
+        // make a copy of the element children since we will be removing some during
+        // this process, we don't want side effects.
+        NodeList childNodes = element.getChildNodes();
+        ImmutableList.Builder<Element> childElements = ImmutableList.builder();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                childElements.add((Element) node);
+            }
+        }
+        for (Element childElement : childElements.build()) {
+            Pair<MergingReport.Result, Boolean> result =
+                    cleanToolsReferences(mergeType, childElement, logger);
+            needsToolsNamespace |= result.getSecond();
+            if (result.getFirst() == ERROR) {
+                return new Pair<>(ERROR, needsToolsNamespace);
+            }
+        }
         NamedNodeMap namedNodeMap = element.getAttributes();
         if (namedNodeMap != null) {
             // make a copy of the original list of attributes as we will remove some during this
@@ -106,7 +125,7 @@ public class ToolsInstructionsCleaner {
                                         "tools:node=\"%1$s\" not allowed on top level %2$s element",
                                         attribute.getNodeValue(),
                                         XmlNode.unwrapName(element)));
-                            return ERROR;
+                            return new Pair<>(ERROR, needsToolsNamespace);
                         } else {
                             // Remove leading comments
                             for (Node comment : XmlElement.getLeadingComments(element)) {
@@ -118,36 +137,25 @@ public class ToolsInstructionsCleaner {
                     } else {
                         // anything else, we just clean the attribute unless we are merging for
                         // libraries.
-                        if (mergeType.isKeepToolsAttributeRequired(attribute.getLocalName())) {
+                        if (mergeType.isKeepToolsAttributeRequired(
+                                attribute.getLocalName(), attribute.getNodeValue())) {
                             element.removeAttributeNS(
                                     attribute.getNamespaceURI(), attribute.getLocalName());
+                        } else {
+                            needsToolsNamespace = true;
                         }
                     }
                 }
                 // this could also be the xmlns:tools declaration.
                 if (attribute.getNodeName().startsWith(SdkConstants.XMLNS_PREFIX)
-                    && SdkConstants.TOOLS_URI.equals(attribute.getNodeValue())
-                        && mergeType == ManifestMerger2.MergeType.APPLICATION) {
+                        && SdkConstants.TOOLS_URI.equals(attribute.getNodeValue())
+                        && !needsToolsNamespace) {
                     element.removeAttribute(attribute.getNodeName());
                 }
             }
         }
-        // make a copy of the element children since we will be removing some during
-        // this process, we don't want side effects.
-        NodeList childNodes = element.getChildNodes();
-        ImmutableList.Builder<Element> childElements = ImmutableList.builder();
-        for (int i = 0; i < childNodes.getLength(); i++) {
-            Node node = childNodes.item(i);
-            if (node.getNodeType() == Node.ELEMENT_NODE) {
-                childElements.add((Element) node);
-            }
-        }
-        for (Element childElement : childElements.build()) {
-            if (cleanToolsReferences(mergeType, childElement, logger) == ERROR) {
-                return ERROR;
-            }
-        }
-        return MergingReport.Result.SUCCESS;
+
+        return new Pair<>(MergingReport.Result.SUCCESS, needsToolsNamespace);
     }
 
 }

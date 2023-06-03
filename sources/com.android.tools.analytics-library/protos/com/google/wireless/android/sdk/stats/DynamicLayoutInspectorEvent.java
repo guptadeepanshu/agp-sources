@@ -118,6 +118,19 @@ private static final long serialVersionUID = 0L;
             bitField0_ |= 0x00000010;
             break;
           }
+          case 50: {
+            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError.Builder subBuilder = null;
+            if (((bitField0_ & 0x00000020) != 0)) {
+              subBuilder = transportError_.toBuilder();
+            }
+            transportError_ = input.readMessage(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(transportError_);
+              transportError_ = subBuilder.buildPartial();
+            }
+            bitField0_ |= 0x00000020;
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -303,6 +316,14 @@ private static final long serialVersionUID = 0L;
      * <code>AUTO_CONNECT_INFO = 18;</code>
      */
     AUTO_CONNECT_INFO(18),
+    /**
+     * <pre>
+     * A transport-related error
+     * </pre>
+     *
+     * <code>TRANSPORT_ERROR = 19;</code>
+     */
+    TRANSPORT_ERROR(19),
     ;
 
     /**
@@ -453,6 +474,14 @@ private static final long serialVersionUID = 0L;
      * <code>AUTO_CONNECT_INFO = 18;</code>
      */
     public static final int AUTO_CONNECT_INFO_VALUE = 18;
+    /**
+     * <pre>
+     * A transport-related error
+     * </pre>
+     *
+     * <code>TRANSPORT_ERROR = 19;</code>
+     */
+    public static final int TRANSPORT_ERROR_VALUE = 19;
 
 
     public final int getNumber() {
@@ -494,6 +523,7 @@ private static final long serialVersionUID = 0L;
         case 16: return ATTACH_ERROR;
         case 17: return ATTACH_CANCELLED;
         case 18: return AUTO_CONNECT_INFO;
+        case 19: return TRANSPORT_ERROR;
         default: return null;
       }
     }
@@ -723,6 +753,44 @@ private static final long serialVersionUID = 0L;
     return autoConnectInfo_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.getDefaultInstance() : autoConnectInfo_;
   }
 
+  public static final int TRANSPORT_ERROR_FIELD_NUMBER = 6;
+  private com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError transportError_;
+  /**
+   * <pre>
+   * An error from the transport that prevents Layout Inspector from starting
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+   * @return Whether the transportError field is set.
+   */
+  @java.lang.Override
+  public boolean hasTransportError() {
+    return ((bitField0_ & 0x00000020) != 0);
+  }
+  /**
+   * <pre>
+   * An error from the transport that prevents Layout Inspector from starting
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+   * @return The transportError.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError getTransportError() {
+    return transportError_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError.getDefaultInstance() : transportError_;
+  }
+  /**
+   * <pre>
+   * An error from the transport that prevents Layout Inspector from starting
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportErrorOrBuilder getTransportErrorOrBuilder() {
+    return transportError_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError.getDefaultInstance() : transportError_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -752,6 +820,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000010) != 0)) {
       output.writeMessage(5, getAutoConnectInfo());
     }
+    if (((bitField0_ & 0x00000020) != 0)) {
+      output.writeMessage(6, getTransportError());
+    }
     unknownFields.writeTo(output);
   }
 
@@ -780,6 +851,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000010) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(5, getAutoConnectInfo());
+    }
+    if (((bitField0_ & 0x00000020) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(6, getTransportError());
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -820,6 +895,11 @@ private static final long serialVersionUID = 0L;
       if (!getAutoConnectInfo()
           .equals(other.getAutoConnectInfo())) return false;
     }
+    if (hasTransportError() != other.hasTransportError()) return false;
+    if (hasTransportError()) {
+      if (!getTransportError()
+          .equals(other.getTransportError())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -850,6 +930,10 @@ private static final long serialVersionUID = 0L;
     if (hasAutoConnectInfo()) {
       hash = (37 * hash) + AUTO_CONNECT_INFO_FIELD_NUMBER;
       hash = (53 * hash) + getAutoConnectInfo().hashCode();
+    }
+    if (hasTransportError()) {
+      hash = (37 * hash) + TRANSPORT_ERROR_FIELD_NUMBER;
+      hash = (53 * hash) + getTransportError().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -987,6 +1071,7 @@ private static final long serialVersionUID = 0L;
         getSnapshotInfoFieldBuilder();
         getErrorInfoFieldBuilder();
         getAutoConnectInfoFieldBuilder();
+        getTransportErrorFieldBuilder();
       }
     }
     @java.lang.Override
@@ -1018,6 +1103,12 @@ private static final long serialVersionUID = 0L;
         autoConnectInfoBuilder_.clear();
       }
       bitField0_ = (bitField0_ & ~0x00000010);
+      if (transportErrorBuilder_ == null) {
+        transportError_ = null;
+      } else {
+        transportErrorBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000020);
       return this;
     }
 
@@ -1082,6 +1173,14 @@ private static final long serialVersionUID = 0L;
         }
         to_bitField0_ |= 0x00000010;
       }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        if (transportErrorBuilder_ == null) {
+          result.transportError_ = transportError_;
+        } else {
+          result.transportError_ = transportErrorBuilder_.build();
+        }
+        to_bitField0_ |= 0x00000020;
+      }
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -1145,6 +1244,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasAutoConnectInfo()) {
         mergeAutoConnectInfo(other.getAutoConnectInfo());
+      }
+      if (other.hasTransportError()) {
+        mergeTransportError(other.getTransportError());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -1857,6 +1959,162 @@ private static final long serialVersionUID = 0L;
         autoConnectInfo_ = null;
       }
       return autoConnectInfoBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError transportError_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError.Builder, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportErrorOrBuilder> transportErrorBuilder_;
+    /**
+     * <pre>
+     * An error from the transport that prevents Layout Inspector from starting
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+     * @return Whether the transportError field is set.
+     */
+    public boolean hasTransportError() {
+      return ((bitField0_ & 0x00000020) != 0);
+    }
+    /**
+     * <pre>
+     * An error from the transport that prevents Layout Inspector from starting
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+     * @return The transportError.
+     */
+    public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError getTransportError() {
+      if (transportErrorBuilder_ == null) {
+        return transportError_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError.getDefaultInstance() : transportError_;
+      } else {
+        return transportErrorBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * An error from the transport that prevents Layout Inspector from starting
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+     */
+    public Builder setTransportError(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError value) {
+      if (transportErrorBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        transportError_ = value;
+        onChanged();
+      } else {
+        transportErrorBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00000020;
+      return this;
+    }
+    /**
+     * <pre>
+     * An error from the transport that prevents Layout Inspector from starting
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+     */
+    public Builder setTransportError(
+        com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError.Builder builderForValue) {
+      if (transportErrorBuilder_ == null) {
+        transportError_ = builderForValue.build();
+        onChanged();
+      } else {
+        transportErrorBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00000020;
+      return this;
+    }
+    /**
+     * <pre>
+     * An error from the transport that prevents Layout Inspector from starting
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+     */
+    public Builder mergeTransportError(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError value) {
+      if (transportErrorBuilder_ == null) {
+        if (((bitField0_ & 0x00000020) != 0) &&
+            transportError_ != null &&
+            transportError_ != com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError.getDefaultInstance()) {
+          transportError_ =
+            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError.newBuilder(transportError_).mergeFrom(value).buildPartial();
+        } else {
+          transportError_ = value;
+        }
+        onChanged();
+      } else {
+        transportErrorBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00000020;
+      return this;
+    }
+    /**
+     * <pre>
+     * An error from the transport that prevents Layout Inspector from starting
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+     */
+    public Builder clearTransportError() {
+      if (transportErrorBuilder_ == null) {
+        transportError_ = null;
+        onChanged();
+      } else {
+        transportErrorBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000020);
+      return this;
+    }
+    /**
+     * <pre>
+     * An error from the transport that prevents Layout Inspector from starting
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+     */
+    public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError.Builder getTransportErrorBuilder() {
+      bitField0_ |= 0x00000020;
+      onChanged();
+      return getTransportErrorFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * An error from the transport that prevents Layout Inspector from starting
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+     */
+    public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportErrorOrBuilder getTransportErrorOrBuilder() {
+      if (transportErrorBuilder_ != null) {
+        return transportErrorBuilder_.getMessageOrBuilder();
+      } else {
+        return transportError_ == null ?
+            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError.getDefaultInstance() : transportError_;
+      }
+    }
+    /**
+     * <pre>
+     * An error from the transport that prevents Layout Inspector from starting
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError.Builder, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportErrorOrBuilder> 
+        getTransportErrorFieldBuilder() {
+      if (transportErrorBuilder_ == null) {
+        transportErrorBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError.Builder, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportErrorOrBuilder>(
+                getTransportError(),
+                getParentForChildren(),
+                isClean());
+        transportError_ = null;
+      }
+      return transportErrorBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

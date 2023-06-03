@@ -23,10 +23,9 @@ import com.android.annotations.concurrency.Slow;
 import com.android.utils.Pair;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import java.awt.geom.AffineTransform;
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,19 +44,18 @@ import org.w3c.dom.NodeList;
 /**
  * Converts SVG to VectorDrawable's XML.
  *
- * There are 2 major functions:
- * 1. parse(file)
- *   This include parse the .svg file and build an internal tree. The optimize this tree.
- *
- * 2. writeFile()
- *   This is traversing the whole tree, and write the group / path info into the XML.
+ * <p>There are two major functions:
+ * <ul>
+ *   <li>{@link #parse} Parses the .svg file, builds and optimizes an internal tree</li>
+ *   <li>{@link #writeFile} Traverses the internal tree and produces XML output</li>
+ * </ul>
  */
 public class Svg2Vector {
     private static final Logger logger = Logger.getLogger(Svg2Vector.class.getSimpleName());
     private static final String SVG_DEFS = "defs";
     private static final String SVG_USE = "use";
-    private static final String SVG_HREF = "href";
-    private static final String SVG_XLINK_HREF = "xlink:href";
+    static final String SVG_HREF = "href";
+    static final String SVG_XLINK_HREF = "xlink:href";
 
     public static final String SVG_POLYGON = "polygon";
     public static final String SVG_POLYLINE = "polyline";
@@ -72,18 +70,19 @@ public class Svg2Vector {
     public static final String SVG_CLIP_PATH_ELEMENT = "clipPath";
 
     public static final String SVG_D = "d";
-    public static final String SVG_STROKE = "stroke";
-    public static final String SVG_STROKE_OPACITY = "stroke-opacity";
-    public static final String SVG_STROKE_LINEJOIN = "stroke-linejoin";
-    public static final String SVG_STROKE_LINECAP = "stroke-linecap";
-    public static final String SVG_STROKE_WIDTH = "stroke-width";
+    public static final String SVG_CLIP = "clip";
+    public static final String SVG_CLIP_PATH = "clip-path";
+    public static final String SVG_CLIP_RULE = "clip-rule";
     public static final String SVG_FILL = "fill";
     public static final String SVG_FILL_OPACITY = "fill-opacity";
     public static final String SVG_FILL_RULE = "fill-rule";
     public static final String SVG_OPACITY = "opacity";
-    public static final String SVG_CLIP = "clip";
-    public static final String SVG_CLIP_PATH = "clip-path";
-    public static final String SVG_CLIP_RULE = "clip-rule";
+    public static final String SVG_PAINT_ORDER = "paint-order";
+    public static final String SVG_STROKE = "stroke";
+    public static final String SVG_STROKE_LINECAP = "stroke-linecap";
+    public static final String SVG_STROKE_LINEJOIN = "stroke-linejoin";
+    public static final String SVG_STROKE_OPACITY = "stroke-opacity";
+    public static final String SVG_STROKE_WIDTH = "stroke-width";
     public static final String SVG_MASK = "mask";
     public static final String SVG_POINTS = "points";
 
@@ -92,13 +91,14 @@ public class Svg2Vector {
                     .put(SVG_CLIP, "android:clip")
                     .put(SVG_CLIP_RULE, "") // Treated individually.
                     .put(SVG_FILL, "android:fillColor")
-                    .put(SVG_FILL_RULE, "android:fillType")
                     .put(SVG_FILL_OPACITY, "android:fillAlpha")
+                    .put(SVG_FILL_RULE, "android:fillType")
                     .put(SVG_OPACITY, "") // Treated individually.
+                    .put(SVG_PAINT_ORDER, "") // Treated individually.
                     .put(SVG_STROKE, "android:strokeColor")
-                    .put(SVG_STROKE_OPACITY, "android:strokeAlpha")
-                    .put(SVG_STROKE_LINEJOIN, "android:strokeLineJoin")
                     .put(SVG_STROKE_LINECAP, "android:strokeLineCap")
+                    .put(SVG_STROKE_LINEJOIN, "android:strokeLineJoin")
+                    .put(SVG_STROKE_OPACITY, "android:strokeAlpha")
                     .put(SVG_STROKE_WIDTH, "android:strokeWidth")
                     .build();
 
@@ -128,12 +128,10 @@ public class Svg2Vector {
             "set",
             // Container elements.
             "a",
-            "glyph",
             "marker",
             "missing-glyph",
             "pattern",
             "switch",
-            "symbol",
             // Filter primitive elements.
             "feBlend",
             "feColorMatrix",
@@ -170,7 +168,6 @@ public class Svg2Vector {
             // Graphics elements.
             "ellipse",
             "image",
-            "text",
             // Light source elements.
             "feDistantLight",
             "fePointLight",
@@ -178,15 +175,11 @@ public class Svg2Vector {
             // Structural elements.
             "symbol",
             // Text content elements.
-            "altGlyph",
             "altGlyphDef",
             "altGlyphItem",
             "glyph",
             "glyphRef",
-            "textPath",
             "text",
-            "tref",
-            "tspan",
             // Text content child elements.
             "altGlyph",
             "textPath",
@@ -203,10 +196,10 @@ public class Svg2Vector {
     private static final Pattern SPACE_OR_COMMA = Pattern.compile("[\\s,]+");
 
     @NonNull
-    private static SvgTree parse(@NonNull File f) throws IOException {
+    private static SvgTree parse(@NonNull Path file) throws IOException {
         SvgTree svgTree = new SvgTree();
         List<String> parseErrors = new ArrayList<>();
-        Document doc = svgTree.parse(f, parseErrors);
+        Document doc = svgTree.parse(file, parseErrors);
         for (String error : parseErrors) {
             svgTree.logError(error, null);
         }
@@ -230,15 +223,8 @@ public class Svg2Vector {
         // Parse all the group and path nodes recursively.
         traverseSvgAndExtract(svgTree, root, rootElement);
 
-        // Fill in all the <use> nodes in the svgTree.
-        Set<SvgGroupNode> nodes = svgTree.getPendingUseSet();
-        while (!nodes.isEmpty()) {
-            if (!nodes.removeIf(node -> extractUseNode(svgTree, node, node.getDocumentElement()))) {
-                // Not able to make progress because of cyclic references.
-                reportCycles(svgTree, nodes);
-                break;
-            }
-        }
+        resolveUseNodes(svgTree);
+        resolveGradientReferences(svgTree);
 
         // TODO: Handle clipPath elements that reference another clipPath
         // Add attributes for all the style elements.
@@ -267,20 +253,41 @@ public class Svg2Vector {
         return svgTree;
     }
 
-    private static void reportCycles(
-            @NonNull SvgTree svgTree, @NonNull Set<SvgGroupNode> svgNodes) {
+    // Fills in all <use> nodes in the svgTree.
+    private static void resolveUseNodes(SvgTree svgTree) {
+        Set<SvgGroupNode> nodes = svgTree.getPendingUseSet();
+        while (!nodes.isEmpty()) {
+            if (!nodes.removeIf(node -> node.resolveHref(svgTree))) {
+                // Not able to make progress because of cyclic references.
+                reportCycles(svgTree, nodes);
+                break;
+            }
+        }
+    }
+
+    // Resolves all href references in gradient nodes.
+    private static void resolveGradientReferences(SvgTree svgTree) {
+        Set<SvgGradientNode> nodes = svgTree.getPendingGradientRefSet();
+        while (!nodes.isEmpty()) {
+            if (!nodes.removeIf(node -> node.resolveHref(svgTree))) {
+                // Not able to make progress because of cyclic references.
+                reportCycles(svgTree, nodes);
+                break;
+            }
+        }
+    }
+
+    private static <T extends SvgNode> void reportCycles(
+            @NonNull SvgTree svgTree, @NonNull Set<T> svgNodes) {
         Map<String, String> edges = new HashMap<>();
         Map<String, Node> nodesById = new HashMap<>();
-        for (SvgGroupNode svgNode : svgNodes) {
+        for (SvgNode svgNode : svgNodes) {
             Element element = svgNode.getDocumentElement();
             String id = element.getAttribute("id");
             if (!id.isEmpty()) {
-                String targetId = element.getAttribute(SVG_HREF);
-                if (targetId.isEmpty()) {
-                    targetId = element.getAttribute(SVG_XLINK_HREF);
-                }
+                String targetId = svgNode.getHrefId();
                 if (!targetId.isEmpty()) {
-                    edges.put(id, getIdFromReference(targetId));
+                    edges.put(id, targetId);
                     nodesById.put(id, element);
                 }
             }
@@ -412,7 +419,7 @@ public class Svg2Vector {
 
                 default:
                     String id = childElement.getAttribute("id");
-                    if (id != null) {
+                    if (!id.isEmpty()) {
                         svgTree.addIgnoredId(id);
                     }
                     // For other fancy tags, like <switch>, they can contain children too.
@@ -435,10 +442,14 @@ public class Svg2Vector {
     private static void extractGradientNode(
             @NonNull SvgTree svg, @NonNull SvgGradientNode gradientNode) {
         Element element = gradientNode.getDocumentElement();
-        NamedNodeMap a = element.getAttributes();
-        int len = a.getLength();
+        NamedNodeMap attrs = element.getAttributes();
+        if (attrs.getNamedItem(SVG_HREF) != null || attrs.getNamedItem(SVG_XLINK_HREF) != null) {
+            svg.addToPendingGradientRefSet(gradientNode);
+        }
+
+        int len = attrs.getLength();
         for (int j = 0; j < len; j++) {
-            Node n = a.item(j);
+            Node n = attrs.item(j);
             String name = n.getNodeName();
             String value = n.getNodeValue();
             if (gradientMap.containsKey(name)) {
@@ -607,68 +618,6 @@ public class Svg2Vector {
         if (!id.isEmpty()) {
             svgTree.addIdToMap(id, node);
         }
-    }
-
-    /**
-     * Reads the contents of the currentNode and fills them into useGroupNode. Propagates any
-     * attributes of the useGroupNode to its children.
-     *
-     * @return true if the node has been processed, or false if it cannot been processed at this
-     *     time due to dependency on an unprocessed {@code <use>} node
-     */
-    private static boolean extractUseNode(
-            @NonNull SvgTree svgTree,
-            @NonNull SvgGroupNode useGroupNode,
-            @NonNull Node currentNode) {
-        NamedNodeMap a = currentNode.getAttributes();
-        float x = 0;
-        float y = 0;
-        String id = null;
-        int len = a.getLength();
-        for (int j = 0; j < len; j++) {
-            Node n = a.item(j);
-            String name = n.getNodeName();
-            String value = n.getNodeValue();
-            if (name.equals(SVG_HREF)) {
-                id = getIdFromReference(value);
-            } else if (name.equals(SVG_XLINK_HREF) && id == null) {
-                id = getIdFromReference(value);
-            } else if (name.equals("x")) {
-                x = Float.parseFloat(value);
-            } else if (name.equals("y")) {
-                y = Float.parseFloat(value);
-            } else if (presentationMap.containsKey(name)) {
-                useGroupNode.fillPresentationAttributes(name, value);
-            }
-        }
-        AffineTransform useTransform = new AffineTransform(1, 0, 0, 1, x, y);
-        SvgNode definedNode = id == null ? null : svgTree.getSvgNodeFromId(id);
-        if (definedNode == null) {
-            if (id == null || !svgTree.isIdIgnored(id)) {
-                svgTree.logError("Referenced id not found", currentNode);
-            }
-        } else {
-            //noinspection SuspiciousMethodCalls
-            if (svgTree.getPendingUseSet().contains(definedNode)) {
-                // Cannot process useGroupNode yet, because definedNode it depends upon hasn't been
-                // processed.
-                return false;
-            }
-            SvgNode copiedNode = definedNode.deepCopy();
-            useGroupNode.addChild(copiedNode);
-            for (Map.Entry<String, String> entry : useGroupNode.mVdAttributesMap.entrySet()) {
-                String key = entry.getKey();
-                copiedNode.fillPresentationAttributes(key, entry.getValue());
-            }
-            useGroupNode.fillEmptyAttributes(useGroupNode.mVdAttributesMap);
-            useGroupNode.transformIfNeeded(useTransform);
-        }
-        return true;
-    }
-
-    @NonNull
-    private static String getIdFromReference(@NonNull String value) {
-        return value.isEmpty() ? "" : value.substring(1);
     }
 
     /**
@@ -1213,13 +1162,23 @@ public class Svg2Vector {
         }
     }
 
+    static float parseFloatOrDefault(String value, float defaultValue) {
+        if (!value.isEmpty()) {
+            try {
+                return Float.parseFloat(value);
+            } catch (NumberFormatException ignore) {
+            }
+        }
+        return defaultValue;
+    }
+
     private static void writeFile(@NonNull OutputStream outStream, @NonNull SvgTree svgTree)
             throws IOException {
         svgTree.writeXml(outStream);
     }
 
     /**
-     * Converts a SVG file into VectorDrawable's XML content, if no error is found.
+     * Converts an SVG file into VectorDrawable's XML content, if no error is found.
      *
      * @param inputSvg the input SVG file
      * @param outStream the converted VectorDrawable's content. This can be empty if there is any
@@ -1229,7 +1188,7 @@ public class Svg2Vector {
      */
     @Slow
     @NonNull
-    public static String parseSvgToXml(@NonNull File inputSvg, @NonNull OutputStream outStream)
+    public static String parseSvgToXml(@NonNull Path inputSvg, @NonNull OutputStream outStream)
             throws IOException {
         SvgTree svgTree = parse(inputSvg);
         if (svgTree.getHasLeafNode()) {

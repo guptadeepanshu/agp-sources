@@ -17,6 +17,7 @@
 package com.android.build.gradle.internal.dsl;
 
 import com.android.annotations.NonNull;
+import com.android.build.api.dsl.NdkBuildFlags;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import java.util.Collections;
@@ -25,8 +26,7 @@ import java.util.Set;
 import javax.inject.Inject;
 
 public class ExternalNativeNdkBuildOptions
-        implements CoreExternalNativeNdkBuildOptions,
-                com.android.build.api.dsl.ExternalNativeNdkBuildOptions {
+        implements CoreExternalNativeNdkBuildOptions, NdkBuildFlags {
     @NonNull
     private final List<String> arguments = Lists.newArrayList();
     @NonNull

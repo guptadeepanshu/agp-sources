@@ -26,12 +26,13 @@ import com.android.build.api.variant.impl.BuiltArtifactImpl
 import com.android.build.api.variant.impl.BuiltArtifactsImpl
 import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
 import com.android.build.api.variant.impl.VariantOutputImpl
+import com.android.build.api.variant.impl.dirName
 import com.android.build.api.variant.impl.getFilter
 import com.android.build.gradle.internal.AndroidJarInput
 import com.android.build.gradle.internal.TaskManager
-import com.android.build.gradle.internal.component.AndroidTestCreationConfig
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
+import com.android.build.gradle.internal.component.ConsumableCreationConfig
 import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig
 import com.android.build.gradle.internal.initialize
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
@@ -58,11 +59,11 @@ import com.android.build.gradle.internal.utils.toImmutableList
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.StringOption
 import com.android.build.gradle.tasks.ProcessAndroidResources
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.core.ComponentType
 import com.android.builder.internal.aapt.AaptOptions
 import com.android.builder.internal.aapt.AaptPackageConfig
 import com.android.builder.internal.aapt.v2.Aapt2
-import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.ide.common.process.ProcessException
 import com.android.ide.common.resources.mergeIdentifiedSourceSetFiles
 import com.android.ide.common.symbols.SymbolIo
@@ -108,6 +109,27 @@ import javax.inject.Inject
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.ANDROID_RESOURCES, secondaryTaskCategories = [TaskCategory.LINKING])
 abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: ObjectFactory) :
     ProcessAndroidResources() {
+
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:Incremental
+    abstract val manifestFiles: DirectoryProperty
+
+    @get:InputFiles
+    @get:Optional
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:Incremental
+    abstract val aaptFriendlyManifestFiles: DirectoryProperty
+
+    // This input in not required for the task to function properly.
+    // However, the implementation of getManifestFile() requires it to stay compatible with past
+    // plugin and crashlitics related plugins are using it.
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:Optional
+    @get:Deprecated("Deprecated and will be removed")
+    @get:Incremental
+    abstract val mergedManifestFiles: DirectoryProperty
 
     @get:OutputDirectory
     @get:Optional
@@ -191,11 +213,6 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
     abstract val namespace: Property<String>
 
     @get:Input
-    @get:Optional
-    var buildTargetDensity: String? = null
-        private set
-
-    @get:Input
     var useConditionalKeepRules: Boolean = false
         private set
 
@@ -265,6 +282,25 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
     @get:Internal
     abstract val incrementalDirectory: DirectoryProperty
 
+    @Internal
+    override fun getManifestFile(): File? {
+        val manifestDirectory = if (aaptFriendlyManifestFiles.isPresent) {
+            aaptFriendlyManifestFiles.get().asFile
+        } else if (mergedManifestFiles.isPresent) {
+            mergedManifestFiles.get().asFile
+        } else {
+            manifestFiles.get().asFile
+        }
+        Preconditions.checkNotNull(manifestDirectory)
+
+        Preconditions.checkNotNull(mainSplit)
+        return FileUtils.join(
+            manifestDirectory,
+            mainSplit.dirName(),
+            SdkConstants.ANDROID_MANIFEST_XML
+        )
+    }
+
     override fun doTaskAction(inputChanges: InputChanges) {
         val stableIdsFile = stableIdsOutputFileProperty.orNull?.asFile
         if (useStableIds && inputChanges.isIncremental) {
@@ -296,7 +332,6 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
 
             parameters.aaptOptions.set(AaptOptions(noCompress.orNull, aaptAdditionalParameters.orNull))
             parameters.applicationId.set(applicationId)
-            parameters.buildTargetDensity.set(buildTargetDensity)
             parameters.canHaveSplits.set(canHaveSplits)
             parameters.compiledDependenciesResources.from(compiledDependenciesResources)
             parameters.dependencies.from(dependenciesFileCollection)
@@ -342,7 +377,6 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
         abstract val symbolTableBuildService: Property<SymbolTableBuildService>
         abstract val aaptOptions: Property<AaptOptions>
         abstract val applicationId: Property<String>
-        abstract val buildTargetDensity: Property<String?>
         abstract val canHaveSplits: Property<Boolean>
         abstract val compiledDependenciesResources: ConfigurableFileCollection
         abstract val dependencies: ConfigurableFileCollection
@@ -462,6 +496,16 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
 
         protected open fun preconditionsCheck(creationConfig: ComponentCreationConfig) {}
 
+        private fun generatesProguardOutputFile(
+            creationConfig: ComponentCreationConfig
+        ): Boolean {
+            return ((creationConfig is ConsumableCreationConfig
+                    && creationConfig
+                .optimizationCreationConfig
+                .minifiedEnabled)
+                    || creationConfig.componentType.isDynamicFeature)
+        }
+
         override fun handleProvider(
             taskProvider: TaskProvider<LinkApplicationAndroidResourcesTask>
         ) {
@@ -516,15 +560,7 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
             )
 
             task.mainSplit = creationConfig.outputs.getMainSplitOrNull()
-            task.namespace.setDisallowChanges(
-                if (creationConfig is AndroidTestCreationConfig) {
-                    // TODO(b/176931684) Use creationConfig.namespace instead after we stop
-                    //  supporting using applicationId to namespace the test component R class.
-                    creationConfig.namespaceForR
-                } else {
-                    creationConfig.namespace
-                }
-            )
+            task.namespace.setDisallowChanges(creationConfig.namespace)
 
             task.taskInputType = creationConfig.global.manifestArtifactType
             creationConfig.artifacts.setTaskInputToFinalProduct(
@@ -547,8 +583,6 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
             task.noCompress.disallowChanges()
             task.aaptAdditionalParameters.disallowChanges()
 
-            task.buildTargetDensity = projectOptions.get(StringOption.IDE_BUILD_TARGET_DENSITY)
-
             task.useConditionalKeepRules = projectOptions.get(BooleanOption.CONDITIONAL_KEEP_RULES)
             task.useMinimalKeepRules = projectOptions.get(BooleanOption.MINIMAL_KEEP_RULES)
             task.canHaveSplits.set(creationConfig.componentType.canHaveSplits)
@@ -560,15 +594,11 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
             )
             val componentType = creationConfig.componentType
 
-            if (projectOptions[BooleanOption.ENABLE_SOURCE_SET_PATHS_MAP]) {
-                val sourceSetMap =
-                        creationConfig.artifacts.get(InternalArtifactType.SOURCE_SET_PATH_MAP)
-                task.sourceSetMaps.fromDisallowChanges(
-                        creationConfig.services.fileCollection(sourceSetMap))
-                task.dependsOn(sourceSetMap)
-            } else {
-                task.sourceSetMaps.disallowChanges()
-            }
+            val sourceSetMap =
+                    creationConfig.artifacts.get(InternalArtifactType.SOURCE_SET_PATH_MAP)
+            task.sourceSetMaps.fromDisallowChanges(
+                    creationConfig.services.fileCollection(sourceSetMap))
+            task.dependsOn(sourceSetMap)
 
             // Tests should not have feature dependencies, however because they include the
             // tested production component in their dependency graph, we see the tested feature
@@ -842,11 +872,8 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
 
             val densityFilterData = variantOutput.variantOutputConfiguration
                 .getFilter(FilterConfiguration.FilterType.DENSITY)
-            // if resConfigs is set, we should not use our preferredDensity.
-            val preferredDensity =
-                densityFilterData?.identifier
-                    ?: if (parameters.resourceConfigs.get().isEmpty()) parameters.buildTargetDensity.orNull else null
 
+            val preferredDensity = densityFilterData?.identifier
 
             try {
 

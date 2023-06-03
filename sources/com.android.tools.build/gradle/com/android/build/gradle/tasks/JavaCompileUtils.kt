@@ -19,6 +19,7 @@
 package com.android.build.gradle.tasks
 
 import com.android.build.api.component.impl.AnnotationProcessorImpl
+import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.dependency.CONFIG_NAME_ANDROID_JDK_IMAGE
 import com.android.build.gradle.internal.dependency.JDK_IMAGE_OUTPUT_DIR
@@ -30,6 +31,7 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactSco
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.JAR
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.PROCESSED_JAR
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.ANNOTATION_PROCESSOR
+import com.android.builder.errors.DefaultIssueReporter
 import com.android.builder.errors.IssueReporter
 import com.android.sdklib.AndroidTargetHash
 import com.android.utils.FileUtils
@@ -67,18 +69,18 @@ const val DEFAULT_INCREMENTAL_COMPILATION = true
  *
  * @see [JavaCompile.configurePropertiesForAnnotationProcessing]
  */
-fun JavaCompile.configureProperties(creationConfig: ComponentCreationConfig, task: JavaCompile) {
+fun JavaCompile.configureProperties(creationConfig: ComponentCreationConfig) {
     val compileOptions = creationConfig.global.compileOptions
 
     if (compileOptions.sourceCompatibility.isJava9Compatible) {
         checkSdkCompatibility(creationConfig.global.compileSdkHashString, creationConfig.services.issueReporter)
-        checkNotNull(task.project.configurations.findByName(CONFIG_NAME_ANDROID_JDK_IMAGE)) {
+        checkNotNull(this.project.configurations.findByName(CONFIG_NAME_ANDROID_JDK_IMAGE)) {
             "The $CONFIG_NAME_ANDROID_JDK_IMAGE configuration must exist for Java 9+ sources."
         }
 
         val jdkImage = getJdkImageFromTransform(
             creationConfig.services,
-            task.javaCompiler.orNull
+            this.javaCompiler.orNull
         )
 
         this.options.compilerArgumentProviders.add(JdkImageInput(jdkImage))
@@ -91,13 +93,15 @@ fun JavaCompile.configureProperties(creationConfig: ComponentCreationConfig, tas
             creationConfig.compileClasspath
         )
     } else {
-        this.options.bootstrapClasspath = task.project.files(creationConfig.global.bootClasspath)
+        this.options.bootstrapClasspath = this.project.files(creationConfig.global.bootClasspath)
         this.classpath = creationConfig.compileClasspath
     }
 
     this.sourceCompatibility = compileOptions.sourceCompatibility.toString()
     this.targetCompatibility = compileOptions.targetCompatibility.toString()
     this.options.encoding = compileOptions.encoding
+
+    checkReleaseFlag(creationConfig.global.compileOptions.sourceCompatibility.isJava9Compatible)
 }
 
 /**
@@ -325,6 +329,32 @@ private fun checkSdkCompatibility(compileSdkVersion: String, issueReporter: Issu
                     IssueReporter.Type.GENERIC, "In order to compile Java 9+ source, " +
                     "please set compileSdkVersion to 30 or above"
                 )
+        }
+    }
+}
+
+private fun JavaCompile.checkReleaseFlag(isJava9Compatible: Boolean) {
+    this.doFirst {
+        val issueReporter = DefaultIssueReporter(LoggerWrapper(logger))
+        if (this.options.release.isPresent) {
+            if (isJava9Compatible) {
+                issueReporter.reportWarning(
+                    IssueReporter.Type.GENERIC, "WARNING: Using '--release' option could " +
+                            "cause issues when using Android Gradle Plugin to compile sources " +
+                            "with Java 9+. Instead, please set 'sourceCompatibility' and " +
+                            "'targetCompatibility' to the desired Java version, and set " +
+                            "'compileSdkVersion' to 30 or above. See " +
+                            "https://developer.android.com/studio/releases/gradle-plugin#java-11"
+                )
+            } else {
+                issueReporter.reportError(
+                    IssueReporter.Type.GENERIC, "Using '--release' option prevents Android " +
+                            "Gradle Plugin from setting correct bootclasspath when compiling " +
+                            "source with Java 8. Instead, please set 'sourceCompatibility' and " +
+                            "'targetCompatibility' to 8. See " +
+                            "https://developer.android.com/studio/write/java8-support#supported_features"
+                )
+            }
         }
     }
 }

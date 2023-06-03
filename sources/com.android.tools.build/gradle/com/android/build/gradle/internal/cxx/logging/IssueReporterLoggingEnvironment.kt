@@ -40,7 +40,7 @@ class IssueReporterLoggingEnvironment private constructor(
     rootBuildGradleFolder: File,
     private val cxxFolder: File?,
     private val internals: CxxDiagnosticCodesTrackingInternals?
-) : PassThroughDeduplicatingLoggingEnvironment() {
+) : PassThroughRecordingLoggingEnvironment() {
     private val structuredLogEncoder : CxxStructuredLogEncoder?
     init {
         // Structured log is only written if user has manually created a folder
@@ -119,10 +119,10 @@ class IssueReporterLoggingEnvironment private constructor(
             }
             BUG -> {
                 internals?.cxxDiagnosticCodes?.add(message.diagnosticCode)
-                val sb = StringBuilder(message.text())
-                sb.append("Please refer to bug https://issuetracker.google.com/${message.diagnosticCode} for more information.\n")
+                val sb = StringBuilder(message.text() + " ")
+                sb.append("Please refer to bug https://issuetracker.google.com/${message.diagnosticCode} for more information. \n")
                 if (cxxFolder != null) {
-                    sb.append("If possible, please also attach a zipped copy of $cxxFolder to the bug to assist in diagnosing the issue.\n")
+                    sb.append("If possible, please also attach a zipped copy of $cxxFolder to the bug to assist in diagnosing the issue. \n")
                 }
                 sb.append("The current Android Gradle Plugin Version is $ANDROID_GRADLE_PLUGIN_VERSION.\n")
                 issueReporter.reportError(

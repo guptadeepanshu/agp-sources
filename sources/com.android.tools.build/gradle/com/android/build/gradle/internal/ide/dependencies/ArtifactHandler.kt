@@ -102,6 +102,13 @@ abstract class ArtifactHandler<DependencyItemT> protected constructor(
                     coordinatesSupplier,
                     modelAddressSupplier
                 )
+            } else if (artifact.dependencyType == ResolvedArtifact.DependencyType.ANDROID_SANDBOX_SDK) {
+                handleJavaLibrary(
+                    artifact.extractedFolder!!,
+                    isProvided,
+                    coordinatesSupplier,
+                    modelAddressSupplier
+                )
             } else {
                 handleJavaModule(
                     id.projectPath,

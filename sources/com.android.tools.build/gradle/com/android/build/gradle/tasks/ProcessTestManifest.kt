@@ -37,9 +37,9 @@ import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.manifest.ManifestProviderImpl
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.tasks.ProcessApplicationManifest.Companion.getArtifactName
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.internal.InstrumentedTestManifestGenerator
 import com.android.builder.internal.UnitTestManifestGenerator
-import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.manifmerger.ManifestMerger2
 import com.android.manifmerger.ManifestMerger2.MergeFailureException
 import com.android.manifmerger.ManifestProvider
@@ -263,7 +263,7 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
                     .setNamespace(namespace)
                     .withFeatures(
                         ManifestMerger2.Invoker.Feature.DISABLE_MINSDKLIBRARY_CHECK,
-                        ManifestMerger2.Invoker.Feature.WARN_IF_PACKAGE_IN_SOURCE_MANIFEST
+                        ManifestMerger2.Invoker.Feature.CHECK_IF_PACKAGE_IN_MAIN_MANIFEST
                     )
 
                 instrumentationRunner?.let {
@@ -472,11 +472,10 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
         ) {
             super.configure(task)
             val project = task.project
-            val variantSources = creationConfig.variantSources
             task.testManifestFile
-                .fileProvider(project.provider(variantSources::mainManifestFilePath))
+                .fileProvider(creationConfig.sources.manifestFile)
             task.testManifestFile.disallowChanges()
-            task.manifestOverlays.set(task.project.provider(variantSources::manifestOverlays))
+            creationConfig.sources.manifestOverlays.forEach(task.manifestOverlays::add)
             task.manifestOverlays.disallowChanges()
             task.apkData.set(creationConfig.outputs.getMainSplit())
             task.componentType.setDisallowChanges(creationConfig.componentType.toString())

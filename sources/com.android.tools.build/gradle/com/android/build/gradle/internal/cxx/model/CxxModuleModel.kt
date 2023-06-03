@@ -165,6 +165,12 @@ data class CxxModuleModel(
      * If present, a script to generate build.ninja
      */
     val configureScript: File?,
+
+    /**
+     * If true, then this model has been augmented with build-time information.
+     * If false, then this model only has configuration time information.
+     */
+    val hasBuildTimeInformation: Boolean
 )
 
 /** The user's CMakeSettings.json file next to CMakeLists.txt */

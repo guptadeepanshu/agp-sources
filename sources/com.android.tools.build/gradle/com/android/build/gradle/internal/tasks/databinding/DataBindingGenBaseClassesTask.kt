@@ -21,6 +21,7 @@ import android.databinding.tool.DataBindingBuilder
 import android.databinding.tool.processing.ScopedException
 import android.databinding.tool.store.LayoutInfoInput
 import android.databinding.tool.util.L
+import com.android.build.gradle.internal.component.AndroidTestCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
@@ -32,7 +33,7 @@ import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.ide.common.symbols.EMPTY
 import com.android.ide.common.symbols.SymbolIo
 import com.android.ide.common.symbols.SymbolTable
@@ -105,7 +106,7 @@ abstract class DataBindingGenBaseClassesTask : AndroidVariantTask() {
     // See [com.android.ide.common.symbols.SymbolIo] for read/write instructions.
     @get:InputFile
     @get:Optional
-    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:PathSensitive(PathSensitivity.NONE)
     abstract val localResourcesFile: RegularFileProperty
 
     @get:Internal
@@ -136,11 +137,9 @@ abstract class DataBindingGenBaseClassesTask : AndroidVariantTask() {
     @get:Input
     var enableDataBinding: Boolean = false
         private set
-
     @get:Input
-    var isNonTransitiveR: Boolean = false
+    var enableRPackageLookup: Boolean = false
         private set
-
     @TaskAction
     fun writeBaseClasses(inputChanges: InputChanges) {
         // TODO extend NewIncrementalTask when moved to new API so that we can remove the manual call to recordTaskAction
@@ -156,13 +155,11 @@ abstract class DataBindingGenBaseClassesTask : AndroidVariantTask() {
                 sourceOutFolder.get().asFile,
                 Logger.getLogger(DataBindingGenBaseClassesTask::class.java),
                 encodeErrors,
-                collectResources()).run()
+                getRPackageProvider()).run()
         }
     }
 
-    private fun collectResources(): List<SymbolTable>? {
-        // Don't read anything if R class is transitive
-        if (!isNonTransitiveR) return null
+    private fun collectResources(): List<SymbolTable> {
 
         // TODO: maybe filter by ResourceType.ID
         val depSymbolTables: List<SymbolTable> =
@@ -172,6 +169,22 @@ abstract class DataBindingGenBaseClassesTask : AndroidVariantTask() {
             else -> SymbolIo.readRDef(localR.asFile.toPath()).rename("")
         }
         return listOf(localTable).plus(depSymbolTables)
+    }
+
+    private fun getRPackageProvider(): ((String, String) -> String)? {
+        if (!enableRPackageLookup) {
+            return null
+        }
+        val symbolTables: List<SymbolTable> =  collectResources()
+        val getRPackage: (String, String) -> String = fun(type: String, name: String): String {
+            symbolTables.forEach {
+                if (it.containsSymbol(ResourceType.fromXmlTagName(type)!!, name)) {
+                    return it.tablePackage
+                }
+            }
+            error("Cannot find resource: $type $name")
+        }
+        return getRPackage
     }
 
     private fun buildInputArgs(inputs: InputChanges): LayoutInfoInput.Args {
@@ -264,22 +277,37 @@ abstract class DataBindingGenBaseClassesTask : AndroidVariantTask() {
             task.enableViewBinding = creationConfig.buildFeatures.viewBinding
             task.enableDataBinding = creationConfig.buildFeatures.dataBinding
 
-            task.isNonTransitiveR =
+            val isNonTransitiveR =
                     creationConfig.services.projectOptions[BooleanOption.NON_TRANSITIVE_R_CLASS]
 
-            if (task.isNonTransitiveR) {
+            // TODO(b/138780301): Since we do not generate compile time R class in android tests,
+            //  we don't want to perform symbol lookups to determine R package of resources during
+            //  view binding.
+            task.enableRPackageLookup = creationConfig !is AndroidTestCreationConfig
+                    && isNonTransitiveR
+
+            if (task.enableRPackageLookup) {
                 artifacts.setTaskInputToFinalProduct(
                         InternalArtifactType.LOCAL_ONLY_SYMBOL_LIST,
                         task.localResourcesFile
                 )
 
+                task.dependenciesFileCollection.from(
+                    creationConfig
+                        .variantDependencies.getArtifactFileCollection(
+                            AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
+                            AndroidArtifacts.ArtifactScope.ALL,
+                            AndroidArtifacts.ArtifactType.APP_SYMBOL_LIST_FOR_DATA_BINDING
+                        )
+                )
+
                 task.dependenciesFileCollection.fromDisallowChanges(
-                        creationConfig
-                                .variantDependencies.getArtifactFileCollection(
-                                        AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
-                                        AndroidArtifacts.ArtifactScope.ALL,
-                                        AndroidArtifacts.ArtifactType.SYMBOL_LIST_WITH_PACKAGE_NAME
-                                )
+                    creationConfig
+                        .variantDependencies.getArtifactFileCollection(
+                            AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
+                            AndroidArtifacts.ArtifactScope.ALL,
+                            AndroidArtifacts.ArtifactType.SYMBOL_LIST_WITH_PACKAGE_NAME
+                        )
                 )
 
                 task.symbolTableBuildService.set(
@@ -293,27 +321,18 @@ abstract class DataBindingGenBaseClassesTask : AndroidVariantTask() {
         private val sourceOutFolder: File,
         private val logger: Logger,
         private val encodeErrors: Boolean,
-        private val symbolTables: List<SymbolTable>? = null
+        private val getRPackage: ((String, String) -> (String))?
     ) : Runnable, Serializable {
         override fun run() {
             try {
                 initLogger()
                 BaseDataBinder(
                         LayoutInfoInput(args),
-                        if (symbolTables != null) this::getRPackage else null)
+                        getRPackage)
                     .generateAll(DataBindingBuilder.GradleFileWriter(sourceOutFolder.absolutePath))
             } finally {
                 clearLogger()
             }
-        }
-
-        private fun getRPackage(type: String, name: String): String {
-            symbolTables!!.forEach {
-                if (it.containsSymbol(ResourceType.fromXmlTagName(type)!!, name)) {
-                    return it.tablePackage
-                }
-            }
-            error("Cannot find resource: $type $name")
         }
 
         private fun initLogger() {

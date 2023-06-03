@@ -650,6 +650,22 @@ public enum BooleanOption
    * <code>ENABLE_DEFAULT_DEBUG_SIGNING_CONFIG = 157;</code>
    */
   ENABLE_DEFAULT_DEBUG_SIGNING_CONFIG(157),
+  /**
+   * <code>ENABLE_INSTRUMENTATION_TEST_DESUGARING = 158;</code>
+   */
+  ENABLE_INSTRUMENTATION_TEST_DESUGARING(158),
+  /**
+   * <code>GRADLE_MANAGED_DEVICE_CUSTOM_DEVICE = 159;</code>
+   */
+  GRADLE_MANAGED_DEVICE_CUSTOM_DEVICE(159),
+  /**
+   * <code>ENABLE_GLOBAL_SYNTHETICS = 160;</code>
+   */
+  ENABLE_GLOBAL_SYNTHETICS(160),
+  /**
+   * <code>PRINT_LINT_STACK_TRACE = 161;</code>
+   */
+  PRINT_LINT_STACK_TRACE(161),
   UNRECOGNIZED(-1),
   ;
 
@@ -1285,6 +1301,22 @@ public enum BooleanOption
    * <code>ENABLE_DEFAULT_DEBUG_SIGNING_CONFIG = 157;</code>
    */
   public static final int ENABLE_DEFAULT_DEBUG_SIGNING_CONFIG_VALUE = 157;
+  /**
+   * <code>ENABLE_INSTRUMENTATION_TEST_DESUGARING = 158;</code>
+   */
+  public static final int ENABLE_INSTRUMENTATION_TEST_DESUGARING_VALUE = 158;
+  /**
+   * <code>GRADLE_MANAGED_DEVICE_CUSTOM_DEVICE = 159;</code>
+   */
+  public static final int GRADLE_MANAGED_DEVICE_CUSTOM_DEVICE_VALUE = 159;
+  /**
+   * <code>ENABLE_GLOBAL_SYNTHETICS = 160;</code>
+   */
+  public static final int ENABLE_GLOBAL_SYNTHETICS_VALUE = 160;
+  /**
+   * <code>PRINT_LINT_STACK_TRACE = 161;</code>
+   */
+  public static final int PRINT_LINT_STACK_TRACE_VALUE = 161;
 
 
   public final int getNumber() {
@@ -1469,6 +1501,10 @@ public enum BooleanOption
       case 155: return PRIVACY_SANDBOX_SDK_SUPPORT;
       case 156: return BUILD_ANALYZER_TASK_LABELS;
       case 157: return ENABLE_DEFAULT_DEBUG_SIGNING_CONFIG;
+      case 158: return ENABLE_INSTRUMENTATION_TEST_DESUGARING;
+      case 159: return GRADLE_MANAGED_DEVICE_CUSTOM_DEVICE;
+      case 160: return ENABLE_GLOBAL_SYNTHETICS;
+      case 161: return PRINT_LINT_STACK_TRACE;
       default: return null;
     }
   }

@@ -29,6 +29,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -168,7 +170,15 @@ public final class KeystoreHelper {
 
         try {
             KeyStore ks = KeyStore.getInstance(useStoreType);
-            ks.load(null, null);
+            if (storeFile.exists()) {
+                try (InputStream is = new FileInputStream(storeFile)) {
+                    ks.load(is, storePassword.toCharArray());
+                } catch (IOException e) {
+                    throw new KeytoolException("Failed to load keystore: " + e.getMessage(), e);
+                }
+            } else {
+                ks.load(null, null);
+            }
 
             Pair<PrivateKey, X509Certificate> generated =
                     generateKeyAndCertificate("RSA", "SHA256withRSA", validityYears, dn, keySize);

@@ -820,7 +820,7 @@ public final class ManifestOuterClass {
       if (versionCode_ != 0) {
         output.writeInt32(1, versionCode_);
       }
-      if (!getVersionNameBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(versionName_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, versionName_);
       }
       for (int i = 0; i < apks_.size(); i++) {
@@ -848,7 +848,7 @@ public final class ManifestOuterClass {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(1, versionCode_);
       }
-      if (!getVersionNameBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(versionName_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, versionName_);
       }
       for (int i = 0; i < apks_.size(); i++) {
@@ -3097,10 +3097,10 @@ public final class ManifestOuterClass {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       getSerializedSize();
-      if (!getManufacturerBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(manufacturer_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, manufacturer_);
       }
-      if (!getAndroidDeviceBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(androidDevice_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, androidDevice_);
       }
       if (getSdkIntList().size() > 0) {
@@ -3110,10 +3110,10 @@ public final class ManifestOuterClass {
       for (int i = 0; i < sdkInt_.size(); i++) {
         output.writeInt32NoTag(sdkInt_.getInt(i));
       }
-      if (!getProductBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(product_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 4, product_);
       }
-      if (!getHardwareBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(hardware_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 5, hardware_);
       }
       unknownFields.writeTo(output);
@@ -3125,10 +3125,10 @@ public final class ManifestOuterClass {
       if (size != -1) return size;
 
       size = 0;
-      if (!getManufacturerBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(manufacturer_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, manufacturer_);
       }
-      if (!getAndroidDeviceBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(androidDevice_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, androidDevice_);
       }
       {
@@ -3145,10 +3145,10 @@ public final class ManifestOuterClass {
         }
         sdkIntMemoizedSerializedSize = dataSize;
       }
-      if (!getProductBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(product_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, product_);
       }
-      if (!getHardwareBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(hardware_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, hardware_);
       }
       size += unknownFields.getSerializedSize();
@@ -4396,10 +4396,10 @@ public final class ManifestOuterClass {
       for (int i = 0; i < device_.size(); i++) {
         output.writeMessage(1, device_.get(i));
       }
-      if (!getKeyBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(key_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, key_);
       }
-      if (!getValueBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(value_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, value_);
       }
       unknownFields.writeTo(output);
@@ -4415,10 +4415,10 @@ public final class ManifestOuterClass {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, device_.get(i));
       }
-      if (!getKeyBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(key_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, key_);
       }
-      if (!getValueBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(value_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, value_);
       }
       size += unknownFields.getSerializedSize();
@@ -6530,7 +6530,7 @@ public final class ManifestOuterClass {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!getNameBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(name_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, name_);
       }
       if (minimumVersion_ != 0) {
@@ -6545,7 +6545,7 @@ public final class ManifestOuterClass {
       if (size != -1) return size;
 
       size = 0;
-      if (!getNameBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(name_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, name_);
       }
       if (minimumVersion_ != 0) {
@@ -7538,19 +7538,19 @@ public final class ManifestOuterClass {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       getSerializedSize();
-      if (!getPathBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(path_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, path_);
       }
       if (arch_ != wireless.android.instantapps.sdk.ManifestOuterClass.Arch.ALL.getNumber()) {
         output.writeEnum(2, arch_);
       }
-      if (!getPackageNameBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(packageName_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, packageName_);
       }
       if (versionCode_ != 0) {
         output.writeInt32(4, versionCode_);
       }
-      if (!getVersionNameBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(versionName_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 5, versionName_);
       }
       if (getSdkIntList().size() > 0) {
@@ -7569,21 +7569,21 @@ public final class ManifestOuterClass {
       if (size != -1) return size;
 
       size = 0;
-      if (!getPathBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(path_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, path_);
       }
       if (arch_ != wireless.android.instantapps.sdk.ManifestOuterClass.Arch.ALL.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(2, arch_);
       }
-      if (!getPackageNameBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(packageName_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, packageName_);
       }
       if (versionCode_ != 0) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(4, versionCode_);
       }
-      if (!getVersionNameBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(versionName_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, versionName_);
       }
       {

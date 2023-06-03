@@ -3337,7 +3337,7 @@ public final class GradleAndroidTestResultListenerProto {
       if (stateCase_ == 4) {
         output.writeMessage(4, (com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestSuiteFinished) state_);
       }
-      if (!getDeviceIdBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(deviceId_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 5, deviceId_);
       }
       unknownFields.writeTo(output);
@@ -3365,7 +3365,7 @@ public final class GradleAndroidTestResultListenerProto {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(4, (com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestSuiteFinished) state_);
       }
-      if (!getDeviceIdBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(deviceId_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, deviceId_);
       }
       size += unknownFields.getSerializedSize();

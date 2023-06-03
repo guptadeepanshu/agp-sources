@@ -16,8 +16,6 @@
 
 package com.android.sdklib.tool;
 
-import static com.google.common.base.Verify.verifyNotNull;
-
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
@@ -357,7 +355,12 @@ class AvdManagerCli extends CommandLineParser {
     @NonNull
     private AvdManager getAvdManager() throws AndroidLocationsException {
         if (mAvdManager == null) {
-            mAvdManager = verifyNotNull(AvdManager.getInstance(mSdkHandler, mAvdFolder, mSdkLog));
+            mAvdManager =
+                    AvdManager.createInstance(
+                            mSdkHandler,
+                            mAvdFolder,
+                            DeviceManager.createInstance(mSdkHandler, mSdkLog),
+                            mSdkLog);
         }
         return mAvdManager;
     }
@@ -1464,11 +1467,13 @@ class AvdManagerCli extends CommandLineParser {
     AvdManagerCli(
             ILogger logger,
             @Nullable AndroidSdkHandler sdkHandler,
+            @Nullable AvdManager avdManager,
             @Nullable String sdkRoot,
             @Nullable String avdRoot,
             @Nullable InputStream input) {
         this(logger);
         mSdkHandler = sdkHandler;
+        mAvdManager = avdManager;
         mOsSdkFolder = sdkRoot;
         mInput = input;
         mAvdFolder = sdkHandler.toCompatiblePath(avdRoot);

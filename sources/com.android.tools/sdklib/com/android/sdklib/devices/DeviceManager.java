@@ -133,8 +133,6 @@ public class DeviceManager {
     public static DeviceManager createInstance(
             @NonNull AndroidSdkHandler sdkHandler,
             @NonNull ILogger log) {
-        // TODO consider using a cache and reusing the same instance of the device manager
-        // for the same manager/log combo.
         return new DeviceManager(sdkHandler, log);
     }
 

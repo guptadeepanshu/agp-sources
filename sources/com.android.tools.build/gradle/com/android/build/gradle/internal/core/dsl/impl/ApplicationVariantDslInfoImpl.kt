@@ -21,8 +21,9 @@ import com.android.build.api.dsl.ApplicationProductFlavor
 import com.android.build.api.dsl.BuildType
 import com.android.build.api.dsl.ProductFlavor
 import com.android.build.api.variant.ComponentIdentity
-import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.core.dsl.ApplicationVariantDslInfo
+import com.android.build.gradle.internal.core.dsl.features.DexingDslInfo
+import com.android.build.gradle.internal.core.dsl.impl.features.DexingDslInfoImpl
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import com.android.build.gradle.internal.dsl.InternalApplicationExtension
 import com.android.build.gradle.internal.dsl.SigningConfig
@@ -47,7 +48,6 @@ internal class ApplicationVariantDslInfoImpl(
     buildDirectory: DirectoryProperty,
     override val publishInfo: VariantPublishingInfo,
     private val signingConfigOverride: SigningConfig?,
-    oldExtension: BaseExtension?,
     extension: InternalApplicationExtension
 ) : TestedVariantDslInfoImpl(
     componentIdentity,
@@ -58,7 +58,6 @@ internal class ApplicationVariantDslInfoImpl(
     dataProvider,
     services,
     buildDirectory,
-    oldExtension,
     extension
 ), ApplicationVariantDslInfo {
 
@@ -84,7 +83,7 @@ internal class ApplicationVariantDslInfoImpl(
                 services.issueReporter.reportError(
                     IssueReporter.Type.COMPILE_SDK_VERSION_TOO_LOW,
                     """'profileable' is enabled with compile SDK <30.
-                            Recommended action: If possible, upgrade compileSdk from ${minSdkVersion.apiLevel} to 30."""
+                            Recommended action: If possible, upgrade compileSdk from $compileSdk to 30."""
                         .trimIndent()
                 )
             }
@@ -172,6 +171,12 @@ internal class ApplicationVariantDslInfoImpl(
         get() = mergedFlavor.wearAppUnbundled
     override val isEmbedMicroApp: Boolean
         get() = applicationBuildType.isEmbedMicroApp
+
+    override val dexingDslInfo: DexingDslInfo by lazy {
+        DexingDslInfoImpl(
+            buildTypeObj, mergedFlavor, services
+        )
+    }
 
     private fun computeVersionNameSuffix(): String {
         // for the suffix we combine the suffix from all the flavors. However, we're going to

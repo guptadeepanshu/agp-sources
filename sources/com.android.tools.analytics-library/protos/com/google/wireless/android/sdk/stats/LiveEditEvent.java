@@ -17,6 +17,7 @@ private static final long serialVersionUID = 0L;
   }
   private LiveEditEvent() {
     status_ = 0;
+    mode_ = 0;
   }
 
   @java.lang.Override
@@ -75,6 +76,18 @@ private static final long serialVersionUID = 0L;
           case 32: {
             bitField0_ |= 0x00000008;
             pushDurationMs_ = input.readInt64();
+            break;
+          }
+          case 40: {
+            int rawValue = input.readEnum();
+              @SuppressWarnings("deprecation")
+            com.google.wireless.android.sdk.stats.LiveEditEvent.Mode value = com.google.wireless.android.sdk.stats.LiveEditEvent.Mode.valueOf(rawValue);
+            if (value == null) {
+              unknownFields.mergeVarintField(5, rawValue);
+            } else {
+              bitField0_ |= 0x00000010;
+              mode_ = rawValue;
+            }
             break;
           }
           default: {
@@ -349,6 +362,127 @@ private static final long serialVersionUID = 0L;
     // @@protoc_insertion_point(enum_scope:android_studio.LiveEditEvent.Status)
   }
 
+  /**
+   * Protobuf enum {@code android_studio.LiveEditEvent.Mode}
+   */
+  public enum Mode
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>UNKNOWN_MODE = 0;</code>
+     */
+    UNKNOWN_MODE(0),
+    /**
+     * <pre>
+     * The LiveEdit push was triggered automatically.
+     * </pre>
+     *
+     * <code>AUTO = 1;</code>
+     */
+    AUTO(1),
+    /**
+     * <pre>
+     * The LiveEdit push was triggered by the user.
+     * </pre>
+     *
+     * <code>MANUAL = 2;</code>
+     */
+    MANUAL(2),
+    ;
+
+    /**
+     * <code>UNKNOWN_MODE = 0;</code>
+     */
+    public static final int UNKNOWN_MODE_VALUE = 0;
+    /**
+     * <pre>
+     * The LiveEdit push was triggered automatically.
+     * </pre>
+     *
+     * <code>AUTO = 1;</code>
+     */
+    public static final int AUTO_VALUE = 1;
+    /**
+     * <pre>
+     * The LiveEdit push was triggered by the user.
+     * </pre>
+     *
+     * <code>MANUAL = 2;</code>
+     */
+    public static final int MANUAL_VALUE = 2;
+
+
+    public final int getNumber() {
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static Mode valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static Mode forNumber(int value) {
+      switch (value) {
+        case 0: return UNKNOWN_MODE;
+        case 1: return AUTO;
+        case 2: return MANUAL;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<Mode>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        Mode> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<Mode>() {
+            public Mode findValueByNumber(int number) {
+              return Mode.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.LiveEditEvent.getDescriptor().getEnumTypes().get(1);
+    }
+
+    private static final Mode[] VALUES = values();
+
+    public static Mode valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private Mode(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:android_studio.LiveEditEvent.Mode)
+  }
+
   private int bitField0_;
   public static final int STATUS_FIELD_NUMBER = 1;
   private int status_;
@@ -458,6 +592,33 @@ private static final long serialVersionUID = 0L;
     return pushDurationMs_;
   }
 
+  public static final int MODE_FIELD_NUMBER = 5;
+  private int mode_;
+  /**
+   * <pre>
+   * How the LiveEdit push was triggered
+   * </pre>
+   *
+   * <code>optional .android_studio.LiveEditEvent.Mode mode = 5;</code>
+   * @return Whether the mode field is set.
+   */
+  @java.lang.Override public boolean hasMode() {
+    return ((bitField0_ & 0x00000010) != 0);
+  }
+  /**
+   * <pre>
+   * How the LiveEdit push was triggered
+   * </pre>
+   *
+   * <code>optional .android_studio.LiveEditEvent.Mode mode = 5;</code>
+   * @return The mode.
+   */
+  @java.lang.Override public com.google.wireless.android.sdk.stats.LiveEditEvent.Mode getMode() {
+    @SuppressWarnings("deprecation")
+    com.google.wireless.android.sdk.stats.LiveEditEvent.Mode result = com.google.wireless.android.sdk.stats.LiveEditEvent.Mode.valueOf(mode_);
+    return result == null ? com.google.wireless.android.sdk.stats.LiveEditEvent.Mode.UNKNOWN_MODE : result;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -484,6 +645,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000008) != 0)) {
       output.writeInt64(4, pushDurationMs_);
     }
+    if (((bitField0_ & 0x00000010) != 0)) {
+      output.writeEnum(5, mode_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -508,6 +672,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000008) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt64Size(4, pushDurationMs_);
+    }
+    if (((bitField0_ & 0x00000010) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(5, mode_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -543,6 +711,10 @@ private static final long serialVersionUID = 0L;
       if (getPushDurationMs()
           != other.getPushDurationMs()) return false;
     }
+    if (hasMode() != other.hasMode()) return false;
+    if (hasMode()) {
+      if (mode_ != other.mode_) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -572,6 +744,10 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + PUSH_DURATION_MS_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getPushDurationMs());
+    }
+    if (hasMode()) {
+      hash = (37 * hash) + MODE_FIELD_NUMBER;
+      hash = (53 * hash) + mode_;
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -714,6 +890,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000004);
       pushDurationMs_ = 0L;
       bitField0_ = (bitField0_ & ~0x00000008);
+      mode_ = 0;
+      bitField0_ = (bitField0_ & ~0x00000010);
       return this;
     }
 
@@ -758,6 +936,10 @@ private static final long serialVersionUID = 0L;
         result.pushDurationMs_ = pushDurationMs_;
         to_bitField0_ |= 0x00000008;
       }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        to_bitField0_ |= 0x00000010;
+      }
+      result.mode_ = mode_;
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -818,6 +1000,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasPushDurationMs()) {
         setPushDurationMs(other.getPushDurationMs());
+      }
+      if (other.hasMode()) {
+        setMode(other.getMode());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -1069,6 +1254,65 @@ private static final long serialVersionUID = 0L;
     public Builder clearPushDurationMs() {
       bitField0_ = (bitField0_ & ~0x00000008);
       pushDurationMs_ = 0L;
+      onChanged();
+      return this;
+    }
+
+    private int mode_ = 0;
+    /**
+     * <pre>
+     * How the LiveEdit push was triggered
+     * </pre>
+     *
+     * <code>optional .android_studio.LiveEditEvent.Mode mode = 5;</code>
+     * @return Whether the mode field is set.
+     */
+    @java.lang.Override public boolean hasMode() {
+      return ((bitField0_ & 0x00000010) != 0);
+    }
+    /**
+     * <pre>
+     * How the LiveEdit push was triggered
+     * </pre>
+     *
+     * <code>optional .android_studio.LiveEditEvent.Mode mode = 5;</code>
+     * @return The mode.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.LiveEditEvent.Mode getMode() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.LiveEditEvent.Mode result = com.google.wireless.android.sdk.stats.LiveEditEvent.Mode.valueOf(mode_);
+      return result == null ? com.google.wireless.android.sdk.stats.LiveEditEvent.Mode.UNKNOWN_MODE : result;
+    }
+    /**
+     * <pre>
+     * How the LiveEdit push was triggered
+     * </pre>
+     *
+     * <code>optional .android_studio.LiveEditEvent.Mode mode = 5;</code>
+     * @param value The mode to set.
+     * @return This builder for chaining.
+     */
+    public Builder setMode(com.google.wireless.android.sdk.stats.LiveEditEvent.Mode value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00000010;
+      mode_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * How the LiveEdit push was triggered
+     * </pre>
+     *
+     * <code>optional .android_studio.LiveEditEvent.Mode mode = 5;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearMode() {
+      bitField0_ = (bitField0_ & ~0x00000010);
+      mode_ = 0;
       onChanged();
       return this;
     }

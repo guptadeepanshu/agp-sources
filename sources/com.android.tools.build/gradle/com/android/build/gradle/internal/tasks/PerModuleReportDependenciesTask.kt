@@ -22,8 +22,7 @@ import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.build.gradle.options.BooleanOption
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.tools.build.libraries.metadata.AppDependencies
 import com.google.protobuf.ByteString
 import org.gradle.api.artifacts.ArtifactCollection
@@ -80,9 +79,6 @@ abstract class PerModuleReportDependenciesTask : NonIncrementalTask() {
 
     @get:Input
     abstract val moduleName: Property<String>
-
-    @get:Input
-    abstract val includeRepositoryInfo: Property<Boolean>
 
     @get:Nested
     abstract val projectRepositories: ListProperty<InternalRepositoryMetadata>
@@ -313,8 +309,6 @@ abstract class PerModuleReportDependenciesTask : NonIncrementalTask() {
             )
             @Suppress("UnstableApiUsage")
             task.getRootComponent().set(creationConfig.variantDependencies.runtimeClasspath.incoming.resolutionResult.rootComponent)
-            task.includeRepositoryInfo
-                .set(creationConfig.services.projectOptions[BooleanOption.INCLUDE_REPOSITORIES_IN_DEPENDENCY_REPORT])
 
             val projectRepositories = task.project.repositories
 

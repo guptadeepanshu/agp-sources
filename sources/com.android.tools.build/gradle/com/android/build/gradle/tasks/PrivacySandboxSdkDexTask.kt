@@ -31,7 +31,7 @@ import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.SyncOptions
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.sdklib.AndroidVersion
 import org.gradle.api.attributes.Usage
 import org.gradle.api.file.ConfigurableFileCollection
@@ -68,6 +68,9 @@ abstract class PrivacySandboxSdkDexTask: NewIncrementalTask() {
     @get:OutputDirectory
     abstract val output: DirectoryProperty
 
+    @get:OutputDirectory
+    abstract val globalSyntheticsOutput: DirectoryProperty
+
     override fun doTaskAction(inputChanges: InputChanges) {
         DexArchiveBuilderTaskDelegate(
             isIncremental = inputChanges.isIncremental,
@@ -83,7 +86,11 @@ abstract class PrivacySandboxSdkDexTask: NewIncrementalTask() {
             externalLibChangedClasses = emptySet(),
             mixedScopeClasses = emptySet(),
             mixedScopeChangedClasses = emptySet(),
-            projectOutputs = DexArchiveBuilderTaskDelegate.DexingOutputs(output.asFile.get(), null),
+            projectOutputs = DexArchiveBuilderTaskDelegate.DexingOutputs(
+                output.asFile.get(),
+                null,
+                globalSyntheticsOutput.asFile.get()
+            ),
             subProjectOutputs = null,
             externalLibsOutputs = null,
             mixedScopeOutputs = null,
@@ -127,6 +134,11 @@ abstract class PrivacySandboxSdkDexTask: NewIncrementalTask() {
                 taskProvider,
                 PrivacySandboxSdkDexTask::desugarGraphDir
             ).withName("out").on(PrivacySandboxSdkInternalArtifactType.DESUGAR_GRAPH)
+
+            creationConfig.artifacts.setInitialProvider(
+                taskProvider,
+                PrivacySandboxSdkDexTask::globalSyntheticsOutput
+            ).withName("out").on(PrivacySandboxSdkInternalArtifactType.GLOBAL_SYNTHETICS_ARCHIVE)
         }
 
         override fun configure(task: PrivacySandboxSdkDexTask) {

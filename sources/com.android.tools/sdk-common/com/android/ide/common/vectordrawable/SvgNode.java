@@ -18,8 +18,12 @@ package com.android.ide.common.vectordrawable;
 import static com.android.ide.common.vectordrawable.Svg2Vector.SVG_CLIP_RULE;
 import static com.android.ide.common.vectordrawable.Svg2Vector.SVG_FILL;
 import static com.android.ide.common.vectordrawable.Svg2Vector.SVG_FILL_RULE;
+import static com.android.ide.common.vectordrawable.Svg2Vector.SVG_HREF;
+import static com.android.ide.common.vectordrawable.Svg2Vector.SVG_PAINT_ORDER;
 import static com.android.ide.common.vectordrawable.Svg2Vector.SVG_STROKE;
 import static com.android.ide.common.vectordrawable.Svg2Vector.SVG_STROKE_WIDTH;
+import static com.android.ide.common.vectordrawable.Svg2Vector.SVG_XLINK_HREF;
+import static com.android.ide.common.vectordrawable.Svg2Vector.presentationMap;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
@@ -57,6 +61,8 @@ abstract class SvgNode {
 
     // Key is the attributes for vector drawable, and the value is the converted from SVG.
     protected final Map<String, String> mVdAttributesMap = new HashMap<>();
+    /** Stroke is applied before fill as a result of "paint-order:stroke fill" style. */
+    protected boolean mStrokeBeforeFill;
     // If mLocalTransform is identity, it is the same as not having any transformation.
     protected AffineTransform mLocalTransform = new AffineTransform();
 
@@ -70,15 +76,15 @@ abstract class SvgNode {
         mSvgTree = svgTree;
         mDocumentElement = element;
         // Parse and generate a presentation map.
-        NamedNodeMap a = element.getAttributes();
-        int len = a.getLength();
+        NamedNodeMap attrs = element.getAttributes();
+        int len = attrs.getLength();
 
         for (int itemIndex = 0; itemIndex < len; itemIndex++) {
-            Node n = a.item(itemIndex);
+            Node n = attrs.item(itemIndex);
             String nodeName = n.getNodeName();
             String nodeValue = n.getNodeValue();
             // TODO: Handle style here. Refer to Svg2Vector::addStyleToPath().
-            if (Svg2Vector.presentationMap.containsKey(nodeName)) {
+            if (presentationMap.containsKey(nodeName)) {
                 fillPresentationAttributesInternal(nodeName, nodeValue);
             }
 
@@ -212,13 +218,30 @@ abstract class SvgNode {
     public abstract void transformIfNeeded(@NonNull AffineTransform finalTransform);
 
     private void fillPresentationAttributesInternal(@NonNull String name, @NonNull String value) {
-        if (name.equals(SVG_FILL_RULE) || name.equals(SVG_CLIP_RULE)) {
-            if (value.equals("nonzero")) {
-                value = "nonZero";
-            } else if (value.equals("evenodd")) {
-                value = "evenOdd";
-            }
+        switch (name) {
+            case SVG_PAINT_ORDER:
+                String[] order = value.split("\\s+");
+                int strokePos = indexOf(order, SVG_STROKE);
+                int fillPos = indexOf(order, SVG_FILL);
+                mStrokeBeforeFill = 0 <= strokePos && strokePos < fillPos;
+                return;
+
+            case SVG_FILL_RULE:
+            case SVG_CLIP_RULE:
+                if (value.equals("nonzero")) {
+                    value = "nonZero";
+                } else if (value.equals("evenodd")) {
+                    value = "evenOdd";
+                }
+                break;
+
+            case SVG_STROKE_WIDTH:
+                if (value.equals("0")) {
+                    mVdAttributesMap.remove(SVG_STROKE);
+                }
+                break;
         }
+
         logger.log(Level.FINE, ">>>> PROP " + name + " = " + value);
         if (value.startsWith("url(")) {
             if (!name.equals(SVG_FILL) && !name.equals(SVG_STROKE)) {
@@ -226,10 +249,16 @@ abstract class SvgNode {
                 return;
             }
         }
-        if (name.equals(SVG_STROKE_WIDTH) && value.equals("0")) {
-            mVdAttributesMap.remove(SVG_STROKE);
-        }
         mVdAttributesMap.put(name, value);
+    }
+
+    private <T, U extends T> int indexOf(@NonNull T[] array, @NonNull U element) {
+        for (int i = 0; i < array.length; i++) {
+            if (element.equals(array[i])) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     protected void fillPresentationAttributes(@NonNull String name, @NonNull String value) {
@@ -287,6 +316,19 @@ abstract class SvgNode {
             logError("Unsupported color format \"" + svgColor + "\"");
             return errorFallbackColor;
         }
+    }
+
+    /**
+     * Returns the id referenced by 'href' or 'xlink.href' attribute, or an empty string if neither
+     * of the two attributes is present or doesn't contain a valid reference.
+     */
+    @NonNull
+    protected String getHrefId() {
+        String value = mDocumentElement.getAttribute(SVG_HREF);
+        if (value.isEmpty()) {
+            value = mDocumentElement.getAttribute(SVG_XLINK_HREF);
+        }
+        return value.isEmpty() ? "" : value.substring(1);
     }
 
     protected void logError(@NonNull String s) {

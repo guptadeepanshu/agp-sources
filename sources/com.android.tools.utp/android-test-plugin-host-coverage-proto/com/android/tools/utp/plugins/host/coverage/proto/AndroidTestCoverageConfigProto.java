@@ -562,10 +562,10 @@ public final class AndroidTestCoverageConfigProto {
       if (testCoveragePathOnDeviceCase_ == 2) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, testCoveragePathOnDevice_);
       }
-      if (!getRunAsPackageNameBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(runAsPackageName_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, runAsPackageName_);
       }
-      if (!getOutputDirectoryOnHostBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(outputDirectoryOnHost_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 4, outputDirectoryOnHost_);
       }
       if (useTestStorageService_ != false) {
@@ -586,10 +586,10 @@ public final class AndroidTestCoverageConfigProto {
       if (testCoveragePathOnDeviceCase_ == 2) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, testCoveragePathOnDevice_);
       }
-      if (!getRunAsPackageNameBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(runAsPackageName_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, runAsPackageName_);
       }
-      if (!getOutputDirectoryOnHostBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(outputDirectoryOnHost_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, outputDirectoryOnHost_);
       }
       if (useTestStorageService_ != false) {

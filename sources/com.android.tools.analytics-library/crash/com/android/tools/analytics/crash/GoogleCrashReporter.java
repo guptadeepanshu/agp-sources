@@ -59,6 +59,8 @@ public class GoogleCrashReporter implements CrashReporter {
   private static final String CRASH_URL = "https://clients2.google.com/cr/report";
   private static final String STAGING_CRASH_URL = "https://clients2.google.com/cr/staging_report";
 
+  private static final String SYSTEM_PROPERTY_USE_STAGING_CRASH_URL = "use.staging.crash.url";
+
   // Crash has a limit of 250 * 1024 bytes for field values
   private static final int MAX_BYTES_FOR_VALUE = 250 * 1024;
   private static final String TRUNCATION_INDICATOR = "[truncated]";
@@ -104,7 +106,8 @@ public class GoogleCrashReporter implements CrashReporter {
 
   public GoogleCrashReporter(boolean isUnitTestMode, boolean isDebugBuild) {
     this(
-            (isUnitTestMode || isDebugBuild) ? STAGING_CRASH_URL : CRASH_URL,
+            (isUnitTestMode || isDebugBuild || java.lang.Boolean.getBoolean(
+                    SYSTEM_PROPERTY_USE_STAGING_CRASH_URL)) ? STAGING_CRASH_URL : CRASH_URL,
             UploadRateLimiter.create(MAX_CRASHES_PER_SEC),
             isUnitTestMode,
             isDebugBuild);
@@ -120,6 +123,12 @@ public class GoogleCrashReporter implements CrashReporter {
     this.rateLimiter = rateLimiter;
     this.isUnitTestMode = isUnitTestMode;
     this.isDebugBuild = isDebugBuild;
+  }
+
+  @VisibleForTesting
+  @NonNull
+  public String getCrashUrl() {
+    return crashUrl;
   }
 
   @Override

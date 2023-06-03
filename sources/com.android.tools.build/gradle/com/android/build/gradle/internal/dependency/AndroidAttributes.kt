@@ -30,6 +30,15 @@ class AndroidAttributes @JvmOverloads constructor(
 
     constructor(stringAttribute: Pair<Attribute<String>, String>) : this(mapOf(stringAttribute))
 
+    /** Makes a copy of this instance overwritten with the given properties. */
+    fun copy(libraryElementsAttribute: LibraryElements): AndroidAttributes {
+        return AndroidAttributes(
+            stringAttributes = stringAttributes,
+            libraryElementsAttribute = libraryElementsAttribute,
+            category = category
+        )
+    }
+
     fun addAttributesToContainer(container: AttributeContainer) {
         stringAttributes?.let {
             for ((key, value) in it) {

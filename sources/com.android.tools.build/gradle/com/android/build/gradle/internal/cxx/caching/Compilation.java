@@ -259,13 +259,13 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (!getWorkingDirectoryBytes().isEmpty()) {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(workingDirectory_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 1, workingDirectory_);
     }
     if (objectFileKey_ != null) {
       output.writeMessage(2, getObjectFileKey());
     }
-    if (!getObjectFileBytes().isEmpty()) {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(objectFile_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 3, objectFile_);
     }
     unknownFields.writeTo(output);
@@ -277,14 +277,14 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (!getWorkingDirectoryBytes().isEmpty()) {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(workingDirectory_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, workingDirectory_);
     }
     if (objectFileKey_ != null) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(2, getObjectFileKey());
     }
-    if (!getObjectFileBytes().isEmpty()) {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(objectFile_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, objectFile_);
     }
     size += unknownFields.getSerializedSize();

@@ -62,6 +62,7 @@ enum class ModelField {
     CXX_MODULE_MODEL_CMAKE_TOOLCHAIN_FILE,
     CXX_MODULE_MODEL_CONFIGURE_SCRIPT,
     CXX_MODULE_MODEL_CXX_FOLDER,
+    CXX_MODULE_MODEL_HAS_BUILD_TIME_INFORMATION,
     CXX_MODULE_MODEL_INTERMEDIATES_BASE_FOLDER,
     CXX_MODULE_MODEL_INTERMEDIATES_FOLDER,
     CXX_MODULE_MODEL_MAKE_FILE,
@@ -122,6 +123,7 @@ fun CxxAbiModel.lookup(field : ModelField) : String? {
         ModelField.CXX_MODULE_MODEL_CMAKE_SETTINGS_FILE -> variant.module.cmakeSettingsFile.toString()
         ModelField.CXX_MODULE_MODEL_CMAKE_TOOLCHAIN_FILE -> variant.module.cmakeToolchainFile.toString()
         ModelField.CXX_MODULE_MODEL_CXX_FOLDER -> variant.module.cxxFolder.toString()
+        ModelField.CXX_MODULE_MODEL_HAS_BUILD_TIME_INFORMATION -> variant.module.hasBuildTimeInformation.toString()
         ModelField.CXX_MODULE_MODEL_INTERMEDIATES_BASE_FOLDER -> variant.module.intermediatesBaseFolder.toString()
         ModelField.CXX_MODULE_MODEL_INTERMEDIATES_FOLDER -> variant.module.intermediatesFolder.toString()
         ModelField.CXX_MODULE_MODEL_MAKE_FILE -> variant.module.makeFile.toString()

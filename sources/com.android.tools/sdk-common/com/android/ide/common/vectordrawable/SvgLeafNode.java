@@ -72,7 +72,7 @@ class SvgLeafNode extends SvgNode {
         for (Map.Entry<String, String> entry : mVdAttributesMap.entrySet()) {
             String name = entry.getKey();
             String attribute = presentationMap.get(name);
-            if (attribute.isEmpty()) {
+            if (attribute == null || attribute.isEmpty()) {
                 continue;
             }
             String svgValue = entry.getValue().trim();
@@ -239,21 +239,42 @@ class SvgLeafNode extends SvgNode {
     @Override
     public void writeXml(@NonNull OutputStreamWriter writer, @NonNull String indent)
             throws IOException {
-        // First, decide whether we can skip this path, since it has no visible effect.
         if (mPathData == null || mPathData.isEmpty()) {
             return; // No path to draw.
         }
 
+        if (mStrokeBeforeFill) {
+            // To render fill on top of stroke output the <path> element twice,
+            // first without fill, and then without stroke.
+            writePathElementWithSuppressedFillOrStroke(writer, SVG_FILL, indent);
+            writePathElementWithSuppressedFillOrStroke(writer, SVG_STROKE, indent);
+        } else {
+            writePathElement(writer, indent);
+        }
+    }
+
+    private void writePathElementWithSuppressedFillOrStroke(
+            @NonNull OutputStreamWriter writer, @NonNull String attribute, @NonNull String indent)
+            throws IOException {
+        String savedValue = mVdAttributesMap.put(attribute, "#00000000");
+        writePathElement(writer, indent);
+        if (savedValue == null) {
+            mVdAttributesMap.remove(attribute);
+        } else {
+            mVdAttributesMap.put(attribute, savedValue);
+        }
+    }
+
+    private void writePathElement(@NonNull OutputStreamWriter writer, @NonNull String indent)
+            throws IOException {
         String fillColor = mVdAttributesMap.get(SVG_FILL);
         String strokeColor = mVdAttributesMap.get(SVG_STROKE);
-        logger.log(Level.FINE, "fill color " + fillColor);
         boolean emptyFill = "none".equals(fillColor) || "#00000000".equals(fillColor);
         boolean emptyStroke = strokeColor == null || "none".equals(strokeColor);
         if (emptyFill && emptyStroke) {
             return; // Nothing to draw.
         }
 
-        // Second, write the color info handling the default values.
         writer.write(indent);
         writer.write("<path");
         writer.write(System.lineSeparator());

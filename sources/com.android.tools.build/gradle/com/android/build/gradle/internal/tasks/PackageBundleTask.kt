@@ -32,10 +32,10 @@ import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.internal.packaging.IncrementalPackager.APP_METADATA_FILE_NAME
 import com.android.builder.packaging.PackagingUtils
 import com.android.bundle.Config
-import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.tools.build.bundletool.commands.BuildBundleCommand
 import com.android.utils.FileUtils
 import com.google.common.base.Preconditions
@@ -150,12 +150,12 @@ abstract class PackageBundleTask : NonIncrementalTask() {
     abstract val bundleNeedsFusedStandaloneConfig: Property<Boolean>
 
     @get:InputFiles
-    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
     @get:Optional
     abstract val binaryArtProfile: RegularFileProperty
 
     @get:InputFiles
-    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
     @get:Optional
     abstract val binaryArtProfileMetadata: RegularFileProperty
 
@@ -571,7 +571,9 @@ abstract class PackageBundleTask : NonIncrementalTask() {
                 MergeNativeDebugMetadataTask.getNativeDebugMetadataFiles(creationConfig)
             )
 
-            task.abiFilters.setDisallowChanges(creationConfig.supportedAbis)
+            task.abiFilters.setDisallowChanges(
+                creationConfig.nativeBuildCreationConfig?.supportedAbis ?: emptyList()
+            )
 
             task.aaptOptionsNoCompress.setDisallowChanges(
                 creationConfig.androidResourcesCreationConfig?.androidResources?.noCompress,
@@ -590,7 +592,7 @@ abstract class PackageBundleTask : NonIncrementalTask() {
             }
             task.compressNativeLibs.disallowChanges()
 
-            if (creationConfig.needsMainDexListForBundle) {
+            if (creationConfig.dexingCreationConfig.needsMainDexListForBundle) {
                 creationConfig.artifacts.setTaskInputToFinalProduct(
                     InternalArtifactType.MAIN_DEX_LIST_FOR_BUNDLE,
                     task.mainDexList
@@ -617,8 +619,7 @@ abstract class PackageBundleTask : NonIncrementalTask() {
                 task.appMetadata
             )
 
-            if (creationConfig.services.projectOptions[BooleanOption.ENABLE_ART_PROFILES]
-                && !creationConfig.debuggable) {
+            if (!creationConfig.debuggable) {
                 creationConfig.artifacts.setTaskInputToFinalProduct(
                     InternalArtifactType.BINARY_ART_PROFILE,
                     task.binaryArtProfile

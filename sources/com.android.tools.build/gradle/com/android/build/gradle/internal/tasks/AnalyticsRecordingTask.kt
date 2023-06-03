@@ -36,7 +36,7 @@ abstract class AnalyticsRecordingTask :
     UnsafeOutputsTask("AnalyticsRecordingTask always runs to record raw application id for release artifacts") {
 
     @get:InputFile
-    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
     abstract val applicationId: RegularFileProperty
 
     override fun doTaskAction() {

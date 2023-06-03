@@ -34,6 +34,7 @@ sealed class SourceArtifactType: Artifact.Single<Directory>(
     object ANDROID_RESOURCES : SourceArtifactType()
     object AIDL : SourceArtifactType()
     object RENDERSCRIPT : SourceArtifactType()
+    object BASELINE_PROFILES : SourceArtifactType()
     object JNI : SourceArtifactType()
     object JNI_LIBS : SourceArtifactType()
     object SHADERS : SourceArtifactType()

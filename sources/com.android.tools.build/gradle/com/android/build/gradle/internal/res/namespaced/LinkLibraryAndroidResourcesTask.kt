@@ -29,10 +29,10 @@ import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.core.ComponentTypeImpl
 import com.android.builder.internal.aapt.AaptOptions
 import com.android.builder.internal.aapt.AaptPackageConfig
-import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.utils.FileUtils
 import com.google.common.collect.ImmutableList
 import org.gradle.api.file.ConfigurableFileCollection
@@ -60,7 +60,7 @@ import java.io.File
 abstract class LinkLibraryAndroidResourcesTask : NonIncrementalTask() {
 
     @get:InputFiles
-    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
     abstract val manifestFile: RegularFileProperty
 
     @get:InputFiles

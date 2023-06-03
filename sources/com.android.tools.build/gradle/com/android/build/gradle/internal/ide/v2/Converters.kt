@@ -19,12 +19,11 @@ package com.android.build.gradle.internal.ide.v2
 import com.android.build.api.dsl.AndroidResources
 import com.android.build.api.dsl.CompileOptions
 import com.android.build.api.dsl.Lint
-import com.android.build.api.variant.Sources
+import com.android.build.api.variant.InternalSources
 import com.android.build.api.variant.impl.SourceDirectoriesImpl
-import com.android.build.api.variant.impl.SourcesImpl
+import com.android.build.gradle.internal.api.DefaultAndroidSourceDirectorySet
 import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
 import com.android.build.gradle.internal.component.VariantCreationConfig
-import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.utils.toImmutableList
 import com.android.build.gradle.internal.utils.toImmutableMap
@@ -204,6 +203,7 @@ internal fun DefaultAndroidSourceSet.convert(
         resourcesDirectories = resourcesDirectories,
         aidlDirectories = if (features.aidl) aidlDirectories else null,
         renderscriptDirectories = if (features.renderScript) renderscriptDirectories else null,
+        baselineProfileDirectories = (baselineProfiles as DefaultAndroidSourceDirectorySet).srcDirs,
         resDirectories = if (features.androidResources) resDirectories else null,
         assetsDirectories = assetsDirectories + variantSourcesForModel(mixin?.assets),
         jniLibsDirectories = jniLibsDirectories + variantSourcesForModel(mixin?.jniLibs),
@@ -216,21 +216,21 @@ internal fun DefaultAndroidSourceSet.convert(
 }
 
 internal fun DefaultAndroidSourceSet.convert(
-    features: BuildFeatureValues,
-    sources: SourcesImpl,
+    sources: InternalSources,
 ) = SourceProviderImpl(
     name = name,
     manifestFile = manifestFile,
     javaDirectories = variantSourcesForModel(sources.java),
     kotlinDirectories = variantSourcesForModel(sources.kotlin),
     resourcesDirectories = variantSourcesForModel(sources.resources),
-    aidlDirectories = if (features.aidl) aidlDirectories else null,
-    renderscriptDirectories = if (features.renderScript) renderscriptDirectories else null,
-    resDirectories = if (features.androidResources) variantSourcesForModel(sources.res) else null,
+    aidlDirectories = variantSourcesForModel(sources.aidl),
+    renderscriptDirectories = variantSourcesForModel(sources.renderscript),
+    baselineProfileDirectories = variantSourcesForModel(sources.baselineProfiles),
+    resDirectories = variantSourcesForModel(sources.res),
     assetsDirectories = variantSourcesForModel(sources.assets),
     jniLibsDirectories = variantSourcesForModel(sources.jniLibs),
-    shadersDirectories = sources.shaders?.let { variantSourcesForModel(it) },
-    mlModelsDirectories = if (features.mlModelBinding) mlModelsDirectories else null,
+    shadersDirectories = variantSourcesForModel(sources.shaders),
+    mlModelsDirectories = variantSourcesForModel(sources.mlModels),
     customDirectories = customDirectories,
 )
 

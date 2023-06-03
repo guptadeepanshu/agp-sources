@@ -32,12 +32,14 @@ import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.errors.DefaultIssueReporter
-import com.android.build.gradle.internal.tasks.TaskCategory
 import org.gradle.api.provider.Property
+import org.gradle.api.tasks.Destroys
 import org.gradle.api.tasks.Internal
 import org.gradle.process.ExecOperations
 import org.gradle.work.DisableCachingByDefault
+import java.io.File
 import javax.inject.Inject
 
 /**
@@ -53,6 +55,16 @@ abstract class ExternalNativeCleanTask @Inject constructor(private val ops: Exec
     abstract val sdkComponents: Property<SdkComponentsBuildService>
     @get:Internal
     internal lateinit var configurationModel: CxxConfigurationModel
+
+    /**
+     * See http://b/262059864 file not found exception in native tests after 8.0 upgrade
+     * This declares the folders that this task may destroy so that Gradle can properly
+     * order tasks in dependency order.
+     */
+    @get:Destroys
+    val destroys : List<File>
+        get() =
+        (configurationModel.activeAbis + configurationModel.unusedAbis).map { it.soFolder }
 
     override fun doTaskAction() {
         IssueReporterLoggingEnvironment(

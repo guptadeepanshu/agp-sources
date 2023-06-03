@@ -19,11 +19,9 @@ package com.android.manifmerger;
 import com.android.annotations.NonNull;
 import java.util.regex.Matcher;
 import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * encode all non resolved placeholders key names.
@@ -31,46 +29,33 @@ import org.w3c.dom.NodeList;
 public class PlaceholderEncoder {
 
     /**
-     * Visits a document's entire tree and check each attribute for a placeholder existence. If one
-     * is found, encode its name so tools like aapt will not object invalid characters and such.
+     * Iterate through each attribute for a placeholder existence. If one is found, encode its name
+     * so tools like aapt will not object invalid characters and such.
      *
-     * <p>
-     *
-     * @param document the document to visit
+     * @param node node to visit attributes on
+     * @return true if node was changed. False otherwise.
      */
-    public static void visit(@NonNull Document document) {
-        visit(document.getDocumentElement());
-    }
-
-    /**
-     * Visits an element's entire tree and checks each attribute for a placeholder existence. If one
-     * is found, encode its name so tools like aapt will not object invalid characters and such.
-     *
-     * <p>
-     *
-     * @param element the element to visit
-     */
-    private static void visit(@NonNull Element element) {
-        NamedNodeMap elementAttributes = element.getAttributes();
-        for (int i = 0; i < elementAttributes.getLength(); i++) {
-            Node attribute = elementAttributes.item(i);
-            handleAttribute((Attr) attribute);
-        }
-        NodeList childNodes = element.getChildNodes();
-        for (int i = 0; i < childNodes.getLength(); i++) {
-            Node childNode = childNodes.item(i);
-            if (childNode instanceof Element) {
-                visit((Element) childNode);
+    public static boolean encode(@NonNull Node node) {
+        if (node instanceof Element) {
+            boolean changeFlag = false;
+            Element element = (Element) node;
+            NamedNodeMap elementAttributes = element.getAttributes();
+            for (int i = 0; i < elementAttributes.getLength(); i++) {
+                Node attribute = elementAttributes.item(i);
+                changeFlag |= handleAttribute((Attr) attribute);
             }
+            return changeFlag;
         }
+        return false;
     }
 
     /**
      * Handles an XML attribute, by subsituting placeholders to an AAPT friendly encoding.
      *
      * @param attr attribute potentially containing a placeholder.
+     * @return true if attribute was changed.
      */
-    private static void handleAttribute(Attr attr) {
+    private static boolean handleAttribute(Attr attr) {
         Matcher matcher = PlaceholderHandler.PATTERN.matcher(attr.getValue());
         if (matcher.matches()) {
             String encodedValue =
@@ -80,6 +65,8 @@ public class PlaceholderEncoder {
                             + "_closeBracket"
                             + matcher.group(3);
             attr.setValue(encodedValue);
+            return true;
         }
+        return false;
     }
 }

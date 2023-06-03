@@ -18,7 +18,6 @@ package com.android.build.gradle.internal.privaysandboxsdk
 
 import com.android.build.api.artifact.Artifact
 import com.android.build.api.artifact.ArtifactKind
-import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.file.RegularFile
@@ -30,6 +29,9 @@ PrivacySandboxSdkInternalArtifactType<T : FileSystemLocation>(
     category: Category = Category.INTERMEDIATES,
 ) : Artifact.Single<T>(kind, category) {
 
+    // Directory containing classes and java resources provided to the api packager.
+    object API_PACKAGER_SOURCES: PrivacySandboxSdkInternalArtifactType<Directory>(ArtifactKind.DIRECTORY), Replaceable
+
     // generated manifest file that contains permissions to be automatically added to the sandbox.
     object SANDBOX_MANIFEST: PrivacySandboxSdkInternalArtifactType<RegularFile>(ArtifactKind.FILE), Replaceable
 
@@ -39,6 +41,8 @@ PrivacySandboxSdkInternalArtifactType<T : FileSystemLocation>(
     object ASAR: PrivacySandboxSdkInternalArtifactType<RegularFile>(ArtifactKind.FILE, category = Category.OUTPUTS), Replaceable
 
     object LINKED_MERGE_RES_FOR_ASB: PrivacySandboxSdkInternalArtifactType<RegularFile>(ArtifactKind.FILE), Replaceable
+    object RUNTIME_SYMBOL_LIST: PrivacySandboxSdkInternalArtifactType<RegularFile>(ArtifactKind.FILE)
+    object RUNTIME_R_CLASS: PrivacySandboxSdkInternalArtifactType<RegularFile>(ArtifactKind.FILE)
     object MODULE_BUNDLE: PrivacySandboxSdkInternalArtifactType<RegularFile>(ArtifactKind.FILE), Replaceable
     object APP_METADATA: PrivacySandboxSdkInternalArtifactType<RegularFile>(FILE), Replaceable
 
@@ -49,10 +53,13 @@ PrivacySandboxSdkInternalArtifactType<T : FileSystemLocation>(
     object MERGED_RES_BLAME_LOG: PrivacySandboxSdkInternalArtifactType<Directory>(ArtifactKind.DIRECTORY), Replaceable
 
     object INCREMENTAL_MERGED_RES: PrivacySandboxSdkInternalArtifactType<Directory>(ArtifactKind.DIRECTORY), Replaceable
-
+    object STUB_JAR: PrivacySandboxSdkInternalArtifactType<RegularFile>(FILE), Replaceable
     object DEX_ARCHIVE: PrivacySandboxSdkInternalArtifactType<Directory>(ArtifactKind.DIRECTORY), Replaceable
     object DEX_ARCHIVE_INPUT_JAR_HASHES: PrivacySandboxSdkInternalArtifactType<RegularFile>(ArtifactKind.FILE), Replaceable
+
     object DESUGAR_GRAPH: PrivacySandboxSdkInternalArtifactType<Directory>(ArtifactKind.DIRECTORY), Replaceable
+    object GLOBAL_SYNTHETICS_ARCHIVE: PrivacySandboxSdkInternalArtifactType<Directory>(ArtifactKind.DIRECTORY), Replaceable
 
     object DEX: PrivacySandboxSdkInternalArtifactType<Directory>(ArtifactKind.DIRECTORY), Replaceable
+    object R_PACKAGE_DEX: PrivacySandboxSdkInternalArtifactType<Directory>(ArtifactKind.DIRECTORY), Replaceable
 }

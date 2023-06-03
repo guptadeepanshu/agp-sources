@@ -77,6 +77,13 @@ interface SourceProvider: AndroidModel {
     val renderscriptDirectories: Collection<File>?
 
     /**
+     * Returns the baseline profiles source folders
+     *
+     * @return a list of folders. They may not all exist.
+     */
+    val baselineProfileDirectories: Collection<File>?
+
+    /**
      * Returns the android resources folders, or null if resource processing is disabled
      *
      * @return a list of folders. They may not all exist.

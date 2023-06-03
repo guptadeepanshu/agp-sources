@@ -344,11 +344,12 @@ object CommonMetricsData {
   }
 }
 
-/*
-Returns true if the current process is translated from ARM to x86 by Rosetta
-Processes running under Rosetta translation return 1 when sysctlbyname is called
-with sysctl.proc_translated
-https://developer.apple.com/documentation/apple_silicon/about_the_rosetta_translation_environment
+/**
+ * Determines if the current process is being translated to ARM by Rosetta.
+ *
+ * Processes running under Rosetta translation return 1 when sysctlbyname is called with
+ * sysctl.proc_translated
+ * ref: https://developer.apple.com/documentation/apple_silicon/about_the_rosetta_translation_environment
  */
 fun isRosetta() : Boolean {
   val clazz = try {
@@ -358,7 +359,7 @@ fun isRosetta() : Boolean {
   catch (e: ClassNotFoundException) {
     return false
   }
-  catch(e: NoClassDefFoundError) {
+  catch(e: LinkageError) {
     return false
   }
 

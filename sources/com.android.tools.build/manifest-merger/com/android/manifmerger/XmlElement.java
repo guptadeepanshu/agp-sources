@@ -102,14 +102,14 @@ public class XmlElement extends OrphanXmlElement {
             Node attribute = namedNodeMap.item(i);
             if (SdkConstants.TOOLS_URI.equals(attribute.getNamespaceURI())) {
                 String instruction = attribute.getLocalName();
-                if (NodeOperationType.LIST_OF_ALLOWED_RUNTIME_ATTRIBUTES.contains(instruction)) {
-                    continue;
-                }
                 if (instruction.equals(NodeOperationType.NODE_LOCAL_NAME)) {
                     // should we flag an error when there are more than one operation type on a node ?
                     lastNodeOperationType = NodeOperationType.valueOf(
                             SdkUtils.camelCaseToConstantName(
                                     attribute.getNodeValue()));
+                } else if (instruction.equals(
+                        NodeOperationType.REQUIRED_BY_PRIVACY_SANDBOX_SDK_ATTRIBUTE_NAME)) {
+                    continue;
                 } else if (instruction.equals(Selector.SELECTOR_LOCAL_NAME)) {
                     selector = new Selector(attribute.getNodeValue());
                 } else if (instruction.equals(NodeOperationType.OVERRIDE_USES_SDK)) {
@@ -162,12 +162,18 @@ public class XmlElement extends OrphanXmlElement {
         mAttributesOperationTypes = attributeOperationTypeBuilder.build();
         for (int i = 0; i < namedNodeMap.getLength(); i++) {
             Attr attribute = (Attr) namedNodeMap.item(i);
+            NodeName nodeName;
+            if (attribute.getNamespaceURI() != null) {
+                nodeName =
+                        XmlNode.fromNSName(
+                                attribute.getNamespaceURI(),
+                                attribute.getPrefix(),
+                                attribute.getLocalName());
+            } else {
+                nodeName = XmlNode.fromXmlName(attribute.getName());
+            }
             XmlAttribute xmlAttribute =
-                    new XmlAttribute(
-                            this,
-                            attribute,
-                            getType()
-                                    .getAttributeModel(XmlNode.fromXmlName((attribute).getName())));
+                    new XmlAttribute(this, attribute, getType().getAttributeModel(nodeName));
             attributesListBuilder.add(xmlAttribute);
         }
         mNodeOperationType = lastNodeOperationType;
@@ -594,7 +600,7 @@ public class XmlElement extends OrphanXmlElement {
         //  higher priority one has a tools:node="remove", remove the low priority one
         //  higher priority one has a tools:node="replace", replace the low priority one
         //  higher priority one has a tools:node="strict", flag the error if not equals.
-        switch(operationType) {
+        switch (operationType) {
             case MERGE:
             case MERGE_ONLY_ATTRIBUTES:
                 // record the action

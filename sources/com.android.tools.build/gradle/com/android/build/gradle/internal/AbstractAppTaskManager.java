@@ -16,10 +16,8 @@
 
 package com.android.build.gradle.internal;
 
-import static com.android.build.gradle.internal.cxx.configure.CxxCreateGradleTasksKt.createCxxVariantBuildTask;
-
 import com.android.annotations.NonNull;
-import com.android.build.api.transform.QualifiedContent.ScopeType;
+import com.android.build.api.artifact.impl.InternalScopedArtifacts;
 import com.android.build.api.variant.VariantBuilder;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.internal.component.ApkCreationConfig;
@@ -29,7 +27,6 @@ import com.android.build.gradle.internal.component.TestComponentCreationConfig;
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig;
 import com.android.build.gradle.internal.component.VariantCreationConfig;
 import com.android.build.gradle.internal.feature.BundleAllClasses;
-import com.android.build.gradle.internal.pipeline.TransformManager;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts;
 import com.android.build.gradle.internal.tasks.AnalyticsRecordingTask;
 import com.android.build.gradle.internal.tasks.ApkZipPackagingTask;
@@ -137,10 +134,6 @@ public abstract class AbstractAppTaskManager<
 
         maybeExtractProfilerDependencies(creationConfig);
 
-        // Set up the C/C++ external native build task
-        createCxxVariantBuildTask(
-                taskFactory, variant.getVariant(), project.getProviders(), project.getLayout());
-
         // Add a task to merge the jni libs folders
         createMergeJniLibFoldersTasks(creationConfig);
 
@@ -169,7 +162,6 @@ public abstract class AbstractAppTaskManager<
 
     private void createCompileTask(@NonNull ApkCreationConfig creationConfig) {
         TaskProvider<? extends JavaCompile> javacTask = createJavacTask(creationConfig);
-        addJavacClassesStream(creationConfig);
         setJavaCompilerTask(javacTask, creationConfig);
         createPostCompilationTasks(creationConfig);
     }
@@ -242,9 +234,12 @@ public abstract class AbstractAppTaskManager<
 
     @NonNull
     @Override
-    protected Set<ScopeType> getJavaResMergingScopes(
+    protected Set<InternalScopedArtifacts.InternalScope> getJavaResMergingScopes(
             @NonNull ComponentCreationConfig creationConfig) {
-        return TransformManager.SCOPE_FULL_PROJECT;
+        return Set.of(
+                InternalScopedArtifacts.InternalScope.SUB_PROJECT,
+                InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS
+        );
     }
 
     private void createApplicationIdWriterTask(@NonNull ApkCreationConfig creationConfig) {

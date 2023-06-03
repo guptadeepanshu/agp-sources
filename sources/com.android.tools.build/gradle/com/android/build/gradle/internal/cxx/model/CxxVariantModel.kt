@@ -17,6 +17,7 @@
 package com.android.build.gradle.internal.cxx.model
 
 import com.android.build.gradle.internal.core.Abi
+import com.android.build.gradle.internal.cxx.settings.AvailabilityPhase
 import com.android.utils.FileUtils
 import org.gradle.api.file.FileCollection
 import java.io.File

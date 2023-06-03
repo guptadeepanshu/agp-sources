@@ -16,7 +16,6 @@
 
 package com.android.build.api.dsl
 
-import org.gradle.api.Incubating
 import java.io.File
 
 /**
@@ -35,7 +34,7 @@ import java.io.File
  *          // if true, only report errors
  *          ignoreWarnings = true
  *          // if true, emit full/absolute paths to files with errors (true by default)
- *          //absolutePaths = true
+ *          absolutePaths = true
  *          // if true, check all issues, including those that are off by default
  *          checkAllWarnings = true
  *          // if true, treat all warnings as errors
@@ -95,12 +94,9 @@ import java.io.File
  *          ignoreTestSources true
  *          // Normally lint will skip generated sources, but you can turn it on with this flag
  *          checkGeneratedSources true
- *          // Normally lint will analyze all dependencies along with each module; this ensures
- *          // that lint can correctly (for example) determine if a resource declared in a library
- *          // is unused; checking only the library in isolation would not be able to identify this
- *          // problem. However, this leads to quite a bit of extra computation; a library is
- *          // analyzed repeatedly, for each module that it is used in.
- *          checkDependencies false
+ *          // Whether lint should check all dependencies too as part of its analysis.
+ *          // Default is false.
+ *          checkDependencies true
  *     }
  * }
  * ```
@@ -110,13 +106,11 @@ interface Lint {
      * The set of issue IDs to suppress. Callers are allowed to modify this collection.
      *
      */
-    @get:Incubating
     val disable: MutableSet<String>
 
     /**
      * The set of issue IDs to enable. Callers are allowed to modify this collection.
      */
-    @get:Incubating
     val enable: MutableSet<String>
 
     /**
@@ -125,51 +119,36 @@ interface Lint {
      * If empty, lint will detect the issues that are enabled by default plus
      * any issues enabled via [enable] and without issues disabled via [disable].
      */
-    @get:Incubating
     val checkOnly: MutableSet<String>
 
     /** Whether lint should set the exit code of the process if errors are found */
-    @get:Incubating
-    @set:Incubating
     var abortOnError: Boolean
 
     /**
      * Whether lint should display full paths in the error output. By default the paths are relative
      * to the path lint was invoked from.
      */
-    @get:Incubating
-    @set:Incubating
     var absolutePaths: Boolean
 
     /**
      * Whether lint should include the source lines in the output where errors occurred (true by
      * default)
      */
-    @get:Incubating
-    @set:Incubating
     var noLines: Boolean
 
     /**
      * Whether lint should be quiet (for example, not write informational messages such as paths to
      * report files written)
      */
-    @get:Incubating
-    @set:Incubating
     var quiet: Boolean
 
     /** Whether lint should check all warnings, including those off by default */
-    @get:Incubating
-    @set:Incubating
     var checkAllWarnings: Boolean
 
     /** Returns whether lint will only check for errors (ignoring warnings) */
-    @get:Incubating
-    @set:Incubating
     var ignoreWarnings: Boolean
 
     /** Whether lint should treat all warnings as errors */
-    @get:Incubating
-    @set:Incubating
     var warningsAsErrors: Boolean
 
     /**
@@ -177,8 +156,6 @@ interface Lint {
      * that have been specifically written to include tests (e.g. checks looking for specific test
      * errors, or checks that need to consider testing code such as the unused resource detector)
      */
-    @get:Incubating
-    @set:Incubating
     var checkTestSources: Boolean
 
     /**
@@ -186,57 +163,41 @@ interface Lint {
      * skips analyzing tests -- meaning that it also ignores checks that have explicitly asked to
      * look at test sources, such as the unused resource check.
      */
-    @get:Incubating
-    @set:Incubating
     var ignoreTestSources: Boolean
 
     /**
      * Whether lint should ignore all testFixtures sources.
      */
-    @get:Incubating
-    @set:Incubating
     var ignoreTestFixturesSources: Boolean
 
     /** Returns whether lint should run checks on generated sources. */
-    @get:Incubating
-    @set:Incubating
     var checkGeneratedSources: Boolean
 
     /** Whether lint should check all dependencies too as part of its analysis. Default is false. */
-    @get:Incubating
-    @set:Incubating
     var checkDependencies: Boolean
 
     /**
      * Whether lint should include explanations for issue errors. (Note that HTML and XML reports
      * intentionally do this unconditionally, ignoring this setting.)
      */
-    @get:Incubating
-    @set:Incubating
     var explainIssues: Boolean
 
     /**
      * Whether lint should include all output (e.g. include all alternate locations, not truncating
      * long messages, etc.)
      */
-    @get:Incubating
-    @set:Incubating
     var showAll: Boolean
 
     /**
      * Whether lint should check for fatal errors during release builds. Default is true. If issues
      * with severity "fatal" are found, the release build is aborted.
      */
-    @get:Incubating
-    @set:Incubating
     var checkReleaseBuilds: Boolean
 
     /**
      * The default config file to use as a fallback. This corresponds to a `lint.xml` file with
      * severities etc to use when a project does not have more specific information.
      */
-    @get:Incubating
-    @set:Incubating
     var lintConfig: File?
 
     /**
@@ -250,32 +211,24 @@ interface Lint {
      * lint task, rather than just a summary. When [textOutput] is set, the full text report
      * will be copied to the specified location.
      */
-    @get:Incubating
-    @set:Incubating
     var textReport: Boolean
 
     /**
      * Whether we should write an HTML report. Default is true. The location can be controlled by
      * [htmlOutput].
      */
-    @get:Incubating
-    @set:Incubating
     var htmlReport: Boolean
 
     /**
      * Whether we should write a SARIF (OASIS Static Analysis Results Interchange Format) report.
      * Default is false. The location can be controlled by [sarifOutput].
      */
-    @get:Incubating
-    @set:Incubating
     var sarifReport: Boolean
 
     /**
      * Whether we should write an XML report. Default is true. The location can be controlled by
      * [xmlOutput].
      */
-    @get:Incubating
-    @set:Incubating
     var xmlReport: Boolean
 
     /**
@@ -283,24 +236,18 @@ interface Lint {
      *
      * To output the lint report to `stdout` set [textReport]`=true`, and leave [textOutput] unset.
      */
-    @get:Incubating
-    @set:Incubating
     var textOutput: File?
 
     /**
      * The optional path to where an HTML report should be written.
      * Setting this property will also turn on [htmlReport].
      */
-    @get:Incubating
-    @set:Incubating
     var htmlOutput: File?
 
     /**
      * The optional path to where an XML report should be written.
      * Setting this property will also turn on [xmlReport].
      */
-    @get:Incubating
-    @set:Incubating
     var xmlOutput: File?
 
     /**
@@ -308,8 +255,6 @@ interface Lint {
      * Analysis Results Interchange Format) should be written.
      * Setting this property will also turn on [sarifReport].
      */
-    @get:Incubating
-    @set:Incubating
     var sarifOutput: File?
 
     /**
@@ -320,28 +265,21 @@ interface Lint {
      * and only see newly introduced warnings until you get a chance to go back and address the
      * "technical debt" of the earlier warnings.
      */
-    @get:Incubating
-    @set:Incubating
     var baseline: File?
 
     /** Issues that have severity overridden to 'informational' */
-    @get:Incubating
     val informational: MutableSet<String>
 
     /** Issues that have severity overridden to 'ignore' */
-    @get:Incubating
     @Deprecated("Ignore and disable are synonyms", ReplaceWith("disable"))
     val ignore: MutableSet<String>
 
     /** Issues that have severity overridden to 'warning' */
-    @get:Incubating
     val warning: MutableSet<String>
 
     /** Issues that have severity overridden to 'error' */
-    @get:Incubating
     val error: MutableSet<String>
 
     /** Issues that have severity overridden to 'fatal' */
-    @get:Incubating
     val fatal: MutableSet<String>
 }

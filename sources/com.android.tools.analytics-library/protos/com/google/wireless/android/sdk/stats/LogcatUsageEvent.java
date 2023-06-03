@@ -1485,6 +1485,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool is_default_preset = 12 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the isDefaultPreset field is set.
      */
     @java.lang.Deprecated boolean hasIsDefaultPreset();
@@ -1494,6 +1495,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool is_default_preset = 12 [deprecated = true];</code>
+     * @deprecated
      * @return The isDefaultPreset.
      */
     @java.lang.Deprecated boolean getIsDefaultPreset();
@@ -1504,6 +1506,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool is_apply_button_used = 13 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the isApplyButtonUsed field is set.
      */
     @java.lang.Deprecated boolean hasIsApplyButtonUsed();
@@ -1513,6 +1516,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool is_apply_button_used = 13 [deprecated = true];</code>
+     * @deprecated
      * @return The isApplyButtonUsed.
      */
     @java.lang.Deprecated boolean getIsApplyButtonUsed();
@@ -2111,6 +2115,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool is_default_preset = 12 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the isDefaultPreset field is set.
      */
     @java.lang.Override
@@ -2123,6 +2128,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool is_default_preset = 12 [deprecated = true];</code>
+     * @deprecated
      * @return The isDefaultPreset.
      */
     @java.lang.Override
@@ -2138,6 +2144,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool is_apply_button_used = 13 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the isApplyButtonUsed field is set.
      */
     @java.lang.Override
@@ -2150,6 +2157,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool is_apply_button_used = 13 [deprecated = true];</code>
+     * @deprecated
      * @return The isApplyButtonUsed.
      */
     @java.lang.Override
@@ -3400,6 +3408,7 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional bool is_default_preset = 12 [deprecated = true];</code>
+       * @deprecated
        * @return Whether the isDefaultPreset field is set.
        */
       @java.lang.Override
@@ -3412,6 +3421,7 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional bool is_default_preset = 12 [deprecated = true];</code>
+       * @deprecated
        * @return The isDefaultPreset.
        */
       @java.lang.Override
@@ -3424,6 +3434,7 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional bool is_default_preset = 12 [deprecated = true];</code>
+       * @deprecated
        * @param value The isDefaultPreset to set.
        * @return This builder for chaining.
        */
@@ -3439,6 +3450,7 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional bool is_default_preset = 12 [deprecated = true];</code>
+       * @deprecated
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearIsDefaultPreset() {
@@ -3455,6 +3467,7 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional bool is_apply_button_used = 13 [deprecated = true];</code>
+       * @deprecated
        * @return Whether the isApplyButtonUsed field is set.
        */
       @java.lang.Override
@@ -3467,6 +3480,7 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional bool is_apply_button_used = 13 [deprecated = true];</code>
+       * @deprecated
        * @return The isApplyButtonUsed.
        */
       @java.lang.Override
@@ -3479,6 +3493,7 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional bool is_apply_button_used = 13 [deprecated = true];</code>
+       * @deprecated
        * @param value The isApplyButtonUsed to set.
        * @return This builder for chaining.
        */
@@ -3494,6 +3509,7 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional bool is_apply_button_used = 13 [deprecated = true];</code>
+       * @deprecated
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearIsApplyButtonUsed() {
@@ -8882,6 +8898,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the formatDialog field is set.
    */
   @java.lang.Override
@@ -8894,6 +8911,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true];</code>
+   * @deprecated
    * @return The formatDialog.
    */
   @java.lang.Override
@@ -9547,6 +9565,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the formatDialog field is set.
      */
     @java.lang.Deprecated public boolean hasFormatDialog() {
@@ -9558,6 +9577,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true];</code>
+     * @deprecated
      * @return The formatDialog.
      */
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration getFormatDialog() {

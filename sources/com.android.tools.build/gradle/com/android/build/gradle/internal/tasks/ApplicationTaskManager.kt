@@ -16,8 +16,11 @@
 
 package com.android.build.gradle.internal.tasks
 
+import com.android.build.api.artifact.MultipleArtifact
+import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.component.impl.isTestApk
 import com.android.build.api.variant.ApplicationVariantBuilder
+import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.AbstractAppTaskManager
 import com.android.build.gradle.internal.component.AndroidTestCreationConfig
@@ -272,6 +275,14 @@ class ApplicationTaskManager(
             if (variant.services.projectOptions[BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT]) {
                 taskFactory.register(
                         GeneratePrivacySandboxSdkRuntimeConfigFile.CreationAction(variant))
+                variant
+                    .artifacts
+                    .forScope(ScopedArtifacts.Scope.PROJECT)
+                    .setInitialContent(
+                        ScopedArtifact.CLASSES,
+                        variant.artifacts,
+                        InternalArtifactType.PRIVACY_SANDBOX_SDK_R_PACKAGE_JAR
+                    )
             }
 
             taskFactory.register(BundleIdeModelProducerTask.CreationAction(variant))
@@ -322,10 +333,6 @@ class ApplicationTaskManager(
     override fun createInstallTask(creationConfig: ApkCreationConfig) {
         if ( globalConfig.services.projectOptions[BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT] && !creationConfig.componentType.isForTesting) {
             taskFactory.register(BuildPrivacySandboxSdkApks.CreationAction(creationConfig))
-            // TODO(b/235469089): register installation of the privacy sandbox sdk too.
-            // Force installation via the bundle for now, until the fast path is implemented.
-            taskFactory.register(InstallVariantViaBundleTask.CreationAction(creationConfig))
-            return
         }
         if (!globalConfig.hasDynamicFeatures ||
             creationConfig is AndroidTestCreationConfig

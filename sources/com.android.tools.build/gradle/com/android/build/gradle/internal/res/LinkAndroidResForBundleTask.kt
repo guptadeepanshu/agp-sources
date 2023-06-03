@@ -39,10 +39,10 @@ import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.internal.utils.toImmutableList
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.StringOption
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.core.ComponentTypeImpl
 import com.android.builder.internal.aapt.AaptOptions
 import com.android.builder.internal.aapt.AaptPackageConfig
-import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.ide.common.resources.mergeIdentifiedSourceSetFiles
 import com.android.sdklib.AndroidVersion
 import com.android.utils.FileUtils
@@ -86,8 +86,6 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
     // Not an input as it is only used to rewrite exceptions and doesn't affect task output
     @get:Internal
     abstract val manifestMergeBlameFile: RegularFileProperty
-
-    private var buildTargetDensity: String? = null
 
     @get:OutputFile
     abstract val bundledResFile: RegularFileProperty
@@ -273,9 +271,6 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
                     projectOptions.getProvider(BooleanOption.EXCLUDE_RES_SOURCES_FOR_RELEASE_BUNDLES)
                 )
 
-            task.buildTargetDensity =
-                    projectOptions.get(StringOption.IDE_BUILD_TARGET_DENSITY)
-
             task.mergeBlameLogFolder.setDisallowChanges(creationConfig.artifacts.get(InternalArtifactType.MERGED_RES_BLAME_FOLDER))
 
             task.minSdkVersion = creationConfig.minSdkVersion.apiLevel
@@ -296,16 +291,12 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
             creationConfig.services.initializeAapt2Input(task.aapt2)
             task.androidJarInput.initialize(creationConfig)
 
-            if (projectOptions[BooleanOption.ENABLE_SOURCE_SET_PATHS_MAP]) {
-                val sourceSetMap =
-                        creationConfig.artifacts.get(InternalArtifactType.SOURCE_SET_PATH_MAP)
-                task.sourceSetMaps.fromDisallowChanges(
-                        creationConfig.services.fileCollection(sourceSetMap)
-                )
-                task.dependsOn(sourceSetMap)
-            } else {
-                task.sourceSetMaps.disallowChanges()
-            }
+            val sourceSetMap =
+                    creationConfig.artifacts.get(InternalArtifactType.SOURCE_SET_PATH_MAP)
+            task.sourceSetMaps.fromDisallowChanges(
+                    creationConfig.services.fileCollection(sourceSetMap)
+            )
+            task.dependsOn(sourceSetMap)
         }
     }
 }

@@ -526,7 +526,7 @@ public final class ResourcesInternal {
       @java.lang.Override
       public void writeTo(com.google.protobuf.CodedOutputStream output)
                           throws java.io.IOException {
-        if (!getResourceNameBytes().isEmpty()) {
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(resourceName_)) {
           com.google.protobuf.GeneratedMessageV3.writeString(output, 1, resourceName_);
         }
         if (source_ != null) {
@@ -541,7 +541,7 @@ public final class ResourcesInternal {
         if (size != -1) return size;
 
         size = 0;
-        if (!getResourceNameBytes().isEmpty()) {
+        if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(resourceName_)) {
           size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, resourceName_);
         }
         if (source_ != null) {
@@ -1380,7 +1380,7 @@ public final class ResourcesInternal {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!getResourceNameBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(resourceName_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, resourceName_);
       }
       if (config_ != null) {
@@ -1389,7 +1389,7 @@ public final class ResourcesInternal {
       if (type_ != com.android.aapt.Resources.FileReference.Type.UNKNOWN.getNumber()) {
         output.writeEnum(3, type_);
       }
-      if (!getSourcePathBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(sourcePath_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 4, sourcePath_);
       }
       for (int i = 0; i < exportedSymbol_.size(); i++) {
@@ -1404,7 +1404,7 @@ public final class ResourcesInternal {
       if (size != -1) return size;
 
       size = 0;
-      if (!getResourceNameBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(resourceName_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, resourceName_);
       }
       if (config_ != null) {
@@ -1415,7 +1415,7 @@ public final class ResourcesInternal {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(3, type_);
       }
-      if (!getSourcePathBytes().isEmpty()) {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(sourcePath_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, sourcePath_);
       }
       for (int i = 0; i < exportedSymbol_.size(); i++) {

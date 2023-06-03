@@ -67,12 +67,12 @@ import com.android.build.gradle.internal.testing.utp.UtpTestRunner;
 import com.android.build.gradle.options.BooleanOption;
 import com.android.build.gradle.options.IntegerOption;
 import com.android.build.gradle.options.ProjectOptions;
+import com.android.buildanalyzer.common.TaskCategory;
 import com.android.builder.core.ComponentType;
 import com.android.builder.model.TestOptions.Execution;
 import com.android.builder.testing.api.DeviceConnector;
 import com.android.builder.testing.api.DeviceException;
 import com.android.builder.testing.api.DeviceProvider;
-import com.android.build.gradle.internal.tasks.TaskCategory;
 import com.android.ide.common.workers.ExecutorServiceAdapter;
 import com.android.utils.FileUtils;
 import com.android.utils.StringHelper;
@@ -191,6 +191,10 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
         @Nested
         public abstract BuildToolsExecutableInput getBuildTools();
 
+        @Input
+        @Optional
+        public abstract Property<Integer> getInstallApkTimeout();
+
         TestRunner createTestRunner(
                 WorkerExecutor workerExecutor,
                 ExecutorServiceAdapter executorServiceAdapter,
@@ -217,7 +221,8 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                         useOrchestrator,
                         getUninstallIncompatibleApks().get(),
                         utpTestResultListener,
-                        utpLoggingLevel());
+                        utpLoggingLevel(),
+                        getInstallApkTimeout().getOrNull());
             } else {
                 switch (getExecutionEnum().get()) {
                     case ANDROID_TEST_ORCHESTRATOR:
@@ -361,6 +366,7 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                                             getProjectPath().get(),
                                             getTestData().get().getFlavorName().get(),
                                             getTestData().get().getAsStaticData(),
+                                            getPrivacySandboxSdkApksFiles().getFiles(),
                                             getBuddyApks().getFiles(),
                                             getFilteredDevices(deviceProvider),
                                             deviceProvider.getTimeoutInMs(),
@@ -568,6 +574,11 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
     @InputFiles
     @PathSensitive(PathSensitivity.RELATIVE)
     public abstract ConfigurableFileCollection getBuddyApks();
+
+    @InputFiles
+    @PathSensitive(PathSensitivity.ABSOLUTE)
+    @Optional
+    public abstract ConfigurableFileCollection getPrivacySandboxSdkApksFiles();
 
     public static class CreationAction
             extends VariantTaskCreationAction<
@@ -822,6 +833,9 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                                     projectOptions,
                                     (EmulatorSnapshots) testOptions.getEmulatorSnapshots()));
 
+            task.getTestRunnerFactory()
+                    .getInstallApkTimeout()
+                    .set(projectOptions.getProvider(IntegerOption.INSTALL_APK_TIMEOUT));
             task.getCodeCoverageEnabled().set(creationConfig.isAndroidTestCoverageEnabled());
             boolean useJacocoTransformOutputs =
                     creationConfig.isAndroidTestCoverageEnabled();
@@ -900,6 +914,23 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                                                         .RUNTIME_CLASSPATH));
             }
             task.getRClasses().disallowChanges();
+            if (creationConfig
+                            .getServices()
+                            .getProjectOptions()
+                            .get(BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT)
+                    && testedConfig != null) {
+                task.getPrivacySandboxSdkApksFiles()
+                        .setFrom(
+                                testedConfig
+                                        .getVariantDependencies()
+                                        .getArtifactFileCollection(
+                                                AndroidArtifacts.ConsumedConfigType
+                                                        .RUNTIME_CLASSPATH,
+                                                AndroidArtifacts.ArtifactScope.ALL,
+                                                AndroidArtifacts.ArtifactType
+                                                        .ANDROID_PRIVACY_SANDBOX_SDK_APKS));
+            }
+            task.getPrivacySandboxSdkApksFiles().disallowChanges();
         }
     }
 }

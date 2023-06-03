@@ -23,7 +23,9 @@ import com.android.build.gradle.internal.PostprocessingFeatures
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
+import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.core.ToolExecutionOptions
+import com.android.build.gradle.internal.dsl.ModulePropertyKeys
 import com.android.build.gradle.internal.errors.MessageReceiverImpl
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
@@ -37,6 +39,7 @@ import com.android.build.gradle.internal.utils.getFilteredConfigurationFiles
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.SyncOptions
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.dexing.DexingType
 import com.android.builder.dexing.MainDexListConfig
 import com.android.builder.dexing.ProguardConfig
@@ -45,7 +48,6 @@ import com.android.builder.dexing.R8OutputType
 import com.android.builder.dexing.ToolConfig
 import com.android.builder.dexing.getR8Version
 import com.android.builder.dexing.runR8
-import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.utils.FileUtils
 import com.android.zipflinger.ZipArchive
 import org.gradle.api.file.ConfigurableFileCollection
@@ -138,8 +140,7 @@ abstract class R8Task @Inject constructor(
     abstract val useFullR8: Property<Boolean>
 
     @get:Input
-    lateinit var dexingType: DexingType
-        private set
+    abstract val legacyMultiDexEnabled: Property<Boolean>
 
     @get:Internal
     abstract val executionOptions: Property<ToolExecutionOptions>
@@ -216,6 +217,18 @@ abstract class R8Task @Inject constructor(
     @get:OutputFile
     abstract val mainDexListOutput: RegularFileProperty
 
+    @get:Input
+    abstract val artProfileRewriting: Property<Boolean>
+
+    @get:Optional
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
+    @get:InputFiles
+    abstract val inputArtProfile: RegularFileProperty
+
+    @get:Optional
+    @get:OutputFile
+    abstract val outputArtProfile: RegularFileProperty
+
     @get:Inject
     abstract val providerFactory: ProviderFactory
 
@@ -261,21 +274,24 @@ abstract class R8Task @Inject constructor(
                         R8Task::featureJavaResourceOutputDir
                     ).on(InternalArtifactType.FEATURE_SHRUNK_JAVA_RES)
 
-                    if (creationConfig.needsShrinkDesugarLibrary) {
+                    if (creationConfig.dexingCreationConfig.needsShrinkDesugarLibrary) {
+                        creationConfig.artifacts
+                            .setInitialProvider(taskProvider, R8Task::projectOutputKeepRules)
+                            .on(InternalArtifactType.DESUGAR_LIB_PROJECT_KEEP_RULES)
+                    }
+                }
+                creationConfig is ApkCreationConfig -> {
+                    creationConfig.artifacts.use(taskProvider)
+                        .wiredWith(R8Task::outputDex)
+                        .toAppendTo(InternalMultipleArtifactType.DEX)
+                    if (creationConfig.dexingCreationConfig.needsShrinkDesugarLibrary) {
                         creationConfig.artifacts
                             .setInitialProvider(taskProvider, R8Task::projectOutputKeepRules)
                             .on(InternalArtifactType.DESUGAR_LIB_PROJECT_KEEP_RULES)
                     }
                 }
                 else -> {
-                    creationConfig.artifacts.use(taskProvider)
-                        .wiredWith(R8Task::outputDex)
-                        .toAppendTo(InternalMultipleArtifactType.DEX)
-                    if (creationConfig.needsShrinkDesugarLibrary) {
-                        creationConfig.artifacts
-                            .setInitialProvider(taskProvider, R8Task::projectOutputKeepRules)
-                            .on(InternalArtifactType.DESUGAR_LIB_PROJECT_KEEP_RULES)
-                    }
+                    throw RuntimeException("Unrecognized type")
                 }
             }
 
@@ -286,14 +302,14 @@ abstract class R8Task @Inject constructor(
 
             if (creationConfig is ApkCreationConfig) {
                 when {
-                    creationConfig.needsMainDexListForBundle -> {
+                    creationConfig.dexingCreationConfig.needsMainDexListForBundle -> {
                         creationConfig.artifacts.setInitialProvider(
                             taskProvider,
                             R8Task::mainDexListOutput
                         ).withName("mainDexList.txt")
                             .on(InternalArtifactType.MAIN_DEX_LIST_FOR_BUNDLE)
                     }
-                    creationConfig.dexingType.needsMainDexList -> {
+                    creationConfig.dexingCreationConfig.dexingType.needsMainDexList -> {
                         creationConfig.artifacts.setInitialProvider(
                             taskProvider,
                             R8Task::mainDexListOutput
@@ -301,6 +317,12 @@ abstract class R8Task @Inject constructor(
                             .on(InternalArtifactType.LEGACY_MULTIDEX_MAIN_DEX_LIST)
                     }
                 }
+            }
+            if (creationConfig is VariantCreationConfig) {
+                creationConfig.artifacts
+                    .use(taskProvider)
+                    .wiredWithFiles(R8Task::inputArtProfile, R8Task::outputArtProfile)
+                    .toTransform(InternalArtifactType.MERGED_ART_PROFILE)
             }
         }
 
@@ -311,6 +333,16 @@ abstract class R8Task @Inject constructor(
 
             val artifacts = creationConfig.artifacts
 
+            if (creationConfig is VariantCreationConfig) {
+                task.artProfileRewriting.set(
+                    creationConfig.experimentalProperties.map {
+                        ModulePropertyKeys.ART_PROFILE_R8_REWRITING.getValueAsBoolean(it)
+                    }
+                )
+            } else {
+                task.artProfileRewriting.set(false)
+            }
+
             task.usesService(
                 getBuildService(
                     creationConfig.services.buildServiceRegistry,
@@ -318,31 +350,38 @@ abstract class R8Task @Inject constructor(
                 )
             )
 
-            task.enableDesugaring.set(
-                creationConfig.getJava8LangSupportType() == Java8LangSupport.R8
-                        && !componentType.isAar)
+            task.enableDesugaring.setDisallowChanges(
+                creationConfig is ApkCreationConfig &&
+                        creationConfig.dexingCreationConfig.java8LangSupportType == Java8LangSupport.R8
+            )
 
             setBootClasspathForCodeShrinker(task)
-            task.minSdkVersion.set(creationConfig.minSdkVersionForDexing.apiLevel)
+            if (creationConfig is ApkCreationConfig) {
+                task.minSdkVersion.set(
+                    creationConfig.dexingCreationConfig.minSdkVersionForDexing.apiLevel
+                )
+            } else {
+                task.minSdkVersion.set(creationConfig.minSdkVersion.apiLevel)
+            }
+            task.minSdkVersion.disallowChanges()
+
             task.debuggable
                 .setDisallowChanges(creationConfig.debuggable)
             task.disableTreeShaking.set(disableTreeShaking)
             task.disableMinification.set(disableMinification)
             task.errorFormatMode.set(SyncOptions.getErrorFormatMode(creationConfig.services.projectOptions))
-            task.dexingType = creationConfig.dexingType
+            task.legacyMultiDexEnabled.setDisallowChanges(
+                creationConfig is ApkCreationConfig &&
+                        creationConfig.dexingCreationConfig.dexingType == DexingType.LEGACY_MULTIDEX
+            )
             task.useFullR8.setDisallowChanges(creationConfig.services.projectOptions[BooleanOption.FULL_R8])
 
             task.executionOptions.setDisallowChanges(
                 creationConfig.global.settingsOptions.executionProfile?.r8Options)
 
-            if (!creationConfig.services.projectOptions[BooleanOption.R8_FAIL_ON_MISSING_CLASSES]) {
-                // Keep until AGP 8.0. It used to be necessary because of http://b/72683872.
-                proguardConfigurations.add("-ignorewarnings")
-            }
-
             task.proguardConfigurations = proguardConfigurations
 
-            if (componentType.isApk) {
+            if (creationConfig is ApkCreationConfig) {
                 // options applicable only when building APKs, do not apply with AARs
                 task.duplicateClassesCheck.from(artifacts.get(DUPLICATE_CLASSES_CHECK))
 
@@ -350,18 +389,17 @@ abstract class R8Task @Inject constructor(
                         artifacts.getAll(MultipleArtifact.MULTIDEX_KEEP_PROGUARD)
                 )
 
-                if (creationConfig.dexingType.needsMainDexList
-                    && !creationConfig.global.namespacedAndroidResources
-                ) {
+                if (creationConfig.dexingCreationConfig.dexingType.needsMainDexList &&
+                    !creationConfig.global.namespacedAndroidResources) {
                     task.mainDexRulesFiles.from(
                         artifacts.get(
                             InternalArtifactType.LEGACY_MULTIDEX_AAPT_DERIVED_PROGUARD_RULES
                         )
                     )
                 }
-                if (creationConfig is ApkCreationConfig) {
-                    task.multiDexKeepFile.setDisallowChanges(creationConfig.multiDexKeepFile)
-                }
+                task.multiDexKeepFile.setDisallowChanges(
+                    creationConfig.dexingCreationConfig.multiDexKeepFile
+                )
 
                 if ((creationConfig as? ApplicationCreationConfig)?.consumesFeatureJars == true) {
                     creationConfig.artifacts.setTaskInputToFinalProduct(
@@ -383,7 +421,7 @@ abstract class R8Task @Inject constructor(
                         )
                     )
                 }
-                if (creationConfig.isCoreLibraryDesugaringEnabled) {
+                if (creationConfig.dexingCreationConfig.isCoreLibraryDesugaringEnabled) {
                     task.coreLibDesugarConfig.set(getDesugarLibConfig(creationConfig.services))
                 }
             }
@@ -468,6 +506,19 @@ abstract class R8Task @Inject constructor(
                 |Current version is: ${getR8Version()}.
                 |""".trimMargin()
             )
+
+        val finalListOfConfigurationFiles = projectLayout.files(
+                configurationFiles,
+                generatedProguardFile.asFileTree,
+        )
+
+        // If inputArtProfile exists but artProfileRewriting is false, we need to copy it over
+        // to outputArtProfile.
+        val inputArtProfileFile = inputArtProfile.orNull?.asFile
+        if (inputArtProfileFile?.exists() == true && artProfileRewriting.get() == false) {
+            outputArtProfile.orNull?.asFile?.let { FileUtils.copyFile(inputArtProfileFile, it) }
+        }
+
         val workerAction = { it: R8Runnable.Params ->
             it.bootClasspath.from(bootClasspath.toList())
             it.minSdkVersion.set(minSdkVersion.get())
@@ -495,7 +546,7 @@ abstract class R8Task @Inject constructor(
                         ignoredLibraryKeepRules.get(),
                         ignoreAllLibraryKeepRules.get(),
                         libraryKeepRules,
-                        configurationFiles,
+                        finalListOfConfigurationFiles,
                         LoggerWrapper.getLogger(R8Task::class.java)),
                     extractedDefaultProguardFile))
             it.inputProguardMapping.set(
@@ -506,7 +557,7 @@ abstract class R8Task @Inject constructor(
                 })
             it.proguardConfigurations.set(proguardConfigurations)
             it.aar.set(componentType.orNull?.isAar == true)
-            it.dexingType.set(dexingType)
+            it.legacyMultiDexEnabled.set(legacyMultiDexEnabled)
             it.useFullR8.set(useFullR8.get())
             it.referencedInputs.from((referencedClasses + referencedResources).toList())
             it.classes.from(
@@ -530,6 +581,10 @@ abstract class R8Task @Inject constructor(
             it.libConfiguration.set(coreLibDesugarConfig.orNull)
             it.outputKeepRulesDir.set(projectOutputKeepRules.asFile.orNull)
             it.errorFormatMode.set(errorFormatMode.get())
+            if (artProfileRewriting.get()) {
+                it.inputArtProfile.set(inputArtProfile)
+                it.outputArtProfile.set(outputArtProfile)
+            }
         }
         if (executionOptions.get().runInSeparateProcess) {
             workerExecutor.processIsolation { spec ->
@@ -553,7 +608,7 @@ abstract class R8Task @Inject constructor(
             mainDexListFiles: List<File>,
             mainDexRulesFiles: List<File>,
             mainDexListOutput: File?,
-            dexingType: DexingType,
+            legacyMultiDexEnabled: Boolean,
             useFullR8: Boolean,
             referencedInputs: List<File>,
             classes: List<File>,
@@ -576,6 +631,8 @@ abstract class R8Task @Inject constructor(
             libConfiguration: String?,
             outputKeepRulesDir: File?,
             errorFormatMode: SyncOptions.ErrorFormatMode,
+            inputArtProfile: File?,
+            outputArtProfile: File?
         ) {
             val logger = LoggerWrapper.getLogger(R8Task::class.java)
 
@@ -615,7 +672,7 @@ abstract class R8Task @Inject constructor(
                 proguardOutputFiles
             )
 
-            val mainDexListConfig = if (dexingType == DexingType.LEGACY_MULTIDEX) {
+            val mainDexListConfig = if (legacyMultiDexEnabled) {
                 MainDexListConfig(
                     mainDexRulesFiles.map { it.toPath() },
                     mainDexListFiles.map { it.toPath() },
@@ -657,6 +714,8 @@ abstract class R8Task @Inject constructor(
                 featureJavaResourceOutputDir?.toPath(),
                 libConfiguration,
                 outputKeepRulesFile?.toPath(),
+                inputArtProfile?.toPath(),
+                outputArtProfile?.toPath(),
             )
         }
 
@@ -683,7 +742,7 @@ abstract class R8Task @Inject constructor(
             abstract val mainDexListFiles: ConfigurableFileCollection
             abstract val mainDexRulesFiles: ConfigurableFileCollection
             abstract val mainDexListOutput: RegularFileProperty
-            abstract val dexingType: Property<DexingType>
+            abstract val legacyMultiDexEnabled: Property<Boolean>
             abstract val useFullR8: Property<Boolean>
             abstract val referencedInputs: ConfigurableFileCollection
             abstract val classes: ConfigurableFileCollection
@@ -706,6 +765,8 @@ abstract class R8Task @Inject constructor(
             abstract val libConfiguration: Property<String>
             abstract val outputKeepRulesDir: DirectoryProperty
             abstract val errorFormatMode: Property<SyncOptions.ErrorFormatMode>
+            abstract val inputArtProfile: RegularFileProperty
+            abstract val outputArtProfile: RegularFileProperty
         }
 
         override fun execute() {
@@ -719,7 +780,7 @@ abstract class R8Task @Inject constructor(
                 parameters.mainDexListFiles.files.toList(),
                 parameters.mainDexRulesFiles.files.toList(),
                 parameters.mainDexListOutput.orNull?.asFile,
-                parameters.dexingType.get(),
+                parameters.legacyMultiDexEnabled.get(),
                 parameters.useFullR8.get(),
                 parameters.referencedInputs.files.toList(),
                 parameters.classes.files.toList(),
@@ -742,6 +803,8 @@ abstract class R8Task @Inject constructor(
                 parameters.libConfiguration.orNull,
                 parameters.outputKeepRulesDir.orNull?.asFile,
                 parameters.errorFormatMode.get(),
+                parameters.inputArtProfile.orNull?.asFile,
+                parameters.outputArtProfile.orNull?.asFile,
             )
         }
     }

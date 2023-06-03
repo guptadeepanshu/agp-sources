@@ -20,8 +20,9 @@ import com.android.build.api.dsl.ApplicationBuildType
 import com.android.build.api.dsl.BuildType
 import com.android.build.api.dsl.ProductFlavor
 import com.android.build.api.variant.ComponentIdentity
-import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.core.dsl.DynamicFeatureVariantDslInfo
+import com.android.build.gradle.internal.core.dsl.features.DexingDslInfo
+import com.android.build.gradle.internal.core.dsl.impl.features.DexingDslInfoImpl
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import com.android.build.gradle.internal.dsl.InternalDynamicFeatureExtension
 import com.android.build.gradle.internal.dsl.SigningConfig
@@ -41,7 +42,6 @@ internal class DynamicFeatureVariantDslInfoImpl(
     dataProvider: ManifestDataProvider,
     services: VariantServices,
     buildDirectory: DirectoryProperty,
-    oldExtension: BaseExtension?,
     extension: InternalDynamicFeatureExtension
 ) : TestedVariantDslInfoImpl(
     componentIdentity,
@@ -52,7 +52,6 @@ internal class DynamicFeatureVariantDslInfoImpl(
     dataProvider,
     services,
     buildDirectory,
-    oldExtension,
     extension
 ), DynamicFeatureVariantDslInfo {
 
@@ -69,4 +68,10 @@ internal class DynamicFeatureVariantDslInfoImpl(
     override val isSigningReady: Boolean = false
     override val isMultiDexSetFromDsl: Boolean
         get() = (buildTypeObj as? ApplicationBuildType)?.multiDexEnabled != null
+
+    override val dexingDslInfo: DexingDslInfo by lazy {
+        DexingDslInfoImpl(
+            buildTypeObj, mergedFlavor, services
+        )
+    }
 }

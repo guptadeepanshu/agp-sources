@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.core.dsl
 
+import com.android.build.gradle.internal.core.dsl.features.DexingDslInfo
 import com.android.build.gradle.internal.dsl.SigningConfig
 import com.android.build.gradle.options.ProjectOptions
 
@@ -24,6 +25,8 @@ import com.android.build.gradle.options.ProjectOptions
  * build type, flavors) that are needed by components that produces APKs.
  */
 interface ApkProducingComponentDslInfo: ConsumableComponentDslInfo {
+
+    val dexingDslInfo: DexingDslInfo
 
     val isDebuggable: Boolean
 

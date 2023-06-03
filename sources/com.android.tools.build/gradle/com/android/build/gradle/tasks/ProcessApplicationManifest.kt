@@ -36,12 +36,11 @@ import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.manifest.ManifestProviderImpl
 import com.android.build.gradle.internal.tasks.manifest.mergeManifests
-import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.StringOption
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.dexing.DexingType
-import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.manifmerger.ManifestMerger2
 import com.android.manifmerger.ManifestMerger2.Invoker
 import com.android.manifmerger.ManifestMerger2.WEAR_APP_SUB_MANIFEST
@@ -53,7 +52,6 @@ import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
 import org.gradle.api.artifacts.result.ResolvedArtifactResult
-import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
@@ -95,15 +93,10 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
     var dependencyFeatureNameArtifacts: FileCollection? = null
         private set
 
-    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
     @get:Optional
     @get:InputFiles
     abstract val microApkManifest: RegularFileProperty
-
-    @get:PathSensitive(PathSensitivity.RELATIVE)
-    @get:Optional
-    @get:InputFiles
-    abstract val privacySandboxSdkManifestSnippets: ConfigurableFileCollection
 
     @get:Optional
     @get:Input
@@ -128,7 +121,7 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
 
     @get:Optional
     @get:Input
-    abstract val manifestPlaceholders: MapProperty<String, Any>
+    abstract val manifestPlaceholders: MapProperty<String, String>
 
     private var isFeatureSplitVariantType = false
     private var buildTypeName: String? = null
@@ -231,9 +224,6 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
                         )
                 )
             }
-        }
-        privacySandboxSdkManifestSnippets.forEach {
-            providers.add(ManifestProviderImpl(it, it.name))
         }
 
         if (featureManifests != null) {
@@ -365,7 +355,6 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
             task: ProcessApplicationManifest
         ) {
             super.configure(task)
-            val variantSources = creationConfig.variantSources
             val componentType = creationConfig.componentType
             // This includes the dependent libraries.
             task.manifests = creationConfig
@@ -383,17 +372,6 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
                         InternalArtifactType.MICRO_APK_MANIFEST_FILE,
                         task.microApkManifest
                 )
-            }
-            if (creationConfig.services.projectOptions[BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT]) {
-                task.privacySandboxSdkManifestSnippets.fromDisallowChanges(
-                    creationConfig.variantDependencies.getArtifactFileCollection(
-                        ConsumedConfigType.RUNTIME_CLASSPATH,
-                        ArtifactScope.ALL,
-                        AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_EXTRACTED_MANIFEST_SNIPPET
-                    )
-                )
-            } else {
-                task.privacySandboxSdkManifestSnippets.disallowChanges()
             }
 
             task.applicationId.set(creationConfig.applicationId)
@@ -465,12 +443,14 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
                     creationConfig.services.projectOptions[StringOption.PROFILING_MODE]
                 ) != ProfilingMode.UNDEFINED
             )
-            task.manifestPlaceholders.set(creationConfig.manifestPlaceholders)
-            task.manifestPlaceholders.disallowChanges()
-            task.mainManifest.setDisallowChanges(creationConfig.services.provider(variantSources::mainManifestFilePath))
-            task.manifestOverlays.setDisallowChanges(
-                task.project.provider(variantSources::manifestOverlays)
+            task.manifestPlaceholders.setDisallowChanges(
+                creationConfig.manifestPlaceholdersCreationConfig?.placeholders,
+                handleNullable = { empty() }
             )
+            task.manifestPlaceholders.disallowChanges()
+            task.mainManifest.setDisallowChanges(creationConfig.sources.manifestFile)
+            creationConfig.sources.manifestOverlays.forEach(task.manifestOverlays::add)
+            task.manifestOverlays.disallowChanges()
             task.isFeatureSplitVariantType = creationConfig.componentType.isDynamicFeature
             task.buildTypeName = creationConfig.buildType
             task.projectBuildFile.set(task.project.buildFile)
@@ -526,7 +506,7 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
                     features.add(Invoker.Feature.ADVANCED_PROFILING)
                 }
             }
-            if (creationConfig.dexingType === DexingType.LEGACY_MULTIDEX) {
+            if (creationConfig.dexingCreationConfig.dexingType === DexingType.LEGACY_MULTIDEX) {
                 features.add(
                     if (creationConfig.services.projectOptions[BooleanOption.USE_ANDROID_X]) {
                         Invoker.Feature.ADD_ANDROIDX_MULTIDEX_APPLICATION_IF_NO_NAME

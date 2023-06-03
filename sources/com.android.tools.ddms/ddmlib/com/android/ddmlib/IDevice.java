@@ -58,6 +58,21 @@ public interface IDevice extends IShellEnabledDevice {
     String PROP_DEVICE_REGION = "persist.sys.country";
 
     String PROP_DEBUGGABLE = "ro.debuggable";
+    /**
+     * System display name of the emulator
+     *
+     * <p>Possible values:
+     *
+     * <ul>
+     *   <li>{@code "freeform"}: Support emulation of "freeform" (i.e. resizable) activity windows
+     *   <li>{@code "resizable"}: Support emulation of resizable display
+     * </ul>
+     *
+     * <a
+     * href="https://cs.android.com/android/platform/superproject/+/c9c74a385c33bbe94c24ecad3b2982c13d737763:device/generic/goldfish/provision/EmulatorProvisonLib/src/com/android/sdksetup/ProvisionActivity.java;l=130;bpv=1">See
+     * reference</a>
+     */
+    String PROP_DEVICE_BOOT_QEMU_DISPLAY_NAME = "ro.boot.qemu.display.settings.xml";
 
     /** Serial number of the first connected emulator. */
     String FIRST_EMULATOR_SN = "emulator-5554"; //$NON-NLS-1$

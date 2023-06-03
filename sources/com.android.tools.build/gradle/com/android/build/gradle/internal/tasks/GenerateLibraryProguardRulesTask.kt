@@ -17,14 +17,14 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
-import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
+import com.android.build.api.artifact.SingleArtifact
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.tasks.getChangesInSerializableForm
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.files.SerializableChange
-import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.ide.common.resources.FileStatus
 import com.android.ide.common.symbols.generateKeepRulesFromLayoutXmlFile
 import com.android.ide.common.symbols.generateMinifyKeepRules
@@ -37,6 +37,7 @@ import org.gradle.api.logging.Logging
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
+import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
@@ -63,9 +64,9 @@ abstract class GenerateLibraryProguardRulesTask : NewIncrementalTask() {
     @get:OutputFile
     abstract val proguardOutputFile: RegularFileProperty
 
-    @get:InputFiles
-    @get:PathSensitive(PathSensitivity.RELATIVE)
-    abstract val manifestFiles: DirectoryProperty
+    @get:InputFile
+    @get:PathSensitive(PathSensitivity.NONE)
+    abstract val manifestFile: RegularFileProperty
 
     @get:Incremental
     @get:InputFiles
@@ -74,9 +75,8 @@ abstract class GenerateLibraryProguardRulesTask : NewIncrementalTask() {
 
     override fun doTaskAction(inputChanges: InputChanges) {
         val isIncremental = inputChanges.isIncremental
-        val manifest =
-            BuiltArtifactsLoaderImpl().load(manifestFiles)?.elements?.first()?.outputFile
-                ?: throw RuntimeException("Cannot find manifest file")
+        val manifest = manifestFile.get().asFile
+        if (!manifest.exists()) throw RuntimeException("Cannot find manifest file")
         val changedResources = if (isIncremental) {
             inputChanges.getChangesInSerializableForm(inputResourcesDir).changes
         } else {
@@ -86,7 +86,7 @@ abstract class GenerateLibraryProguardRulesTask : NewIncrementalTask() {
             GenerateProguardRulesWorkAction::class.java
         ) {
             it.initializeFromAndroidVariantTask(this)
-            it.manifestFile.set(File(manifest))
+            it.manifestFile.set(manifest)
             it.proguardOutputFile.set(proguardOutputFile)
             it.inputResourcesDir.set(inputResourcesDir)
             it.changedResources.set(changedResources)
@@ -150,7 +150,7 @@ abstract class GenerateLibraryProguardRulesTask : NewIncrementalTask() {
             )
 
              creationConfig.artifacts.setTaskInputToFinalProduct(
-                 InternalArtifactType.PACKAGED_MANIFESTS, task.manifestFiles)
+                 SingleArtifact.MERGED_MANIFEST, task.manifestFile)
         }
     }
 }

@@ -86,7 +86,7 @@ fun createCxxVariantModel(
                      * -DCMAKE_RELEASE_TYPE=Release in build.gradle to override the default chosen
                      * here.
                      */
-                    val lower = variantName.toLowerCase(Locale.ROOT)
+                    val lower = variantName.lowercase(Locale.ROOT)
                     when {
                         lower.endsWith("release") -> "RelWithDebInfo"
                         lower.endsWith("debug") -> "Debug"
@@ -114,7 +114,10 @@ val CxxVariantModel.prefabClassPath : File?
 val CxxVariantModel.prefabPackageDirectoryList : List<File>
     get() = prefabPackages?.toList()?:listOf()
 
-val CxxVariantModel.prefabPackageConfigurationDirectoryList : List<File>
+/**
+ * List of prefab_publication.json from Prefab sources such as AAR or module-to-module reference.
+ */
+val CxxVariantModel.prefabPackageConfigurationList : List<File>
     get() = (prefabPackageConfigurations?.toList()?:listOf())
 
 

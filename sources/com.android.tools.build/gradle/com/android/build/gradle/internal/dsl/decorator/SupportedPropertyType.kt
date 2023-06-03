@@ -117,7 +117,7 @@ sealed class SupportedPropertyType {
         ) : this(Type.getType(type), Type.getType(implementationType))
 
         init {
-            assert(type != implementationType) {
+            check(type != implementationType) {
                 """
                     Trying to decorate a class (${type.className}) with no implementation class.
 

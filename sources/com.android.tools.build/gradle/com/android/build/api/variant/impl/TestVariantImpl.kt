@@ -16,31 +16,27 @@
 
 package com.android.build.api.variant.impl
 
-import com.android.build.api.artifact.MultipleArtifact
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.component.analytics.AnalyticsEnabledTestVariant
-import com.android.build.api.component.impl.TestVariantCreationConfigImpl
+import com.android.build.api.component.impl.features.DexingCreationConfigImpl
 import com.android.build.api.component.impl.getAndroidResources
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
 import com.android.build.api.variant.AndroidResources
-import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.ApkPackaging
 import com.android.build.api.variant.Component
 import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.TestVariant
 import com.android.build.api.variant.Variant
 import com.android.build.api.variant.VariantBuilder
-import com.android.build.gradle.internal.ProguardFileType
 import com.android.build.gradle.internal.component.TestVariantCreationConfig
+import com.android.build.gradle.internal.component.features.DexingCreationConfig
 import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.core.dsl.TestProjectVariantDslInfo
 import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.dsl.ModulePropertyKeys
-import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.BuildFeatureValues
-import com.android.build.gradle.internal.scope.Java8LangSupport
 import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
@@ -49,10 +45,7 @@ import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
 import com.android.build.gradle.options.IntegerOption
-import com.android.builder.dexing.DexingType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
-import org.gradle.api.file.RegularFile
-import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import javax.inject.Inject
@@ -67,7 +60,6 @@ open class TestVariantImpl @Inject constructor(
     artifacts: ArtifactsImpl,
     variantData: BaseVariantData,
     taskContainer: MutableTaskContainer,
-    transformManager: TransformManager,
     internalServices: VariantServices,
     taskCreationServices: TaskCreationServices,
     globalTaskCreationConfig: GlobalTaskCreationConfig
@@ -81,25 +73,10 @@ open class TestVariantImpl @Inject constructor(
     artifacts,
     variantData,
     taskContainer,
-    transformManager,
     internalServices,
     taskCreationServices,
     globalTaskCreationConfig
 ), TestVariant, TestVariantCreationConfig {
-
-    init {
-        dslInfo.multiDexKeepProguard?.let {
-            artifacts.getArtifactContainer(MultipleArtifact.MULTIDEX_KEEP_PROGUARD)
-                .addInitialProvider(null, internalServices.toRegularFileProvider(it))
-        }
-    }
-
-    private val delegate by lazy {
-        TestVariantCreationConfigImpl(
-            this,
-            dslInfo
-        )
-    }
 
     // ---------------------------------------------------------------------------------------------
     // PUBLIC API
@@ -124,13 +101,12 @@ open class TestVariantImpl @Inject constructor(
         }
     }
 
-    override val minifiedEnabled: Boolean
-        get() = variantBuilder.isMinifyEnabled
-    override val resourcesShrink: Boolean
-        get() = false
-
-    override val instrumentationRunner: Property<String> =
-        internalServices.propertyOf(String::class.java, dslInfo.getInstrumentationRunner(dexingType))
+    override val instrumentationRunner: Property<String> by lazy {
+        internalServices.propertyOf(
+            String::class.java,
+            dslInfo.getInstrumentationRunner(dexingCreationConfig.dexingType)
+        )
+    }
 
     override val handleProfiling: Property<Boolean> =
         internalServices.propertyOf(Boolean::class.java, dslInfo.handleProfiling)
@@ -153,20 +129,17 @@ open class TestVariantImpl @Inject constructor(
         renderscriptCreationConfig?.renderscript
     }
 
-    override val proguardFiles: ListProperty<RegularFile> by lazy {
-        internalServices.listPropertyOf(RegularFile::class.java) {
-            val projectDir = services.projectInfo.projectDirectory
-            it.addAll(
-                dslInfo.gatherProguardFiles(ProguardFileType.TEST).map { file ->
-                    projectDir.file(file.absolutePath)
-                }
-            )
-        }
-    }
-
     // ---------------------------------------------------------------------------------------------
     // INTERNAL API
     // ---------------------------------------------------------------------------------------------
+
+    override val dexingCreationConfig: DexingCreationConfig by lazy(LazyThreadSafetyMode.NONE) {
+        DexingCreationConfigImpl(
+            this,
+            dslInfo.dexingDslInfo,
+            internalServices
+        )
+    }
 
     // always false for this type
     override val embedsMicroApp: Boolean
@@ -179,14 +152,8 @@ open class TestVariantImpl @Inject constructor(
     override val instrumentationRunnerArguments: Map<String, String>
         get() = dslInfo.instrumentationRunnerArguments
 
-    override val isTestCoverageEnabled: Boolean
-        get() = dslInfo.isAndroidTestCoverageEnabled
-
-    override val shouldPackageDesugarLibDex: Boolean = delegate.isCoreLibraryDesugaringEnabled(this)
     override val debuggable: Boolean
-        get() = delegate.isDebuggable
-    override val isCoreLibraryDesugaringEnabled: Boolean
-        get() = delegate.isCoreLibraryDesugaringEnabled
+        get() = dslInfo.isDebuggable
 
     override val shouldPackageProfilerDependencies: Boolean = false
     override val advancedProfilingTransforms: List<String> = emptyList()
@@ -202,13 +169,15 @@ open class TestVariantImpl @Inject constructor(
         }
     }
 
+    /**
+     * For test projects, coverage will only be effective if set by the tested project.
+     */
+    override val isAndroidTestCoverageEnabled: Boolean
+        get() = dslInfo.isAndroidTestCoverageEnabled
     override val useJacocoTransformInstrumentation: Boolean
         get() = false
-
-    // ---------------------------------------------------------------------------------------------
-    // DO NOT USE, Deprecated DSL APIs.
-    // ---------------------------------------------------------------------------------------------
-    override val multiDexKeepFile = dslInfo.multiDexKeepFile
+    override val packageJacocoRuntime: Boolean
+        get() = false
 
     // ---------------------------------------------------------------------------------------------
     // Private stuff
@@ -229,9 +198,6 @@ open class TestVariantImpl @Inject constructor(
             }
     }
 
-    override val dexingType: DexingType
-        get() = delegate.dexingType
-
     override fun <T : Component> createUserVisibleVariantObject(
             projectServices: ProjectServices,
             operationsRegistrar: VariantApiOperationsRegistrar<out CommonExtension<*, *, *, *>, out VariantBuilder, out Variant>,
@@ -246,14 +212,4 @@ open class TestVariantImpl @Inject constructor(
                 stats
             ) as T
         }
-
-    override val minSdkVersionForDexing: AndroidVersion
-        get() = delegate.minSdkVersionForDexing
-
-    override val needsMergedJavaResStream: Boolean = delegate.getNeedsMergedJavaResStream()
-
-    override fun getJava8LangSupportType(): Java8LangSupport = delegate.getJava8LangSupportType()
-    override val needsShrinkDesugarLibrary: Boolean
-        get() = delegate.needsShrinkDesugarLibrary
-
 }

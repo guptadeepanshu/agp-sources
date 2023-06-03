@@ -17,7 +17,7 @@
 package com.android.build.gradle.internal.cxx.configure
 
 import com.android.build.gradle.internal.cxx.json.AndroidBuildGradleJsons.writeNativeBuildMiniConfigValueToJsonFile
-import com.android.build.gradle.internal.cxx.logging.PassThroughDeduplicatingLoggingEnvironment
+import com.android.build.gradle.internal.cxx.logging.PassThroughRecordingLoggingEnvironment
 import com.android.build.gradle.internal.cxx.logging.errorln
 import com.android.build.gradle.internal.cxx.logging.lifecycleln
 import com.android.build.gradle.internal.cxx.model.CxxAbiModel
@@ -81,7 +81,7 @@ internal class NinjaMetadataGenerator(
         abi.compileCommandsJsonFile.delete()
         abi.compileCommandsJsonBinFile.delete()
 
-        PassThroughDeduplicatingLoggingEnvironment().use { logger ->
+        PassThroughRecordingLoggingEnvironment().use { logger ->
             // Execute tool to generate build.ninja or build.ninja.txt
             val result = abi.executeProcess(
                 processType = ExecuteProcessType.CONFIGURE_PROCESS,

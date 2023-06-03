@@ -43,7 +43,7 @@ interface LibraryExtension :
      * container of Prefab options
      */
     @get:Incubating
-    val prefab: NamedDomainObjectContainer<PrefabPackagingOptions>
+    val prefab: NamedDomainObjectContainer<Prefab>
 
     /**
      * Customizes publishing build variant artifacts from library module to a Maven repository.

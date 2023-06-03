@@ -28,11 +28,11 @@ import com.android.utils.PositionXmlParser;
 import com.google.common.base.Preconditions;
 import java.awt.geom.AffineTransform;
 import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,7 +67,6 @@ class SvgTree {
     private float h = -1;
     private final AffineTransform mRootTransform = new AffineTransform();
     private float[] viewBox;
-    private float mScaleFactor = 1;
 
     private SvgGroupNode mRoot;
     private String mFileName;
@@ -84,8 +83,11 @@ class SvgTree {
     /** IDs of ignored SVG nodes. */
     private final Set<String> mIgnoredIds = new HashSet<>();
 
-    /** Set of SvgGroupNodes that contain use elements. */
+    /** Set of SvgGroupNodes that contain "use" elements. */
     private final Set<SvgGroupNode> mPendingUseGroupSet = new HashSet<>();
+
+    /** Set of SvgGradientNodes that contain "href"" elements. */
+    private final Set<SvgGradientNode> mPendingGradientRefSet = new HashSet<>();
 
     /**
      * Key is SvgNode that references a clipPath. Value is SvgGroupNode that is the parent of that
@@ -160,7 +162,7 @@ class SvgTree {
     }
 
     public float getScaleFactor() {
-        return mScaleFactor;
+        return 1;
     }
 
     public void setHasLeafNode(boolean hasLeafNode) {
@@ -188,10 +190,12 @@ class SvgTree {
         }
     }
 
-    public Document parse(@NonNull File f, @NonNull List<String> parseErrors) throws IOException {
-        mFileName = f.getName();
+    @NonNull
+    public Document parse(@NonNull Path file, @NonNull List<String> parseErrors)
+            throws IOException {
+        mFileName = file.getFileName().toString();
         try {
-            BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(f));
+            BufferedInputStream inputStream = new BufferedInputStream(Files.newInputStream(file));
             return PositionXmlParser.parse(inputStream, false, parseErrors);
         } catch (ParserConfigurationException e) {
             throw new Error("Internal error", e); // Should not happen unless there is a bug.
@@ -389,6 +393,15 @@ class SvgTree {
     @NonNull
     public Set<SvgGroupNode> getPendingUseSet() {
         return mPendingUseGroupSet;
+    }
+
+    public void addToPendingGradientRefSet(@NonNull SvgGradientNode node) {
+        mPendingGradientRefSet.add(node);
+    }
+
+    @NonNull
+    public Set<SvgGradientNode> getPendingGradientRefSet() {
+        return mPendingGradientRefSet;
     }
 
     public void addIgnoredId(@NonNull String id) {

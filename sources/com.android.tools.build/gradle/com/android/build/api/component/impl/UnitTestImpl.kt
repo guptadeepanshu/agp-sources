@@ -20,6 +20,7 @@ import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.component.UnitTest
 import com.android.build.api.component.analytics.AnalyticsEnabledUnitTest
 import com.android.build.api.component.impl.features.AndroidResourcesCreationConfigImpl
+import com.android.build.api.component.impl.features.ManifestPlaceholdersCreationConfigImpl
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
 import com.android.build.api.variant.AndroidVersion
@@ -34,9 +35,9 @@ import com.android.build.gradle.internal.component.features.BuildConfigCreationC
 import com.android.build.gradle.internal.component.features.ManifestPlaceholdersCreationConfig
 import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.core.dsl.UnitTestComponentDslInfo
+import com.android.build.gradle.internal.core.dsl.features.ManifestPlaceholdersDslInfo
 import com.android.build.gradle.internal.core.dsl.impl.DEFAULT_TEST_RUNNER
 import com.android.build.gradle.internal.dependency.VariantDependencies
-import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.ProjectServices
@@ -61,7 +62,6 @@ open class UnitTestImpl @Inject constructor(
     variantData: BaseVariantData,
     taskContainer: MutableTaskContainer,
     testedVariant: VariantCreationConfig,
-    transformManager: TransformManager,
     internalServices: VariantServices,
     taskCreationServices: TaskCreationServices,
     global: GlobalTaskCreationConfig
@@ -76,7 +76,6 @@ open class UnitTestImpl @Inject constructor(
     variantData,
     taskContainer,
     testedVariant,
-    transformManager,
     internalServices,
     taskCreationServices,
     global
@@ -120,7 +119,7 @@ open class UnitTestImpl @Inject constructor(
 
     // these would normally be public but not for unit-test. They are there to feed the
     // manifest but aren't actually used.
-    override val isTestCoverageEnabled: Boolean
+    override val isUnitTestCoverageEnabled: Boolean
         get() = dslInfo.isUnitTestCoverageEnabled
 
     override val androidResourcesCreationConfig: AndroidResourcesCreationConfig? by lazy(LazyThreadSafetyMode.NONE) {
@@ -131,6 +130,7 @@ open class UnitTestImpl @Inject constructor(
             AndroidResourcesCreationConfigImpl(
                 this,
                 dslInfo,
+                dslInfo.androidResourcesDsl!!,
                 internalServices,
             )
         } else {
@@ -139,7 +139,8 @@ open class UnitTestImpl @Inject constructor(
     }
 
     override val manifestPlaceholdersCreationConfig: ManifestPlaceholdersCreationConfig by lazy(LazyThreadSafetyMode.NONE) {
-        createManifestPlaceholdersCreationConfig(dslInfo.testedVariantDslInfo.manifestPlaceholders)
+        createManifestPlaceholdersCreationConfig(
+                dslInfo.mainVariantDslInfo.manifestPlaceholdersDslInfo?.placeholders)
     }
 
     override fun <T : Component> createUserVisibleVariantObject(
@@ -161,8 +162,4 @@ open class UnitTestImpl @Inject constructor(
      * There is no build config fields for unit tests.
      */
     override val buildConfigCreationConfig: BuildConfigCreationConfig? = null
-
-    // TODO: Remove
-    override val isUnitTestCoverageEnabled: Boolean
-        get() = dslInfo.isUnitTestCoverageEnabled
 }

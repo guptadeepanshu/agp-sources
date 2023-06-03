@@ -47,9 +47,8 @@ import org.gradle.api.artifacts.transform.TransformOutputs;
 import org.gradle.api.file.FileSystemLocation;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
+import org.gradle.api.tasks.Classpath;
 import org.gradle.api.tasks.Input;
-import org.gradle.api.tasks.PathSensitive;
-import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.work.DisableCachingByDefault;
 
 /** Transform that returns the content of an extracted AAR folder. */
@@ -64,7 +63,7 @@ public abstract class AarTransform implements TransformAction<AarTransform.Param
         Property<Boolean> getSharedLibSupport();
     }
 
-    @PathSensitive(PathSensitivity.ABSOLUTE)
+    @Classpath
     @InputArtifact
     public abstract Provider<FileSystemLocation> getInputArtifact();
 

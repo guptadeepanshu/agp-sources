@@ -2015,6 +2015,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>repeated string plugin_names = 16 [deprecated = true];</code>
+   * @deprecated
    * @return A list containing the pluginNames.
    */
   @java.lang.Deprecated public com.google.protobuf.ProtocolStringList
@@ -2029,6 +2030,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>repeated string plugin_names = 16 [deprecated = true];</code>
+   * @deprecated
    * @return The count of pluginNames.
    */
   @java.lang.Deprecated public int getPluginNamesCount() {
@@ -2042,6 +2044,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>repeated string plugin_names = 16 [deprecated = true];</code>
+   * @deprecated
    * @param index The index of the element to return.
    * @return The pluginNames at the given index.
    */
@@ -2056,6 +2059,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>repeated string plugin_names = 16 [deprecated = true];</code>
+   * @deprecated
    * @param index The index of the value to return.
    * @return The bytes of the pluginNames at the given index.
    */
@@ -4903,6 +4907,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>repeated string plugin_names = 16 [deprecated = true];</code>
+     * @deprecated
      * @return A list containing the pluginNames.
      */
     @java.lang.Deprecated public com.google.protobuf.ProtocolStringList
@@ -4917,6 +4922,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>repeated string plugin_names = 16 [deprecated = true];</code>
+     * @deprecated
      * @return The count of pluginNames.
      */
     @java.lang.Deprecated public int getPluginNamesCount() {
@@ -4930,6 +4936,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>repeated string plugin_names = 16 [deprecated = true];</code>
+     * @deprecated
      * @param index The index of the element to return.
      * @return The pluginNames at the given index.
      */
@@ -4944,6 +4951,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>repeated string plugin_names = 16 [deprecated = true];</code>
+     * @deprecated
      * @param index The index of the value to return.
      * @return The bytes of the pluginNames at the given index.
      */
@@ -4959,6 +4967,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>repeated string plugin_names = 16 [deprecated = true];</code>
+     * @deprecated
      * @param index The index to set the value at.
      * @param value The pluginNames to set.
      * @return This builder for chaining.
@@ -4981,6 +4990,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>repeated string plugin_names = 16 [deprecated = true];</code>
+     * @deprecated
      * @param value The pluginNames to add.
      * @return This builder for chaining.
      */
@@ -5002,6 +5012,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>repeated string plugin_names = 16 [deprecated = true];</code>
+     * @deprecated
      * @param values The pluginNames to add.
      * @return This builder for chaining.
      */
@@ -5021,6 +5032,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>repeated string plugin_names = 16 [deprecated = true];</code>
+     * @deprecated
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder clearPluginNames() {
@@ -5037,6 +5049,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>repeated string plugin_names = 16 [deprecated = true];</code>
+     * @deprecated
      * @param value The bytes of the pluginNames to add.
      * @return This builder for chaining.
      */

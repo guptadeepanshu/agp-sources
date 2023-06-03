@@ -40,8 +40,11 @@ import com.android.build.gradle.internal.dependency.CollectClassesTransform
 import com.android.build.gradle.internal.dependency.CollectResourceSymbolsTransform
 import com.android.build.gradle.internal.dependency.EnumerateClassesTransform
 import com.android.build.gradle.internal.dependency.ExtractAarTransform
+import com.android.build.gradle.internal.dependency.ExtractCompileSdkShimTransform
 import com.android.build.gradle.internal.dependency.ExtractJniTransform
 import com.android.build.gradle.internal.dependency.ExtractProGuardRulesTransform
+import com.android.build.gradle.internal.dependency.ExtractRuntimeSdkShimTransform
+import com.android.build.gradle.internal.dependency.ExtractSdkShimTransform
 import com.android.build.gradle.internal.dependency.FilterShrinkerRulesTransform
 import com.android.build.gradle.internal.dependency.GenericTransformParameters
 import com.android.build.gradle.internal.dependency.IdentityTransform
@@ -71,7 +74,11 @@ import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.AsarToApksTransform
 import com.android.build.gradle.internal.tasks.AsarToManifestSnippetTransform
+import com.android.build.gradle.internal.tasks.AsarTransform
 import com.android.build.gradle.internal.tasks.factory.BootClasspathConfig
+import com.android.build.gradle.internal.utils.ATTR_ENABLE_CORE_LIBRARY_DESUGARING
+import com.android.build.gradle.internal.utils.D8BackportedMethodsGenerator
+import com.android.build.gradle.internal.utils.D8_DESUGAR_METHODS
 import com.android.build.gradle.internal.utils.getDesugarLibConfig
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.internal.variant.ComponentInfo
@@ -79,6 +86,8 @@ import com.android.build.gradle.internal.variant.VariantInputModel
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.StringOption
 import com.android.build.gradle.options.SyncOptions
+import com.android.repository.Revision
+import com.android.tools.r8.Version
 import com.google.common.collect.Maps
 import org.gradle.api.ActionConfiguration
 import org.gradle.api.Project
@@ -90,6 +99,8 @@ import org.gradle.api.artifacts.type.ArtifactTypeDefinition
 import org.gradle.api.attributes.AttributesSchema
 import org.gradle.api.attributes.Usage
 import org.gradle.api.internal.artifacts.ArtifactAttributes
+import java.lang.Boolean.FALSE
+import java.lang.Boolean.TRUE
 
 /**
  * configures the dependencies for a set of variant inputs.
@@ -245,6 +256,7 @@ class DependencyConfigurator(
                 false
             )
         }
+
         // transform to extract attr info from android.jar
         registerTransform(
             PlatformAttrTransform::class.java,
@@ -437,31 +449,134 @@ class DependencyConfigurator(
             AndroidArtifacts.ArtifactType.JAR_CLASS_LIST
         )
 
+        return this
+    }
 
-        if (projectOptions.get(BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT)) {
+    fun configurePrivacySandboxSdkConsumerTransforms(
+            compileSdkHashString: String, buildToolsRevision: Revision, bootstrapCreationConfig : BootClasspathConfig) : DependencyConfigurator {
+        if (projectServices.projectOptions.get(BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT)) {
+            val defaultDebugSigning = getBuildService(
+                    projectServices.buildServiceRegistry,
+                    AndroidLocationsBuildService::class.java
+            ).map { it.getDefaultDebugKeystoreSigningConfig() }
             registerTransform(
                     AsarToApksTransform::class.java,
                     AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_ARCHIVE,
                     AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_APKS
             ) { params ->
                 projectServices.initializeAapt2Input(params.aapt2)
-                params.signingConfigData.set(
-                        getBuildService(
-                                projectServices.buildServiceRegistry,
-                                AndroidLocationsBuildService::class.java
-                        ).map { it.getDefaultDebugKeystoreSigningConfig() }
-                )
+
+                params.signingConfigData.set(defaultDebugSigning)
                 params.signingConfigValidationResultDir.set(
-                        ArtifactsImpl(project, "global").get(InternalArtifactType.VALIDATE_SIGNING_CONFIG)
+                        ArtifactsImpl(project,
+                                "global").get(InternalArtifactType.VALIDATE_SIGNING_CONFIG)
                 )
             }
             registerTransform(
-                AsarToManifestSnippetTransform::class.java,
-                AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_ARCHIVE,
-                AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_EXTRACTED_MANIFEST_SNIPPET
-            )
-        }
+                    AsarToManifestSnippetTransform::class.java,
+                    AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_ARCHIVE,
+                    AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_USES_SDK_LIBRARY_MANIFEST_SNIPPET
+            ) {
+                it.signingConfigData.set(defaultDebugSigning)
+            }
+            for (from in AsarTransform.supportedAsarTransformTypes) {
+                registerTransform(
+                        AsarTransform::class.java,
+                        AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_ARCHIVE,
+                        from
+                ) {
+                    it.targetType.set(from)
+                }
+            }
 
+            val apiGeneratorCoordinates = projectServices.projectOptions
+                    .get(StringOption.ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR)
+            if (apiGeneratorCoordinates != null) {
+
+                val extractSdkShimTransformParamConfig = {
+                    reg: TransformSpec<ExtractSdkShimTransform.Parameters> ->
+                    val runtimeDependenciesForShimSdk =
+                            projectServices.projectOptions
+                                    .get(StringOption.ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR_GENERATED_RUNTIME_DEPENDENCIES)
+                                    ?.split(",") ?: emptyList()
+
+                    val apiGeneratorAndRuntimeDependencies =
+                            project.configurations.detachedConfiguration(
+                                    project.dependencies.create(apiGeneratorCoordinates))
+                    // Runtime dependencies of the sources created by the api generator
+                    val apiGeneratorOutputSourceDependencies =
+                            project.configurations.detachedConfiguration(
+                                    *runtimeDependenciesForShimSdk.map {
+                                        project.dependencies.create(it)
+                                    }.toTypedArray())
+
+                    val params = reg.parameters
+                    params.apiGeneratorAndRuntimeDependenciesJars.setFrom(
+                            apiGeneratorAndRuntimeDependencies)
+                    params.buildTools.initialize(
+                            projectServices.buildServiceRegistry,
+                            compileSdkHashString,
+                            buildToolsRevision)
+
+                    // For kotlin compilation
+                    params.bootstrapClasspath.from(bootstrapCreationConfig.fullBootClasspath)
+
+                    val kotlinCompiler = project.configurations.detachedConfiguration(
+                            project.dependencies.create("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.7.10")
+                    )
+                    params.kotlinCompiler.from(kotlinCompiler)
+                    params.runtimeDependencies.from(apiGeneratorOutputSourceDependencies)
+                }
+
+                project.dependencies.registerTransform(
+                    ExtractCompileSdkShimTransform::class.java,
+                ) { reg ->
+                    val compileUsage: Usage =
+                        project.objects.named(Usage::class.java, Usage.JAVA_API)
+
+                    reg.from.attribute(
+                        ArtifactAttributes.ARTIFACT_FORMAT,
+                        AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_INTERFACE_DESCRIPTOR.type
+                    )
+                    reg.from.attribute(
+                        Usage.USAGE_ATTRIBUTE,
+                        compileUsage
+                    )
+                    reg.to.attribute(
+                        ArtifactAttributes.ARTIFACT_FORMAT,
+                        AndroidArtifacts.ArtifactType.CLASSES_JAR.type
+                    )
+                    reg.to.attribute(
+                        Usage.USAGE_ATTRIBUTE,
+                        compileUsage
+                    )
+                    extractSdkShimTransformParamConfig(reg)
+                }
+                project.dependencies.registerTransform(
+                    ExtractRuntimeSdkShimTransform::class.java,
+                ) { reg ->
+                    val runtimeUsage: Usage = project.objects.named(Usage::class.java, Usage.JAVA_RUNTIME)
+
+                    reg.from.attribute(
+                        ArtifactAttributes.ARTIFACT_FORMAT,
+                        AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_INTERFACE_DESCRIPTOR.type
+                    )
+                    reg.from.attribute(
+                        Usage.USAGE_ATTRIBUTE,
+                        runtimeUsage
+                    )
+                    reg.to.attribute(
+                        ArtifactAttributes.ARTIFACT_FORMAT,
+                        AndroidArtifacts.ArtifactType.CLASSES_JAR.type
+                    )
+                    reg.to.attribute(
+                        Usage.USAGE_ATTRIBUTE,
+                        runtimeUsage
+                    )
+                    extractSdkShimTransformParamConfig(reg)
+                }
+            }
+        }
         return this
     }
 
@@ -679,26 +794,56 @@ class DependencyConfigurator(
         }
         if (allComponents.isNotEmpty()) {
             val bootClasspath = project.files(bootClasspathConfig.bootClasspath)
+            val services = allComponents.first().services
             if (projectOptions[BooleanOption.ENABLE_DEXING_ARTIFACT_TRANSFORM]) {
-                if (allComponents.isNotEmpty()) {
-                    val services = allComponents.first().services
-
-                    for (artifactConfiguration in getDexingArtifactConfigurations(
-                        allComponents
-                    )) {
-                        artifactConfiguration.registerTransform(
-                            project.name,
-                            dependencies,
-                            bootClasspath,
-                            getDesugarLibConfig(services),
-                            SyncOptions.getErrorFormatMode(projectOptions),
-                        )
-                    }
+                for (artifactConfiguration in getDexingArtifactConfigurations(
+                    allComponents
+                )) {
+                    artifactConfiguration.registerTransform(
+                        project.name,
+                        dependencies,
+                        bootClasspath,
+                        getDesugarLibConfig(services),
+                        SyncOptions.getErrorFormatMode(projectOptions),
+                    )
                 }
             }
+
+            val d8Version = Version.getVersionString()
+
+            // register d8 backported methods generatore when desugaring enabled
+            project.dependencies.registerTransform(
+                D8BackportedMethodsGenerator::class.java
+            ) { spec ->
+                spec.parameters { parameters ->
+                    parameters.d8Version.set(d8Version)
+                    parameters.coreLibDesugarConfig.set(getDesugarLibConfig(services))
+                    parameters.bootclasspath.from(bootClasspath)
+                }
+                spec.from.attribute(ArtifactAttributes.ARTIFACT_FORMAT, ArtifactTypeDefinition.JAR_TYPE)
+                spec.from.attribute(ATTR_ENABLE_CORE_LIBRARY_DESUGARING, TRUE.toString())
+                spec.to.attribute(ArtifactAttributes.ARTIFACT_FORMAT, D8_DESUGAR_METHODS)
+                spec.to.attribute(ATTR_ENABLE_CORE_LIBRARY_DESUGARING, TRUE.toString())
+            }
+
+            // register d8 backported methods generator when desugaring disabled
+            project.dependencies.registerTransform(
+                D8BackportedMethodsGenerator::class.java
+            ) { spec ->
+                spec.parameters { parameters ->
+                    parameters.d8Version.set(d8Version)
+                }
+                spec.from.attribute(ArtifactAttributes.ARTIFACT_FORMAT, ArtifactTypeDefinition.JAR_TYPE)
+                spec.from.attribute(ATTR_ENABLE_CORE_LIBRARY_DESUGARING, FALSE.toString())
+                spec.to.attribute(ArtifactAttributes.ARTIFACT_FORMAT, D8_DESUGAR_METHODS)
+                spec.to.attribute(ATTR_ENABLE_CORE_LIBRARY_DESUGARING, FALSE.toString())
+            }
         }
+
         if (projectOptions[BooleanOption.ENABLE_PROGUARD_RULES_EXTRACTION]
-                && allComponents.any { it is ConsumableCreationConfig && it.minifiedEnabled }) {
+                && allComponents.any {
+                    it is ConsumableCreationConfig && it.optimizationCreationConfig.minifiedEnabled
+                }) {
             dependencies.registerTransform(
                     FilterShrinkerRulesTransform::class.java
             ) { reg: TransformSpec<FilterShrinkerRulesTransform.Parameters> ->

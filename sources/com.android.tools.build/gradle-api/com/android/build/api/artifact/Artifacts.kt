@@ -58,6 +58,18 @@ interface Artifacts {
     ): Provider<List<FileTypeT>>
 
     /**
+     * Add an existing [FileTypeT] for the passed [Artifact].
+     * For task generated folder or file, do not use this API but instead use the [use] API.
+     *
+     * @param type Type of the multiple artifact.
+     * @param artifact is an existing static [FileTypeT]
+     */
+    fun <FileTypeT: FileSystemLocation> add(
+            type: MultipleArtifact<FileTypeT>,
+            artifact: FileTypeT
+    )
+
+    /**
      * Access [Task] based operations.
      *
      * @param taskProvider The [TaskProvider] for the [TaskT] that will be producing and/or

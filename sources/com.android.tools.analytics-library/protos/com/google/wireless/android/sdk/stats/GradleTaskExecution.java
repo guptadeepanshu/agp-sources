@@ -16,6 +16,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private GradleTaskExecution() {
+    taskState_ = 0;
   }
 
   @java.lang.Override
@@ -74,6 +75,18 @@ private static final long serialVersionUID = 0L;
             failed_ = input.readBool();
             break;
           }
+          case 48: {
+            int rawValue = input.readEnum();
+              @SuppressWarnings("deprecation")
+            com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState value = com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState.valueOf(rawValue);
+            if (value == null) {
+              unknownFields.mergeVarintField(6, rawValue);
+            } else {
+              bitField0_ |= 0x00000020;
+              taskState_ = rawValue;
+            }
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -104,6 +117,152 @@ private static final long serialVersionUID = 0L;
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleTaskExecution_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             com.google.wireless.android.sdk.stats.GradleTaskExecution.class, com.google.wireless.android.sdk.stats.GradleTaskExecution.Builder.class);
+  }
+
+  /**
+   * <pre>
+   * State of a task during a build, similar to
+   * https://docs.gradle.org/current/javadoc/org/gradle/testkit/runner/TaskOutcome.html
+   * </pre>
+   *
+   * Protobuf enum {@code android_studio.GradleTaskExecution.TaskState}
+   */
+  public enum TaskState
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>UNKNOWN = 0;</code>
+     */
+    UNKNOWN(0),
+    /**
+     * <code>UP_TO_DATE = 1;</code>
+     */
+    UP_TO_DATE(1),
+    /**
+     * <code>FROM_CACHE = 2;</code>
+     */
+    FROM_CACHE(2),
+    /**
+     * <code>DID_WORK_INCREMENTAL = 3;</code>
+     */
+    DID_WORK_INCREMENTAL(3),
+    /**
+     * <code>DID_WORK_NON_INCREMENTAL = 4;</code>
+     */
+    DID_WORK_NON_INCREMENTAL(4),
+    /**
+     * <code>SKIPPED = 5;</code>
+     */
+    SKIPPED(5),
+    /**
+     * <code>FAILED = 6;</code>
+     */
+    FAILED(6),
+    ;
+
+    /**
+     * <code>UNKNOWN = 0;</code>
+     */
+    public static final int UNKNOWN_VALUE = 0;
+    /**
+     * <code>UP_TO_DATE = 1;</code>
+     */
+    public static final int UP_TO_DATE_VALUE = 1;
+    /**
+     * <code>FROM_CACHE = 2;</code>
+     */
+    public static final int FROM_CACHE_VALUE = 2;
+    /**
+     * <code>DID_WORK_INCREMENTAL = 3;</code>
+     */
+    public static final int DID_WORK_INCREMENTAL_VALUE = 3;
+    /**
+     * <code>DID_WORK_NON_INCREMENTAL = 4;</code>
+     */
+    public static final int DID_WORK_NON_INCREMENTAL_VALUE = 4;
+    /**
+     * <code>SKIPPED = 5;</code>
+     */
+    public static final int SKIPPED_VALUE = 5;
+    /**
+     * <code>FAILED = 6;</code>
+     */
+    public static final int FAILED_VALUE = 6;
+
+
+    public final int getNumber() {
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static TaskState valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static TaskState forNumber(int value) {
+      switch (value) {
+        case 0: return UNKNOWN;
+        case 1: return UP_TO_DATE;
+        case 2: return FROM_CACHE;
+        case 3: return DID_WORK_INCREMENTAL;
+        case 4: return DID_WORK_NON_INCREMENTAL;
+        case 5: return SKIPPED;
+        case 6: return FAILED;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<TaskState>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        TaskState> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<TaskState>() {
+            public TaskState findValueByNumber(int number) {
+              return TaskState.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.GradleTaskExecution.getDescriptor().getEnumTypes().get(0);
+    }
+
+    private static final TaskState[] VALUES = values();
+
+    public static TaskState valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private TaskState(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:android_studio.GradleTaskExecution.TaskState)
   }
 
   private int bitField0_;
@@ -147,13 +306,15 @@ private static final long serialVersionUID = 0L;
    * Whether the task did work (TaskState#getDidWork())
    * This is not necessarily the inverse of up_to_date: see
    * https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/TaskState.html#getDidWork()
+   * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
    * </pre>
    *
-   * <code>optional bool did_work = 2;</code>
+   * <code>optional bool did_work = 2 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the didWork field is set.
    */
   @java.lang.Override
-  public boolean hasDidWork() {
+  @java.lang.Deprecated public boolean hasDidWork() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -161,13 +322,15 @@ private static final long serialVersionUID = 0L;
    * Whether the task did work (TaskState#getDidWork())
    * This is not necessarily the inverse of up_to_date: see
    * https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/TaskState.html#getDidWork()
+   * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
    * </pre>
    *
-   * <code>optional bool did_work = 2;</code>
+   * <code>optional bool did_work = 2 [deprecated = true];</code>
+   * @deprecated
    * @return The didWork.
    */
   @java.lang.Override
-  public boolean getDidWork() {
+  @java.lang.Deprecated public boolean getDidWork() {
     return didWork_;
   }
 
@@ -176,25 +339,29 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * Whether the task was skipped (TaskState#getSkipped())
+   * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
    * </pre>
    *
-   * <code>optional bool skipped = 3;</code>
+   * <code>optional bool skipped = 3 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the skipped field is set.
    */
   @java.lang.Override
-  public boolean hasSkipped() {
+  @java.lang.Deprecated public boolean hasSkipped() {
     return ((bitField0_ & 0x00000004) != 0);
   }
   /**
    * <pre>
    * Whether the task was skipped (TaskState#getSkipped())
+   * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
    * </pre>
    *
-   * <code>optional bool skipped = 3;</code>
+   * <code>optional bool skipped = 3 [deprecated = true];</code>
+   * @deprecated
    * @return The skipped.
    */
   @java.lang.Override
-  public boolean getSkipped() {
+  @java.lang.Deprecated public boolean getSkipped() {
     return skipped_;
   }
 
@@ -203,25 +370,29 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * Whether the task was up to date (TaskState#getUpToDate())
+   * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
    * </pre>
    *
-   * <code>optional bool up_to_date = 4;</code>
+   * <code>optional bool up_to_date = 4 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the upToDate field is set.
    */
   @java.lang.Override
-  public boolean hasUpToDate() {
+  @java.lang.Deprecated public boolean hasUpToDate() {
     return ((bitField0_ & 0x00000008) != 0);
   }
   /**
    * <pre>
    * Whether the task was up to date (TaskState#getUpToDate())
+   * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
    * </pre>
    *
-   * <code>optional bool up_to_date = 4;</code>
+   * <code>optional bool up_to_date = 4 [deprecated = true];</code>
+   * @deprecated
    * @return The upToDate.
    */
   @java.lang.Override
-  public boolean getUpToDate() {
+  @java.lang.Deprecated public boolean getUpToDate() {
     return upToDate_;
   }
 
@@ -230,26 +401,57 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * Whether the task failed
+   * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
    * </pre>
    *
-   * <code>optional bool failed = 5;</code>
+   * <code>optional bool failed = 5 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the failed field is set.
    */
   @java.lang.Override
-  public boolean hasFailed() {
+  @java.lang.Deprecated public boolean hasFailed() {
     return ((bitField0_ & 0x00000010) != 0);
   }
   /**
    * <pre>
    * Whether the task failed
+   * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
    * </pre>
    *
-   * <code>optional bool failed = 5;</code>
+   * <code>optional bool failed = 5 [deprecated = true];</code>
+   * @deprecated
    * @return The failed.
    */
   @java.lang.Override
-  public boolean getFailed() {
+  @java.lang.Deprecated public boolean getFailed() {
     return failed_;
+  }
+
+  public static final int TASK_STATE_FIELD_NUMBER = 6;
+  private int taskState_;
+  /**
+   * <pre>
+   * State of the task during the build
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleTaskExecution.TaskState task_state = 6;</code>
+   * @return Whether the taskState field is set.
+   */
+  @java.lang.Override public boolean hasTaskState() {
+    return ((bitField0_ & 0x00000020) != 0);
+  }
+  /**
+   * <pre>
+   * State of the task during the build
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleTaskExecution.TaskState task_state = 6;</code>
+   * @return The taskState.
+   */
+  @java.lang.Override public com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState getTaskState() {
+    @SuppressWarnings("deprecation")
+    com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState result = com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState.valueOf(taskState_);
+    return result == null ? com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState.UNKNOWN : result;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -281,6 +483,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000010) != 0)) {
       output.writeBool(5, failed_);
     }
+    if (((bitField0_ & 0x00000020) != 0)) {
+      output.writeEnum(6, taskState_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -309,6 +514,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000010) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeBoolSize(5, failed_);
+    }
+    if (((bitField0_ & 0x00000020) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(6, taskState_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -350,6 +559,10 @@ private static final long serialVersionUID = 0L;
       if (getFailed()
           != other.getFailed()) return false;
     }
+    if (hasTaskState() != other.hasTaskState()) return false;
+    if (hasTaskState()) {
+      if (taskState_ != other.taskState_) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -384,6 +597,10 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + FAILED_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getFailed());
+    }
+    if (hasTaskState()) {
+      hash = (37 * hash) + TASK_STATE_FIELD_NUMBER;
+      hash = (53 * hash) + taskState_;
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -528,6 +745,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000008);
       failed_ = false;
       bitField0_ = (bitField0_ & ~0x00000010);
+      taskState_ = 0;
+      bitField0_ = (bitField0_ & ~0x00000020);
       return this;
     }
 
@@ -576,6 +795,10 @@ private static final long serialVersionUID = 0L;
         result.failed_ = failed_;
         to_bitField0_ |= 0x00000010;
       }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        to_bitField0_ |= 0x00000020;
+      }
+      result.taskState_ = taskState_;
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -639,6 +862,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasFailed()) {
         setFailed(other.getFailed());
+      }
+      if (other.hasTaskState()) {
+        setTaskState(other.getTaskState());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -743,13 +969,15 @@ private static final long serialVersionUID = 0L;
      * Whether the task did work (TaskState#getDidWork())
      * This is not necessarily the inverse of up_to_date: see
      * https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/TaskState.html#getDidWork()
+     * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
      * </pre>
      *
-     * <code>optional bool did_work = 2;</code>
+     * <code>optional bool did_work = 2 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the didWork field is set.
      */
     @java.lang.Override
-    public boolean hasDidWork() {
+    @java.lang.Deprecated public boolean hasDidWork() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -757,13 +985,15 @@ private static final long serialVersionUID = 0L;
      * Whether the task did work (TaskState#getDidWork())
      * This is not necessarily the inverse of up_to_date: see
      * https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/TaskState.html#getDidWork()
+     * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
      * </pre>
      *
-     * <code>optional bool did_work = 2;</code>
+     * <code>optional bool did_work = 2 [deprecated = true];</code>
+     * @deprecated
      * @return The didWork.
      */
     @java.lang.Override
-    public boolean getDidWork() {
+    @java.lang.Deprecated public boolean getDidWork() {
       return didWork_;
     }
     /**
@@ -771,13 +1001,15 @@ private static final long serialVersionUID = 0L;
      * Whether the task did work (TaskState#getDidWork())
      * This is not necessarily the inverse of up_to_date: see
      * https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/TaskState.html#getDidWork()
+     * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
      * </pre>
      *
-     * <code>optional bool did_work = 2;</code>
+     * <code>optional bool did_work = 2 [deprecated = true];</code>
+     * @deprecated
      * @param value The didWork to set.
      * @return This builder for chaining.
      */
-    public Builder setDidWork(boolean value) {
+    @java.lang.Deprecated public Builder setDidWork(boolean value) {
       bitField0_ |= 0x00000002;
       didWork_ = value;
       onChanged();
@@ -788,12 +1020,14 @@ private static final long serialVersionUID = 0L;
      * Whether the task did work (TaskState#getDidWork())
      * This is not necessarily the inverse of up_to_date: see
      * https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/TaskState.html#getDidWork()
+     * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
      * </pre>
      *
-     * <code>optional bool did_work = 2;</code>
+     * <code>optional bool did_work = 2 [deprecated = true];</code>
+     * @deprecated
      * @return This builder for chaining.
      */
-    public Builder clearDidWork() {
+    @java.lang.Deprecated public Builder clearDidWork() {
       bitField0_ = (bitField0_ & ~0x00000002);
       didWork_ = false;
       onChanged();
@@ -804,37 +1038,43 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Whether the task was skipped (TaskState#getSkipped())
+     * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
      * </pre>
      *
-     * <code>optional bool skipped = 3;</code>
+     * <code>optional bool skipped = 3 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the skipped field is set.
      */
     @java.lang.Override
-    public boolean hasSkipped() {
+    @java.lang.Deprecated public boolean hasSkipped() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
      * <pre>
      * Whether the task was skipped (TaskState#getSkipped())
+     * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
      * </pre>
      *
-     * <code>optional bool skipped = 3;</code>
+     * <code>optional bool skipped = 3 [deprecated = true];</code>
+     * @deprecated
      * @return The skipped.
      */
     @java.lang.Override
-    public boolean getSkipped() {
+    @java.lang.Deprecated public boolean getSkipped() {
       return skipped_;
     }
     /**
      * <pre>
      * Whether the task was skipped (TaskState#getSkipped())
+     * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
      * </pre>
      *
-     * <code>optional bool skipped = 3;</code>
+     * <code>optional bool skipped = 3 [deprecated = true];</code>
+     * @deprecated
      * @param value The skipped to set.
      * @return This builder for chaining.
      */
-    public Builder setSkipped(boolean value) {
+    @java.lang.Deprecated public Builder setSkipped(boolean value) {
       bitField0_ |= 0x00000004;
       skipped_ = value;
       onChanged();
@@ -843,12 +1083,14 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Whether the task was skipped (TaskState#getSkipped())
+     * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
      * </pre>
      *
-     * <code>optional bool skipped = 3;</code>
+     * <code>optional bool skipped = 3 [deprecated = true];</code>
+     * @deprecated
      * @return This builder for chaining.
      */
-    public Builder clearSkipped() {
+    @java.lang.Deprecated public Builder clearSkipped() {
       bitField0_ = (bitField0_ & ~0x00000004);
       skipped_ = false;
       onChanged();
@@ -859,37 +1101,43 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Whether the task was up to date (TaskState#getUpToDate())
+     * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
      * </pre>
      *
-     * <code>optional bool up_to_date = 4;</code>
+     * <code>optional bool up_to_date = 4 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the upToDate field is set.
      */
     @java.lang.Override
-    public boolean hasUpToDate() {
+    @java.lang.Deprecated public boolean hasUpToDate() {
       return ((bitField0_ & 0x00000008) != 0);
     }
     /**
      * <pre>
      * Whether the task was up to date (TaskState#getUpToDate())
+     * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
      * </pre>
      *
-     * <code>optional bool up_to_date = 4;</code>
+     * <code>optional bool up_to_date = 4 [deprecated = true];</code>
+     * @deprecated
      * @return The upToDate.
      */
     @java.lang.Override
-    public boolean getUpToDate() {
+    @java.lang.Deprecated public boolean getUpToDate() {
       return upToDate_;
     }
     /**
      * <pre>
      * Whether the task was up to date (TaskState#getUpToDate())
+     * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
      * </pre>
      *
-     * <code>optional bool up_to_date = 4;</code>
+     * <code>optional bool up_to_date = 4 [deprecated = true];</code>
+     * @deprecated
      * @param value The upToDate to set.
      * @return This builder for chaining.
      */
-    public Builder setUpToDate(boolean value) {
+    @java.lang.Deprecated public Builder setUpToDate(boolean value) {
       bitField0_ |= 0x00000008;
       upToDate_ = value;
       onChanged();
@@ -898,12 +1146,14 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Whether the task was up to date (TaskState#getUpToDate())
+     * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
      * </pre>
      *
-     * <code>optional bool up_to_date = 4;</code>
+     * <code>optional bool up_to_date = 4 [deprecated = true];</code>
+     * @deprecated
      * @return This builder for chaining.
      */
-    public Builder clearUpToDate() {
+    @java.lang.Deprecated public Builder clearUpToDate() {
       bitField0_ = (bitField0_ & ~0x00000008);
       upToDate_ = false;
       onChanged();
@@ -914,37 +1164,43 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Whether the task failed
+     * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
      * </pre>
      *
-     * <code>optional bool failed = 5;</code>
+     * <code>optional bool failed = 5 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the failed field is set.
      */
     @java.lang.Override
-    public boolean hasFailed() {
+    @java.lang.Deprecated public boolean hasFailed() {
       return ((bitField0_ & 0x00000010) != 0);
     }
     /**
      * <pre>
      * Whether the task failed
+     * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
      * </pre>
      *
-     * <code>optional bool failed = 5;</code>
+     * <code>optional bool failed = 5 [deprecated = true];</code>
+     * @deprecated
      * @return The failed.
      */
     @java.lang.Override
-    public boolean getFailed() {
+    @java.lang.Deprecated public boolean getFailed() {
       return failed_;
     }
     /**
      * <pre>
      * Whether the task failed
+     * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
      * </pre>
      *
-     * <code>optional bool failed = 5;</code>
+     * <code>optional bool failed = 5 [deprecated = true];</code>
+     * @deprecated
      * @param value The failed to set.
      * @return This builder for chaining.
      */
-    public Builder setFailed(boolean value) {
+    @java.lang.Deprecated public Builder setFailed(boolean value) {
       bitField0_ |= 0x00000010;
       failed_ = value;
       onChanged();
@@ -953,14 +1209,75 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Whether the task failed
+     * DEPRECATED since 11/2022 (AGP 8.0). Use task_state instead.
      * </pre>
      *
-     * <code>optional bool failed = 5;</code>
+     * <code>optional bool failed = 5 [deprecated = true];</code>
+     * @deprecated
      * @return This builder for chaining.
      */
-    public Builder clearFailed() {
+    @java.lang.Deprecated public Builder clearFailed() {
       bitField0_ = (bitField0_ & ~0x00000010);
       failed_ = false;
+      onChanged();
+      return this;
+    }
+
+    private int taskState_ = 0;
+    /**
+     * <pre>
+     * State of the task during the build
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleTaskExecution.TaskState task_state = 6;</code>
+     * @return Whether the taskState field is set.
+     */
+    @java.lang.Override public boolean hasTaskState() {
+      return ((bitField0_ & 0x00000020) != 0);
+    }
+    /**
+     * <pre>
+     * State of the task during the build
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleTaskExecution.TaskState task_state = 6;</code>
+     * @return The taskState.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState getTaskState() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState result = com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState.valueOf(taskState_);
+      return result == null ? com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState.UNKNOWN : result;
+    }
+    /**
+     * <pre>
+     * State of the task during the build
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleTaskExecution.TaskState task_state = 6;</code>
+     * @param value The taskState to set.
+     * @return This builder for chaining.
+     */
+    public Builder setTaskState(com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00000020;
+      taskState_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * State of the task during the build
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleTaskExecution.TaskState task_state = 6;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearTaskState() {
+      bitField0_ = (bitField0_ & ~0x00000020);
+      taskState_ = 0;
       onChanged();
       return this;
     }

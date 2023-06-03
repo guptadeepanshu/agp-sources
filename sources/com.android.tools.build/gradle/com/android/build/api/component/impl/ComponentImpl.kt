@@ -53,7 +53,6 @@ import com.android.build.gradle.internal.core.dsl.PublishableComponentDslInfo
 import com.android.build.gradle.internal.dependency.AndroidAttributes
 import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.dependency.getProvidedClasspath
-import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType
@@ -99,12 +98,11 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
     final override val buildFeatures: BuildFeatureValues,
     protected val dslInfo: DslInfoT,
     final override val variantDependencies: VariantDependencies,
-    override val variantSources: VariantSources,
+    private val variantSources: VariantSources,
     override val paths: VariantPathHelper,
     override val artifacts: ArtifactsImpl,
     private val variantData: BaseVariantData? = null,
     override val taskContainer: MutableTaskContainer,
-    override val transformManager: TransformManager,
     protected val internalServices: VariantServices,
     final override val services: TaskCreationServices,
     final override val global: GlobalTaskCreationConfig,
@@ -141,12 +139,12 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
             buildFeatures.dataBinding,
             internalServices)
 
-    override val sources: SourcesImpl by lazy {
+    override val sources by lazy {
         SourcesImpl(
             DefaultSourcesProviderImpl(this, variantSources),
-            internalServices.projectInfo.projectDirectory,
             internalServices,
-            variantSources.variantSourceProvider,
+            multiFlavorSourceProvider = variantSources.multiFlavorSourceProvider,
+            variantSourceProvider = variantSources.variantSourceProvider,
         ).also { sourcesImpl ->
             // add all source sets extra directories added by the user
             variantSources.customSourceList.forEach{ (_, srcEntries) ->
@@ -199,8 +197,8 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
     override val baseName: String
         get() = paths.baseName
 
-    override val productFlavorList: List<ProductFlavor> = dslInfo.productFlavorList.map {
-        ProductFlavor(it)
+    override val productFlavorList: List<ProductFlavor> = dslInfo.componentIdentity.productFlavors.map {
+        ProductFlavor(it.first, it.second)
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -324,7 +322,7 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
                     outputSpec.publishedConfigTypes.any { it.isPublicationConfig }
 
                 if (isPublicationConfigs) {
-                    val components = (dslInfo as PublishableComponentDslInfo).publishInfo!!.components
+                    val components = (dslInfo as PublishableComponentDslInfo).publishInfo.components
                     for(component in components) {
                         publishIntermediateArtifact(
                                 artifactProvider,
@@ -362,25 +360,20 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
         }
     }
 
-    override val packageJacocoRuntime: Boolean
-        get() = false
-
-    override val isAndroidTestCoverageEnabled: Boolean
-        get() = dslInfo.isAndroidTestCoverageEnabled
-
-    override val modelV1LegacySupport = ModelV1LegacySupportImpl(dslInfo)
+    override val modelV1LegacySupport = ModelV1LegacySupportImpl(dslInfo, variantSources)
 
     override val oldVariantApiLegacySupport: OldVariantApiLegacySupport? by lazy {
         OldVariantApiLegacySupportImpl(
             this,
             dslInfo,
-            variantData!!
+            variantData!!,
+            variantSources
         )
     }
 
     override val assetsCreationConfig: AssetsCreationConfig by lazy {
         AssetsCreationConfigImpl(
-            dslInfo,
+            dslInfo.androidResourcesDsl!!,
             internalServices
         ) { androidResourcesCreationConfig }
     }
@@ -390,6 +383,7 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
             AndroidResourcesCreationConfigImpl(
                 this,
                 dslInfo,
+                dslInfo.androidResourcesDsl!!,
                 internalServices,
             )
         } else {
@@ -400,7 +394,7 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
     override val resValuesCreationConfig: ResValuesCreationConfig? by lazy {
         if (buildFeatures.resValues) {
             ResValuesCreationConfigImpl(
-                dslInfo,
+                dslInfo.androidResourcesDsl!!,
                 internalServices
             )
         } else {
@@ -473,16 +467,9 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
 
     override fun getArtifactName(name: String) = name
 
-    override val needsJavaResStreams: Boolean
-        get() {
-            // We need to create original java resource stream only if we're in a library module with
-            // custom transforms.
-            return componentType.isAar && dslInfo.transforms.isNotEmpty()
-        }
-
     protected fun createManifestPlaceholdersCreationConfig(
             placeholders: Map<String, String>?): ManifestPlaceholdersCreationConfig {
-        val legacyApiManifestPlaceholders = oldVariantApiLegacySupport?.manifestPlaceholders
+        val legacyApiManifestPlaceholders = oldVariantApiLegacySupport?.manifestPlaceholdersDslInfo?.placeholders
                 ?: mapOf()
         val allPlaceholders = (placeholders ?: mapOf()) + legacyApiManifestPlaceholders
         return ManifestPlaceholdersCreationConfigImpl(

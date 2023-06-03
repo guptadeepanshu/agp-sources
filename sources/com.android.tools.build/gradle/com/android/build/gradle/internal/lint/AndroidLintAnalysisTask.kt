@@ -21,6 +21,7 @@ import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.dsl.Lint
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.component.ComponentCreationConfig
+import com.android.build.gradle.internal.component.ConsumableCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
@@ -33,7 +34,8 @@ import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.getDesugaredMethods
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.build.gradle.options.BooleanOption
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.ide.common.repository.GradleVersion
 import com.android.tools.lint.model.LintModelSerialization
 import com.android.utils.FileUtils
@@ -127,7 +129,8 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
             android = android.get(),
             fatalOnly = fatalOnly.get(),
             await = false,
-            lintMode = LintMode.ANALYSIS
+            lintMode = LintMode.ANALYSIS,
+            hasBaseline = projectInputs.lintOptions.baseline.orNull != null
         )
     }
 
@@ -307,10 +310,10 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
             task.desugaredMethodsFiles.from(
                 getDesugaredMethods(
                     creationConfig.services,
-                    creationConfig.global.compileOptions.isCoreLibraryDesugaringEnabled,
+                    (creationConfig as? ConsumableCreationConfig)
+                        ?.isCoreLibraryDesugaringEnabledLintCheck ?: false,
                     creationConfig.minSdkVersion,
-                    creationConfig.global.compileSdkHashString,
-                    creationConfig.global.bootClasspath
+                    creationConfig.global
                 )
             )
             task.desugaredMethodsFiles.disallowChanges()
@@ -350,7 +353,9 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
                 project.providers
                     .environmentVariable(LINT_PRINT_STACKTRACE_ENVIRONMENT_VARIABLE)
                     .map { it.equals("true", ignoreCase = true) }
-                    .orElse(false)
+                    .orElse(
+                        services.projectOptions.getProvider(BooleanOption.PRINT_LINT_STACK_TRACE)
+                    )
             )
         }
         systemPropertyInputs.initialize(project.providers, LintMode.ANALYSIS)

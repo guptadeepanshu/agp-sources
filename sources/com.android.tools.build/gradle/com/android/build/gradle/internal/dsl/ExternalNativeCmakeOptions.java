@@ -17,6 +17,7 @@
 package com.android.build.gradle.internal.dsl;
 
 import com.android.annotations.NonNull;
+import com.android.build.api.dsl.CmakeFlags;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import java.util.Collections;
@@ -24,9 +25,8 @@ import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
 
-public class ExternalNativeCmakeOptions
-        implements CoreExternalNativeCmakeOptions,
-                com.android.build.api.dsl.ExternalNativeCmakeOptions {
+public class ExternalNativeCmakeOptions implements
+        CoreExternalNativeCmakeOptions, CmakeFlags {
 
     @NonNull
     private final List<String> arguments = Lists.newArrayList();

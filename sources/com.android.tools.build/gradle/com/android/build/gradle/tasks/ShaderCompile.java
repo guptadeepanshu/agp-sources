@@ -25,6 +25,7 @@ import com.android.build.gradle.internal.NdkHandlerInput;
 import com.android.build.gradle.internal.SdkComponentsBuildService;
 import com.android.build.gradle.internal.SdkComponentsKt;
 import com.android.build.gradle.internal.component.ConsumableCreationConfig;
+import com.android.build.gradle.internal.component.features.ShadersCreationConfig;
 import com.android.build.gradle.internal.process.GradleProcessExecutor;
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
@@ -32,9 +33,9 @@ import com.android.build.gradle.internal.services.BuildServicesKt;
 import com.android.build.gradle.internal.tasks.BuildAnalyzer;
 import com.android.build.gradle.internal.tasks.NonIncrementalTask;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
+import com.android.buildanalyzer.common.TaskCategory;
 import com.android.builder.internal.compiler.DirectoryWalker;
 import com.android.builder.internal.compiler.ShaderProcessor;
-import com.android.build.gradle.internal.tasks.TaskCategory;
 import com.android.ide.common.process.LoggedProcessOutputHandler;
 import com.android.repository.Revision;
 import com.android.utils.FileUtils;
@@ -47,6 +48,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javax.inject.Inject;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.file.FileTree;
@@ -105,12 +107,7 @@ public abstract class ShaderCompile extends NonIncrementalTask {
     @PathSensitive(PathSensitivity.RELATIVE)
     @SkipWhenEmpty
     public FileTree getSourceFiles() {
-        File sourceDirFile = getSourceDir().get().getAsFile();
-        FileTree src = null;
-        if (sourceDirFile.isDirectory()) {
-            src = getProject().files(sourceDirFile).getAsFileTree().matching(PATTERN_SET);
-        }
-        return src == null ? getProject().files().getAsFileTree() : src;
+        return getSourceDir().getAsFileTree().matching(PATTERN_SET);
     }
 
     /**
@@ -298,8 +295,12 @@ public abstract class ShaderCompile extends NonIncrementalTask {
             creationConfig
                     .getArtifacts()
                     .setTaskInputToFinalProduct(MERGED_SHADERS.INSTANCE, task.getSourceDir());
-            task.setDefaultArgs(creationConfig.getDefaultGlslcArgs());
-            task.setScopedArgs(creationConfig.getScopedGlslcArgs());
+
+            ShadersCreationConfig shadersCreationConfig =
+                    Objects.requireNonNull(creationConfig.getShadersCreationConfig());
+
+            task.setDefaultArgs(shadersCreationConfig.getDefaultGlslcArgs());
+            task.setScopedArgs(shadersCreationConfig.getScopedGlslcArgs());
             SdkComponentsKt.initialize(task.getNdkHandlerInput(), creationConfig);
         }
     }

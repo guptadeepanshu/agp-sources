@@ -39,11 +39,9 @@ import com.android.build.gradle.internal.dsl.BuildType
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import com.android.build.gradle.internal.dsl.ProductFlavor
 import com.android.build.gradle.internal.dsl.SigningConfig
-import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.plugins.DslContainerProvider
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.MutableTaskContainer
-import com.android.build.gradle.internal.services.BaseServices
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantBuilderServices
 import com.android.build.gradle.internal.services.VariantServices
@@ -79,7 +77,6 @@ interface VariantFactory<VariantBuilderT : VariantBuilder, VariantDslInfoT: Vari
         artifacts: ArtifactsImpl,
         variantData: BaseVariantData,
         taskContainer: MutableTaskContainer,
-        transformManager: TransformManager,
         variantServices: VariantServices,
         taskCreationServices: TaskCreationServices,
         globalConfig: GlobalTaskCreationConfig,
@@ -95,7 +92,6 @@ interface VariantFactory<VariantBuilderT : VariantBuilder, VariantDslInfoT: Vari
         artifacts: ArtifactsImpl,
         taskContainer: MutableTaskContainer,
         mainVariant: VariantCreationConfig,
-        transformManager: TransformManager,
         variantServices: VariantServices,
         taskCreationServices: TaskCreationServices,
         globalConfig: GlobalTaskCreationConfig
@@ -112,7 +108,6 @@ interface VariantFactory<VariantBuilderT : VariantBuilder, VariantDslInfoT: Vari
         variantData: TestVariantData,
         taskContainer: MutableTaskContainer,
         testedVariantProperties: VariantCreationConfig,
-        transformManager: TransformManager,
         variantServices: VariantServices,
         taskCreationServices: TaskCreationServices,
         globalConfig: GlobalTaskCreationConfig,
@@ -129,7 +124,6 @@ interface VariantFactory<VariantBuilderT : VariantBuilder, VariantDslInfoT: Vari
         variantData: TestVariantData,
         taskContainer: MutableTaskContainer,
         testedVariantProperties: VariantCreationConfig,
-        transformManager: TransformManager,
         variantServices: VariantServices,
         taskCreationServices: TaskCreationServices,
         globalConfig: GlobalTaskCreationConfig,

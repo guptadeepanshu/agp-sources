@@ -33,9 +33,8 @@ import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.manifest.mergeManifests
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.manifmerger.ManifestMerger2
-import com.android.manifmerger.MergingReport
 import com.android.utils.FileUtils
 import com.google.common.annotations.VisibleForTesting
 import com.google.common.base.Preconditions
@@ -74,10 +73,6 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
     @get:Optional
     @get:Input
     abstract val manifestPlaceholders: MapProperty<String, String>
-
-    /** The processed Manifests files folder.  */
-    @get:OutputDirectory
-    abstract val packagedManifestOutputDirectory: DirectoryProperty
 
     /**
      * The aapt friendly processed Manifest. In case we are processing a library manifest, some
@@ -130,11 +125,10 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
             it.manifestPlaceholders.set(manifestPlaceholders)
             it.reportFile.set(reportFile)
             it.mergeBlameFile.set(mergeBlameFile)
-            it.manifestOutputDirectory.set(packagedManifestOutputDirectory)
             it.aaptFriendlyManifestOutputDirectory.set(aaptFriendlyManifestOutputDirectory)
             it.mainSplit.set(mainSplit.get().toSerializedForm())
             it.tmpDir.set(tmpDir.get())
-            it.disableMinSdkversionCheck.set(disableMinSdkVersionCheck)
+            it.disableMinSdkVersionCheck.set(disableMinSdkVersionCheck)
         }
     }
 
@@ -152,12 +146,11 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
         abstract val manifestPlaceholders: MapProperty<String, Any>
         abstract val reportFile: RegularFileProperty
         abstract val mergeBlameFile: RegularFileProperty
-        abstract val manifestOutputDirectory: DirectoryProperty
         abstract val aaptFriendlyManifestOutputDirectory: DirectoryProperty
         abstract val mainSplit: Property<VariantOutputImpl.SerializedForm>
         abstract val tmpDir: DirectoryProperty
-        abstract val disableMinSdkversionCheck: Property<Boolean>
-}
+        abstract val disableMinSdkVersionCheck: Property<Boolean>
+    }
 
     abstract class ProcessLibWorkAction : ProfileAwareWorkAction<ProcessLibParams>() {
         override fun run() {
@@ -165,7 +158,7 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
                 if (parameters.namespaced.get()) listOf(
                     ManifestMerger2.Invoker.Feature.FULLY_NAMESPACE_LOCAL_RESOURCES
                 ) else emptyList()
-            if (parameters.disableMinSdkversionCheck.get()) {
+            if (parameters.disableMinSdkVersionCheck.get()) {
                 optionalFeatures.plus(ManifestMerger2.Invoker.Feature.DISABLE_MINSDKLIBRARY_CHECK)
             }
             val mergingReport = mergeManifests(
@@ -192,8 +185,6 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
                 parameters.reportFile.asFile.get(),
                 LoggerWrapper.getLogger(ProcessLibraryManifest::class.java)
             )
-            val mergedXmlDocument =
-                mergingReport.getMergedXmlDocument(MergingReport.MergedManifestKind.MERGED)
             try {
                 outputMergeBlameContents(
                     mergingReport,
@@ -204,20 +195,6 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
                 }
             } catch (e: IOException) {
                 throw UncheckedIOException(e)
-            }
-            if (parameters.manifestOutputDirectory.isPresent) {
-                BuiltArtifactsImpl(
-                    BuiltArtifacts.METADATA_FILE_VERSION,
-                    InternalArtifactType.PACKAGED_MANIFESTS,
-                    parameters.namespace.get(),
-                    parameters.variantName.get(),
-                    listOf(
-                        parameters.mainSplit.get().toBuiltArtifact(
-                            parameters.manifestOutputFile.asFile.get()
-                        )
-                    )
-                )
-                    .saveToDirectory(parameters.manifestOutputDirectory.asFile.get())
             }
             if (parameters.aaptFriendlyManifestOutputDirectory.isPresent) {
                 BuiltArtifactsImpl(
@@ -267,8 +244,7 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
     class CreationAction(
         creationConfig: ComponentCreationConfig,
         private val targetSdkVersion: AndroidVersion?,
-        private val maxSdkVersion: Int?,
-        private val manifestPlaceholders: MapProperty<String, String>?
+        private val maxSdkVersion: Int?
     ) : VariantTaskCreationAction<ProcessLibraryManifest, ComponentCreationConfig>(
         creationConfig
     ) {
@@ -291,13 +267,8 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
 
             artifacts.setInitialProvider(
                 taskProvider,
-                ProcessLibraryManifest::packagedManifestOutputDirectory
-            ).on(InternalArtifactType.PACKAGED_MANIFESTS)
-
-            artifacts.setInitialProvider(
-                taskProvider
-            ) { task: ProcessLibraryManifest -> task.manifestOutputFile }
-                .on(SingleArtifact.MERGED_MANIFEST)
+                ProcessLibraryManifest::manifestOutputFile
+            ).on(SingleArtifact.MERGED_MANIFEST)
 
             artifacts.setInitialProvider(
                 taskProvider,
@@ -321,7 +292,6 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
             task: ProcessLibraryManifest
         ) {
             super.configure(task)
-            val variantSources = creationConfig.variantSources
             task.minSdkVersion.setDisallowChanges(creationConfig.minSdkVersion.getApiString())
             task.targetSdkVersion
                 .setDisallowChanges(
@@ -332,17 +302,12 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
             task.mainSplit.set(creationConfig.services.provider { creationConfig.outputs.getMainSplit() })
             task.mainSplit.disallowChanges()
             task.isNamespaced = creationConfig.global.namespacedAndroidResources
-            manifestPlaceholders?.let {
+            creationConfig.manifestPlaceholdersCreationConfig?.placeholders?.let {
                 task.manifestPlaceholders.setDisallowChanges(it)
             }
-            task.mainManifest
-                .fileProvider(
-                    creationConfig.services.provider(variantSources::mainManifestFilePath)
-                )
+            task.mainManifest.fileProvider(creationConfig.sources.manifestFile)
             task.mainManifest.disallowChanges()
-            task.manifestOverlays.set(
-                task.project.provider(variantSources::manifestOverlays)
-            )
+            creationConfig.sources.manifestOverlays.forEach(task.manifestOverlays::add)
             task.manifestOverlays.disallowChanges()
             task.namespace.setDisallowChanges(creationConfig.namespace)
             task.tmpDir.setDisallowChanges(creationConfig.paths.intermediatesDir(

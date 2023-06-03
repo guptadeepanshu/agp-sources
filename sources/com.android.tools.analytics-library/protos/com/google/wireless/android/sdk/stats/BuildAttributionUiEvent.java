@@ -409,6 +409,10 @@ private static final long serialVersionUID = 0L;
      * <code>MIGRATE_NON_TRANSITIVE_R_CLASS_ACTION_CLICKED = 31;</code>
      */
     MIGRATE_NON_TRANSITIVE_R_CLASS_ACTION_CLICKED(31),
+    /**
+     * <code>TAB_OPENED_WITH_ACTION = 32;</code>
+     */
+    TAB_OPENED_WITH_ACTION(32),
     ;
 
     /**
@@ -617,6 +621,10 @@ private static final long serialVersionUID = 0L;
      * <code>MIGRATE_NON_TRANSITIVE_R_CLASS_ACTION_CLICKED = 31;</code>
      */
     public static final int MIGRATE_NON_TRANSITIVE_R_CLASS_ACTION_CLICKED_VALUE = 31;
+    /**
+     * <code>TAB_OPENED_WITH_ACTION = 32;</code>
+     */
+    public static final int TAB_OPENED_WITH_ACTION_VALUE = 32;
 
 
     public final int getNumber() {
@@ -671,6 +679,7 @@ private static final long serialVersionUID = 0L;
         case 29: return TOOL_WINDOW_BALLOON_DETAILS_LINK_CLICKED;
         case 30: return TOOL_WINDOW_BALLOON_DONT_SHOW_AGAIN_LINK_CLICKED;
         case 31: return MIGRATE_NON_TRANSITIVE_R_CLASS_ACTION_CLICKED;
+        case 32: return TAB_OPENED_WITH_ACTION;
         default: return null;
       }
     }

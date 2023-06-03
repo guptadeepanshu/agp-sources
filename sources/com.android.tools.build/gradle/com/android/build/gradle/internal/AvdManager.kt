@@ -17,6 +17,7 @@
 package com.android.build.gradle.internal
 
 import com.android.SdkConstants
+import com.android.build.gradle.internal.testing.AdbHelper
 import com.android.builder.utils.SynchronizedFile
 import com.android.prefs.AndroidLocationsProvider
 import com.android.sdklib.PathFileWrapper
@@ -53,7 +54,8 @@ class AvdManager(
     private val sdkHandler: AndroidSdkHandler,
     private val androidLocationsProvider: AndroidLocationsProvider,
     private val snapshotHandler: AvdSnapshotHandler,
-    val deviceLockManager: ManagedVirtualDeviceLockManager
+    val deviceLockManager: ManagedVirtualDeviceLockManager,
+    private val adbHelper: AdbHelper
 ) {
 
     private val sdkDirectory: File
@@ -61,21 +63,20 @@ class AvdManager(
 
     private val logger: ILogger = LoggerWrapper.getLogger(AvdManager::class.java)
 
-    private val avdManager: com.android.sdklib.internal.avd.AvdManager by lazy {
-        com.android.sdklib.internal.avd.AvdManager.getInstance(
-            sdkHandler,
-            sdkHandler.toCompatiblePath(avdFolder),
-            logger
-        ) ?: throw RuntimeException("Failed to initialize AvdManager.")
-    }
-
-    private val deviceManager: DeviceManager by lazy {
-        DeviceManager.createInstance(androidLocationsProvider, sdkDirectory.toPath(), logger)
-    }
-
     init {
         FileUtils.mkdirs(avdFolder)
     }
+
+    private val deviceManager =
+        DeviceManager.createInstance(androidLocationsProvider, sdkDirectory.toPath(), logger)
+
+    private val avdManager =
+        com.android.sdklib.internal.avd.AvdManager.createInstance(
+            sdkHandler,
+            sdkHandler.toCompatiblePath(avdFolder),
+            deviceManager,
+            logger
+        )
 
     fun createOrRetrieveAvd(
         imageProvider: Provider<Directory>,
@@ -109,14 +110,7 @@ class AvdManager(
 
     private fun <V> runWithMultiProcessLocking(deviceName: String, runnable: () -> V): V {
         return SynchronizedFile.getInstanceWithMultiProcessLocking(avdFolder.resolve(deviceName))
-            .write {
-                val result = try {
-                    runnable()
-                } finally {
-                    SynchronizedFile.getLockFile(it).delete()
-                }
-                return@write result
-            }
+            .write { runnable() }
     }
 
     internal fun createAvd(
@@ -220,7 +214,6 @@ class AvdManager(
                 snapshotHandler.generateSnapshot(
                     deviceName,
                     emulatorExecutable,
-                    adbExecutable,
                     avdFolder,
                     emulatorGpuFlag,
                     logger
@@ -277,6 +270,15 @@ class AvdManager(
                 logger.warning("Failed to delete avd: $avdName.")
             }
             isDeleted
+        }
+    }
+
+    /**
+     * Closes all active emulators having the given idPrefix.
+     */
+    fun closeOpenEmulators(idPrefix: String) {
+        adbHelper.findAllDeviceSerialsWithIdPrefix(idPrefix).forEach { serial ->
+            adbHelper.killDevice(serial)
         }
     }
 

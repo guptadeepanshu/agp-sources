@@ -509,7 +509,7 @@ public final class GradleCoordinate {
     }
 
     public boolean acceptsGreaterRevisions() {
-        return mRevisions.get(mRevisions.size() - 1) == PLUS_REV;
+        return !mRevisions.isEmpty() && mRevisions.get(mRevisions.size() - 1) == PLUS_REV;
     }
 
     @NonNull

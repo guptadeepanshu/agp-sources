@@ -39,7 +39,7 @@ import org.gradle.api.tasks.TaskProvider
 import java.util.concurrent.atomic.AtomicBoolean
 
 class ScopedArtifactsImpl(
-    val scope: ScopedArtifacts.Scope,
+    val scopeName: String,
     val variantIdentifier: String,
     val projectLayout: ProjectLayout,
     val fileCollectionCreator: () -> ConfigurableFileCollection,
@@ -64,7 +64,7 @@ class ScopedArtifactsImpl(
             .from(fileCollection)
     }
 
-    override fun <T : Task> use(taskProvider: TaskProvider<T>): ScopedArtifactsOperation<T> =
+    override fun <T : Task> use(taskProvider: TaskProvider<T>): ScopedArtifactsOperationImpl<T> =
         ScopedArtifactsOperationImpl(
             this,
             taskProvider,
@@ -106,6 +106,7 @@ class ScopedArtifactsImpl(
 
         val artifactsAltered = AtomicBoolean(false)
 
+        val listOfProviders = mutableListOf(initialScopedContent)
         /**
          * Reset the current provider of the artifact the new file collection and make sure the
          * final version points to the new content.
@@ -113,19 +114,55 @@ class ScopedArtifactsImpl(
         @Synchronized
         fun setNewContent(newScopedContent: ConfigurableFileCollection) {
             artifactsAltered.set(true)
+            listOfProviders.add(newScopedContent)
             currentScopedContent = newScopedContent
             finalScopedContent.setFrom(currentScopedContent)
         }
     }
 
     private val scopedArtifacts = mutableMapOf<ScopedArtifact, ScopedArtifactsContainer>()
+    private val internalScopedArtifacts = mutableMapOf<InternalScopedArtifact, ScopedArtifactsContainer>()
 
     internal fun getScopedArtifactsContainer(
         type: ScopedArtifact,
-    ) = scopedArtifacts.getOrPut(
-        type
-    ) {
+    ) = scopedArtifacts.getOrPut(type) {
         ScopedArtifactsContainer(fileCollectionCreator)
+    }
+
+    internal fun getScopedArtifactsContainer(
+        type: InternalScopedArtifact,
+    ) = internalScopedArtifacts.getOrPut(type) {
+        ScopedArtifactsContainer(fileCollectionCreator)
+    }
+
+    /**
+     * Publish the final version of [type] artifact under a different internal [into] type. This
+     * is useful when some code path produce different versions of [into] artifacts from the ones
+     * registered under [type] and consumers just want to use the [into] type irrespectively.
+     */
+    internal fun republish(type: ScopedArtifact, into: InternalScopedArtifact) {
+        getScopedArtifactsContainer(into)
+            .initialScopedContent
+            .from(getFinalArtifacts(type))
+    }
+
+    /**
+     * Publish the current version of [type] under a different internal [into] type. This is useful
+     * when some code path requires to have access to an artifact [type] before certain internal
+     * transforms are potentially applied.
+     *
+     * For instance, [ScopedArtifact.CLASSES] can be useful to the JacocoReportTask without the
+     * jacoco instrumentation performed on the classes. To achieve that, the [ScopedArtifact.CLASSES]
+     * are publish under a new name [InternalScopedArtifact.PRE_JACOCO_TRANSFORMED_CLASSES] which
+     * guarantees to have access to the final version of the classes before the jacoco transformation
+     * is registered.
+     */
+    internal fun publishCurrent(type: ScopedArtifact, into: InternalScopedArtifact) {
+        getScopedArtifactsContainer(into)
+            .initialScopedContent
+            .from(
+                getScopedArtifactsContainer(type).currentScopedContent
+            )
     }
 
     internal fun getFinalArtifacts(type: ScopedArtifact): FileCollection =
@@ -187,6 +224,76 @@ class ScopedArtifactsImpl(
             resetContentProvider(type, into)
         }
 
+        internal fun toTransform(
+            type: ScopedArtifact,
+            inputJars: (T) -> ConfigurableFileCollection,
+            inputDirectories: (T) -> ConfigurableFileCollection,
+            intoJarDirectory: (T) -> DirectoryProperty,
+            intoDirDirectory: (T) -> DirectoryProperty,
+        ) {
+            val artifactContainer = scopedArtifacts.getScopedArtifactsContainer(type)
+            val currentScopedContent = artifactContainer.currentScopedContent
+            val newContent = fileCollectionCreator.invoke()
+            // set the [Task] input and output fields.
+            taskProvider.configure { task ->
+                inputJars(task).setFrom(
+                    currentScopedContent.getRegularFiles(projectLayout.projectDirectory)
+                )
+                inputDirectories(task).setFrom(
+                    currentScopedContent.getDirectories(projectLayout.projectDirectory)
+                )
+                setContentPath(type, intoJarDirectory(task), taskProvider.name, "jars")
+                setContentPath(type, intoDirDirectory(task), taskProvider.name, "dirs")
+            }
+            newContent.from(
+                // TODO: this is a hack, we should instead have all the tasks like jacoco and asm tasks
+                // that transform classes to produce a list of jars instead of a directory containing
+                // jars.
+                // see bug 254666753
+                taskProvider.flatMap { task -> intoJarDirectory(task).map {
+                    it.asFileTree.files
+                } },
+                taskProvider.flatMap { task -> intoDirDirectory(task) }
+            )
+            scopedArtifacts.getScopedArtifactsContainer(type).setNewContent(newContent)
+        }
+
+        internal fun toFork(
+            type: ScopedArtifact,
+            inputJars: (T) -> ConfigurableFileCollection,
+            inputDirectories: (T) -> ConfigurableFileCollection,
+            intoJarDirectory: (T) -> DirectoryProperty,
+            intoDirDirectory: (T) -> DirectoryProperty,
+            intoType: InternalScopedArtifact,
+        ) {
+            val artifactContainer = scopedArtifacts.getScopedArtifactsContainer(type)
+            val currentScopedContent = artifactContainer.currentScopedContent
+            val newContent = fileCollectionCreator.invoke()
+            // set the [Task] input and output fields.
+            taskProvider.configure { task ->
+                inputJars(task).setFrom(
+                    currentScopedContent.getRegularFiles(projectLayout.projectDirectory)
+                )
+                inputDirectories(task).setFrom(
+                    currentScopedContent.getDirectories(projectLayout.projectDirectory)
+                )
+                setContentPath(type, intoJarDirectory(task), taskProvider.name, "jars")
+                setContentPath(type, intoDirDirectory(task), taskProvider.name, "dirs")
+            }
+            newContent.from(
+                // TODO: this is a hack, we should instead have all the tasks like jacoco and asm tasks
+                // that transform classes to produce a list of jars instead of a directory containing
+                // jars.
+                // see bug 254666753.
+                taskProvider.flatMap { task -> intoJarDirectory(task).map {
+                    it.asFileTree.files
+                } },
+                taskProvider.flatMap { task -> intoDirDirectory(task) }
+            )
+            scopedArtifacts.getScopedArtifactsContainer(intoType)
+                .initialScopedContent.from(newContent)
+        }
+
         override fun toReplace(type: ScopedArtifact, into: (T) -> RegularFileProperty) {
             taskProvider.configure { task ->
                 setContentPath(type, into(task))
@@ -203,7 +310,7 @@ class ScopedArtifactsImpl(
                 type.getIntermediateOutputPath(
                     buildDirectory = projectLayout.buildDirectory,
                     variantIdentifier = scopedArtifacts.variantIdentifier,
-                    paths = arrayOf(scopedArtifacts.scope.name) ,
+                    paths = arrayOf(scopedArtifacts.scopeName) ,
                     forceFilename = type.name().lowercase().plus(".jar")
                 )
             )
@@ -212,11 +319,13 @@ class ScopedArtifactsImpl(
         private fun setContentPath(
             type: ScopedArtifact,
             into: DirectoryProperty,
+            vararg paths: String,
         ) {
             into.set(
                 type.getIntermediateOutputPath(
                     buildDirectory = projectLayout.buildDirectory,
                     variantIdentifier = scopedArtifacts.variantIdentifier,
+                    paths = paths,
                 )
             )
         }

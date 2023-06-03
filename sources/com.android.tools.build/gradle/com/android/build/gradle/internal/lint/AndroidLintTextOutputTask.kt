@@ -32,7 +32,7 @@ import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.TaskCategory
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.provider.Property
@@ -75,6 +75,9 @@ abstract class AndroidLintTextOutputTask : NonIncrementalTask() {
     @get:Input
     abstract val abortOnError: Property<Boolean>
 
+    @get:Input
+    abstract val hasBaseline: Property<Boolean>
+
     override fun doTaskAction() {
         if (outputStream.get() != OutputStream.ABBREVIATED) {
             textReportInputFile.get().asFile.let { textReportFile ->
@@ -108,7 +111,8 @@ abstract class AndroidLintTextOutputTask : NonIncrementalTask() {
                     android.get(),
                     fatalOnly.get(),
                     lintMode = LintMode.REPORTING,
-                    abbreviatedLintOutput
+                    abbreviatedLintOutput,
+                    hasBaseline.get()
                 )
             }
         }
@@ -203,6 +207,7 @@ abstract class AndroidLintTextOutputTask : NonIncrementalTask() {
                 outputStream.setDisallowChanges(OutputStream.STDOUT)
             else -> outputStream.setDisallowChanges(OutputStream.ABBREVIATED)
         }
+        hasBaseline.setDisallowChanges(lintOptions.baseline != null)
     }
 
     internal fun configureForStandalone(

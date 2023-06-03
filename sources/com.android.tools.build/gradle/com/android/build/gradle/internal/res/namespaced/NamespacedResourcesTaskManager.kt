@@ -32,8 +32,8 @@ import org.gradle.api.provider.Provider
  * Responsible for the creation of tasks to build namespaced resources.
  */
 class NamespacedResourcesTaskManager(
-        private val taskFactory: TaskFactory,
-        private val creationConfig: ComponentCreationConfig
+    private val taskFactory: TaskFactory,
+    private val creationConfig: ComponentCreationConfig
 ) {
 
     /**
@@ -116,29 +116,32 @@ class NamespacedResourcesTaskManager(
         // By the time this is called, the list of potential source files is known since the
         // variant API has run. Eventually, it could be better to not do a get() here and instead
         // create a unique Task that uses workers for parallelization.
-        creationConfig.sources.res.getVariantSources().forEach { dimensionSources ->
+        creationConfig.sources.res { resSources ->
+            resSources.getVariantSources().forEach { dimensionSources ->
 
-            val artifacts = creationConfig.services.fileCollection().also { fileCollection ->
-                    fileCollection.from( dimensionSources.getEntries()
-                .filter { !it.isGenerated }
-                .map { it.asFiles(creationConfig.services.provider {
- creationConfig.services.projectInfo.projectDirectory
-            }) }
+                val artifacts = creationConfig.services.fileCollection().also { fileCollection ->
+                    fileCollection.from(dimensionSources.directoryEntries
+                        .filter { !it.isGenerated }
+                        .map { it.asFiles(
+                          creationConfig.services.provider {
+                          creationConfig.services.projectInfo.projectDirectory
+                      }) }
                     )
                 }
 
-            val sourceSetName = dimensionSources.name
+                val sourceSetName = dimensionSources.name
 
-            val name = "compile".appendCapitalized(sourceSetName) +
-                    "ResourcesFor".appendCapitalized(creationConfig.name)
-            // TODO : figure out when we need explicit task dependency and potentially remove it.
-            taskFactory.register(
-                CompileLibraryResourcesTask.NamespacedCreationAction(
-                    name = name,
-                    inputDirectories = artifacts,
-                    creationConfig = creationConfig
+                val name = "compile".appendCapitalized(sourceSetName) +
+                        "ResourcesFor".appendCapitalized(creationConfig.name)
+                // TODO : figure out when we need explicit task dependency and potentially remove it.
+                taskFactory.register(
+                    CompileLibraryResourcesTask.NamespacedCreationAction(
+                        name = name,
+                        inputDirectories = artifacts,
+                        creationConfig = creationConfig
+                    )
                 )
-            )
+            }
         }
     }
 }

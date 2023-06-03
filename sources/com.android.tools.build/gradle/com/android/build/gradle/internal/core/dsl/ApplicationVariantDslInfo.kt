@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.core.dsl
 
+import com.android.build.gradle.internal.core.dsl.features.AndroidResourcesDslInfo
 import org.gradle.api.provider.Provider
 
 /**
@@ -28,7 +29,12 @@ import org.gradle.api.provider.Provider
  *
  * @see [com.android.build.gradle.internal.component.ApplicationCreationConfig]
  */
-interface ApplicationVariantDslInfo: VariantDslInfo, ApkProducingComponentDslInfo, PublishableComponentDslInfo, TestedVariantDslInfo {
+interface ApplicationVariantDslInfo:
+    VariantDslInfo,
+    ApkProducingComponentDslInfo,
+    PublishableComponentDslInfo,
+    TestedVariantDslInfo,
+    MultiVariantComponentDslInfo {
 
     /**
      * Returns the version name for this variant. This could be specified by the product flavors,
@@ -52,4 +58,6 @@ interface ApplicationVariantDslInfo: VariantDslInfo, ApkProducingComponentDslInf
     val isEmbedMicroApp: Boolean
 
     val isProfileable: Boolean
+
+    override val androidResourcesDsl: AndroidResourcesDslInfo
 }

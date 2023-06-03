@@ -18,6 +18,7 @@ package com.android.ide.common.rendering.api;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import java.net.URL;
+import java.util.Map;
 
 /**
  * Intermediary class implementing parts of both the old and new ProjectCallback from the LayoutLib
@@ -132,14 +133,13 @@ public abstract class LayoutlibCallback implements XmlParserFactory {
      * SessionParams} does not have an {@link AdapterBinding} for the given {@link
      * ResourceReference} already.
      *
-     * @param adapterViewRef the reference of adapter view to return the adapter binding for.
-     * @param adapterCookie the view cookie for this particular view.
      * @param viewObject the view object for the adapter.
+     * @param attributes a map of the attributes needed to create the binding.
      * @return an adapter binding for the given view or null if there's no data.
      */
     @Nullable
     public abstract AdapterBinding getAdapterBinding(
-            ResourceReference adapterViewRef, Object adapterCookie, Object viewObject);
+            Object viewObject, Map<String, String> attributes);
 
     /**
      * Returns a callback for Action Bar information needed by the Layout Library. The callback

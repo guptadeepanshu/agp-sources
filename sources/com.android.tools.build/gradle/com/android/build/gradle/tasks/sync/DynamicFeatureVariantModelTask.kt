@@ -19,7 +19,7 @@ package com.android.build.gradle.tasks.sync
 import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.ide.common.build.filebasedproperties.variant.VariantProperties
 import org.gradle.work.DisableCachingByDefault
 
@@ -31,9 +31,9 @@ abstract class DynamicFeatureVariantModelTask: ModuleVariantModelTask() {
         super.addVariantContent(variant.dynamicFeatureVariantPropertiesBuilder.artifactOutputPropertiesBuilder)
     }
 
-    class CreationAction(private val dynamicFeatureCreationConfig: DynamicFeatureCreationConfig):
+    class CreationAction(creationConfig: DynamicFeatureCreationConfig):
         AbstractVariantModelTask.CreationAction<DynamicFeatureVariantModelTask, DynamicFeatureCreationConfig>(
-            creationConfig = dynamicFeatureCreationConfig,
+            creationConfig,
         ) {
 
         override val type: Class<DynamicFeatureVariantModelTask>
@@ -42,7 +42,8 @@ abstract class DynamicFeatureVariantModelTask: ModuleVariantModelTask() {
         override fun configure(task: DynamicFeatureVariantModelTask) {
             super.configure(task)
             task.manifestPlaceholders.setDisallowChanges(
-                dynamicFeatureCreationConfig.manifestPlaceholders
+                creationConfig.manifestPlaceholdersCreationConfig?.placeholders,
+                handleNullable = { empty() }
             )
         }
     }

@@ -23,20 +23,17 @@ import org.gradle.api.Incubating
  */
 interface Installation {
     /** The time out used for all adb operations. */
-    @get:Incubating
-    @set:Incubating
     var timeOutInMs: Int
 
     /** The list of FULL_APK installation options. */
     @get:Incubating
-    @set:Incubating
-    var installOptions: Collection<String>?
+    val installOptions: MutableList<String>
 
     /** Sets the list of FULL_APK installation options */
-    @Incubating
+    @Deprecated("To be removed in AGP 9.0")
     fun installOptions(option: String)
 
     /** Sets the list of FULL_APK installation options */
-    @Incubating
+    @Deprecated("To be removed in AGP 9.0")
     fun installOptions(vararg options: String)
 }

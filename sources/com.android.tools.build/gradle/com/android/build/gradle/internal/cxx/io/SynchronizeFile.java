@@ -661,13 +661,13 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (!getWorkingDirectoryBytes().isEmpty()) {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(workingDirectory_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 1, workingDirectory_);
     }
-    if (!getSourceFileBytes().isEmpty()) {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(sourceFile_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 2, sourceFile_);
     }
-    if (!getDestinationFileBytes().isEmpty()) {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(destinationFile_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 3, destinationFile_);
     }
     if (initialFileComparison_ != com.android.build.gradle.internal.cxx.io.SynchronizeFile.Comparison.UNKNOWN_COMPARISON.getNumber()) {
@@ -685,13 +685,13 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (!getWorkingDirectoryBytes().isEmpty()) {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(workingDirectory_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, workingDirectory_);
     }
-    if (!getSourceFileBytes().isEmpty()) {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(sourceFile_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, sourceFile_);
     }
-    if (!getDestinationFileBytes().isEmpty()) {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(destinationFile_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, destinationFile_);
     }
     if (initialFileComparison_ != com.android.build.gradle.internal.cxx.io.SynchronizeFile.Comparison.UNKNOWN_COMPARISON.getNumber()) {

@@ -25,8 +25,8 @@ import com.android.build.gradle.internal.cxx.configure.CommandLineArgument.Defin
 import com.android.build.gradle.internal.cxx.configure.CommandLineArgument.NdkBuildAppendProperty
 import com.android.build.gradle.internal.cxx.configure.CommandLineArgument.NdkBuildJobs
 import com.android.build.gradle.internal.cxx.configure.CommandLineArgument.UnknownArgument
-import com.android.build.gradle.internal.cxx.os.OsBehavior
-import com.android.build.gradle.internal.cxx.os.createOsBehavior
+import com.android.utils.cxx.os.OsBehavior
+import com.android.utils.cxx.os.createOsBehavior
 import com.google.common.annotations.VisibleForTesting
 
 /**

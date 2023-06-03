@@ -69,19 +69,27 @@ public class MergingReport {
     @NonNull
     private final Actions actions;
 
+    /**
+     * In some cases AAPT manifest is the same as merged one, so we can save time by reusing the
+     * merged manifest
+     */
+    @NonNull private final boolean isAaptSafeManifestUnchanged;
+
     private MergingReport(
             @NonNull Map<MergedManifestKind, String> mergedDocuments,
             @NonNull Map<MergedManifestKind, XmlDocument> mergedXmlDocuments,
             @NonNull Result result,
             @NonNull ImmutableList<Record> records,
             @NonNull ImmutableList<String> intermediaryStages,
-            @NonNull Actions actions) {
+            @NonNull Actions actions,
+            @NonNull boolean isAaptSafeManifestUnchanged) {
         this.mergedDocuments = mergedDocuments;
         this.mergedXmlDocuments = mergedXmlDocuments;
         this.result = result;
         this.records = records;
         this.intermediaryStages = intermediaryStages;
         this.actions = actions;
+        this.isAaptSafeManifestUnchanged = isAaptSafeManifestUnchanged;
     }
 
     /**
@@ -115,6 +123,10 @@ public class MergingReport {
     @Nullable
     public String getMergedDocument(@NonNull MergedManifestKind state) {
         return mergedDocuments.get(state);
+    }
+
+    public boolean isAaptSafeManifestUnchanged() {
+        return isAaptSafeManifestUnchanged;
     }
 
     @Nullable
@@ -282,6 +294,7 @@ public class MergingReport {
         @NonNull
         private ActionRecorder mActionRecorder = new ActionRecorder();
         @NonNull private final ILogger mLogger;
+        private boolean isAaptSafeManifestUnchanged = false;
 
         Builder(@NonNull ILogger logger) {
             mLogger = logger;
@@ -289,6 +302,11 @@ public class MergingReport {
 
         Builder setMergedDocument(@NonNull MergedManifestKind mergedManifestKind, @NonNull String mergedDocument) {
             this.mergedDocuments.put(mergedManifestKind, mergedDocument);
+            return this;
+        }
+
+        Builder setAaptSafeManifestUnchanged(boolean aaptSafeManifestUnchanged) {
+            this.isAaptSafeManifestUnchanged = aaptSafeManifestUnchanged;
             return this;
         }
 
@@ -397,7 +415,8 @@ public class MergingReport {
                     result,
                     ImmutableList.copyOf(mRecordBuilder.build()),
                     mIntermediaryStages.build(),
-                    mActionRecorder.build());
+                    mActionRecorder.build(),
+                    isAaptSafeManifestUnchanged);
         }
 
         @NonNull

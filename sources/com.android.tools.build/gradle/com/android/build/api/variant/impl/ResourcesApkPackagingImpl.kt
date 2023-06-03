@@ -16,13 +16,13 @@
 
 package com.android.build.api.variant.impl
 
-import com.android.build.api.dsl.PackagingOptions
+import com.android.build.api.dsl.Packaging
 import com.android.build.gradle.internal.services.VariantServices
 
 class ResourcesApkPackagingImpl(
-    dslPackagingOptions: PackagingOptions,
+    dslPackaging: Packaging,
     variantServices: VariantServices
-) : ResourcesPackagingImpl(dslPackagingOptions, variantServices) {
+) : ResourcesPackagingImpl(dslPackaging, variantServices) {
 
     override val excludes =
         variantServices.setPropertyOf(String::class.java) {

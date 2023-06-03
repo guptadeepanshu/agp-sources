@@ -23,7 +23,7 @@ import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.buildanalyzer.common.TaskCategory
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.InputFile
@@ -45,7 +45,7 @@ abstract class CreateNonNamespacedLibraryManifestTask : NonIncrementalTask() {
     abstract val outputStrippedManifestFile: RegularFileProperty
 
     @get:InputFile
-    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
     abstract val libraryManifest: RegularFileProperty
 
     override fun doTaskAction() {

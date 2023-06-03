@@ -35,7 +35,6 @@ import com.android.build.gradle.internal.dsl.BuildType
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import com.android.build.gradle.internal.dsl.ProductFlavor
 import com.android.build.gradle.internal.dsl.SigningConfig
-import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.plugins.DslContainerProvider
 import com.android.build.gradle.internal.scope.AndroidTestBuildFeatureValuesImpl
 import com.android.build.gradle.internal.scope.BuildFeatureValues
@@ -86,7 +85,6 @@ class LibraryVariantFactory(
         artifacts: ArtifactsImpl,
         variantData: BaseVariantData,
         taskContainer: MutableTaskContainer,
-        transformManager: TransformManager,
         variantServices: VariantServices,
         taskCreationServices: TaskCreationServices,
         globalConfig: GlobalTaskCreationConfig,
@@ -103,7 +101,6 @@ class LibraryVariantFactory(
                         artifacts,
                         variantData,
                         taskContainer,
-                        transformManager,
                         variantServices,
                         taskCreationServices,
                         globalConfig,
@@ -161,7 +158,8 @@ class LibraryVariantFactory(
             projectOptions,
             dataBindingOverride = null,
             mlModelBindingOverride = false,
-            includeAndroidResources = includeAndroidResources
+            includeAndroidResources = includeAndroidResources,
+            testedComponent = componentType
         )
     }
 

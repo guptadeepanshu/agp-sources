@@ -241,4 +241,31 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
    */
   com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisDataOrBuilder getDownloadsAnalysisDataOrBuilder();
+
+  /**
+   * <pre>
+   * Data from task category issues
+   * </pre>
+   *
+   * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+   * @return Whether the taskCategoryIssuesData field is set.
+   */
+  boolean hasTaskCategoryIssuesData();
+  /**
+   * <pre>
+   * Data from task category issues
+   * </pre>
+   *
+   * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+   * @return The taskCategoryIssuesData.
+   */
+  com.google.wireless.android.sdk.stats.TaskCategoryIssuesData getTaskCategoryIssuesData();
+  /**
+   * <pre>
+   * Data from task category issues
+   * </pre>
+   *
+   * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+   */
+  com.google.wireless.android.sdk.stats.TaskCategoryIssuesDataOrBuilder getTaskCategoryIssuesDataOrBuilder();
 }

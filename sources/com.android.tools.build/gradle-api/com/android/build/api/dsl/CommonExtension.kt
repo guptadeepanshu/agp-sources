@@ -74,7 +74,6 @@ interface CommonExtension<
      * For more information about the properties you can configure in this block, see [AdbOptions].
      */
     @Suppress("DEPRECATION")
-    @get:Incubating
     @Deprecated("Replaced by installation", replaceWith = ReplaceWith("installation"))
     val adbOptions: AdbOptions
 
@@ -86,7 +85,6 @@ interface CommonExtension<
      * For more information about the properties you can configure in this block, see [AdbOptions].
      */
     @Suppress("DEPRECATION")
-    @Incubating
     @Deprecated("Replaced by installation", replaceWith = ReplaceWith("installation"))
     fun adbOptions(action: AdbOptions.() -> Unit)
 
@@ -319,19 +317,35 @@ interface CommonExtension<
      * Specifies options and rules that determine which files the Android plugin packages into your
      * APK.
      *
-     * For more information about the properties you can configure in this block, see [PackagingOptions].
+     * For more information about the properties you can configure in this block, see [Packaging].
      */
-    @get:Incubating
-    val packagingOptions: PackagingOptions
+    @Deprecated("Renamed to packaging", replaceWith = ReplaceWith("packaging"))
+    val packagingOptions: Packaging
 
     /**
      * Specifies options and rules that determine which files the Android plugin packages into your
      * APK.
      *
-     * For more information about the properties you can configure in this block, see [PackagingOptions].
+     * For more information about the properties you can configure in this block, see [Packaging].
      */
-    @Incubating
-    fun packagingOptions(action: PackagingOptions.() -> Unit)
+    @Deprecated("Renamed to packaging", replaceWith = ReplaceWith("packaging"))
+    fun packagingOptions(action: Packaging.() -> Unit)
+
+    /**
+     * Specifies options and rules that determine which files the Android plugin packages into your
+     * APK.
+     *
+     * For more information about the properties you can configure in this block, see [Packaging].
+     */
+    val packaging: Packaging
+
+    /**
+     * Specifies options and rules that determine which files the Android plugin packages into your
+     * APK.
+     *
+     * For more information about the properties you can configure in this block, see [Packaging].
+     */
+    fun packaging(action: Packaging.() -> Unit)
 
     /**
      * Encapsulates all product flavors configurations for this project.
@@ -424,7 +438,6 @@ interface CommonExtension<
      *
      * @see [ApkSigningConfig]
      */
-    @get:Incubating
     val signingConfigs: NamedDomainObjectContainer<out ApkSigningConfig>
 
     /**
@@ -434,7 +447,6 @@ interface CommonExtension<
      * For more information about the properties you can configure in this block,
      * see [ApkSigningConfig].
      */
-    @Incubating
     fun signingConfigs(action: NamedDomainObjectContainer<out ApkSigningConfig>.() -> Unit)
 
     /**
@@ -500,7 +512,6 @@ interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [Splits].
      */
-    @get:Incubating
     val splits: Splits
 
     /**
@@ -510,13 +521,10 @@ interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [Splits].
      */
-    @Incubating
     fun splits(action: Splits.() -> Unit)
 
-    @get:Incubating
     val composeOptions: ComposeOptions
 
-    @Incubating
     fun composeOptions(action: ComposeOptions.() -> Unit)
 
     /**
@@ -852,10 +860,6 @@ interface CommonExtension<
     /**
      * The namespace of the generated R and BuildConfig classes. Also, the namespace used to resolve
      * any relative class names that are declared in the AndroidManifest.xml.
-     *
-     * This value supersedes any value specified by the `package` attribute in the source
-     * AndroidManifest.xml, but doing a 'get' on this property will not retrieve the value specified
-     * in the AndroidManifest.xml.
      */
     var namespace: String?
 

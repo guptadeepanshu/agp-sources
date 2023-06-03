@@ -28,8 +28,11 @@ import com.android.build.gradle.internal.cxx.io.decodeFileFingerPrint
 import com.android.build.gradle.internal.cxx.io.encode
 import com.android.build.gradle.internal.cxx.io.fingerPrint
 import com.android.build.gradle.internal.cxx.logging.CxxStructuredLogEncoder
+import com.android.build.gradle.internal.cxx.logging.bugln
 import com.android.build.gradle.internal.cxx.logging.errorln
 import com.android.build.gradle.internal.cxx.logging.readStructuredLog
+import com.android.utils.cxx.CxxBugDiagnosticCode
+import com.android.utils.cxx.CxxBugDiagnosticCode.CONFIGURE_INVALIDATION_STATE_RACE
 import com.android.utils.cxx.CxxDiagnosticCode.FINGER_PRINT_FILE_CORRUPTED
 import java.io.File
 
@@ -83,11 +86,13 @@ fun createConfigurationInvalidationState(
             .setConfigureType(HARD_CONFIGURE)
             .build()
 
+    val compareLastFingerPrintFilesToCurrent =
+        lastConfigureFingerPrint.map { it to it.compareToCurrent() }
     val (unchangedFingerPrintFiles, changedFingerPrintFiles) =
-        lastConfigureFingerPrint.partition { it.compareToCurrent() == null }
-    val changesToFingerPrintFiles = changedFingerPrintFiles.map { it.compareToCurrent()!! }
+        compareLastFingerPrintFilesToCurrent.partition { it.second == null }
+    val changesToFingerPrintFiles = changedFingerPrintFiles.map { it.second!! }
     val changes = changesToFingerPrintFiles.associate { it.fileName to it.type }
-    val unchanged = unchangedFingerPrintFiles.map { it.fileName }.toSet()
+    val unchanged = unchangedFingerPrintFiles.map { it.first.fileName }.toSet()
     val fingerprintTimestamp = lastConfigureFingerPrintFile.lastModified()
 
     val allFiles = (configureInputFiles + requiredOutputFiles + optionalOutputFiles + hardConfigureFiles).toSet()
@@ -108,6 +113,24 @@ fun createConfigurationInvalidationState(
                 || changedHardConfigureFiles.isNotEmpty() -> HARD_CONFIGURE
         softConfigureReasons.isNotEmpty() -> SOFT_CONFIGURE
         else -> NO_CONFIGURE
+    }
+
+    // b/255965912 -- check whether any fingerprinted files were modified during this check.
+    val compareLastFingerPrintFilesToCurrentAgain =
+        lastConfigureFingerPrint.map { it.compareToCurrent() }
+    for(i in compareLastFingerPrintFilesToCurrentAgain.indices) {
+        val filename = compareLastFingerPrintFilesToCurrent[i].first
+        val firstCompareToCurrent = compareLastFingerPrintFilesToCurrent[i].second
+        val secondCompareToCurrent = compareLastFingerPrintFilesToCurrentAgain[i]
+        if (firstCompareToCurrent != secondCompareToCurrent) {
+            bugln(
+                CONFIGURE_INVALIDATION_STATE_RACE,
+                "File '${filename}' was modified during checks for C/C++ configuration invalidation. " +
+                        "Before [${firstCompareToCurrent?.type}], after [${secondCompareToCurrent?.type}].")
+            return result
+                .setConfigureType(HARD_CONFIGURE)
+                .build()
+        }
     }
 
     return result
