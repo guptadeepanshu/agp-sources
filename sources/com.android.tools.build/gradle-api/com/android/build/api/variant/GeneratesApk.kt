@@ -48,5 +48,9 @@ interface GeneratesApk {
     /**
      * Target SDK version for this variant.
      */
+    val targetSdk: AndroidVersion
+
+    @Deprecated(message = "Replaced with targetSdk, will be removed in 9.0", replaceWith = ReplaceWith("targetSdk"))
     val targetSdkVersion: AndroidVersion
+
 }

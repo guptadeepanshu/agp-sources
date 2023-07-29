@@ -29,11 +29,11 @@ import com.android.repository.api.ProgressIndicatorAdapter;
 import com.android.repository.io.FileOpUtils;
 import com.android.resources.Density;
 import com.android.resources.ScreenSize;
+import com.android.sdklib.AndroidVersionUtils;
 import com.android.sdklib.IAndroidTarget;
 import com.android.sdklib.ISystemImage;
 import com.android.sdklib.OptionalLibrary;
 import com.android.sdklib.PathFileWrapper;
-import com.android.sdklib.SdkVersionInfo;
 import com.android.sdklib.devices.Device;
 import com.android.sdklib.devices.DeviceManager;
 import com.android.sdklib.devices.Storage;
@@ -467,8 +467,9 @@ class AvdManagerCli extends CommandLineParser {
             SystemImage img = (SystemImage) info.getSystemImage();
             DetailsTypes.ApiDetailsType details =
                     (DetailsTypes.ApiDetailsType) img.getPackage().getTypeDetails();
-            String versionWithCodename = SdkVersionInfo
-                    .getVersionWithCodename(details.getAndroidVersion());
+            String versionWithCodename =
+                    AndroidVersionUtils.getFullReleaseName(
+                            details.getAndroidVersion(), false, true);
             if (details instanceof DetailsTypes.PlatformDetailsType) {
                 mSdkLog.info("  API: %s",
                         versionWithCodename);

@@ -29,6 +29,6 @@ class DexParameters(
     val desugarBootclasspath: ClassFileProviderFactory,
     val desugarClasspath: ClassFileProviderFactory,
     val coreLibDesugarConfig: String?,
-    val coreLibDesugarOutputKeepRuleFile: File?,
+    val enableApiModeling: Boolean,
     val messageReceiver: MessageReceiver
 )

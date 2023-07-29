@@ -51,27 +51,28 @@ public final class FolderConfiguration implements Comparable<FolderConfiguration
     private static final int INDEX_COUNTRY_CODE          = 0;
     private static final int INDEX_NETWORK_CODE          = 1;
     private static final int INDEX_LOCALE                = 2;
-    private static final int INDEX_LAYOUT_DIR            = 3;
-    private static final int INDEX_SMALLEST_SCREEN_WIDTH = 4;
-    private static final int INDEX_SCREEN_WIDTH          = 5;
-    private static final int INDEX_SCREEN_HEIGHT         = 6;
-    private static final int INDEX_SCREEN_LAYOUT_SIZE    = 7;
-    private static final int INDEX_SCREEN_RATIO          = 8;
-    private static final int INDEX_SCREEN_ROUND          = 9;
-    private static final int INDEX_WIDE_COLOR_GAMUT      = 10;
-    private static final int INDEX_HIGH_DYNAMIC_RANGE    = 11;
-    private static final int INDEX_SCREEN_ORIENTATION    = 12;
-    private static final int INDEX_UI_MODE               = 13;
-    private static final int INDEX_NIGHT_MODE            = 14;
-    private static final int INDEX_PIXEL_DENSITY         = 15;
-    private static final int INDEX_TOUCH_TYPE            = 16;
-    private static final int INDEX_KEYBOARD_STATE        = 17;
-    private static final int INDEX_TEXT_INPUT_METHOD     = 18;
-    private static final int INDEX_NAVIGATION_STATE      = 19;
-    private static final int INDEX_NAVIGATION_METHOD     = 20;
-    private static final int INDEX_SCREEN_DIMENSION      = 21;
-    private static final int INDEX_VERSION               = 22;
-    private static final int INDEX_COUNT                 = 23;
+    private static final int INDEX_GRAMMATICAL_GENDER = 3;
+    private static final int INDEX_LAYOUT_DIR = 4;
+    private static final int INDEX_SMALLEST_SCREEN_WIDTH = 5;
+    private static final int INDEX_SCREEN_WIDTH = 6;
+    private static final int INDEX_SCREEN_HEIGHT = 7;
+    private static final int INDEX_SCREEN_LAYOUT_SIZE = 8;
+    private static final int INDEX_SCREEN_RATIO = 9;
+    private static final int INDEX_SCREEN_ROUND = 10;
+    private static final int INDEX_WIDE_COLOR_GAMUT = 11;
+    private static final int INDEX_HIGH_DYNAMIC_RANGE = 12;
+    private static final int INDEX_SCREEN_ORIENTATION = 13;
+    private static final int INDEX_UI_MODE = 14;
+    private static final int INDEX_NIGHT_MODE = 15;
+    private static final int INDEX_PIXEL_DENSITY = 16;
+    private static final int INDEX_TOUCH_TYPE = 17;
+    private static final int INDEX_KEYBOARD_STATE = 18;
+    private static final int INDEX_TEXT_INPUT_METHOD = 19;
+    private static final int INDEX_NAVIGATION_STATE = 20;
+    private static final int INDEX_NAVIGATION_METHOD = 21;
+    private static final int INDEX_SCREEN_DIMENSION = 22;
+    private static final int INDEX_VERSION = 23;
+    private static final int INDEX_COUNT = 24;
 
     private static final ResourceQualifier[] NULL_QUALIFIERS = new ResourceQualifier[INDEX_COUNT];
 
@@ -607,6 +608,8 @@ public final class FolderConfiguration implements Comparable<FolderConfiguration
             mQualifiers[INDEX_SCREEN_DIMENSION] = qualifier;
         } else if (qualifier instanceof VersionQualifier) {
             mQualifiers[INDEX_VERSION] = qualifier;
+        } else if (qualifier instanceof GrammaticalGenderQualifier) {
+            mQualifiers[INDEX_GRAMMATICAL_GENDER] = qualifier;
         }
         mQualifierString = null;
     }
@@ -912,6 +915,17 @@ public final class FolderConfiguration implements Comparable<FolderConfiguration
     @Nullable
     public VersionQualifier getVersionQualifier() {
         return (VersionQualifier) mQualifiers[INDEX_VERSION];
+    }
+
+    public void setGrammaticalGenderQualifier(@Nullable GrammaticalGenderQualifier qualifier) {
+        mQualifiers[INDEX_GRAMMATICAL_GENDER] =
+                qualifier == null ? NULL_QUALIFIERS[INDEX_GRAMMATICAL_GENDER] : qualifier;
+        mQualifierString = null;
+    }
+
+    @Nullable
+    public GrammaticalGenderQualifier getGrammaticalGenderQualifier() {
+        return (GrammaticalGenderQualifier) mQualifiers[INDEX_GRAMMATICAL_GENDER];
     }
 
     /**
@@ -1403,6 +1417,7 @@ public final class FolderConfiguration implements Comparable<FolderConfiguration
         config.mQualifiers[INDEX_NAVIGATION_METHOD] = new NavigationMethodQualifier();
         config.mQualifiers[INDEX_SCREEN_DIMENSION] = new ScreenDimensionQualifier();
         config.mQualifiers[INDEX_VERSION] = new VersionQualifier();
+        config.mQualifiers[INDEX_GRAMMATICAL_GENDER] = new GrammaticalGenderQualifier();
         return config;
     }
 

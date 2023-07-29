@@ -16,12 +16,10 @@
 
 package com.android.build.api.dsl
 
-import org.gradle.api.Incubating
-
 /**
  * Shared properties between DSL objects [ProductFlavor] and [DefaultConfig]
  */
-interface BaseFlavor : VariantDimension, HasInitWith<BaseFlavor> {
+interface BaseFlavor : VariantDimension {
     // TODO(b/140406102)
     /** The name of the flavor. */
     fun getName(): String
@@ -403,6 +401,5 @@ interface BaseFlavor : VariantDimension, HasInitWith<BaseFlavor> {
      * }
      * ```
      */
-    @Incubating
-    override fun initWith(that: BaseFlavor)
+    fun initWith(that: BaseFlavor)
 }

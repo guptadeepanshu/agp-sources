@@ -29,7 +29,7 @@ import kotlin.streams.toList
 /**
  * Returns `true` if the given file's extension is `.jar`, ignoring case. It may or may not exist.
  */
-val isJarFile: (File) -> Boolean = { it.extension.equals(SdkConstants.EXT_JAR, ignoreCase = true) }
+val isJarFile: (File) -> Boolean = { it.path.endsWith(SdkConstants.DOT_JAR, ignoreCase = true) }
 
 /**
  * Returns a sorted list of files in the given directory whose relative paths satisfy the given

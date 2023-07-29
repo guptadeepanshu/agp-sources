@@ -39,4 +39,9 @@ interface AssetPackBundleExtension {
     val deviceTier: BundleDeviceTier
     @Incubating
     fun deviceTier(action: BundleDeviceTier.() -> Unit)
+
+    @get:Incubating
+    val countrySet: BundleCountrySet
+    @Incubating
+    fun countrySet(action: BundleCountrySet.() -> Unit)
 }

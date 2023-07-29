@@ -48,6 +48,15 @@ interface VariantSelector {
     fun withFlavor(flavorToDimension: Pair<String, String>): VariantSelector
 
     /**
+     * Returns a new selector for [ComponentIdentity] objects with a given (flavorName).
+     *
+     * @param dimension dimension name
+     * @param flavorName flavor name to filter [ComponentIdentity] on.
+     * @return [VariantSelector] instance to further filter instances of [ComponentIdentity]
+     */
+    fun withFlavor(dimension: String, flavorName: String): VariantSelector
+
+    /**
      * Returns a new selector for [ComponentIdentity]  objects with a given name pattern.
      *
      * @param pattern [Pattern] to apply on the [org.gradle.api.Named.getName] to filter [ComponentIdentity]

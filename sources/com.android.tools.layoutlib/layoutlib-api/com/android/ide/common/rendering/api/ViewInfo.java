@@ -32,6 +32,7 @@ public class ViewInfo {
     private final int mBottom;
     private List<ViewInfo> mChildren = Collections.emptyList();
     private final Object mViewObject;
+    private final Object mAccessibilityObject;
     private final Object mLayoutParamsObject;
 
     // optional info
@@ -42,12 +43,28 @@ public class ViewInfo {
     private int mBottomMargin = Integer.MIN_VALUE;
 
     public ViewInfo(String name, Object cookie, int left, int top, int right, int bottom) {
-        this(name, cookie, left, top, right, bottom, null /*viewObject*/,
+        this(
+                name,
+                cookie,
+                left,
+                top,
+                right,
+                bottom,
+                null /*viewObject*/,
+                null /*accessibilityObject*/,
                 null /*layoutParamsObject*/);
     }
 
-    public ViewInfo(String name, Object cookie, int left, int top, int right, int bottom,
-            Object viewObject, Object layoutParamsObject) {
+    public ViewInfo(
+            String name,
+            Object cookie,
+            int left,
+            int top,
+            int right,
+            int bottom,
+            Object viewObject,
+            Object accessibilityObject,
+            Object layoutParamsObject) {
         mName = name;
         mCookie = cookie;
         mLeft = left;
@@ -55,6 +72,7 @@ public class ViewInfo {
         mTop = top;
         mBottom = bottom;
         mViewObject = viewObject;
+        mAccessibilityObject = accessibilityObject;
         mLayoutParamsObject = layoutParamsObject;
     }
 
@@ -135,6 +153,15 @@ public class ViewInfo {
      */
     public Object getViewObject() {
         return mViewObject;
+    }
+
+    /**
+     * Returns the android.view.accessibility.AccessibilityNodeInfo object associated with this
+     * ViewInfo. This can be used to get information not directly accessible through the view
+     * hierarchy.
+     */
+    public Object getAccessibilityObject() {
+        return mAccessibilityObject;
     }
 
     /**

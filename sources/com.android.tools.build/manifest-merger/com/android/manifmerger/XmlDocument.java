@@ -35,6 +35,7 @@ import com.android.utils.Pair;
 import com.android.utils.PositionXmlParser;
 import com.android.utils.XmlUtils;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import java.util.HashMap;
@@ -59,6 +60,18 @@ public class XmlDocument {
 
     private static final String DEFAULT_SDK_VERSION = "1";
     private static final int INVALID_SDK_VERSION = -1;
+
+    /**
+     * Clones and transforms an XML document.
+     *
+     * @return a pair of document and flag on whether new document is differ from original one.
+     */
+    @NonNull
+    public Pair<Document, Boolean> cloneAndTransform(
+            Predicate<Node> transform, Predicate<Node> shouldRemove)
+            throws ManifestMerger2.MergeFailureException {
+        return DomMergeUtils.cloneAndTransform(getXml(), transform, shouldRemove);
+    }
 
     /**
      * The document type.
@@ -147,7 +160,7 @@ public class XmlDocument {
      *
      * @param lowerPriorityDocument the lower priority document to merge in.
      * @param mergingReportBuilder the merging report to record errors and actions.
-     * @return a new merged {@link XmlDocument} or {@link Optional#empty()} ()} if there were errors
+     * @return a new merged {@link XmlDocument} or {@link Optional#empty()} if there were errors
      *     during the merging activities.
      */
     @NonNull
@@ -182,41 +195,21 @@ public class XmlDocument {
         if (getFileType() == Type.MAIN) {
             mergingReportBuilder.getActionRecorder().recordAddedNodeAction(getRootNode(), false);
         }
+        ImmutableList<KeyAndReason> implicitElements =
+                getImplicitElementsToAdd(
+                        lowerPriorityDocument,
+                        mergingReportBuilder,
+                        addImplicitPermissions,
+                        disableMinSdkVersionCheck);
 
-        getRootNode().mergeWithLowerPriorityNode(
-                lowerPriorityDocument.getRootNode(), mergingReportBuilder);
+        getRootNode()
+                .mergeWithLowerPriorityNode(
+                        lowerPriorityDocument.getRootNode(), mergingReportBuilder);
+        addImplicitElements(mergingReportBuilder.getActionRecorder(), implicitElements);
 
-        addImplicitElements(
-                lowerPriorityDocument,
-                reparse(),
-                mergingReportBuilder,
-                addImplicitPermissions,
-                disableMinSdkVersionCheck);
-
-        // force re-parsing as new nodes may have appeared.
         return mergingReportBuilder.hasErrors() && !keepGoingOnErrors
                 ? Optional.empty()
-                : Optional.of(reparse());
-    }
-
-    /**
-     * Forces a re-parsing of the document
-     *
-     * @return a new {@link XmlDocument} with up to date information.
-     */
-    @NonNull
-    public XmlDocument reparse() {
-        XmlDocument newXmlDocument =
-                new XmlDocument(
-                        mSourceFile,
-                        mSelectors,
-                        mSystemPropertyResolver,
-                        mRootElement,
-                        mType,
-                        mNamespace,
-                        mModel);
-        newXmlDocument.originalNodeOperation = originalNodeOperation;
-        return newXmlDocument;
+                : Optional.of(this);
     }
 
     /** Returns a {@link KeyResolver} capable of resolving all selectors types */
@@ -273,6 +266,12 @@ public class XmlDocument {
     @NonNull
     public SourceFile getSourceFile() {
         return mSourceFile;
+    }
+
+    public synchronized void resetRootNode() {
+        if (mRootNode.get() != null) {
+            this.mRootNode.set(new XmlElement(mRootElement, this));
+        }
     }
 
     public synchronized XmlElement getRootNode() {
@@ -540,22 +539,30 @@ public class XmlDocument {
         return SdkVersionInfo.getApiByPreviewName(attributeVersion, true);
     }
 
-    /**
-     * Add all implicit elements from the passed lower priority document that are required in the
-     * target SDK.
-     */
     private void addImplicitElements(
+            ActionRecorder actionRecorder, ImmutableList<KeyAndReason> implicitElements) {
+        implicitElements.forEach(
+                implicitElement -> {
+                    addIfAbsent(
+                            actionRecorder, implicitElement.getKey(), implicitElement.getReason());
+                });
+    }
+
+    /**
+     * Compute and get all implicit elements from the passed lower priority document that are
+     * required in the target SDK.
+     */
+    private ImmutableList<KeyAndReason> getImplicitElementsToAdd(
             @NonNull XmlDocument lowerPriorityDocument,
-            @NonNull XmlDocument reparsedXmlDocument,
             @NonNull MergingReport.Builder mergingReport,
             boolean addImplicitPermissions,
             boolean disableMinSdkVersionCheck) {
-
+        var implicitElementKeys = new ImmutableList.Builder<KeyAndReason>();
         // if this document is an overlay, tolerate the absence of uses-sdk and do not
         // assume implicit minimum versions.
         Optional<XmlElement> usesSdk = getByTypeAndKey(USES_SDK, null);
-        if (mType == Type.OVERLAY && !usesSdk.isPresent()) {
-            return;
+        if (mType == Type.OVERLAY && usesSdk.isEmpty()) {
+            return implicitElementKeys.build();
         }
 
         // check that the uses-sdk element does not have any tools:node instruction.
@@ -569,7 +576,7 @@ public class XmlDocument {
                                         usesSdkElement.getPosition()),
                                 MergingReport.Record.Severity.ERROR,
                                 "uses-sdk element cannot have a \"tools:node\" attribute");
-                return;
+                return implicitElementKeys.build();
             }
         }
         int thisTargetSdk = getApiLevelFromAttribute(getTargetSdkVersion(mergingReport));
@@ -584,7 +591,7 @@ public class XmlDocument {
                                 : lowerPriorityDocument.getTargetSdkVersion(mergingReport));
 
         if (thisTargetSdk == INVALID_SDK_VERSION || libraryTargetSdk == INVALID_SDK_VERSION) {
-            return;
+            return implicitElementKeys.build();
         }
 
         // if library is using a code name rather than an API level, make sure this document target
@@ -605,7 +612,7 @@ public class XmlDocument {
                                 getTargetSdkVersion(mergingReport),
                                 libraryTargetSdkVersion,
                                 lowerPriorityDocument.getSourceFile().print(false)));
-                return;
+                return implicitElementKeys.build();
             }
         }
         // same for minSdkVersion, if the library is using a code name, the application must
@@ -624,7 +631,7 @@ public class XmlDocument {
                                 getMinSdkVersion(mergingReport),
                                 libraryMinSdkVersion,
                                 lowerPriorityDocument.getSourceFile().print(false)));
-                return;
+                return implicitElementKeys.build();
             }
         }
 
@@ -650,21 +657,21 @@ public class XmlDocument {
                 mergingReport.addMessage(
                         getSourceFile(), MergingReport.Record.Severity.ERROR, error);
             }
-            return;
+            return implicitElementKeys.build();
         }
 
         // if the merged document target SDK is equal or smaller than the library's, nothing to do.
         if (thisTargetSdk <= libraryTargetSdk) {
-            return;
+            return implicitElementKeys.build();
         }
 
         // There is no need to add any implied permissions when targeting an old runtime.
         if (thisTargetSdk < 4) {
-            return;
+            return implicitElementKeys.build();
         }
 
         if (!addImplicitPermissions) {
-            return;
+            return implicitElementKeys.build();
         }
 
         boolean hasWriteToExternalStoragePermission =
@@ -672,18 +679,17 @@ public class XmlDocument {
                         USES_PERMISSION, permission("WRITE_EXTERNAL_STORAGE")).isPresent();
 
         if (libraryTargetSdk < 4) {
-            addIfAbsent(
-                    reparsedXmlDocument,
-                    mergingReport.getActionRecorder(),
-                    permission("WRITE_EXTERNAL_STORAGE"),
-                    lowerPriorityDocument.getNamespace() + " has a targetSdkVersion < 4");
+            implicitElementKeys.add(
+                    KeyAndReason.of(
+                            permission("WRITE_EXTERNAL_STORAGE"),
+                            lowerPriorityDocument.getNamespace() + " has a targetSdkVersion < 4"));
+
             hasWriteToExternalStoragePermission = true;
 
-            addIfAbsent(
-                    reparsedXmlDocument,
-                    mergingReport.getActionRecorder(),
-                    permission("READ_PHONE_STATE"),
-                    lowerPriorityDocument.getNamespace() + " has a targetSdkVersion < 4");
+            implicitElementKeys.add(
+                    KeyAndReason.of(
+                            permission("READ_PHONE_STATE"),
+                            lowerPriorityDocument.getNamespace() + " has a targetSdkVersion < 4"));
         }
 
         // If the application has requested WRITE_EXTERNAL_STORAGE, we will
@@ -691,35 +697,33 @@ public class XmlDocument {
         // do this (regardless of target API version) because we can't have
         // an app with write permission but not read permission.
         if (hasWriteToExternalStoragePermission) {
-
-            addIfAbsent(
-                    reparsedXmlDocument,
-                    mergingReport.getActionRecorder(),
-                    permission("READ_EXTERNAL_STORAGE"),
-                    lowerPriorityDocument.getNamespace() + " requested WRITE_EXTERNAL_STORAGE");
+            implicitElementKeys.add(
+                    KeyAndReason.of(
+                            permission("READ_EXTERNAL_STORAGE"),
+                            lowerPriorityDocument.getNamespace()
+                                    + " requested WRITE_EXTERNAL_STORAGE"));
         }
 
         // Pre-JellyBean call log permission compatibility.
         if (thisTargetSdk >= 16 && libraryTargetSdk < 16) {
             if (lowerPriorityDocument.getByTypeAndKey(
                     USES_PERMISSION, permission("READ_CONTACTS")).isPresent()) {
-                addIfAbsent(
-                        reparsedXmlDocument,
-                        mergingReport.getActionRecorder(),
-                        permission("READ_CALL_LOG"),
-                        lowerPriorityDocument.getNamespace()
-                                + " has targetSdkVersion < 16 and requested READ_CONTACTS");
+                implicitElementKeys.add(
+                        KeyAndReason.of(
+                                permission("READ_CALL_LOG"),
+                                lowerPriorityDocument.getNamespace()
+                                        + " has targetSdkVersion < 16 and requested READ_CONTACTS"));
             }
             if (lowerPriorityDocument.getByTypeAndKey(
                     USES_PERMISSION, permission("WRITE_CONTACTS")).isPresent()) {
-                addIfAbsent(
-                        reparsedXmlDocument,
-                        mergingReport.getActionRecorder(),
-                        permission("WRITE_CALL_LOG"),
-                        lowerPriorityDocument.getNamespace()
-                                + " has targetSdkVersion < 16 and requested WRITE_CONTACTS");
+                implicitElementKeys.add(
+                        KeyAndReason.of(
+                                permission("WRITE_CALL_LOG"),
+                                lowerPriorityDocument.getNamespace()
+                                        + " has targetSdkVersion < 16 and requested WRITE_CONTACTS"));
             }
         }
+        return implicitElementKeys.build();
     }
 
     /**
@@ -766,23 +770,19 @@ public class XmlDocument {
      * Adds a new element of type nodeType with a specific keyValue if the element is absent in this
      * document. Will also add attributes expressed through key value pairs.
      *
-     * @param reParsedXmlDocument an up-to-date version of this XmlDocument, we use this parameter
-     *     instead of calling reparse() because reparse() can be expensive
      * @param actionRecorder to records creation actions.
      * @param keyValue the optional key for the element.
      * @param attributes the optional array of key value pairs for extra element attribute.
      */
     @SafeVarargs
     private final void addIfAbsent(
-            @NonNull XmlDocument reParsedXmlDocument,
             @NonNull ActionRecorder actionRecorder,
             @Nullable String keyValue,
             @Nullable String reason,
             @Nullable Pair<String, String>... attributes) {
 
         Optional<XmlElement> xmlElementOptional =
-                reParsedXmlDocument.getByTypeAndKey(
-                        ManifestModel.NodeTypes.USES_PERMISSION, keyValue);
+                getByTypeAndKey(ManifestModel.NodeTypes.USES_PERMISSION, keyValue);
         if (xmlElementOptional.isPresent()) {
             return;
         }
@@ -809,14 +809,16 @@ public class XmlDocument {
         XmlElement xmlElement = new XmlElement(elementNS, this);
         actionRecorder.recordImpliedNodeAction(xmlElement, reason);
 
-        getRootNode().getXml().appendChild(elementNS);
+        getRootNode().appendChild(elementNS);
     }
 
     /**
      * Removes the android namespace from all nodes.
      */
     public void clearNodeNamespaces() {
-        clearNodeNamespaces(getRootNode().getXml());
+        if (clearNodeNamespaces(getRootNode().getXml())) {
+            resetRootNode();
+        }
     }
 
     /**
@@ -824,7 +826,8 @@ public class XmlDocument {
      *
      * @param element the element
      */
-    private void clearNodeNamespaces(Element element) {
+    private boolean clearNodeNamespaces(Element element) {
+        boolean nodeRenamed = false;
         String androidPrefix = XmlUtils.lookupNamespacePrefix(element, SdkConstants.ANDROID_URI);
 
         String name = element.getNodeName();
@@ -834,6 +837,7 @@ public class XmlDocument {
             if (prefix.equals(androidPrefix)) {
                 String newName = name.substring(colonIdx + 1);
                 getXml().renameNode(element, null, newName);
+                nodeRenamed = true;
             }
         }
 
@@ -841,8 +845,32 @@ public class XmlDocument {
         for (int i = 0; i < childrenNodeList.getLength(); i++) {
             Node n = childrenNodeList.item(i);
             if (n instanceof Element) {
-                clearNodeNamespaces((Element) n);
+                nodeRenamed = nodeRenamed || clearNodeNamespaces((Element) n);
             }
+        }
+        return nodeRenamed;
+    }
+
+    private static class KeyAndReason {
+
+        private final String mKey;
+        private final String mReason;
+
+        private KeyAndReason(String key, String reason) {
+            this.mKey = key;
+            this.mReason = reason;
+        }
+
+        public static KeyAndReason of(String key, String reason) {
+            return new KeyAndReason(key, reason);
+        }
+
+        public String getKey() {
+            return mKey;
+        }
+
+        public String getReason() {
+            return mReason;
         }
     }
 }

@@ -22,9 +22,13 @@ import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.ide.common.blame.SourceFile;
 import com.android.ide.common.blame.SourcePosition;
+import com.android.utils.XmlUtils;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import java.util.Optional;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  * An xml element that does not belong to a {@link com.android.manifmerger.XmlDocument}
@@ -59,6 +63,54 @@ public class OrphanXmlElement extends XmlNode {
         return mXml;
     }
 
+    @NonNull
+    public String getNamespaceURI() {
+        return mXml.getNamespaceURI();
+    }
+
+    @NonNull
+    public String getTagName() {
+        return mXml.getTagName();
+    }
+
+    @Nullable
+    public String getAttributeValue(String namespaceUri, String localName) {
+        var namedNodeMap = getXml().getAttributes();
+        return Optional.ofNullable(namedNodeMap.getNamedItemNS(namespaceUri, localName))
+                .map(Node::getNodeValue)
+                .orElse(null);
+    }
+
+    @Nullable
+    public String getAttributeInfo(String namespaceUri, String attributeName) {
+        var element = getXml();
+        var attr = element.getAttributeNodeNS(namespaceUri, attributeName);
+        if (attr == null) {
+            return null;
+        }
+        return element.getTagName() + ":" + attributeName + ":" + attr.getValue();
+    }
+
+    @NonNull
+    public String lookupNamespacePrefix(@NonNull String nsUri, boolean create) {
+        return XmlUtils.lookupNamespacePrefix(getXml(), nsUri, create);
+    }
+
+    @NonNull
+    public String lookupNamespacePrefix(
+            @NonNull String nsUri, @NonNull String defaultPrefix, boolean create) {
+        return XmlUtils.lookupNamespacePrefix(getXml(), nsUri, defaultPrefix, create);
+    }
+
+    @NonNull
+    public Attr getAttributeNode(String name) {
+        return mXml.getAttributeNode(name);
+    }
+
+    @Nullable
+    public Attr getAttributeNodeNS(String namespaceURI, String localName) {
+        return mXml.getAttributeNodeNS(namespaceURI, localName);
+    }
 
     @NonNull
     @Override

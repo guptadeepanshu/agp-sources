@@ -67,6 +67,9 @@ public final class SdkConstants {
     /** Property in local.properties file that specifies the path of the Android SDK. */
     public static final String SDK_DIR_PROPERTY = "sdk.dir";
 
+    /** Property in local.properties file that specifies the path of the Gradle JDK. */
+    public static final String GRADLE_JDK_DIR_PROPERTY = "jdk.dir";
+
     /** Property in local.properties file that specifies the path of the Android NDK. */
     public static final String NDK_DIR_PROPERTY = "ndk.dir";
 
@@ -151,6 +154,8 @@ public final class SdkConstants {
     public static final String FN_SETTINGS_GRADLE_KTS = "settings.gradle.kts";
     /** An SDK Project's gradle.properties file */
     public static final String FN_GRADLE_PROPERTIES = "gradle.properties";
+    /** An SDK Project's libs.versions.toml file */
+    public static final String FN_VERSION_CATALOG = "libs.versions.toml";
     /** An SDK Project's gradle daemon executable */
     public static final String FN_GRADLE_UNIX = "gradle";
     /** An SDK Project's gradle.bat daemon executable (gradle for windows) */
@@ -445,7 +450,6 @@ public final class SdkConstants {
     public static final String FD_BUNDLE = "bundle";
     /** Machine learning models folder. */
     public static final String FD_ML_MODELS = "ml";
-
     /** rs Libs output folder for support mode */
     public static final String FD_RS_LIBS = "rsLibs";
     /** rs Libs output folder for support mode */
@@ -884,7 +888,7 @@ public final class SdkConstants {
     public static final String CLASS_COMPOSE_VIEW = "androidx.compose.ui.platform.ComposeView";
 
     public static final String CLASS_COMPOSE_VIEW_ADAPTER =
-            "androidx.compose.ui.tooling.preview.ComposeViewAdapter";
+            "androidx.compose.ui.tooling.ComposeViewAdapter";
 
     public static final String ATTR_COMPOSABLE_NAME = "composableName";
 
@@ -1294,6 +1298,8 @@ public final class SdkConstants {
     public static final String ATTR_ON_DEMAND = "onDemand";
     public static final String MANIFEST_ATTR_TITLE = "title";
     public static final String ATTR_TARGET_ACTIVITY = "targetActivity";
+    public static final String ATTR_MIMETYPE = "mimeType";
+    public static final String ATTR_LOCALE_CONFIG = "localeConfig";
 
     // Attributes: Resources
     public static final String ATTR_ATTR = "attr";
@@ -2096,6 +2102,8 @@ public final class SdkConstants {
     public static final String DOT_OTF = ".otf";
     public static final String DOT_EXEC = ".exec";
     public static final String DOT_AVIF = ".avif";
+    public static final String DOT_TOML = ".toml";
+    public static final String DOT_VERSIONS_DOT_TOML = ".versions.toml";
 
     /** Extension of the Application package Files, i.e. "apk". */
     public static final String EXT_ANDROID_PACKAGE = "apk";
@@ -2824,7 +2832,7 @@ public final class SdkConstants {
     public static final String GRADLE_ANDROID_TEST_API_CONFIGURATION = "androidTestApi";
 
     public static final String GRADLE_ANDROID_TEST_UTIL_CONFIGURATION = "androidTestUtil";
-    public static final String CURRENT_BUILD_TOOLS_VERSION = "30.0.3";
+    public static final String CURRENT_BUILD_TOOLS_VERSION = "33.0.1";
     public static final String SUPPORT_LIB_GROUP_ID = "com.android.support";
     public static final String SUPPORT_LIB_ARTIFACT = "com.android.support:support-v4";
     public static final String DESIGN_LIB_ARTIFACT = "com.android.support:design";

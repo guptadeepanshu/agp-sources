@@ -68,13 +68,13 @@ internal open class CompositeNodeKeyResolver(val nodeType: String) : NodeKeyReso
             val subElement = OrphanXmlElement(child as Element, model)
             if (subElement.type == ManifestModel.NodeTypes.ACTION ||
                     subElement.type == ManifestModel.NodeTypes.CATEGORY) {
-                val attributeInfo = getAttributeInfo(subElement, ATTR_NAME)
+                val attributeInfo = subElement.getAttributeInfo(ANDROID_URI, ATTR_NAME)
                 if (attributeInfo != null) {
                     subElementAttributes.add(attributeInfo)
                 }
             } else if (subElement.type == ManifestModel.NodeTypes.DATA) {
                 for (dataAttributeName in dataAttributeNames) {
-                    val attributeInfo = getAttributeInfo(subElement, dataAttributeName)
+                    val attributeInfo = subElement.getAttributeInfo(ANDROID_URI, dataAttributeName)
                     if (attributeInfo != null) {
                         subElementAttributes.add(attributeInfo)
                     }
@@ -83,17 +83,6 @@ internal open class CompositeNodeKeyResolver(val nodeType: String) : NodeKeyReso
         }
         subElementAttributes.sort()
         return Joiner.on('+').join(subElementAttributes)
-    }
-
-    private fun getAttributeInfo(
-            xmlElement: OrphanXmlElement, attributeName: String): String? {
-        val element = xmlElement.xml
-        val attr = element.getAttributeNodeNS(ANDROID_URI, attributeName)
-        return if (attr == null) {
-            null
-        } else {
-            element.tagName + ":" + attributeName + ":" + attr.value
-        }
     }
 }
 

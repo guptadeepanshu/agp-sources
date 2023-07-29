@@ -18,11 +18,11 @@ package com.android.tools.lint.model
 
 /** Represents the type of artifact produced by a module. */
 enum class LintModelModuleType {
-    APP,
-    LIBRARY,
-    TEST,
-    INSTANT_APP,
-    FEATURE,
-    DYNAMIC_FEATURE,
-    JAVA_LIBRARY
+  APP,
+  LIBRARY,
+  TEST,
+  INSTANT_APP,
+  FEATURE,
+  DYNAMIC_FEATURE,
+  JAVA_LIBRARY
 }

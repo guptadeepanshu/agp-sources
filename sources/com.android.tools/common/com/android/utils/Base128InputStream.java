@@ -19,6 +19,7 @@ import com.android.io.CancellableFileIo;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.Map;
@@ -120,6 +121,28 @@ public final class Base128InputStream extends BufferedInputStream {
       value |= ((long) (b & 0x7F)) << shift;
     }
     return value;
+  }
+
+  /**
+   * Reads a float from the stream. The float had to be written by {@link Base128OutputStream#writeFloat(float)}.
+   *
+   * @return the value read from the stream
+   * @throws IOException if an I/O error occurs
+   * @throws StreamFormatException if an invalid data format is detected
+   */
+  public float readFloat() throws IOException, StreamFormatException {
+    return Float.intBitsToFloat(readFixed32());
+  }
+
+  /**
+   * Reads a fixed 32-bit value from the stream and returns it as an int.
+   *
+   * @return the next 32-bits of the stream as a 4-byte int
+   * @throws IOException if an I/O error occurs
+   */
+  public int readFixed32() throws IOException {
+    return readByteAsInt() | (readByteAsInt() << 8) | (readByteAsInt() << 16) |
+           (readByteAsInt() << 24);
   }
 
   /**

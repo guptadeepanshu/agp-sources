@@ -21,6 +21,7 @@ private static final long serialVersionUID = 0L;
     launchTaskDetail_ = java.util.Collections.emptyList();
     deployFailureId_ = "";
     appComponentType_ = 0;
+    projectId_ = "";
   }
 
   @java.lang.Override
@@ -197,6 +198,17 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00800000;
               appComponentType_ = rawValue;
             }
+            break;
+          }
+          case 208: {
+            bitField0_ |= 0x01000000;
+            isComposeProject_ = input.readBool();
+            break;
+          }
+          case 218: {
+            com.google.protobuf.ByteString bs = input.readBytes();
+            bitField0_ |= 0x02000000;
+            projectId_ = bs;
             break;
           }
           default: {
@@ -1264,6 +1276,96 @@ private static final long serialVersionUID = 0L;
     return result == null ? com.google.wireless.android.sdk.stats.RunEvent.AppComponent.UNKNOWN : result;
   }
 
+  public static final int IS_COMPOSE_PROJECT_FIELD_NUMBER = 26;
+  private boolean isComposeProject_;
+  /**
+   * <pre>
+   * Whether or not the deployed project is a Compose project.
+   * </pre>
+   *
+   * <code>optional bool is_compose_project = 26;</code>
+   * @return Whether the isComposeProject field is set.
+   */
+  @java.lang.Override
+  public boolean hasIsComposeProject() {
+    return ((bitField0_ & 0x01000000) != 0);
+  }
+  /**
+   * <pre>
+   * Whether or not the deployed project is a Compose project.
+   * </pre>
+   *
+   * <code>optional bool is_compose_project = 26;</code>
+   * @return The isComposeProject.
+   */
+  @java.lang.Override
+  public boolean getIsComposeProject() {
+    return isComposeProject_;
+  }
+
+  public static final int PROJECT_ID_FIELD_NUMBER = 27;
+  private volatile java.lang.Object projectId_;
+  /**
+   * <pre>
+   * Client-side salted (rotating every 28 days), sha256 of the project base
+   * path. Used to correlate LiveEdit usage with Compose projects.
+   * </pre>
+   *
+   * <code>optional string project_id = 27;</code>
+   * @return Whether the projectId field is set.
+   */
+  @java.lang.Override
+  public boolean hasProjectId() {
+    return ((bitField0_ & 0x02000000) != 0);
+  }
+  /**
+   * <pre>
+   * Client-side salted (rotating every 28 days), sha256 of the project base
+   * path. Used to correlate LiveEdit usage with Compose projects.
+   * </pre>
+   *
+   * <code>optional string project_id = 27;</code>
+   * @return The projectId.
+   */
+  @java.lang.Override
+  public java.lang.String getProjectId() {
+    java.lang.Object ref = projectId_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      if (bs.isValidUtf8()) {
+        projectId_ = s;
+      }
+      return s;
+    }
+  }
+  /**
+   * <pre>
+   * Client-side salted (rotating every 28 days), sha256 of the project base
+   * path. Used to correlate LiveEdit usage with Compose projects.
+   * </pre>
+   *
+   * <code>optional string project_id = 27;</code>
+   * @return The bytes for projectId.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getProjectIdBytes() {
+    java.lang.Object ref = projectId_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      projectId_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -1352,6 +1454,12 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00800000) != 0)) {
       output.writeEnum(25, appComponentType_);
+    }
+    if (((bitField0_ & 0x01000000) != 0)) {
+      output.writeBool(26, isComposeProject_);
+    }
+    if (((bitField0_ & 0x02000000) != 0)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 27, projectId_);
     }
     unknownFields.writeTo(output);
   }
@@ -1459,6 +1567,13 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00800000) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(25, appComponentType_);
+    }
+    if (((bitField0_ & 0x01000000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(26, isComposeProject_);
+    }
+    if (((bitField0_ & 0x02000000) != 0)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(27, projectId_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -1595,6 +1710,16 @@ private static final long serialVersionUID = 0L;
     if (hasAppComponentType()) {
       if (appComponentType_ != other.appComponentType_) return false;
     }
+    if (hasIsComposeProject() != other.hasIsComposeProject()) return false;
+    if (hasIsComposeProject()) {
+      if (getIsComposeProject()
+          != other.getIsComposeProject()) return false;
+    }
+    if (hasProjectId() != other.hasProjectId()) return false;
+    if (hasProjectId()) {
+      if (!getProjectId()
+          .equals(other.getProjectId())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -1724,6 +1849,15 @@ private static final long serialVersionUID = 0L;
     if (hasAppComponentType()) {
       hash = (37 * hash) + APP_COMPONENT_TYPE_FIELD_NUMBER;
       hash = (53 * hash) + appComponentType_;
+    }
+    if (hasIsComposeProject()) {
+      hash = (37 * hash) + IS_COMPOSE_PROJECT_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getIsComposeProject());
+    }
+    if (hasProjectId()) {
+      hash = (37 * hash) + PROJECT_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getProjectId().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -1913,6 +2047,10 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00800000);
       appComponentType_ = 0;
       bitField0_ = (bitField0_ & ~0x01000000);
+      isComposeProject_ = false;
+      bitField0_ = (bitField0_ & ~0x02000000);
+      projectId_ = "";
+      bitField0_ = (bitField0_ & ~0x04000000);
       return this;
     }
 
@@ -2046,6 +2184,14 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00800000;
       }
       result.appComponentType_ = appComponentType_;
+      if (((from_bitField0_ & 0x02000000) != 0)) {
+        result.isComposeProject_ = isComposeProject_;
+        to_bitField0_ |= 0x01000000;
+      }
+      if (((from_bitField0_ & 0x04000000) != 0)) {
+        to_bitField0_ |= 0x02000000;
+      }
+      result.projectId_ = projectId_;
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -2196,6 +2342,14 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasAppComponentType()) {
         setAppComponentType(other.getAppComponentType());
+      }
+      if (other.hasIsComposeProject()) {
+        setIsComposeProject(other.getIsComposeProject());
+      }
+      if (other.hasProjectId()) {
+        bitField0_ |= 0x04000000;
+        projectId_ = other.projectId_;
+        onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -3957,6 +4111,175 @@ private static final long serialVersionUID = 0L;
     public Builder clearAppComponentType() {
       bitField0_ = (bitField0_ & ~0x01000000);
       appComponentType_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private boolean isComposeProject_ ;
+    /**
+     * <pre>
+     * Whether or not the deployed project is a Compose project.
+     * </pre>
+     *
+     * <code>optional bool is_compose_project = 26;</code>
+     * @return Whether the isComposeProject field is set.
+     */
+    @java.lang.Override
+    public boolean hasIsComposeProject() {
+      return ((bitField0_ & 0x02000000) != 0);
+    }
+    /**
+     * <pre>
+     * Whether or not the deployed project is a Compose project.
+     * </pre>
+     *
+     * <code>optional bool is_compose_project = 26;</code>
+     * @return The isComposeProject.
+     */
+    @java.lang.Override
+    public boolean getIsComposeProject() {
+      return isComposeProject_;
+    }
+    /**
+     * <pre>
+     * Whether or not the deployed project is a Compose project.
+     * </pre>
+     *
+     * <code>optional bool is_compose_project = 26;</code>
+     * @param value The isComposeProject to set.
+     * @return This builder for chaining.
+     */
+    public Builder setIsComposeProject(boolean value) {
+      bitField0_ |= 0x02000000;
+      isComposeProject_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Whether or not the deployed project is a Compose project.
+     * </pre>
+     *
+     * <code>optional bool is_compose_project = 26;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearIsComposeProject() {
+      bitField0_ = (bitField0_ & ~0x02000000);
+      isComposeProject_ = false;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object projectId_ = "";
+    /**
+     * <pre>
+     * Client-side salted (rotating every 28 days), sha256 of the project base
+     * path. Used to correlate LiveEdit usage with Compose projects.
+     * </pre>
+     *
+     * <code>optional string project_id = 27;</code>
+     * @return Whether the projectId field is set.
+     */
+    public boolean hasProjectId() {
+      return ((bitField0_ & 0x04000000) != 0);
+    }
+    /**
+     * <pre>
+     * Client-side salted (rotating every 28 days), sha256 of the project base
+     * path. Used to correlate LiveEdit usage with Compose projects.
+     * </pre>
+     *
+     * <code>optional string project_id = 27;</code>
+     * @return The projectId.
+     */
+    public java.lang.String getProjectId() {
+      java.lang.Object ref = projectId_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          projectId_ = s;
+        }
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <pre>
+     * Client-side salted (rotating every 28 days), sha256 of the project base
+     * path. Used to correlate LiveEdit usage with Compose projects.
+     * </pre>
+     *
+     * <code>optional string project_id = 27;</code>
+     * @return The bytes for projectId.
+     */
+    public com.google.protobuf.ByteString
+        getProjectIdBytes() {
+      java.lang.Object ref = projectId_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        projectId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <pre>
+     * Client-side salted (rotating every 28 days), sha256 of the project base
+     * path. Used to correlate LiveEdit usage with Compose projects.
+     * </pre>
+     *
+     * <code>optional string project_id = 27;</code>
+     * @param value The projectId to set.
+     * @return This builder for chaining.
+     */
+    public Builder setProjectId(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x04000000;
+      projectId_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Client-side salted (rotating every 28 days), sha256 of the project base
+     * path. Used to correlate LiveEdit usage with Compose projects.
+     * </pre>
+     *
+     * <code>optional string project_id = 27;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearProjectId() {
+      bitField0_ = (bitField0_ & ~0x04000000);
+      projectId_ = getDefaultInstance().getProjectId();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Client-side salted (rotating every 28 days), sha256 of the project base
+     * path. Used to correlate LiveEdit usage with Compose projects.
+     * </pre>
+     *
+     * <code>optional string project_id = 27;</code>
+     * @param value The bytes for projectId to set.
+     * @return This builder for chaining.
+     */
+    public Builder setProjectIdBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x04000000;
+      projectId_ = value;
       onChanged();
       return this;
     }

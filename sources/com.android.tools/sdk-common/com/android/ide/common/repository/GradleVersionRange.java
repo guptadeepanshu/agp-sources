@@ -17,6 +17,7 @@ package com.android.ide.common.repository;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.ide.common.gradle.Version;
 import com.android.utils.HashCodes;
 import com.google.common.base.Objects;
 import java.util.regex.Matcher;
@@ -31,8 +32,8 @@ import java.util.regex.Pattern;
  */
 public class GradleVersionRange {
     private static final Pattern RANGE_PATTERN = Pattern.compile("\\[([^,)]+),([^,)]+)\\)");
-    private final GradleVersion myMin;
-    private final GradleVersion myMax;
+    private final Version myMin;
+    private final Version myMax;
 
     /**
      * Parses the given version range.
@@ -61,7 +62,7 @@ public class GradleVersionRange {
     public static GradleVersionRange parse(
             @NonNull String value, @NonNull KnownVersionStability stability) {
         if (!value.startsWith("[")) {
-            GradleVersion minimum = GradleVersion.parse(value);
+            Version minimum = Version.Companion.parse(value);
             return new GradleVersionRange(minimum, stability.expiration(minimum));
         }
         Matcher matcher = RANGE_PATTERN.matcher(value);
@@ -69,7 +70,7 @@ public class GradleVersionRange {
             throw parsingFailure(value);
         }
         return new GradleVersionRange(
-                GradleVersion.parse(matcher.group(1)), GradleVersion.parse(matcher.group(2)));
+                Version.Companion.parse(matcher.group(1)), Version.Companion.prefixInfimum(matcher.group(2)));
     }
 
     /**
@@ -112,20 +113,23 @@ public class GradleVersionRange {
                 String.format("'%1$s' is not a valid version range", value));
     }
 
-    private GradleVersionRange(@NonNull GradleVersion min, @Nullable GradleVersion max) {
+    private GradleVersionRange(@NonNull Version min, @Nullable Version max) {
         myMin = min;
+        if (max != null && !max.isPrefixInfimum()) {
+            throw new IllegalArgumentException("max is not an exclusive upper bound");
+        }
         myMax = max;
     }
 
     /** The lower bound (inclusive) */
     @NonNull
-    public GradleVersion getMin() {
+    public Version getMin() {
         return myMin;
     }
 
     /** The upper bound (exclusive) */
     @Nullable
-    public GradleVersion getMax() {
+    public Version getMax() {
         return myMax;
     }
 
@@ -144,13 +148,13 @@ public class GradleVersionRange {
                     ? other
                     : null;
         }
-        GradleVersion min = myMin.compareTo(other.myMin) >= 0 ? myMin : other.myMin;
-        GradleVersion max = myMax.compareTo(other.myMax) <= 0 ? myMax : other.myMax;
+        Version min = myMin.compareTo(other.myMin) >= 0 ? myMin : other.myMin;
+        Version max = myMax.compareTo(other.myMax) <= 0 ? myMax : other.myMax;
         return min.compareTo(max) < 0 ? new GradleVersionRange(min, max) : null;
     }
 
     @Nullable
-    public GradleVersionRange intersection(@NonNull GradleVersion version) {
+    public GradleVersionRange intersection(@NonNull Version version) {
         return intersection(new GradleVersionRange(version, null));
     }
 
@@ -173,6 +177,6 @@ public class GradleVersionRange {
         if (myMax == null) {
             return myMin.toString();
         }
-        return String.format("[%1$s,%2$s)", myMin, myMax);
+        return String.format("[%1$s,%2$s)", myMin, myMax.prefixVersion());
     }
 }

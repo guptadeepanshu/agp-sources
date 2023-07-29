@@ -50,7 +50,7 @@ interface Library: AndroidModel {
     /**
      * The artifact location.
      *
-     * Only valid for instances where [type] is [LibraryType.LIBRARY_JAVA] or
+     * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      */
     val artifact: File?
@@ -64,6 +64,30 @@ interface Library: AndroidModel {
      * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY]
      */
     val lintJar: File?
+
+    /**
+     * The jar containing the sources for the [artifact]
+     *
+     * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+     * [LibraryType.ANDROID_LIBRARY]
+     */
+    val srcJar: File?
+
+    /**
+     * The jar containing the documentation for the [artifact]
+     *
+     * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+     * [LibraryType.ANDROID_LIBRARY]
+     */
+    val docJar: File?
+
+    /**
+     * The jar containing samples for the [artifact]
+     *
+     * Only valid for instance where [type] is [LibraryType.JAVA_LIBRARY] or
+     * [LibraryType.ANDROID_LIBRARY]
+     */
+    val samplesJar: File?
 
     /**
      * Data for libraries of type [LibraryType.ANDROID_LIBRARY]. It is null in other cases.

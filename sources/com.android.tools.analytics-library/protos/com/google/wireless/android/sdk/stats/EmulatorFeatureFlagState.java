@@ -615,13 +615,54 @@ private static final long serialVersionUID = 0L;
      */
     VIRTIO_SND_CARD(89),
     /**
-     * <pre>
-     * Next tag: 91
-     * </pre>
-     *
      * <code>VIRTIO_TABLET = 90;</code>
      */
     VIRTIO_TABLET(90),
+    /**
+     * <code>RGTC_TEXTURE_SUPPORT = 91 [deprecated = true];</code>
+     */
+    @java.lang.Deprecated
+    RGTC_TEXTURE_SUPPORT(91),
+    /**
+     * <code>VULKAN_NATIVE_SWAPCHAIN = 92;</code>
+     */
+    VULKAN_NATIVE_SWAPCHAIN(92),
+    /**
+     * <code>VIRTIO_GPU_FENCE_CONTEXTS = 93;</code>
+     */
+    VIRTIO_GPU_FENCE_CONTEXTS(93),
+    /**
+     * <code>VSOCK_SNAPSHOT_LOAD_FIXED_B231345789 = 94;</code>
+     */
+    VSOCK_SNAPSHOT_LOAD_FIXED_B231345789(94),
+    /**
+     * <code>VULKAN_ASTC_LDR_EMULATION = 95;</code>
+     */
+    VULKAN_ASTC_LDR_EMULATION(95),
+    /**
+     * <code>VULKAN_YCBCR_EMULATION = 96;</code>
+     */
+    VULKAN_YCBCR_EMULATION(96),
+    /**
+     * <code>VULKAN_ETC2_EMULATION = 97;</code>
+     */
+    VULKAN_ETC2_EMULATION(97),
+    /**
+     * <code>EXTERNAL_BLOB = 98;</code>
+     */
+    EXTERNAL_BLOB(98),
+    /**
+     * <code>DOWNLOADABLE_SNAPSHOT = 99;</code>
+     */
+    DOWNLOADABLE_SNAPSHOT(99),
+    /**
+     * <pre>
+     * Next tag: 101
+     * </pre>
+     *
+     * <code>SYSTEM_BLOB = 100;</code>
+     */
+    SYSTEM_BLOB(100),
     ;
 
     /**
@@ -989,13 +1030,53 @@ private static final long serialVersionUID = 0L;
      */
     public static final int VIRTIO_SND_CARD_VALUE = 89;
     /**
-     * <pre>
-     * Next tag: 91
-     * </pre>
-     *
      * <code>VIRTIO_TABLET = 90;</code>
      */
     public static final int VIRTIO_TABLET_VALUE = 90;
+    /**
+     * <code>RGTC_TEXTURE_SUPPORT = 91 [deprecated = true];</code>
+     */
+    @java.lang.Deprecated public static final int RGTC_TEXTURE_SUPPORT_VALUE = 91;
+    /**
+     * <code>VULKAN_NATIVE_SWAPCHAIN = 92;</code>
+     */
+    public static final int VULKAN_NATIVE_SWAPCHAIN_VALUE = 92;
+    /**
+     * <code>VIRTIO_GPU_FENCE_CONTEXTS = 93;</code>
+     */
+    public static final int VIRTIO_GPU_FENCE_CONTEXTS_VALUE = 93;
+    /**
+     * <code>VSOCK_SNAPSHOT_LOAD_FIXED_B231345789 = 94;</code>
+     */
+    public static final int VSOCK_SNAPSHOT_LOAD_FIXED_B231345789_VALUE = 94;
+    /**
+     * <code>VULKAN_ASTC_LDR_EMULATION = 95;</code>
+     */
+    public static final int VULKAN_ASTC_LDR_EMULATION_VALUE = 95;
+    /**
+     * <code>VULKAN_YCBCR_EMULATION = 96;</code>
+     */
+    public static final int VULKAN_YCBCR_EMULATION_VALUE = 96;
+    /**
+     * <code>VULKAN_ETC2_EMULATION = 97;</code>
+     */
+    public static final int VULKAN_ETC2_EMULATION_VALUE = 97;
+    /**
+     * <code>EXTERNAL_BLOB = 98;</code>
+     */
+    public static final int EXTERNAL_BLOB_VALUE = 98;
+    /**
+     * <code>DOWNLOADABLE_SNAPSHOT = 99;</code>
+     */
+    public static final int DOWNLOADABLE_SNAPSHOT_VALUE = 99;
+    /**
+     * <pre>
+     * Next tag: 101
+     * </pre>
+     *
+     * <code>SYSTEM_BLOB = 100;</code>
+     */
+    public static final int SYSTEM_BLOB_VALUE = 100;
 
 
     public final int getNumber() {
@@ -1109,6 +1190,16 @@ private static final long serialVersionUID = 0L;
         case 88: return ASYNC_COMPOSE_SUPPORT;
         case 89: return VIRTIO_SND_CARD;
         case 90: return VIRTIO_TABLET;
+        case 91: return RGTC_TEXTURE_SUPPORT;
+        case 92: return VULKAN_NATIVE_SWAPCHAIN;
+        case 93: return VIRTIO_GPU_FENCE_CONTEXTS;
+        case 94: return VSOCK_SNAPSHOT_LOAD_FIXED_B231345789;
+        case 95: return VULKAN_ASTC_LDR_EMULATION;
+        case 96: return VULKAN_YCBCR_EMULATION;
+        case 97: return VULKAN_ETC2_EMULATION;
+        case 98: return EXTERNAL_BLOB;
+        case 99: return DOWNLOADABLE_SNAPSHOT;
+        case 100: return SYSTEM_BLOB;
         default: return null;
       }
     }

@@ -41,6 +41,9 @@ interface Bundle {
     @get:Incubating
     val integrityConfigDir: DirectoryProperty
 
+    @get:Incubating
+    val countrySet: BundleCountrySet
+
     fun abi(action: BundleAbi.() -> Unit)
 
     fun density(action: BundleDensity.() -> Unit)
@@ -56,4 +59,7 @@ interface Bundle {
     fun codeTransparency(action: BundleCodeTransparency.() -> Unit)
 
     fun storeArchive(action: BundleStoreArchive.() -> Unit)
+
+    @Incubating
+    fun countrySet(action: BundleCountrySet.() -> Unit)
 }

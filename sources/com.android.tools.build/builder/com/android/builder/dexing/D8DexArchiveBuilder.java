@@ -24,7 +24,6 @@ import com.android.tools.r8.CompilationMode;
 import com.android.tools.r8.D8;
 import com.android.tools.r8.D8Command;
 import com.android.tools.r8.Diagnostic;
-import com.android.tools.r8.StringConsumer.FileConsumer;
 import com.android.tools.r8.errors.UnsupportedFeatureDiagnostic;
 import com.google.common.util.concurrent.MoreExecutors;
 import java.io.File;
@@ -88,7 +87,7 @@ final class D8DexArchiveBuilder extends DexArchiveBuilder {
                             (dexParams.getDexPerClass()
                                             ? DexFilePerClassFile.INSTANCE
                                             : DexIndexed.INSTANCE)
-                                    .getR8OutputMode())
+                                    .getOutputMode())
                     .setIncludeClassesChecksum(dexParams.getDebuggable());
 
             if (dexParams.getDebuggable()) {
@@ -101,6 +100,10 @@ final class D8DexArchiveBuilder extends DexArchiveBuilder {
                         new D8GlobalSyntheticsConsumer(globalSyntheticsOutput));
             }
 
+            if (dexParams.getEnableApiModeling()) {
+                builder.setEnableExperimentalMissingLibraryApiModeling(true);
+            }
+
             if (dexParams.getWithDesugaring()) {
                 builder.addLibraryResourceProvider(
                         dexParams.getDesugarBootclasspath().getOrderedProvider());
@@ -109,12 +112,8 @@ final class D8DexArchiveBuilder extends DexArchiveBuilder {
 
                 if (dexParams.getCoreLibDesugarConfig() != null) {
                     builder.addSpecialLibraryConfiguration(dexParams.getCoreLibDesugarConfig());
-                    if (dexParams.getCoreLibDesugarOutputKeepRuleFile() != null) {
-                        builder.setDesugaredLibraryKeepRuleConsumer(
-                                new FileConsumer(
-                                        dexParams.getCoreLibDesugarOutputKeepRuleFile().toPath()));
-                    }
                 }
+
                 if (desugarGraphUpdater != null) {
                     builder.setDesugarGraphConsumer(
                             new D8DesugarGraphConsumerAdapter(desugarGraphUpdater));

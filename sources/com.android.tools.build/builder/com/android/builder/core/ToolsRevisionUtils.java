@@ -52,5 +52,5 @@ public class ToolsRevisionUtils {
      * encourage build authors to upgrade the Android Gradle Plugin.
      */
     public static final AndroidVersion MAX_RECOMMENDED_COMPILE_SDK_VERSION =
-            new AndroidVersion(HIGHEST_SUPPORTED_API);
+            new AndroidVersion(HIGHEST_SUPPORTED_API, "UpsideDownCakePrivacySandbox");
 }

@@ -351,6 +351,13 @@ public class AvdManager {
      */
     public static final String AVD_INI_ANDROID_API = "image.androidVersion.api";
 
+    /** The Sdk Extension level of this AVD. Derived from the target hash. */
+    public static final String AVD_INI_ANDROID_EXTENSION = "image.androidVersion.extension";
+
+    /** Whether the AVD's target Sdk Extension is the base extension */
+    public static final String AVD_INI_ANDROID_IS_BASE_EXTENSION =
+            "image.androidVersion.isBaseExtension";
+
     /**
      * The API codename of this AVD. Derived from the target hash.
      */
@@ -777,7 +784,8 @@ public class AvdManager {
      */
     @Slow
     public void reloadAvds() throws AndroidLocationsException {
-        // build the list in a temp list first, in case the method throws an exception.
+        mSdkHandler.clearSystemImageManagerCache();
+        // Build the list in a temp list first, in case the method throws an exception.
         // It's better than deleting the whole list before reading the new one.
         ArrayList<AvdInfo> allList = new ArrayList<>();
         buildAvdList(allList);
@@ -1555,6 +1563,14 @@ public class AvdManager {
                 AndroidVersion version = AndroidTargetHash.getVersionFromHash(targetHash);
                 if (version != null) {
                     properties.put(AVD_INI_ANDROID_API, Integer.toString(version.getApiLevel()));
+                    if (version.getExtensionLevel() != null) {
+                        properties.put(
+                                AVD_INI_ANDROID_EXTENSION,
+                                Integer.toString(version.getExtensionLevel()));
+                        properties.put(
+                                AVD_INI_ANDROID_IS_BASE_EXTENSION,
+                                Boolean.toString(version.isBaseExtension()));
+                    }
                     if (version.getCodename() != null) {
                         properties.put(AVD_INI_ANDROID_CODENAME, version.getCodename());
                     }
@@ -1597,6 +1613,8 @@ public class AvdManager {
             ArrayList<String> keys = new ArrayList<>(values.keySet());
             // Do not save these values (always recompute)
             keys.remove(AVD_INI_ANDROID_API);
+            keys.remove(AVD_INI_ANDROID_EXTENSION);
+            keys.remove(AVD_INI_ANDROID_IS_BASE_EXTENSION);
             keys.remove(AVD_INI_ANDROID_CODENAME);
             Collections.sort(keys);
 

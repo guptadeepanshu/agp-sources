@@ -391,13 +391,23 @@ object AnalyticsSettings {
         }
     }
 
+    private const val ANALYTICS_SETTINGS = "analytics.settings"
+
     /**
      * Helper to get the file to read/write settings from based on the configured android settings
      * home.
      */
     internal val settingsFile: File
-        get() = Paths.get(AnalyticsPaths.getAndEnsureAndroidSettingsHome(), "analytics.settings")
+        get() = Paths.get(AnalyticsPaths.getAndEnsureAndroidSettingsHome(), ANALYTICS_SETTINGS)
             .toFile()
+
+    /**
+     * Check if the [ANALYTICS_SETTINGS] file exists without creating parent directories
+     */
+    @JvmStatic
+    fun settingsFileExists(): Boolean {
+        return File(AnalyticsPaths.getAndroidSettingsHome(), ANALYTICS_SETTINGS).exists()
+    }
 
     /**
      * Gets a binary blob to ensure per user anonymization. Gets automatically rotated every 28

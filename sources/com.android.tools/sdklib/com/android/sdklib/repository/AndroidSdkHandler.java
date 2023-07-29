@@ -297,6 +297,13 @@ public final class AndroidSdkHandler {
         return mSystemImageManager;
     }
 
+    /** Clears cache of the {@link SystemImageManager}. */
+    public void clearSystemImageManagerCache() {
+        if (mSystemImageManager != null) {
+            mSystemImageManager.clearCache();
+        }
+    }
+
     /**
      * Gets (and creates if necessary) an {@link AndroidTargetManager} based on our local sdk
      * packages.
@@ -331,25 +338,24 @@ public final class AndroidSdkHandler {
 
     /**
      * @param packages a {@link Collection} of packages which share a common {@code prefix}, from
-     *     which we wish to extract the "Latest" package, as sorted with {@code mapper} and {@code
-     *     comparator} on the suffixes.
+     *     which we wish to extract the "Latest" package, as sorted in natural order with {@code
+     *     mapper}.
      * @param filter the revision predicate that has to be satisfied by the returned package
      * @param allowPreview whether we allow returning a preview package.
      * @param mapper maps from path suffix to a {@link Comparable}, so that we can sort the packages
-     *     by suffix.
-     * @param comparator how to sort suffixes after mapping them.
+     *     by suffix in natural order.
      * @param <P> {@link LocalPackage} or {@link RemotePackage}
-     * @param <T> {@link Comparable} that we map the suffix to.
-     * @return the "Latest" package from the {@link Collection}, as sorted with {@code mapper} and
-     *     {@code comparator} on the last path component.
+     * @param <T> {@link Comparable<T>} that we map the suffix to.
+     * @return the "Latest" package from the {@link Collection}, as sorted with {@code mapper} on
+     *     the last path component.
      */
     @Nullable
-    public static <P extends RepoPackage, T> P getLatestPackageFromPrefixCollection(
-            @NonNull Collection<P> packages,
-            @Nullable Predicate<Revision> filter,
-            boolean allowPreview,
-            @NonNull Function<String, T> mapper,
-            @NonNull Comparator<T> comparator) {
+    public static <P extends RepoPackage, T extends Comparable<T>>
+            P getLatestPackageFromPrefixCollection(
+                    @NonNull Collection<P> packages,
+                    @Nullable Predicate<Revision> filter,
+                    boolean allowPreview,
+                    @NonNull Function<String, T> mapper) {
         Function<P, T> keyGen = p -> mapper.apply(p.getPath().substring(
                 p.getPath().lastIndexOf(RepoPackage.PATH_SEPARATOR) + 1));
         return packages.stream()
@@ -357,7 +363,7 @@ public final class AndroidSdkHandler {
                         p ->
                                 (filter == null || filter.test(p.getVersion()))
                                         && (allowPreview || !p.getVersion().isPreview()))
-                .max((p1, p2) -> comparator.compare(keyGen.apply(p1), keyGen.apply(p2)))
+                .max(Comparator.comparing(keyGen))
                 .orElse(null);
     }
 
@@ -383,31 +389,22 @@ public final class AndroidSdkHandler {
     }
 
     /**
-     * @see #getLatestLocalPackageForPrefix(String, Predicate, boolean, Function, Comparator,
-     * ProgressIndicator) , where {@link Comparator} is just the default order. Highest is latest.
-     */
-    @Nullable
-    public LocalPackage getLatestLocalPackageForPrefix(
-            @NonNull String prefix, @Nullable Predicate<Revision> filter, boolean allowPreview,
-            @NonNull Function<String, ? extends Comparable> mapper,
-            @NonNull ProgressIndicator progress) {
-        return getLatestLocalPackageForPrefix(
-                prefix, filter, allowPreview, mapper, Comparator.naturalOrder(), progress);
-    }
-
-    /**
      * This grabs the {@link Collection} of {@link LocalPackage}s from {@link RepoManager} with the
-     * same prefix using {@link RepositoryPackages#getLocalPackagesForPrefix(String)}
-     * and forwards it to {@link #getLatestPackageFromPrefixCollection}
+     * same prefix using {@link RepositoryPackages#getLocalPackagesForPrefix(String)} and forwards
+     * it to {@link #getLatestPackageFromPrefixCollection}
      */
     @Nullable
-    public <T> LocalPackage getLatestLocalPackageForPrefix(@NonNull String prefix,
-            @Nullable Predicate<Revision> filter, boolean allowPreview,
-            @NonNull Function<String, T> mapper, @NonNull Comparator<T> comparator,
+    public <T extends Comparable<T>> LocalPackage getLatestLocalPackageForPrefix(
+            @NonNull String prefix,
+            @Nullable Predicate<Revision> filter,
+            boolean allowPreview,
+            @NonNull Function<String, T> mapper,
             @NonNull ProgressIndicator progress) {
         return getLatestPackageFromPrefixCollection(
                 getSdkManager(progress).getPackages().getLocalPackagesForPrefix(prefix),
-                filter, allowPreview, mapper, comparator);
+                filter,
+                allowPreview,
+                mapper);
     }
 
     /**
@@ -427,27 +424,17 @@ public final class AndroidSdkHandler {
      *     ProgressIndicator), but for {@link RemotePackage}s instead.
      */
     @Nullable
-    public RemotePackage getLatestRemotePackageForPrefix(
+    public <T extends Comparable<T>> RemotePackage getLatestRemotePackageForPrefix(
             @NonNull String prefix,
-            @Nullable Predicate<Revision> filter, boolean allowPreview,
-            @NonNull Function<String, ? extends Comparable> mapper,
-            @NonNull ProgressIndicator progress) {
-        return getLatestRemotePackageForPrefix(
-                prefix, filter, allowPreview, mapper, Comparator.naturalOrder(), progress);
-    }
-
-    /**
-     * @see #getLatestLocalPackageForPrefix(String, Predicate, boolean, Function, Comparator,
-     *     ProgressIndicator), but for {@link RemotePackage}s instead.
-     */
-    @Nullable
-    public <T> RemotePackage getLatestRemotePackageForPrefix(@NonNull String prefix,
-            @Nullable Predicate<Revision> filter, boolean allowPreview,
-            @NonNull Function<String, T> mapper, @NonNull Comparator<T> comparator,
+            @Nullable Predicate<Revision> filter,
+            boolean allowPreview,
+            @NonNull Function<String, T> mapper,
             @NonNull ProgressIndicator progress) {
         return getLatestPackageFromPrefixCollection(
                 getSdkManager(progress).getPackages().getRemotePackagesForPrefix(prefix),
-                filter, allowPreview, mapper, comparator);
+                filter,
+                allowPreview,
+                mapper);
     }
 
     /**

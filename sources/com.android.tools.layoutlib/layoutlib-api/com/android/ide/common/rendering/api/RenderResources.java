@@ -60,10 +60,13 @@ public class RenderResources {
     public void clearStyles() {
     }
 
+    /** Clears all themes, from the resolution list, including the default theme. */
+    public void clearAllThemes() {}
+
     /**
-     * Returns a list of {@link StyleResourceValue} containing a list of themes to be used for
-     * resolving resources. The order of the themes in the list specifies the order in which they
-     * should be used to resolve resources.
+     * Returns an immutable list of {@link StyleResourceValue} containing a list of themes to be
+     * used for resolving resources. The order of the themes in the list specifies the order in
+     * which they should be used to resolve resources.
      */
     @NonNull
     public List<StyleResourceValue> getAllThemes() {

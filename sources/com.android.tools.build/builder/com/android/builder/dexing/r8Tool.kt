@@ -48,6 +48,8 @@ import com.android.tools.r8.origin.PathOrigin
 import com.android.tools.r8.profile.art.ArtProfileBuilder
 import com.android.tools.r8.profile.art.ArtProfileConsumer
 import com.android.tools.r8.profile.art.ArtProfileProvider
+import com.android.tools.r8.startup.StartupProfileBuilder
+import com.android.tools.r8.startup.StartupProfileProvider
 import com.android.tools.r8.utils.ArchiveResourceProvider
 import com.google.common.io.ByteStreams
 import java.io.BufferedOutputStream
@@ -63,6 +65,7 @@ import java.util.logging.Level
 import java.util.logging.Logger
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
+import kotlin.io.path.exists
 
 fun isProguardRule(name: String): Boolean {
     val lowerCaseName = name.toLowerCase(Locale.US)
@@ -85,7 +88,7 @@ fun getR8Version(): String = Version.getVersionString()
 fun runR8(
     inputClasses: Collection<Path>,
     output: Path,
-    inputJavaResources: Collection<Path>,
+    inputJavaResJar: Path,
     javaResourcesJar: Path,
     libraries: Collection<Path>,
     classpath: Collection<Path>,
@@ -99,9 +102,10 @@ fun runR8(
     featureDexDir: Path?,
     featureJavaResourceOutputDir: Path?,
     libConfiguration: String? = null,
-    outputKeepRules: Path? = null,
     inputArtProfile: Path? = null,
     outputArtProfile: Path? = null,
+    enableMinimalStartupOptimization: Boolean = false,
+    inputProfileForDexStartupOptimization: Path? = null,
 ) {
     val logger: Logger = Logger.getLogger("R8")
     if (logger.isLoggable(Level.FINE)) {
@@ -110,20 +114,21 @@ fun runR8(
         logger.fine("Proguard config: $proguardConfig")
         logger.fine("Tool config: $toolConfig")
         logger.fine("Program classes: $inputClasses")
-        logger.fine("Java resources: $inputJavaResources")
+        logger.fine("Java resources: $inputJavaResJar")
         logger.fine("Library classes: $libraries")
         logger.fine("Classpath classes: $classpath")
-        outputKeepRules?.let{ logger.fine("Keep rules for shrinking desugar lib: $it") }
     }
     val r8CommandBuilder =
-            R8Command.builder(
-                    R8DiagnosticsHandler(
-                            proguardConfig.proguardOutputFiles.missingKeepRules,
-                            messageReceiver,
-                            "R8"))
+        R8Command.builder(
+            R8DiagnosticsHandler(
+                proguardConfig.proguardOutputFiles.missingKeepRules,
+                messageReceiver,
+                "R8"
+            )
+        )
 
     if (!useFullR8) {
-      r8CommandBuilder.setProguardCompatibility(true);
+        r8CommandBuilder.setProguardCompatibility(true);
     }
 
     if (toolConfig.r8OutputType == R8OutputType.DEX) {
@@ -142,9 +147,7 @@ fun runR8(
             }
         }
         if (libConfiguration != null) {
-            r8CommandBuilder
-                .addSpecialLibraryConfiguration(libConfiguration)
-                .setDesugaredLibraryKeepRuleConsumer(StringConsumer.FileConsumer(outputKeepRules!!))
+            r8CommandBuilder.addSpecialLibraryConfiguration(libConfiguration)
         }
         if (toolConfig.isDebuggable) {
             r8CommandBuilder.addAssertionsConfiguration(
@@ -178,9 +181,11 @@ fun runR8(
     Files.createDirectories(proguardOutputFiles.proguardMapOutput.parent)
     r8CommandBuilder.setProguardMapOutputPath(proguardOutputFiles.proguardMapOutput)
     r8CommandBuilder.setProguardSeedsConsumer(
-        StringConsumer.FileConsumer(proguardOutputFiles.proguardSeedsOutput))
+        StringConsumer.FileConsumer(proguardOutputFiles.proguardSeedsOutput)
+    )
     r8CommandBuilder.setProguardUsageConsumer(
-        StringConsumer.FileConsumer(proguardOutputFiles.proguardUsageOutput))
+        StringConsumer.FileConsumer(proguardOutputFiles.proguardUsageOutput)
+    )
     r8CommandBuilder.setProguardConfigurationConsumer(
         StringConsumer.FileConsumer(
             proguardOutputFiles.proguardConfigurationOutput
@@ -230,7 +235,9 @@ fun runR8(
     for (path in inputClasses) {
         when {
             Files.isRegularFile(path) -> r8ProgramResourceProvider.addProgramResourceProvider(
-                ArchiveProgramResourceProvider.fromArchive(path))
+                ArchiveProgramResourceProvider.fromArchive(path)
+            )
+
             Files.isDirectory(path) -> Files.walk(path).use { stream ->
                 stream.filter {
                     val relativePath = path.relativize(it).toString()
@@ -238,22 +245,16 @@ fun runR8(
                 }
                     .forEach { r8CommandBuilder.addProgramFiles(it) }
             }
+
             else -> throw IOException("Unexpected file format: $path")
         }
     }
 
-    val dirResources = inputJavaResources.filter {
-        if (!Files.isDirectory(it)) {
-            val resourceOnlyProvider =
-                ResourceOnlyProvider(ArchiveResourceProvider.fromArchive(it, true))
-            r8ProgramResourceProvider.dataResourceProviders.add(resourceOnlyProvider.dataResourceProvider)
-            false
-        } else {
-            true
-        }
-    }
-
-    r8ProgramResourceProvider.dataResourceProviders.add(R8DataResourceProvider(dirResources))
+    r8ProgramResourceProvider.dataResourceProviders.add(
+        ResourceOnlyProvider(
+            ArchiveResourceProvider.fromArchive(inputJavaResJar, true)
+        ).dataResourceProvider
+    )
 
     r8CommandBuilder.addProgramResourceProvider(r8ProgramResourceProvider)
 
@@ -265,7 +266,7 @@ fun runR8(
     // versa.
     check(
         featureClassJarMap.keys.containsAll(featureJavaResourceJarMap.keys)
-            && featureJavaResourceJarMap.keys.containsAll(featureClassJarMap.keys)
+                && featureJavaResourceJarMap.keys.containsAll(featureClassJarMap.keys)
     ) {
         """
             featureClassJarMap and featureJavaResourceJarMap must have the same keys.
@@ -309,10 +310,20 @@ fun runR8(
             }
         }
     }
-
     // handle art-profile rewriting if enabled
-    if (inputArtProfile != null && outputArtProfile != null) {
-        wireArtProfileRewriting(r8CommandBuilder, inputArtProfile, outputArtProfile)
+    inputArtProfile?.let {input ->
+        if (input.exists() && outputArtProfile != null) {
+            wireArtProfileRewriting(r8CommandBuilder, input, outputArtProfile)
+        }
+    }
+    if (enableMinimalStartupOptimization) {
+        check(inputProfileForDexStartupOptimization != null) {
+            """
+        'android.experimental.r8.dex-startup-optimization' flag has been turned on but there are no
+        baseline profile source file in this project. Remove the flag or add a source file.
+        """.trimIndent()
+        }
+        wireMinimalStartupOptimization(r8CommandBuilder, inputProfileForDexStartupOptimization)
     }
 
     // Enable workarounds for missing library APIs in R8 (see b/231547906).
@@ -344,7 +355,8 @@ private fun wireArtProfileRewriting(
         override fun getArtProfile(profileBuilder: ArtProfileBuilder) {
             profileBuilder.addHumanReadableArtProfile(
                 object : TextInputStream {
-                    override fun getInputStream(): InputStream = Files.newInputStream(inputArtProfile)
+                    override fun getInputStream(): InputStream =
+                        Files.newInputStream(inputArtProfile)
 
                     override fun getCharset(): Charset = StandardCharsets.UTF_8
                 }
@@ -371,6 +383,27 @@ private fun wireArtProfileRewriting(
     }
 
     r8CommandBuilder.addArtProfileForRewriting(artProfileProvider, residualArtProfileConsumer)
+}
+
+private fun wireMinimalStartupOptimization(
+    r8CommandBuilder: R8Command.Builder,
+    inputArtProfile: Path,
+) {
+    r8CommandBuilder.addStartupProfileProviders(object : StartupProfileProvider {
+        override fun getOrigin(): Origin {
+            return PathOrigin(inputArtProfile)
+        }
+
+        override fun getStartupProfile(p0: StartupProfileBuilder) {
+            p0.addHumanReadableArtProfile(
+                object : TextInputStream {
+                    override fun getInputStream(): InputStream =
+                        Files.newInputStream(inputArtProfile)
+
+                    override fun getCharset(): Charset = StandardCharsets.UTF_8
+                }) {}
+        }
+    })
 }
 
 enum class R8OutputType {
@@ -415,6 +448,7 @@ data class ToolConfig(
 private class ProGuardRulesFilteringVisitor(
     private val visitor: DataResourceProvider.Visitor?
 ) : DataResourceProvider.Visitor {
+
     override fun visit(directory: DataDirectoryResource) {
         visitor?.visit(directory)
     }
@@ -427,6 +461,7 @@ private class ProGuardRulesFilteringVisitor(
 }
 
 private class R8ProgramResourceProvider : ProgramResourceProvider {
+
     private val programResourcesList: MutableList<ProgramResource> = ArrayList()
 
     val dataResourceProviders: MutableList<DataResourceProvider> = ArrayList()
@@ -452,6 +487,7 @@ private class R8ProgramResourceProvider : ProgramResourceProvider {
 
 /** Provider that loads all resources from the specified directories.  */
 private class R8DataResourceProvider(val dirResources: Collection<Path>) : DataResourceProvider {
+
     override fun accept(visitor: DataResourceProvider.Visitor?) {
         val seen = mutableSetOf<Path>()
         val logger: Logger = Logger.getLogger("R8")
@@ -461,13 +497,15 @@ private class R8DataResourceProvider(val dirResources: Collection<Path>) : DataR
                     val relative = resourceBase.relativize(it)
                     if (it != resourceBase
                         && !it.toString().endsWith(DOT_CLASS)
-                        && seen.add(relative)) {
+                        && seen.add(relative)
+                    ) {
                         when {
                             Files.isDirectory(it) -> visitor!!.visit(
                                 DataDirectoryResource.fromFile(
                                     resourceBase, resourceBase.relativize(it)
                                 )
                             )
+
                             else -> visitor!!.visit(
                                 DataEntryResource.fromFile(
                                     resourceBase, resourceBase.relativize(it)
@@ -483,16 +521,19 @@ private class R8DataResourceProvider(val dirResources: Collection<Path>) : DataR
     }
 }
 
-private class ResourceOnlyProvider(val originalProvider: ProgramResourceProvider): ProgramResourceProvider {
+private class ResourceOnlyProvider(val originalProvider: ProgramResourceProvider) :
+    ProgramResourceProvider {
+
     override fun getProgramResources() = listOf<ProgramResource>()
 
     override fun getDataResourceProvider() = originalProvider.getDataResourceProvider()
 }
 
 /** Custom Java resources consumer to make sure we compress Java resources in the jar. */
-private class JavaResourcesConsumer(private val outputJar: Path): DataResourceConsumer {
+private class JavaResourcesConsumer(private val outputJar: Path) : DataResourceConsumer {
 
-    private val output = lazy { ZipOutputStream(BufferedOutputStream(outputJar.toFile().outputStream())) }
+    private val output =
+        lazy { ZipOutputStream(BufferedOutputStream(outputJar.toFile().outputStream())) }
     private val zipLock = Any()
 
     /** Accept can be called from multiple threads. */
@@ -506,7 +547,7 @@ private class JavaResourcesConsumer(private val outputJar: Path): DataResourceCo
 
     /** Accept can be called from multiple threads. */
     override fun accept(file: DataEntryResource, diagnosticsHandler: DiagnosticsHandler) {
-        val entry:ZipEntry = createNewZipEntry(file.getName())
+        val entry: ZipEntry = createNewZipEntry(file.getName())
         synchronized(zipLock) {
             output.value.putNextEntry(entry)
             output.value.write(ByteStreams.toByteArray(file.getByteStream()))

@@ -811,6 +811,7 @@ public class ClientImpl extends JdwpPipe implements Client {
     public void close(boolean notify) {
         Log.d("ddms", "Closing " + this.toString());
 
+        jdwpTracer.close();
         clear();
         try {
             // we could have multiple threads calling close, but it does not matter,

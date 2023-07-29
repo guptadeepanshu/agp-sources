@@ -43,8 +43,9 @@ fun parseMnc(part: String, config: ConfigDescription): Boolean {
         return true
     }
 
-    // The only acceptable format is "mncDDD" (where D is a digit).
-    if (!part.startsWith("mnc") || part.length != 6) {
+    // mnc may have a dynamic sized value ranging from 2 to 3 digits. It is possible to have unique
+    // mcn such as 01 and 001 that are represented by the number digits.
+    if (!part.startsWith("mnc") || part.length !in 4..6) {
         return false
     }
     val value = part.substring(3).toIntOrNull()?.toShort() ?: return false
@@ -291,6 +292,17 @@ fun parseNavigation(part: String, config: ConfigDescription): Boolean {
         else -> return false
     }
     return true
+}
+
+fun parseGrammaticalInflection(part: String, config: ConfigDescription): Boolean {
+  config.grammaticalInflection = when (part) {
+    WILDCARD_NAME -> ResTableConfig.GRAMMATICAL_GENDER.ANY
+    "neuter" -> ResTableConfig.GRAMMATICAL_GENDER.NEUTER
+    "feminine" -> ResTableConfig.GRAMMATICAL_GENDER.FEMININE
+    "masculine" -> ResTableConfig.GRAMMATICAL_GENDER.MASCULINE
+    else -> return false
+  }
+  return true
 }
 
 fun parseScreenSize(part: String, config: ConfigDescription): Boolean {

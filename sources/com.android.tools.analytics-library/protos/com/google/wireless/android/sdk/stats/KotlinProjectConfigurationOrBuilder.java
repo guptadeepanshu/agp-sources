@@ -189,4 +189,23 @@ public interface KotlinProjectConfigurationOrBuilder extends
    * @return The eventType.
    */
   com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.EventType getEventType();
+
+  /**
+   * <pre>
+   * bitfield for future flags added by kotlin plugin
+   * </pre>
+   *
+   * <code>optional uint64 event_flags = 8;</code>
+   * @return Whether the eventFlags field is set.
+   */
+  boolean hasEventFlags();
+  /**
+   * <pre>
+   * bitfield for future flags added by kotlin plugin
+   * </pre>
+   *
+   * <code>optional uint64 event_flags = 8;</code>
+   * @return The eventFlags.
+   */
+  long getEventFlags();
 }

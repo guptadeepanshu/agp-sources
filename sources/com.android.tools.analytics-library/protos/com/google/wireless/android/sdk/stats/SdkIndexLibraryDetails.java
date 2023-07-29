@@ -70,6 +70,11 @@ private static final long serialVersionUID = 0L;
             versionString_ = bs;
             break;
           }
+          case 32: {
+            bitField0_ |= 0x00000008;
+            isBlocking_ = input.readBool();
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -283,6 +288,33 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int IS_BLOCKING_FIELD_NUMBER = 4;
+  private boolean isBlocking_;
+  /**
+   * <pre>
+   * Is this library reported as blocking publishing on Google Play?
+   * </pre>
+   *
+   * <code>optional bool is_blocking = 4;</code>
+   * @return Whether the isBlocking field is set.
+   */
+  @java.lang.Override
+  public boolean hasIsBlocking() {
+    return ((bitField0_ & 0x00000008) != 0);
+  }
+  /**
+   * <pre>
+   * Is this library reported as blocking publishing on Google Play?
+   * </pre>
+   *
+   * <code>optional bool is_blocking = 4;</code>
+   * @return The isBlocking.
+   */
+  @java.lang.Override
+  public boolean getIsBlocking() {
+    return isBlocking_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -306,6 +338,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000004) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 3, versionString_);
     }
+    if (((bitField0_ & 0x00000008) != 0)) {
+      output.writeBool(4, isBlocking_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -323,6 +358,10 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00000004) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, versionString_);
+    }
+    if (((bitField0_ & 0x00000008) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(4, isBlocking_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -354,6 +393,11 @@ private static final long serialVersionUID = 0L;
       if (!getVersionString()
           .equals(other.getVersionString())) return false;
     }
+    if (hasIsBlocking() != other.hasIsBlocking()) return false;
+    if (hasIsBlocking()) {
+      if (getIsBlocking()
+          != other.getIsBlocking()) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -376,6 +420,11 @@ private static final long serialVersionUID = 0L;
     if (hasVersionString()) {
       hash = (37 * hash) + VERSION_STRING_FIELD_NUMBER;
       hash = (53 * hash) + getVersionString().hashCode();
+    }
+    if (hasIsBlocking()) {
+      hash = (37 * hash) + IS_BLOCKING_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getIsBlocking());
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -516,6 +565,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000002);
       versionString_ = "";
       bitField0_ = (bitField0_ & ~0x00000004);
+      isBlocking_ = false;
+      bitField0_ = (bitField0_ & ~0x00000008);
       return this;
     }
 
@@ -556,6 +607,10 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000004;
       }
       result.versionString_ = versionString_;
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.isBlocking_ = isBlocking_;
+        to_bitField0_ |= 0x00000008;
+      }
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -619,6 +674,9 @@ private static final long serialVersionUID = 0L;
         bitField0_ |= 0x00000004;
         versionString_ = other.versionString_;
         onChanged();
+      }
+      if (other.hasIsBlocking()) {
+        setIsBlocking(other.getIsBlocking());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -970,6 +1028,61 @@ private static final long serialVersionUID = 0L;
   }
   bitField0_ |= 0x00000004;
       versionString_ = value;
+      onChanged();
+      return this;
+    }
+
+    private boolean isBlocking_ ;
+    /**
+     * <pre>
+     * Is this library reported as blocking publishing on Google Play?
+     * </pre>
+     *
+     * <code>optional bool is_blocking = 4;</code>
+     * @return Whether the isBlocking field is set.
+     */
+    @java.lang.Override
+    public boolean hasIsBlocking() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <pre>
+     * Is this library reported as blocking publishing on Google Play?
+     * </pre>
+     *
+     * <code>optional bool is_blocking = 4;</code>
+     * @return The isBlocking.
+     */
+    @java.lang.Override
+    public boolean getIsBlocking() {
+      return isBlocking_;
+    }
+    /**
+     * <pre>
+     * Is this library reported as blocking publishing on Google Play?
+     * </pre>
+     *
+     * <code>optional bool is_blocking = 4;</code>
+     * @param value The isBlocking to set.
+     * @return This builder for chaining.
+     */
+    public Builder setIsBlocking(boolean value) {
+      bitField0_ |= 0x00000008;
+      isBlocking_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Is this library reported as blocking publishing on Google Play?
+     * </pre>
+     *
+     * <code>optional bool is_blocking = 4;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearIsBlocking() {
+      bitField0_ = (bitField0_ & ~0x00000008);
+      isBlocking_ = false;
       onChanged();
       return this;
     }

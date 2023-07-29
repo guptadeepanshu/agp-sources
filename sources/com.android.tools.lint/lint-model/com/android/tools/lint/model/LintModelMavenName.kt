@@ -17,55 +17,54 @@
 package com.android.tools.lint.model
 
 interface LintModelMavenName : Comparable<LintModelMavenName> {
-    val groupId: String
-    val artifactId: String
-    val version: String
+  val groupId: String
+  val artifactId: String
+  val version: String
 
-    // Support destructuring
-    operator fun component1(): String = groupId
-    operator fun component2(): String = artifactId
-    operator fun component3(): String = version
+  // Support destructuring
+  operator fun component1(): String = groupId
+  operator fun component2(): String = artifactId
+  operator fun component3(): String = version
 
-    override fun compareTo(other: LintModelMavenName): Int {
-        val group = groupId.compareTo(other.groupId)
-        if (group != 0) {
-            return group
-        }
-        val artifact = artifactId.compareTo(other.artifactId)
-        if (artifact != 0) {
-            return artifact
-        }
-
-        return version.compareTo(other.version)
+  override fun compareTo(other: LintModelMavenName): Int {
+    val group = groupId.compareTo(other.groupId)
+    if (group != 0) {
+      return group
+    }
+    val artifact = artifactId.compareTo(other.artifactId)
+    if (artifact != 0) {
+      return artifact
     }
 
-    companion object {
-        // Reverse operation from toString
-        fun parse(string: String): LintModelMavenName? {
-            val index1 = string.indexOf(':')
-            val index2 = string.indexOf(':', index1 + 1)
-            return if (index2 != -1) {
-                DefaultLintModelMavenName(
-                    string.substring(0, index1),
-                    string.substring(index1 + 1, index2),
-                    string.substring(index2 + 1)
-                )
-            } else {
-                null
-            }
-        }
+    return version.compareTo(other.version)
+  }
 
-        val NONE = DefaultLintModelMavenName("", "")
-
-        @Suppress("SpellCheckingInspection")
-        const val LOCAL_AARS = "__local_aars__"
+  companion object {
+    // Reverse operation from toString
+    fun parse(string: String): LintModelMavenName? {
+      val index1 = string.indexOf(':')
+      val index2 = string.indexOf(':', index1 + 1)
+      return if (index2 != -1) {
+        DefaultLintModelMavenName(
+          string.substring(0, index1),
+          string.substring(index1 + 1, index2),
+          string.substring(index2 + 1)
+        )
+      } else {
+        null
+      }
     }
+
+    val NONE = DefaultLintModelMavenName("", "")
+
+    @Suppress("SpellCheckingInspection") const val LOCAL_AARS = "__local_aars__"
+  }
 }
 
 data class DefaultLintModelMavenName(
-    override val groupId: String,
-    override val artifactId: String,
-    override val version: String = ""
+  override val groupId: String,
+  override val artifactId: String,
+  override val version: String = ""
 ) : LintModelMavenName {
-    override fun toString(): String = "$groupId:${artifactId.trimStart(':')}:$version"
+  override fun toString(): String = "$groupId:${artifactId.trimStart(':')}:$version"
 }

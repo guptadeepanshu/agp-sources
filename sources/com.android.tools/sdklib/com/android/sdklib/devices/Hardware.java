@@ -31,6 +31,7 @@ import java.util.Set;
 
 public class Hardware {
     private Screen mScreen;
+    private Hinge mHinge;
     private EnumSet<Network> mNetworking = EnumSet.noneOf(Network.class);
     private EnumSet<Sensor> mSensors = EnumSet.noneOf(Sensor.class);
     private boolean mMic;
@@ -246,9 +247,17 @@ public class Hardware {
         mScreen = s;
     }
 
+    public Hinge getHinge() {
+        return mHinge;
+    }
+
+    public void setHinge(Hinge mHinge) {
+        this.mHinge = mHinge;
+    }
+
     /**
-     * Returns a copy of the object that shares no state with it,
-     * but is initialized to equivalent values.
+     * Returns a copy of the object that shares no state with it, but is initialized to equivalent
+     * values.
      *
      * @return A copy of the object.
      */
@@ -256,7 +265,8 @@ public class Hardware {
     public Hardware deepCopy() {
         Hardware hw = new Hardware();
         hw.mScreen = mScreen != null ? mScreen.deepCopy() : null;
-        hw.mNetworking =  mNetworking.clone();
+        hw.mHinge = mHinge != null ? mHinge.deepCopy() : null;
+        hw.mNetworking = mNetworking.clone();
         hw.mSensors = mSensors.clone();
         // Get the constant boolean value
         hw.mMic = mMic;

@@ -97,6 +97,11 @@ private static final long serialVersionUID = 0L;
             calculationTimeMs_ = input.readInt64();
             break;
           }
+          case 40: {
+            bitField0_ |= 0x00000010;
+            usingBuiltInAnnotationSearch_ = input.readBool();
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -1523,6 +1528,35 @@ private static final long serialVersionUID = 0L;
     return calculationTimeMs_;
   }
 
+  public static final int USING_BUILT_IN_ANNOTATION_SEARCH_FIELD_NUMBER = 5;
+  private boolean usingBuiltInAnnotationSearch_;
+  /**
+   * <pre>
+   * Indicates whether built-in (true) or custom Dagger (false) annotation
+   * search is in use.
+   * </pre>
+   *
+   * <code>optional bool using_built_in_annotation_search = 5;</code>
+   * @return Whether the usingBuiltInAnnotationSearch field is set.
+   */
+  @java.lang.Override
+  public boolean hasUsingBuiltInAnnotationSearch() {
+    return ((bitField0_ & 0x00000010) != 0);
+  }
+  /**
+   * <pre>
+   * Indicates whether built-in (true) or custom Dagger (false) annotation
+   * search is in use.
+   * </pre>
+   *
+   * <code>optional bool using_built_in_annotation_search = 5;</code>
+   * @return The usingBuiltInAnnotationSearch.
+   */
+  @java.lang.Override
+  public boolean getUsingBuiltInAnnotationSearch() {
+    return usingBuiltInAnnotationSearch_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -1549,6 +1583,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000008) != 0)) {
       output.writeInt64(4, calculationTimeMs_);
     }
+    if (((bitField0_ & 0x00000010) != 0)) {
+      output.writeBool(5, usingBuiltInAnnotationSearch_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -1573,6 +1610,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000008) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt64Size(4, calculationTimeMs_);
+    }
+    if (((bitField0_ & 0x00000010) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(5, usingBuiltInAnnotationSearch_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -1607,6 +1648,11 @@ private static final long serialVersionUID = 0L;
       if (getCalculationTimeMs()
           != other.getCalculationTimeMs()) return false;
     }
+    if (hasUsingBuiltInAnnotationSearch() != other.hasUsingBuiltInAnnotationSearch()) return false;
+    if (hasUsingBuiltInAnnotationSearch()) {
+      if (getUsingBuiltInAnnotationSearch()
+          != other.getUsingBuiltInAnnotationSearch()) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -1634,6 +1680,11 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + CALCULATION_TIME_MS_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getCalculationTimeMs());
+    }
+    if (hasUsingBuiltInAnnotationSearch()) {
+      hash = (37 * hash) + USING_BUILT_IN_ANNOTATION_SEARCH_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getUsingBuiltInAnnotationSearch());
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -1785,6 +1836,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000004);
       calculationTimeMs_ = 0L;
       bitField0_ = (bitField0_ & ~0x00000008);
+      usingBuiltInAnnotationSearch_ = false;
+      bitField0_ = (bitField0_ & ~0x00000010);
       return this;
     }
 
@@ -1832,6 +1885,10 @@ private static final long serialVersionUID = 0L;
       if (((from_bitField0_ & 0x00000008) != 0)) {
         result.calculationTimeMs_ = calculationTimeMs_;
         to_bitField0_ |= 0x00000008;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.usingBuiltInAnnotationSearch_ = usingBuiltInAnnotationSearch_;
+        to_bitField0_ |= 0x00000010;
       }
       result.bitField0_ = to_bitField0_;
       onBuilt();
@@ -1893,6 +1950,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasCalculationTimeMs()) {
         setCalculationTimeMs(other.getCalculationTimeMs());
+      }
+      if (other.hasUsingBuiltInAnnotationSearch()) {
+        setUsingBuiltInAnnotationSearch(other.getUsingBuiltInAnnotationSearch());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -2253,6 +2313,65 @@ private static final long serialVersionUID = 0L;
     public Builder clearCalculationTimeMs() {
       bitField0_ = (bitField0_ & ~0x00000008);
       calculationTimeMs_ = 0L;
+      onChanged();
+      return this;
+    }
+
+    private boolean usingBuiltInAnnotationSearch_ ;
+    /**
+     * <pre>
+     * Indicates whether built-in (true) or custom Dagger (false) annotation
+     * search is in use.
+     * </pre>
+     *
+     * <code>optional bool using_built_in_annotation_search = 5;</code>
+     * @return Whether the usingBuiltInAnnotationSearch field is set.
+     */
+    @java.lang.Override
+    public boolean hasUsingBuiltInAnnotationSearch() {
+      return ((bitField0_ & 0x00000010) != 0);
+    }
+    /**
+     * <pre>
+     * Indicates whether built-in (true) or custom Dagger (false) annotation
+     * search is in use.
+     * </pre>
+     *
+     * <code>optional bool using_built_in_annotation_search = 5;</code>
+     * @return The usingBuiltInAnnotationSearch.
+     */
+    @java.lang.Override
+    public boolean getUsingBuiltInAnnotationSearch() {
+      return usingBuiltInAnnotationSearch_;
+    }
+    /**
+     * <pre>
+     * Indicates whether built-in (true) or custom Dagger (false) annotation
+     * search is in use.
+     * </pre>
+     *
+     * <code>optional bool using_built_in_annotation_search = 5;</code>
+     * @param value The usingBuiltInAnnotationSearch to set.
+     * @return This builder for chaining.
+     */
+    public Builder setUsingBuiltInAnnotationSearch(boolean value) {
+      bitField0_ |= 0x00000010;
+      usingBuiltInAnnotationSearch_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Indicates whether built-in (true) or custom Dagger (false) annotation
+     * search is in use.
+     * </pre>
+     *
+     * <code>optional bool using_built_in_annotation_search = 5;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearUsingBuiltInAnnotationSearch() {
+      bitField0_ = (bitField0_ & ~0x00000010);
+      usingBuiltInAnnotationSearch_ = false;
       onChanged();
       return this;
     }

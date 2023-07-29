@@ -17,23 +17,23 @@
 package com.android.tools.lint.model
 
 enum class LintModelSeverity {
-    FATAL,
-    ERROR,
-    WARNING,
-    INFORMATIONAL,
-    IGNORE,
-    DEFAULT_ENABLED;
+  FATAL,
+  ERROR,
+  WARNING,
+  INFORMATIONAL,
+  IGNORE,
+  DEFAULT_ENABLED;
 
-    companion object {
-        @JvmStatic
-        fun fromName(name: String): LintModelSeverity? {
-            for (severity in values()) {
-                if (severity.name.equals(name, ignoreCase = true)) {
-                    return severity
-                }
-            }
-
-            return null
+  companion object {
+    @JvmStatic
+    fun fromName(name: String): LintModelSeverity? {
+      for (severity in values()) {
+        if (severity.name.equals(name, ignoreCase = true)) {
+          return severity
         }
+      }
+
+      return null
     }
+  }
 }

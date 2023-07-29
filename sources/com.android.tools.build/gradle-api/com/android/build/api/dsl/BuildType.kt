@@ -35,7 +35,7 @@ import org.gradle.api.plugins.ExtensionAware
  * [configuring build types](https://developer.android.com/studio/build#build-config)
  * for more information.
  */
-interface BuildType : Named, VariantDimension, ExtensionAware, HasInitWith<BuildType> {
+interface BuildType : Named, VariantDimension, ExtensionAware {
     /**
      * Whether test coverage is enabled for this build type.
      *
@@ -225,7 +225,7 @@ interface BuildType : Named, VariantDimension, ExtensionAware, HasInitWith<Build
      * }
      * ```
      */
-    override fun initWith(that: BuildType)
+    fun initWith(that: BuildType)
 
     @Deprecated("Replaced with property matchingFallbacks")
     fun setMatchingFallbacks(vararg fallbacks: String)

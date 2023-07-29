@@ -16,8 +16,5 @@
 
 package com.android.build.api.dsl
 
-import org.gradle.api.Incubating
-
-@Incubating
 @Deprecated("Renamed to AndroidResources", replaceWith = ReplaceWith("AndroidResources"))
 interface AaptOptions : AndroidResources

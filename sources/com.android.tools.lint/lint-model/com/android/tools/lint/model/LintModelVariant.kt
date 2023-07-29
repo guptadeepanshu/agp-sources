@@ -20,104 +20,89 @@ import com.android.sdklib.AndroidVersion
 import java.io.File
 
 interface LintModelVariant {
-    /** Module containing this variant. */
-    val module: LintModelModule
+  /** Module containing this variant. */
+  val module: LintModelModule
 
-    val name: String
-    val useSupportLibraryVectorDrawables: Boolean
-    val mainArtifact: LintModelAndroidArtifact
-    val testArtifact: LintModelJavaArtifact?
-    val androidTestArtifact: LintModelAndroidArtifact?
-    val testFixturesArtifact: LintModelAndroidArtifact?
-    val mergedManifest: File?
-    val manifestMergeReport: File?
+  val name: String
+  val useSupportLibraryVectorDrawables: Boolean
+  val mainArtifact: LintModelAndroidArtifact
+  val testArtifact: LintModelJavaArtifact?
+  val androidTestArtifact: LintModelAndroidArtifact?
+  val testFixturesArtifact: LintModelAndroidArtifact?
+  val mergedManifest: File?
+  val manifestMergeReport: File?
 
-    // In builder-model these are coming from the merged flavor, plus buildType merged in
-    val `package`: String?
-    val minSdkVersion: AndroidVersion?
-    val targetSdkVersion: AndroidVersion?
-    val resValues: Map<String, LintModelResourceField>
-    val manifestPlaceholders: Map<String, String>
-    val resourceConfigurations: Collection<String>
-    val proguardFiles: Collection<File>
-    val consumerProguardFiles: Collection<File>
+  // In builder-model these are coming from the merged flavor, plus buildType merged in
+  val `package`: String?
+  val minSdkVersion: AndroidVersion?
+  val targetSdkVersion: AndroidVersion?
+  val resValues: Map<String, LintModelResourceField>
+  val manifestPlaceholders: Map<String, String>
+  val resourceConfigurations: Collection<String>
+  val proguardFiles: Collection<File>
+  val consumerProguardFiles: Collection<File>
 
-    val sourceProviders: List<LintModelSourceProvider>
-    val testSourceProviders: List<LintModelSourceProvider>
-    val testFixturesSourceProviders: List<LintModelSourceProvider>
+  val sourceProviders: List<LintModelSourceProvider>
+  val testSourceProviders: List<LintModelSourceProvider>
+  val testFixturesSourceProviders: List<LintModelSourceProvider>
 
-    val debuggable: Boolean
-    val shrinkable: Boolean
+  val debuggable: Boolean
+  val shrinkable: Boolean
 
-    /** Build features in effect. */
-    val buildFeatures: LintModelBuildFeatures
+  /** Build features in effect. */
+  val buildFeatures: LintModelBuildFeatures
 
-    /**
-     * Lookup from artifact address in a [LintModelDependencyGraph] to a
-     * [LintModelLibrary]. The libraries are shared across modules and
-     * variants, only the dependency graphs pointing to the libraries by
-     * address are per artifact.
-     */
-    val libraryResolver: LintModelLibraryResolver
+  /**
+   * Lookup from artifact address in a [LintModelDependencyGraph] to a [LintModelLibrary]. The
+   * libraries are shared across modules and variants, only the dependency graphs pointing to the
+   * libraries by address are per artifact.
+   */
+  val libraryResolver: LintModelLibraryResolver
 
-    /**
-     * The location of lint's partial results directory, if doing
-     * partial analysis.
-     */
-    val partialResultsDir: File?
+  /** The location of lint's partial results directory, if doing partial analysis. */
+  val partialResultsDir: File?
 
-    /**
-     * Files listing any D8 backported desugared methods or core library
-     * desugared methods.
-     */
-    val desugaredMethodsFiles: Collection<File>
+  /** Files listing any D8 backported desugared methods or core library desugared methods. */
+  val desugaredMethodsFiles: Collection<File>
 }
 
 class DefaultLintModelVariant(
-    override val module: LintModelModule,
+  override val module: LintModelModule,
+  override val name: String,
+  override val useSupportLibraryVectorDrawables: Boolean,
+  override val mainArtifact: LintModelAndroidArtifact,
+  override val testArtifact: LintModelJavaArtifact?,
+  override val androidTestArtifact: LintModelAndroidArtifact?,
+  override val testFixturesArtifact: LintModelAndroidArtifact?,
+  override val mergedManifest: File?,
+  override val manifestMergeReport: File?,
+  override val `package`: String?,
+  override val minSdkVersion: AndroidVersion?,
+  override val targetSdkVersion: AndroidVersion?,
 
-    override val name: String,
-    override val useSupportLibraryVectorDrawables: Boolean,
-    override val mainArtifact: LintModelAndroidArtifact,
-    override val testArtifact: LintModelJavaArtifact?,
-    override val androidTestArtifact: LintModelAndroidArtifact?,
-    override val testFixturesArtifact: LintModelAndroidArtifact?,
-    override val mergedManifest: File?,
-    override val manifestMergeReport: File?,
-    override val `package`: String?,
-    override val minSdkVersion: AndroidVersion?,
-    override val targetSdkVersion: AndroidVersion?,
-
-    /**
-     * Resource fields declared in the DSL. Note that unlike the
-     * builder-model, this map merges all the values from the
-     * mergedFlavor (which includes the defaultConfig) as well as the
-     * buildType.
-     */
-    override val resValues: Map<String, LintModelResourceField>,
-    /**
-     * Manifest placeholders declared in the DSL. Note that unlike
-     * the builder-model, this map merges all the values from the
-     * mergedFlavor (which includes the defaultConfig) as well as the
-     * buildType.
-     */
-    override val manifestPlaceholders: Map<String, String>,
-
-    override val resourceConfigurations: Collection<String>,
-    override val proguardFiles: Collection<File>,
-    override val consumerProguardFiles: Collection<File>,
-
-    override val sourceProviders: List<LintModelSourceProvider>,
-    override val testSourceProviders: List<LintModelSourceProvider>,
-    override val testFixturesSourceProviders: List<LintModelSourceProvider>,
-
-    override val debuggable: Boolean,
-    override val shrinkable: Boolean,
-    override val buildFeatures: LintModelBuildFeatures,
-    override val libraryResolver: LintModelLibraryResolver,
-
-    override val partialResultsDir: File?,
-    override val desugaredMethodsFiles: Collection<File>,
+  /**
+   * Resource fields declared in the DSL. Note that unlike the builder-model, this map merges all
+   * the values from the mergedFlavor (which includes the defaultConfig) as well as the buildType.
+   */
+  override val resValues: Map<String, LintModelResourceField>,
+  /**
+   * Manifest placeholders declared in the DSL. Note that unlike the builder-model, this map merges
+   * all the values from the mergedFlavor (which includes the defaultConfig) as well as the
+   * buildType.
+   */
+  override val manifestPlaceholders: Map<String, String>,
+  override val resourceConfigurations: Collection<String>,
+  override val proguardFiles: Collection<File>,
+  override val consumerProguardFiles: Collection<File>,
+  override val sourceProviders: List<LintModelSourceProvider>,
+  override val testSourceProviders: List<LintModelSourceProvider>,
+  override val testFixturesSourceProviders: List<LintModelSourceProvider>,
+  override val debuggable: Boolean,
+  override val shrinkable: Boolean,
+  override val buildFeatures: LintModelBuildFeatures,
+  override val libraryResolver: LintModelLibraryResolver,
+  override val partialResultsDir: File?,
+  override val desugaredMethodsFiles: Collection<File>,
 ) : LintModelVariant {
-    override fun toString(): String = name
+  override fun toString(): String = name
 }

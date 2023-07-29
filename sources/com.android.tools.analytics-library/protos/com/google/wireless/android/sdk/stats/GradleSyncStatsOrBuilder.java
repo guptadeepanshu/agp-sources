@@ -307,4 +307,50 @@ public interface GradleSyncStatsOrBuilder extends
    * @return The studioRequestedSyncType.
    */
   com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution getStudioRequestedSyncType();
+
+  /**
+   * <pre>
+   * Data on downloads happened during sync.
+   * </pre>
+   *
+   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+   * @return Whether the downloadsData field is set.
+   */
+  boolean hasDownloadsData();
+  /**
+   * <pre>
+   * Data on downloads happened during sync.
+   * </pre>
+   *
+   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+   * @return The downloadsData.
+   */
+  com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData getDownloadsData();
+  /**
+   * <pre>
+   * Data on downloads happened during sync.
+   * </pre>
+   *
+   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+   */
+  com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisDataOrBuilder getDownloadsDataOrBuilder();
+
+  /**
+   * <pre>
+   * Data on Version Catalog use.
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleVersionCatalogDetectorEvent.State version_catalog_detector_state = 16;</code>
+   * @return Whether the versionCatalogDetectorState field is set.
+   */
+  boolean hasVersionCatalogDetectorState();
+  /**
+   * <pre>
+   * Data on Version Catalog use.
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleVersionCatalogDetectorEvent.State version_catalog_detector_state = 16;</code>
+   * @return The versionCatalogDetectorState.
+   */
+  com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State getVersionCatalogDetectorState();
 }

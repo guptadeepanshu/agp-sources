@@ -90,6 +90,11 @@ private static final long serialVersionUID = 0L;
             uiPlace_ = bs;
             break;
           }
+          case 48: {
+            bitField0_ |= 0x00000020;
+            togglingOn_ = input.readBool();
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -471,6 +476,33 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int TOGGLING_ON_FIELD_NUMBER = 6;
+  private boolean togglingOn_;
+  /**
+   * <pre>
+   * For toggle UI actions to track whether they are turning on or off.
+   * </pre>
+   *
+   * <code>optional bool toggling_on = 6;</code>
+   * @return Whether the togglingOn field is set.
+   */
+  @java.lang.Override
+  public boolean hasTogglingOn() {
+    return ((bitField0_ & 0x00000020) != 0);
+  }
+  /**
+   * <pre>
+   * For toggle UI actions to track whether they are turning on or off.
+   * </pre>
+   *
+   * <code>optional bool toggling_on = 6;</code>
+   * @return The togglingOn.
+   */
+  @java.lang.Override
+  public boolean getTogglingOn() {
+    return togglingOn_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -500,6 +532,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000010) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 5, uiPlace_);
     }
+    if (((bitField0_ & 0x00000020) != 0)) {
+      output.writeBool(6, togglingOn_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -526,6 +561,10 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00000010) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, uiPlace_);
+    }
+    if (((bitField0_ & 0x00000020) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(6, togglingOn_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -566,6 +605,11 @@ private static final long serialVersionUID = 0L;
       if (!getUiPlace()
           .equals(other.getUiPlace())) return false;
     }
+    if (hasTogglingOn() != other.hasTogglingOn()) return false;
+    if (hasTogglingOn()) {
+      if (getTogglingOn()
+          != other.getTogglingOn()) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -598,6 +642,11 @@ private static final long serialVersionUID = 0L;
     if (hasUiPlace()) {
       hash = (37 * hash) + UI_PLACE_FIELD_NUMBER;
       hash = (53 * hash) + getUiPlace().hashCode();
+    }
+    if (hasTogglingOn()) {
+      hash = (37 * hash) + TOGGLING_ON_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getTogglingOn());
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -746,6 +795,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000008);
       uiPlace_ = "";
       bitField0_ = (bitField0_ & ~0x00000010);
+      togglingOn_ = false;
+      bitField0_ = (bitField0_ & ~0x00000020);
       return this;
     }
 
@@ -794,6 +845,10 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000010;
       }
       result.uiPlace_ = uiPlace_;
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.togglingOn_ = togglingOn_;
+        to_bitField0_ |= 0x00000020;
+      }
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -861,6 +916,9 @@ private static final long serialVersionUID = 0L;
         bitField0_ |= 0x00000010;
         uiPlace_ = other.uiPlace_;
         onChanged();
+      }
+      if (other.hasTogglingOn()) {
+        setTogglingOn(other.getTogglingOn());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -1295,6 +1353,61 @@ private static final long serialVersionUID = 0L;
   }
   bitField0_ |= 0x00000010;
       uiPlace_ = value;
+      onChanged();
+      return this;
+    }
+
+    private boolean togglingOn_ ;
+    /**
+     * <pre>
+     * For toggle UI actions to track whether they are turning on or off.
+     * </pre>
+     *
+     * <code>optional bool toggling_on = 6;</code>
+     * @return Whether the togglingOn field is set.
+     */
+    @java.lang.Override
+    public boolean hasTogglingOn() {
+      return ((bitField0_ & 0x00000020) != 0);
+    }
+    /**
+     * <pre>
+     * For toggle UI actions to track whether they are turning on or off.
+     * </pre>
+     *
+     * <code>optional bool toggling_on = 6;</code>
+     * @return The togglingOn.
+     */
+    @java.lang.Override
+    public boolean getTogglingOn() {
+      return togglingOn_;
+    }
+    /**
+     * <pre>
+     * For toggle UI actions to track whether they are turning on or off.
+     * </pre>
+     *
+     * <code>optional bool toggling_on = 6;</code>
+     * @param value The togglingOn to set.
+     * @return This builder for chaining.
+     */
+    public Builder setTogglingOn(boolean value) {
+      bitField0_ |= 0x00000020;
+      togglingOn_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * For toggle UI actions to track whether they are turning on or off.
+     * </pre>
+     *
+     * <code>optional bool toggling_on = 6;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearTogglingOn() {
+      bitField0_ = (bitField0_ & ~0x00000020);
+      togglingOn_ = false;
       onChanged();
       return this;
     }

@@ -423,7 +423,7 @@ private static final long serialVersionUID = 0L;
   private boolean multipleProjectsOpen_;
   /**
    * <pre>
-   * When we attached to a process, were the multiple projects open?
+   * When we attached to a process, were there multiple projects open?
    * </pre>
    *
    * <code>optional bool multiple_projects_open = 5;</code>
@@ -435,7 +435,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * When we attached to a process, were the multiple projects open?
+   * When we attached to a process, were there multiple projects open?
    * </pre>
    *
    * <code>optional bool multiple_projects_open = 5;</code>
@@ -1364,7 +1364,7 @@ private static final long serialVersionUID = 0L;
     private boolean multipleProjectsOpen_ ;
     /**
      * <pre>
-     * When we attached to a process, were the multiple projects open?
+     * When we attached to a process, were there multiple projects open?
      * </pre>
      *
      * <code>optional bool multiple_projects_open = 5;</code>
@@ -1376,7 +1376,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * When we attached to a process, were the multiple projects open?
+     * When we attached to a process, were there multiple projects open?
      * </pre>
      *
      * <code>optional bool multiple_projects_open = 5;</code>
@@ -1388,7 +1388,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * When we attached to a process, were the multiple projects open?
+     * When we attached to a process, were there multiple projects open?
      * </pre>
      *
      * <code>optional bool multiple_projects_open = 5;</code>
@@ -1403,7 +1403,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * When we attached to a process, were the multiple projects open?
+     * When we attached to a process, were there multiple projects open?
      * </pre>
      *
      * <code>optional bool multiple_projects_open = 5;</code>

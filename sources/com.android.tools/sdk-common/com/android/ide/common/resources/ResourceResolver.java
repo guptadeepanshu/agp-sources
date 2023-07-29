@@ -38,7 +38,9 @@ import com.android.resources.ResourceUrl;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
+import com.google.common.collect.ForwardingList;
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
 import java.util.Arrays;
@@ -158,7 +160,10 @@ public class ResourceResolver extends RenderResources {
         resolver.mLogger = original.mLogger;
         resolver.mStyleInheritanceMap.putAll(original.mStyleInheritanceMap);
         resolver.mReverseStyleInheritanceMap.putAll(original.mReverseStyleInheritanceMap);
-        resolver.mThemes.addAll(original.mThemes);
+        List<StyleResourceValue> originalThemes = original.getAllThemes();
+        synchronized (resolver.mThemes) {
+            resolver.mThemes.addAll(originalThemes);
+        }
 
         return resolver;
     }
@@ -301,25 +306,52 @@ public class ResourceResolver extends RenderResources {
         if (theme == null) {
             return;
         }
-        if (useAsPrimary) {
-            mThemes.add(0, theme);
-        } else {
-            mThemes.add(theme);
+        synchronized (mThemes) {
+            if (useAsPrimary) {
+                mThemes.add(0, theme);
+            } else {
+                mThemes.add(theme);
+            }
+        }
+    }
+
+    @Override
+    public void clearAllThemes() {
+        synchronized (mThemes) {
+            mThemes.clear();
         }
     }
 
     @Override
     public void clearStyles() {
-        mThemes.clear();
-        if (mDefaultTheme != null) {
-            mThemes.add(mDefaultTheme);
+        synchronized (mThemes) {
+            mThemes.clear();
+            if (mDefaultTheme != null) {
+                mThemes.add(mDefaultTheme);
+            }
         }
     }
 
     @Override
     @NonNull
     public List<StyleResourceValue> getAllThemes() {
-        return mThemes;
+        synchronized (mThemes) {
+            // Layoutlib calls getAllThemes().clear() to ensure all the themes
+            // all cleared. The new method clearAllThemes will replace this ForwardingList
+            // that is currently a workaround to allow for that use case.
+            return new ForwardingList<StyleResourceValue>() {
+
+                @Override
+                protected List<StyleResourceValue> delegate() {
+                    return ImmutableList.copyOf(mThemes);
+                }
+
+                @Override
+                public void clear() {
+                    clearAllThemes();
+                }
+            };
+        }
     }
 
     /**
@@ -667,7 +699,12 @@ public class ResourceResolver extends RenderResources {
     @Override
     @Nullable
     public StyleResourceValue getStyle(@NonNull ResourceReference styleReference) {
-        ResourceValue style = getUnresolvedResource(styleReference);
+        ResourceValue style;
+        if (styleReference.getResourceType() == ResourceType.ATTR) {
+            style = resolveResValue(findItemInTheme(styleReference));
+        } else {
+            style = getUnresolvedResource(styleReference);
+        }
         if (style == null) {
             return null;
         }
@@ -746,7 +783,10 @@ public class ResourceResolver extends RenderResources {
                 new RecordingResourceResolver(lookupChain, mResources, mDefaultTheme);
         resolver.mLogger = mLogger;
         resolver.mStyleInheritanceMap.putAll(mStyleInheritanceMap);
-        resolver.mThemes.addAll(mThemes);
+        List<StyleResourceValue> originalThemes = getAllThemes();
+        synchronized (resolver.mThemes) {
+            resolver.mThemes.addAll(originalThemes);
+        }
         return resolver;
     }
 

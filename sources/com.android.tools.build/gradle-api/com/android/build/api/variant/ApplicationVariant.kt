@@ -25,6 +25,7 @@ import org.gradle.api.provider.Property
 interface ApplicationVariant : GeneratesApk,
     Variant,
     HasAndroidTest,
+    HasUnitTest,
     HasTestFixtures,
     CanMinifyCode,
     CanMinifyAndroidResources {

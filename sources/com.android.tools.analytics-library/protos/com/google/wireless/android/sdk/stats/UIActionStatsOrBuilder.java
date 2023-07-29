@@ -132,4 +132,23 @@ public interface UIActionStatsOrBuilder extends
    */
   com.google.protobuf.ByteString
       getUiPlaceBytes();
+
+  /**
+   * <pre>
+   * For toggle UI actions to track whether they are turning on or off.
+   * </pre>
+   *
+   * <code>optional bool toggling_on = 6;</code>
+   * @return Whether the togglingOn field is set.
+   */
+  boolean hasTogglingOn();
+  /**
+   * <pre>
+   * For toggle UI actions to track whether they are turning on or off.
+   * </pre>
+   *
+   * <code>optional bool toggling_on = 6;</code>
+   * @return The togglingOn.
+   */
+  boolean getTogglingOn();
 }

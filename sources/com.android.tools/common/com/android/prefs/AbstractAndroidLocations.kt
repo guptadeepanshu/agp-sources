@@ -20,6 +20,7 @@ import com.android.io.CancellableFileIo
 import com.android.prefs.AbstractAndroidLocations.Companion.FOLDER_DOT_ANDROID
 import com.android.utils.EnvironmentProvider
 import com.android.utils.ILogger
+import com.android.utils.NullLogger
 import com.google.common.annotations.VisibleForTesting
 import java.nio.file.Files
 import java.nio.file.Path
@@ -121,7 +122,7 @@ This is the path of preference folder expected by the Android tools."""
             val pathLocator = PathLocator(environmentProvider)
             return pathLocator.firstPathOf(
                 Global.TEST_TMPDIR,
-                Global.XGD_CONFIG_HOME,
+                Global.XDG_CONFIG_HOME,
                 Global.USER_HOME,
                 Global.HOME
             )?.also { internalUserHomeLocation = it } ?:
@@ -137,8 +138,8 @@ This is the path of preference folder expected by the Android tools."""
      * ANDROID_USER_HOME does not exist
      *
      */
-    private fun computeAndroidFolder(): Path  {
-        val locator = AndroidPathLocator(environmentProvider, if (!silent) logger else null)
+     fun computeAndroidFolder(): Path  {
+        val locator = AndroidPathLocator(environmentProvider, if (!silent) logger else NullLogger())
 
         val folder =
                 locator.singlePathOf(
@@ -178,7 +179,7 @@ This is the path of preference folder expected by the Android tools."""
         val pathLocator = PathLocator(environmentProvider)
         return pathLocator.firstPathOf(
             Global.TEST_TMPDIR,
-            Global.XGD_CONFIG_HOME,
+            Global.XDG_CONFIG_HOME,
             Global.USER_HOME,
             Global.HOME
         )?.resolve(FOLDER_DOT_ANDROID)
@@ -505,8 +506,8 @@ private enum class Global(
         isSysProp = false,
         isEnvVar = true
     ),
-    XGD_CONFIG_HOME(
-        propName = "XGD_CONFIG_HOME",
+    XDG_CONFIG_HOME(
+        propName = "XDG_CONFIG_HOME",
         isSysProp = true,
         isEnvVar = true
     )

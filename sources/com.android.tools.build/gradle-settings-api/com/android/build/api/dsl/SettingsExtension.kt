@@ -16,7 +16,6 @@
 
 package com.android.build.api.dsl
 
-import org.gradle.api.Action
 import org.gradle.api.Incubating
 
 /**
@@ -26,7 +25,6 @@ import org.gradle.api.Incubating
  * This allows settings default values that are then applied to all android projects which this
  * build.
  */
-@Incubating
 interface SettingsExtension {
 
     /**
@@ -69,10 +67,13 @@ interface SettingsExtension {
     fun compileSdkAddon(vendor: String, name: String, version: Int)
 
     /** Value set via `compileSdkAddon` */
+    @get:Incubating
     val addOnVendor: String?
     /** Value set via `compileSdkAddon` */
+    @get:Incubating
     val addOnName: String?
     /** Value set via `compileSdkAddon` */
+    @get:Incubating
     val addOnVersion: Int?
 
     /**
@@ -91,9 +92,6 @@ interface SettingsExtension {
     val execution: Execution
 
     /** Set execution profiles and options for tools. */
-    fun execution(action: Action<Execution>)
-
-    /** Set execution profiles and options for tools. */
     fun execution(action: Execution.() -> Unit)
 
     /**
@@ -101,7 +99,7 @@ interface SettingsExtension {
      *
      * See [com.android.build.api.dsl.CommonExtension.ndkVersion] for more information
      */
-    var ndkVersion: String?
+    var ndkVersion: String
 
     /**
      * Requires the specified path to NDK be used.
@@ -117,5 +115,5 @@ interface SettingsExtension {
      *
      * See [com.android.build.api.dsl.CommonExtension.buildToolsVersion] for more information
      */
-    var buildToolsVersion: String?
+    var buildToolsVersion: String
 }

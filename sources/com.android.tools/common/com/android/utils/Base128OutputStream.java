@@ -18,6 +18,7 @@ package com.android.utils;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.jetbrains.annotations.NotNull;
@@ -91,6 +92,28 @@ public final class Base128OutputStream extends BufferedOutputStream {
       }
       super.write(b);
     } while (value != 0);
+  }
+
+  /**
+   * Writes a float to the stream as a 32-bit, IEEE754-encoded floating point value.
+   *
+   * @param value the value to write
+   * @throws IOException if an I/O error occurs.
+   */
+  public void writeFloat(float value) throws IOException {
+    writeFixed32(Float.floatToIntBits(value));
+  }
+
+  /**
+   * Writes a fixed 32-bit value to the stream.
+   *
+   * @param value the 32-bit value, as an int
+   * @throws IOException if an I/O error occurs
+   */
+  public void writeFixed32(int value) throws IOException {
+    for (int shift = 0; shift < 32; shift += 8) {
+      super.write((value >>> shift) & 0xFF);
+    }
   }
 
   /**

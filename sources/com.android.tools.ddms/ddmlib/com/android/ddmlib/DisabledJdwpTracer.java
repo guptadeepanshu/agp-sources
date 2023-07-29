@@ -25,4 +25,8 @@ class DisabledJdwpTracer implements DDMLibJdwpTracer {
 
     @Override
     public void onPacket(@NotNull ByteBuffer packet) {}
+
+    @Override
+    public void close() {}
 }
+

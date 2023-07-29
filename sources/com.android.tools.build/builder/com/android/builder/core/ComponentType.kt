@@ -129,10 +129,6 @@ interface ComponentType {
      */
     val analyticsVariantType: GradleBuildVariant.VariantType
     /**
-     * Whether this variant can have split outputs.
-     */
-    val canHaveSplits: Boolean
-    /**
      * Whether the manifest file is required to exist.
      */
     val requiresManifest: Boolean
@@ -146,6 +142,8 @@ interface ComponentType {
         const val UNIT_TEST_SUFFIX = "UnitTest"
         const val TEST_FIXTURES_PREFIX = "testFixtures"
         const val TEST_FIXTURES_SUFFIX = "TestFixtures"
+        const val SCREENSHOT_TEST_PREFIX = "screenshotTest"
+        const val SCREENSHOT_TEST_SUFFIX = "ScreenshotTest"
 
         val testComponents: ImmutableList<ComponentType>
             get() {
@@ -179,7 +177,6 @@ enum class ComponentTypeImpl(
     override val artifactType: Int,
     override val isExportDataBindingClassList: Boolean = false,
     override val analyticsVariantType: GradleBuildVariant.VariantType,
-    override val canHaveSplits: Boolean = false
 ): ComponentType {
     BASE_APK(
         isApk = true,
@@ -191,7 +188,6 @@ enum class ComponentTypeImpl(
         artifactName = AndroidProject.ARTIFACT_MAIN,
         artifactType = ArtifactMetaData.TYPE_ANDROID,
         analyticsVariantType = GradleBuildVariant.VariantType.APPLICATION,
-        canHaveSplits = true
     ),
     OPTIONAL_APK(
         isApk = true,
@@ -202,8 +198,8 @@ enum class ComponentTypeImpl(
         suffix = "",
         artifactName = AndroidProject.ARTIFACT_MAIN,
         artifactType = ArtifactMetaData.TYPE_ANDROID,
-        analyticsVariantType = GradleBuildVariant.VariantType.OPTIONAL_APK,
-        canHaveSplits = true),
+        analyticsVariantType = GradleBuildVariant.VariantType.OPTIONAL_APK
+    ),
     LIBRARY(
         isAar = true,
         publishToRepository = true,
@@ -213,8 +209,8 @@ enum class ComponentTypeImpl(
         artifactName = AndroidProject.ARTIFACT_MAIN,
         artifactType = ArtifactMetaData.TYPE_ANDROID,
         isExportDataBindingClassList = true,
-        analyticsVariantType = GradleBuildVariant.VariantType.LIBRARY,
-        canHaveSplits = true),
+        analyticsVariantType = GradleBuildVariant.VariantType.LIBRARY
+    ),
     TEST_APK(
         isApk = true,
         isForTesting = true,
@@ -257,6 +253,15 @@ enum class ComponentTypeImpl(
         artifactName = AndroidProject.ARTIFACT_TEST_FIXTURES,
         artifactType = ArtifactMetaData.TYPE_ANDROID,
         analyticsVariantType = GradleBuildVariant.VariantType.TEST_FIXTURES
+    ), KMP_ANDROID(
+        isAar = true,
+        publishToRepository = true,
+        publishToOtherModules = true,
+        prefix = "",
+        suffix = "",
+        artifactName = AndroidProject.ARTIFACT_MAIN,
+        artifactType = ArtifactMetaData.TYPE_ANDROID,
+        analyticsVariantType = GradleBuildVariant.VariantType.LIBRARY, //TODO(b/243387425): Support Analytics
     );
 
     override val isTestComponent: Boolean

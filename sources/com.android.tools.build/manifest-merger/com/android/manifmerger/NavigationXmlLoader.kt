@@ -16,7 +16,6 @@
 
 package com.android.manifmerger
 
-import com.google.common.annotations.VisibleForTesting
 import com.android.ide.common.blame.SourceFile
 import com.android.utils.PositionXmlParser
 import java.io.File

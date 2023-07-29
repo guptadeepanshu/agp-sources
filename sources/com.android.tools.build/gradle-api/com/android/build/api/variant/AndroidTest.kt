@@ -34,12 +34,6 @@ interface AndroidTest : GeneratesTestApk, TestComponent, HasAndroidResources {
     override val applicationId: Property<String>
 
     /**
-     * The namespace of the generated R and BuildConfig classes. Also, the namespace used to resolve
-     * any relative class names that are declared in the AndroidManifest.xml.
-     */
-    val namespace: Provider<String>
-
-    /**
      * Variant's [BuildConfigField] which will be generated in the BuildConfig class.
      */
     val buildConfigFields: MapProperty<String, out BuildConfigField<out Serializable>>

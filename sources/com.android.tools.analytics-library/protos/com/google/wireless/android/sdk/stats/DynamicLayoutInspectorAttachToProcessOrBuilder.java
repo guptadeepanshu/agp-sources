@@ -93,7 +93,7 @@ public interface DynamicLayoutInspectorAttachToProcessOrBuilder extends
 
   /**
    * <pre>
-   * When we attached to a process, were the multiple projects open?
+   * When we attached to a process, were there multiple projects open?
    * </pre>
    *
    * <code>optional bool multiple_projects_open = 5;</code>
@@ -102,7 +102,7 @@ public interface DynamicLayoutInspectorAttachToProcessOrBuilder extends
   boolean hasMultipleProjectsOpen();
   /**
    * <pre>
-   * When we attached to a process, were the multiple projects open?
+   * When we attached to a process, were there multiple projects open?
    * </pre>
    *
    * <code>optional bool multiple_projects_open = 5;</code>

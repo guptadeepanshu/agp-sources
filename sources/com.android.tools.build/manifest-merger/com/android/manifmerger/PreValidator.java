@@ -16,6 +16,7 @@
 
 package com.android.manifmerger;
 
+import static com.android.SdkConstants.ANDROID_URI;
 import static com.android.manifmerger.ManifestMerger2.COMPATIBLE_SCREENS_SUB_MANIFEST;
 import static com.android.manifmerger.ManifestMerger2.WEAR_APP_SUB_MANIFEST;
 import static com.android.manifmerger.MergingReport.Record.Severity.ERROR;
@@ -24,18 +25,15 @@ import static com.android.manifmerger.XmlNode.NodeKey;
 
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
+import com.android.annotations.Nullable;
 import com.android.xml.AndroidManifest;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.w3c.dom.Attr;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 
 /**
  * Validates a loaded {@link XmlDocument} and check for potential inconsistencies in the model due
@@ -67,19 +65,33 @@ public class PreValidator {
      *       notified, merging should not be attempted
      * </ul>
      *
-     * A successful validation does not mean that the merging will be successful, it only means that
-     * the {@link SdkConstants#TOOLS_URI} instructions are correct and consistent.
+     * A successful validation does not mean that the merging will be successful.
      *
      * @param mergingReport report to log warnings and errors.
      * @param xmlDocument the loaded xml part.
+     * @param validateExtractNativeLibsFromSources whether to warn if the {@link
+     *     SdkConstants#ATTR_EXTRACT_NATIVE_LIBS} attribute is set in a source (MAIN or OVERLAY)
+     *     manifest.
+     * @param validateExtractNativeLibsFromDependencies whether to warn if the {@link
+     *     SdkConstants#ATTR_EXTRACT_NATIVE_LIBS} attribute is set to true in a dependency (LIBRARY)
+     *     manifest.
      * @return one the {@link MergingReport.Result} value.
      */
     @NonNull
     public static MergingReport.Result validate(
-            @NonNull MergingReport.Builder mergingReport, @NonNull XmlDocument xmlDocument) {
+            @NonNull MergingReport.Builder mergingReport,
+            @NonNull XmlDocument xmlDocument,
+            boolean validateExtractNativeLibsFromSources,
+            boolean validateExtractNativeLibsFromDependencies) {
 
-        validateManifestAttribute(
+        validatePackageAttribute(
                 mergingReport, xmlDocument.getRootNode(), xmlDocument.getFileType());
+        if (validateExtractNativeLibsFromSources) {
+            validateExtractNativeLibsFromSources(mergingReport, xmlDocument);
+        }
+        if (validateExtractNativeLibsFromDependencies) {
+            validateExtractNativeLibsFromDependencies(mergingReport, xmlDocument);
+        }
         return validate(mergingReport, xmlDocument.getRootNode());
     }
 
@@ -134,16 +146,13 @@ public class PreValidator {
     private static void validateRemoveAllOperation(@NonNull MergingReport.Builder mergingReport,
             @NonNull XmlElement element) {
 
-        NamedNodeMap attributes = element.getXml().getAttributes();
-        if (attributes.getLength() > 1) {
-            List<String> extraAttributeNames = new ArrayList<String>();
-            for (int i = 0; i < attributes.getLength(); i++) {
-                Node item = attributes.item(i);
-                if (!(SdkConstants.TOOLS_URI.equals(item.getNamespaceURI()) &&
-                        NodeOperationType.NODE_LOCAL_NAME.equals(item.getLocalName()))) {
-                    extraAttributeNames.add(item.getNodeName());
-                }
-            }
+        if (element.getAttributeCount() > 1) {
+            var extraAttributeNames =
+                    element.getAttributeNames(
+                            item ->
+                                    !(SdkConstants.TOOLS_URI.equals(item.getNamespaceURI())
+                                            && NodeOperationType.NODE_LOCAL_NAME.equals(
+                                                    item.getLocalName())));
             String message = String.format(
                     "Element %1$s at %2$s annotated with 'tools:node=\"removeAll\"' cannot "
                             + "have other attributes : %3$s",
@@ -159,7 +168,7 @@ public class PreValidator {
             @NonNull XmlElement element) {
 
         Attr selectorAttribute =
-                element.getXml().getAttributeNodeNS(SdkConstants.TOOLS_URI, Selector.SELECTOR_LOCAL_NAME);
+                element.getAttributeNodeNS(SdkConstants.TOOLS_URI, Selector.SELECTOR_LOCAL_NAME);
         if (selectorAttribute!=null && !element.supportsSelector()) {
             String message = String.format(
                     "Unsupported tools:selector=\"%1$s\" found on node %2$s at %3$s",
@@ -170,9 +179,11 @@ public class PreValidator {
         }
     }
 
-    private static void validateManifestAttribute(
-            @NonNull MergingReport.Builder mergingReport, @NonNull XmlElement manifest, XmlDocument.Type fileType) {
-        Attr attributeNode = manifest.getXml().getAttributeNode(AndroidManifest.ATTRIBUTE_PACKAGE);
+    private static void validatePackageAttribute(
+            @NonNull MergingReport.Builder mergingReport,
+            @NonNull XmlElement manifest,
+            XmlDocument.Type fileType) {
+        Attr attributeNode = manifest.getAttributeNode(AndroidManifest.ATTRIBUTE_PACKAGE);
         // it's ok for other manifest types to have no package name, but it's an error for
         // library manifest types.
         if ((attributeNode == null || attributeNode.getValue().isEmpty())
@@ -185,6 +196,90 @@ public class PreValidator {
                             "Missing 'package' declaration in manifest at %1$s",
                             manifest.printPosition()));
         }
+    }
+
+    /** Warn if android:extractNativeLibs is set in a MAIN or OVERLAY manifest. */
+    private static void validateExtractNativeLibsFromSources(
+            @NonNull MergingReport.Builder mergingReport, @NonNull XmlDocument xmlDocument) {
+        // Ignore manifests coming from dependencies.
+        if (xmlDocument.getFileType() == XmlDocument.Type.LIBRARY) {
+            return;
+        }
+        final Boolean extractNativeLibsValue = getExtractNativeLibsValue(xmlDocument);
+        if (extractNativeLibsValue != null) {
+            String warning =
+                    String.format(
+                            "android:%1$s should not be specified in this "
+                                    + "source AndroidManifest.xml file. See "
+                                    + "%2$s for more information.\n"
+                                    + "The AGP Upgrade Assistant can remove "
+                                    + "the attribute from the "
+                                    + "AndroidManifest.xml file and update the "
+                                    + "build file accordingly. See %3$s for "
+                                    + "more information.",
+                            SdkConstants.ATTR_EXTRACT_NATIVE_LIBS,
+                            "https://d.android.com/guide/topics/manifest/application-element#extractNativeLibs",
+                            "https://d.android.com/studio/build/agp-upgrade-assistant");
+            getExtractNativeLibsAttribute(xmlDocument)
+                    .ifPresent(it -> mergingReport.addMessage(it, WARNING, warning));
+        }
+    }
+
+    /** Warn if android:extractNativeLibs is set to true in LIBRARY manifest. */
+    private static void validateExtractNativeLibsFromDependencies(
+            @NonNull MergingReport.Builder mergingReport, @NonNull XmlDocument xmlDocument) {
+        // Ignore MAIN and OVERLAY manifests.
+        if (xmlDocument.getFileType() != XmlDocument.Type.LIBRARY) {
+            return;
+        }
+        final Boolean extractNativeLibsValue = getExtractNativeLibsValue(xmlDocument);
+        if (Boolean.TRUE.equals(extractNativeLibsValue)) {
+            String warning =
+                    String.format(
+                            "android:%1$s is set to true in a dependency's "
+                                    + "AndroidManifest.xml, but not in the "
+                                    + "app's merged manifest. If the "
+                                    + "dependency truly requires its native "
+                                    + "libraries to be extracted, the app can "
+                                    + "be configured to do so by setting the "
+                                    + "jniLibs.useLegacyPackaging DSL to "
+                                    + "true.\n"
+                                    + "Otherwise, you can silence this type of "
+                                    + "warning by adding %2$s=true to your "
+                                    + "gradle.properties file.",
+                            SdkConstants.ATTR_EXTRACT_NATIVE_LIBS,
+                            "android.experimental.suppressExtractNativeLibsWarnings");
+            getExtractNativeLibsAttribute(xmlDocument)
+                    .ifPresent(it -> mergingReport.addMessage(it, WARNING, warning));
+        }
+    }
+
+    /**
+     * @param xmlDocument the XmlDocument to check for the value of the android:extractNativeLibs
+     *     attribute
+     * @return the Boolean value of the android:extractNativeLibs attribute, or null if it's not set
+     */
+    @Nullable
+    static Boolean getExtractNativeLibsValue(XmlDocument xmlDocument) {
+        final XmlAttribute extractNativeLibsAttribute =
+                getExtractNativeLibsAttribute(xmlDocument).orElse(null);
+        if (extractNativeLibsAttribute == null) {
+            return null;
+        }
+        return Boolean.valueOf(extractNativeLibsAttribute.getValue());
+    }
+
+    private static Optional<XmlAttribute> getExtractNativeLibsAttribute(XmlDocument xmlDocument) {
+        if (xmlDocument == null) {
+            return Optional.empty();
+        }
+        final XmlElement applicationElement =
+                xmlDocument.getByTypeAndKey(ManifestModel.NodeTypes.APPLICATION, null).orElse(null);
+        if (applicationElement == null) {
+            return Optional.empty();
+        }
+        return applicationElement.getAttribute(
+                XmlNode.fromNSName(ANDROID_URI, "android", SdkConstants.ATTR_EXTRACT_NATIVE_LIBS));
     }
 
     private static boolean isSubManifest(@NonNull XmlElement manifest) {

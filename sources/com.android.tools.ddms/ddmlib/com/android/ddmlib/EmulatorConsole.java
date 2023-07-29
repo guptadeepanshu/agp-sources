@@ -33,7 +33,8 @@ package com.android.ddmlib;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.google.common.annotations.VisibleForTesting;
-
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,13 +57,20 @@ public abstract class EmulatorConsole {
     @Nullable
     public abstract String getAvdName();
 
+    @NonNull
+    public Path getAvdNioPath() throws CommandFailedException {
+        return Paths.get(getAvdPath());
+    }
+
     /**
      * The absolute path to the virtual device in the file system. The path is operating system
      * dependent; it will have / name separators on Linux and \ separators on Windows.
      *
      * @throws CommandFailedException If the subcommand failed or if the emulator's version is older
-     *                                than 30.0.18
+     *     than 30.0.18
+     * @deprecated Use {@link #getAvdNioPath}
      */
+    @Deprecated
     @NonNull
     public abstract String getAvdPath() throws CommandFailedException;
 

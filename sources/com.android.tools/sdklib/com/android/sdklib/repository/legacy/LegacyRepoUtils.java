@@ -27,8 +27,8 @@ import com.android.repository.api.RepoPackage;
 import com.android.repository.impl.meta.GenericFactory;
 import com.android.repository.impl.meta.TypeDetails;
 import com.android.sdklib.AndroidVersion;
+import com.android.sdklib.AndroidVersionUtils;
 import com.android.sdklib.OptionalLibrary;
-import com.android.sdklib.SdkVersionInfo;
 import com.android.sdklib.internal.project.ProjectProperties;
 import com.android.sdklib.repository.AndroidSdkHandler;
 import com.android.sdklib.repository.IdDisplay;
@@ -217,7 +217,7 @@ public class LegacyRepoUtils {
         if (legacy.getType() == PkgType.PKG_PLATFORM) {
             AndroidVersion androidVersion = legacy.getAndroidVersion();
             assert androidVersion != null;
-            return SdkVersionInfo.getAndroidName(androidVersion.getFeatureLevel());
+            return AndroidVersionUtils.getFullApiName(androidVersion, true, true);
         }
         result = legacy.getListDescription();
         if (!result.isEmpty()) {

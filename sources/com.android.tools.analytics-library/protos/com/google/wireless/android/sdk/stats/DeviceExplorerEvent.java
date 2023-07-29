@@ -202,6 +202,38 @@ private static final long serialVersionUID = 0L;
      * <code>EXPAND_APP_DATA = 10;</code>
      */
     EXPAND_APP_DATA(10),
+    /**
+     * <pre>
+     * The user force stopped a process
+     * </pre>
+     *
+     * <code>FORCE_STOP = 11;</code>
+     */
+    FORCE_STOP(11),
+    /**
+     * <pre>
+     * The user killed a process
+     * </pre>
+     *
+     * <code>KILL = 12;</code>
+     */
+    KILL(12),
+    /**
+     * <pre>
+     * The user attached the debugger to a process
+     * </pre>
+     *
+     * <code>ATTACH_DEBUGGER = 13;</code>
+     */
+    ATTACH_DEBUGGER(13),
+    /**
+     * <pre>
+     * The user refreshed the process list
+     * </pre>
+     *
+     * <code>REFRESH_PROCESSES = 14;</code>
+     */
+    REFRESH_PROCESSES(14),
     ;
 
     /**
@@ -292,6 +324,38 @@ private static final long serialVersionUID = 0L;
      * <code>EXPAND_APP_DATA = 10;</code>
      */
     public static final int EXPAND_APP_DATA_VALUE = 10;
+    /**
+     * <pre>
+     * The user force stopped a process
+     * </pre>
+     *
+     * <code>FORCE_STOP = 11;</code>
+     */
+    public static final int FORCE_STOP_VALUE = 11;
+    /**
+     * <pre>
+     * The user killed a process
+     * </pre>
+     *
+     * <code>KILL = 12;</code>
+     */
+    public static final int KILL_VALUE = 12;
+    /**
+     * <pre>
+     * The user attached the debugger to a process
+     * </pre>
+     *
+     * <code>ATTACH_DEBUGGER = 13;</code>
+     */
+    public static final int ATTACH_DEBUGGER_VALUE = 13;
+    /**
+     * <pre>
+     * The user refreshed the process list
+     * </pre>
+     *
+     * <code>REFRESH_PROCESSES = 14;</code>
+     */
+    public static final int REFRESH_PROCESSES_VALUE = 14;
 
 
     public final int getNumber() {
@@ -325,6 +389,10 @@ private static final long serialVersionUID = 0L;
         case 8: return SYNC;
         case 9: return COPY_PATH;
         case 10: return EXPAND_APP_DATA;
+        case 11: return FORCE_STOP;
+        case 12: return KILL;
+        case 13: return ATTACH_DEBUGGER;
+        case 14: return REFRESH_PROCESSES;
         default: return null;
       }
     }

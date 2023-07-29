@@ -88,6 +88,32 @@ public final class AndroidVersion implements Comparable<AndroidVersion>, Seriali
         public static final int TIRAMISU = 33;
     }
 
+    /**
+     * Starting Android "T", every new release has a base <a
+     * href="https://developer.android.com/guide/sdk-extensions">SDK extension</a> version, i.e. the
+     * minimum SDK extension version number supported by that release.
+     */
+    public enum ApiBaseExtension {
+        TIRAMISU(33, 3);
+
+        private final int myApi;
+
+        private final int myExtension;
+
+        ApiBaseExtension(int api, int extension) {
+            myApi = api;
+            myExtension = extension;
+        }
+
+        public int getApi() {
+            return myApi;
+        }
+
+        public int getExtension() {
+            return myExtension;
+        }
+    }
+
     public static final Pattern PREVIEW_PATTERN = Pattern.compile("^[A-Z][0-9A-Za-z_]*$");
 
     private static final long serialVersionUID = 1L;
@@ -272,14 +298,44 @@ public final class AndroidVersion implements Comparable<AndroidVersion>, Seriali
 
     /**
      * Returns a string representing the API level and/or the code name.
+     *
+     * <p>Note that this does not handle extension level.
+     *
+     * @deprecated Use either {@link #getApiStringWithExtension()}
      */
     @NonNull
+    @Deprecated
     public String getApiString() {
+        return getApiStringWithoutExtension();
+    }
+
+    /**
+     * Returns a string representing the API level and/or the code name.
+     *
+     * <p>This does not include the SDK Extension level.
+     *
+     * @see #getApiStringWithExtension
+     */
+    @NonNull
+    public String getApiStringWithoutExtension() {
         if (mCodename != null) {
             return mCodename;
         }
 
         return Integer.toString(mApiLevel);
+    }
+
+    @NonNull
+    public String getApiStringWithExtension() {
+        if (mCodename != null) {
+            return mCodename;
+        }
+
+        if (mIsBaseExtension) {
+            return Integer.toString(mApiLevel);
+        }
+
+        return String.format(Locale.US, "%1$d-ext%2$d", mApiLevel, mExtensionLevel);
     }
 
     /**
@@ -452,6 +508,21 @@ public final class AndroidVersion implements Comparable<AndroidVersion>, Seriali
      */
     public boolean isGreaterOrEqualThan(int api, int extensionLevel) {
         return compareTo(new AndroidVersion(api, null, extensionLevel, true)) >= 0;
+    }
+
+    /**
+     * Returns the base extension level of the given API version, i.e. the extension level at
+     * release.
+     */
+    public static int getBaseExtensionLevel(int api) {
+
+        ApiBaseExtension[] values = ApiBaseExtension.values();
+        for (ApiBaseExtension value : values) {
+            if (value.getApi() == api) {
+                return value.getExtension();
+            }
+        }
+        return 0;
     }
 
     /**

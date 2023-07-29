@@ -93,4 +93,23 @@ public interface SdkIndexLibraryDetailsOrBuilder extends
    */
   com.google.protobuf.ByteString
       getVersionStringBytes();
+
+  /**
+   * <pre>
+   * Is this library reported as blocking publishing on Google Play?
+   * </pre>
+   *
+   * <code>optional bool is_blocking = 4;</code>
+   * @return Whether the isBlocking field is set.
+   */
+  boolean hasIsBlocking();
+  /**
+   * <pre>
+   * Is this library reported as blocking publishing on Google Play?
+   * </pre>
+   *
+   * <code>optional bool is_blocking = 4;</code>
+   * @return The isBlocking.
+   */
+  boolean getIsBlocking();
 }

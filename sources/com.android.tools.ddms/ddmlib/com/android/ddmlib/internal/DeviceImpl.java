@@ -49,6 +49,7 @@ import com.android.ddmlib.TimeoutException;
 import com.android.ddmlib.clientmanager.DeviceClientManager;
 import com.android.ddmlib.log.LogReceiver;
 import com.android.sdklib.AndroidVersion;
+import com.android.sdklib.AndroidVersionUtil;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
@@ -430,23 +431,20 @@ public final class DeviceImpl implements IDevice {
     @NonNull
     @Override
     public AndroidVersion getVersion() {
-        if (mVersion != null) {
-            return mVersion;
-        }
-
-        try {
+        if (mVersion == null) {
+            // Try to fetch all properties with a reasonable timeout
             String buildApi = getProperty(PROP_BUILD_API_LEVEL);
             if (buildApi == null) {
+                // Properties are not available yet, return default value
                 return AndroidVersion.DEFAULT;
             }
-
-            int api = Integer.parseInt(buildApi);
-            String codeName = getProperty(PROP_BUILD_CODENAME);
-            mVersion = new AndroidVersion(api, codeName);
-            return mVersion;
-        } catch (Exception e) {
-            return AndroidVersion.DEFAULT;
+            Map<String, String> properties = getProperties();
+            mVersion = AndroidVersionUtil.androidVersionFromDeviceProperties(properties);
+            if (mVersion == null) {
+                mVersion = AndroidVersion.DEFAULT;
+            }
         }
+        return mVersion;
     }
 
     private boolean hasBinary(String path) {
@@ -899,6 +897,9 @@ public final class DeviceImpl implements IDevice {
 
     @Override
     public ProfileableClient[] getProfileableClients() {
+        if (mDeviceClientManagerProvider != null) {
+            return getClientManager().getProfileableClients().toArray(new ProfileableClient[0]);
+        }
         return getProfileableClientImpls();
     }
 
@@ -1074,6 +1075,18 @@ public final class DeviceImpl implements IDevice {
 
     @Override
     public String getClientName(int pid) {
+        if (mDeviceClientManagerProvider != null) {
+            String name = null;
+            Client[] clients = getClients();
+            for (Client c : clients) {
+                if (pid == c.getClientData().getPid()) {
+                    name = c.getClientData().getClientDescription();
+                    break;
+                }
+            }
+            return (name == null) ? UNKNOWN_PACKAGE : name;
+        }
+
         return mClientInfo.getOrDefault(pid, UNKNOWN_PACKAGE);
     }
 

@@ -48,6 +48,10 @@ public enum OptionalBooleanOption
    * <code>DISABLE_AUTOMATIC_COMPONENT_CREATION = 9;</code>
    */
   DISABLE_AUTOMATIC_COMPONENT_CREATION(9),
+  /**
+   * <code>ENABLE_API_MODELING_AND_GLOBAL_SYNTHETICS = 10;</code>
+   */
+  ENABLE_API_MODELING_AND_GLOBAL_SYNTHETICS(10),
   UNRECOGNIZED(-1),
   ;
 
@@ -91,6 +95,10 @@ public enum OptionalBooleanOption
    * <code>DISABLE_AUTOMATIC_COMPONENT_CREATION = 9;</code>
    */
   public static final int DISABLE_AUTOMATIC_COMPONENT_CREATION_VALUE = 9;
+  /**
+   * <code>ENABLE_API_MODELING_AND_GLOBAL_SYNTHETICS = 10;</code>
+   */
+  public static final int ENABLE_API_MODELING_AND_GLOBAL_SYNTHETICS_VALUE = 10;
 
 
   public final int getNumber() {
@@ -127,6 +135,7 @@ public enum OptionalBooleanOption
       case 7: return ENABLE_TEST_FAILURE_RETENTION_COMPRESS_SNAPSHOT;
       case 8: return INTERNAL_ONLY_ENABLE_R8;
       case 9: return DISABLE_AUTOMATIC_COMPONENT_CREATION;
+      case 10: return ENABLE_API_MODELING_AND_GLOBAL_SYNTHETICS;
       default: return null;
     }
   }

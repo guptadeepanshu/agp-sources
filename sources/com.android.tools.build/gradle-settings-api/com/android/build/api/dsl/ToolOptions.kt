@@ -25,6 +25,4 @@ interface ToolOptions {
      * setting things like max memory usage
      */
     val jvmOptions: MutableList<String>
-
-    fun setJvmOptions(from: List<String>)
 }

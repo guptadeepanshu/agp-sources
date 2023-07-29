@@ -65,21 +65,21 @@ class MutableDependencyGraph<T> : DependencyGraphUpdater<T>, Serializable {
      *
      * Any nodes in the given set that do not exist are ignored.
      */
-    fun getAllDependents(nodes: Set<T>): Set<T> {
-        val visitedSet: MutableSet<T> = mutableSetOf()
-        val toVisitSet: MutableSet<T> = nodes.toMutableSet()
+    fun getAllDependents(nodes: Collection<T>): Set<T> {
+        // Standard Breadth-First Search
+        val visitedNodes = nodes.toMutableSet()
+        val queue = ArrayDeque(nodes)
 
-        while (toVisitSet.isNotEmpty()) {
-            val toVisitNextSet = mutableSetOf<T>()
-            for (toVisitNode in toVisitSet) {
-                dependentsMap[toVisitNode]?.let { toVisitNextSet.addAll(it) }
+        while (queue.isNotEmpty()) {
+            val node = queue.removeFirst()
+            dependentsMap[node]?.forEach {
+                if (it !in visitedNodes) {
+                    visitedNodes.add(it)
+                    queue.add(it)
+                }
             }
-            visitedSet.addAll(toVisitSet)
-            toVisitSet.clear()
-            toVisitSet.addAll(toVisitNextSet - visitedSet)
         }
-
-        return visitedSet - nodes
+        return visitedNodes - nodes.toSet()
     }
 
     companion object {

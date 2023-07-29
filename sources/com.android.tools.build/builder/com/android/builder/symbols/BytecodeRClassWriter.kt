@@ -55,19 +55,31 @@ fun exportToCompiledJava(
     JarFlinger(outJar).use { jarCreator ->
         // NO_COMPRESSION because R.jar isn't packaged into final APK or AAR
         jarCreator.setCompressionLevel(NO_COMPRESSION)
-        val mergedTables = tables.groupBy { it.tablePackage }.map { SymbolTable.merge(it.value) }
-        mergedTables.forEach { table ->
-            exportToCompiledJava(table, jarCreator, finalIds, rPackage)
+        exportToCompiledJava(tables, finalIds, rPackage) { entryPath, content ->
+            jarCreator.addEntry(entryPath, content.inputStream())
         }
     }
 }
 
 @Throws(IOException::class)
 fun exportToCompiledJava(
+        tables: Iterable<SymbolTable>,
+        finalIds: Boolean = false,
+        rPackage: String? = null,
+        consumer: (String, ByteArray) -> Unit,
+) {
+    val mergedTables = tables.groupBy { it.tablePackage }.map { SymbolTable.merge(it.value) }
+    mergedTables.forEach { table ->
+        exportToCompiledJava(table, finalIds, rPackage, consumer)
+    }
+}
+
+@Throws(IOException::class)
+private fun exportToCompiledJava(
     table: SymbolTable,
-    jarMerger: JarCreator,
     finalIds: Boolean = false,
     rPackage: String? = null,
+    consumer: (String, ByteArray) -> Unit,
 ) {
     val resourceTypes = EnumSet.noneOf(ResourceType::class.java)
     for (resType in ResourceType.values()) {
@@ -75,14 +87,14 @@ fun exportToCompiledJava(
         val bytes = generateResourceTypeClass(table, resType, finalIds, rPackage) ?: continue
         resourceTypes.add(resType)
         val innerR = internalName(table, resType)
-        jarMerger.addEntry(innerR + SdkConstants.DOT_CLASS, bytes.inputStream())
+        consumer.invoke(innerR + SdkConstants.DOT_CLASS, bytes)
     }
 
     // Generate and write the main R class file.
     val packageR = internalName(table, null)
-    jarMerger.addEntry(
+    consumer.invoke(
         packageR + SdkConstants.DOT_CLASS,
-        generateOuterRClass(resourceTypes, packageR).inputStream())
+        generateOuterRClass(resourceTypes, packageR))
 }
 
 

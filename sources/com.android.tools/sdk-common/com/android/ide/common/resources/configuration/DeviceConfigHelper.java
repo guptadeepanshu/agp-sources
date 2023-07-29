@@ -80,6 +80,7 @@ public class DeviceConfigHelper {
         config.setLayoutDirectionQualifier(new LayoutDirectionQualifier());
         config.setNetworkCodeQualifier(new NetworkCodeQualifier());
         config.setVersionQualifier(new VersionQualifier());
+        config.setGrammaticalGenderQualifier(new GrammaticalGenderQualifier());
 
         return config;
     }

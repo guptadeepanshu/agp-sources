@@ -22,7 +22,6 @@ import org.gradle.api.Incubating
 import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
-import org.gradle.api.provider.Provider
 import java.io.Serializable
 
 /**
@@ -33,11 +32,23 @@ interface Variant : Component, HasAndroidResources {
     /**
      * Gets the minimum supported SDK Version for this variant.
      */
+    val minSdk: AndroidVersion
+
+    @Deprecated(
+            "Will be removed in v9.0",
+            replaceWith = ReplaceWith("minSdk")
+    )
     val minSdkVersion: AndroidVersion
 
     /**
      * Gets the maximum supported SDK Version for this variant.
      */
+    val maxSdk: Int?
+
+    @Deprecated(
+            "Will be removed in v9.0",
+            replaceWith = ReplaceWith("maxSdk")
+    )
     val maxSdkVersion: Int?
 
     /**
@@ -45,15 +56,9 @@ interface Variant : Component, HasAndroidResources {
      */
     @Deprecated(
         "Will be removed in v9.0",
-        replaceWith = ReplaceWith("GeneratesApk.targetSdkVersion")
+        replaceWith = ReplaceWith("GeneratesApk.targetSdk")
     )
     val targetSdkVersion: AndroidVersion
-
-    /**
-     * The namespace of the generated R and BuildConfig classes. Also, the namespace used to resolve
-     * any relative class names that are declared in the AndroidManifest.xml.
-     */
-    val namespace: Provider<String>
 
     /**
      * Variant's [BuildConfigField] which will be generated in the BuildConfig class.
@@ -84,6 +89,10 @@ interface Variant : Component, HasAndroidResources {
     /**
      * Variant's [UnitTest], or null if the unit tests for this variant are disabled.
      */
+    @Deprecated(
+        "Will be removed in v9.0",
+        replaceWith = ReplaceWith("(Variant.Subtype).unitTest where available")
+    )
     val unitTest: UnitTest?
 
     /**

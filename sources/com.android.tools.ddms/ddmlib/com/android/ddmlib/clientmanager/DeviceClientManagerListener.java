@@ -20,6 +20,7 @@ import com.android.annotations.concurrency.WorkerThread;
 import com.android.ddmlib.AndroidDebugBridge;
 import com.android.ddmlib.Client;
 import com.android.ddmlib.ClientData;
+import com.android.ddmlib.ProfileableClientData;
 
 /**
  * Listener for process related changes coming from {@link DeviceClientManager}
@@ -37,6 +38,14 @@ public interface DeviceClientManagerListener {
             @NonNull AndroidDebugBridge bridge, @NonNull DeviceClientManager deviceClientManager);
 
     /**
+     * Invoked when the {@link DeviceClientManager#getProfileableClients()} list has been updated
+     * with new and/or removed processes. Also invoked when the
+     * {@link ProfileableClientData#getProcessName()} value of any profileable process is updated.
+     */
+    void profileableProcessListUpdated(
+            @NonNull AndroidDebugBridge bridge, @NonNull DeviceClientManager deviceClientManager);
+
+    /**
      * Invoked when {@link ClientData#getPackageName()} or {@link ClientData#getClientDescription()}
      * of the given {@link Client} has changed.
      */
@@ -50,6 +59,24 @@ public interface DeviceClientManagerListener {
      * changed.
      */
     void processDebuggerStatusUpdated(
+            @NonNull AndroidDebugBridge bridge,
+            @NonNull DeviceClientManager deviceClientManager,
+            @NonNull Client client);
+
+
+    /**
+     * Invoked when {@link Client#requestAllocationDetails()} of the given {@link Client} has
+     * successfully retrieved allocation data into {@link ClientData#getAllocationsData()}.
+     */
+    void processHeapAllocationsUpdated(
+            @NonNull AndroidDebugBridge bridge,
+            @NonNull DeviceClientManager deviceClientManager,
+            @NonNull Client client);
+
+    /**
+     * Invoked when the profiler state has changed (e.g. {@link Client#startMethodTracer()}).
+     */
+    void processMethodProfilingStatusUpdated(
             @NonNull AndroidDebugBridge bridge,
             @NonNull DeviceClientManager deviceClientManager,
             @NonNull Client client);

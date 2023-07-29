@@ -93,4 +93,8 @@ class FontFamily : Comparable<FontFamily> {
         }
         return details.build()
     }
+
+    override fun toString(): String {
+        return name
+    }
 }

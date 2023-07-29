@@ -27,4 +27,16 @@ interface ModelBuilderParameter {
      * The name of the variant for which to return [VariantDependencies]
      */
     var variantName: String
+
+    /**
+     * Don't build the runtime classpath. If true [ArtifactDependencies.runtimeDependencies] will
+     * be null. If false the resulting [VariantDependencies] will contain [ArtifactDependencies]
+     * with the [ArtifactDependencies.runtimeDependencies] populated.
+     *
+     * Note: this only ensures that the model builder doesn't request the runtime classpath
+     * it does not ensure that it isn't resolved indirectly or through other models.
+     * e.g. "android.dependency.useConstraints" may cause building the compile classpath to also
+     * resolve the runtime classpath.
+     */
+    var dontBuildRuntimeClasspath: Boolean
 }

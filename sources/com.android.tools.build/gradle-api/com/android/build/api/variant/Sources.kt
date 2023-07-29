@@ -20,10 +20,7 @@ import org.gradle.api.Incubating
 
 /**
  * Provides access to all source directories for a [Variant].
- *
- * since 7.2
  */
-@Incubating
 interface Sources {
 
     /**
@@ -34,6 +31,7 @@ interface Sources {
     /**
      * Access ot the Kotlin source folders.
      */
+    @get:Incubating
     val kotlin: SourceDirectories.Flat?
 
     /**
@@ -79,8 +77,9 @@ interface Sources {
     /**
      * Access to the renderscript sources folders if
      * [com.android.build.api.dsl.BuildFeatures.renderScript] is true otherwise null.
+     * RenderScript APIs are deprecated starting in Android 12
+     * <a href="https://developer.android.com/guide/topics/renderscript/migrate">See more</a>.
      */
-    @get:Deprecated("renderscript is deprecated and will be removed in a future release.")
     val renderscript: SourceDirectories.Flat?
 
     /**
@@ -98,5 +97,6 @@ interface Sources {
      *
      * These sources directories are attached to the variant and will be visible to Android Studio.
      */
+    @Incubating
     fun getByName(name: String): SourceDirectories.Flat
 }

@@ -43,7 +43,8 @@ class D8GlobalSyntheticsConsumer(val globalSyntheticsOutput: Path) : GlobalSynth
             globalSyntheticsOutput.resolve(
                 // context.binaryName + .class is guaranteed to be the same as classFileRelativePath
                 DexFilePerClassFile
-                    .getGlobalOutputRelativePathOfClassFile(context.binaryName + ".class"))
+                    .getGlobalSyntheticOutputRelativePath(context.binaryName + ".class")
+            )
         } else {
             // when context doesn't exist, globals are output to a single file under
             // globalSyntheticsOutput directory

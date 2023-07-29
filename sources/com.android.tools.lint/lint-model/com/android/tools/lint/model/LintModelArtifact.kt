@@ -19,54 +19,46 @@ package com.android.tools.lint.model
 import java.io.File
 
 interface LintModelArtifact {
-    val dependencies: LintModelDependencies
-    val classOutputs: List<File>
+  val dependencies: LintModelDependencies
+  val classOutputs: List<File>
 
-    /**
-     * Finds the library with the given [mavenName] (group id and
-     * artifact id) in any transitive compile-dependency.
-     *
-     * Convenience method for accessing the compile dependencies and
-     * then looking up the library there, since this is a very common
-     * operation.
-     */
-    fun findCompileDependency(mavenName: String): LintModelLibrary? =
-        dependencies.compileDependencies.findLibrary(mavenName, direct = false)
+  /**
+   * Finds the library with the given [mavenName] (group id and artifact id) in any transitive
+   * compile-dependency.
+   *
+   * Convenience method for accessing the compile dependencies and then looking up the library
+   * there, since this is a very common operation.
+   */
+  fun findCompileDependency(mavenName: String): LintModelLibrary? =
+    dependencies.compileDependencies.findLibrary(mavenName, direct = false)
 }
 
 interface LintModelJavaArtifact : LintModelArtifact
 
 interface LintModelAndroidArtifact : LintModelArtifact {
-    val applicationId: String
-    val generatedResourceFolders: Collection<File>
-    val generatedSourceFolders: Collection<File>
-    // Files listing any D8 backported desugared methods or core library desugared methods.
-    val desugaredMethodsFiles: Collection<File>
+  val applicationId: String
+  val generatedResourceFolders: Collection<File>
+  val generatedSourceFolders: Collection<File>
+  // Files listing any D8 backported desugared methods or core library desugared methods.
+  val desugaredMethodsFiles: Collection<File>
 }
 
 open class DefaultLintModelArtifact(
-    override val dependencies: LintModelDependencies,
-    override val classOutputs: List<File>
+  override val dependencies: LintModelDependencies,
+  override val classOutputs: List<File>
 ) : LintModelArtifact
 
-class DefaultLintModelJavaArtifact(
-    classFolders: List<File>,
-    dependencies: LintModelDependencies
-) : DefaultLintModelArtifact(
-    dependencies = dependencies,
-    classOutputs = classFolders
-),
-    LintModelJavaArtifact
+class DefaultLintModelJavaArtifact(classFolders: List<File>, dependencies: LintModelDependencies) :
+  DefaultLintModelArtifact(dependencies = dependencies, classOutputs = classFolders),
+  LintModelJavaArtifact
 
 class DefaultLintModelAndroidArtifact(
-    override val applicationId: String,
-    override val generatedResourceFolders: Collection<File>,
-    override val generatedSourceFolders: Collection<File>,
-    override val desugaredMethodsFiles: Collection<File>,
-    classOutputs: List<File>,
-    dependencies: LintModelDependencies
-) : DefaultLintModelArtifact(
-    dependencies = dependencies,
-    classOutputs = classOutputs
-),
-    LintModelAndroidArtifact
+  override val applicationId: String,
+  override val generatedResourceFolders: Collection<File>,
+  override val generatedSourceFolders: Collection<File>,
+  override val desugaredMethodsFiles: Collection<File>,
+  classOutputs: List<File>,
+  dependencies: LintModelDependencies
+) :
+  DefaultLintModelArtifact(dependencies = dependencies, classOutputs = classOutputs),
+  LintModelAndroidArtifact

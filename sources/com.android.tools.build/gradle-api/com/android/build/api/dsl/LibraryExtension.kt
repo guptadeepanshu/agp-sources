@@ -31,7 +31,8 @@ interface LibraryExtension :
         LibraryBuildFeatures,
         LibraryBuildType,
         LibraryDefaultConfig,
-        LibraryProductFlavor>,
+        LibraryProductFlavor,
+        LibraryAndroidResources>,
     TestedExtension {
     // TODO(b/140406102)
 

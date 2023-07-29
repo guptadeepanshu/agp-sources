@@ -107,6 +107,29 @@ interface TestOptions {
     var execution: String
 
     /**
+     * Configures Android Emulator Grpc Access
+     *
+     * Android Emulator Grpc Access will make it possible to interact with the emulator over gRPC
+     *
+     * ```
+     * android {
+     *     emulatorControl {
+     *       enable true
+     *       secondsValid 180
+     *       allowedEndpoints.addAll(
+     *           "/android.emulation.control.EmulatorController/getStatus",
+     *           "/android.emulation.control.EmulatorController/getVmState")
+     *     }
+     * }
+     * ```
+     */
+    @get:Incubating
+    val emulatorControl: EmulatorControl
+
+    @Incubating
+    fun emulatorControl(action: EmulatorControl.() -> Unit)
+
+    /**
      * Configures Android Test Retention.
      *
      * Android Test Retention automatically takes emulator snapshots on test failures. It can only

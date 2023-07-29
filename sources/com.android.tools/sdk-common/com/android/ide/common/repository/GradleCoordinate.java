@@ -15,9 +15,15 @@
  */
 package com.android.ide.common.repository;
 
+import static com.android.ide.common.repository.KnownVersionStabilityKt.getStability;
+
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.ide.common.gradle.Component;
+import com.android.ide.common.gradle.Version;
+import com.android.ide.common.gradle.VersionRange;
 import com.google.common.base.Joiner;
+import com.google.common.collect.Range;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -525,22 +531,70 @@ public final class GradleCoordinate {
         return revision.toString();
     }
 
+    @NonNull
+    private String getPrefix() {
+        StringBuilder prefix = new StringBuilder();
+        for (RevisionComponent component : mRevisions) {
+            if (component == PLUS_REV) break;
+            if (prefix.length() > 0) {
+                prefix.append('.');
+            }
+            prefix.append(component.toString());
+        }
+        if (prefix.length() == 0) {
+            // a bare coordinate of "+" means "any version", distinct from ".+" but equivalent
+            // to "dev.+"
+            prefix.append("dev");
+        }
+        return prefix.toString();
+    }
+
+    /**
+     * Returns the lower-bound version of this coordinate.  If this coordinate indicates a
+     * prefix range (by ending with a +), the lower-bound is the infimum of the prefix; otherwise,
+     * the lower-bound is the version itself.
+     * <p>
+     * Note that using this on a user-supplied coordinate is almost certainly a mistake, as the
+     * syntax for user-supplied coordinates is richer than single versions (see for a start the
+     * contortions here around {@link GradleCoordinate#acceptsGreaterRevisions()}, and the
+     * contradictions within this file about whether we support rich versions or not (mostly not
+     * but apparently we do support prefix matching).  Compromise for now by returning a
+     * {@link Version} representing the earliest possible matching version.
+     */
+    @NonNull
+    public Version getLowerBoundVersion() {
+        if (acceptsGreaterRevisions()) {
+            return Version.Companion.prefixInfimum(getPrefix());
+        }
+        return Version.Companion.parse(getRevision());
+    }
+
     /**
      * Returns the version of this coordinate
      *
      * @return the version
+     * @deprecated prefer {@link GradleCoordinate#getLowerBoundVersion()} if possible
      */
+    @Deprecated
     @Nullable
     public GradleVersion getVersion() {
         return GradleVersion.tryParse(getRevision());
     }
 
     /** Returns the dependency version range of this coordinate */
-    @Nullable
-    public GradleVersionRange getVersionRange() {
-        KnownVersionStability stability =
-                KnownVersionStabilityKt.stabilityOf(mGroupId, mArtifactId, getRevision());
-        return GradleVersionRange.tryParse(getRevision(), stability);
+    @NonNull
+    public VersionRange getVersionRange() {
+        String revision = getRevision();
+        if (acceptsGreaterRevisions()) {
+            return VersionRange.Companion.parse(revision);
+        } else {
+            Version version = Version.Companion.parse(getRevision());
+            Component component = new Component(mGroupId, mArtifactId, version);
+            KnownVersionStability stability = getStability(component);
+            // this is [version,expiration), where stability.expiration(...) has computed the
+            // appropriate prefixInfimum for the maven-style upper bound.
+            return new VersionRange(Range.closedOpen(version, stability.expiration(version)));
+        }
     }
 
     public boolean isPreview() {

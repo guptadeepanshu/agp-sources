@@ -478,7 +478,7 @@ public class ClientData {
      * AndroidDebugBridge#addClientChangeListener(AndroidDebugBridge.IClientChangeListener)}
      */
     @Deprecated
-    public static void setAllocationTrackingHandler(@NonNull IAllocationTrackingHandler handler) {
+    public static void setAllocationTrackingHandler(IAllocationTrackingHandler handler) {
         sAllocationTrackingHandler = handler;
     }
 

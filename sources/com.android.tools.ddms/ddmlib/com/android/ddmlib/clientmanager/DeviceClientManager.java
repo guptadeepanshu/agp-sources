@@ -18,6 +18,7 @@ package com.android.ddmlib.clientmanager;
 import com.android.annotations.NonNull;
 import com.android.ddmlib.Client;
 import com.android.ddmlib.IDevice;
+import com.android.ddmlib.ProfileableClient;
 import java.util.List;
 
 /** An abstraction that allows tracking to {@link Client} instances of a given {@link IDevice}. */
@@ -35,4 +36,7 @@ public interface DeviceClientManager {
      */
     @NonNull
     List<Client> getClients();
+
+    @NonNull
+    List<ProfileableClient> getProfileableClients();
 }

@@ -17,21 +17,21 @@
 package com.android.tools.lint.model
 
 interface LintModelResourceField {
-    val type: String
-    val name: String
-    val value: String
+  val type: String
+  val name: String
+  val value: String
 
-    operator fun component1(): String = type
-    operator fun component2(): String = name
-    operator fun component3(): String = value
+  operator fun component1(): String = type
+  operator fun component2(): String = name
+  operator fun component3(): String = value
 }
 
 data class DefaultLintModelResourceField(
-    override val type: String,
-    override val name: String,
-    override val value: String
+  override val type: String,
+  override val name: String,
+  override val value: String
 ) : LintModelResourceField {
-    override fun toString(): String {
-        return "$name:$type=$value"
-    }
+  override fun toString(): String {
+    return "$name:$type=$value"
+  }
 }

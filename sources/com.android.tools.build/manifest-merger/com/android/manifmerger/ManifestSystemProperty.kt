@@ -24,7 +24,6 @@ import com.android.manifmerger.ManifestMerger2.AutoAddingProperty
 import com.android.manifmerger.ManifestModel.NodeTypes
 import com.android.utils.SdkUtils
 import com.android.utils.XmlUtils
-import org.w3c.dom.Element
 
 /**
  * List of manifest files properties that can be directly overridden without using a
@@ -56,19 +55,22 @@ interface ManifestSystemProperty : AutoAddingProperty {
     /**
      * @see [
      * https://developer.android.com/guide/topics/manifest/application-element](https://developer.android.com/guide/topics/manifest/application-element)
+     *
+     * [override] specifies whether an existing attribute value should be overridden.
      */
-    enum class Application : ManifestSystemProperty {
+    enum class Application(private val override: Boolean) : ManifestSystemProperty {
 
-        TEST_ONLY;
+        TEST_ONLY(override = true),
+        EXTRACT_NATIVE_LIBS(override = false);
 
         override fun addTo(actionRecorder: ActionRecorder, document: XmlDocument, value: String) {
-            val msp = createOrGetElementInManifest(
+            val xmlElement = createOrGetElementInManifest(
                 actionRecorder,
                 document,
                 NodeTypes.APPLICATION,
                 "application injection requested"
             )
-            addToElementInAndroidNS(this, actionRecorder, value, msp)
+            addToElementInAndroidNS(this, actionRecorder, value, xmlElement, override)
         }
     }
 
@@ -124,18 +126,20 @@ interface ManifestSystemProperty : AutoAddingProperty {
         SHELL;
 
         override fun addTo(actionRecorder: ActionRecorder, document: XmlDocument, value: String) {
-            // Assume there is always an application element.
-            val applicationElement = document.getByTypeAndKey(NodeTypes.APPLICATION, null)
-            addToElementInAndroidNS(
-                this, actionRecorder, value,
-                createOrGetElement(
-                    actionRecorder,
-                    document,
-                    applicationElement.get().xml,
-                    NodeTypes.PROFILEABLE,
-                    "profileable injection requested"
+            val maybeApplicationElement = document.getByTypeAndKey(NodeTypes.APPLICATION, null)
+            // If no application element, nothing to add.
+            maybeApplicationElement.ifPresent { applicationElement ->
+                addToElementInAndroidNS(
+                    this, actionRecorder, value,
+                    createOrGetElement(
+                        actionRecorder,
+                        document,
+                        applicationElement,
+                        NodeTypes.PROFILEABLE,
+                        "profileable injection requested"
+                    )
                 )
-            )
+            }
         }
     }
     /**
@@ -173,35 +177,48 @@ private fun addToElement(
     value: String,
     to: XmlElement
 ) {
-    to.xml.setAttribute(elementAttribute.toCamelCase(), value)
+    to.setAttribute(elementAttribute.toCamelCase(), value)
     val xmlAttribute = XmlAttribute(
         to,
-        to.xml.getAttributeNode(elementAttribute.toCamelCase()), null
+        to.getAttributeNode(elementAttribute.toCamelCase()), null
     )
     recordElementInjectionAction(actionRecorder, to, xmlAttribute)
 }
 
-// utility method to add an attribute in android namespace which local name is derived from
-// the enum name().
+/**
+ * utility method to add an attribute in android namespace which local name is derived from
+ * the enum name().
+ *
+ * @param override whether to override an existing attribute value
+ */
 private fun addToElementInAndroidNS(
     elementAttribute: ManifestSystemProperty,
     actionRecorder: ActionRecorder,
     value: String,
-    to: XmlElement
+    to: XmlElement,
+    override: Boolean = true
 ) {
-    val toolsPrefix = XmlUtils.lookupNamespacePrefix(
-        to.xml, SdkConstants.ANDROID_URI, SdkConstants.ANDROID_NS_NAME, true
-    )
-    to.xml.setAttributeNS(
-        SdkConstants.ANDROID_URI,
-        toolsPrefix + XmlUtils.NS_SEPARATOR + elementAttribute.toCamelCase(),
-        value
-    )
-    val attr = to.xml.getAttributeNodeNS(
+    val toolsPrefix = to.lookupNamespacePrefix(
+        SdkConstants.ANDROID_URI, SdkConstants.ANDROID_NS_NAME, true)
+    if (override) {
+        to.setAttributeNS(
+            SdkConstants.ANDROID_URI,
+            toolsPrefix + XmlUtils.NS_SEPARATOR + elementAttribute.toCamelCase(),
+            value
+        )
+    } else {
+        val isModified =
+            ManifestMerger2.setAndroidAttributeIfMissing(to, elementAttribute.toCamelCase(), value)
+        if (!isModified) {
+            // no reason to record the action if not modified.
+            return
+        }
+    }
+    val attr = to.getAttributeNodeNS(
         SdkConstants.ANDROID_URI,
         elementAttribute.toCamelCase()
     )
-    val xmlAttribute = XmlAttribute(to, attr, null)
+    val xmlAttribute = XmlAttribute(to, attr!!, null)
     recordElementInjectionAction(actionRecorder, to, xmlAttribute)
 }
 
@@ -228,27 +245,20 @@ private fun createOrGetElementInManifest(
     nodeType: NodeTypes,
     message: String
 ): XmlElement {
-    val manifest = document.xml.documentElement
+    val manifest = document.rootNode
     return createOrGetElement(actionRecorder, document, manifest, nodeType, message)
 }
 
 private fun createOrGetElement(
     actionRecorder: ActionRecorder,
     document: XmlDocument,
-    parentElement: Element,
+    parentElement: XmlElement,
     nodeType: NodeTypes,
     message: String
 ): XmlElement {
-    val elementName = document.model.toXmlName(nodeType)
-    var nodes = parentElement.getElementsByTagName(elementName)
-    if (nodes.length == 0) {
-        nodes = parentElement.getElementsByTagNameNS(SdkConstants.ANDROID_URI, elementName)
-    }
-    return if (nodes.length == 0) {
-        // create it first.
-        val node = parentElement.ownerDocument.createElement(elementName)
-        parentElement.appendChild(node)
-        val xmlElement = XmlElement(node, document)
+    return parentElement.createOrGetElementOfType(
+        document,
+        nodeType) { xmlElement ->
         val nodeRecord = NodeRecord(
             Actions.ActionType.INJECTED,
             SourceFilePosition(
@@ -260,8 +270,5 @@ private fun createOrGetElement(
             NodeOperationType.STRICT
         )
         actionRecorder.recordNodeAction(xmlElement, nodeRecord)
-        xmlElement
-    } else {
-        XmlElement((nodes.item(0) as Element), document)
     }
 }

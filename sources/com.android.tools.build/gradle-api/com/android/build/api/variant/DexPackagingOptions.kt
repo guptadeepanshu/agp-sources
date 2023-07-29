@@ -26,6 +26,12 @@ interface DexPackagingOptions {
     /**
      * Whether to use the legacy convention of compressing all dex files in the APK.
      *
+     * This property is initialized from the
+     * [com.android.build.api.dsl.DexPackaging.useLegacyPackaging] DSL element, if set. If this
+     * property and the DSL are unset, dex files will be uncompressed when minSdk >= 28. If this
+     * property is set, the value will be fed directly to the corresponding Gradle tasks without
+     * extra logic.
+     *
      * This property does not affect dex file compression in APKs produced from app bundles.
      */
     val useLegacyPackaging: Property<Boolean>

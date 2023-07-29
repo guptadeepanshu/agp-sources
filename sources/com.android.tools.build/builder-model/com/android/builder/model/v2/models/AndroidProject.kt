@@ -118,4 +118,11 @@ interface AndroidProject: AndroidModel {
      * @since 7.3
      */
     val modelSyncFiles: Collection<ModelSyncFile>
+
+    /**
+     * Returns desugar.json configuration files for library desugaring, or empty when library
+     * desugaring is not enabled. Currently, there would only be one desugar.json file for the
+     * entire project, but could be more in the future if r8 team decides to publish more.
+     */
+    val desugarLibConfig: List<File>
 }

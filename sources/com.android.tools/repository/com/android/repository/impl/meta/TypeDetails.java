@@ -17,7 +17,6 @@
 package com.android.repository.impl.meta;
 
 import com.android.repository.api.RepoPackage;
-
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -33,7 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * extension in which it was defined).
  */
 @XmlTransient
-public abstract class TypeDetails {
+public abstract class TypeDetails implements PackageDisplayNameQualifier {
 
     @XmlTransient
     public interface GenericType {}

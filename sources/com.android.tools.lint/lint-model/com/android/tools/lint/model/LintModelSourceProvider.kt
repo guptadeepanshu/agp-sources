@@ -19,49 +19,43 @@ package com.android.tools.lint.model
 import java.io.File
 
 interface LintModelSourceProvider {
-    val manifestFiles: Collection<File>
-    val javaDirectories: Collection<File>
-    val resDirectories: Collection<File>
-    val assetsDirectories: Collection<File>
+  val manifestFiles: Collection<File>
+  val javaDirectories: Collection<File>
+  val resDirectories: Collection<File>
+  val assetsDirectories: Collection<File>
 
-    /**
-     * Are the sources from this source provider specific to tests (of
-     * any type) ?
-     */
-    fun isTest(): Boolean = isUnitTest() or isInstrumentationTest()
+  /** Are the sources from this source provider specific to tests (of any type) ? */
+  fun isTest(): Boolean = isUnitTest() or isInstrumentationTest()
 
-    /**
-     * Are the sources from this source provider specific to unit tests?
-     */
-    fun isUnitTest(): Boolean
+  /** Are the sources from this source provider specific to unit tests? */
+  fun isUnitTest(): Boolean
 
-    /**
-     * Are the sources from this source provider specific to
-     * instrumentation tests?
-     */
-    fun isInstrumentationTest(): Boolean
+  /** Are the sources from this source provider specific to instrumentation tests? */
+  fun isInstrumentationTest(): Boolean
 
-    /**
-     * Are the sources from this source provider in a debug-specific
-     * source set?
-     */
-    fun isDebugOnly(): Boolean
+  /** Are the sources from this source provider in a debug-specific source set? */
+  fun isDebugOnly(): Boolean
+
+  /** Are the sources from this source provider specific to test fixtures? */
+  fun isTestFixture(): Boolean
 }
 
 class DefaultLintModelSourceProvider(
-    override val manifestFiles: Collection<File>,
-    override val javaDirectories: Collection<File>,
-    override val resDirectories: Collection<File>,
-    override val assetsDirectories: Collection<File>,
-    private val debugOnly: Boolean,
-    private val unitTestOnly: Boolean,
-    private val instrumentationTestOnly: Boolean
+  override val manifestFiles: Collection<File>,
+  override val javaDirectories: Collection<File>,
+  override val resDirectories: Collection<File>,
+  override val assetsDirectories: Collection<File>,
+  private val debugOnly: Boolean,
+  private val unitTestOnly: Boolean,
+  private val instrumentationTestOnly: Boolean,
+  private val testFixture: Boolean
 ) : LintModelSourceProvider {
-    override fun isUnitTest(): Boolean = unitTestOnly
-    override fun isInstrumentationTest(): Boolean = instrumentationTestOnly
-    override fun isDebugOnly(): Boolean = debugOnly
+  override fun isUnitTest(): Boolean = unitTestOnly
+  override fun isInstrumentationTest(): Boolean = instrumentationTestOnly
+  override fun isDebugOnly(): Boolean = debugOnly
+  override fun isTestFixture(): Boolean = testFixture
 
-    override fun toString(): String {
-        return manifestFiles.first().parentFile?.path ?: "?"
-    }
+  override fun toString(): String {
+    return manifestFiles.first().parentFile?.path ?: "?"
+  }
 }

@@ -176,6 +176,96 @@ private static final long serialVersionUID = 0L;
      * <code>INVALID_JDK_MISSING_FILES = 8;</code>
      */
     INVALID_JDK_MISSING_FILES(8),
+    /**
+     * <pre>
+     * The jdk.dir isn't defined in the project local.properties
+     * </pre>
+     *
+     * <code>UNDEFINED_LOCAL_PROPERTIES_JDK_DIR = 9;</code>
+     */
+    UNDEFINED_LOCAL_PROPERTIES_JDK_DIR(9),
+    /**
+     * <pre>
+     * The jdk.dir defined in the project local.properties is invalid
+     * </pre>
+     *
+     * <code>INVALID_LOCAL_PROPERTIES_JDK_DIR = 10;</code>
+     */
+    INVALID_LOCAL_PROPERTIES_JDK_DIR(10),
+    /**
+     * <pre>
+     * The org.gradle.java.home isn't defined in the gradle.properties
+     * </pre>
+     *
+     * <code>UNDEFINED_GRADLE_PROPERTIES_JAVA_HOME = 11;</code>
+     */
+    UNDEFINED_GRADLE_PROPERTIES_JAVA_HOME(11),
+    /**
+     * <pre>
+     * The org.gradle.java.home defined in the gradle.properties is invalid
+     * </pre>
+     *
+     * <code>INVALID_GRADLE_PROPERTIES_JAVA_HOME = 12;</code>
+     */
+    INVALID_GRADLE_PROPERTIES_JAVA_HOME(12),
+    /**
+     * <pre>
+     * The system environment variable JAVA_HOME isn't defined
+     * </pre>
+     *
+     * <code>UNDEFINED_ENVIRONMENT_VARIABLE_JAVA_HOME = 13;</code>
+     */
+    UNDEFINED_ENVIRONMENT_VARIABLE_JAVA_HOME(13),
+    /**
+     * <pre>
+     * The system environment variable JAVA_HOME is invalid
+     * </pre>
+     *
+     * <code>INVALID_ENVIRONMENT_VARIABLE_JAVA_HOME = 14;</code>
+     */
+    INVALID_ENVIRONMENT_VARIABLE_JAVA_HOME(14),
+    /**
+     * <pre>
+     * The system environment variable STUDIO_GRADLE_JDK isn't defined
+     * </pre>
+     *
+     * <code>UNDEFINED_ENVIRONMENT_VARIABLE_STUDIO_GRADLE_JDK = 15;</code>
+     */
+    UNDEFINED_ENVIRONMENT_VARIABLE_STUDIO_GRADLE_JDK(15),
+    /**
+     * <pre>
+     * The system environment variable STUDIO_GRADLE_JDK is invalid
+     * </pre>
+     *
+     * <code>INVALID_ENVIRONMENT_VARIABLE_STUDIO_GRADLE_JDK = 16;</code>
+     */
+    INVALID_ENVIRONMENT_VARIABLE_STUDIO_GRADLE_JDK(16),
+    /**
+     * <pre>
+     * The studio config jdk.table.xml doesn't contain gradleJvm table entry
+     * </pre>
+     *
+     * <code>UNDEFINED_GRADLE_JVM_TABLE_ENTRY = 17;</code>
+     */
+    UNDEFINED_GRADLE_JVM_TABLE_ENTRY(17),
+    /**
+     * <pre>
+     * The studio config jdk.table.xml contains gradleJvm table entry with
+     * undefined javaHome path
+     * </pre>
+     *
+     * <code>UNDEFINED_GRADLE_JVM_TABLE_ENTRY_JAVA_HOME = 18;</code>
+     */
+    UNDEFINED_GRADLE_JVM_TABLE_ENTRY_JAVA_HOME(18),
+    /**
+     * <pre>
+     * The studio config jdk.table.xml contains gradleJvm table entry with
+     * invalid javaHome path
+     * </pre>
+     *
+     * <code>INVALID_GRADLE_JVM_TABLE_ENTRY_JAVA_HOME = 19;</code>
+     */
+    INVALID_GRADLE_JVM_TABLE_ENTRY_JAVA_HOME(19),
     ;
 
     /**
@@ -251,6 +341,96 @@ private static final long serialVersionUID = 0L;
      * <code>INVALID_JDK_MISSING_FILES = 8;</code>
      */
     public static final int INVALID_JDK_MISSING_FILES_VALUE = 8;
+    /**
+     * <pre>
+     * The jdk.dir isn't defined in the project local.properties
+     * </pre>
+     *
+     * <code>UNDEFINED_LOCAL_PROPERTIES_JDK_DIR = 9;</code>
+     */
+    public static final int UNDEFINED_LOCAL_PROPERTIES_JDK_DIR_VALUE = 9;
+    /**
+     * <pre>
+     * The jdk.dir defined in the project local.properties is invalid
+     * </pre>
+     *
+     * <code>INVALID_LOCAL_PROPERTIES_JDK_DIR = 10;</code>
+     */
+    public static final int INVALID_LOCAL_PROPERTIES_JDK_DIR_VALUE = 10;
+    /**
+     * <pre>
+     * The org.gradle.java.home isn't defined in the gradle.properties
+     * </pre>
+     *
+     * <code>UNDEFINED_GRADLE_PROPERTIES_JAVA_HOME = 11;</code>
+     */
+    public static final int UNDEFINED_GRADLE_PROPERTIES_JAVA_HOME_VALUE = 11;
+    /**
+     * <pre>
+     * The org.gradle.java.home defined in the gradle.properties is invalid
+     * </pre>
+     *
+     * <code>INVALID_GRADLE_PROPERTIES_JAVA_HOME = 12;</code>
+     */
+    public static final int INVALID_GRADLE_PROPERTIES_JAVA_HOME_VALUE = 12;
+    /**
+     * <pre>
+     * The system environment variable JAVA_HOME isn't defined
+     * </pre>
+     *
+     * <code>UNDEFINED_ENVIRONMENT_VARIABLE_JAVA_HOME = 13;</code>
+     */
+    public static final int UNDEFINED_ENVIRONMENT_VARIABLE_JAVA_HOME_VALUE = 13;
+    /**
+     * <pre>
+     * The system environment variable JAVA_HOME is invalid
+     * </pre>
+     *
+     * <code>INVALID_ENVIRONMENT_VARIABLE_JAVA_HOME = 14;</code>
+     */
+    public static final int INVALID_ENVIRONMENT_VARIABLE_JAVA_HOME_VALUE = 14;
+    /**
+     * <pre>
+     * The system environment variable STUDIO_GRADLE_JDK isn't defined
+     * </pre>
+     *
+     * <code>UNDEFINED_ENVIRONMENT_VARIABLE_STUDIO_GRADLE_JDK = 15;</code>
+     */
+    public static final int UNDEFINED_ENVIRONMENT_VARIABLE_STUDIO_GRADLE_JDK_VALUE = 15;
+    /**
+     * <pre>
+     * The system environment variable STUDIO_GRADLE_JDK is invalid
+     * </pre>
+     *
+     * <code>INVALID_ENVIRONMENT_VARIABLE_STUDIO_GRADLE_JDK = 16;</code>
+     */
+    public static final int INVALID_ENVIRONMENT_VARIABLE_STUDIO_GRADLE_JDK_VALUE = 16;
+    /**
+     * <pre>
+     * The studio config jdk.table.xml doesn't contain gradleJvm table entry
+     * </pre>
+     *
+     * <code>UNDEFINED_GRADLE_JVM_TABLE_ENTRY = 17;</code>
+     */
+    public static final int UNDEFINED_GRADLE_JVM_TABLE_ENTRY_VALUE = 17;
+    /**
+     * <pre>
+     * The studio config jdk.table.xml contains gradleJvm table entry with
+     * undefined javaHome path
+     * </pre>
+     *
+     * <code>UNDEFINED_GRADLE_JVM_TABLE_ENTRY_JAVA_HOME = 18;</code>
+     */
+    public static final int UNDEFINED_GRADLE_JVM_TABLE_ENTRY_JAVA_HOME_VALUE = 18;
+    /**
+     * <pre>
+     * The studio config jdk.table.xml contains gradleJvm table entry with
+     * invalid javaHome path
+     * </pre>
+     *
+     * <code>INVALID_GRADLE_JVM_TABLE_ENTRY_JAVA_HOME = 19;</code>
+     */
+    public static final int INVALID_GRADLE_JVM_TABLE_ENTRY_JAVA_HOME_VALUE = 19;
 
 
     public final int getNumber() {
@@ -282,6 +462,17 @@ private static final long serialVersionUID = 0L;
         case 6: return INVALID_JDK_HOME_PATH_NOT_DEFINED;
         case 7: return INVALID_JDK_NO_JAVAC;
         case 8: return INVALID_JDK_MISSING_FILES;
+        case 9: return UNDEFINED_LOCAL_PROPERTIES_JDK_DIR;
+        case 10: return INVALID_LOCAL_PROPERTIES_JDK_DIR;
+        case 11: return UNDEFINED_GRADLE_PROPERTIES_JAVA_HOME;
+        case 12: return INVALID_GRADLE_PROPERTIES_JAVA_HOME;
+        case 13: return UNDEFINED_ENVIRONMENT_VARIABLE_JAVA_HOME;
+        case 14: return INVALID_ENVIRONMENT_VARIABLE_JAVA_HOME;
+        case 15: return UNDEFINED_ENVIRONMENT_VARIABLE_STUDIO_GRADLE_JDK;
+        case 16: return INVALID_ENVIRONMENT_VARIABLE_STUDIO_GRADLE_JDK;
+        case 17: return UNDEFINED_GRADLE_JVM_TABLE_ENTRY;
+        case 18: return UNDEFINED_GRADLE_JVM_TABLE_ENTRY_JAVA_HOME;
+        case 19: return INVALID_GRADLE_JVM_TABLE_ENTRY_JAVA_HOME;
         default: return null;
       }
     }

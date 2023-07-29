@@ -123,6 +123,8 @@ public class DeviceParser {
                 mMeta.setFrameOffsetPortrait(new Point());
             } else if (DeviceSchema.NODE_SCREEN.equals(localName)) {
                 mHardware.setScreen(new Screen());
+            } else if (DeviceSchema.NODE_HINGE.equals(localName)) {
+                mHardware.setHinge(new Hinge());
             } else if (DeviceSchema.NODE_BOOT_PROP.equals(localName)) {
                 mBootProp = new String[2];
             }
@@ -206,6 +208,24 @@ public class DeviceParser {
                 mHardware.getScreen().setFoldedWidth3(getInteger(mStringAccumulator));
             } else if (DeviceSchema.NODE_Y_FOLDED_DIMENSION_3.equals(localName)) {
                 mHardware.getScreen().setFoldedHeight3(getInteger(mStringAccumulator));
+            } else if (DeviceSchema.NODE_HINGE_COUNT.equals(localName)) {
+                mHardware.getHinge().setCount(getInteger(mStringAccumulator));
+            } else if (DeviceSchema.NODE_HINGE_TYPE.equals(localName)) {
+                mHardware.getHinge().setType(getInteger(mStringAccumulator));
+            } else if (DeviceSchema.NODE_HINGE_SUB_TYPE.equals(localName)) {
+                mHardware.getHinge().setSubtype(getInteger(mStringAccumulator));
+            } else if (DeviceSchema.NODE_HINGE_RANGES.equals(localName)) {
+                mHardware.getHinge().setRanges(getString(mStringAccumulator));
+            } else if (DeviceSchema.NODE_HINGE_DEFAULTS.equals(localName)) {
+                mHardware.getHinge().setDefaults(getInteger(mStringAccumulator));
+            } else if (DeviceSchema.NODE_HINGE_AREAS.equals(localName)) {
+                mHardware.getHinge().setAreas(getString(mStringAccumulator));
+            } else if (DeviceSchema.NODE_HINGE_FOLD_AT_POSTURE.equals(localName)) {
+                mHardware.getHinge().setFoldAtPosture(getInteger(mStringAccumulator));
+            } else if (DeviceSchema.NODE_HINGE_POSTURE_LIST.equals(localName)) {
+                mHardware.getHinge().setPostureList(getString(mStringAccumulator));
+            } else if (DeviceSchema.NODE_HINGE_ANGLES_POSTURE_DEFINITIONS.equals(localName)) {
+                mHardware.getHinge().setHingeAnglePostureDefinitions(getString(mStringAccumulator));
             } else if (DeviceSchema.NODE_XDPI.equals(localName)) {
                 mHardware.getScreen().setXdpi(getDouble(mStringAccumulator));
             } else if (DeviceSchema.NODE_YDPI.equals(localName)) {

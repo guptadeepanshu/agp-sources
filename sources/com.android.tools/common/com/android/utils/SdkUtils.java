@@ -366,6 +366,21 @@ public class SdkUtils {
         return fileName.substring(0, lastExtension);
     }
 
+    /**
+     * Returns the layout resource name for the given layout file
+     *
+     * @param layoutFile the file pointing to the layout
+     * @return the layout resource name, not including the `@layout` prefix
+     */
+    public static String getLayoutName(File layoutFile) {
+        String name = layoutFile.getName();
+        int dotIndex = name.indexOf('.');
+        if (dotIndex != -1) {
+            name = name.substring(0, dotIndex);
+        }
+        return name;
+    }
+
     public static final List<String> IMAGE_EXTENSIONS = ImmutableList.of(
             DOT_PNG, DOT_9PNG, DOT_GIF, DOT_JPEG, DOT_JPG, DOT_BMP, DOT_WEBP, DOT_AVIF);
 

@@ -218,7 +218,7 @@ class AttributeModel {
          * otherwise
          */
         default boolean canMergeWithLowerPriority(@NonNull XmlDocument document) {
-            return EnumSet.allOf(XmlDocument.Type.class).contains(document.getFileType());
+            return true;
         }
 
         /**
@@ -249,6 +249,29 @@ class AttributeModel {
                     : null;
         }
     };
+
+    /** Similar to STRICT_MERGING_POLICY, but only allows merging from MAIN or OVERLAY manifests */
+    @NonNull
+    static final MergingPolicy STRICT_MAIN_OR_OVERLAY_MERGING_POLICY =
+            new MergingPolicy() {
+
+                @Override
+                public boolean shouldMergeDefaultValues() {
+                    return false;
+                }
+
+                @Override
+                public boolean canMergeWithLowerPriority(@NonNull XmlDocument document) {
+                    return EnumSet.of(XmlDocument.Type.MAIN, XmlDocument.Type.OVERLAY)
+                            .contains(document.getFileType());
+                }
+
+                @Nullable
+                @Override
+                public String merge(@NonNull String higherPriority, @NonNull String lowerPriority) {
+                    return STRICT_MERGING_POLICY.merge(higherPriority, lowerPriority);
+                }
+            };
 
     /**
      * Boolean OR merging policy.

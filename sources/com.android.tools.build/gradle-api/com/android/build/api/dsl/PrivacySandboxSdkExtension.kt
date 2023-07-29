@@ -98,4 +98,10 @@ interface PrivacySandboxSdkExtension {
 
     @Incubating
     fun bundle(action: PrivacySandboxSdkBundle.() -> Unit)
+
+    @get:Incubating
+    val signingConfig: SigningConfig
+
+    @Incubating
+    fun signingConfig(action: SigningConfig?.() -> Unit)
 }

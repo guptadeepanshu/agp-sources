@@ -21,6 +21,7 @@ import static java.io.File.separatorChar;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.ide.common.gradle.Version;
 import com.android.io.CancellableFileIo;
 import com.android.repository.io.FileOpUtils;
 import java.nio.file.Path;
@@ -50,7 +51,7 @@ public class MavenRepositories {
             @NonNull String groupId,
             @NonNull String artifactId,
             @NonNull Path repository,
-            @Nullable Predicate<GradleVersion> filter,
+            @Nullable Predicate<Version> filter,
             boolean allowPreview) {
         Path versionDir = getArtifactIdDirectory(repository, groupId, artifactId);
         Path[] versions = FileOpUtils.listFiles(versionDir);
@@ -74,12 +75,12 @@ public class MavenRepositories {
     }
 
     private static boolean applyVersionPredicate(@NonNull String revision,
-            @Nullable Predicate<GradleVersion> predicate) {
+            @Nullable Predicate<Version> predicate) {
         if (predicate == null) {
             return true;
         }
-        GradleVersion version = GradleVersion.tryParse(revision);
-        return version != null && predicate.test(version);
+        Version version = Version.Companion.parse(revision);
+        return predicate.test(version);
     }
 
     /**
@@ -92,12 +93,12 @@ public class MavenRepositories {
      * @return the best (highest version), or null if none were found
      */
     @Nullable
-    public static GradleVersion getHighestVersion(
+    public static Version getHighestVersion(
             @NonNull Path versionDir,
-            @Nullable Predicate<GradleVersion> filter,
+            @Nullable Predicate<Version> filter,
             boolean allowPreview) {
         Path[] versionDirs = FileOpUtils.listFiles(versionDir);
-        GradleVersion maxVersion = null;
+        Version maxVersion = null;
         for (Path dir : versionDirs) {
             if (!CancellableFileIo.isDirectory(dir)) {
                 continue;
@@ -106,8 +107,8 @@ public class MavenRepositories {
             if (name.isEmpty() || !Character.isDigit(name.charAt(0))) {
                 continue;
             }
-            GradleVersion version = GradleVersion.tryParse(name);
-            if (version != null && (allowPreview || !version.isPreview()
+            Version version = Version.Companion.parse(name);
+            if ((allowPreview || !version.isPreview()
                     && (filter == null || filter.test(version)))
                     && (maxVersion == null || version.compareTo(maxVersion) > 0)) {
                 maxVersion = version;

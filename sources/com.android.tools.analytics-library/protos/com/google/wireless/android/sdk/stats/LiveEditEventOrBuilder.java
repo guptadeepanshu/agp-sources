@@ -101,4 +101,36 @@ public interface LiveEditEventOrBuilder extends
    * @return The mode.
    */
   com.google.wireless.android.sdk.stats.LiveEditEvent.Mode getMode();
+
+  /**
+   * <pre>
+   * Client-side salted (rotating every 28 days), sha256 of the project base
+   * path. Used to correlate LiveEdit usage with Compose projects.
+   * </pre>
+   *
+   * <code>optional string project_id = 6;</code>
+   * @return Whether the projectId field is set.
+   */
+  boolean hasProjectId();
+  /**
+   * <pre>
+   * Client-side salted (rotating every 28 days), sha256 of the project base
+   * path. Used to correlate LiveEdit usage with Compose projects.
+   * </pre>
+   *
+   * <code>optional string project_id = 6;</code>
+   * @return The projectId.
+   */
+  java.lang.String getProjectId();
+  /**
+   * <pre>
+   * Client-side salted (rotating every 28 days), sha256 of the project base
+   * path. Used to correlate LiveEdit usage with Compose projects.
+   * </pre>
+   *
+   * <code>optional string project_id = 6;</code>
+   * @return The bytes for projectId.
+   */
+  com.google.protobuf.ByteString
+      getProjectIdBytes();
 }

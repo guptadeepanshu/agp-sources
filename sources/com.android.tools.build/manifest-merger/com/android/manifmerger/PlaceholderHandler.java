@@ -129,7 +129,7 @@ public class PlaceholderHandler {
                 // append the last remainder (without placeholders) in the result string.
                 resultString.append(inputString);
 
-                xmlAttribute.getXml().setValue(resultString.toString());
+                xmlAttribute.setValue(resultString.toString());
 
                 if (injected > 0) {
                     // record the action on the element, as it may be the first time we

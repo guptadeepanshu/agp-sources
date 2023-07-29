@@ -16,6 +16,7 @@
 
 package com.android.sdklib.repository.meta;
 
+import static com.android.sdklib.AndroidVersionUtils.getFullApiName;
 import static com.android.sdklib.repository.targets.SystemImage.DEFAULT_TAG;
 
 import com.android.SdkConstants;
@@ -23,6 +24,7 @@ import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.repository.Revision;
 import com.android.repository.api.RepoPackage;
+import com.android.repository.impl.meta.PackageDisplayNameQualifier;
 import com.android.repository.impl.meta.TypeDetails;
 import com.android.sdklib.AndroidVersion;
 import com.android.sdklib.OptionalLibrary;
@@ -40,10 +42,8 @@ public final class DetailsTypes {
     private DetailsTypes() {
     }
 
-    /**
-     * Common methods shared by all android version-specific details types.
-     */
-    public interface ApiDetailsType {
+    /** Common methods shared by all android version-specific details types. */
+    public interface ApiDetailsType extends PackageDisplayNameQualifier {
 
         /**
          * Convenience method to create an {@link AndroidVersion} with the information from the given
@@ -137,6 +137,12 @@ public final class DetailsTypes {
          */
         String getCodename();
 
+        @Override
+        @NonNull
+        default String getQualifierTemplate() {
+            return " (revision {0})";
+        }
+
         static int getApiLevelInt(String apiLevel) {
             if (apiLevel == null) {
                 return 0;
@@ -194,9 +200,7 @@ public final class DetailsTypes {
         }
     }
 
-    /**
-     * Details type for extra packages. Includes a {@link IdDisplay} for the vendor.
-     */
+    /** Details type for extra packages. Includes a {@link IdDisplay} for the vendor. */
     @XmlTransient
     public interface ExtraDetailsType {
 
@@ -338,6 +342,12 @@ public final class DetailsTypes {
          */
         @Nullable
         IdDisplay getVendor();
+
+        @Override
+        @NonNull
+        default String getQualifierTemplate() {
+            return " " + getFullApiName(getAndroidVersion()) + " (revision {0})";
+        }
     }
 
     /**

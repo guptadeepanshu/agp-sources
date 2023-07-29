@@ -1204,12 +1204,12 @@ private static final long serialVersionUID = 0L;
     HYPERV(5),
     /**
      * <pre>
-     * AMD Hypervisor for Android Emulator
+     * Android Emulator hypervisor driver
      * </pre>
      *
-     * <code>GVM = 6;</code>
+     * <code>AEHD = 6;</code>
      */
-    GVM(6),
+    AEHD(6),
     ;
 
     /**
@@ -1254,12 +1254,12 @@ private static final long serialVersionUID = 0L;
     public static final int HYPERV_VALUE = 5;
     /**
      * <pre>
-     * AMD Hypervisor for Android Emulator
+     * Android Emulator hypervisor driver
      * </pre>
      *
-     * <code>GVM = 6;</code>
+     * <code>AEHD = 6;</code>
      */
-    public static final int GVM_VALUE = 6;
+    public static final int AEHD_VALUE = 6;
 
 
     public final int getNumber() {
@@ -1288,7 +1288,7 @@ private static final long serialVersionUID = 0L;
         case 3: return HAXM;
         case 4: return HVF;
         case 5: return HYPERV;
-        case 6: return GVM;
+        case 6: return AEHD;
         default: return null;
       }
     }

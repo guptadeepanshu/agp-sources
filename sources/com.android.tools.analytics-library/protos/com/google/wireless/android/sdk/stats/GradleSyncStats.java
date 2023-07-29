@@ -28,6 +28,7 @@ private static final long serialVersionUID = 0L;
     syncExecutionType_ = 0;
     userRequestedSyncType_ = 0;
     studioRequestedSyncType_ = 0;
+    versionCatalogDetectorState_ = 0;
   }
 
   @java.lang.Override
@@ -172,6 +173,31 @@ private static final long serialVersionUID = 0L;
             } else {
               bitField0_ |= 0x00002000;
               studioRequestedSyncType_ = rawValue;
+            }
+            break;
+          }
+          case 122: {
+            com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.Builder subBuilder = null;
+            if (((bitField0_ & 0x00004000) != 0)) {
+              subBuilder = downloadsData_.toBuilder();
+            }
+            downloadsData_ = input.readMessage(com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(downloadsData_);
+              downloadsData_ = subBuilder.buildPartial();
+            }
+            bitField0_ |= 0x00004000;
+            break;
+          }
+          case 128: {
+            int rawValue = input.readEnum();
+              @SuppressWarnings("deprecation")
+            com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State value = com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State.valueOf(rawValue);
+            if (value == null) {
+              unknownFields.mergeVarintField(16, rawValue);
+            } else {
+              bitField0_ |= 0x00008000;
+              versionCatalogDetectorState_ = rawValue;
             }
             break;
           }
@@ -1107,6 +1133,30 @@ private static final long serialVersionUID = 0L;
      * <code>TRIGGER_GRADLEDEPENDENCY_LAST_MARKER = 5799;</code>
      */
     TRIGGER_GRADLEDEPENDENCY_LAST_MARKER(5799),
+    /**
+     * <pre>
+     * First marker for changes related to Version Catalogs
+     * </pre>
+     *
+     * <code>TRIGGER_VERSION_CATALOG_FIRST_MARKER = 6000;</code>
+     */
+    TRIGGER_VERSION_CATALOG_FIRST_MARKER(6000),
+    /**
+     * <pre>
+     * A Version Catalog file was added
+     * </pre>
+     *
+     * <code>TRIGGER_VERSION_CATALOG_FILE_ADDED = 6001;</code>
+     */
+    TRIGGER_VERSION_CATALOG_FILE_ADDED(6001),
+    /**
+     * <pre>
+     * Last marker for changes related to Version Catalogs
+     * </pre>
+     *
+     * <code>TRIGGER_VERSION_CATALOG_LAST_MARKER = 6099;</code>
+     */
+    TRIGGER_VERSION_CATALOG_LAST_MARKER(6099),
     ;
 
     /**
@@ -2000,6 +2050,30 @@ private static final long serialVersionUID = 0L;
      * <code>TRIGGER_GRADLEDEPENDENCY_LAST_MARKER = 5799;</code>
      */
     public static final int TRIGGER_GRADLEDEPENDENCY_LAST_MARKER_VALUE = 5799;
+    /**
+     * <pre>
+     * First marker for changes related to Version Catalogs
+     * </pre>
+     *
+     * <code>TRIGGER_VERSION_CATALOG_FIRST_MARKER = 6000;</code>
+     */
+    public static final int TRIGGER_VERSION_CATALOG_FIRST_MARKER_VALUE = 6000;
+    /**
+     * <pre>
+     * A Version Catalog file was added
+     * </pre>
+     *
+     * <code>TRIGGER_VERSION_CATALOG_FILE_ADDED = 6001;</code>
+     */
+    public static final int TRIGGER_VERSION_CATALOG_FILE_ADDED_VALUE = 6001;
+    /**
+     * <pre>
+     * Last marker for changes related to Version Catalogs
+     * </pre>
+     *
+     * <code>TRIGGER_VERSION_CATALOG_LAST_MARKER = 6099;</code>
+     */
+    public static final int TRIGGER_VERSION_CATALOG_LAST_MARKER_VALUE = 6099;
 
 
     public final int getNumber() {
@@ -2132,6 +2206,9 @@ private static final long serialVersionUID = 0L;
         case 5701: return TRIGGER_GRADLEDEPENDENCY_ADDED;
         case 5702: return TRIGGER_GRADLEDEPENDENCY_UPDATED;
         case 5799: return TRIGGER_GRADLEDEPENDENCY_LAST_MARKER;
+        case 6000: return TRIGGER_VERSION_CATALOG_FIRST_MARKER;
+        case 6001: return TRIGGER_VERSION_CATALOG_FILE_ADDED;
+        case 6099: return TRIGGER_VERSION_CATALOG_LAST_MARKER;
         default: return null;
       }
     }
@@ -3185,6 +3262,71 @@ private static final long serialVersionUID = 0L;
     return result == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution.UNKNOWN_STUDIO_REQUESTED_EXECUTION_TYPE : result;
   }
 
+  public static final int DOWNLOADS_DATA_FIELD_NUMBER = 15;
+  private com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData downloadsData_;
+  /**
+   * <pre>
+   * Data on downloads happened during sync.
+   * </pre>
+   *
+   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+   * @return Whether the downloadsData field is set.
+   */
+  @java.lang.Override
+  public boolean hasDownloadsData() {
+    return ((bitField0_ & 0x00004000) != 0);
+  }
+  /**
+   * <pre>
+   * Data on downloads happened during sync.
+   * </pre>
+   *
+   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+   * @return The downloadsData.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData getDownloadsData() {
+    return downloadsData_ == null ? com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.getDefaultInstance() : downloadsData_;
+  }
+  /**
+   * <pre>
+   * Data on downloads happened during sync.
+   * </pre>
+   *
+   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisDataOrBuilder getDownloadsDataOrBuilder() {
+    return downloadsData_ == null ? com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.getDefaultInstance() : downloadsData_;
+  }
+
+  public static final int VERSION_CATALOG_DETECTOR_STATE_FIELD_NUMBER = 16;
+  private int versionCatalogDetectorState_;
+  /**
+   * <pre>
+   * Data on Version Catalog use.
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleVersionCatalogDetectorEvent.State version_catalog_detector_state = 16;</code>
+   * @return Whether the versionCatalogDetectorState field is set.
+   */
+  @java.lang.Override public boolean hasVersionCatalogDetectorState() {
+    return ((bitField0_ & 0x00008000) != 0);
+  }
+  /**
+   * <pre>
+   * Data on Version Catalog use.
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleVersionCatalogDetectorEvent.State version_catalog_detector_state = 16;</code>
+   * @return The versionCatalogDetectorState.
+   */
+  @java.lang.Override public com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State getVersionCatalogDetectorState() {
+    @SuppressWarnings("deprecation")
+    com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State result = com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State.valueOf(versionCatalogDetectorState_);
+    return result == null ? com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State.UNKNOWN_GRADLE_VERSION_CATALOG_DETECTOR_STATE : result;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -3240,6 +3382,12 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00002000) != 0)) {
       output.writeEnum(14, studioRequestedSyncType_);
+    }
+    if (((bitField0_ & 0x00004000) != 0)) {
+      output.writeMessage(15, getDownloadsData());
+    }
+    if (((bitField0_ & 0x00008000) != 0)) {
+      output.writeEnum(16, versionCatalogDetectorState_);
     }
     unknownFields.writeTo(output);
   }
@@ -3303,6 +3451,14 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00002000) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(14, studioRequestedSyncType_);
+    }
+    if (((bitField0_ & 0x00004000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(15, getDownloadsData());
+    }
+    if (((bitField0_ & 0x00008000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(16, versionCatalogDetectorState_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -3383,6 +3539,15 @@ private static final long serialVersionUID = 0L;
     if (hasStudioRequestedSyncType()) {
       if (studioRequestedSyncType_ != other.studioRequestedSyncType_) return false;
     }
+    if (hasDownloadsData() != other.hasDownloadsData()) return false;
+    if (hasDownloadsData()) {
+      if (!getDownloadsData()
+          .equals(other.getDownloadsData())) return false;
+    }
+    if (hasVersionCatalogDetectorState() != other.hasVersionCatalogDetectorState()) return false;
+    if (hasVersionCatalogDetectorState()) {
+      if (versionCatalogDetectorState_ != other.versionCatalogDetectorState_) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -3455,6 +3620,14 @@ private static final long serialVersionUID = 0L;
     if (hasStudioRequestedSyncType()) {
       hash = (37 * hash) + STUDIO_REQUESTED_SYNC_TYPE_FIELD_NUMBER;
       hash = (53 * hash) + studioRequestedSyncType_;
+    }
+    if (hasDownloadsData()) {
+      hash = (37 * hash) + DOWNLOADS_DATA_FIELD_NUMBER;
+      hash = (53 * hash) + getDownloadsData().hashCode();
+    }
+    if (hasVersionCatalogDetectorState()) {
+      hash = (37 * hash) + VERSION_CATALOG_DETECTOR_STATE_FIELD_NUMBER;
+      hash = (53 * hash) + versionCatalogDetectorState_;
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -3588,6 +3761,7 @@ private static final long serialVersionUID = 0L;
     private void maybeForceBuilderInitialization() {
       if (com.google.protobuf.GeneratedMessageV3
               .alwaysUseFieldBuilders) {
+        getDownloadsDataFieldBuilder();
       }
     }
     @java.lang.Override
@@ -3621,6 +3795,14 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00001000);
       studioRequestedSyncType_ = 0;
       bitField0_ = (bitField0_ & ~0x00002000);
+      if (downloadsDataBuilder_ == null) {
+        downloadsData_ = null;
+      } else {
+        downloadsDataBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00004000);
+      versionCatalogDetectorState_ = 0;
+      bitField0_ = (bitField0_ & ~0x00008000);
       return this;
     }
 
@@ -3705,6 +3887,18 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00002000;
       }
       result.studioRequestedSyncType_ = studioRequestedSyncType_;
+      if (((from_bitField0_ & 0x00004000) != 0)) {
+        if (downloadsDataBuilder_ == null) {
+          result.downloadsData_ = downloadsData_;
+        } else {
+          result.downloadsData_ = downloadsDataBuilder_.build();
+        }
+        to_bitField0_ |= 0x00004000;
+      }
+      if (((from_bitField0_ & 0x00008000) != 0)) {
+        to_bitField0_ |= 0x00008000;
+      }
+      result.versionCatalogDetectorState_ = versionCatalogDetectorState_;
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -3799,6 +3993,12 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasStudioRequestedSyncType()) {
         setStudioRequestedSyncType(other.getStudioRequestedSyncType());
+      }
+      if (other.hasDownloadsData()) {
+        mergeDownloadsData(other.getDownloadsData());
+      }
+      if (other.hasVersionCatalogDetectorState()) {
+        setVersionCatalogDetectorState(other.getVersionCatalogDetectorState());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -4756,6 +4956,221 @@ private static final long serialVersionUID = 0L;
     public Builder clearStudioRequestedSyncType() {
       bitField0_ = (bitField0_ & ~0x00002000);
       studioRequestedSyncType_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData downloadsData_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData, com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.Builder, com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisDataOrBuilder> downloadsDataBuilder_;
+    /**
+     * <pre>
+     * Data on downloads happened during sync.
+     * </pre>
+     *
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+     * @return Whether the downloadsData field is set.
+     */
+    public boolean hasDownloadsData() {
+      return ((bitField0_ & 0x00004000) != 0);
+    }
+    /**
+     * <pre>
+     * Data on downloads happened during sync.
+     * </pre>
+     *
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+     * @return The downloadsData.
+     */
+    public com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData getDownloadsData() {
+      if (downloadsDataBuilder_ == null) {
+        return downloadsData_ == null ? com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.getDefaultInstance() : downloadsData_;
+      } else {
+        return downloadsDataBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * Data on downloads happened during sync.
+     * </pre>
+     *
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+     */
+    public Builder setDownloadsData(com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData value) {
+      if (downloadsDataBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        downloadsData_ = value;
+        onChanged();
+      } else {
+        downloadsDataBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00004000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Data on downloads happened during sync.
+     * </pre>
+     *
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+     */
+    public Builder setDownloadsData(
+        com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.Builder builderForValue) {
+      if (downloadsDataBuilder_ == null) {
+        downloadsData_ = builderForValue.build();
+        onChanged();
+      } else {
+        downloadsDataBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00004000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Data on downloads happened during sync.
+     * </pre>
+     *
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+     */
+    public Builder mergeDownloadsData(com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData value) {
+      if (downloadsDataBuilder_ == null) {
+        if (((bitField0_ & 0x00004000) != 0) &&
+            downloadsData_ != null &&
+            downloadsData_ != com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.getDefaultInstance()) {
+          downloadsData_ =
+            com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.newBuilder(downloadsData_).mergeFrom(value).buildPartial();
+        } else {
+          downloadsData_ = value;
+        }
+        onChanged();
+      } else {
+        downloadsDataBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00004000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Data on downloads happened during sync.
+     * </pre>
+     *
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+     */
+    public Builder clearDownloadsData() {
+      if (downloadsDataBuilder_ == null) {
+        downloadsData_ = null;
+        onChanged();
+      } else {
+        downloadsDataBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00004000);
+      return this;
+    }
+    /**
+     * <pre>
+     * Data on downloads happened during sync.
+     * </pre>
+     *
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+     */
+    public com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.Builder getDownloadsDataBuilder() {
+      bitField0_ |= 0x00004000;
+      onChanged();
+      return getDownloadsDataFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Data on downloads happened during sync.
+     * </pre>
+     *
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+     */
+    public com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisDataOrBuilder getDownloadsDataOrBuilder() {
+      if (downloadsDataBuilder_ != null) {
+        return downloadsDataBuilder_.getMessageOrBuilder();
+      } else {
+        return downloadsData_ == null ?
+            com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.getDefaultInstance() : downloadsData_;
+      }
+    }
+    /**
+     * <pre>
+     * Data on downloads happened during sync.
+     * </pre>
+     *
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData, com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.Builder, com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisDataOrBuilder> 
+        getDownloadsDataFieldBuilder() {
+      if (downloadsDataBuilder_ == null) {
+        downloadsDataBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData, com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.Builder, com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisDataOrBuilder>(
+                getDownloadsData(),
+                getParentForChildren(),
+                isClean());
+        downloadsData_ = null;
+      }
+      return downloadsDataBuilder_;
+    }
+
+    private int versionCatalogDetectorState_ = 0;
+    /**
+     * <pre>
+     * Data on Version Catalog use.
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleVersionCatalogDetectorEvent.State version_catalog_detector_state = 16;</code>
+     * @return Whether the versionCatalogDetectorState field is set.
+     */
+    @java.lang.Override public boolean hasVersionCatalogDetectorState() {
+      return ((bitField0_ & 0x00008000) != 0);
+    }
+    /**
+     * <pre>
+     * Data on Version Catalog use.
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleVersionCatalogDetectorEvent.State version_catalog_detector_state = 16;</code>
+     * @return The versionCatalogDetectorState.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State getVersionCatalogDetectorState() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State result = com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State.valueOf(versionCatalogDetectorState_);
+      return result == null ? com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State.UNKNOWN_GRADLE_VERSION_CATALOG_DETECTOR_STATE : result;
+    }
+    /**
+     * <pre>
+     * Data on Version Catalog use.
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleVersionCatalogDetectorEvent.State version_catalog_detector_state = 16;</code>
+     * @param value The versionCatalogDetectorState to set.
+     * @return This builder for chaining.
+     */
+    public Builder setVersionCatalogDetectorState(com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00008000;
+      versionCatalogDetectorState_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Data on Version Catalog use.
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleVersionCatalogDetectorEvent.State version_catalog_detector_state = 16;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearVersionCatalogDetectorState() {
+      bitField0_ = (bitField0_ & ~0x00008000);
+      versionCatalogDetectorState_ = 0;
       onChanged();
       return this;
     }

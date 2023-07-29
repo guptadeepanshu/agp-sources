@@ -16,6 +16,7 @@
 package com.android.ide.common.repository
 
 import com.android.SdkConstants
+import com.android.ide.common.gradle.Version
 import com.google.common.collect.Maps
 import org.kxml2.io.KXmlParser
 import org.xmlpull.v1.XmlPullParser
@@ -62,28 +63,28 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
 
     private var packageMap: MutableMap<String, PackageInfo>? = null
 
-    fun findVersion(dependency: GradleCoordinate, filter: Predicate<GradleVersion>? = null):
-        GradleVersion? = findVersion(dependency, filter, dependency.isPreview)
+    fun findVersion(dependency: GradleCoordinate, filter: Predicate<Version>? = null):
+        Version? = findVersion(dependency, filter, dependency.isPreview)
 
     fun findVersion(
         dependency: GradleCoordinate,
-        predicate: Predicate<GradleVersion>?,
+        predicate: Predicate<Version>?,
         allowPreview: Boolean = false
-    ): GradleVersion? {
+    ): Version? {
         val groupId = dependency.groupId
         val artifactId = dependency.artifactId
-        val version = dependency.version
+        val version = dependency.lowerBoundVersion
         val filter = when {
             dependency.acceptsGreaterRevisions() -> {
                 val prefix = dependency.revision.trimEnd('+')
                 if (predicate != null) {
-                    { v: GradleVersion -> predicate.test(v) && v.toString().startsWith(prefix) }
+                    { v: Version -> predicate.test(v) && v.toString().startsWith(prefix) }
                 } else {
-                    { v: GradleVersion -> v.toString().startsWith(prefix) }
+                    { v: Version -> v.toString().startsWith(prefix) }
                 }
             }
             predicate != null -> {
-                { v: GradleVersion -> predicate.test(v) }
+                { v: Version -> predicate.test(v) }
             }
             else -> {
                 null
@@ -92,66 +93,46 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
 
         // Temporary special casing for AndroidX: don't offer upgrades from 2.6 to 2.7 previews
         if (groupId == "androidx.work") {
-            if (version != null) {
-                if (version.major == 1 || version.major == 2 && version.minor <= 6) {
-                    val artifactInfo = findArtifact(groupId, artifactId) ?: return null
-                    val snapshotFilter = getSnapshotVersionFilter(version, null)
-                    artifactInfo.getGradleVersions()
-                        .filter { v ->
-                            (v.major != 2 || (v.minor != 7 || !v.isPreview)) &&
+            if (version < Version.prefixInfimum("2.7")) {
+                val artifactInfo = findArtifact(groupId, artifactId) ?: return null
+                val snapshotFilter = getSnapshotVersionFilter(null)
+                artifactInfo.getVersions()
+                    .filter { v ->
+                        ((v < Version.prefixInfimum("2") || v >= Version.prefixInfimum("3")) ||
+                                (v < Version.prefixInfimum("2.7") ||
+                                        (v > Version.prefixInfimum("2.8") || !v.isPreview))) &&
                                 (filter == null || filter(v))
-                        }
-                        .filter { allowPreview || !it.isPreview }
-                        .filter { snapshotFilter(it) }
-                        .maxOrNull()
-                        ?.let { return it }
-                }
+                    }
+                    .filter { allowPreview || !it.isPreview }
+                    .filter { snapshotFilter(it) }
+                    .maxOrNull()
+                    ?.let { return it }
             }
         }
 
-        val compositeFilter = getSnapshotVersionFilter(version, filter)
+        val compositeFilter = getSnapshotVersionFilter(filter)
         return findVersion(groupId, artifactId, compositeFilter, allowPreview)
     }
 
-    // In addition to the optional filter, add in filtering to
-    // make sure we compare correctly with SNAPSHOT versions
-    // https://docs.gradle.org/current/userguide/single_versions.html#version_ordering
-    private fun getSnapshotVersionFilter(
-        version: GradleVersion?,
-        filter: ((GradleVersion) -> Boolean)?
-    ): (GradleVersion) -> Boolean {
-        return { candidate ->
-            val snapshot = if (candidate.isSnapshot) {
-                // Never update to snapshot
-                false
-            } else if (version != null && version.isSnapshot) {
-                // Only update from a snapshot if the version is stable or higher
-                candidate.isAtLeast(version.major, version.minor, version.micro) &&
-                    (
-                        !candidate.isPreview || candidate.major > version.major ||
-                            candidate.minor > version.minor || candidate.micro > version.micro
-                        )
-            } else {
-                true
-            }
-            snapshot && (filter == null || filter(candidate))
-        }
-    }
+    // In addition to the optional filter, add in filtering to disable suggestions to
+    // snapshot versions.
+    private fun getSnapshotVersionFilter(filter: ((Version) -> Boolean)?): (Version) -> Boolean =
+        { candidate -> !candidate.isSnapshot && (filter == null || filter(candidate)) }
 
     fun findVersion(
         groupId: String,
         artifactId: String,
-        filter: Predicate<GradleVersion>?,
+        filter: Predicate<Version>?,
         allowPreview: Boolean = false
-    ): GradleVersion? =
+    ): Version? =
         findVersion(groupId, artifactId, { filter?.test(it) != false }, allowPreview)
 
     fun findVersion(
         groupId: String,
         artifactId: String,
-        filter: ((GradleVersion) -> Boolean)? = null,
+        filter: ((Version) -> Boolean)? = null,
         allowPreview: Boolean = false
-    ): GradleVersion? {
+    ): Version? {
         val artifactInfo = findArtifact(groupId, artifactId) ?: return null
         return artifactInfo.findVersion(filter, allowPreview)
     }
@@ -160,9 +141,9 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
 
     fun getArtifacts(groupId: String): Set<String> = getPackageMap()[groupId]?.artifacts().orEmpty()
 
-    fun getVersions(groupId: String, artifactId: String): Set<GradleVersion> {
+    fun getVersions(groupId: String, artifactId: String): Set<Version> {
         val artifactInfo = findArtifact(groupId, artifactId) ?: return emptySet()
-        return artifactInfo.getGradleVersions().toSet()
+        return artifactInfo.getVersions().toSet()
     }
 
     fun getAgpVersions(): Set<AgpVersion> {
@@ -173,7 +154,7 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
     fun findCompileDependencies(
         groupId: String,
         artifactId: String,
-        version: GradleVersion
+        version: Version
     ): List<GradleCoordinate> {
         val packageInfo = getPackageMap()[groupId] ?: return emptyList()
         val artifactInfo = packageInfo.findArtifact(artifactId)
@@ -197,34 +178,32 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
 
     private data class ArtifactInfo(val id: String, val versions: String) {
 
-        private val dependencyInfo by lazy { HashMap<GradleVersion, List<GradleCoordinate>>() }
+        private val dependencyInfo by lazy { HashMap<Version, List<GradleCoordinate>>() }
 
-        fun getGradleVersions(): Sequence<GradleVersion> =
+        fun getVersions(): Sequence<Version> =
             versions.splitToSequence(",")
-                .map { GradleVersion.tryParse(it) }
-                .filterNotNull()
+                .map { Version.parse(it) }
 
         fun getAgpVersions(): Sequence<AgpVersion> =
             versions.splitToSequence(",")
                 .map { AgpVersion.tryParse(it) }
                 .filterNotNull()
 
-        fun findVersion(filter: ((GradleVersion) -> Boolean)?, allowPreview: Boolean = false):
-            GradleVersion? =
-                getGradleVersions()
-                    .filter { filter == null || filter(it) }
-                    .filter { allowPreview || !it.isPreview }
-                    .maxOrNull()
+        fun findVersion(filter: ((Version) -> Boolean)?, allowPreview: Boolean = false): Version? =
+            getVersions()
+                .filter { filter == null || filter(it) }
+                .filter { allowPreview || !it.isPreview }
+                .maxOrNull()
 
         fun findCompileDependencies(
-            version: GradleVersion,
+            version: Version,
             packageInfo: PackageInfo
         ): List<GradleCoordinate> {
             return dependencyInfo[version] ?: loadCompileDependencies(version, packageInfo)
         }
 
         private fun loadCompileDependencies(
-            version: GradleVersion,
+            version: Version,
             packageInfo: PackageInfo
         ): List<GradleCoordinate> {
             if (findVersion({ it == version }, true) == null) {
@@ -275,7 +254,7 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
 
         fun findArtifact(id: String): ArtifactInfo? = artifacts[id]
 
-        fun loadCompileDependencies(id: String, version: GradleVersion): List<GradleCoordinate> {
+        fun loadCompileDependencies(id: String, version: Version): List<GradleCoordinate> {
             val file = "${pkg.replace('.', '/')}/$id/$version/$id-$version.pom"
             val stream = findData(file)
             return stream?.use { readCompileDependenciesFromPomFile(stream, file) } ?: emptyList()

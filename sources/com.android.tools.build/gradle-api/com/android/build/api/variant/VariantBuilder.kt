@@ -89,15 +89,21 @@ interface VariantBuilder: ComponentBuilder {
      * Set to `true` if the variant's has any unit tests, false otherwise. Value is [Boolean#True]
      * by default.
      */
-    @Deprecated("Use enableUnitTest", replaceWith=ReplaceWith("enableUnitTest"))
+    @Deprecated(
+        "Will be removed in AGP 9.0.",
+        replaceWith=ReplaceWith("(VariantBuilder.Subtype).enableUnitTest where available")
+    )
     var unitTestEnabled: Boolean
 
     /**
      * Set to `true` if the variant's has any unit tests, false otherwise. Value is [Boolean#True]
      * by default.
      */
+    @Deprecated(
+        "Will be removed in AGP 9.0.",
+        replaceWith=ReplaceWith("(VariantBuilder.Subtype).enableUnitTest where available")
+    )
     var enableUnitTest: Boolean
-
 
     /**
      * Registers an extension object to the variant object. Extension objects can be looked up

@@ -22,4 +22,6 @@ public interface DDMLibJdwpTracer {
     default void onEvent(@NonNull String event) {}
 
     default void onPacket(@NonNull ByteBuffer packet) {}
+
+    default void close() {}
 }

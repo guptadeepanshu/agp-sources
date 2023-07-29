@@ -53,7 +53,7 @@ public class DeviceSchema {
      * The latest version of the device XML Schema. Valid version numbers are between 1 and this
      * number, included.
      */
-    public static final int NS_LATEST_VERSION = 6;
+    public static final int NS_LATEST_VERSION = 7;
 
     /** The XML namespace of the latest device XML. */
     public static final String NS_DEVICES_URI = getSchemaUri(NS_LATEST_VERSION);
@@ -190,6 +190,17 @@ public class DeviceSchema {
     public static final String NODE_Y_FOLDED_OFFSET_3 = "y-folded-offset-3";
     public static final String NODE_X_FOLDED_DIMENSION_3 = "x-folded-dimension-3";
     public static final String NODE_Y_FOLDED_DIMENSION_3 = "y-folded-dimension-3";
+    public static final String NODE_HINGE = "hinge";
+    public static final String NODE_HINGE_AREAS = "areas";
+    public static final String NODE_HINGE_COUNT = "count";
+    public static final String NODE_HINGE_DEFAULTS = "defaults";
+    public static final String NODE_HINGE_RANGES = "ranges";
+    public static final String NODE_HINGE_SUB_TYPE = "sub-type";
+    public static final String NODE_HINGE_TYPE = "type";
+    public static final String NODE_HINGE_FOLD_AT_POSTURE = "fold-at-posture";
+    public static final String NODE_HINGE_POSTURE_LIST = "posture-list";
+    public static final String NODE_HINGE_ANGLES_POSTURE_DEFINITIONS =
+            "hinge-angles-posture-definitions";
 
     public static final String NODE_CPU = "cpu";
 

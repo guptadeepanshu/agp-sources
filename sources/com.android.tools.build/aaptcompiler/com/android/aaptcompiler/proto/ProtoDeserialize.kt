@@ -200,6 +200,16 @@ fun deserializeConfigFromPb(
     else -> ResTableConfig.NAVIGATION.ANY
   }
 
+  val grammaticalGender = when (config.grammaticalGender) {
+    ConfigurationOuterClass.Configuration.GrammaticalGender.GRAM_GENDER_NEUTER ->
+      ResTableConfig.GRAMMATICAL_GENDER.NEUTER
+    ConfigurationOuterClass.Configuration.GrammaticalGender.GRAM_GENDER_FEMININE ->
+      ResTableConfig.GRAMMATICAL_GENDER.FEMININE
+    ConfigurationOuterClass.Configuration.GrammaticalGender.GRAM_GENDER_MASCULINE ->
+      ResTableConfig.GRAMMATICAL_GENDER.MASCULINE
+    else -> ResTableConfig.GRAMMATICAL_GENDER.ANY
+  }
+
   val screenWidth = config.getScreenWidth()
   val screenHeight = config.getScreenHeight()
   val sdkVersion = config.getSdkVersion().toShort()
@@ -213,6 +223,7 @@ fun deserializeConfigFromPb(
       density = density,
       keyboard = keyboard,
       navigation = navigation,
+      grammaticalInflection = grammaticalGender,
       inputFlags = (keysHidden.toInt() or navHidden.toInt()).toByte(),
       screenWidth = screenWidth,
       screenHeight = screenHeight,

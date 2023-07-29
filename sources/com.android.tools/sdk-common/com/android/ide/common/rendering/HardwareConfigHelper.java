@@ -204,8 +204,8 @@ public class HardwareConfigHelper {
         String name = device.getDisplayName();
         if (isTv(device)) {
             // Example: 1080p, 1920x1080, xhdpi (TV)
-            if (name.startsWith("Android TV (")) {
-                name = name.substring("Android TV (".length());
+            if (name.startsWith("Television (")) {
+                name = name.substring("Television (".length());
                 if (name.endsWith(")")) {
                     name = name.substring(0, name.length() - 1);
                 }
@@ -317,7 +317,9 @@ public class HardwareConfigHelper {
      * Whether the given device is a TV device
      */
     public static boolean isTv(@Nullable Device device) {
-        return device != null && "android-tv".equals(device.getTagId());
+        return device != null
+                && ("android-tv".equals(device.getTagId())
+                        || "google-tv".equals(device.getTagId()));
     }
 
     /** Whether the given device is an Automotive device */

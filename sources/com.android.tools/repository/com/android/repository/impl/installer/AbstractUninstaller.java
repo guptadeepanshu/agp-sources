@@ -52,6 +52,6 @@ public abstract class AbstractUninstaller extends AbstractPackageOperation
     @Override
     @NonNull
     public String getName() {
-        return String.format("Uninstall %1$s (revision: %2$s)", mPackage.getDisplayName(), mPackage.getVersion().toString());
+        return String.format("Uninstall %1$s", mPackage.getDetailedDisplayName());
     }
 }

@@ -16,6 +16,8 @@
 
 package com.android.build.api.dsl
 
+import com.android.build.api.variant.Aidl
+import org.gradle.api.Incubating
 import org.gradle.api.file.Directory
 import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Provider
@@ -53,4 +55,13 @@ interface SdkComponents {
      * a [org.gradle.api.Task] input to do so.
      */
     val bootClasspath: Provider<List<RegularFile>>
+
+    /**
+     *  Provides access to aidl tools
+     *
+     *  The returned [Provider] can be used by tasks requiring aidl tools as input
+     *  with [org.gradle.api.tasks.Nested]
+     */
+    @get:Incubating
+    val aidl: Provider<Aidl>
 }

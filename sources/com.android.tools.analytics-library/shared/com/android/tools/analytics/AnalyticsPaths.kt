@@ -37,13 +37,18 @@ object AnalyticsPaths {
    */
   @JvmStatic
   fun getAndEnsureAndroidSettingsHome(): String {
-    // currently can't be shared with AndroidLocation see b/37123089
-    val prefsRoot = getEnvOrPropValue(EnvironmentVariable.ANDROID_PREFS_ROOT, SystemProperty.ANDROID_PREFS_ROOT)
-      ?: getEnvOrPropValue(EnvironmentVariable.ANDROID_SDK_HOME, SystemProperty.ANDROID_SDK_HOME)
-      ?: Paths.get(Environment.instance.getSystemProperty(SystemProperty.USER_HOME)!!, ".android").toString()
+    val prefsRoot = getAndroidSettingsHome()
 
     File(prefsRoot).mkdirs()
     return prefsRoot
+  }
+
+  @JvmStatic
+  fun getAndroidSettingsHome(): String {
+    // currently can't be shared with AndroidLocation see b/37123089
+    return getEnvOrPropValue(EnvironmentVariable.ANDROID_PREFS_ROOT, SystemProperty.ANDROID_PREFS_ROOT)
+      ?: getEnvOrPropValue(EnvironmentVariable.ANDROID_SDK_HOME, SystemProperty.ANDROID_SDK_HOME)
+      ?: Paths.get(Environment.instance.getSystemProperty(SystemProperty.USER_HOME)!!, ".android").toString()
   }
 
   private fun getEnvOrPropValue(

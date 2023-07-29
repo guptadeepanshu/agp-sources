@@ -60,6 +60,10 @@ public enum VariantApiArtifactType
    * <code>PROJECT_CLASSES = 11;</code>
    */
   PROJECT_CLASSES(11),
+  /**
+   * <code>MERGED_NATIVE_LIBS = 12;</code>
+   */
+  MERGED_NATIVE_LIBS(12),
   UNRECOGNIZED(-1),
   ;
 
@@ -115,6 +119,10 @@ public enum VariantApiArtifactType
    * <code>PROJECT_CLASSES = 11;</code>
    */
   public static final int PROJECT_CLASSES_VALUE = 11;
+  /**
+   * <code>MERGED_NATIVE_LIBS = 12;</code>
+   */
+  public static final int MERGED_NATIVE_LIBS_VALUE = 12;
 
 
   public final int getNumber() {
@@ -153,6 +161,7 @@ public enum VariantApiArtifactType
       case 9: return METADATA_LIBRARY_DEPENDENCIES_REPORT;
       case 10: return APK_FROM_BUNDLE;
       case 11: return PROJECT_CLASSES;
+      case 12: return MERGED_NATIVE_LIBS;
       default: return null;
     }
   }

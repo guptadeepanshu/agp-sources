@@ -116,10 +116,8 @@ public abstract class ChunkHandler extends JdwpInterceptor {
         return val;
     }
 
-    /**
-     * Convert an integer type to a 4-character string.
-     */
-    static String name(int type) {
+    /** Convert an integer type to a 4-character string. */
+    public static String name(int type) {
         char[] ascii = new char[4];
 
         ascii[0] = (char) ((type >> 24) & 0xff);

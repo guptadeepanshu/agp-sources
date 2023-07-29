@@ -48,15 +48,11 @@ fun computeVendorString(imageSource: String) =
         else -> imageSource
     }
 
-fun isWearTvOrAutoSource(imageSource: String) =
-    imageSource.contains("-wear") ||
-            imageSource.contains("-tv") ||
-            imageSource.contains("-auto")
+fun isTvOrAutoSource(imageSource: String) =
+    imageSource.contains("-tv") || imageSource.contains("-auto")
 
-fun isWearTvOrAutoDevice(deviceName: String) =
-    deviceName.contains("Wear") ||
-            deviceName.contains("TV") ||
-            deviceName.contains("Auto")
+fun isTvOrAutoDevice(deviceName: String) =
+    deviceName.contains("TV") || deviceName.contains("Auto")
 
 /**
  * Determine the api level of a system image hash

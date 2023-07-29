@@ -17,7 +17,6 @@ package com.android.ide.common.resources;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -40,12 +39,11 @@ public class LocaleManager {
     }
 
     /**
-     * Returns the name of the given region for a 2 letter region code, in English.
+     * Returns the name of the given region for a region code, in English.
      *
-     * @param regionCode the 2 letter region code (ISO 3166-1 alpha-2),
-     *                   or the 3 letter region ode (ISO 3166-2 alpha-3)
-     * @return the name of the given region for a region code, in English, or
-     *         null if not known
+     * @param regionCode the 2 letter region code (ISO 3166-1 alpha-2), or the 3 letter region code
+     *     (ISO 3166-2 alpha-3), or the 3 digit region code (UN M.49)
+     * @return the name of the given region for a region code, in English, or null if not known
      */
     @Nullable
     public static String getRegionName(@NonNull String regionCode) {
@@ -58,9 +56,14 @@ public class LocaleManager {
             }
             return ISO_3166_2_NAMES[ISO_3166_1_TO_2[index]];
         } else if (regionCode.length() == 3) {
-            assert Character.isUpperCase(regionCode.charAt(0))
-                    && Character.isUpperCase(regionCode.charAt(1))
-                    && Character.isUpperCase(regionCode.charAt(2)) : regionCode;
+            // 3 character code is expected to be either all letters or all numbers.
+            assert (Character.isUpperCase(regionCode.charAt(0))
+                                    && Character.isUpperCase(regionCode.charAt(1))
+                                    && Character.isUpperCase(regionCode.charAt(2)))
+                            || (Character.isDigit(regionCode.charAt(0))
+                                    && Character.isDigit(regionCode.charAt(1))
+                                    && Character.isDigit(regionCode.charAt(2)))
+                    : "regionCode " + regionCode + " unexpected";
             int index = Arrays.binarySearch(ISO_3166_2_CODES, regionCode);
             if (index < 0) {
                 return null;
@@ -1057,293 +1060,606 @@ public class LocaleManager {
             181,  -1,  -1,  77, 183,  -1,  -1,  -1,  -1,  -1,  -1,
             184, 185,  -1, 186,  -1,  -1
     };
-    private static final String[] ISO_3166_2_CODES = new String[] {
-            "ABW", "AFG", "AGO", "AIA", "ALA", "ALB", "AND", "ARE", "ARG",
-            "ARM", "ASM", "ATA", "ATF", "ATG", "AUS", "AUT", "AZE", "BDI",
-            "BEL", "BEN", "BES", "BFA", "BGD", "BGR", "BHR", "BHS", "BIH",
-            "BLM", "BLR", "BLZ", "BMU", "BOL", "BRA", "BRB", "BRN", "BTN",
-            "BVT", "BWA", "CAF", "CAN", "CCK", "CHE", "CHL", "CHN", "CIV",
-            "CMR", "COD", "COG", "COK", "COL", "COM", "CPV", "CRI", "CUB",
-            "CUW", "CXR", "CYM", "CYP", "CZE", "DEU", "DGA", "DJI", "DMA",
-            "DNK", "DOM", "DZA", "ECU", "EGY", "ERI", "ESH", "ESP", "EST",
-            "ETH", "FIN", "FJI", "FLK", "FRA", "FRO", "FSM", "GAB", "GBR",
-            "GEO", "GGY", "GHA", "GIB", "GIN", "GLP", "GMB", "GNB", "GNQ",
-            "GRC", "GRD", "GRL", "GTM", "GUF", "GUM", "GUY", "HKG", "HMD",
-            "HND", "HRV", "HTI", "HUN", "IDN", "IMN", "IND", "IOT", "IRL",
-            "IRN", "IRQ", "ISL", "ISR", "ITA", "JAM", "JEY", "JOR", "JPN",
-            "KAZ", "KEN", "KGZ", "KHM", "KIR", "KNA", "KOR", "KWT", "LAO",
-            "LBN", "LBR", "LBY", "LCA", "LIE", "LKA", "LSO", "LTU", "LUX",
-            "LVA", "MAC", "MAF", "MAR", "MCO", "MDA", "MDG", "MDV", "MEX",
-            "MHL", "MKD", "MLI", "MLT", "MMR", "MNE", "MNG", "MNP", "MOZ",
-            "MRT", "MSR", "MTQ", "MUS", "MWI", "MYS", "MYT", "NAM", "NCL",
-            "NER", "NFK", "NGA", "NIC", "NIU", "NLD", "NOR", "NPL", "NRU",
-            "NZL", "OMN", "PAK", "PAN", "PCN", "PER", "PHL", "PLW", "PNG",
-            "POL", "PRI", "PRK", "PRT", "PRY", "PSE", "PYF", "QAT", "REU",
-            "ROU", "RUS", "RWA", "SAU", "SDN", "SEN", "SGP", "SGS", "SHN",
-            "SJM", "SLB", "SLE", "SLV", "SMR", "SOM", "SPM", "SRB", "SSD",
-            "STP", "SUR", "SVK", "SVN", "SWE", "SWZ", "SXM", "SYC", "SYR",
-            "TCA", "TCD", "TGO", "THA", "TJK", "TKL", "TKM", "TLS", "TON",
-            "TTO", "TUN", "TUR", "TUV", "TWN", "TZA", "UGA", "UKR", "UMI",
-            "URY", "USA", "UZB", "VAT", "VCT", "VEN", "VGB", "VIR", "VNM",
-            "VUT", "WLF", "WSM", "XEA", "XIC", "XKK", "YEM", "ZAF", "ZMB",
-            "ZWE"
-    };
+    private static final String[] ISO_3166_2_CODES =
+            new String[] {
+                "001", "002", "004", "005", "008", "009", "010", "011", "012",
+                "013", "014", "015", "016", "017", "018", "019", "020", "021",
+                "024", "028", "029", "030", "031", "032", "034", "035", "036",
+                "039", "040", "044", "048", "050", "051", "052", "053", "054",
+                "056", "057", "060", "061", "064", "068", "070", "072", "074",
+                "076", "084", "086", "090", "092", "096", "100", "104", "108",
+                "112", "116", "120", "124", "132", "136", "140", "142", "143",
+                "144", "145", "148", "150", "151", "152", "154", "155", "156",
+                "162", "166", "170", "174", "175", "178", "180", "184", "188",
+                "191", "192", "196", "202", "203", "204", "208", "212", "214",
+                "218", "222", "226", "231", "232", "233", "234", "238", "239",
+                "242", "246", "248", "250", "254", "258", "260", "262", "266",
+                "268", "270", "275", "276", "288", "292", "296", "300", "304",
+                "308", "312", "316", "320", "324", "328", "332", "334", "336",
+                "340", "344", "348", "352", "356", "360", "364", "368", "372",
+                "376", "380", "384", "388", "392", "398", "400", "404", "408",
+                "410", "414", "417", "418", "419", "422", "426", "428", "430",
+                "434", "438", "440", "442", "446", "450", "454", "458", "462",
+                "466", "470", "474", "478", "480", "484", "492", "496", "498",
+                "499", "500", "504", "508", "512", "516", "520", "524", "528",
+                "531", "533", "534", "535", "540", "548", "554", "558", "562",
+                "566", "570", "574", "578", "580", "581", "583", "584", "585",
+                "586", "591", "598", "600", "604", "608", "612", "616", "620",
+                "624", "626", "630", "634", "638", "642", "643", "646", "652",
+                "654", "659", "660", "662", "663", "666", "670", "674", "678",
+                "680", "682", "686", "688", "690", "694", "702", "703", "704",
+                "705", "706", "710", "716", "724", "728", "729", "732", "740",
+                "744", "748", "752", "756", "760", "762", "764", "768", "772",
+                "776", "780", "784", "788", "792", "795", "796", "798", "800",
+                "804", "807", "818", "826", "830", "831", "832", "833", "834",
+                "840", "850", "854", "858", "860", "862", "876", "882", "887",
+                "894", "ABW", "AFG", "AGO", "AIA", "ALA", "ALB", "AND", "ARE",
+                "ARG", "ARM", "ASM", "ATA", "ATF", "ATG", "AUS", "AUT", "AZE",
+                "BDI", "BEL", "BEN", "BES", "BFA", "BGD", "BGR", "BHR", "BHS",
+                "BIH", "BLM", "BLR", "BLZ", "BMU", "BOL", "BRA", "BRB", "BRN",
+                "BTN", "BVT", "BWA", "CAF", "CAN", "CCK", "CHE", "CHL", "CHN",
+                "CIV", "CMR", "COD", "COG", "COK", "COL", "COM", "CPV", "CRI",
+                "CUB", "CUW", "CXR", "CYM", "CYP", "CZE", "DEU", "DGA", "DJI",
+                "DMA", "DNK", "DOM", "DZA", "ECU", "EGY", "ERI", "ESH", "ESP",
+                "EST", "ETH", "FIN", "FJI", "FLK", "FRA", "FRO", "FSM", "GAB",
+                "GBR", "GEO", "GGY", "GHA", "GIB", "GIN", "GLP", "GMB", "GNB",
+                "GNQ", "GRC", "GRD", "GRL", "GTM", "GUF", "GUM", "GUY", "HKG",
+                "HMD", "HND", "HRV", "HTI", "HUN", "IDN", "IMN", "IND", "IOT",
+                "IRL", "IRN", "IRQ", "ISL", "ISR", "ITA", "JAM", "JEY", "JOR",
+                "JPN", "KAZ", "KEN", "KGZ", "KHM", "KIR", "KNA", "KOR", "KWT",
+                "LAO", "LBN", "LBR", "LBY", "LCA", "LIE", "LKA", "LSO", "LTU",
+                "LUX", "LVA", "MAC", "MAF", "MAR", "MCO", "MDA", "MDG", "MDV",
+                "MEX", "MHL", "MKD", "MLI", "MLT", "MMR", "MNE", "MNG", "MNP",
+                "MOZ", "MRT", "MSR", "MTQ", "MUS", "MWI", "MYS", "MYT", "NAM",
+                "NCL", "NER", "NFK", "NGA", "NIC", "NIU", "NLD", "NOR", "NPL",
+                "NRU", "NZL", "OMN", "PAK", "PAN", "PCN", "PER", "PHL", "PLW",
+                "PNG", "POL", "PRI", "PRK", "PRT", "PRY", "PSE", "PYF", "QAT",
+                "REU", "ROU", "RUS", "RWA", "SAU", "SDN", "SEN", "SGP", "SGS",
+                "SHN", "SJM", "SLB", "SLE", "SLV", "SMR", "SOM", "SPM", "SRB",
+                "SSD", "STP", "SUR", "SVK", "SVN", "SWE", "SWZ", "SXM", "SYC",
+                "SYR", "TCA", "TCD", "TGO", "THA", "TJK", "TKL", "TKM", "TLS",
+                "TON", "TTO", "TUN", "TUR", "TUV", "TWN", "TZA", "UGA", "UKR",
+                "UMI", "URY", "USA", "UZB", "VAT", "VCT", "VEN", "VGB", "VIR",
+                "VNM", "VUT", "WLF", "WSM", "XEA", "XIC", "XKK", "YEM", "ZAF",
+                "ZMB", "ZWE"
+            };
 
-    private static final String[] ISO_3166_2_NAMES = new String[] {
-            "Aruba",                                // Code ABW/AW
-            "Afghanistan",                          // Code AFG/AF
-            "Angola",                               // Code AGO/AO
-            "Anguilla",                             // Code AIA/AI
-            "Åland Islands",                        // Code ALA/AX
-            "Albania",                              // Code ALB/AL
-            "Andorra",                              // Code AND/AD
-            "United Arab Emirates",                 // Code ARE/AE
-            "Argentina",                            // Code ARG/AR
-            "Armenia",                              // Code ARM/AM
-            "American Samoa",                       // Code ASM/AS
-            "Antarctica",                           // Code ATA/AQ
-            "French Southern Territories (the)",    // Code ATF/TF
-            "Antigua & Barbuda",                    // Code ATG/AG
-            "Australia",                            // Code AUS/AU
-            "Austria",                              // Code AUT/AT
-            "Azerbaijan",                           // Code AZE/AZ
-            "Burundi",                              // Code BDI/BI
-            "Belgium",                              // Code BEL/BE
-            "Benin",                                // Code BEN/BJ
-            "Caribbean Netherlands",                // Code BES/BQ
-            "Burkina Faso",                         // Code BFA/BF
-            "Bangladesh",                           // Code BGD/BD
-            "Bulgaria",                             // Code BGR/BG
-            "Bahrain",                              // Code BHR/BH
-            "Bahamas",                              // Code BHS/BS
-            "Bosnia & Herzegovina",                 // Code BIH/BA
-            "St. Barthélemy",                       // Code BLM/BL
-            "Belarus",                              // Code BLR/BY
-            "Belize",                               // Code BLZ/BZ
-            "Bermuda",                              // Code BMU/BM
-            "Bolivia",                              // Code BOL/BO
-            "Brazil",                               // Code BRA/BR
-            "Barbados",                             // Code BRB/BB
-            "Brunei",                               // Code BRN/BN
-            "Bhutan",                               // Code BTN/BT
-            "Bouvet Island",                        // Code BVT/BV
-            "Botswana",                             // Code BWA/BW
-            "Central African Republic",             // Code CAF/CF
-            "Canada",                               // Code CAN/CA
-            "Cocos (Keeling) Islands",              // Code CCK/CC
-            "Switzerland",                          // Code CHE/CH
-            "Chile",                                // Code CHL/CL
-            "China",                                // Code CHN/CN
-            "Côte d’Ivoire",                        // Code CIV/CI
-            "Cameroon",                             // Code CMR/CM
-            "Congo - Kinshasa",                     // Code COD/CD
-            "Congo - Brazzaville",                  // Code COG/CG
-            "Cook Islands",                         // Code COK/CK
-            "Colombia",                             // Code COL/CO
-            "Comoros",                              // Code COM/KM
-            "Cape Verde",                           // Code CPV/CV
-            "Costa Rica",                           // Code CRI/CR
-            "Cuba",                                 // Code CUB/CU
-            "Curaçao",                              // Code CUW/CW
-            "Christmas Island",                     // Code CXR/CX
-            "Cayman Islands",                       // Code CYM/KY
-            "Cyprus",                               // Code CYP/CY
-            "Czechia",                              // Code CZE/CZ
-            "Germany",                              // Code DEU/DE
-            "Diego Garcia",                         // Code DGA/DG
-            "Djibouti",                             // Code DJI/DJ
-            "Dominica",                             // Code DMA/DM
-            "Denmark",                              // Code DNK/DK
-            "Dominican Republic",                   // Code DOM/DO
-            "Algeria",                              // Code DZA/DZ
-            "Ecuador",                              // Code ECU/EC
-            "Egypt",                                // Code EGY/EG
-            "Eritrea",                              // Code ERI/ER
-            "Western Sahara",                       // Code ESH/EH
-            "Spain",                                // Code ESP/ES
-            "Estonia",                              // Code EST/EE
-            "Ethiopia",                             // Code ETH/ET
-            "Finland",                              // Code FIN/FI
-            "Fiji",                                 // Code FJI/FJ
-            "Falkland Islands",                     // Code FLK/FK
-            "France",                               // Code FRA/FR
-            "Faroe Islands",                        // Code FRO/FO
-            "Micronesia",                           // Code FSM/FM
-            "Gabon",                                // Code GAB/GA
-            "United Kingdom",                       // Code GBR/GB
-            "Georgia",                              // Code GEO/GE
-            "Guernsey",                             // Code GGY/GG
-            "Ghana",                                // Code GHA/GH
-            "Gibraltar",                            // Code GIB/GI
-            "Guinea",                               // Code GIN/GN
-            "Guadeloupe",                           // Code GLP/GP
-            "Gambia",                               // Code GMB/GM
-            "Guinea-Bissau",                        // Code GNB/GW
-            "Equatorial Guinea",                    // Code GNQ/GQ
-            "Greece",                               // Code GRC/GR
-            "Grenada",                              // Code GRD/GD
-            "Greenland",                            // Code GRL/GL
-            "Guatemala",                            // Code GTM/GT
-            "French Guiana",                        // Code GUF/GF
-            "Guam",                                 // Code GUM/GU
-            "Guyana",                               // Code GUY/GY
-            "Hong Kong SAR China",                  // Code HKG/HK
-            "Heard Island and McDonald Islands",    // Code HMD/HM
-            "Honduras",                             // Code HND/HN
-            "Croatia",                              // Code HRV/HR
-            "Haiti",                                // Code HTI/HT
-            "Hungary",                              // Code HUN/HU
-            "Indonesia",                            // Code IDN/ID
-            "Isle of Man",                          // Code IMN/IM
-            "India",                                // Code IND/IN
-            "British Indian Ocean Territory",       // Code IOT/IO
-            "Ireland",                              // Code IRL/IE
-            "Iran",                                 // Code IRN/IR
-            "Iraq",                                 // Code IRQ/IQ
-            "Iceland",                              // Code ISL/IS
-            "Israel",                               // Code ISR/IL
-            "Italy",                                // Code ITA/IT
-            "Jamaica",                              // Code JAM/JM
-            "Jersey",                               // Code JEY/JE
-            "Jordan",                               // Code JOR/JO
-            "Japan",                                // Code JPN/JP
-            "Kazakhstan",                           // Code KAZ/KZ
-            "Kenya",                                // Code KEN/KE
-            "Kyrgyzstan",                           // Code KGZ/KG
-            "Cambodia",                             // Code KHM/KH
-            "Kiribati",                             // Code KIR/KI
-            "St. Kitts & Nevis",                    // Code KNA/KN
-            "South Korea",                          // Code KOR/KR
-            "Kuwait",                               // Code KWT/KW
-            "Laos",                                 // Code LAO/LA
-            "Lebanon",                              // Code LBN/LB
-            "Liberia",                              // Code LBR/LR
-            "Libya",                                // Code LBY/LY
-            "St. Lucia",                            // Code LCA/LC
-            "Liechtenstein",                        // Code LIE/LI
-            "Sri Lanka",                            // Code LKA/LK
-            "Lesotho",                              // Code LSO/LS
-            "Lithuania",                            // Code LTU/LT
-            "Luxembourg",                           // Code LUX/LU
-            "Latvia",                               // Code LVA/LV
-            "Macao SAR China",                      // Code MAC/MO
-            "St. Martin",                           // Code MAF/MF
-            "Morocco",                              // Code MAR/MA
-            "Monaco",                               // Code MCO/MC
-            "Moldova",                              // Code MDA/MD
-            "Madagascar",                           // Code MDG/MG
-            "Maldives",                             // Code MDV/MV
-            "Mexico",                               // Code MEX/MX
-            "Marshall Islands",                     // Code MHL/MH
-            "North Macedonia",                      // Code MKD/MK
-            "Mali",                                 // Code MLI/ML
-            "Malta",                                // Code MLT/MT
-            "Myanmar (Burma)",                      // Code MMR/MM
-            "Montenegro",                           // Code MNE/ME
-            "Mongolia",                             // Code MNG/MN
-            "Northern Mariana Islands",             // Code MNP/MP
-            "Mozambique",                           // Code MOZ/MZ
-            "Mauritania",                           // Code MRT/MR
-            "Montserrat",                           // Code MSR/MS
-            "Martinique",                           // Code MTQ/MQ
-            "Mauritius",                            // Code MUS/MU
-            "Malawi",                               // Code MWI/MW
-            "Malaysia",                             // Code MYS/MY
-            "Mayotte",                              // Code MYT/YT
-            "Namibia",                              // Code NAM/NA
-            "New Caledonia",                        // Code NCL/NC
-            "Niger",                                // Code NER/NE
-            "Norfolk Island",                       // Code NFK/NF
-            "Nigeria",                              // Code NGA/NG
-            "Nicaragua",                            // Code NIC/NI
-            "Niue",                                 // Code NIU/NU
-            "Netherlands",                          // Code NLD/NL
-            "Norway",                               // Code NOR/NO
-            "Nepal",                                // Code NPL/NP
-            "Nauru",                                // Code NRU/NR
-            "New Zealand",                          // Code NZL/NZ
-            "Oman",                                 // Code OMN/OM
-            "Pakistan",                             // Code PAK/PK
-            "Panama",                               // Code PAN/PA
-            "Pitcairn Islands",                     // Code PCN/PN
-            "Peru",                                 // Code PER/PE
-            "Philippines",                          // Code PHL/PH
-            "Palau",                                // Code PLW/PW
-            "Papua New Guinea",                     // Code PNG/PG
-            "Poland",                               // Code POL/PL
-            "Puerto Rico",                          // Code PRI/PR
-            "North Korea",                          // Code PRK/KP
-            "Portugal",                             // Code PRT/PT
-            "Paraguay",                             // Code PRY/PY
-            "Palestinian Territories",              // Code PSE/PS
-            "French Polynesia",                     // Code PYF/PF
-            "Qatar",                                // Code QAT/QA
-            "Réunion",                              // Code REU/RE
-            "Romania",                              // Code ROU/RO
-            "Russia",                               // Code RUS/RU
-            "Rwanda",                               // Code RWA/RW
-            "Saudi Arabia",                         // Code SAU/SA
-            "Sudan",                                // Code SDN/SD
-            "Senegal",                              // Code SEN/SN
-            "Singapore",                            // Code SGP/SG
-            "South Georgia and the South Sandwich Islands",// Code SGS/GS
-            "St. Helena",                           // Code SHN/SH
-            "Svalbard & Jan Mayen",                 // Code SJM/SJ
-            "Solomon Islands",                      // Code SLB/SB
-            "Sierra Leone",                         // Code SLE/SL
-            "El Salvador",                          // Code SLV/SV
-            "San Marino",                           // Code SMR/SM
-            "Somalia",                              // Code SOM/SO
-            "St. Pierre & Miquelon",                // Code SPM/PM
-            "Serbia",                               // Code SRB/RS
-            "South Sudan",                          // Code SSD/SS
-            "São Tomé & Príncipe",                  // Code STP/ST
-            "Suriname",                             // Code SUR/SR
-            "Slovakia",                             // Code SVK/SK
-            "Slovenia",                             // Code SVN/SI
-            "Sweden",                               // Code SWE/SE
-            "Eswatini",                             // Code SWZ/SZ
-            "Sint Maarten",                         // Code SXM/SX
-            "Seychelles",                           // Code SYC/SC
-            "Syria",                                // Code SYR/SY
-            "Turks & Caicos Islands",               // Code TCA/TC
-            "Chad",                                 // Code TCD/TD
-            "Togo",                                 // Code TGO/TG
-            "Thailand",                             // Code THA/TH
-            "Tajikistan",                           // Code TJK/TJ
-            "Tokelau",                              // Code TKL/TK
-            "Turkmenistan",                         // Code TKM/TM
-            "Timor-Leste",                          // Code TLS/TL
-            "Tonga",                                // Code TON/TO
-            "Trinidad & Tobago",                    // Code TTO/TT
-            "Tunisia",                              // Code TUN/TN
-            "Turkey",                               // Code TUR/TR
-            "Tuvalu",                               // Code TUV/TV
-            "Taiwan",                               // Code TWN/TW
-            "Tanzania",                             // Code TZA/TZ
-            "Uganda",                               // Code UGA/UG
-            "Ukraine",                              // Code UKR/UA
-            "U.S. Outlying Islands",                // Code UMI/UM
-            "Uruguay",                              // Code URY/UY
-            "United States",                        // Code USA/US
-            "Uzbekistan",                           // Code UZB/UZ
-            "Vatican City",                         // Code VAT/VA
-            "St. Vincent & Grenadines",             // Code VCT/VC
-            "Venezuela",                            // Code VEN/VE
-            "British Virgin Islands",               // Code VGB/VG
-            "U.S. Virgin Islands",                  // Code VIR/VI
-            "Vietnam",                              // Code VNM/VN
-            "Vanuatu",                              // Code VUT/VU
-            "Wallis & Futuna",                      // Code WLF/WF
-            "Samoa",                                // Code WSM/WS
-            "Ceuta & Melilla",                      // Code XEA/EA
-            "Canary Islands",                       // Code XIC/IC
-            "Kosovo",                               // Code XKK/XK
-            "Yemen",                                // Code YEM/YE
-            "South Africa",                         // Code ZAF/ZA
-            "Zambia",                               // Code ZMB/ZM
-            "Zimbabwe"                              // Code ZWE/ZW
-    };
+    private static final String[] ISO_3166_2_NAMES =
+            new String[] {
+                "World", // Code 001
+                "Africa", // Code 002
+                "Afghanistan", // Code 004
+                "South America", // Code 005
+                "Albania", // Code 008
+                "Oceania", // Code 009
+                "Antarctica", // Code 010
+                "Western Africa", // Code 011
+                "Algeria", // Code 012
+                "Central America", // Code 013
+                "Eastern Africa", // Code 014
+                "Northern Africa", // Code 015
+                "American Samoa", // Code 016
+                "Middle Africa", // Code 017
+                "Southern Africa", // Code 018
+                "Americas", // Code 019
+                "Andorra", // Code 020
+                "Northern America", // Code 021
+                "Angola", // Code 024
+                "Antigua and Barbuda", // Code 028
+                "Caribbean", // Code 029
+                "Eastern Asia", // Code 030
+                "Azerbaijan", // Code 031
+                "Argentina", // Code 032
+                "Southern Asia", // Code 034
+                "South-eastern Asia", // Code 035
+                "Australia", // Code 036
+                "Southern Europe", // Code 039
+                "Austria", // Code 040
+                "Bahamas", // Code 044
+                "Bahrain", // Code 048
+                "Bangladesh", // Code 050
+                "Armenia", // Code 051
+                "Barbados", // Code 052
+                "Australia and New Zealand", // Code 053
+                "Melanesia", // Code 054
+                "Belgium", // Code 056
+                "Micronesia", // Code 057
+                "Bermuda", // Code 060
+                "Polynesia", // Code 061
+                "Bhutan", // Code 064
+                "Bolivia (Plurinational State of)", // Code 068
+                "Bosnia and Herzegovina", // Code 070
+                "Botswana", // Code 072
+                "Bouvet Island", // Code 074
+                "Brazil", // Code 076
+                "Belize", // Code 084
+                "British Indian Ocean Territory", // Code 086
+                "Solomon Islands", // Code 090
+                "British Virgin Islands", // Code 092
+                "Brunei Darussalam", // Code 096
+                "Bulgaria", // Code 100
+                "Myanmar", // Code 104
+                "Burundi", // Code 108
+                "Belarus", // Code 112
+                "Cambodia", // Code 116
+                "Cameroon", // Code 120
+                "Canada", // Code 124
+                "Cabo Verde", // Code 132
+                "Cayman Islands", // Code 136
+                "Central African Republic", // Code 140
+                "Asia", // Code 142
+                "Central Asia", // Code 143
+                "Sri Lanka", // Code 144
+                "Western Asia", // Code 145
+                "Chad", // Code 148
+                "Europe", // Code 150
+                "Eastern Europe", // Code 151
+                "Chile", // Code 152
+                "Northern Europe", // Code 154
+                "Western Europe", // Code 155
+                "China", // Code 156
+                "Christmas Island", // Code 162
+                "Cocos (Keeling) Islands", // Code 166
+                "Colombia", // Code 170
+                "Comoros", // Code 174
+                "Mayotte", // Code 175
+                "Congo", // Code 178
+                "Democratic Republic of the Congo", // Code 180
+                "Cook Islands", // Code 184
+                "Costa Rica", // Code 188
+                "Croatia", // Code 191
+                "Cuba", // Code 192
+                "Cyprus", // Code 196
+                "Sub-Saharan Africa", // Code 202
+                "Czechia", // Code 203
+                "Benin", // Code 204
+                "Denmark", // Code 208
+                "Dominica", // Code 212
+                "Dominican Republic", // Code 214
+                "Ecuador", // Code 218
+                "El Salvador", // Code 222
+                "Equatorial Guinea", // Code 226
+                "Ethiopia", // Code 231
+                "Eritrea", // Code 232
+                "Estonia", // Code 233
+                "Faroe Islands", // Code 234
+                "Falkland Islands (Malvinas)", // Code 238
+                "South Georgia and the South Sandwich Islands", // Code 239
+                "Fiji", // Code 242
+                "Finland", // Code 246
+                "Åland Islands", // Code 248
+                "France", // Code 250
+                "French Guiana", // Code 254
+                "French Polynesia", // Code 258
+                "French Southern Territories", // Code 260
+                "Djibouti", // Code 262
+                "Gabon", // Code 266
+                "Georgia", // Code 268
+                "Gambia", // Code 270
+                "State of Palestine", // Code 275
+                "Germany", // Code 276
+                "Ghana", // Code 288
+                "Gibraltar", // Code 292
+                "Kiribati", // Code 296
+                "Greece", // Code 300
+                "Greenland", // Code 304
+                "Grenada", // Code 308
+                "Guadeloupe", // Code 312
+                "Guam", // Code 316
+                "Guatemala", // Code 320
+                "Guinea", // Code 324
+                "Guyana", // Code 328
+                "Haiti", // Code 332
+                "Heard Island and McDonald Islands", // Code 334
+                "Holy See", // Code 336
+                "Honduras", // Code 340
+                "China, Hong Kong Special Administrative Region", // Code 344
+                "Hungary", // Code 348
+                "Iceland", // Code 352
+                "India", // Code 356
+                "Indonesia", // Code 360
+                "Iran (Islamic Republic of)", // Code 364
+                "Iraq", // Code 368
+                "Ireland", // Code 372
+                "Israel", // Code 376
+                "Italy", // Code 380
+                "Côte d’Ivoire", // Code 384
+                "Jamaica", // Code 388
+                "Japan", // Code 392
+                "Kazakhstan", // Code 398
+                "Jordan", // Code 400
+                "Kenya", // Code 404
+                "Democratic People's Republic of Korea", // Code 408
+                "Republic of Korea", // Code 410
+                "Kuwait", // Code 414
+                "Kyrgyzstan", // Code 417
+                "Lao People's Democratic Republic", // Code 418
+                "Latin America and the Caribbean", // Code 419
+                "Lebanon", // Code 422
+                "Lesotho", // Code 426
+                "Latvia", // Code 428
+                "Liberia", // Code 430
+                "Libya", // Code 434
+                "Liechtenstein", // Code 438
+                "Lithuania", // Code 440
+                "Luxembourg", // Code 442
+                "China, Macao Special Administrative Region", // Code 446
+                "Madagascar", // Code 450
+                "Malawi", // Code 454
+                "Malaysia", // Code 458
+                "Maldives", // Code 462
+                "Mali", // Code 466
+                "Malta", // Code 470
+                "Martinique", // Code 474
+                "Mauritania", // Code 478
+                "Mauritius", // Code 480
+                "Mexico", // Code 484
+                "Monaco", // Code 492
+                "Mongolia", // Code 496
+                "Republic of Moldova", // Code 498
+                "Montenegro", // Code 499
+                "Montserrat", // Code 500
+                "Morocco", // Code 504
+                "Mozambique", // Code 508
+                "Oman", // Code 512
+                "Namibia", // Code 516
+                "Nauru", // Code 520
+                "Nepal", // Code 524
+                "Netherlands", // Code 528
+                "Curaçao", // Code 531
+                "Aruba", // Code 533
+                "Sint Maarten (Dutch part)", // Code 534
+                "Bonaire, Sint Eustatius and Saba", // Code 535
+                "New Caledonia", // Code 540
+                "Vanuatu", // Code 548
+                "New Zealand", // Code 554
+                "Nicaragua", // Code 558
+                "Niger", // Code 562
+                "Nigeria", // Code 566
+                "Niue", // Code 570
+                "Norfolk Island", // Code 574
+                "Norway", // Code 578
+                "Northern Mariana Islands", // Code 580
+                "United States Minor Outlying Islands", // Code 581
+                "Micronesia (Federated States of)", // Code 583
+                "Marshall Islands", // Code 584
+                "Palau", // Code 585
+                "Pakistan", // Code 586
+                "Panama", // Code 591
+                "Papua New Guinea", // Code 598
+                "Paraguay", // Code 600
+                "Peru", // Code 604
+                "Philippines", // Code 608
+                "Pitcairn", // Code 612
+                "Poland", // Code 616
+                "Portugal", // Code 620
+                "Guinea-Bissau", // Code 624
+                "Timor-Leste", // Code 626
+                "Puerto Rico", // Code 630
+                "Qatar", // Code 634
+                "Réunion", // Code 638
+                "Romania", // Code 642
+                "Russian Federation", // Code 643
+                "Rwanda", // Code 646
+                "Saint Barthélemy", // Code 652
+                "Saint Helena", // Code 654
+                "Saint Kitts and Nevis", // Code 659
+                "Anguilla", // Code 660
+                "Saint Lucia", // Code 662
+                "Saint Martin (French Part)", // Code 663
+                "Saint Pierre and Miquelon", // Code 666
+                "Saint Vincent and the Grenadines", // Code 670
+                "San Marino", // Code 674
+                "Sao Tome and Principe", // Code 678
+                "Sark", // Code 680
+                "Saudi Arabia", // Code 682
+                "Senegal", // Code 686
+                "Serbia", // Code 688
+                "Seychelles", // Code 690
+                "Sierra Leone", // Code 694
+                "Singapore", // Code 702
+                "Slovakia", // Code 703
+                "Viet Nam", // Code 704
+                "Slovenia", // Code 705
+                "Somalia", // Code 706
+                "South Africa", // Code 710
+                "Zimbabwe", // Code 716
+                "Spain", // Code 724
+                "South Sudan", // Code 728
+                "Sudan", // Code 729
+                "Western Sahara", // Code 732
+                "Suriname", // Code 740
+                "Svalbard and Jan Mayen Islands", // Code 744
+                "Eswatini", // Code 748
+                "Sweden", // Code 752
+                "Switzerland", // Code 756
+                "Syrian Arab Republic", // Code 760
+                "Tajikistan", // Code 762
+                "Thailand", // Code 764
+                "Togo", // Code 768
+                "Tokelau", // Code 772
+                "Tonga", // Code 776
+                "Trinidad and Tobago", // Code 780
+                "United Arab Emirates", // Code 784
+                "Tunisia", // Code 788
+                "Türkiye", // Code 792
+                "Turkmenistan", // Code 795
+                "Turks and Caicos Islands", // Code 796
+                "Tuvalu", // Code 798
+                "Uganda", // Code 800
+                "Ukraine", // Code 804
+                "North Macedonia", // Code 807
+                "Egypt", // Code 818
+                "United Kingdom of Great Britain and Northern Ireland", // Code 826
+                "Channel Islands", // Code 830
+                "Guernsey", // Code 831
+                "Jersey", // Code 832
+                "Isle of Man", // Code 833
+                "United Republic of Tanzania", // Code 834
+                "United States of America", // Code 840
+                "United States Virgin Islands", // Code 850
+                "Burkina Faso", // Code 854
+                "Uruguay", // Code 858
+                "Uzbekistan", // Code 860
+                "Venezuela (Bolivarian Republic of)", // Code 862
+                "Wallis and Futuna Islands", // Code 876
+                "Samoa", // Code 882
+                "Yemen", // Code 887
+                "Zambia", // Code 894
+                "Aruba", // Code ABW/AW
+                "Afghanistan", // Code AFG/AF
+                "Angola", // Code AGO/AO
+                "Anguilla", // Code AIA/AI
+                "Åland Islands", // Code ALA/AX
+                "Albania", // Code ALB/AL
+                "Andorra", // Code AND/AD
+                "United Arab Emirates", // Code ARE/AE
+                "Argentina", // Code ARG/AR
+                "Armenia", // Code ARM/AM
+                "American Samoa", // Code ASM/AS
+                "Antarctica", // Code ATA/AQ
+                "French Southern Territories (the)", // Code ATF/TF
+                "Antigua & Barbuda", // Code ATG/AG
+                "Australia", // Code AUS/AU
+                "Austria", // Code AUT/AT
+                "Azerbaijan", // Code AZE/AZ
+                "Burundi", // Code BDI/BI
+                "Belgium", // Code BEL/BE
+                "Benin", // Code BEN/BJ
+                "Caribbean Netherlands", // Code BES/BQ
+                "Burkina Faso", // Code BFA/BF
+                "Bangladesh", // Code BGD/BD
+                "Bulgaria", // Code BGR/BG
+                "Bahrain", // Code BHR/BH
+                "Bahamas", // Code BHS/BS
+                "Bosnia & Herzegovina", // Code BIH/BA
+                "St. Barthélemy", // Code BLM/BL
+                "Belarus", // Code BLR/BY
+                "Belize", // Code BLZ/BZ
+                "Bermuda", // Code BMU/BM
+                "Bolivia", // Code BOL/BO
+                "Brazil", // Code BRA/BR
+                "Barbados", // Code BRB/BB
+                "Brunei", // Code BRN/BN
+                "Bhutan", // Code BTN/BT
+                "Bouvet Island", // Code BVT/BV
+                "Botswana", // Code BWA/BW
+                "Central African Republic", // Code CAF/CF
+                "Canada", // Code CAN/CA
+                "Cocos (Keeling) Islands", // Code CCK/CC
+                "Switzerland", // Code CHE/CH
+                "Chile", // Code CHL/CL
+                "China", // Code CHN/CN
+                "Côte d’Ivoire", // Code CIV/CI
+                "Cameroon", // Code CMR/CM
+                "Congo - Kinshasa", // Code COD/CD
+                "Congo - Brazzaville", // Code COG/CG
+                "Cook Islands", // Code COK/CK
+                "Colombia", // Code COL/CO
+                "Comoros", // Code COM/KM
+                "Cape Verde", // Code CPV/CV
+                "Costa Rica", // Code CRI/CR
+                "Cuba", // Code CUB/CU
+                "Curaçao", // Code CUW/CW
+                "Christmas Island", // Code CXR/CX
+                "Cayman Islands", // Code CYM/KY
+                "Cyprus", // Code CYP/CY
+                "Czechia", // Code CZE/CZ
+                "Germany", // Code DEU/DE
+                "Diego Garcia", // Code DGA/DG
+                "Djibouti", // Code DJI/DJ
+                "Dominica", // Code DMA/DM
+                "Denmark", // Code DNK/DK
+                "Dominican Republic", // Code DOM/DO
+                "Algeria", // Code DZA/DZ
+                "Ecuador", // Code ECU/EC
+                "Egypt", // Code EGY/EG
+                "Eritrea", // Code ERI/ER
+                "Western Sahara", // Code ESH/EH
+                "Spain", // Code ESP/ES
+                "Estonia", // Code EST/EE
+                "Ethiopia", // Code ETH/ET
+                "Finland", // Code FIN/FI
+                "Fiji", // Code FJI/FJ
+                "Falkland Islands", // Code FLK/FK
+                "France", // Code FRA/FR
+                "Faroe Islands", // Code FRO/FO
+                "Micronesia", // Code FSM/FM
+                "Gabon", // Code GAB/GA
+                "United Kingdom", // Code GBR/GB
+                "Georgia", // Code GEO/GE
+                "Guernsey", // Code GGY/GG
+                "Ghana", // Code GHA/GH
+                "Gibraltar", // Code GIB/GI
+                "Guinea", // Code GIN/GN
+                "Guadeloupe", // Code GLP/GP
+                "Gambia", // Code GMB/GM
+                "Guinea-Bissau", // Code GNB/GW
+                "Equatorial Guinea", // Code GNQ/GQ
+                "Greece", // Code GRC/GR
+                "Grenada", // Code GRD/GD
+                "Greenland", // Code GRL/GL
+                "Guatemala", // Code GTM/GT
+                "French Guiana", // Code GUF/GF
+                "Guam", // Code GUM/GU
+                "Guyana", // Code GUY/GY
+                "Hong Kong SAR China", // Code HKG/HK
+                "Heard Island and McDonald Islands", // Code HMD/HM
+                "Honduras", // Code HND/HN
+                "Croatia", // Code HRV/HR
+                "Haiti", // Code HTI/HT
+                "Hungary", // Code HUN/HU
+                "Indonesia", // Code IDN/ID
+                "Isle of Man", // Code IMN/IM
+                "India", // Code IND/IN
+                "British Indian Ocean Territory", // Code IOT/IO
+                "Ireland", // Code IRL/IE
+                "Iran", // Code IRN/IR
+                "Iraq", // Code IRQ/IQ
+                "Iceland", // Code ISL/IS
+                "Israel", // Code ISR/IL
+                "Italy", // Code ITA/IT
+                "Jamaica", // Code JAM/JM
+                "Jersey", // Code JEY/JE
+                "Jordan", // Code JOR/JO
+                "Japan", // Code JPN/JP
+                "Kazakhstan", // Code KAZ/KZ
+                "Kenya", // Code KEN/KE
+                "Kyrgyzstan", // Code KGZ/KG
+                "Cambodia", // Code KHM/KH
+                "Kiribati", // Code KIR/KI
+                "St. Kitts & Nevis", // Code KNA/KN
+                "South Korea", // Code KOR/KR
+                "Kuwait", // Code KWT/KW
+                "Laos", // Code LAO/LA
+                "Lebanon", // Code LBN/LB
+                "Liberia", // Code LBR/LR
+                "Libya", // Code LBY/LY
+                "St. Lucia", // Code LCA/LC
+                "Liechtenstein", // Code LIE/LI
+                "Sri Lanka", // Code LKA/LK
+                "Lesotho", // Code LSO/LS
+                "Lithuania", // Code LTU/LT
+                "Luxembourg", // Code LUX/LU
+                "Latvia", // Code LVA/LV
+                "Macao SAR China", // Code MAC/MO
+                "St. Martin", // Code MAF/MF
+                "Morocco", // Code MAR/MA
+                "Monaco", // Code MCO/MC
+                "Moldova", // Code MDA/MD
+                "Madagascar", // Code MDG/MG
+                "Maldives", // Code MDV/MV
+                "Mexico", // Code MEX/MX
+                "Marshall Islands", // Code MHL/MH
+                "North Macedonia", // Code MKD/MK
+                "Mali", // Code MLI/ML
+                "Malta", // Code MLT/MT
+                "Myanmar (Burma)", // Code MMR/MM
+                "Montenegro", // Code MNE/ME
+                "Mongolia", // Code MNG/MN
+                "Northern Mariana Islands", // Code MNP/MP
+                "Mozambique", // Code MOZ/MZ
+                "Mauritania", // Code MRT/MR
+                "Montserrat", // Code MSR/MS
+                "Martinique", // Code MTQ/MQ
+                "Mauritius", // Code MUS/MU
+                "Malawi", // Code MWI/MW
+                "Malaysia", // Code MYS/MY
+                "Mayotte", // Code MYT/YT
+                "Namibia", // Code NAM/NA
+                "New Caledonia", // Code NCL/NC
+                "Niger", // Code NER/NE
+                "Norfolk Island", // Code NFK/NF
+                "Nigeria", // Code NGA/NG
+                "Nicaragua", // Code NIC/NI
+                "Niue", // Code NIU/NU
+                "Netherlands", // Code NLD/NL
+                "Norway", // Code NOR/NO
+                "Nepal", // Code NPL/NP
+                "Nauru", // Code NRU/NR
+                "New Zealand", // Code NZL/NZ
+                "Oman", // Code OMN/OM
+                "Pakistan", // Code PAK/PK
+                "Panama", // Code PAN/PA
+                "Pitcairn Islands", // Code PCN/PN
+                "Peru", // Code PER/PE
+                "Philippines", // Code PHL/PH
+                "Palau", // Code PLW/PW
+                "Papua New Guinea", // Code PNG/PG
+                "Poland", // Code POL/PL
+                "Puerto Rico", // Code PRI/PR
+                "North Korea", // Code PRK/KP
+                "Portugal", // Code PRT/PT
+                "Paraguay", // Code PRY/PY
+                "Palestinian Territories", // Code PSE/PS
+                "French Polynesia", // Code PYF/PF
+                "Qatar", // Code QAT/QA
+                "Réunion", // Code REU/RE
+                "Romania", // Code ROU/RO
+                "Russia", // Code RUS/RU
+                "Rwanda", // Code RWA/RW
+                "Saudi Arabia", // Code SAU/SA
+                "Sudan", // Code SDN/SD
+                "Senegal", // Code SEN/SN
+                "Singapore", // Code SGP/SG
+                "South Georgia and the South Sandwich Islands", // Code SGS/GS
+                "St. Helena", // Code SHN/SH
+                "Svalbard & Jan Mayen", // Code SJM/SJ
+                "Solomon Islands", // Code SLB/SB
+                "Sierra Leone", // Code SLE/SL
+                "El Salvador", // Code SLV/SV
+                "San Marino", // Code SMR/SM
+                "Somalia", // Code SOM/SO
+                "St. Pierre & Miquelon", // Code SPM/PM
+                "Serbia", // Code SRB/RS
+                "South Sudan", // Code SSD/SS
+                "São Tomé & Príncipe", // Code STP/ST
+                "Suriname", // Code SUR/SR
+                "Slovakia", // Code SVK/SK
+                "Slovenia", // Code SVN/SI
+                "Sweden", // Code SWE/SE
+                "Eswatini", // Code SWZ/SZ
+                "Sint Maarten", // Code SXM/SX
+                "Seychelles", // Code SYC/SC
+                "Syria", // Code SYR/SY
+                "Turks & Caicos Islands", // Code TCA/TC
+                "Chad", // Code TCD/TD
+                "Togo", // Code TGO/TG
+                "Thailand", // Code THA/TH
+                "Tajikistan", // Code TJK/TJ
+                "Tokelau", // Code TKL/TK
+                "Turkmenistan", // Code TKM/TM
+                "Timor-Leste", // Code TLS/TL
+                "Tonga", // Code TON/TO
+                "Trinidad & Tobago", // Code TTO/TT
+                "Tunisia", // Code TUN/TN
+                "Turkey", // Code TUR/TR
+                "Tuvalu", // Code TUV/TV
+                "Taiwan", // Code TWN/TW
+                "Tanzania", // Code TZA/TZ
+                "Uganda", // Code UGA/UG
+                "Ukraine", // Code UKR/UA
+                "U.S. Outlying Islands", // Code UMI/UM
+                "Uruguay", // Code URY/UY
+                "United States", // Code USA/US
+                "Uzbekistan", // Code UZB/UZ
+                "Vatican City", // Code VAT/VA
+                "St. Vincent & Grenadines", // Code VCT/VC
+                "Venezuela", // Code VEN/VE
+                "British Virgin Islands", // Code VGB/VG
+                "U.S. Virgin Islands", // Code VIR/VI
+                "Vietnam", // Code VNM/VN
+                "Vanuatu", // Code VUT/VU
+                "Wallis & Futuna", // Code WLF/WF
+                "Samoa", // Code WSM/WS
+                "Ceuta & Melilla", // Code XEA/EA
+                "Canary Islands", // Code XIC/IC
+                "Kosovo", // Code XKK/XK
+                "Yemen", // Code YEM/YE
+                "South Africa", // Code ZAF/ZA
+                "Zambia", // Code ZMB/ZM
+                "Zimbabwe" // Code ZWE/ZW
+            };
 
     private static final String[] ISO_3166_1_CODES = new String[] {
             "AD", "AE", "AF", "AG", "AI", "AL", "AM", "AO", "AQ", "AR", "AS",
@@ -1374,159 +1690,192 @@ public class LocaleManager {
 
     // Each element corresponds to an ISO2 code, and contains the index
     // for the corresponding ISO3 code
-    private static final int[] ISO_3166_1_TO_2 = new int[] {
-              6,   7,   1,  13,   3,   5,   9,   2,  11,   8,  10,
-             15,  14,   0,   4,  16,  26,  33,  22,  18,  21,  23,
-             24,  17,  19,  27,  30,  34,  31,  20,  32,  25,  35,
-             36,  37,  28,  29,  39,  40,  46,  38,  47,  41,  44,
-             48,  42,  45,  43,  49,  52,  53,  51,  54,  55,  57,
-             58,  59,  60,  61,  63,  62,  64,  65, 246,  66,  71,
-             67,  69,  68,  70,  72,  73,  74,  75,  78,  77,  76,
-             79,  80,  91,  81,  94,  82,  83,  84,  92,  87,  85,
-             86,  89,  90, 196,  93,  95,  88,  96,  97,  98,  99,
-            100, 101, 102, 247, 103, 107, 111, 104, 105, 106, 109,
-            108, 110, 112, 114, 113, 115, 116, 118, 119, 120, 121,
-             50, 122, 182, 123, 124,  56, 117, 125, 126, 129, 130,
-            131, 127, 132, 133, 134, 135, 128, 138, 139, 140, 149,
-            137, 141, 144, 145, 146, 148, 150, 136, 151, 155, 153,
-            154, 147, 156, 142, 157, 143, 158, 152, 160, 161, 162,
-            163, 164, 165, 167, 168, 169, 170, 166, 171, 172, 174,
-            176, 186, 179, 177, 173, 180, 204, 175, 181, 185, 183,
-            178, 184, 187, 188, 189, 205, 190, 191, 192, 199, 214,
-            193, 211, 195, 197, 210, 198, 209, 200, 202, 194, 203,
-            208, 206, 207, 201, 213, 215, 212, 216, 217,  12, 218,
-            219, 220, 221, 223, 222, 226, 224, 227, 225, 228, 229,
-            230, 232, 231, 233, 235, 234, 236, 237, 238, 239, 240,
-            241, 242, 243, 244, 245, 248, 249, 159, 250, 251, 252
-
-    };
+    private static final int[] ISO_3166_1_TO_2 =
+            new int[] {
+                286, 287, 281, 293, 283, 285, 289, 282, 291, 288, 290,
+                295, 294, 280, 284, 296, 306, 313, 302, 298, 301, 303,
+                304, 297, 299, 307, 310, 314, 311, 300, 312, 305, 315,
+                316, 317, 308, 309, 319, 320, 326, 318, 327, 321, 324,
+                328, 322, 325, 323, 329, 332, 333, 331, 334, 335, 337,
+                338, 339, 340, 341, 343, 342, 344, 345, 526, 346, 351,
+                347, 349, 348, 350, 352, 353, 354, 355, 358, 357, 356,
+                359, 360, 371, 361, 374, 362, 363, 364, 372, 367, 365,
+                366, 369, 370, 476, 373, 375, 368, 376, 377, 378, 379,
+                380, 381, 382, 527, 383, 387, 391, 384, 385, 386, 389,
+                388, 390, 392, 394, 393, 395, 396, 398, 399, 400, 401,
+                330, 402, 462, 403, 404, 336, 397, 405, 406, 409, 410,
+                411, 407, 412, 413, 414, 415, 408, 418, 419, 420, 429,
+                417, 421, 424, 425, 426, 428, 430, 416, 431, 435, 433,
+                434, 427, 436, 422, 437, 423, 438, 432, 440, 441, 442,
+                443, 444, 445, 447, 448, 449, 450, 446, 451, 452, 454,
+                456, 466, 459, 457, 453, 460, 484, 455, 461, 465, 463,
+                458, 464, 467, 468, 469, 485, 470, 471, 472, 479, 494,
+                473, 491, 475, 477, 490, 478, 489, 480, 482, 474, 483,
+                488, 486, 487, 481, 493, 495, 492, 496, 497, 292, 498,
+                499, 500, 501, 503, 502, 506, 504, 507, 505, 508, 509,
+                510, 512, 511, 513, 515, 514, 516, 517, 518, 519, 520,
+                521, 522, 523, 524, 525, 528, 529, 439, 530, 531, 532
+            };
 
     // Each element corresponds to an ISO3 code, and contains the index
     // for the corresponding ISO2 code, or -1 if not represented
-    private static final int[] ISO_3166_2_TO_1 = new int[] {
-             13,   2,   7,   4,  14,   5,   0,   1,   9,   6,  10,
-              8, 218,   3,  12,  11,  15,  23,  19,  24,  29,  20,
-             18,  21,  22,  31,  16,  25,  35,  36,  26,  28,  30,
-             17,  27,  32,  33,  34,  40,  37,  38,  42,  45,  47,
-             43,  46,  39,  41,  44,  48, 121,  51,  49,  50,  52,
-             53, 126,  54,  55,  56,  57,  58,  60,  59,  61,  62,
-             64,  66,  68,  67,  69,  65,  70,  71,  72,  73,  76,
-             75,  74,  77,  78,  80,  82,  83,  84,  87,  88,  86,
-             94,  89,  90,  79,  85,  92,  81,  93,  95,  96,  97,
-             98,  99, 100, 101, 103, 106, 107, 108, 104, 110, 109,
-            111, 105, 112, 114, 113, 115, 116, 127, 117, 118, 119,
-            120, 122, 124, 125, 128, 129, 133, 138, 130, 131, 132,
-            134, 135, 136, 137, 150, 143, 139, 140, 141, 144, 157,
-            159, 145, 146, 147, 155, 148, 142, 149, 151, 161, 153,
-            154, 152, 156, 158, 160, 249, 162, 163, 164, 165, 166,
-            167, 172, 168, 169, 170, 171, 173, 174, 180, 175, 183,
-            176, 179, 187, 178, 181, 184, 123, 186, 188, 185, 177,
-            189, 190, 191, 193, 194, 195, 198, 207, 200,  91, 201,
-            203, 196, 205, 212, 206, 208, 182, 192, 210, 211, 209,
-            204, 202, 199, 215, 213, 197, 214, 216, 217, 219, 220,
-            221, 222, 224, 223, 226, 228, 225, 227, 229, 230, 231,
-            233, 232, 234, 236, 235, 237, 238, 239, 240, 241, 242,
-            243, 244, 245, 246,  63, 102, 247, 248, 250, 251, 252
-
-    };
+    private static final int[] ISO_3166_2_TO_1 =
+            new int[] {
+                -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                -1, -1, -1, -1, -1, -1, -1, 13, 2, 7, 4, 14, 5, 0, 1, 9, 6, 10, 8, 218, 3, 12, 11,
+                15, 23, 19, 24, 29, 20, 18, 21, 22, 31, 16, 25, 35, 36, 26, 28, 30, 17, 27, 32, 33,
+                34, 40, 37, 38, 42, 45, 47, 43, 46, 39, 41, 44, 48, 121, 51, 49, 50, 52, 53, 126,
+                54, 55, 56, 57, 58, 60, 59, 61, 62, 64, 66, 68, 67, 69, 65, 70, 71, 72, 73, 76, 75,
+                74, 77, 78, 80, 82, 83, 84, 87, 88, 86, 94, 89, 90, 79, 85, 92, 81, 93, 95, 96, 97,
+                98, 99, 100, 101, 103, 106, 107, 108, 104, 110, 109, 111, 105, 112, 114, 113, 115,
+                116, 127, 117, 118, 119, 120, 122, 124, 125, 128, 129, 133, 138, 130, 131, 132, 134,
+                135, 136, 137, 150, 143, 139, 140, 141, 144, 157, 159, 145, 146, 147, 155, 148, 142,
+                149, 151, 161, 153, 154, 152, 156, 158, 160, 249, 162, 163, 164, 165, 166, 167, 172,
+                168, 169, 170, 171, 173, 174, 180, 175, 183, 176, 179, 187, 178, 181, 184, 123, 186,
+                188, 185, 177, 189, 190, 191, 193, 194, 195, 198, 207, 200, 91, 201, 203, 196, 205,
+                212, 206, 208, 182, 192, 210, 211, 209, 204, 202, 199, 215, 213, 197, 214, 216, 217,
+                219, 220, 221, 222, 224, 223, 226, 228, 225, 227, 229, 230, 231, 233, 232, 234, 236,
+                235, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 63, 102, 247, 248, 250, 251,
+                252
+            };
     // Language afr: NAM,ZAF
-    private static final int[] REGIONS_AFR = new int[] { 160,250 };
-    // Language ara: ARE,BHR,COM,DJI,DZA,EGY,ERI,ESH,IRQ,ISR,JOR,KWT,LBN,LBY,MAR,MRT,OMN,PSE,QAT,SAU,SDN,SOM,SSD,SYR,TCD,TUN,YEM
-    private static final int[] REGIONS_ARA = new int[] { 7,24,50,61,65,67,68,69,109,111,115,124,126,128,138,153,172,185,187,192,193,203,206,215,217,226,249 };
+    private static final int[] REGIONS_AFR = new int[] {440, 530};
+    // Language ara:
+    // ARE,BHR,COM,DJI,DZA,EGY,ERI,ESH,IRQ,ISR,JOR,KWT,LBN,LBY,MAR,MRT,OMN,PSE,QAT,SAU,SDN,SOM,SSD,SYR,TCD,TUN,YEM
+    private static final int[] REGIONS_ARA =
+            new int[] {
+                287, 304, 330, 341, 345, 347, 348, 349, 389, 391, 395, 404, 406, 408, 418, 433, 452,
+                465, 467, 472, 473, 483, 486, 495, 497, 506, 529
+            };
     // Language ben: BGD,IND
-    private static final int[] REGIONS_BEN = new int[] { 22,105 };
+    private static final int[] REGIONS_BEN = new int[] {302, 385};
     // Language bod: CHN,IND
-    private static final int[] REGIONS_BOD = new int[] { 43,105 };
+    private static final int[] REGIONS_BOD = new int[] {323, 385};
     // Language cat: AND,ESP,FRA,ITA
-    private static final int[] REGIONS_CAT = new int[] { 6,70,76,112 };
+    private static final int[] REGIONS_CAT = new int[] {286, 350, 356, 392};
     // Language dan: DNK,GRL
-    private static final int[] REGIONS_DAN = new int[] { 63,92 };
+    private static final int[] REGIONS_DAN = new int[] {343, 372};
     // Language deu: DEU,AUT,BEL,CHE,ITA,LIE,LUX
-    private static final int[] REGIONS_DEU = new int[] { 59,15,18,41,112,130,134 };
+    private static final int[] REGIONS_DEU = new int[] {339, 295, 298, 321, 392, 410, 414};
     // Language ell: CYP,GRC
-    private static final int[] REGIONS_ELL = new int[] { 57,90 };
-    // Language eng: AIA,ARE,ASM,ATG,AUS,AUT,BDI,BEL,BHS,BLZ,BMU,BRB,BWA,CAN,CCK,CHE,CMR,COK,CXR,CYM,CYP,DEU,DGA,DMA,DNK,ERI,FIN,FJI,FLK,FSM,GBR,GGY,GHA,GIB,GMB,GRD,GUM,GUY,HKG,IMN,IND,IOT,IRL,ISR,JAM,JEY,KEN,KIR,KNA,LBR,LCA,LSO,MAC,MDG,MDV,MHL,MLT,MNP,MSR,MUS,MWI,MYS,NAM,NFK,NGA,NIU,NLD,NRU,NZL,PAK,PCN,PHL,PLW,PNG,PRI,RWA,SDN,SGP,SHN,SLB,SLE,SSD,SVN,SWE,SWZ,SXM,SYC,TCA,TKL,TON,TTO,TUV,TZA,UGA,UMI,USA,VCT,VGB,VIR,VUT,WSM,ZAF,ZMB,ZWE
-    private static final int[] REGIONS_ENG = new int[] { 3,7,10,13,14,15,17,18,25,29,30,33,37,39,40,41,45,48,55,56,57,59,60,62,63,68,73,74,75,78,80,82,83,84,87,91,95,96,97,104,105,106,107,111,113,114,118,121,122,127,129,132,136,141,142,144,147,151,154,156,157,158,160,163,164,166,167,170,171,173,175,177,178,179,181,191,193,195,197,199,200,206,210,211,212,213,214,216,221,224,225,228,230,231,233,235,238,240,241,243,245,250,251,252 };
+    private static final int[] REGIONS_ELL = new int[] {337, 370};
+    // Language eng:
+    // AIA,ARE,ASM,ATG,AUS,AUT,BDI,BEL,BHS,BLZ,BMU,BRB,BWA,CAN,CCK,CHE,CMR,COK,CXR,CYM,CYP,DEU,DGA,DMA,DNK,ERI,FIN,FJI,FLK,FSM,GBR,GGY,GHA,GIB,GMB,GRD,GUM,GUY,HKG,IMN,IND,IOT,IRL,ISR,JAM,JEY,KEN,KIR,KNA,LBR,LCA,LSO,MAC,MDG,MDV,MHL,MLT,MNP,MSR,MUS,MWI,MYS,NAM,NFK,NGA,NIU,NLD,NRU,NZL,PAK,PCN,PHL,PLW,PNG,PRI,RWA,SDN,SGP,SHN,SLB,SLE,SSD,SVN,SWE,SWZ,SXM,SYC,TCA,TKL,TON,TTO,TUV,TZA,UGA,UMI,USA,VCT,VGB,VIR,VUT,WSM,ZAF,ZMB,ZWE
+    private static final int[] REGIONS_ENG =
+            new int[] {
+                283, 287, 290, 293, 294, 295, 297, 298, 305, 309, 310, 313, 317, 319, 320, 321, 325,
+                328, 335, 336, 337, 339, 340, 342, 343, 348, 353, 354, 355, 358, 360, 362, 363, 364,
+                367, 371, 375, 376, 377, 384, 385, 386, 387, 391, 393, 394, 398, 401, 402, 407, 409,
+                412, 416, 421, 422, 424, 427, 431, 434, 436, 437, 438, 440, 443, 444, 446, 447, 450,
+                451, 453, 455, 457, 458, 459, 461, 471, 473, 475, 477, 479, 480, 486, 490, 491, 492,
+                493, 494, 496, 501, 504, 505, 508, 510, 511, 513, 515, 518, 520, 521, 523, 525, 530,
+                531, 532
+            };
     // Language ewe: GHA,TGO
-    private static final int[] REGIONS_EWE = new int[] { 83,218 };
+    private static final int[] REGIONS_EWE = new int[] {363, 498};
     // Language fao: DNK,FRO
-    private static final int[] REGIONS_FAO = new int[] { 63,77 };
+    private static final int[] REGIONS_FAO = new int[] {343, 357};
     // Language fas: AFG,IRN
-    private static final int[] REGIONS_FAS = new int[] { 1,108 };
-    // Language fra: FRA,BDI,BEL,BEN,BFA,BLM,CAF,CAN,CHE,CIV,CMR,COD,COG,COM,DJI,DZA,GAB,GIN,GLP,GNQ,GUF,HTI,LUX,MAF,MAR,MCO,MDG,MLI,MRT,MTQ,MUS,MYT,NCL,NER,PYF,REU,RWA,SEN,SPM,SYC,SYR,TCD,TGO,TUN,VUT,WLF
-    private static final int[] REGIONS_FRA = new int[] { 76,17,18,19,21,27,38,39,41,44,45,46,47,50,61,65,79,85,86,89,94,101,134,137,138,139,141,146,153,155,156,159,161,162,186,188,191,194,204,214,215,217,218,226,243,244 };
+    private static final int[] REGIONS_FAS = new int[] {281, 388};
+    // Language fra:
+    // FRA,BDI,BEL,BEN,BFA,BLM,CAF,CAN,CHE,CIV,CMR,COD,COG,COM,DJI,DZA,GAB,GIN,GLP,GNQ,GUF,HTI,LUX,MAF,MAR,MCO,MDG,MLI,MRT,MTQ,MUS,MYT,NCL,NER,PYF,REU,RWA,SEN,SPM,SYC,SYR,TCD,TGO,TUN,VUT,WLF
+    private static final int[] REGIONS_FRA =
+            new int[] {
+                356, 297, 298, 299, 301, 307, 318, 319, 321, 324, 325, 326, 327, 330, 341, 345, 359,
+                365, 366, 369, 374, 381, 414, 417, 418, 419, 421, 426, 433, 435, 436, 439, 441, 442,
+                466, 468, 471, 474, 484, 494, 495, 497, 498, 506, 523, 524
+            };
     // Language ful: BFA,CMR,GHA,GIN,GMB,GNB,LBR,MRT,NER,NGA,SEN,SLE
-    private static final int[] REGIONS_FUL = new int[] { 21,45,83,85,87,88,127,153,162,164,194,200 };
+    private static final int[] REGIONS_FUL =
+            new int[] {301, 325, 363, 365, 367, 368, 407, 433, 442, 444, 474, 480};
     // Language gle: GBR,IRL
-    private static final int[] REGIONS_GLE = new int[] { 80,107 };
+    private static final int[] REGIONS_GLE = new int[] {360, 387};
     // Language hau: GHA,NER,NGA
-    private static final int[] REGIONS_HAU = new int[] { 83,162,164 };
+    private static final int[] REGIONS_HAU = new int[] {363, 442, 444};
     // Language hrv: HRV,BIH
-    private static final int[] REGIONS_HRV = new int[] { 100,26 };
+    private static final int[] REGIONS_HRV = new int[] {380, 306};
     // Language ita: ITA,CHE,SMR,VAT
-    private static final int[] REGIONS_ITA = new int[] { 112,41,202,237 };
+    private static final int[] REGIONS_ITA = new int[] {392, 321, 482, 517};
     // Language kor: KOR,PRK
-    private static final int[] REGIONS_KOR = new int[] { 123,182 };
+    private static final int[] REGIONS_KOR = new int[] {403, 462};
     // Language lin: AGO,CAF,COD,COG
-    private static final int[] REGIONS_LIN = new int[] { 2,38,46,47 };
+    private static final int[] REGIONS_LIN = new int[] {282, 318, 326, 327};
     // Language lrc: IRN,IRQ
-    private static final int[] REGIONS_LRC = new int[] { 108,109 };
+    private static final int[] REGIONS_LRC = new int[] {388, 389};
     // Language msa: BRN,IDN,MYS,SGP
-    private static final int[] REGIONS_MSA = new int[] { 34,103,158,195 };
+    private static final int[] REGIONS_MSA = new int[] {314, 383, 438, 475};
     // Language nep: IND,NPL
-    private static final int[] REGIONS_NEP = new int[] { 105,169 };
+    private static final int[] REGIONS_NEP = new int[] {385, 449};
     // Language nld: NLD,ABW,BEL,BES,CUW,SUR,SXM
-    private static final int[] REGIONS_NLD = new int[] { 167,0,18,20,54,208,213 };
+    private static final int[] REGIONS_NLD = new int[] {447, 280, 298, 300, 334, 488, 493};
     // Language nob: NOR,SJM
-    private static final int[] REGIONS_NOB = new int[] { 168,198 };
+    private static final int[] REGIONS_NOB = new int[] {448, 478};
     // Language orm: ETH,KEN
-    private static final int[] REGIONS_ORM = new int[] { 72,118 };
+    private static final int[] REGIONS_ORM = new int[] {352, 398};
     // Language oss: GEO,RUS
-    private static final int[] REGIONS_OSS = new int[] { 81,190 };
+    private static final int[] REGIONS_OSS = new int[] {361, 470};
     // Language pan: IND,PAK
-    private static final int[] REGIONS_PAN = new int[] { 105,173 };
+    private static final int[] REGIONS_PAN = new int[] {385, 453};
     // Language por: AGO,BRA,CHE,CPV,GNB,GNQ,LUX,MAC,MOZ,PRT,STP,TLS
-    private static final int[] REGIONS_POR = new int[] { 2,32,41,51,88,89,134,136,152,183,207,223 };
+    private static final int[] REGIONS_POR =
+            new int[] {282, 312, 321, 331, 368, 369, 414, 416, 432, 463, 487, 503};
     // Language pus: AFG,PAK
-    private static final int[] REGIONS_PUS = new int[] { 1,173 };
+    private static final int[] REGIONS_PUS = new int[] {281, 453};
     // Language que: BOL,ECU,PER
-    private static final int[] REGIONS_QUE = new int[] { 31,66,176 };
+    private static final int[] REGIONS_QUE = new int[] {311, 346, 456};
     // Language ron: MDA,ROU
-    private static final int[] REGIONS_RON = new int[] { 140,189 };
+    private static final int[] REGIONS_RON = new int[] {420, 469};
     // Language rus: RUS,BLR,KAZ,KGZ,MDA,UKR
-    private static final int[] REGIONS_RUS = new int[] { 190,28,117,119,140,232 };
+    private static final int[] REGIONS_RUS = new int[] {470, 308, 397, 399, 420, 512};
     // Language sme: FIN,NOR,SWE
-    private static final int[] REGIONS_SME = new int[] { 73,168,211 };
+    private static final int[] REGIONS_SME = new int[] {353, 448, 491};
     // Language snd: IND,PAK
-    private static final int[] REGIONS_SND = new int[] { 105,173 };
+    private static final int[] REGIONS_SND = new int[] {385, 453};
     // Language som: SOM,DJI,ETH,KEN
-    private static final int[] REGIONS_SOM = new int[] { 203,61,72,118 };
-    // Language spa: ARG,BLZ,BOL,BRA,CHL,COL,CRI,CUB,DOM,ECU,ESP,GNQ,GTM,HND,MEX,NIC,PAN,PER,PHL,PRI,PRY,SLV,URY,USA,VEN,XEA,XIC
-    private static final int[] REGIONS_SPA = new int[] { 8,29,31,32,42,49,52,53,64,66,70,89,93,99,143,165,174,176,177,181,184,201,234,235,239,246,247 };
+    private static final int[] REGIONS_SOM = new int[] {483, 341, 352, 398};
+    // Language spa:
+    // ARG,BLZ,BOL,BRA,CHL,COL,CRI,CUB,DOM,ECU,ESP,GNQ,GTM,HND,MEX,NIC,PAN,PER,PHL,PRI,PRY,SLV,URY,USA,VEN,XEA,XIC
+    private static final int[] REGIONS_SPA =
+            new int[] {
+                288, 309, 311, 312, 322, 329, 332, 333, 344, 346, 350, 369, 373, 379, 423, 445, 454,
+                456, 457, 461, 464, 481, 514, 515, 519, 526, 527
+            };
     // Language sqi: ALB,MKD,XKK
-    private static final int[] REGIONS_SQI = new int[] { 5,145,248 };
+    private static final int[] REGIONS_SQI = new int[] {285, 425, 528};
     // Language srp: BIH,MNE,SRB,XKK
-    private static final int[] REGIONS_SRP = new int[] { 26,149,205,248 };
+    private static final int[] REGIONS_SRP = new int[] {306, 429, 485, 528};
     // Language swa: COD,KEN,TZA,UGA
-    private static final int[] REGIONS_SWA = new int[] { 46,118,230,231 };
+    private static final int[] REGIONS_SWA = new int[] {326, 398, 510, 511};
     // Language swe: SWE,ALA,FIN
-    private static final int[] REGIONS_SWE = new int[] { 211,4,73 };
+    private static final int[] REGIONS_SWE = new int[] {491, 284, 353};
     // Language tam: IND,LKA,MYS,SGP
-    private static final int[] REGIONS_TAM = new int[] { 105,131,158,195 };
+    private static final int[] REGIONS_TAM = new int[] {385, 411, 438, 475};
     // Language tir: ERI,ETH
-    private static final int[] REGIONS_TIR = new int[] { 68,72 };
+    private static final int[] REGIONS_TIR = new int[] {348, 352};
     // Language tur: TUR,CYP
-    private static final int[] REGIONS_TUR = new int[] { 227,57 };
+    private static final int[] REGIONS_TUR = new int[] {507, 337};
     // Language urd: IND,PAK
-    private static final int[] REGIONS_URD = new int[] { 105,173 };
+    private static final int[] REGIONS_URD = new int[] {385, 453};
     // Language uzb: UZB,AFG
-    private static final int[] REGIONS_UZB = new int[] { 236,1 };
+    private static final int[] REGIONS_UZB = new int[] {516, 281};
     // Language yor: BEN,NGA
-    private static final int[] REGIONS_YOR = new int[] { 19,164 };
+    private static final int[] REGIONS_YOR = new int[] {299, 444};
     // Language yrl: BRA,COL,VEN
-    private static final int[] REGIONS_YRL = new int[] { 32,49,239 };
+    private static final int[] REGIONS_YRL = new int[] {312, 329, 519};
     // Language zho: CHN,HKG,MAC,SGP,TWN
-    private static final int[] REGIONS_ZHO = new int[] { 43,97,136,195,229 };
+    private static final int[] REGIONS_ZHO = new int[] {323, 377, 416, 475, 509};
 
     private static final int[][] LANGUAGE_REGIONS = new int[][] {
             null, null, null, null, null, null, null, null, REGIONS_AFR,
@@ -1595,70 +1944,34 @@ public class LocaleManager {
             null, null, null
     };
 
-    private static final int[] LANGUAGE_REGION = new int[] {
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-            160,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,   7,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1,  22,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  43,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,   6,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,  -1,  63,  -1,  -1,  -1,
-             -1,  59,  -1,  -1,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  57,
-             -1,   3,  -1,  -1,  -1,  -1,  83,  -1,
-             -1,  63,   1,  -1,  -1,  -1,  -1,  -1,
-             -1,  76,  -1,  -1,  -1,  -1,  -1,  21,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             80,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             83,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             -1,  -1, 100,  -1,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-            112,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1, 123,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             -1,  -1,   2,  -1,  -1,  -1, 108,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,  34,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1, 105,  -1,
-             -1,  -1,  -1, 167,  -1, 168,  -1,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,  -1,  -1,  72,  -1,  81,
-             -1,  -1,  -1,  -1,  -1,  -1, 105,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-              2,  -1,  -1,   1,  31,  -1,  -1,  -1,
-             -1,  -1,  -1, 140,  -1,  -1, 190,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  73,
-             -1,  -1,  -1,  -1,  -1,  -1, 105,  -1,
-             -1, 203,  -1,  -1,   8,   5,  -1,  -1,
-             26,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             46, 211,  -1,  -1,  -1,  -1, 105,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             68,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1, 227,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             -1,  -1, 105, 236,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
-             -1,  -1,  -1,  -1,  -1,  19,  -1,  32,
-             -1,  -1,  -1,  -1,  -1,  43,  -1,  -1,
-             -1,  -1
-    };
+    private static final int[] LANGUAGE_REGION =
+            new int[] {
+                -1, -1, -1, -1, -1, -1, -1, -1, 440, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 287,
+                -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                -1, -1, -1, -1, -1, 302, -1, -1, -1, -1, -1, -1, -1, -1, 323, -1, -1, -1, -1, -1,
+                -1, -1, -1, -1, -1, -1, 286, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 343, -1, -1,
+                -1, -1, 339, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 337, -1, 283, -1,
+                -1, -1, -1, 363, -1, -1, 343, 281, -1, -1, -1, -1, -1, -1, 356, -1, -1, -1, -1, -1,
+                301, -1, -1, -1, -1, -1, -1, -1, -1, 360, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                -1, -1, -1, -1, -1, 363, -1, -1, -1, -1, -1, -1, -1, -1, -1, 380, -1, -1, -1, -1,
+                -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 392, -1, -1, -1,
+                -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                -1, -1, -1, -1, -1, -1, 403, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                -1, -1, -1, -1, 282, -1, -1, -1, 388, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                -1, -1, -1, -1, 314, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                -1, -1, 385, -1, -1, -1, -1, 447, -1, 448, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                -1, -1, -1, -1, -1, 352, -1, 361, -1, -1, -1, -1, -1, -1, 385, -1, -1, -1, -1, -1,
+                -1, -1, -1, -1, 282, -1, -1, 281, 311, -1, -1, -1, -1, -1, -1, 420, -1, -1, 470, -1,
+                -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                -1, -1, 353, -1, -1, -1, -1, -1, -1, 385, -1, -1, 483, -1, -1, 288, 285, -1, -1,
+                306, -1, -1, -1, -1, -1, -1, -1, 326, 491, -1, -1, -1, -1, 385, -1, -1, -1, -1, -1,
+                -1, -1, -1, -1, 348, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 507,
+                -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 385, 516, -1, -1, -1, -1, -1, -1, -1, -1,
+                -1, -1, -1, -1, -1, -1, -1, -1, -1, 299, -1, 312, -1, -1, -1, -1, -1, 323, -1, -1,
+                -1, -1
+            };
 
     static {
         // These maps should have been generated programmatically; look for accidental edits
@@ -1674,11 +1987,11 @@ public class LocaleManager {
         assert ISO_639_1_TO_2.length == 187;
 
         //noinspection ConstantConditions
-        assert ISO_3166_2_CODES.length == 253;
+        assert ISO_3166_2_CODES.length == 533;
         //noinspection ConstantConditions
-        assert ISO_3166_2_NAMES.length == 253;
+        assert ISO_3166_2_NAMES.length == 533;
         //noinspection ConstantConditions
-        assert ISO_3166_2_TO_1.length == 253;
+        assert ISO_3166_2_TO_1.length == 533;
         //noinspection ConstantConditions
         assert ISO_3166_1_CODES.length == 253;
         //noinspection ConstantConditions

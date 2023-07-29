@@ -122,7 +122,7 @@ public class DdmJdwpExtension extends JdwpExtension {
                 ChunkHandler handler = mHandlerMap.get(type);
 
                 if (handler == null) {
-                    Log.w("ddms", "Received unsupported chunk type " + "ChunkHandler.name(type)");
+                    Log.w("ddms", "Received unsupported chunk type " + ChunkHandler.name(type));
                 } else {
                     handler.handlePacket(mClient, packet);
                 }

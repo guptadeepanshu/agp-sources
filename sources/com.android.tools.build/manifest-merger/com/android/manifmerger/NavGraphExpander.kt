@@ -26,6 +26,7 @@ import com.android.SdkConstants.ATTR_PATH_PATTERN
 import com.android.SdkConstants.ATTR_PATH_PREFIX
 import com.android.SdkConstants.ATTR_PORT
 import com.android.SdkConstants.ATTR_SCHEME
+import com.android.SdkConstants.ATTR_MIMETYPE;
 import com.android.SdkConstants.TAG_ACTION
 import com.android.SdkConstants.TAG_CATEGORY
 import com.android.SdkConstants.TAG_DATA
@@ -64,7 +65,7 @@ object NavGraphExpander {
             loadedNavigationMap: Map<String, NavigationXmlDocument>,
             mergingReportBuilder: MergingReport.Builder): XmlDocument {
         expandNavGraphs(xmlDocument.rootNode, loadedNavigationMap, mergingReportBuilder)
-        return xmlDocument.reparse()
+        return xmlDocument
     }
 
     /**
@@ -80,7 +81,7 @@ object NavGraphExpander {
         for (childElement in xmlElement.mergeableElements) {
             expandNavGraphs(childElement, loadedNavigationMap, mergingReportBuilder)
         }
-        if (xmlElement.xml.tagName != SdkConstants.TAG_ACTIVITY) {
+        if (xmlElement.tagName != SdkConstants.TAG_ACTIVITY) {
             return
         }
         val navGraphs = xmlElement.getAllNodesByType(ManifestModel.NodeTypes.NAV_GRAPH)
@@ -89,18 +90,15 @@ object NavGraphExpander {
         }
         // expand each navGraph
         for (navGraph in navGraphs) {
-            val namedNodeMap: NamedNodeMap? = navGraph.xml.attributes
             val graphValue: String? =
-                    namedNodeMap
-                            ?.getNamedItemNS(ANDROID_URI, SdkConstants.ATTR_VALUE)
-                            ?.nodeValue
+                navGraph.getAttributeValue(ANDROID_URI, SdkConstants.ATTR_VALUE)
             val navigationXmlId =
                     if (graphValue?.startsWith(SdkConstants.NAVIGATION_PREFIX) == true)
                         graphValue.substring(SdkConstants.NAVIGATION_PREFIX.length)
                     else null
             if (navigationXmlId == null) {
                 val nsUriPrefix =
-                        XmlUtils.lookupNamespacePrefix(navGraph.xml, ANDROID_URI, false)
+                    navGraph.lookupNamespacePrefix(ANDROID_URI, false)
                 val graphName = nsUriPrefix + XmlUtils.NS_SEPARATOR + SdkConstants.ATTR_VALUE
                 mergingReportBuilder.addMessage(
                         SourceFilePosition(xmlElement.document.sourceFile, xmlElement.position),
@@ -115,7 +113,7 @@ object NavGraphExpander {
         }
         // then remove each navGraph
         for (navGraph in navGraphs) {
-            xmlElement.xml.removeChild(navGraph.xml)
+            xmlElement.removeChild(navGraph)
             mergingReportBuilder.actionRecorder.recordNodeAction(
                     navGraph, Actions.ActionType.CONVERTED)
         }
@@ -153,20 +151,21 @@ object NavGraphExpander {
         for (deepLinkGroup in deepLinkGroups.values) {
             val deepLink = deepLinkGroup.first()
             // first create <intent-filter> element
-            val intentFilterElement =
-                    addChildElement(SdkConstants.TAG_INTENT_FILTER, xmlElement.xml)
+            val intentFilterXmlElement =
+                xmlElement.addChildElement(SdkConstants.TAG_INTENT_FILTER)
             if (deepLink.isAutoVerify) {
-                addAttribute(ANDROID_URI, ATTR_AUTO_VERIFY, "true", intentFilterElement)
+                intentFilterXmlElement.addAttribute(ANDROID_URI, ATTR_AUTO_VERIFY, "true")
             }
+            val childElementDataList = mutableListOf<ChildElementData>()
             // then add children elements to <intent-filter> element
-            val childElementDataList: MutableList<ChildElementData> =
-                    mutableListOf(
-                            ChildElementData(
-                                    TAG_ACTION, ATTR_NAME, "android.intent.action.VIEW"),
-                            ChildElementData(
-                                    TAG_CATEGORY, ATTR_NAME, "android.intent.category.DEFAULT"),
-                            ChildElementData(
-                                    TAG_CATEGORY, ATTR_NAME, "android.intent.category.BROWSABLE"))
+            if (deepLink.action.isNotBlank()) {
+                childElementDataList.add(
+                    ChildElementData(TAG_ACTION, ATTR_NAME, deepLink.action))
+            }
+            childElementDataList.add(ChildElementData(
+                TAG_CATEGORY, ATTR_NAME, "android.intent.category.DEFAULT"))
+            childElementDataList.add(ChildElementData(
+                TAG_CATEGORY, ATTR_NAME, "android.intent.category.BROWSABLE"))
             for (scheme in deepLinkGroup.flatMap { it.schemes }.toSet()) {
                 childElementDataList.add(ChildElementData(TAG_DATA, ATTR_SCHEME, scheme))
             }
@@ -175,7 +174,7 @@ object NavGraphExpander {
             }
             if (deepLink.port != -1) {
                 childElementDataList.add(
-                        ChildElementData(TAG_DATA, ATTR_PORT, deepLink.port.toString()))
+                    ChildElementData(TAG_DATA, ATTR_PORT, deepLink.port.toString()))
             }
             val path = deepLink.path
             when {
@@ -187,12 +186,14 @@ object NavGraphExpander {
                         ChildElementData(TAG_DATA, ATTR_PATH_PATTERN, path))
                 else -> childElementDataList.add(ChildElementData(TAG_DATA, ATTR_PATH, path))
             }
+            if (deepLink.mimeType != null) {
+                childElementDataList.add(ChildElementData(TAG_DATA, ATTR_MIMETYPE, deepLink.mimeType))
+            }
             childElementDataList.forEach {
-                addChildElementWithSingleAttribute(
-                        it.tagName, intentFilterElement, ANDROID_URI, it.attrName, it.attrValue)
+                intentFilterXmlElement.addChildElementWithSingleAttribute(
+                        it.tagName, ANDROID_URI, it.attrName, it.attrValue)
             }
             // finally record all added elements and attributes
-            val intentFilterXmlElement = XmlElement(intentFilterElement, xmlElement.document)
             for (dl in deepLinkGroup) {
                 recordXmlElementAddition(
                     intentFilterXmlElement, dl.sourceFilePosition, actionRecorder)
@@ -224,6 +225,15 @@ object NavGraphExpander {
     }
 
     /**
+     * This class is used to hold uri, action, and mimeType of a deep link and is used in
+     * [findDeepLinks] below to check for duplicate elements.
+     */
+    private data class DeepLinkComparisonObject(
+        private val uri: String,
+        private val action: String,
+        private val mimeType: String?)
+
+    /**
      * Find [DeepLink]s from referenced [NavigationXmlDocument]s and add them
      * to the deepLinkList.
      *
@@ -236,7 +246,7 @@ object NavGraphExpander {
         deepLinkList: MutableList<DeepLink>,
         mergingReportBuilder: MergingReport.Builder,
         sourceFilePosition: SourceFilePosition,
-        deepLinkUriMap: MutableMap<String, DeepLink> = mutableMapOf(),
+        deepLinkComparisonObjects: MutableSet<DeepLinkComparisonObject> = mutableSetOf(),
         visitedNavigationFiles: MutableSet<String> = mutableSetOf(),
         navigationFileAncestors: TreeSet<String> = sortedSetOf()
     ) {
@@ -267,11 +277,25 @@ object NavGraphExpander {
                 "Referenced navigation file with navigationXmlId = $navigationXmlId not found")
         for (deepLink in navigationXmlDocument.deepLinks) {
             for (deepLinkUri in getDeepLinkUris(deepLink)) {
-                if (deepLinkUriMap.containsKey(deepLinkUri)) {
+                val deepLinkComparisonObject =
+                    DeepLinkComparisonObject(
+                        uri = deepLinkUri,
+                        action = deepLink.action,
+                        mimeType = deepLink.mimeType
+                    )
+                if (deepLinkComparisonObjects.contains(deepLinkComparisonObject)) {
+                    val comparisonString = StringBuilder("uri:$deepLinkUri")
+                    if (deepLink.action.isNotBlank()) {
+                        comparisonString.append(", action:${deepLink.action}")
+                    }
+                    if (deepLink.mimeType != null) {
+                        comparisonString.append(", mimeType:${deepLink.mimeType}")
+                    }
                     throw NavGraphException(
-                            "Multiple destinations found with a deep link to $deepLinkUri")
+                        "Multiple destinations found with a deep link containing $comparisonString."
+                    )
                 }
-                deepLinkUriMap[deepLinkUri] = deepLink
+                deepLinkComparisonObjects.add(deepLinkComparisonObject)
             }
             deepLinkList.add(deepLink)
         }
@@ -282,7 +306,7 @@ object NavGraphExpander {
                 deepLinkList,
                 mergingReportBuilder,
                 sourceFilePosition,
-                deepLinkUriMap,
+                deepLinkComparisonObjects,
                 visitedNavigationFiles,
                 navigationFileAncestors
             )
@@ -311,32 +335,6 @@ object NavGraphExpander {
             builder.add("$scheme:$body")
         }
         return builder.build()
-    }
-
-    /** Add a new Element with a single specified Attribute to parentElement */
-    private fun addChildElementWithSingleAttribute(
-            childTagName: String,
-            parentElement: Element,
-            nsUri: String,
-            attrName: String,
-            attrValue: String) {
-        val childElement = addChildElement(childTagName, parentElement)
-        addAttribute(nsUri, attrName, attrValue, childElement)
-    }
-
-    /** Add a new Element with no Attributes to parentElement */
-    private fun addChildElement(childTagName: String, parentElement: Element): Element {
-        val document = parentElement.ownerDocument
-        val childElement = document.createElement(childTagName)
-        return parentElement.appendChild(childElement) as? Element ?:
-                throw RuntimeException(
-                        "Unable to add $childTagName element to ${parentElement.tagName} element.")
-    }
-
-    /** Add a new Attribute to the element */
-    private fun addAttribute(nsUri: String, attrName: String, attrValue: String, element: Element) {
-        val prefix = XmlUtils.lookupNamespacePrefix(element, nsUri, true)
-        element.setAttributeNS(nsUri, prefix + XmlUtils.NS_SEPARATOR + attrName, attrValue)
     }
 
     /** Record addition of xmlElement and all of its descendants (attributes and elements) */

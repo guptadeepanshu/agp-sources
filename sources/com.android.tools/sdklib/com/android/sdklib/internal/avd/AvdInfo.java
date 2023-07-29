@@ -165,8 +165,10 @@ public final class AvdInfo {
 
     @NonNull
     public AndroidVersion getAndroidVersion() {
-        String apiStr = getProperties().get(AvdManager.AVD_INI_ANDROID_API);
-        String codename = getProperties().get(AvdManager.AVD_INI_ANDROID_CODENAME);
+        Map<String, String> properties = getProperties();
+
+        String apiStr = properties.get(AvdManager.AVD_INI_ANDROID_API);
+        String codename = properties.get(AvdManager.AVD_INI_ANDROID_CODENAME);
         int api = 1;
         if (!Strings.isNullOrEmpty(apiStr)) {
             try {
@@ -176,7 +178,24 @@ public final class AvdInfo {
                 // continue with the default
             }
         }
-        return new AndroidVersion(api, codename);
+
+        String extStr = properties.get(AvdManager.AVD_INI_ANDROID_EXTENSION);
+        int extension = 1;
+        if (!Strings.isNullOrEmpty(extStr)) {
+            try {
+                extension = Integer.parseInt(extStr);
+            } catch (NumberFormatException e) {
+                // continue with the default
+            }
+        }
+
+        String isBaseStr = properties.get(AvdManager.AVD_INI_ANDROID_IS_BASE_EXTENSION);
+        boolean isBase = true;
+        if (!Strings.isNullOrEmpty(isBaseStr)) {
+            isBase = Boolean.parseBoolean(isBaseStr);
+        }
+
+        return new AndroidVersion(api, codename, extension, isBase);
     }
 
     @NonNull

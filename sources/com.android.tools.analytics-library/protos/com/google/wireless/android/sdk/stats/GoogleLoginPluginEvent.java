@@ -120,6 +120,18 @@ private static final long serialVersionUID = 0L;
      * <code>FORCE_LOGOUT = 3;</code>
      */
     FORCE_LOGOUT(3),
+    /**
+     * <code>LOGOUT_WITH_SUCCESS = 5;</code>
+     */
+    LOGOUT_WITH_SUCCESS(5),
+    /**
+     * <code>LOGOUT_WITH_FAILURE = 6;</code>
+     */
+    LOGOUT_WITH_FAILURE(6),
+    /**
+     * <code>LOGGED_IN_ON_STUDIO_START = 7;</code>
+     */
+    LOGGED_IN_ON_STUDIO_START(7),
     ;
 
     /**
@@ -143,6 +155,18 @@ private static final long serialVersionUID = 0L;
      * <code>FORCE_LOGOUT = 3;</code>
      */
     public static final int FORCE_LOGOUT_VALUE = 3;
+    /**
+     * <code>LOGOUT_WITH_SUCCESS = 5;</code>
+     */
+    public static final int LOGOUT_WITH_SUCCESS_VALUE = 5;
+    /**
+     * <code>LOGOUT_WITH_FAILURE = 6;</code>
+     */
+    public static final int LOGOUT_WITH_FAILURE_VALUE = 6;
+    /**
+     * <code>LOGGED_IN_ON_STUDIO_START = 7;</code>
+     */
+    public static final int LOGGED_IN_ON_STUDIO_START_VALUE = 7;
 
 
     public final int getNumber() {
@@ -169,6 +193,9 @@ private static final long serialVersionUID = 0L;
         case 1: return LOGIN_WITH_SUCCESS;
         case 2: return LOGIN_WITH_FAILURE;
         case 3: return FORCE_LOGOUT;
+        case 5: return LOGOUT_WITH_SUCCESS;
+        case 6: return LOGOUT_WITH_FAILURE;
+        case 7: return LOGGED_IN_ON_STUDIO_START;
         default: return null;
       }
     }

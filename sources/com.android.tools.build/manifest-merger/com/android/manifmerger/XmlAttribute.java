@@ -59,6 +59,25 @@ public class XmlAttribute extends XmlNode {
         this.mOwnerElement = Preconditions.checkNotNull(ownerElement);
         this.mXml = Preconditions.checkNotNull(xml);
         this.mAttributeModel = attributeModel;
+        checkAndExpandPlaceHolder();
+    }
+
+    public static XmlAttribute createXmlAttribute(XmlElement ownerElement, Attr attribute) {
+        NodeName nodeName;
+        if (attribute.getNamespaceURI() != null) {
+            nodeName =
+                    XmlNode.fromNSName(
+                            attribute.getNamespaceURI(),
+                            attribute.getPrefix(),
+                            attribute.getLocalName());
+        } else {
+            nodeName = XmlNode.fromXmlName(attribute.getName());
+        }
+        return new XmlAttribute(
+                ownerElement, attribute, ownerElement.getType().getAttributeModel(nodeName));
+    }
+
+    private void checkAndExpandPlaceHolder() {
         if (mAttributeModel != null && mAttributeModel.isPackageDependent()) {
             String value = mXml.getValue();
             if (value == null || value.isEmpty()) return;
@@ -127,6 +146,10 @@ public class XmlAttribute extends XmlNode {
         return mXml;
     }
 
+    public void setValue(String value) {
+        getOwnerElement().setAttribute(this, value);
+    }
+
     @Nullable
     public AttributeModel getModel() {
         return mAttributeModel;
@@ -174,7 +197,7 @@ public class XmlAttribute extends XmlNode {
         }
 
         // ok merge it in the higher priority element.
-        getName().addToNode(higherPriorityElement.getXml(), mergedValue);
+        higherPriorityElement.addAttribute(this, mergedValue);
 
         // and record the action.
         mergingReport.getActionRecorder().recordAttributeAction(
@@ -227,7 +250,7 @@ public class XmlAttribute extends XmlNode {
             String mergedValue = mAttributeModel.getMergingPolicy()
                     .merge(higherPriority.getValue(), getValue());
             if (mergedValue != null) {
-                higherPriority.mXml.setValue(mergedValue);
+                higherPriority.setValue(mergedValue);
             } else {
                 if (automaticallyRejected(report, higherPriority)) { // Optional feature
                     return;
@@ -298,7 +321,7 @@ public class XmlAttribute extends XmlNode {
         @NonNull ImmutableSet.Builder<String> targetValues = ImmutableSet.builder();
         targetValues.addAll(splitter.split(higherPriority.getValue()));
         targetValues.addAll(splitter.split(getValue()));
-        higherPriority.getXml().setValue(Joiner.on(',').join(targetValues.build()));
+        higherPriority.setValue(Joiner.on(',').join(targetValues.build()));
     }
 
     /**
@@ -381,7 +404,7 @@ public class XmlAttribute extends XmlNode {
         if (mergedValue == null) {
             addIllegalImplicitOverrideMessage(mergingReport, mAttributeModel, implicitNode);
         } else {
-            getXml().setValue(mergedValue);
+            setValue(mergedValue);
             mergingReport.getActionRecorder().recordAttributeAction(
                     this,
                     Actions.ActionType.MERGED,

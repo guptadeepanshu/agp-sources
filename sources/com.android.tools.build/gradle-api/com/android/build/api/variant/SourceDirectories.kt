@@ -16,7 +16,6 @@
 
 package com.android.build.api.variant
 
-import org.gradle.api.Incubating
 import org.gradle.api.Named
 import org.gradle.api.Task
 import org.gradle.api.file.Directory
@@ -30,7 +29,6 @@ import org.gradle.api.tasks.TaskProvider
  * Adding directories is always added to the "Variant" overlay and will therefore carry the
  * highest possible priority among all directories for the source type.
  */
-@Incubating
 interface SourceDirectories: Named {
     /**
      * Add the output of a custom task to the list of source directories.
@@ -72,10 +70,7 @@ interface SourceDirectories: Named {
      * All folders are considered of the same priority, so if there is a conflict (e.g, two files
      * with the same relative path and name), it will require a resolution step like merging to
      * ensure nothing gets lost.
-     *
-     * since 7.2
      */
-    @Incubating
     interface Flat: SourceDirectories {
 
         /**
@@ -103,7 +98,6 @@ interface SourceDirectories: Named {
      * [Directory].
      *
      */
-    @Incubating
     interface Layered: SourceDirectories {
         /**
          * Get all registered source folders and files as a [List] of [Collection] of [Directory].

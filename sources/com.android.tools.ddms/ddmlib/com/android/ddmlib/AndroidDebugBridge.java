@@ -24,11 +24,13 @@ import com.android.ddmlib.clientmanager.ClientManager;
 import com.android.ddmlib.internal.ClientImpl;
 import com.android.ddmlib.internal.DeviceMonitor;
 import com.android.ddmlib.internal.MonitorThread;
+import com.android.ddmlib.internal.jdwp.chunkhandler.HandleARTT;
 import com.android.ddmlib.internal.jdwp.chunkhandler.HandleAppName;
 import com.android.ddmlib.internal.jdwp.chunkhandler.HandleHeap;
 import com.android.ddmlib.internal.jdwp.chunkhandler.HandleHello;
 import com.android.ddmlib.internal.jdwp.chunkhandler.HandleNativeHeap;
 import com.android.ddmlib.internal.jdwp.chunkhandler.HandleProfiling;
+import com.android.ddmlib.internal.jdwp.chunkhandler.HandleSTAG;
 import com.android.ddmlib.internal.jdwp.chunkhandler.HandleTest;
 import com.android.ddmlib.internal.jdwp.chunkhandler.HandleThread;
 import com.android.ddmlib.internal.jdwp.chunkhandler.HandleViewDebug;
@@ -87,7 +89,7 @@ public class AndroidDebugBridge {
     private static final String SERVER_PORT_ENV_VAR = "ANDROID_ADB_SERVER_PORT"; //$NON-NLS-1$
 
     // Where to find the ADB bridge.
-    static final int DEFAULT_ADB_PORT = 5037;
+    public static final int DEFAULT_ADB_PORT = 5037;
 
     // ADB exit value when no Universal C Runtime on Windows
     private static final int STATUS_DLL_NOT_FOUND = (int) (long) 0xc0000135;
@@ -307,6 +309,8 @@ public class AndroidDebugBridge {
         HandleProfiling.register(monitorThread);
         HandleNativeHeap.register(monitorThread);
         HandleViewDebug.register(monitorThread);
+        HandleARTT.register(monitorThread);
+        HandleSTAG.register(monitorThread);
     }
 
     /**

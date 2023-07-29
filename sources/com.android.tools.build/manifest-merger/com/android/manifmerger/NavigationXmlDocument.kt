@@ -87,7 +87,6 @@ class NavigationXmlDocument private constructor(
             it.name
         } ?: sourceFile!!.description
 
-
     /**
      * Recursive search for navigation xml IDs
      *
@@ -141,11 +140,23 @@ class NavigationXmlDocument private constructor(
                     namedNodeMap
                             ?.getNamedItemNS(
                                     SdkConstants.ANDROID_URI, SdkConstants.ATTR_AUTO_VERIFY)
+            val action =
+                    namedNodeMap?.getNamedItemNS(
+                            SdkConstants.AUTO_URI, SdkConstants.ATTR_DEEPLINK_ACTION)?.nodeValue
+            val mimeType =
+                    namedNodeMap?.getNamedItemNS(
+                            SdkConstants.AUTO_URI, SdkConstants.ATTR_DEEPLINK_MIMETYPE)?.nodeValue
+            if (mimeType != null && mimeType.isBlank()) {
+                throw NavigationXmlDocumentException(
+                        "Navigation XML document <deepLink> element " +
+                                "${SdkConstants.ATTR_DEEPLINK_MIMETYPE} cannot be blank.")
+            }
             val autoVerify = autoVerifyAttribute?.nodeValue == "true"
             val sourceFilePosition =
                     SourceFilePosition(sourceFile!!, PositionXmlParser.getPosition(element))
             if (deepLinkUri != null) {
-                deepLinks.add(DeepLink.fromUri(deepLinkUri, sourceFilePosition, autoVerify))
+                deepLinks.add(DeepLink.fromUri(
+                        deepLinkUri, sourceFilePosition, autoVerify, action, mimeType))
             } else {
                 val nsUriPrefix =
                         XmlUtils.lookupNamespacePrefix(element, SdkConstants.AUTO_URI, false)
@@ -177,7 +188,9 @@ private fun processDeepLinks(
             deepLink.path.performPlaceholderSubstitution(manifestPlaceHolders),
             deepLink.query,
             if (useUnknownSourceFilePosition) UNKNOWN else deepLink.sourceFilePosition,
-            deepLink.isAutoVerify
+            deepLink.isAutoVerify,
+            deepLink.action,
+            deepLink.mimeType
         )
     }
 }

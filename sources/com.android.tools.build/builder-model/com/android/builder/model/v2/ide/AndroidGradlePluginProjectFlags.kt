@@ -47,7 +47,8 @@ interface AndroidGradlePluginProjectFlags {
          *  3. The AGP version used supports this model and this flag but did not explicitly set a
          *     value for it.
          */
-        private val legacyDefault: Boolean) {
+        val legacyDefault: Boolean) {
+
         /**
          * Whether the R class in applications and dynamic features has constant IDs.
          *
@@ -82,15 +83,20 @@ interface AndroidGradlePluginProjectFlags {
         /** Whether the Android Test Platform is enabled for this project.  */
         UNIFIED_TEST_PLATFORM(false),
 
+        /** Whether AndroidX libraries should be used instead of legacy support libraries. */
+        USE_ANDROID_X(false),
+
         ;
 
         /**
          * Returns the value of this flag for the given gradle project flags.
          *
-         * If the value is not supplied by the build system, returns the legacyDefault.
+         * If the value is not supplied by the build system, return [fallbackValue] (e.g.,
+         * [fallbackValue] could be read through a `ToolingModelBuilder` during sync). If
+         * [fallbackValue] is also not provided, return [legacyDefault].
          */
-        fun getValue(flags: AndroidGradlePluginProjectFlags): Boolean {
-            return flags.getFlagValue(name) ?: legacyDefault
+        fun getValue(flags: AndroidGradlePluginProjectFlags, fallbackValue: Boolean? = null): Boolean {
+            return flags.getFlagValue(name) ?: fallbackValue ?: legacyDefault
         }
 
     }

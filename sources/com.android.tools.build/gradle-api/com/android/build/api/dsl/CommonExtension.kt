@@ -30,7 +30,8 @@ interface CommonExtension<
         BuildFeaturesT : BuildFeatures,
         BuildTypeT : BuildType,
         DefaultConfigT : DefaultConfig,
-        ProductFlavorT : ProductFlavor> {
+        ProductFlavorT : ProductFlavor,
+        AndroidResourcesT : AndroidResources> {
 
     /**
      * Specifies options for the Android Asset Packaging Tool (AAPT).
@@ -38,7 +39,6 @@ interface CommonExtension<
      * For more information about the properties you can configure in this block, see [AaptOptions].
      */
     @Suppress("DEPRECATION")
-    @get:Incubating
     @Deprecated("Replaced by ", replaceWith = ReplaceWith("androidResources"))
     val aaptOptions: AaptOptions
 
@@ -48,7 +48,6 @@ interface CommonExtension<
      * For more information about the properties you can configure in this block, see [AaptOptions].
      */
     @Suppress("DEPRECATION")
-    @Incubating
     @Deprecated("Replaced by ", replaceWith = ReplaceWith("androidResources"))
     fun aaptOptions(action: AaptOptions.() -> Unit)
 
@@ -57,14 +56,14 @@ interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [AndroidResources].
      */
-    val androidResources: AndroidResources
+    val androidResources: AndroidResourcesT
 
     /**
      * Specifies options related to the processing of Android Resources.
      *
      * For more information about the properties you can configure in this block, see [AndroidResources].
      */
-    fun androidResources(action: AndroidResources.() -> Unit)
+    fun androidResources(action: AndroidResourcesT.() -> Unit)
 
     /**
      * Specifies options for the
@@ -125,13 +124,11 @@ interface CommonExtension<
     /**
      * A list of build features that can be enabled or disabled on the Android Project.
      */
-    @get:Incubating
     val buildFeatures: BuildFeaturesT
 
     /**
      * A list of build features that can be enabled or disabled on the Android Project.
      */
-    @Incubating
     fun buildFeatures(action: BuildFeaturesT.() -> Unit)
 
     /**
@@ -533,7 +530,6 @@ interface CommonExtension<
      * Note that the Android plugin uses its own implementation of source sets. For more
      * information about the properties you can configure in this block, see [AndroidSourceSet].
      */
-    @get:Incubating
     val sourceSets: NamedDomainObjectContainer<out AndroidSourceSet>
 
     /**
@@ -542,7 +538,6 @@ interface CommonExtension<
      * Note that the Android plugin uses its own implementation of source sets. For more
      * information about the properties you can configure in this block, see [AndroidSourceSet].
      */
-    @Incubating
     fun sourceSets(action: NamedDomainObjectContainer<out AndroidSourceSet>.() -> Unit)
 
     /**
@@ -612,10 +607,8 @@ interface CommonExtension<
      * To learn more, read
      * [Combine multiple flavors](https://developer.android.com/studio/build/build-variants.html#flavor-dimensions).
      */
-    @get:Incubating
     val flavorDimensions: MutableList<String>
 
-    @Incubating
     @Deprecated("Replaced by flavorDimensions property")
     fun flavorDimensions(vararg dimensions: String)
 
@@ -638,8 +631,6 @@ interface CommonExtension<
      * resourcePrefix 'mylib_'
      * ```
      */
-    @get:Incubating
-    @set:Incubating
     var resourcePrefix: String?
 
     /**
@@ -675,8 +666,6 @@ interface CommonExtension<
      *
      * This can be set on all Gradle projects with [com.android.build.api.dsl.SettingsExtension.ndkVersion]
      */
-    @get:Incubating
-    @set:Incubating
     var ndkVersion: String?
 
     /**
@@ -698,8 +687,6 @@ interface CommonExtension<
      *
      * This can be set on all Gradle projects with [com.android.build.api.dsl.SettingsExtension.ndkPath]
      */
-    @get:Incubating
-    @set:Incubating
     var ndkPath: String?
 
     /**
@@ -729,11 +716,8 @@ interface CommonExtension<
      *
      * This can be set on all Gradle projects with [com.android.build.api.dsl.SettingsExtension.buildToolsVersion]
      */
-    @get:Incubating
-    @set:Incubating
     var buildToolsVersion: String
 
-    @Incubating
     @Deprecated("Replaced by buildToolsVersion property")
     fun buildToolsVersion(buildToolsVersion: String)
 
@@ -760,8 +744,8 @@ interface CommonExtension<
      *
      * @param name the name of the library.
      */
-    @Incubating
     fun useLibrary(name: String)
+
     /**
      * Includes the specified library to the classpath.
      *
@@ -787,10 +771,8 @@ interface CommonExtension<
      * @param required if using the library requires a manifest entry, the entry will indicate that
      *     the library is not required.
      */
-    @Incubating
     fun useLibrary(name: String, required: Boolean)
 
-    @get:Incubating
     @Deprecated(
         message = "This API will be removed in AGP 7.0, replaced with AndroidComponents::sdkComponents")
     val sdkComponents: SdkComponents
@@ -849,11 +831,9 @@ interface CommonExtension<
      */
     fun compileSdkAddon(vendor: String, name: String, version: Int)
 
-    @Incubating
     @Deprecated("Replaced by compileSdk")
     fun compileSdkVersion(apiLevel: Int)
 
-    @Incubating
     @Deprecated("Replaced by compileSdkPreview")
     fun compileSdkVersion(version: String)
 
@@ -863,7 +843,6 @@ interface CommonExtension<
      */
     var namespace: String?
 
-    @Incubating
     fun getDefaultProguardFile(name: String): File
 
     /**

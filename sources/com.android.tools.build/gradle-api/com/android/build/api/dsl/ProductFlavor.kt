@@ -49,7 +49,7 @@ import org.gradle.api.plugins.ExtensionAware
  * If the plugin creates certain build variants that you don't want, you can
  * [filter variants using `android.variantFilter`](https://developer.android.com/studio/build/build-variants.html#filter-variants).
  */
-interface ProductFlavor : Named, BaseFlavor, ExtensionAware, HasInitWith<BaseFlavor> {
+interface ProductFlavor : Named, BaseFlavor, ExtensionAware {
 
     /**
      * Specifies the flavor dimension that this product flavor belongs to.

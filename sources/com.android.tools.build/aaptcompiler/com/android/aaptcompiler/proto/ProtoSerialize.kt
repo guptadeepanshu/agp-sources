@@ -361,6 +361,17 @@ fun serializeConfigToPb(
       else -> ConfigurationOuterClass.Configuration.Navigation.NAVIGATION_UNSET
     })
 
+  configBuilder.setGrammaticalGender(
+    when (config.grammaticalInflection) {
+      ResTableConfig.GRAMMATICAL_GENDER.NEUTER ->
+        ConfigurationOuterClass.Configuration.GrammaticalGender.GRAM_GENDER_NEUTER
+      ResTableConfig.GRAMMATICAL_GENDER.FEMININE ->
+        ConfigurationOuterClass.Configuration.GrammaticalGender.GRAM_GENDER_FEMININE
+      ResTableConfig.GRAMMATICAL_GENDER.MASCULINE ->
+        ConfigurationOuterClass.Configuration.GrammaticalGender.GRAM_GENDER_MASCULINE
+      else -> ConfigurationOuterClass.Configuration.GrammaticalGender.GRAM_GENDER_USET
+    })
+
   configBuilder.setSdkVersion(config.sdkVersion.toInt() and 0xffff)
 
   if (product != null) {

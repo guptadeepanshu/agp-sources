@@ -82,8 +82,10 @@ public class ElementsTrimmer {
 
             boolean removeElement;
 
-            Attr requiredAttribute = glEsVersionDeclaration.getValue().getXml().getAttributeNodeNS(
-                    ANDROID_URI, AndroidManifest.ATTRIBUTE_REQUIRED);
+            Attr requiredAttribute =
+                    glEsVersionDeclaration
+                            .getValue()
+                            .getAttributeNodeNS(ANDROID_URI, AndroidManifest.ATTRIBUTE_REQUIRED);
 
             boolean isRequired = requiredAttribute == null ||
                     Boolean.parseBoolean(requiredAttribute.getValue());
@@ -112,26 +114,27 @@ public class ElementsTrimmer {
             if (removeElement) {
                 // if the node only contains glEsVersion, then remove the entire node,
                 // if it also contains android:name, just remove the glEsVersion attribute
-                if (glEsVersionDeclaration.getValue().getXml().getAttributeNodeNS(ANDROID_URI,
-                        SdkConstants.ATTR_NAME) != null) {
+                if (glEsVersionDeclaration
+                                .getValue()
+                                .getAttributeNodeNS(ANDROID_URI, SdkConstants.ATTR_NAME)
+                        != null) {
+                    XmlAttribute glEsVersionAttribute =
+                            glEsVersionDeclaration
+                                    .getValue()
+                                    .getAttribute(
+                                            XmlNode.fromXmlName("android:" + ATTRIBUTE_GLESVERSION))
+                                    .get();
                     glEsVersionDeclaration
                             .getValue()
-                            .getXml()
                             .removeAttributeNS(ANDROID_URI, ATTRIBUTE_GLESVERSION);
                     mergingReport
                             .getActionRecorder()
                             .recordAttributeAction(
-                                    glEsVersionDeclaration
-                                            .getValue()
-                                            .getAttribute(
-                                                    XmlNode.fromXmlName(
-                                                            "android:" + ATTRIBUTE_GLESVERSION))
-                                            .get(),
+                                    glEsVersionAttribute,
                                     Actions.ActionType.REJECTED,
                                     null /* attributeOperationType */);
                 } else {
-                    xmlDocument.getRootNode().getXml().removeChild(
-                            glEsVersionDeclaration.getValue().getXml());
+                    xmlDocument.getRootNode().removeChild(glEsVersionDeclaration.getValue());
                     mergingReport.getActionRecorder().recordNodeAction(
                             glEsVersionDeclaration.getValue(),
                             Actions.ActionType.REJECTED);
@@ -145,8 +148,7 @@ public class ElementsTrimmer {
 
     private static Integer getGlEsVersion(
             @NonNull XmlElement xmlElement, MergingReport.Builder mergingReport) {
-        Attr glEsVersion =
-                xmlElement.getXml().getAttributeNodeNS(ANDROID_URI, ATTRIBUTE_GLESVERSION);
+        Attr glEsVersion = xmlElement.getAttributeNodeNS(ANDROID_URI, ATTRIBUTE_GLESVERSION);
         if (glEsVersion == null) {
             return null;
         }

@@ -58,14 +58,26 @@ public class ToolsInstructionsCleaner {
      */
     public static Optional<Document> cleanToolsReferences(
             @NonNull ManifestMerger2.MergeType mergeType,
-            @NonNull Document document,
+            @NonNull XmlDocument document,
             @NonNull ILogger logger) {
 
         Preconditions.checkNotNull(document);
         Preconditions.checkNotNull(logger);
         MergingReport.Result result =
-                cleanToolsReferences(mergeType, document.getDocumentElement(), logger).getFirst();
-        return result == MergingReport.Result.SUCCESS ? Optional.of(document) : Optional.absent();
+                cleanToolsReferences(mergeType, document.getXml().getDocumentElement(), logger)
+                        .getFirst();
+        if (result == MergingReport.Result.SUCCESS) {
+            // After cleaning tools references, the DOM is modified which requires that we reparse
+            // the document to ensure that DOM and wrapper objects are not out of sync.
+            // TODO: Current implementation of clean tools references require access to the parent
+            //  node. Though DOM Element object provides the reference to parent, XmlElement object
+            //  that wraps Element does have reference to its parent XmlElement. In future, we can
+            //  further optimize by removing the root node resetting by removing direct DOM
+            // manipulation.
+            document.resetRootNode();
+            return Optional.of(document.getXml());
+        }
+        return Optional.absent();
     }
 
     @NonNull

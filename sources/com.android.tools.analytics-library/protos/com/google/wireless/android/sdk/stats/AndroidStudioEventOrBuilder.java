@@ -843,7 +843,9 @@ public interface AndroidStudioEventOrBuilder extends
   /**
    * <pre>
    * Client-side salted (rotating every 532 days), sha256 of the project id.
-   * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
+   * set when kind = PROJECT_STRUCTURE_*
+   *       or kind = APK_ANALYZER_STATS
+   *       or kind = TSDKUA_EVENT
    * </pre>
    *
    * <code>optional string project_id = 31;</code>
@@ -853,7 +855,9 @@ public interface AndroidStudioEventOrBuilder extends
   /**
    * <pre>
    * Client-side salted (rotating every 532 days), sha256 of the project id.
-   * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
+   * set when kind = PROJECT_STRUCTURE_*
+   *       or kind = APK_ANALYZER_STATS
+   *       or kind = TSDKUA_EVENT
    * </pre>
    *
    * <code>optional string project_id = 31;</code>
@@ -863,7 +867,9 @@ public interface AndroidStudioEventOrBuilder extends
   /**
    * <pre>
    * Client-side salted (rotating every 532 days), sha256 of the project id.
-   * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
+   * set when kind = PROJECT_STRUCTURE_*
+   *       or kind = APK_ANALYZER_STATS
+   *       or kind = TSDKUA_EVENT
    * </pre>
    *
    * <code>optional string project_id = 31;</code>
@@ -4315,4 +4321,490 @@ public interface AndroidStudioEventOrBuilder extends
    * <code>optional .android_studio.ManifestMergerStats manifest_merger_stats = 153;</code>
    */
   com.google.wireless.android.sdk.stats.ManifestMergerStatsOrBuilder getManifestMergerStatsOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = THREADING_AGENT_STATS
+   * </pre>
+   *
+   * <code>optional .android_studio.ThreadingAgentUsageEvent threading_agent_usage_event = 154;</code>
+   * @return Whether the threadingAgentUsageEvent field is set.
+   */
+  boolean hasThreadingAgentUsageEvent();
+  /**
+   * <pre>
+   * set when kind = THREADING_AGENT_STATS
+   * </pre>
+   *
+   * <code>optional .android_studio.ThreadingAgentUsageEvent threading_agent_usage_event = 154;</code>
+   * @return The threadingAgentUsageEvent.
+   */
+  com.google.wireless.android.sdk.stats.ThreadingAgentUsageEvent getThreadingAgentUsageEvent();
+  /**
+   * <pre>
+   * set when kind = THREADING_AGENT_STATS
+   * </pre>
+   *
+   * <code>optional .android_studio.ThreadingAgentUsageEvent threading_agent_usage_event = 154;</code>
+   */
+  com.google.wireless.android.sdk.stats.ThreadingAgentUsageEventOrBuilder getThreadingAgentUsageEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = PROJECT_VIEW_SELECTION_CHANGE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.ProjectViewSelectionChangeEvent project_view_selection_change_event = 155;</code>
+   * @return Whether the projectViewSelectionChangeEvent field is set.
+   */
+  boolean hasProjectViewSelectionChangeEvent();
+  /**
+   * <pre>
+   * set when kind = PROJECT_VIEW_SELECTION_CHANGE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.ProjectViewSelectionChangeEvent project_view_selection_change_event = 155;</code>
+   * @return The projectViewSelectionChangeEvent.
+   */
+  com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent getProjectViewSelectionChangeEvent();
+  /**
+   * <pre>
+   * set when kind = PROJECT_VIEW_SELECTION_CHANGE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.ProjectViewSelectionChangeEvent project_view_selection_change_event = 155;</code>
+   */
+  com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEventOrBuilder getProjectViewSelectionChangeEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = HEAP_REPORT_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.HeapReportEvent heap_report_event = 156;</code>
+   * @return Whether the heapReportEvent field is set.
+   */
+  boolean hasHeapReportEvent();
+  /**
+   * <pre>
+   * set when kind = HEAP_REPORT_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.HeapReportEvent heap_report_event = 156;</code>
+   * @return The heapReportEvent.
+   */
+  com.google.wireless.android.sdk.stats.HeapReportEvent getHeapReportEvent();
+  /**
+   * <pre>
+   * set when kind = HEAP_REPORT_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.HeapReportEvent heap_report_event = 156;</code>
+   */
+  com.google.wireless.android.sdk.stats.HeapReportEventOrBuilder getHeapReportEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = CREATE_DIAGNOSTIC_REPORT_ACTION
+   * </pre>
+   *
+   * <code>optional .android_studio.CreateDiagnosticReportAction create_diagnostic_report_action_event = 157;</code>
+   * @return Whether the createDiagnosticReportActionEvent field is set.
+   */
+  boolean hasCreateDiagnosticReportActionEvent();
+  /**
+   * <pre>
+   * set when kind = CREATE_DIAGNOSTIC_REPORT_ACTION
+   * </pre>
+   *
+   * <code>optional .android_studio.CreateDiagnosticReportAction create_diagnostic_report_action_event = 157;</code>
+   * @return The createDiagnosticReportActionEvent.
+   */
+  com.google.wireless.android.sdk.stats.CreateDiagnosticReportAction getCreateDiagnosticReportActionEvent();
+  /**
+   * <pre>
+   * set when kind = CREATE_DIAGNOSTIC_REPORT_ACTION
+   * </pre>
+   *
+   * <code>optional .android_studio.CreateDiagnosticReportAction create_diagnostic_report_action_event = 157;</code>
+   */
+  com.google.wireless.android.sdk.stats.CreateDiagnosticReportActionOrBuilder getCreateDiagnosticReportActionEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = DIRECT_ACCESS_USAGE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.DirectAccessUsageEvent direct_access_usage_event = 158;</code>
+   * @return Whether the directAccessUsageEvent field is set.
+   */
+  boolean hasDirectAccessUsageEvent();
+  /**
+   * <pre>
+   * set when kind = DIRECT_ACCESS_USAGE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.DirectAccessUsageEvent direct_access_usage_event = 158;</code>
+   * @return The directAccessUsageEvent.
+   */
+  com.google.wireless.android.sdk.stats.DirectAccessUsageEvent getDirectAccessUsageEvent();
+  /**
+   * <pre>
+   * set when kind = DIRECT_ACCESS_USAGE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.DirectAccessUsageEvent direct_access_usage_event = 158;</code>
+   */
+  com.google.wireless.android.sdk.stats.DirectAccessUsageEventOrBuilder getDirectAccessUsageEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = SAFE_MODE_STATS_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SafeModeStatsEvent safe_mode_stats_event = 159;</code>
+   * @return Whether the safeModeStatsEvent field is set.
+   */
+  boolean hasSafeModeStatsEvent();
+  /**
+   * <pre>
+   * set when kind = SAFE_MODE_STATS_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SafeModeStatsEvent safe_mode_stats_event = 159;</code>
+   * @return The safeModeStatsEvent.
+   */
+  com.google.wireless.android.sdk.stats.SafeModeStatsEvent getSafeModeStatsEvent();
+  /**
+   * <pre>
+   * set when kind = SAFE_MODE_STATS_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SafeModeStatsEvent safe_mode_stats_event = 159;</code>
+   */
+  com.google.wireless.android.sdk.stats.SafeModeStatsEventOrBuilder getSafeModeStatsEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = TSDKUA_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.TSdkUAEvent tsdk_ua_event = 160;</code>
+   * @return Whether the tsdkUaEvent field is set.
+   */
+  boolean hasTsdkUaEvent();
+  /**
+   * <pre>
+   * set when kind = TSDKUA_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.TSdkUAEvent tsdk_ua_event = 160;</code>
+   * @return The tsdkUaEvent.
+   */
+  com.google.wireless.android.sdk.stats.TSdkUAEvent getTsdkUaEvent();
+  /**
+   * <pre>
+   * set when kind = TSDKUA_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.TSdkUAEvent tsdk_ua_event = 160;</code>
+   */
+  com.google.wireless.android.sdk.stats.TSdkUAEventOrBuilder getTsdkUaEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = INTELLIJ_NEW_UI_STATE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.IntelliJNewUIState intellij_new_ui_state_event = 161;</code>
+   * @return Whether the intellijNewUiStateEvent field is set.
+   */
+  boolean hasIntellijNewUiStateEvent();
+  /**
+   * <pre>
+   * set when kind = INTELLIJ_NEW_UI_STATE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.IntelliJNewUIState intellij_new_ui_state_event = 161;</code>
+   * @return The intellijNewUiStateEvent.
+   */
+  com.google.wireless.android.sdk.stats.IntelliJNewUIState getIntellijNewUiStateEvent();
+  /**
+   * <pre>
+   * set when kind = INTELLIJ_NEW_UI_STATE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.IntelliJNewUIState intellij_new_ui_state_event = 161;</code>
+   */
+  com.google.wireless.android.sdk.stats.IntelliJNewUIStateOrBuilder getIntellijNewUiStateEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = KOTLIN_GRADLE_PERFORMANCE
+   * </pre>
+   *
+   * <code>optional .android_studio.KotlinGradlePerformance kotlin_gradle_performance_event = 162;</code>
+   * @return Whether the kotlinGradlePerformanceEvent field is set.
+   */
+  boolean hasKotlinGradlePerformanceEvent();
+  /**
+   * <pre>
+   * set when kind = KOTLIN_GRADLE_PERFORMANCE
+   * </pre>
+   *
+   * <code>optional .android_studio.KotlinGradlePerformance kotlin_gradle_performance_event = 162;</code>
+   * @return The kotlinGradlePerformanceEvent.
+   */
+  com.google.wireless.android.sdk.stats.KotlinGradlePerformance getKotlinGradlePerformanceEvent();
+  /**
+   * <pre>
+   * set when kind = KOTLIN_GRADLE_PERFORMANCE
+   * </pre>
+   *
+   * <code>optional .android_studio.KotlinGradlePerformance kotlin_gradle_performance_event = 162;</code>
+   */
+  com.google.wireless.android.sdk.stats.KotlinGradlePerformanceOrBuilder getKotlinGradlePerformanceEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = BUILD_OUTPUT_DOWNLOADS_INFO_USER_INTERACTION
+   * </pre>
+   *
+   * <code>optional .android_studio.BuildOutputDownloadsInfoEvent build_output_downloads_info_event = 163;</code>
+   * @return Whether the buildOutputDownloadsInfoEvent field is set.
+   */
+  boolean hasBuildOutputDownloadsInfoEvent();
+  /**
+   * <pre>
+   * set when kind = BUILD_OUTPUT_DOWNLOADS_INFO_USER_INTERACTION
+   * </pre>
+   *
+   * <code>optional .android_studio.BuildOutputDownloadsInfoEvent build_output_downloads_info_event = 163;</code>
+   * @return The buildOutputDownloadsInfoEvent.
+   */
+  com.google.wireless.android.sdk.stats.BuildOutputDownloadsInfoEvent getBuildOutputDownloadsInfoEvent();
+  /**
+   * <pre>
+   * set when kind = BUILD_OUTPUT_DOWNLOADS_INFO_USER_INTERACTION
+   * </pre>
+   *
+   * <code>optional .android_studio.BuildOutputDownloadsInfoEvent build_output_downloads_info_event = 163;</code>
+   */
+  com.google.wireless.android.sdk.stats.BuildOutputDownloadsInfoEventOrBuilder getBuildOutputDownloadsInfoEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = DEVICE_MIRRORING_ABNORMAL_AGENT_TERMINATION
+   * </pre>
+   *
+   * <code>optional .android_studio.DeviceMirroringAbnormalAgentTermination device_mirroring_abnormal_agent_termination = 164;</code>
+   * @return Whether the deviceMirroringAbnormalAgentTermination field is set.
+   */
+  boolean hasDeviceMirroringAbnormalAgentTermination();
+  /**
+   * <pre>
+   * set when kind = DEVICE_MIRRORING_ABNORMAL_AGENT_TERMINATION
+   * </pre>
+   *
+   * <code>optional .android_studio.DeviceMirroringAbnormalAgentTermination device_mirroring_abnormal_agent_termination = 164;</code>
+   * @return The deviceMirroringAbnormalAgentTermination.
+   */
+  com.google.wireless.android.sdk.stats.DeviceMirroringAbnormalAgentTermination getDeviceMirroringAbnormalAgentTermination();
+  /**
+   * <pre>
+   * set when kind = DEVICE_MIRRORING_ABNORMAL_AGENT_TERMINATION
+   * </pre>
+   *
+   * <code>optional .android_studio.DeviceMirroringAbnormalAgentTermination device_mirroring_abnormal_agent_termination = 164;</code>
+   */
+  com.google.wireless.android.sdk.stats.DeviceMirroringAbnormalAgentTerminationOrBuilder getDeviceMirroringAbnormalAgentTerminationOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = SYSTEM_HEALTH_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SystemHealthEvent system_health_event = 165;</code>
+   * @return Whether the systemHealthEvent field is set.
+   */
+  boolean hasSystemHealthEvent();
+  /**
+   * <pre>
+   * set when kind = SYSTEM_HEALTH_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SystemHealthEvent system_health_event = 165;</code>
+   * @return The systemHealthEvent.
+   */
+  com.google.wireless.android.sdk.stats.SystemHealthEvent getSystemHealthEvent();
+  /**
+   * <pre>
+   * set when kind = SYSTEM_HEALTH_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SystemHealthEvent system_health_event = 165;</code>
+   */
+  com.google.wireless.android.sdk.stats.SystemHealthEventOrBuilder getSystemHealthEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = COMPOSE_PREVIEW_CANVAS_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.ComposePreviewCanvasEvent compose_preview_canvas_event = 166;</code>
+   * @return Whether the composePreviewCanvasEvent field is set.
+   */
+  boolean hasComposePreviewCanvasEvent();
+  /**
+   * <pre>
+   * set when kind = COMPOSE_PREVIEW_CANVAS_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.ComposePreviewCanvasEvent compose_preview_canvas_event = 166;</code>
+   * @return The composePreviewCanvasEvent.
+   */
+  com.google.wireless.android.sdk.stats.ComposePreviewCanvasEvent getComposePreviewCanvasEvent();
+  /**
+   * <pre>
+   * set when kind = COMPOSE_PREVIEW_CANVAS_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.ComposePreviewCanvasEvent compose_preview_canvas_event = 166;</code>
+   */
+  com.google.wireless.android.sdk.stats.ComposePreviewCanvasEventOrBuilder getComposePreviewCanvasEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = SML_COMPLETION_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlCompletionEvent sml_completion_event = 167;</code>
+   * @return Whether the smlCompletionEvent field is set.
+   */
+  boolean hasSmlCompletionEvent();
+  /**
+   * <pre>
+   * set when kind = SML_COMPLETION_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlCompletionEvent sml_completion_event = 167;</code>
+   * @return The smlCompletionEvent.
+   */
+  com.google.wireless.android.sdk.stats.SmlCompletionEvent getSmlCompletionEvent();
+  /**
+   * <pre>
+   * set when kind = SML_COMPLETION_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlCompletionEvent sml_completion_event = 167;</code>
+   */
+  com.google.wireless.android.sdk.stats.SmlCompletionEventOrBuilder getSmlCompletionEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = SML_CODE_TRANSFORMATION_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlTransformEvent sml_transform_event = 168;</code>
+   * @return Whether the smlTransformEvent field is set.
+   */
+  boolean hasSmlTransformEvent();
+  /**
+   * <pre>
+   * set when kind = SML_CODE_TRANSFORMATION_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlTransformEvent sml_transform_event = 168;</code>
+   * @return The smlTransformEvent.
+   */
+  com.google.wireless.android.sdk.stats.SmlTransformEvent getSmlTransformEvent();
+  /**
+   * <pre>
+   * set when kind = SML_CODE_TRANSFORMATION_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlTransformEvent sml_transform_event = 168;</code>
+   */
+  com.google.wireless.android.sdk.stats.SmlTransformEventOrBuilder getSmlTransformEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = SML_CHATBOT_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlChatBotEvent sml_chat_bot_event = 169;</code>
+   * @return Whether the smlChatBotEvent field is set.
+   */
+  boolean hasSmlChatBotEvent();
+  /**
+   * <pre>
+   * set when kind = SML_CHATBOT_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlChatBotEvent sml_chat_bot_event = 169;</code>
+   * @return The smlChatBotEvent.
+   */
+  com.google.wireless.android.sdk.stats.SmlChatBotEvent getSmlChatBotEvent();
+  /**
+   * <pre>
+   * set when kind = SML_CHATBOT_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlChatBotEvent sml_chat_bot_event = 169;</code>
+   */
+  com.google.wireless.android.sdk.stats.SmlChatBotEventOrBuilder getSmlChatBotEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = SML_CONFIGURATION_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlConfigurationEvent sml_configuration_event = 170;</code>
+   * @return Whether the smlConfigurationEvent field is set.
+   */
+  boolean hasSmlConfigurationEvent();
+  /**
+   * <pre>
+   * set when kind = SML_CONFIGURATION_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlConfigurationEvent sml_configuration_event = 170;</code>
+   * @return The smlConfigurationEvent.
+   */
+  com.google.wireless.android.sdk.stats.SmlConfigurationEvent getSmlConfigurationEvent();
+  /**
+   * <pre>
+   * set when kind = SML_CONFIGURATION_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlConfigurationEvent sml_configuration_event = 170;</code>
+   */
+  com.google.wireless.android.sdk.stats.SmlConfigurationEventOrBuilder getSmlConfigurationEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = KOTLIN_SUPPORT_DECLINED
+   * </pre>
+   *
+   * <code>optional .android_studio.KotlinSupportDeclined kotlin_support_declined = 171;</code>
+   * @return Whether the kotlinSupportDeclined field is set.
+   */
+  boolean hasKotlinSupportDeclined();
+  /**
+   * <pre>
+   * set when kind = KOTLIN_SUPPORT_DECLINED
+   * </pre>
+   *
+   * <code>optional .android_studio.KotlinSupportDeclined kotlin_support_declined = 171;</code>
+   * @return The kotlinSupportDeclined.
+   */
+  com.google.wireless.android.sdk.stats.KotlinSupportDeclined getKotlinSupportDeclined();
+  /**
+   * <pre>
+   * set when kind = KOTLIN_SUPPORT_DECLINED
+   * </pre>
+   *
+   * <code>optional .android_studio.KotlinSupportDeclined kotlin_support_declined = 171;</code>
+   */
+  com.google.wireless.android.sdk.stats.KotlinSupportDeclinedOrBuilder getKotlinSupportDeclinedOrBuilder();
 }

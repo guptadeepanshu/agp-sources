@@ -190,6 +190,6 @@ public abstract class AbstractInstaller extends AbstractPackageOperation
     @Override
     @NonNull
     public String getName() {
-        return String.format("Install %1$s (revision: %2$s)", mPackage.getDisplayName(), mPackage.getVersion().toString());
+        return String.format("Install %1$s", mPackage.getDetailedDisplayName());
     }
 }

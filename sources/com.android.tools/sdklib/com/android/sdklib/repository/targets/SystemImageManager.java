@@ -249,4 +249,9 @@ public class SystemImageManager {
         }
         return mPathToImage.get(imageDir);
     }
+
+    public void clearCache() {
+        mPackageToImage = null;
+        mPathToImage = null;
+    }
 }

@@ -145,4 +145,14 @@ sealed class SingleArtifact<T : FileSystemLocation>(
     object APK_FROM_BUNDLE:
         SingleArtifact<RegularFile>(FILE, Category.OUTPUTS),
         Transformable
+
+    /**
+     * The directory containing all the native library (.so) files that will be packaged in the APK,
+     * AAR, or Bundle.
+     *
+     * The native libraries in this directory might undergo further processing (e.g. stripping debug
+     * symbols) before packaging.
+     */
+    @Incubating
+    object MERGED_NATIVE_LIBS: SingleArtifact<Directory>(DIRECTORY)
 }

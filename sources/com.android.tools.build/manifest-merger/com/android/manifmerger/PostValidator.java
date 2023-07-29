@@ -28,9 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * Validator that runs post merging activities and verifies that all "tools:" instructions
@@ -75,9 +73,10 @@ public class PostValidator {
      * attributes requiring the namespace declaration.
      */
     private static void enforceAndroidNamespaceDeclaration(@NonNull XmlDocument xmlDocument) {
-        final Element rootElement = xmlDocument.getRootNode().getXml();
-        XmlUtils.lookupNamespacePrefix(
-                rootElement, SdkConstants.ANDROID_URI, SdkConstants.ANDROID_NS_NAME, true);
+        xmlDocument
+                .getRootNode()
+                .enforceNamespaceDeclaration(
+                        SdkConstants.ANDROID_URI, SdkConstants.ANDROID_NS_NAME);
     }
 
     /**
@@ -94,39 +93,10 @@ public class PostValidator {
         }
         // if we are here, we did not find the namespace declaration, so we add it if
         // tools namespace is used anywhere in the xml document
-        if (elementUsesNamespacePrefix(rootElement, SdkConstants.TOOLS_NS_NAME)) {
+        if (xmlDocument.getRootNode().elementUsesNamespacePrefix(SdkConstants.TOOLS_NS_NAME)) {
             XmlUtils.lookupNamespacePrefix(
                     rootElement, SdkConstants.TOOLS_URI, SdkConstants.TOOLS_NS_NAME, true);
         }
-    }
-
-    /**
-     * Check whether element or any of its descendants have an attribute with the given namespace
-     *
-     * @param element the element under consideration
-     * @param prefix the namespace prefix under consideration
-     * @return true if element or any of its descendants have an attribute with the given namespace,
-     *     false otherwise.
-     */
-    @VisibleForTesting
-    static boolean elementUsesNamespacePrefix(@NonNull Element element, @NonNull String prefix) {
-        NamedNodeMap namedNodeMap = element.getAttributes();
-        for (int i = 0; i < namedNodeMap.getLength(); i++) {
-            Node attribute = namedNodeMap.item(i);
-            if (prefix.equals(attribute.getPrefix())) {
-                return true;
-            }
-        }
-        NodeList childNodes = element.getChildNodes();
-        for (int i = 0; i < childNodes.getLength(); i++) {
-            Node childNode = childNodes.item(i);
-            if (childNode instanceof Element) {
-                if (elementUsesNamespacePrefix((Element) childNode, prefix)) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
 
@@ -190,8 +160,8 @@ public class PostValidator {
 
             if (!comments.isEmpty() && !comments.get(0).equals(nextSibling)) {
                 for (Node comment : comments) {
-                    applicationElement.getXml().removeChild(comment);
-                    applicationElement.getXml().insertBefore(comment, nextSibling);
+                    applicationElement.removeChild(comment);
+                    applicationElement.insertBefore(comment, nextSibling);
                 }
             }
 
@@ -199,8 +169,8 @@ public class PostValidator {
             // target activity.
             if (!activityAlias.getXml().equals(nextSibling)
                     && !(!comments.isEmpty() && comments.get(0).equals(nextSibling))) {
-                applicationElement.getXml().removeChild(activityAlias.getXml());
-                applicationElement.getXml().insertBefore(activityAlias.getXml(), nextSibling);
+                applicationElement.removeChild(activityAlias);
+                applicationElement.insertBefore(activityAlias, nextSibling);
             }
         }
     }
@@ -224,12 +194,12 @@ public class PostValidator {
 
         // move the application's comments if any.
         for (Node comment : comments) {
-            xmlElement.getXml().removeChild(comment);
-            xmlElement.getXml().appendChild(comment);
+            xmlElement.removeChild(comment);
+            xmlElement.appendChild(comment);
         }
         // remove the application element and add it back, it will be automatically placed last.
-        xmlElement.getXml().removeChild(applicationElement.getXml());
-        xmlElement.getXml().appendChild(applicationElement.getXml());
+        xmlElement.removeChild(applicationElement);
+        xmlElement.appendChild(applicationElement);
     }
 
     /**
@@ -257,12 +227,12 @@ public class PostValidator {
 
         // move the application's comments if any.
         for (Node comment : comments) {
-            xmlElement.getXml().removeChild(comment);
-            xmlElement.getXml().insertBefore(comment, firstChild);
+            xmlElement.removeChild(comment);
+            xmlElement.insertBefore(comment, firstChild);
         }
         // remove the application element and add it back, it will be automatically placed last.
-        xmlElement.getXml().removeChild(usesSdk.getXml());
-        xmlElement.getXml().insertBefore(usesSdk.getXml(), firstChild);
+        xmlElement.removeChild(usesSdk);
+        xmlElement.insertBefore(usesSdk, firstChild);
     }
 
     /**

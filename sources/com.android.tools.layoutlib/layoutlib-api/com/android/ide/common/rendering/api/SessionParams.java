@@ -17,6 +17,8 @@
 package com.android.ide.common.rendering.api;
 
 import com.android.annotations.NonNull;
+import java.util.List;
+import java.util.function.Function;
 
 /**
  * Rendering parameters for a {@link RenderSession}.
@@ -58,6 +60,7 @@ public class SessionParams extends RenderParams {
     private final RenderingMode mRenderingMode;
     private boolean mExtendedViewInfoMode = false;
     private final int mSimulatedPlatformVersion;
+    private Function<Object, List<ViewInfo>> mCustomContentHierarchyParser = null;
 
     /**
      * @param layoutDescription the {@link ILayoutPullParser} letting the LayoutLib Bridge visit the
@@ -125,6 +128,7 @@ public class SessionParams extends RenderParams {
         mRenderingMode = params.mRenderingMode;
         mSimulatedPlatformVersion = params.mSimulatedPlatformVersion;
         mExtendedViewInfoMode = params.mExtendedViewInfoMode;
+        mCustomContentHierarchyParser = params.mCustomContentHierarchyParser;
     }
 
     public ILayoutPullParser getLayoutDescription() {
@@ -141,6 +145,21 @@ public class SessionParams extends RenderParams {
 
     public boolean getExtendedViewInfoMode() {
         return mExtendedViewInfoMode;
+    }
+
+    /**
+     * Sets a custom parser to create the {@link ViewInfo} hierarchy, that will replace the default
+     * parser used by layoutlib.
+     *
+     * @param parser function that will be applied to the content root of the layout, and should
+     *     return a list of the {@link ViewInfo}s for its children
+     */
+    public void setCustomContentHierarchyParser(Function<Object, List<ViewInfo>> parser) {
+        mCustomContentHierarchyParser = parser;
+    }
+
+    public Function<Object, List<ViewInfo>> getCustomContentHierarchyParser() {
+        return mCustomContentHierarchyParser;
     }
 
     public int getSimulatedPlatformVersion() {

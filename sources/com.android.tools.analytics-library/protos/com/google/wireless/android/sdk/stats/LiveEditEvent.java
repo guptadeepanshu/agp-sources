@@ -18,6 +18,7 @@ private static final long serialVersionUID = 0L;
   private LiveEditEvent() {
     status_ = 0;
     mode_ = 0;
+    projectId_ = "";
   }
 
   @java.lang.Override
@@ -88,6 +89,12 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000010;
               mode_ = rawValue;
             }
+            break;
+          }
+          case 50: {
+            com.google.protobuf.ByteString bs = input.readBytes();
+            bitField0_ |= 0x00000020;
+            projectId_ = bs;
             break;
           }
           default: {
@@ -203,6 +210,77 @@ private static final long serialVersionUID = 0L;
      * <code>UNSUPPORTED_MODIFY_INHERITANCE = 9;</code>
      */
     UNSUPPORTED_MODIFY_INHERITANCE(9),
+    /**
+     * <pre>
+     * The following are from LiveEditUpdateException.Error
+     * We DO NOT log this. If this shows up in metrics, we know we have a bug at
+     * hand.
+     * </pre>
+     *
+     * <code>ANALYSIS_ERROR = 10;</code>
+     */
+    ANALYSIS_ERROR(10),
+    /**
+     * <pre>
+     * We DO NOT log this. If this shows up in metrics, we know we have a bug at
+     * hand.
+     * </pre>
+     *
+     * <code>COMPILATION_ERROR = 11;</code>
+     */
+    COMPILATION_ERROR(11),
+    /**
+     * <code>NON_KOTLIN = 12;</code>
+     */
+    NON_KOTLIN(12),
+    /**
+     * <code>NON_PRIVATE_INLINE_FUNCTION = 13;</code>
+     */
+    NON_PRIVATE_INLINE_FUNCTION(13),
+    /**
+     * <code>UNABLE_TO_INLINE = 14;</code>
+     */
+    UNABLE_TO_INLINE(14),
+    /**
+     * <code>UNABLE_TO_LOCATE_COMPOSE_GROUP = 15;</code>
+     */
+    UNABLE_TO_LOCATE_COMPOSE_GROUP(15),
+    /**
+     * <code>UNSUPPORTED_BUILD_SRC_CHANGE = 16;</code>
+     */
+    UNSUPPORTED_BUILD_SRC_CHANGE(16),
+    /**
+     * <code>UNSUPPORTED_SRC_CHANGE_RECOVERABLE = 17;</code>
+     */
+    UNSUPPORTED_SRC_CHANGE_RECOVERABLE(17),
+    /**
+     * <code>UNSUPPORTED_SRC_CHANGE_UNRECOVERABLE = 18;</code>
+     */
+    UNSUPPORTED_SRC_CHANGE_UNRECOVERABLE(18),
+    /**
+     * <code>UNSUPPORTED_TEST_SRC_CHANGE = 19;</code>
+     */
+    UNSUPPORTED_TEST_SRC_CHANGE(19),
+    /**
+     * <code>UNABLE_TO_DESUGAR = 20;</code>
+     */
+    UNABLE_TO_DESUGAR(20),
+    /**
+     * <code>INTERNAL_ERROR = 21;</code>
+     */
+    INTERNAL_ERROR(21),
+    /**
+     * <code>KNOWN_ISSUE = 22;</code>
+     */
+    KNOWN_ISSUE(22),
+    /**
+     * <pre>
+     * Semantic unsafe operations
+     * </pre>
+     *
+     * <code>PENDING_ERROR_IN_ANOTHER_FILE_AUTO_MODE = 23;</code>
+     */
+    PENDING_ERROR_IN_ANOTHER_FILE_AUTO_MODE(23),
     ;
 
     /**
@@ -281,6 +359,77 @@ private static final long serialVersionUID = 0L;
      * <code>UNSUPPORTED_MODIFY_INHERITANCE = 9;</code>
      */
     public static final int UNSUPPORTED_MODIFY_INHERITANCE_VALUE = 9;
+    /**
+     * <pre>
+     * The following are from LiveEditUpdateException.Error
+     * We DO NOT log this. If this shows up in metrics, we know we have a bug at
+     * hand.
+     * </pre>
+     *
+     * <code>ANALYSIS_ERROR = 10;</code>
+     */
+    public static final int ANALYSIS_ERROR_VALUE = 10;
+    /**
+     * <pre>
+     * We DO NOT log this. If this shows up in metrics, we know we have a bug at
+     * hand.
+     * </pre>
+     *
+     * <code>COMPILATION_ERROR = 11;</code>
+     */
+    public static final int COMPILATION_ERROR_VALUE = 11;
+    /**
+     * <code>NON_KOTLIN = 12;</code>
+     */
+    public static final int NON_KOTLIN_VALUE = 12;
+    /**
+     * <code>NON_PRIVATE_INLINE_FUNCTION = 13;</code>
+     */
+    public static final int NON_PRIVATE_INLINE_FUNCTION_VALUE = 13;
+    /**
+     * <code>UNABLE_TO_INLINE = 14;</code>
+     */
+    public static final int UNABLE_TO_INLINE_VALUE = 14;
+    /**
+     * <code>UNABLE_TO_LOCATE_COMPOSE_GROUP = 15;</code>
+     */
+    public static final int UNABLE_TO_LOCATE_COMPOSE_GROUP_VALUE = 15;
+    /**
+     * <code>UNSUPPORTED_BUILD_SRC_CHANGE = 16;</code>
+     */
+    public static final int UNSUPPORTED_BUILD_SRC_CHANGE_VALUE = 16;
+    /**
+     * <code>UNSUPPORTED_SRC_CHANGE_RECOVERABLE = 17;</code>
+     */
+    public static final int UNSUPPORTED_SRC_CHANGE_RECOVERABLE_VALUE = 17;
+    /**
+     * <code>UNSUPPORTED_SRC_CHANGE_UNRECOVERABLE = 18;</code>
+     */
+    public static final int UNSUPPORTED_SRC_CHANGE_UNRECOVERABLE_VALUE = 18;
+    /**
+     * <code>UNSUPPORTED_TEST_SRC_CHANGE = 19;</code>
+     */
+    public static final int UNSUPPORTED_TEST_SRC_CHANGE_VALUE = 19;
+    /**
+     * <code>UNABLE_TO_DESUGAR = 20;</code>
+     */
+    public static final int UNABLE_TO_DESUGAR_VALUE = 20;
+    /**
+     * <code>INTERNAL_ERROR = 21;</code>
+     */
+    public static final int INTERNAL_ERROR_VALUE = 21;
+    /**
+     * <code>KNOWN_ISSUE = 22;</code>
+     */
+    public static final int KNOWN_ISSUE_VALUE = 22;
+    /**
+     * <pre>
+     * Semantic unsafe operations
+     * </pre>
+     *
+     * <code>PENDING_ERROR_IN_ANOTHER_FILE_AUTO_MODE = 23;</code>
+     */
+    public static final int PENDING_ERROR_IN_ANOTHER_FILE_AUTO_MODE_VALUE = 23;
 
 
     public final int getNumber() {
@@ -313,6 +462,20 @@ private static final long serialVersionUID = 0L;
         case 7: return UNSUPPORTED_REMOVED_FIELD;
         case 8: return UNSUPPORTED_MODIFY_INLINE;
         case 9: return UNSUPPORTED_MODIFY_INHERITANCE;
+        case 10: return ANALYSIS_ERROR;
+        case 11: return COMPILATION_ERROR;
+        case 12: return NON_KOTLIN;
+        case 13: return NON_PRIVATE_INLINE_FUNCTION;
+        case 14: return UNABLE_TO_INLINE;
+        case 15: return UNABLE_TO_LOCATE_COMPOSE_GROUP;
+        case 16: return UNSUPPORTED_BUILD_SRC_CHANGE;
+        case 17: return UNSUPPORTED_SRC_CHANGE_RECOVERABLE;
+        case 18: return UNSUPPORTED_SRC_CHANGE_UNRECOVERABLE;
+        case 19: return UNSUPPORTED_TEST_SRC_CHANGE;
+        case 20: return UNABLE_TO_DESUGAR;
+        case 21: return INTERNAL_ERROR;
+        case 22: return KNOWN_ISSUE;
+        case 23: return PENDING_ERROR_IN_ANOTHER_FILE_AUTO_MODE;
         default: return null;
       }
     }
@@ -619,6 +782,69 @@ private static final long serialVersionUID = 0L;
     return result == null ? com.google.wireless.android.sdk.stats.LiveEditEvent.Mode.UNKNOWN_MODE : result;
   }
 
+  public static final int PROJECT_ID_FIELD_NUMBER = 6;
+  private volatile java.lang.Object projectId_;
+  /**
+   * <pre>
+   * Client-side salted (rotating every 28 days), sha256 of the project base
+   * path. Used to correlate LiveEdit usage with Compose projects.
+   * </pre>
+   *
+   * <code>optional string project_id = 6;</code>
+   * @return Whether the projectId field is set.
+   */
+  @java.lang.Override
+  public boolean hasProjectId() {
+    return ((bitField0_ & 0x00000020) != 0);
+  }
+  /**
+   * <pre>
+   * Client-side salted (rotating every 28 days), sha256 of the project base
+   * path. Used to correlate LiveEdit usage with Compose projects.
+   * </pre>
+   *
+   * <code>optional string project_id = 6;</code>
+   * @return The projectId.
+   */
+  @java.lang.Override
+  public java.lang.String getProjectId() {
+    java.lang.Object ref = projectId_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      if (bs.isValidUtf8()) {
+        projectId_ = s;
+      }
+      return s;
+    }
+  }
+  /**
+   * <pre>
+   * Client-side salted (rotating every 28 days), sha256 of the project base
+   * path. Used to correlate LiveEdit usage with Compose projects.
+   * </pre>
+   *
+   * <code>optional string project_id = 6;</code>
+   * @return The bytes for projectId.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getProjectIdBytes() {
+    java.lang.Object ref = projectId_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      projectId_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -648,6 +874,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000010) != 0)) {
       output.writeEnum(5, mode_);
     }
+    if (((bitField0_ & 0x00000020) != 0)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 6, projectId_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -676,6 +905,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000010) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(5, mode_);
+    }
+    if (((bitField0_ & 0x00000020) != 0)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, projectId_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -715,6 +947,11 @@ private static final long serialVersionUID = 0L;
     if (hasMode()) {
       if (mode_ != other.mode_) return false;
     }
+    if (hasProjectId() != other.hasProjectId()) return false;
+    if (hasProjectId()) {
+      if (!getProjectId()
+          .equals(other.getProjectId())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -748,6 +985,10 @@ private static final long serialVersionUID = 0L;
     if (hasMode()) {
       hash = (37 * hash) + MODE_FIELD_NUMBER;
       hash = (53 * hash) + mode_;
+    }
+    if (hasProjectId()) {
+      hash = (37 * hash) + PROJECT_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getProjectId().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -892,6 +1133,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000008);
       mode_ = 0;
       bitField0_ = (bitField0_ & ~0x00000010);
+      projectId_ = "";
+      bitField0_ = (bitField0_ & ~0x00000020);
       return this;
     }
 
@@ -940,6 +1183,10 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000010;
       }
       result.mode_ = mode_;
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        to_bitField0_ |= 0x00000020;
+      }
+      result.projectId_ = projectId_;
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -1003,6 +1250,11 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasMode()) {
         setMode(other.getMode());
+      }
+      if (other.hasProjectId()) {
+        bitField0_ |= 0x00000020;
+        projectId_ = other.projectId_;
+        onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -1313,6 +1565,120 @@ private static final long serialVersionUID = 0L;
     public Builder clearMode() {
       bitField0_ = (bitField0_ & ~0x00000010);
       mode_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object projectId_ = "";
+    /**
+     * <pre>
+     * Client-side salted (rotating every 28 days), sha256 of the project base
+     * path. Used to correlate LiveEdit usage with Compose projects.
+     * </pre>
+     *
+     * <code>optional string project_id = 6;</code>
+     * @return Whether the projectId field is set.
+     */
+    public boolean hasProjectId() {
+      return ((bitField0_ & 0x00000020) != 0);
+    }
+    /**
+     * <pre>
+     * Client-side salted (rotating every 28 days), sha256 of the project base
+     * path. Used to correlate LiveEdit usage with Compose projects.
+     * </pre>
+     *
+     * <code>optional string project_id = 6;</code>
+     * @return The projectId.
+     */
+    public java.lang.String getProjectId() {
+      java.lang.Object ref = projectId_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          projectId_ = s;
+        }
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <pre>
+     * Client-side salted (rotating every 28 days), sha256 of the project base
+     * path. Used to correlate LiveEdit usage with Compose projects.
+     * </pre>
+     *
+     * <code>optional string project_id = 6;</code>
+     * @return The bytes for projectId.
+     */
+    public com.google.protobuf.ByteString
+        getProjectIdBytes() {
+      java.lang.Object ref = projectId_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        projectId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <pre>
+     * Client-side salted (rotating every 28 days), sha256 of the project base
+     * path. Used to correlate LiveEdit usage with Compose projects.
+     * </pre>
+     *
+     * <code>optional string project_id = 6;</code>
+     * @param value The projectId to set.
+     * @return This builder for chaining.
+     */
+    public Builder setProjectId(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+      projectId_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Client-side salted (rotating every 28 days), sha256 of the project base
+     * path. Used to correlate LiveEdit usage with Compose projects.
+     * </pre>
+     *
+     * <code>optional string project_id = 6;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearProjectId() {
+      bitField0_ = (bitField0_ & ~0x00000020);
+      projectId_ = getDefaultInstance().getProjectId();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Client-side salted (rotating every 28 days), sha256 of the project base
+     * path. Used to correlate LiveEdit usage with Compose projects.
+     * </pre>
+     *
+     * <code>optional string project_id = 6;</code>
+     * @param value The bytes for projectId to set.
+     * @return This builder for chaining.
+     */
+    public Builder setProjectIdBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+      projectId_ = value;
       onChanged();
       return this;
     }

@@ -21,7 +21,7 @@ import java.util.concurrent.CancellationException;
 
 /**
  * An adapter for accessing environment-dependent progress and cancellation functionality. By
- * default all public methods of this class have no effect. See subclasses for descriptions of
+ * default, all public methods of this class have no effect. See subclasses for descriptions of
  * behavior in specific environments.
  */
 public abstract class ProgressManagerAdapter {

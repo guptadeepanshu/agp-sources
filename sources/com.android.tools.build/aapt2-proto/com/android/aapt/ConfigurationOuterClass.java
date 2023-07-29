@@ -399,6 +399,25 @@ public final class ConfigurationOuterClass {
     int getSdkVersion();
 
     /**
+     * <pre>
+     * Grammatical gender.
+     * </pre>
+     *
+     * <code>.aapt.pb.Configuration.GrammaticalGender grammatical_gender = 26;</code>
+     * @return The enum numeric value on the wire for grammaticalGender.
+     */
+    int getGrammaticalGenderValue();
+    /**
+     * <pre>
+     * Grammatical gender.
+     * </pre>
+     *
+     * <code>.aapt.pb.Configuration.GrammaticalGender grammatical_gender = 26;</code>
+     * @return The grammaticalGender.
+     */
+    com.android.aapt.ConfigurationOuterClass.Configuration.GrammaticalGender getGrammaticalGender();
+
+    /**
      * <code>string product = 25;</code>
      * @return The product.
      */
@@ -443,6 +462,7 @@ public final class ConfigurationOuterClass {
       keyboard_ = 0;
       navHidden_ = 0;
       navigation_ = 0;
+      grammaticalGender_ = 0;
       product_ = "";
     }
 
@@ -615,6 +635,12 @@ public final class ConfigurationOuterClass {
               java.lang.String s = input.readStringRequireUtf8();
 
               product_ = s;
+              break;
+            }
+            case 208: {
+              int rawValue = input.readEnum();
+
+              grammaticalGender_ = rawValue;
               break;
             }
             default: {
@@ -2404,6 +2430,132 @@ public final class ConfigurationOuterClass {
       // @@protoc_insertion_point(enum_scope:aapt.pb.Configuration.Navigation)
     }
 
+    /**
+     * Protobuf enum {@code aapt.pb.Configuration.GrammaticalGender}
+     */
+    public enum GrammaticalGender
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>GRAM_GENDER_USET = 0;</code>
+       */
+      GRAM_GENDER_USET(0),
+      /**
+       * <code>GRAM_GENDER_NEUTER = 1;</code>
+       */
+      GRAM_GENDER_NEUTER(1),
+      /**
+       * <code>GRAM_GENDER_FEMININE = 2;</code>
+       */
+      GRAM_GENDER_FEMININE(2),
+      /**
+       * <code>GRAM_GENDER_MASCULINE = 3;</code>
+       */
+      GRAM_GENDER_MASCULINE(3),
+      UNRECOGNIZED(-1),
+      ;
+
+      /**
+       * <code>GRAM_GENDER_USET = 0;</code>
+       */
+      public static final int GRAM_GENDER_USET_VALUE = 0;
+      /**
+       * <code>GRAM_GENDER_NEUTER = 1;</code>
+       */
+      public static final int GRAM_GENDER_NEUTER_VALUE = 1;
+      /**
+       * <code>GRAM_GENDER_FEMININE = 2;</code>
+       */
+      public static final int GRAM_GENDER_FEMININE_VALUE = 2;
+      /**
+       * <code>GRAM_GENDER_MASCULINE = 3;</code>
+       */
+      public static final int GRAM_GENDER_MASCULINE_VALUE = 3;
+
+
+      public final int getNumber() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalArgumentException(
+              "Can't get the number of an unknown enum value.");
+        }
+        return value;
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static GrammaticalGender valueOf(int value) {
+        return forNumber(value);
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       */
+      public static GrammaticalGender forNumber(int value) {
+        switch (value) {
+          case 0: return GRAM_GENDER_USET;
+          case 1: return GRAM_GENDER_NEUTER;
+          case 2: return GRAM_GENDER_FEMININE;
+          case 3: return GRAM_GENDER_MASCULINE;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<GrammaticalGender>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          GrammaticalGender> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<GrammaticalGender>() {
+              public GrammaticalGender findValueByNumber(int number) {
+                return GrammaticalGender.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalStateException(
+              "Can't get the descriptor of an unrecognized enum value.");
+        }
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return com.android.aapt.ConfigurationOuterClass.Configuration.getDescriptor().getEnumTypes().get(14);
+      }
+
+      private static final GrammaticalGender[] VALUES = values();
+
+      public static GrammaticalGender valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        if (desc.getIndex() == -1) {
+          return UNRECOGNIZED;
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private GrammaticalGender(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:aapt.pb.Configuration.GrammaticalGender)
+    }
+
     public static final int MCC_FIELD_NUMBER = 1;
     private int mcc_;
     /**
@@ -2967,6 +3119,33 @@ public final class ConfigurationOuterClass {
       return sdkVersion_;
     }
 
+    public static final int GRAMMATICAL_GENDER_FIELD_NUMBER = 26;
+    private int grammaticalGender_;
+    /**
+     * <pre>
+     * Grammatical gender.
+     * </pre>
+     *
+     * <code>.aapt.pb.Configuration.GrammaticalGender grammatical_gender = 26;</code>
+     * @return The enum numeric value on the wire for grammaticalGender.
+     */
+    @java.lang.Override public int getGrammaticalGenderValue() {
+      return grammaticalGender_;
+    }
+    /**
+     * <pre>
+     * Grammatical gender.
+     * </pre>
+     *
+     * <code>.aapt.pb.Configuration.GrammaticalGender grammatical_gender = 26;</code>
+     * @return The grammaticalGender.
+     */
+    @java.lang.Override public com.android.aapt.ConfigurationOuterClass.Configuration.GrammaticalGender getGrammaticalGender() {
+      @SuppressWarnings("deprecation")
+      com.android.aapt.ConfigurationOuterClass.Configuration.GrammaticalGender result = com.android.aapt.ConfigurationOuterClass.Configuration.GrammaticalGender.valueOf(grammaticalGender_);
+      return result == null ? com.android.aapt.ConfigurationOuterClass.Configuration.GrammaticalGender.UNRECOGNIZED : result;
+    }
+
     public static final int PRODUCT_FIELD_NUMBER = 25;
     private volatile java.lang.Object product_;
     /**
@@ -3094,6 +3273,9 @@ public final class ConfigurationOuterClass {
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(product_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 25, product_);
       }
+      if (grammaticalGender_ != com.android.aapt.ConfigurationOuterClass.Configuration.GrammaticalGender.GRAM_GENDER_USET.getNumber()) {
+        output.writeEnum(26, grammaticalGender_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -3201,6 +3383,10 @@ public final class ConfigurationOuterClass {
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(product_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(25, product_);
       }
+      if (grammaticalGender_ != com.android.aapt.ConfigurationOuterClass.Configuration.GrammaticalGender.GRAM_GENDER_USET.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(26, grammaticalGender_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -3250,6 +3436,7 @@ public final class ConfigurationOuterClass {
       if (navigation_ != other.navigation_) return false;
       if (getSdkVersion()
           != other.getSdkVersion()) return false;
+      if (grammaticalGender_ != other.grammaticalGender_) return false;
       if (!getProduct()
           .equals(other.getProduct())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
@@ -3311,6 +3498,8 @@ public final class ConfigurationOuterClass {
       hash = (53 * hash) + navigation_;
       hash = (37 * hash) + SDK_VERSION_FIELD_NUMBER;
       hash = (53 * hash) + getSdkVersion();
+      hash = (37 * hash) + GRAMMATICAL_GENDER_FIELD_NUMBER;
+      hash = (53 * hash) + grammaticalGender_;
       hash = (37 * hash) + PRODUCT_FIELD_NUMBER;
       hash = (53 * hash) + getProduct().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
@@ -3499,6 +3688,8 @@ public final class ConfigurationOuterClass {
 
         sdkVersion_ = 0;
 
+        grammaticalGender_ = 0;
+
         product_ = "";
 
         return this;
@@ -3551,6 +3742,7 @@ public final class ConfigurationOuterClass {
         result.navHidden_ = navHidden_;
         result.navigation_ = navigation_;
         result.sdkVersion_ = sdkVersion_;
+        result.grammaticalGender_ = grammaticalGender_;
         result.product_ = product_;
         onBuilt();
         return result;
@@ -3672,6 +3864,9 @@ public final class ConfigurationOuterClass {
         }
         if (other.getSdkVersion() != 0) {
           setSdkVersion(other.getSdkVersion());
+        }
+        if (other.grammaticalGender_ != 0) {
+          setGrammaticalGenderValue(other.getGrammaticalGenderValue());
         }
         if (!other.getProduct().isEmpty()) {
           product_ = other.product_;
@@ -5235,6 +5430,80 @@ public final class ConfigurationOuterClass {
         return this;
       }
 
+      private int grammaticalGender_ = 0;
+      /**
+       * <pre>
+       * Grammatical gender.
+       * </pre>
+       *
+       * <code>.aapt.pb.Configuration.GrammaticalGender grammatical_gender = 26;</code>
+       * @return The enum numeric value on the wire for grammaticalGender.
+       */
+      @java.lang.Override public int getGrammaticalGenderValue() {
+        return grammaticalGender_;
+      }
+      /**
+       * <pre>
+       * Grammatical gender.
+       * </pre>
+       *
+       * <code>.aapt.pb.Configuration.GrammaticalGender grammatical_gender = 26;</code>
+       * @param value The enum numeric value on the wire for grammaticalGender to set.
+       * @return This builder for chaining.
+       */
+      public Builder setGrammaticalGenderValue(int value) {
+        
+        grammaticalGender_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Grammatical gender.
+       * </pre>
+       *
+       * <code>.aapt.pb.Configuration.GrammaticalGender grammatical_gender = 26;</code>
+       * @return The grammaticalGender.
+       */
+      @java.lang.Override
+      public com.android.aapt.ConfigurationOuterClass.Configuration.GrammaticalGender getGrammaticalGender() {
+        @SuppressWarnings("deprecation")
+        com.android.aapt.ConfigurationOuterClass.Configuration.GrammaticalGender result = com.android.aapt.ConfigurationOuterClass.Configuration.GrammaticalGender.valueOf(grammaticalGender_);
+        return result == null ? com.android.aapt.ConfigurationOuterClass.Configuration.GrammaticalGender.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * Grammatical gender.
+       * </pre>
+       *
+       * <code>.aapt.pb.Configuration.GrammaticalGender grammatical_gender = 26;</code>
+       * @param value The grammaticalGender to set.
+       * @return This builder for chaining.
+       */
+      public Builder setGrammaticalGender(com.android.aapt.ConfigurationOuterClass.Configuration.GrammaticalGender value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        grammaticalGender_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Grammatical gender.
+       * </pre>
+       *
+       * <code>.aapt.pb.Configuration.GrammaticalGender grammatical_gender = 26;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearGrammaticalGender() {
+        
+        grammaticalGender_ = 0;
+        onChanged();
+        return this;
+      }
+
       private java.lang.Object product_ = "";
       /**
        * <code>string product = 25;</code>
@@ -5377,7 +5646,7 @@ public final class ConfigurationOuterClass {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\023Configuration.proto\022\007aapt.pb\"\331\024\n\rConfi" +
+      "\n\023Configuration.proto\022\007aapt.pb\"\227\026\n\rConfi" +
       "guration\022\013\n\003mcc\030\001 \001(\r\022\013\n\003mnc\030\002 \001(\r\022\016\n\006lo" +
       "cale\030\003 \001(\t\022@\n\020layout_direction\030\004 \001(\0162&.a" +
       "apt.pb.Configuration.LayoutDirection\022\024\n\014" +
@@ -5403,48 +5672,53 @@ public final class ConfigurationOuterClass {
       "Configuration.Keyboard\0224\n\nnav_hidden\030\026 \001" +
       "(\0162 .aapt.pb.Configuration.NavHidden\0225\n\n" +
       "navigation\030\027 \001(\0162!.aapt.pb.Configuration" +
-      ".Navigation\022\023\n\013sdk_version\030\030 \001(\r\022\017\n\007prod" +
-      "uct\030\031 \001(\t\"a\n\017LayoutDirection\022\032\n\026LAYOUT_D" +
-      "IRECTION_UNSET\020\000\022\030\n\024LAYOUT_DIRECTION_LTR" +
-      "\020\001\022\030\n\024LAYOUT_DIRECTION_RTL\020\002\"\252\001\n\020ScreenL" +
-      "ayoutSize\022\034\n\030SCREEN_LAYOUT_SIZE_UNSET\020\000\022" +
-      "\034\n\030SCREEN_LAYOUT_SIZE_SMALL\020\001\022\035\n\031SCREEN_" +
-      "LAYOUT_SIZE_NORMAL\020\002\022\034\n\030SCREEN_LAYOUT_SI" +
-      "ZE_LARGE\020\003\022\035\n\031SCREEN_LAYOUT_SIZE_XLARGE\020" +
-      "\004\"m\n\020ScreenLayoutLong\022\034\n\030SCREEN_LAYOUT_L" +
-      "ONG_UNSET\020\000\022\033\n\027SCREEN_LAYOUT_LONG_LONG\020\001" +
-      "\022\036\n\032SCREEN_LAYOUT_LONG_NOTLONG\020\002\"X\n\013Scre" +
-      "enRound\022\026\n\022SCREEN_ROUND_UNSET\020\000\022\026\n\022SCREE" +
-      "N_ROUND_ROUND\020\001\022\031\n\025SCREEN_ROUND_NOTROUND" +
-      "\020\002\"h\n\016WideColorGamut\022\032\n\026WIDE_COLOR_GAMUT" +
-      "_UNSET\020\000\022\033\n\027WIDE_COLOR_GAMUT_WIDECG\020\001\022\035\n" +
-      "\031WIDE_COLOR_GAMUT_NOWIDECG\020\002\"3\n\003Hdr\022\r\n\tH" +
-      "DR_UNSET\020\000\022\016\n\nHDR_HIGHDR\020\001\022\r\n\tHDR_LOWDR\020" +
-      "\002\"h\n\013Orientation\022\025\n\021ORIENTATION_UNSET\020\000\022" +
-      "\024\n\020ORIENTATION_PORT\020\001\022\024\n\020ORIENTATION_LAN" +
-      "D\020\002\022\026\n\022ORIENTATION_SQUARE\020\003\"\327\001\n\nUiModeTy" +
-      "pe\022\026\n\022UI_MODE_TYPE_UNSET\020\000\022\027\n\023UI_MODE_TY" +
-      "PE_NORMAL\020\001\022\025\n\021UI_MODE_TYPE_DESK\020\002\022\024\n\020UI" +
-      "_MODE_TYPE_CAR\020\003\022\033\n\027UI_MODE_TYPE_TELEVIS" +
-      "ION\020\004\022\032\n\026UI_MODE_TYPE_APPLIANCE\020\005\022\026\n\022UI_" +
-      "MODE_TYPE_WATCH\020\006\022\032\n\026UI_MODE_TYPE_VRHEAD" +
-      "SET\020\007\"[\n\013UiModeNight\022\027\n\023UI_MODE_NIGHT_UN" +
-      "SET\020\000\022\027\n\023UI_MODE_NIGHT_NIGHT\020\001\022\032\n\026UI_MOD" +
-      "E_NIGHT_NOTNIGHT\020\002\"m\n\013Touchscreen\022\025\n\021TOU" +
-      "CHSCREEN_UNSET\020\000\022\027\n\023TOUCHSCREEN_NOTOUCH\020" +
-      "\001\022\026\n\022TOUCHSCREEN_STYLUS\020\002\022\026\n\022TOUCHSCREEN" +
-      "_FINGER\020\003\"v\n\nKeysHidden\022\025\n\021KEYS_HIDDEN_U" +
-      "NSET\020\000\022\033\n\027KEYS_HIDDEN_KEYSEXPOSED\020\001\022\032\n\026K" +
-      "EYS_HIDDEN_KEYSHIDDEN\020\002\022\030\n\024KEYS_HIDDEN_K" +
-      "EYSSOFT\020\003\"`\n\010Keyboard\022\022\n\016KEYBOARD_UNSET\020" +
-      "\000\022\023\n\017KEYBOARD_NOKEYS\020\001\022\023\n\017KEYBOARD_QWERT" +
-      "Y\020\002\022\026\n\022KEYBOARD_TWELVEKEY\020\003\"V\n\tNavHidden" +
-      "\022\024\n\020NAV_HIDDEN_UNSET\020\000\022\031\n\025NAV_HIDDEN_NAV" +
-      "EXPOSED\020\001\022\030\n\024NAV_HIDDEN_NAVHIDDEN\020\002\"}\n\nN" +
-      "avigation\022\024\n\020NAVIGATION_UNSET\020\000\022\024\n\020NAVIG" +
-      "ATION_NONAV\020\001\022\023\n\017NAVIGATION_DPAD\020\002\022\030\n\024NA" +
-      "VIGATION_TRACKBALL\020\003\022\024\n\020NAVIGATION_WHEEL" +
-      "\020\004B\022\n\020com.android.aaptb\006proto3"
+      ".Navigation\022\023\n\013sdk_version\030\030 \001(\r\022D\n\022gram" +
+      "matical_gender\030\032 \001(\0162(.aapt.pb.Configura" +
+      "tion.GrammaticalGender\022\017\n\007product\030\031 \001(\t\"" +
+      "a\n\017LayoutDirection\022\032\n\026LAYOUT_DIRECTION_U" +
+      "NSET\020\000\022\030\n\024LAYOUT_DIRECTION_LTR\020\001\022\030\n\024LAYO" +
+      "UT_DIRECTION_RTL\020\002\"\252\001\n\020ScreenLayoutSize\022" +
+      "\034\n\030SCREEN_LAYOUT_SIZE_UNSET\020\000\022\034\n\030SCREEN_" +
+      "LAYOUT_SIZE_SMALL\020\001\022\035\n\031SCREEN_LAYOUT_SIZ" +
+      "E_NORMAL\020\002\022\034\n\030SCREEN_LAYOUT_SIZE_LARGE\020\003" +
+      "\022\035\n\031SCREEN_LAYOUT_SIZE_XLARGE\020\004\"m\n\020Scree" +
+      "nLayoutLong\022\034\n\030SCREEN_LAYOUT_LONG_UNSET\020" +
+      "\000\022\033\n\027SCREEN_LAYOUT_LONG_LONG\020\001\022\036\n\032SCREEN" +
+      "_LAYOUT_LONG_NOTLONG\020\002\"X\n\013ScreenRound\022\026\n" +
+      "\022SCREEN_ROUND_UNSET\020\000\022\026\n\022SCREEN_ROUND_RO" +
+      "UND\020\001\022\031\n\025SCREEN_ROUND_NOTROUND\020\002\"h\n\016Wide" +
+      "ColorGamut\022\032\n\026WIDE_COLOR_GAMUT_UNSET\020\000\022\033" +
+      "\n\027WIDE_COLOR_GAMUT_WIDECG\020\001\022\035\n\031WIDE_COLO" +
+      "R_GAMUT_NOWIDECG\020\002\"3\n\003Hdr\022\r\n\tHDR_UNSET\020\000" +
+      "\022\016\n\nHDR_HIGHDR\020\001\022\r\n\tHDR_LOWDR\020\002\"h\n\013Orien" +
+      "tation\022\025\n\021ORIENTATION_UNSET\020\000\022\024\n\020ORIENTA" +
+      "TION_PORT\020\001\022\024\n\020ORIENTATION_LAND\020\002\022\026\n\022ORI" +
+      "ENTATION_SQUARE\020\003\"\327\001\n\nUiModeType\022\026\n\022UI_M" +
+      "ODE_TYPE_UNSET\020\000\022\027\n\023UI_MODE_TYPE_NORMAL\020" +
+      "\001\022\025\n\021UI_MODE_TYPE_DESK\020\002\022\024\n\020UI_MODE_TYPE" +
+      "_CAR\020\003\022\033\n\027UI_MODE_TYPE_TELEVISION\020\004\022\032\n\026U" +
+      "I_MODE_TYPE_APPLIANCE\020\005\022\026\n\022UI_MODE_TYPE_" +
+      "WATCH\020\006\022\032\n\026UI_MODE_TYPE_VRHEADSET\020\007\"[\n\013U" +
+      "iModeNight\022\027\n\023UI_MODE_NIGHT_UNSET\020\000\022\027\n\023U" +
+      "I_MODE_NIGHT_NIGHT\020\001\022\032\n\026UI_MODE_NIGHT_NO" +
+      "TNIGHT\020\002\"m\n\013Touchscreen\022\025\n\021TOUCHSCREEN_U" +
+      "NSET\020\000\022\027\n\023TOUCHSCREEN_NOTOUCH\020\001\022\026\n\022TOUCH" +
+      "SCREEN_STYLUS\020\002\022\026\n\022TOUCHSCREEN_FINGER\020\003\"" +
+      "v\n\nKeysHidden\022\025\n\021KEYS_HIDDEN_UNSET\020\000\022\033\n\027" +
+      "KEYS_HIDDEN_KEYSEXPOSED\020\001\022\032\n\026KEYS_HIDDEN" +
+      "_KEYSHIDDEN\020\002\022\030\n\024KEYS_HIDDEN_KEYSSOFT\020\003\"" +
+      "`\n\010Keyboard\022\022\n\016KEYBOARD_UNSET\020\000\022\023\n\017KEYBO" +
+      "ARD_NOKEYS\020\001\022\023\n\017KEYBOARD_QWERTY\020\002\022\026\n\022KEY" +
+      "BOARD_TWELVEKEY\020\003\"V\n\tNavHidden\022\024\n\020NAV_HI" +
+      "DDEN_UNSET\020\000\022\031\n\025NAV_HIDDEN_NAVEXPOSED\020\001\022" +
+      "\030\n\024NAV_HIDDEN_NAVHIDDEN\020\002\"}\n\nNavigation\022" +
+      "\024\n\020NAVIGATION_UNSET\020\000\022\024\n\020NAVIGATION_NONA" +
+      "V\020\001\022\023\n\017NAVIGATION_DPAD\020\002\022\030\n\024NAVIGATION_T" +
+      "RACKBALL\020\003\022\024\n\020NAVIGATION_WHEEL\020\004\"v\n\021Gram" +
+      "maticalGender\022\024\n\020GRAM_GENDER_USET\020\000\022\026\n\022G" +
+      "RAM_GENDER_NEUTER\020\001\022\030\n\024GRAM_GENDER_FEMIN" +
+      "INE\020\002\022\031\n\025GRAM_GENDER_MASCULINE\020\003B\022\n\020com." +
+      "android.aaptb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -5455,7 +5729,7 @@ public final class ConfigurationOuterClass {
     internal_static_aapt_pb_Configuration_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_aapt_pb_Configuration_descriptor,
-        new java.lang.String[] { "Mcc", "Mnc", "Locale", "LayoutDirection", "ScreenWidth", "ScreenHeight", "ScreenWidthDp", "ScreenHeightDp", "SmallestScreenWidthDp", "ScreenLayoutSize", "ScreenLayoutLong", "ScreenRound", "WideColorGamut", "Hdr", "Orientation", "UiModeType", "UiModeNight", "Density", "Touchscreen", "KeysHidden", "Keyboard", "NavHidden", "Navigation", "SdkVersion", "Product", });
+        new java.lang.String[] { "Mcc", "Mnc", "Locale", "LayoutDirection", "ScreenWidth", "ScreenHeight", "ScreenWidthDp", "ScreenHeightDp", "SmallestScreenWidthDp", "ScreenLayoutSize", "ScreenLayoutLong", "ScreenRound", "WideColorGamut", "Hdr", "Orientation", "UiModeType", "UiModeNight", "Density", "Touchscreen", "KeysHidden", "Keyboard", "NavHidden", "Navigation", "SdkVersion", "GrammaticalGender", "Product", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

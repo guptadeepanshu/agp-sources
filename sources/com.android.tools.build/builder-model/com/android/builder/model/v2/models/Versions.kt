@@ -27,6 +27,13 @@ interface Versions: AndroidModel {
     interface Version {
         val major: Int
         val minor: Int
+        /**
+         * An optional, human-readable, representation of this version
+         *
+         * For example, minimum model consumer version 64.1 might correspond to
+         * Android Studio Giraffe patch 1.
+         */
+        val humanReadable: String?
     }
 
     val versions: Map<String, Version>
@@ -37,6 +44,15 @@ interface Versions: AndroidModel {
         const val ANDROID_DSL = "android_dsl"
         const val VARIANT_DEPENDENCIES = "variant_dependencies"
         const val NATIVE_MODULE = "native_module"
+        /**
+         * The minimum required model consumer version, to allow AGP to drop support for older versions
+         * of Android Studio.
+         *
+         * (Android Studio's model consumer version will be incremented after each release branching)
+         *
+         * If not present, a future version of AGP will not be considered compatible
+         */
+        const val MINIMUM_MODEL_CONSUMER = "minimum_model_consumer"
     }
 
     /**

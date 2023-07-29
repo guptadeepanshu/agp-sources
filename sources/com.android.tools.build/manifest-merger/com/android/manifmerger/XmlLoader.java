@@ -16,21 +16,20 @@
 
 package com.android.manifmerger;
 
+import static com.android.manifmerger.PlaceholderHandler.KeyBasedValueResolver;
+
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.ide.common.blame.SourceFile;
 import com.android.resources.NamespaceReferenceRewriter;
 import com.android.utils.PositionXmlParser;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-
-import static com.android.manifmerger.PlaceholderHandler.KeyBasedValueResolver;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 /**
  * Responsible for loading XML files.
@@ -61,6 +60,37 @@ public final class XmlLoader {
             boolean rewriteNamespaces)
             throws IOException, SAXException, ParserConfigurationException {
         Document domDocument = PositionXmlParser.parse(inputStream);
+        return load(
+                domDocument,
+                selectors,
+                systemPropertyResolver,
+                displayName,
+                xmlFile,
+                type,
+                namespace,
+                model,
+                rewriteNamespaces);
+    }
+
+    /**
+     * Build an unvalidated {@link XmlDocument} object from given DOM Document Also see overload
+     * {@link XmlLoader#load(KeyResolver, KeyBasedValueResolver, String, File, InputStream,
+     * XmlDocument.Type, String, DocumentModel, boolean)} for more details.
+     *
+     * @param domDocument Manifest Document object.
+     */
+    @NonNull
+    public static XmlDocument load(
+            @NonNull Document domDocument,
+            @NonNull KeyResolver<String> selectors,
+            @NonNull KeyBasedValueResolver<ManifestSystemProperty> systemPropertyResolver,
+            @NonNull String displayName,
+            @NonNull File xmlFile,
+            @NonNull XmlDocument.Type type,
+            @Nullable String namespace,
+            @NonNull DocumentModel<ManifestModel.NodeTypes> model,
+            boolean rewriteNamespaces)
+            throws IOException, SAXException, ParserConfigurationException {
         Element rootElement = domDocument.getDocumentElement();
         @Nullable
         final String namespaceOrPackageName =

@@ -520,4 +520,55 @@ public interface RunEventOrBuilder extends
    * @return The appComponentType.
    */
   com.google.wireless.android.sdk.stats.RunEvent.AppComponent getAppComponentType();
+
+  /**
+   * <pre>
+   * Whether or not the deployed project is a Compose project.
+   * </pre>
+   *
+   * <code>optional bool is_compose_project = 26;</code>
+   * @return Whether the isComposeProject field is set.
+   */
+  boolean hasIsComposeProject();
+  /**
+   * <pre>
+   * Whether or not the deployed project is a Compose project.
+   * </pre>
+   *
+   * <code>optional bool is_compose_project = 26;</code>
+   * @return The isComposeProject.
+   */
+  boolean getIsComposeProject();
+
+  /**
+   * <pre>
+   * Client-side salted (rotating every 28 days), sha256 of the project base
+   * path. Used to correlate LiveEdit usage with Compose projects.
+   * </pre>
+   *
+   * <code>optional string project_id = 27;</code>
+   * @return Whether the projectId field is set.
+   */
+  boolean hasProjectId();
+  /**
+   * <pre>
+   * Client-side salted (rotating every 28 days), sha256 of the project base
+   * path. Used to correlate LiveEdit usage with Compose projects.
+   * </pre>
+   *
+   * <code>optional string project_id = 27;</code>
+   * @return The projectId.
+   */
+  java.lang.String getProjectId();
+  /**
+   * <pre>
+   * Client-side salted (rotating every 28 days), sha256 of the project base
+   * path. Used to correlate LiveEdit usage with Compose projects.
+   * </pre>
+   *
+   * <code>optional string project_id = 27;</code>
+   * @return The bytes for projectId.
+   */
+  com.google.protobuf.ByteString
+      getProjectIdBytes();
 }

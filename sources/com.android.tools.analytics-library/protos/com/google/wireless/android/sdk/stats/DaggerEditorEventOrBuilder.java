@@ -92,4 +92,25 @@ public interface DaggerEditorEventOrBuilder extends
    * @return The calculationTimeMs.
    */
   long getCalculationTimeMs();
+
+  /**
+   * <pre>
+   * Indicates whether built-in (true) or custom Dagger (false) annotation
+   * search is in use.
+   * </pre>
+   *
+   * <code>optional bool using_built_in_annotation_search = 5;</code>
+   * @return Whether the usingBuiltInAnnotationSearch field is set.
+   */
+  boolean hasUsingBuiltInAnnotationSearch();
+  /**
+   * <pre>
+   * Indicates whether built-in (true) or custom Dagger (false) annotation
+   * search is in use.
+   * </pre>
+   *
+   * <code>optional bool using_built_in_annotation_search = 5;</code>
+   * @return The usingBuiltInAnnotationSearch.
+   */
+  boolean getUsingBuiltInAnnotationSearch();
 }

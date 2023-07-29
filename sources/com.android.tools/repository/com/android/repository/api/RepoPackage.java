@@ -22,13 +22,11 @@ import com.android.repository.Revision;
 import com.android.repository.impl.meta.CommonFactory;
 import com.android.repository.impl.meta.RepoPackageImpl;
 import com.android.repository.impl.meta.TypeDetails;
-
 import java.util.Collection;
-
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * A local or remote repository package, uniquely identified by it's {@code version} and {@code
+ * A local or remote repository package, uniquely identified by its {@code version} and {@code
  * path}.
  */
 @XmlTransient
@@ -53,6 +51,13 @@ public interface RepoPackage extends Comparable<RepoPackage> {
      */
     @NonNull
     String getDisplayName();
+
+    /** Returns the user-friendly name of this package with additional details. */
+    @NonNull
+    default String getDetailedDisplayName() {
+        String qualifierTemplate = getTypeDetails().getQualifierTemplate();
+        return getDisplayName() + qualifierTemplate.replaceAll("\\{0}", getVersion().toString());
+    }
 
     /**
      * Gets the {@link License}, if any, associated with this package.

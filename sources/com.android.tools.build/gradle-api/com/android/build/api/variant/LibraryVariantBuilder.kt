@@ -20,5 +20,6 @@ package com.android.build.api.variant
  */
 interface LibraryVariantBuilder : VariantBuilder,
     HasAndroidTestBuilder,
+    HasUnitTestBuilder,
     HasTestFixturesBuilder,
     CanMinifyCodeBuilder

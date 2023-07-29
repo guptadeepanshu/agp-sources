@@ -21,6 +21,7 @@ import static java.io.File.separator;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.ide.common.gradle.Version;
 import com.android.io.CancellableFileIo;
 import com.android.repository.Revision;
 import com.android.repository.api.ConsoleProgressIndicator;
@@ -34,6 +35,7 @@ import com.android.sdklib.repository.meta.DetailsTypes;
 import com.google.common.collect.Lists;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -206,20 +208,23 @@ public enum SdkMavenRepository {
     @Nullable
     public static LocalPackage findLatestLocalVersion(@NonNull GradleCoordinate coordinate,
             @NonNull AndroidSdkHandler sdkHandler,
-            @Nullable Predicate<GradleVersion> filter,
+            @Nullable Predicate<Version> filter,
             @NonNull ProgressIndicator progress) {
         String prefix = DetailsTypes.MavenType.getRepositoryPath(
                 coordinate.getGroupId(), coordinate.getArtifactId(), null);
         Predicate<Revision> revisionFilter = filter == null ? null
-                : (revision) -> filter.test(revisionToGradleVersion(revision));
+                : (revision) -> filter.test(revisionToVersion(revision));
         return sdkHandler.getLatestLocalPackageForPrefix(
-                prefix, revisionFilter,  coordinate.isPreview(), GradleCoordinate::parseVersionOnly,
-                GradleCoordinate.COMPARE_PLUS_LOWER, progress);
+                prefix,
+                revisionFilter,
+                coordinate.isPreview(),
+                Version.Companion::parse,
+                progress);
     }
 
     @NonNull
-    private static GradleVersion revisionToGradleVersion(Revision revision) {
-        return GradleVersion.parse(revision.toString("-"));
+    private static Version revisionToVersion(Revision revision) {
+        return Version.Companion.parse(revision.toString("-"));
     }
 
     /**
@@ -228,15 +233,18 @@ public enum SdkMavenRepository {
     @Nullable
     public static RemotePackage findLatestRemoteVersion(@NonNull GradleCoordinate coordinate,
             @NonNull AndroidSdkHandler sdkHandler,
-            @Nullable Predicate<GradleVersion> filter,
+            @Nullable Predicate<Version> filter,
             @NonNull ProgressIndicator progress) {
         String prefix = DetailsTypes.MavenType.getRepositoryPath(
                 coordinate.getGroupId(), coordinate.getArtifactId(), null);
         Predicate<Revision> revisionFilter = filter == null ? null
-                : (revision) -> filter.test(revisionToGradleVersion(revision));
+                : (revision) -> filter.test(revisionToVersion(revision));
         return sdkHandler.getLatestRemotePackageForPrefix(
-                prefix, revisionFilter, coordinate.isPreview(),
-          GradleCoordinate::parseVersionOnly, GradleCoordinate.COMPARE_PLUS_LOWER, progress);
+                prefix,
+                revisionFilter,
+                coordinate.isPreview(),
+                Version.Companion::parse,
+                progress);
     }
 
     /**
@@ -246,7 +254,7 @@ public enum SdkMavenRepository {
     @Nullable
     public static RepoPackage findLatestVersion(@NonNull GradleCoordinate coordinate,
             @NonNull AndroidSdkHandler sdkHandler,
-            @Nullable Predicate<GradleVersion> filter,
+            @Nullable Predicate<Version> filter,
             @NonNull ProgressIndicator progress) {
         LocalPackage local = findLatestLocalVersion(coordinate, sdkHandler, filter, progress);
         RemotePackage remote = findLatestRemoteVersion(coordinate, sdkHandler, filter, progress);

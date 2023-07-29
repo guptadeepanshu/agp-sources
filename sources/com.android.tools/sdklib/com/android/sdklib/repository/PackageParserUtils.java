@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Misc utilities to help extracting elements and attributes out of a repository XML document.
@@ -88,16 +89,15 @@ public class PackageParserUtils {
     @NonNull
     public static List<Path> parseSkinFolder(@NonNull Path skinRootFolder) {
         if (CancellableFileIo.isDirectory(skinRootFolder)) {
-            try {
-                return CancellableFileIo.list(skinRootFolder)
-                        .filter(CancellableFileIo::isDirectory)
+            try (Stream<Path> stream = CancellableFileIo.list(skinRootFolder)) {
+                return stream.filter(CancellableFileIo::isDirectory)
                         .filter(
-                                dir ->
+                                directory ->
                                         CancellableFileIo.isRegularFile(
-                                                dir.resolve(SdkConstants.FN_SKIN_LAYOUT)))
+                                                directory.resolve(SdkConstants.FN_SKIN_LAYOUT)))
                         .sorted()
                         .collect(Collectors.toList());
-            } catch (IOException e) {
+            } catch (IOException exception) {
                 return Collections.emptyList();
             }
         }

@@ -132,6 +132,10 @@ public enum EditorFileType
    * <code>KOTLIN_COMPOSE = 24;</code>
    */
   KOTLIN_COMPOSE(24),
+  /**
+   * <code>TOML = 25;</code>
+   */
+  TOML(25),
   ;
 
   /**
@@ -258,6 +262,10 @@ public enum EditorFileType
    * <code>KOTLIN_COMPOSE = 24;</code>
    */
   public static final int KOTLIN_COMPOSE_VALUE = 24;
+  /**
+   * <code>TOML = 25;</code>
+   */
+  public static final int TOML_VALUE = 25;
 
 
   public final int getNumber() {
@@ -305,6 +313,7 @@ public enum EditorFileType
       case 22: return XML_RES_VALUES;
       case 23: return XML_RES_XML;
       case 24: return KOTLIN_COMPOSE;
+      case 25: return TOML;
       default: return null;
     }
   }

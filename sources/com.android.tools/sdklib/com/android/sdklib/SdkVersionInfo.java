@@ -116,45 +116,28 @@ public class SdkVersionInfo {
     public static final int LOWEST_COMPILE_SDK_VERSION = 22;
 
     /**
+     * The lowest api level where profile guided optimization is on. On api 21 - 23 apps are fully
+     * AOT compiled.
+     */
+    public static final int LOWEST_PROFILE_GUIDED_OPTIMIZATIONS_SDK_VERSION = 24;
+
+    /**
      * Build.VERSION_CODES.CUR_DEVELOPMENT; set for platforms in
      * development before preview
      */
     public static final int CUR_DEVELOPMENT = 10000;
 
     /**
-     * Returns the Android version and code name of the given API level
-     * The highest number (inclusive) that is supported
-     * is {@link SdkVersionInfo#HIGHEST_KNOWN_API}.
+     * Returns the Android release name corresponding to the given API level.
      *
-     * @param api the api level
-     * @return a suitable version display name
-     */
-    @NonNull
-    public static String getAndroidName(int api) {
-        // See http://source.android.com/source/build-numbers.html
-        String codeName = getCodeName(api);
-        String versionString = getVersionStringSanitized(api);
-        if (codeName == null) {
-            return versionString;
-        } else if (versionString.contains(codeName)) {
-            return String.format(Locale.US, "API %1$d: Android %2$s", api, versionString);
-        } else {
-            return String.format(Locale.US, "API %1$d: Android %2$s (%3$s)", api, versionString, codeName);
-        }
-    }
-
-    @NonNull
-    public static String getVersionStringSanitized(int api) {
-        String retStr = getVersionString(api);
-        if (retStr != null) {
-            return retStr;
-        }
-        return String.format(Locale.US, "API %1$d", api);
-    }
-
-    /**
-     * Returns the Android release name corresponding to the given API level. If the corresponding
-     * Android version has not yet been released, returns null.
+     * <p>DO NOTE USE TO CONSTRUCTION YOUR OWN ANDROID VERSION STRING. See {@link
+     * AndroidVersionUtils} instead.
+     *
+     * <p>If the corresponding Android version has not yet been released, returns null.
+     *
+     * @param api the API level
+     * @return the release name or null if it's not known
+     * @see SdkVersionInfo#HIGHEST_KNOWN_STABLE_API
      */
     @Nullable
     public static String getReleaseVersionString(int api) {
@@ -200,9 +183,13 @@ public class SdkVersionInfo {
     }
 
     /**
-     * Returns the Android release name corresponding to the given API level. If the corresponding
-     * Android version has not yet been released, returns the codename. This matches how the SDK
-     * describes itself, e.g. S (stable) is
+     * Returns the Android release name corresponding to the given API level.
+     *
+     * <p>DO NOTE USE TO CONSTRUCTION YOUR OWN ANDROID VERSION STRING. See {@link
+     * AndroidVersionUtils} instead.
+     *
+     * <p>If the corresponding Android version has not yet been released, returns the codename. This
+     * matches how the SDK describes itself, e.g. S (stable) is
      *
      * <pre>Pkg.Desc=Android SDK Platform 12</pre>
      *
@@ -215,6 +202,16 @@ public class SdkVersionInfo {
         return releaseVersion != null ? releaseVersion : getCodeName(api);
     }
 
+    /**
+     * Returns the known codename for a given API level
+     *
+     * <p>DO NOTE USE TO CONSTRUCTION YOUR OWN ANDROID VERSION STRING. See {@link
+     * AndroidVersionUtils} instead.
+     *
+     * @param api the API level
+     * @return the codename or null if it's not known
+     * @see SdkVersionInfo#HIGHEST_KNOWN_API
+     */
     @Nullable
     public static String getCodeName(int api) {
         switch (api) {
@@ -515,58 +512,5 @@ public class SdkVersionInfo {
 
         // Must be a future SDK platform
         return new AndroidVersion(HIGHEST_KNOWN_API, apiOrPreviewName);
-    }
-
-    /**
-     * Returns the codename for a given {@link AndroidVersion}'s API level.
-     */
-    @Nullable
-    public static String getAndroidVersionCodeName(@NonNull AndroidVersion version) {
-        String codeName = version.getCodename();
-        if (codeName == null) {
-            codeName = getCodeName(version.getApiLevel());
-        }
-        return codeName;
-    }
-
-    /**
-     * Returns a description of this version containing release name and codename, like "Android 5.1
-     * (Lollipop)".
-     *
-     * <p>If {@code version} has a codename, it is expected to be a preview version, and will be
-     * reported like "Android Nougat Preview".
-     *
-     * <p>If {@code version} does not have a codename, it is expected to be a release version;
-     * however, if this file has not yet been updated with the release name, the API level is used
-     * instead, like "Android API 33 (Tiramisu)". (This can happen when a connected device is newer
-     * than Studio.)
-     *
-     * <p>Versions with extension levels are reported like "Android 11.0 (R), Extension Level 2".
-     */
-    @NonNull
-    public static String getVersionWithCodename(AndroidVersion version) {
-        StringBuilder result = new StringBuilder();
-        result.append("Android ");
-        if (version.isPreview()) {
-            result.append(version.getCodename());
-            result.append(" Preview");
-        } else {
-            String versionString = getReleaseVersionString(version.getFeatureLevel());
-            result.append(versionString == null ? "API " + version.getApiString() : versionString);
-            String codeName = version.getCodename();
-            if (codeName == null) {
-                codeName = getCodeName(version.getFeatureLevel());
-            }
-            if (codeName != null) {
-                result.append(" (");
-                result.append(codeName);
-                result.append(")");
-            }
-        }
-        if (version.getExtensionLevel() != null && !version.isBaseExtension()) {
-            result.append(", Extension Level ");
-            result.append(version.getExtensionLevel());
-        }
-        return result.toString();
     }
 }

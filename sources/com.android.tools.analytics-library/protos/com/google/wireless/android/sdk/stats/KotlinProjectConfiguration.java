@@ -106,6 +106,11 @@ private static final long serialVersionUID = 0L;
             }
             break;
           }
+          case 64: {
+            bitField0_ |= 0x00000080;
+            eventFlags_ = input.readUInt64();
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -589,6 +594,33 @@ private static final long serialVersionUID = 0L;
     return result == null ? com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.EventType.TYPE_UNKNOWN : result;
   }
 
+  public static final int EVENT_FLAGS_FIELD_NUMBER = 8;
+  private long eventFlags_;
+  /**
+   * <pre>
+   * bitfield for future flags added by kotlin plugin
+   * </pre>
+   *
+   * <code>optional uint64 event_flags = 8;</code>
+   * @return Whether the eventFlags field is set.
+   */
+  @java.lang.Override
+  public boolean hasEventFlags() {
+    return ((bitField0_ & 0x00000080) != 0);
+  }
+  /**
+   * <pre>
+   * bitfield for future flags added by kotlin plugin
+   * </pre>
+   *
+   * <code>optional uint64 event_flags = 8;</code>
+   * @return The eventFlags.
+   */
+  @java.lang.Override
+  public long getEventFlags() {
+    return eventFlags_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -624,6 +656,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000040) != 0)) {
       output.writeEnum(7, eventType_);
     }
+    if (((bitField0_ & 0x00000080) != 0)) {
+      output.writeUInt64(8, eventFlags_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -655,6 +690,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000040) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(7, eventType_);
+    }
+    if (((bitField0_ & 0x00000080) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeUInt64Size(8, eventFlags_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -705,6 +744,11 @@ private static final long serialVersionUID = 0L;
     if (hasEventType()) {
       if (eventType_ != other.eventType_) return false;
     }
+    if (hasEventFlags() != other.hasEventFlags()) return false;
+    if (hasEventFlags()) {
+      if (getEventFlags()
+          != other.getEventFlags()) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -744,6 +788,11 @@ private static final long serialVersionUID = 0L;
     if (hasEventType()) {
       hash = (37 * hash) + EVENT_TYPE_FIELD_NUMBER;
       hash = (53 * hash) + eventType_;
+    }
+    if (hasEventFlags()) {
+      hash = (37 * hash) + EVENT_FLAGS_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getEventFlags());
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -896,6 +945,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000020);
       eventType_ = 0;
       bitField0_ = (bitField0_ & ~0x00000040);
+      eventFlags_ = 0L;
+      bitField0_ = (bitField0_ & ~0x00000080);
       return this;
     }
 
@@ -952,6 +1003,10 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000040;
       }
       result.eventType_ = eventType_;
+      if (((from_bitField0_ & 0x00000080) != 0)) {
+        result.eventFlags_ = eventFlags_;
+        to_bitField0_ |= 0x00000080;
+      }
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -1031,6 +1086,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasEventType()) {
         setEventType(other.getEventType());
+      }
+      if (other.hasEventFlags()) {
+        setEventFlags(other.getEventFlags());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -1712,6 +1770,61 @@ private static final long serialVersionUID = 0L;
     public Builder clearEventType() {
       bitField0_ = (bitField0_ & ~0x00000040);
       eventType_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private long eventFlags_ ;
+    /**
+     * <pre>
+     * bitfield for future flags added by kotlin plugin
+     * </pre>
+     *
+     * <code>optional uint64 event_flags = 8;</code>
+     * @return Whether the eventFlags field is set.
+     */
+    @java.lang.Override
+    public boolean hasEventFlags() {
+      return ((bitField0_ & 0x00000080) != 0);
+    }
+    /**
+     * <pre>
+     * bitfield for future flags added by kotlin plugin
+     * </pre>
+     *
+     * <code>optional uint64 event_flags = 8;</code>
+     * @return The eventFlags.
+     */
+    @java.lang.Override
+    public long getEventFlags() {
+      return eventFlags_;
+    }
+    /**
+     * <pre>
+     * bitfield for future flags added by kotlin plugin
+     * </pre>
+     *
+     * <code>optional uint64 event_flags = 8;</code>
+     * @param value The eventFlags to set.
+     * @return This builder for chaining.
+     */
+    public Builder setEventFlags(long value) {
+      bitField0_ |= 0x00000080;
+      eventFlags_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * bitfield for future flags added by kotlin plugin
+     * </pre>
+     *
+     * <code>optional uint64 event_flags = 8;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearEventFlags() {
+      bitField0_ = (bitField0_ & ~0x00000080);
+      eventFlags_ = 0L;
       onChanged();
       return this;
     }

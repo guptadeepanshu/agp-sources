@@ -357,10 +357,18 @@ public class GradleVersion implements Comparable<GradleVersion> {
         return compareTo(version, false);
     }
 
+    /**
+     * @deprecated in favour of direct comparison between constructed versions.
+     */
+    @Deprecated
     public int compareIgnoringQualifiers(@NonNull String version) {
         return compareIgnoringQualifiers(parse(version));
     }
 
+    /**
+     * @deprecated in favour of direct comparison between constructed versions.
+     */
+    @Deprecated
     public int compareIgnoringQualifiers(@NonNull GradleVersion version) {
         return compareTo(version, true);
     }
@@ -418,7 +426,10 @@ public class GradleVersion implements Comparable<GradleVersion> {
     /**
      * Is this {@linkplain GradleVersion} at least as high as the given major, minor, micro version?
      * Any previewType suffixes are ignored.
+     *
+     * @deprecated in favour of direct comparison between constructed versions.
      */
+    @Deprecated
     public boolean isAtLeastIncludingPreviews(int major, int minor, int micro) {
         return isAtLeast(major, minor, micro, "", 0, false);
     }
