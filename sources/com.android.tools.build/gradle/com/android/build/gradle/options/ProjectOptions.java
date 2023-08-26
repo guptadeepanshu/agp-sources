@@ -54,12 +54,6 @@ public final class ProjectOptions {
         integerOptionValues = createOptionValues(IntegerOption.values());
         replacedOptionValues = createOptionValues(ReplacedOption.values());
         stringOptionValues = createOptionValues(StringOption.values());
-        // Initialize AnalyticsSettings before we access its properties in isAnalyticsEnabled
-        // function
-        AnalyticsSettings.initialize(
-                LoggerWrapper.getLogger(ProjectOptions.class),
-                null,
-                com.android.tools.analytics.Environment.getSYSTEM());
         Environment.initialize(Environment.Companion.getSYSTEM());
     }
 
@@ -183,7 +177,27 @@ public final class ProjectOptions {
     }
 
     public boolean isAnalyticsEnabled() {
+        if (!needToInitializeAnalytics()) {
+            return false;
+        }
+        AnalyticsSettings.initialize(
+                LoggerWrapper.getLogger(ProjectOptions.class),
+                null,
+                com.android.tools.analytics.Environment.getSYSTEM());
+
         return AnalyticsSettings.getOptedIn()
+                || get(BooleanOption.ENABLE_PROFILE_JSON)
+                || get(StringOption.PROFILE_OUTPUT_DIR) != null;
+    }
+
+    /**
+     * If the analytics.settings file doesn't exist, which means the user has never used studio or
+     * has manually deleted that file, AGP doesn't need to create that file and check if analytics
+     * is opted in. In that case, it is considered as not opted in. This will also help us avoid
+     * the configuration cache miss caused by file creation in configuration phase for CI users.
+     */
+    private boolean needToInitializeAnalytics() {
+        return AnalyticsSettings.settingsFileExists()
                 || get(BooleanOption.ENABLE_PROFILE_JSON)
                 || get(StringOption.PROFILE_OUTPUT_DIR) != null;
     }

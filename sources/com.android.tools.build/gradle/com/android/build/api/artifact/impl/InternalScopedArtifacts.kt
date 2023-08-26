@@ -27,11 +27,17 @@ interface InternalScopedArtifacts: ScopedArtifacts {
      * AGP Private scopes.
      */
     enum class InternalScope {
-        SUB_PROJECT,
+        // modules imported by this project
+        SUB_PROJECTS,
+        // external libraries specified in the build.gradle dependencies.
         EXTERNAL_LIBS,
+        // local jar files present in the project.
         LOCAL_DEPS,
+        // features dependencies
         FEATURES,
-        PROVIDED,
+        // compile-only dependencies, will not be packaged in the resulting APK/Bundle
+        COMPILE_ONLY,
+        // for test related modules, references the code being tested.
         TESTED_CODE,
     }
 }

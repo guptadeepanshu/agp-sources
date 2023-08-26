@@ -17,31 +17,27 @@
 package com.android.build.api.component.impl
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
-import com.android.build.api.component.analytics.AnalyticsEnabledAndroidTest
 import com.android.build.api.component.impl.features.AndroidResourcesCreationConfigImpl
 import com.android.build.api.component.impl.features.BuildConfigCreationConfigImpl
 import com.android.build.api.component.impl.features.DexingCreationConfigImpl
 import com.android.build.api.component.impl.features.OptimizationCreationConfigImpl
 import com.android.build.api.component.impl.features.RenderscriptCreationConfigImpl
 import com.android.build.api.component.impl.features.ShadersCreationConfigImpl
-import com.android.build.api.dsl.CommonExtension
-import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
 import com.android.build.api.variant.AndroidResources
 import com.android.build.api.variant.AndroidTest
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.ApkPackaging
 import com.android.build.api.variant.BuildConfigField
-import com.android.build.api.variant.Component
 import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.ResValue
 import com.android.build.api.variant.SigningConfig
-import com.android.build.api.variant.Variant
-import com.android.build.api.variant.VariantBuilder
 import com.android.build.api.variant.impl.ApkPackagingImpl
 import com.android.build.api.variant.impl.ResValueKeyImpl
 import com.android.build.api.variant.impl.SigningConfigImpl
 import com.android.build.gradle.internal.component.AndroidTestCreationConfig
+import com.android.build.gradle.internal.component.ApkCreationConfig
+import com.android.build.gradle.internal.component.LibraryCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.component.features.AndroidResourcesCreationConfig
 import com.android.build.gradle.internal.component.features.BuildConfigCreationConfig
@@ -54,18 +50,14 @@ import com.android.build.gradle.internal.component.features.RenderscriptCreation
 import com.android.build.gradle.internal.component.features.ShadersCreationConfig
 import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.core.dsl.AndroidTestComponentDslInfo
-import com.android.build.gradle.internal.core.dsl.features.ManifestPlaceholdersDslInfo
 import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.MutableTaskContainer
-import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
-import com.android.build.gradle.options.IntegerOption
-import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
@@ -111,11 +103,21 @@ open class AndroidTestImpl @Inject constructor(
     override val debuggable: Boolean
         get() = dslInfo.isDebuggable
 
-    override val minSdkVersion: AndroidVersion
-        get() = mainVariant.minSdkVersion
+    override val minSdk: AndroidVersion
+        get() = mainVariant.minSdk
+
+    override val targetSdk: AndroidVersion
+        get() = getMainTargetSdkVersion()
 
     override val targetSdkVersion: AndroidVersion
-        get() = mainVariant.targetSdkVersion
+        get() = targetSdk
+
+    override val targetSdkOverride: AndroidVersion?
+        get() = when (mainVariant) {
+            is ApkCreationConfig -> (mainVariant as ApkCreationConfig).targetSdkOverride
+            is LibraryCreationConfig -> (mainVariant as LibraryCreationConfig).targetSdkOverride
+            else -> null
+        }
 
     override val applicationId: Property<String> = internalServices.propertyOf(
         String::class.java,
@@ -134,7 +136,7 @@ open class AndroidTestImpl @Inject constructor(
         ApkPackagingImpl(
             dslInfo.mainVariantDslInfo.packaging,
             variantServices,
-            minSdkVersion.apiLevel
+            minSdk.apiLevel
         )
     }
 
@@ -175,8 +177,8 @@ open class AndroidTestImpl @Inject constructor(
             SigningConfigImpl(
                 it,
                 variantServices,
-                minSdkVersion.apiLevel,
-                services.projectOptions.get(IntegerOption.IDE_TARGET_DEVICE_API)
+                minSdk.apiLevel,
+                global.targetDeployApiFromIDE
             )
         }
     }
@@ -282,9 +284,6 @@ open class AndroidTestImpl @Inject constructor(
     override val nativeBuildCreationConfig: NativeBuildCreationConfig?
         get() = mainVariant.nativeBuildCreationConfig
 
-    override val targetSdkVersionOverride: AndroidVersion?
-        get() = mainVariant.targetSdkVersionOverride
-
     // always false for this type
     override val embedsMicroApp: Boolean
         get() = false
@@ -305,21 +304,6 @@ open class AndroidTestImpl @Inject constructor(
     override val instrumentationRunnerArguments: Map<String, String>
         get() = dslInfo.instrumentationRunnerArguments
 
-    override fun <T : Component> createUserVisibleVariantObject(
-        projectServices: ProjectServices,
-        operationsRegistrar: VariantApiOperationsRegistrar<out CommonExtension<*, *, *, *>, out VariantBuilder, out Variant>,
-        stats: GradleBuildVariant.Builder?
-    ): T =
-        if (stats == null) {
-            this as T
-        } else {
-            projectServices.objectFactory.newInstance(
-                AnalyticsEnabledAndroidTest::class.java,
-                this,
-                stats
-            ) as T
-        }
-
     override val shouldPackageProfilerDependencies: Boolean = false
 
     override val advancedProfilingTransforms: List<String> = emptyList()
@@ -335,5 +319,11 @@ open class AndroidTestImpl @Inject constructor(
     // as in apps it will have already been included in the tested application.
     override val packageJacocoRuntime: Boolean
         get() = dslInfo.isAndroidTestCoverageEnabled && mainVariant.componentType.isAar
+
+    override val enableApiModeling: Boolean
+        get() = isApiModelingEnabled()
+
+    override val enableGlobalSynthetics: Boolean
+        get() = isGlobalSyntheticsEnabled()
 }
 

@@ -30,7 +30,7 @@ import com.android.sdklib.internal.avd.GpuMode
 import com.android.sdklib.internal.avd.HardwareProperties
 import com.android.sdklib.repository.AndroidSdkHandler
 import com.android.sdklib.repository.LoggerProgressIndicatorWrapper
-import com.android.testing.utils.isWearTvOrAutoDevice
+import com.android.testing.utils.isTvOrAutoDevice
 import com.android.utils.FileUtils
 import com.android.utils.ILogger
 import com.android.utils.StdLogger
@@ -178,7 +178,7 @@ class AvdManager(
         return deviceManager.getDevices(DeviceManager.ALL_DEVICES)
             .asSequence()
             .map { it.displayName }
-            .filterNot(::isWearTvOrAutoDevice)
+            .filterNot(::isTvOrAutoDevice)
             .distinct()
             .map { it to EditDistance.editDistance(hardwareProfile, it) }
             .filter { (_, distance) -> distance <= maxEditDistance }

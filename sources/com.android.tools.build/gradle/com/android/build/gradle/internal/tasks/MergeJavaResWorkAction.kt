@@ -15,19 +15,18 @@
  */
 package com.android.build.gradle.internal.tasks
 
-import com.android.build.gradle.internal.InternalScope
+import com.android.build.api.artifact.impl.InternalScopedArtifacts
+import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.internal.packaging.ParsedPackagingOptions
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.builder.files.KeyedFileCache
 import com.android.builder.files.SerializableInputChanges
 import com.android.builder.merge.IncrementalFileMergerInput
-import com.android.ide.common.resources.FileStatus
 import com.android.utils.FileUtils
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
-import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
 import java.io.File
@@ -48,18 +47,22 @@ abstract class MergeJavaResWorkAction : ProfileAwareWorkAction<MergeJavaResWorkA
 
         val zipCache = KeyedFileCache(cacheDir, KeyedFileCache::fileNameKey)
         val cacheUpdates = mutableListOf<Runnable>()
-        @Suppress("DEPRECATION") // Legacy support
-        val scopeMap = mutableMapOf<IncrementalFileMergerInput, com.android.build.api.transform.QualifiedContent.ScopeType>()
-
-        @Suppress("DEPRECATION") // Legacy support
-        val inputMap = mutableMapOf<File, com.android.build.api.transform.QualifiedContent.ScopeType>()
-        @Suppress("DEPRECATION") // Legacy support
-        run {
-            parameters.projectJavaRes.forEach { inputMap[it] = com.android.build.api.transform.QualifiedContent.Scope.PROJECT }
-            parameters.subProjectJavaRes.forEach { inputMap[it] = com.android.build.api.transform.QualifiedContent.Scope.SUB_PROJECTS }
-            parameters.externalLibJavaRes.forEach { inputMap[it] = com.android.build.api.transform.QualifiedContent.Scope.EXTERNAL_LIBRARIES }
-        }
-        parameters.featureJavaRes.forEach { inputMap[it] = InternalScope.FEATURES }
+        val priorityMap =
+            mutableMapOf<IncrementalFileMergerInput, JavaResMergingPriority>()
+        val inputMap =
+            mutableMapOf<File, JavaResMergingPriority>()
+        inputMap.putAll(parameters.projectJavaRes.associateWith {
+            determinePriority(ScopedArtifacts.Scope.PROJECT)
+        })
+        inputMap.putAll(parameters.subProjectJavaRes.associateWith {
+            determinePriority(InternalScopedArtifacts.InternalScope.SUB_PROJECTS)
+        })
+        inputMap.putAll(parameters.externalLibJavaRes.associateWith {
+            determinePriority(InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS)
+        })
+        inputMap.putAll(parameters.featureJavaRes.associateWith {
+            determinePriority(InternalScopedArtifacts.InternalScope.FEATURES)
+        })
 
         val inputs =
             toInputs(
@@ -68,14 +71,14 @@ abstract class MergeJavaResWorkAction : ProfileAwareWorkAction<MergeJavaResWorkA
                 zipCache,
                 cacheUpdates,
                 !isIncremental,
-                scopeMap
+                priorityMap
             )
 
         val mergeJavaResDelegate =
             MergeJavaResourcesDelegate(
                 inputs,
                 outputFile,
-                scopeMap,
+                priorityMap,
                 ParsedPackagingOptions(
                     parameters.excludes.get(),
                     parameters.pickFirsts.get(),
@@ -89,7 +92,7 @@ abstract class MergeJavaResWorkAction : ProfileAwareWorkAction<MergeJavaResWorkA
         cacheUpdates.forEach(Runnable::run)
     }
 
-    abstract class Params : ProfileAwareWorkAction.Parameters() {
+    abstract class Params : Parameters() {
         abstract val projectJavaRes: ConfigurableFileCollection
         abstract val subProjectJavaRes: ConfigurableFileCollection
         abstract val externalLibJavaRes: ConfigurableFileCollection

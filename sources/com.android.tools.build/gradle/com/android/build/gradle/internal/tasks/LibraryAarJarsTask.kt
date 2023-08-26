@@ -39,7 +39,6 @@ import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
-import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
@@ -82,10 +81,9 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
     @get:Classpath
     abstract val mainScopeClassFiles: ConfigurableFileCollection
 
-    // We can't use @Classpath as it ignores empty directories which may still be used as resources.
-    @get:InputFiles
-    @get:PathSensitive(PathSensitivity.RELATIVE)
-    abstract val mainScopeResourceFiles: ConfigurableFileCollection
+    @get:InputFile
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
+    abstract val javaResourcesJar: RegularFileProperty
 
     @get:Classpath
     abstract val localScopeInputFiles: ConfigurableFileCollection
@@ -110,15 +108,11 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
 
         val excludePatterns = computeExcludeList()
 
-        if (mainScopeClassFiles.isEmpty && mainScopeResourceFiles.isEmpty) {
-            throw RuntimeException("Empty Main scope for $name")
-        }
-
         mergeInputs(
             localScopeInputFiles.files,
             localJarsLocation.asFile.get(),
             mainScopeClassFiles.files,
-            mainScopeResourceFiles.files,
+            javaResourcesJar.asFile.get(),
             mainClassLocation.asFile.get(),
             { archivePath: String -> excludePatterns.any {
                 it.matcher(archivePath).matches() }.not() },
@@ -150,7 +144,7 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
             localJars: MutableSet<File>,
             localJarsLocation: File,
             classFiles: MutableSet<File>,
-            resourceFiles: MutableSet<File>,
+            resourceJar: File,
             toFile: File,
             filter: Predicate<String>,
             typedefRemover: JarCreator.Transformer?,
@@ -159,7 +153,7 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
             // process main scope.
             mergeInputsToLocation(
                 classFiles,
-                resourceFiles,
+                resourceJar,
                 toFile,
                 filter,
                 typedefRemover,
@@ -215,7 +209,7 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
 
         private fun mergeInputsToLocation(
             classFiles: MutableSet<File>,
-            resourceFiles: MutableSet<File>,
+            resourceJar: File,
             toFile: File,
             filter: Predicate<String>,
             typedefRemover: JarCreator.Transformer?,
@@ -241,20 +235,7 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
                     }
                 }
 
-                for (input in resourceFiles) {
-                    // Skip if file doesn't exist
-                    if (!input.exists()) {
-                        continue
-                    }
-
-                    if (input.name.endsWith(SdkConstants.DOT_JAR)) {
-                        jarFlinger.addJar(input.toPath(), filter, null)
-                    } else {
-                        jarFlinger.addDirectory(
-                            input.toPath(), filter, typedefRemover, null
-                        )
-                    }
-                }
+                jarFlinger.addJar(resourceJar.toPath(), filter, null)
             }
         }
 
@@ -333,21 +314,9 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
             )
             task.mainScopeClassFiles.disallowChanges()
 
-            task.mainScopeResourceFiles.from(
-                if (minifyEnabled) {
-                    creationConfig.artifacts.get(InternalArtifactType.SHRUNK_JAVA_RES)
-                } else {
-                    // this is really brittle. we should really have a pipeline of JAVA_RES that
-                    // will get populated and transformed into merged and shrunk potentially and
-                    // avoid this sort of branching.
-                    if (creationConfig.componentType.isTestFixturesComponent) {
-                        creationConfig.artifacts.get(InternalArtifactType.JAVA_RES)
-                    } else {
-                        creationConfig.artifacts.get(InternalArtifactType.MERGED_JAVA_RES)
-                    }
-                }
+            task.javaResourcesJar.setDisallowChanges(
+                creationConfig.artifacts.get(InternalArtifactType.MERGED_JAVA_RES)
             )
-            task.mainScopeResourceFiles.disallowChanges()
 
             // if minification is enabled, local deps will be processed by the R8 Task and do not
             // need to be individually repackaged in the resulting AAR.
@@ -360,5 +329,4 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
             task.localScopeInputFiles.disallowChanges()
         }
     }
-
 }

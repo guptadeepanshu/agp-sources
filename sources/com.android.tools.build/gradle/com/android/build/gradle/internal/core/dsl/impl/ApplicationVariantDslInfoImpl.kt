@@ -73,17 +73,17 @@ internal class ApplicationVariantDslInfoImpl(
             val fromProfilingModeOption = ProfilingMode.getProfilingModeType(
                 services.projectOptions[StringOption.PROFILING_MODE]
             ).isProfileable
-            // When profileable is enabled from the profilingMode option, it ensures all profileable
-            // features are supported, therefore the compileSdk => 30.
-            val minProfileableSdk = 30
+            // When profileable is enabled from the profilingMode option, it ensures profileable
+            // features are supported, therefore the compileSdk => 29.
+            val minProfileableSdk = 29
             val compileSdk = extension.compileSdk ?: minProfileableSdk
             if ((fromProfilingModeOption == true || applicationBuildType.isProfileable) &&
                 compileSdk < minProfileableSdk
             ) {
                 services.issueReporter.reportError(
                     IssueReporter.Type.COMPILE_SDK_VERSION_TOO_LOW,
-                    """'profileable' is enabled with compile SDK <30.
-                            Recommended action: If possible, upgrade compileSdk from $compileSdk to 30."""
+                    """'profileable' is enabled with compile SDK less than API 29.
+                        Recommended action: If possible, upgrade compileSdk from $compileSdk to at least API 29."""
                         .trimIndent()
                 )
             }
@@ -174,8 +174,12 @@ internal class ApplicationVariantDslInfoImpl(
 
     override val dexingDslInfo: DexingDslInfo by lazy {
         DexingDslInfoImpl(
-            buildTypeObj, mergedFlavor, services
+            buildTypeObj, mergedFlavor
         )
+    }
+
+    override val generateLocaleConfig: Boolean by lazy {
+        extension.androidResources.generateLocaleConfig
     }
 
     private fun computeVersionNameSuffix(): String {

@@ -104,9 +104,9 @@ interface InternalSources: Sources {
      */
     fun mlModels(action: (LayeredSourceDirectoriesImpl) -> Unit)
 
-    val artProfile: Provider<File>
+    val artProfile: Provider<File>?
     val manifestFile: Provider<File>
-    val manifestOverlays: List<Provider<File>>
+    val manifestOverlayFiles: Provider<List<File>>
 
     val sourceProviderNames: List<String>
 

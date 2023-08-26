@@ -21,8 +21,6 @@ import com.android.SdkConstants.DOT_JAR
 import com.android.SdkConstants.DOT_JSON
 import com.android.build.api.instrumentation.AsmClassVisitorFactory
 import com.android.build.api.instrumentation.FramesComputationMode
-import com.android.build.api.artifact.ScopedArtifact
-import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.instrumentation.AsmInstrumentationManager
@@ -31,9 +29,6 @@ import com.android.build.gradle.internal.instrumentation.loadClassData
 import com.android.build.gradle.internal.instrumentation.saveClassData
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
-import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.getDirectories
-import com.android.build.gradle.internal.scope.getRegularFiles
 import com.android.build.gradle.internal.services.ClassesHierarchyBuildService
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
@@ -47,12 +42,10 @@ import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.files.SerializableFileChanges
 import com.android.builder.utils.isValidZipEntryName
-import com.android.ide.common.resources.FileStatus
 import com.android.utils.FileUtils
 import com.google.common.io.ByteStreams
 import com.google.common.io.Files
 import org.gradle.api.file.ConfigurableFileCollection
-import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
@@ -66,7 +59,6 @@ import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
-import org.gradle.api.tasks.TaskProvider
 import org.gradle.work.ChangeType
 import org.gradle.work.Incremental
 import org.gradle.work.InputChanges
@@ -99,12 +91,6 @@ abstract class TransformClassesWithAsmTask : NewIncrementalTask() {
     @get:Incremental
     @get:Classpath
     abstract val inputClassesDir: ConfigurableFileCollection
-
-    // This is used when jacoco instrumented jars are used as inputs
-    @get:Incremental
-    @get:Classpath
-    @get:Optional
-    abstract val inputJarsDir: DirectoryProperty
 
     @get:Nested
     abstract val inputJarsWithIdentity: JarsClasspathInputsWithIdentity
@@ -178,7 +164,6 @@ abstract class TransformClassesWithAsmTask : NewIncrementalTask() {
         workerExecutor.noIsolation().submit(TransformClassesFullAction::class.java) {
             configureParams(it, inputChanges)
             it.inputClassesDir.from(inputClassesDir)
-            it.inputJarsDir.set(inputJarsDir)
         }
     }
 
@@ -226,9 +211,6 @@ abstract class TransformClassesWithAsmTask : NewIncrementalTask() {
             it.inputClassesDirChanges.set(
                 inputChanges.getFileChanges(inputClassesDir).toSerializable()
             )
-            if (inputJarsDir.isPresent) {
-                it.inputJarsChanges.set(inputChanges.getFileChanges(inputJarsDir).toSerializable())
-            }
         }
     }
 
@@ -275,7 +257,7 @@ abstract class TransformClassesWithAsmTask : NewIncrementalTask() {
          * Extract profiler dependency jars and add them to the project jars as they need to be
          * packaged with the rest of the classes.
          */
-        protected fun extractProfilerDependencyJars() {
+        private fun extractProfilerDependencyJars() {
             if (parameters.shouldPackageProfilerDependencies.getOrElse(false)) {
                 parameters.profilingTransforms.get().forEach { path ->
                     val profilingTransformFile = File(path)
@@ -311,24 +293,18 @@ abstract class TransformClassesWithAsmTask : NewIncrementalTask() {
             }
         }
 
-        abstract fun maybeProcessJacocoInstrumentedJars(
-            instrumentationManager: AsmInstrumentationManager
-        ): Boolean
-
         fun processJars(instrumentationManager: AsmInstrumentationManager) {
-             if (!maybeProcessJacocoInstrumentedJars(instrumentationManager)) {
-                val mappingState = parameters.mappingState.get()
-                if (mappingState.reprocessAll) {
-                    FileUtils.deleteDirectoryContents(parameters.jarsOutputDir.get().asFile)
-                    extractProfilerDependencyJars()
-                }
-                mappingState.jarsInfo.forEach { (file, info) ->
-                    if (info.hasChanged) {
-                        val instrumentedJar =
-                            File(parameters.jarsOutputDir.get().asFile, info.identity + DOT_JAR)
-                        FileUtils.deleteIfExists(instrumentedJar)
-                        instrumentationManager.instrumentClassesFromJarToJar(file, instrumentedJar)
-                    }
+            val mappingState = parameters.mappingState.get()
+            if (mappingState.reprocessAll) {
+                FileUtils.deleteDirectoryContents(parameters.jarsOutputDir.get().asFile)
+                extractProfilerDependencyJars()
+            }
+            mappingState.jarsInfo.forEach { (file, info) ->
+                if (info.hasChanged) {
+                    val instrumentedJar =
+                        File(parameters.jarsOutputDir.get().asFile, info.identity + DOT_JAR)
+                    FileUtils.deleteIfExists(instrumentedJar)
+                    instrumentationManager.instrumentClassesFromJarToJar(file, instrumentedJar)
                 }
             }
         }
@@ -358,7 +334,6 @@ abstract class TransformClassesWithAsmTask : NewIncrementalTask() {
 
     abstract class IncrementalWorkerParams: BaseWorkerParams() {
         abstract val inputClassesDirChanges: Property<SerializableFileChanges>
-        abstract val inputJarsChanges: Property<SerializableFileChanges>
     }
 
     abstract class TransformClassesIncrementalAction:
@@ -397,33 +372,10 @@ abstract class TransformClassesWithAsmTask : NewIncrementalTask() {
                 classesHierarchyResolver = classesHierarchyResolver
             )
         }
-
-        override fun maybeProcessJacocoInstrumentedJars(
-            instrumentationManager: AsmInstrumentationManager
-        ): Boolean {
-            if (!parameters.inputJarsChanges.isPresent) {
-                return false
-            }
-            parameters.inputJarsChanges.get().fileChanges.forEach { inputJar ->
-                val instrumentedJar =
-                    File(parameters.jarsOutputDir.get().asFile, inputJar.file.name)
-                FileUtils.deleteIfExists(instrumentedJar)
-                if (inputJar.fileStatus == FileStatus.NEW ||
-                    inputJar.fileStatus == FileStatus.CHANGED
-                ) {
-                    instrumentationManager.instrumentClassesFromJarToJar(
-                        inputJar.file,
-                        instrumentedJar
-                    )
-                }
-            }
-            return true
-        }
     }
 
     abstract class FullActionWorkerParams: BaseWorkerParams() {
         abstract val inputClassesDir: ConfigurableFileCollection
-        abstract val inputJarsDir: DirectoryProperty
     }
 
     abstract class TransformClassesFullAction:
@@ -443,21 +395,6 @@ abstract class TransformClassesWithAsmTask : NewIncrementalTask() {
             }
 
             updateIncrementalState(emptySet(), classesHierarchyResolver)
-        }
-
-        override fun maybeProcessJacocoInstrumentedJars(
-            instrumentationManager: AsmInstrumentationManager
-        ): Boolean {
-            if (!parameters.inputJarsDir.isPresent) {
-                return false
-            }
-            FileUtils.deleteDirectoryContents(parameters.jarsOutputDir.get().asFile)
-            extractProfilerDependencyJars()
-            parameters.inputJarsDir.get().asFile.listFiles()?.forEach { inputJar ->
-                val instrumentedJar = File(parameters.jarsOutputDir.get().asFile, inputJar.name)
-                instrumentationManager.instrumentClassesFromJarToJar(inputJar, instrumentedJar)
-            }
-            return true
         }
     }
 

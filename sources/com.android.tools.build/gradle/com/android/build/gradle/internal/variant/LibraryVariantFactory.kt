@@ -25,7 +25,6 @@ import com.android.build.api.variant.LibraryVariantBuilder
 import com.android.build.api.variant.impl.GlobalVariantBuilderConfig
 import com.android.build.api.variant.impl.LibraryVariantBuilderImpl
 import com.android.build.api.variant.impl.LibraryVariantImpl
-import com.android.build.api.variant.impl.VariantOutputConfigurationImpl
 import com.android.build.gradle.internal.api.BaseVariantImpl
 import com.android.build.gradle.internal.component.LibraryCreationConfig
 import com.android.build.gradle.internal.core.VariantSources
@@ -51,7 +50,6 @@ import com.android.build.gradle.options.ProjectOptions
 import com.android.builder.core.BuilderConstants
 import com.android.builder.core.ComponentTypeImpl
 import com.android.builder.errors.IssueReporter
-import com.google.common.collect.ImmutableList
 import org.gradle.api.Project
 
 class LibraryVariantFactory(
@@ -88,32 +86,23 @@ class LibraryVariantFactory(
         variantServices: VariantServices,
         taskCreationServices: TaskCreationServices,
         globalConfig: GlobalTaskCreationConfig,
-        ): LibraryCreationConfig {
-        val libVariant = dslServices
-                .newInstance(
-                        LibraryVariantImpl::class.java,
-                        variantBuilder,
-                        buildFeatures,
-                        variantDslInfo,
-                        variantDependencies,
-                        variantSources,
-                        paths,
-                        artifacts,
-                        variantData,
-                        taskContainer,
-                        variantServices,
-                        taskCreationServices,
-                        globalConfig,
-                )
-
-        // create default output
-        libVariant.addVariantOutput(
-            VariantOutputConfigurationImpl(false, ImmutableList.of()),
-            libVariant.services.projectInfo.getProjectBaseName().map {
-                "${it}-${libVariant.baseName}.${BuilderConstants.EXT_LIB_ARCHIVE}"
-            }
-        )
-        return libVariant
+    ): LibraryCreationConfig {
+        return dslServices
+            .newInstance(
+                LibraryVariantImpl::class.java,
+                variantBuilder,
+                buildFeatures,
+                variantDslInfo,
+                variantDependencies,
+                variantSources,
+                paths,
+                artifacts,
+                variantData,
+                taskContainer,
+                variantServices,
+                taskCreationServices,
+                globalConfig
+            )
     }
 
     override fun createBuildFeatureValues(
@@ -201,7 +190,7 @@ class LibraryVariantFactory(
     /** * Prevent customization of applicationId or applicationIdSuffix.  */
     override fun preVariantCallback(
         project: Project,
-        dslExtension: CommonExtension<*, *, *, *>,
+        dslExtension: CommonExtension<*, *, *, *, *>,
         model: VariantInputModel<DefaultConfig, BuildType, ProductFlavor, SigningConfig>
     ) {
         super.preVariantCallback(project, dslExtension, model)

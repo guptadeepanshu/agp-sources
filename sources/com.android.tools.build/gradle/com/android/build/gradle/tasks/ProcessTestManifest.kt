@@ -17,9 +17,8 @@ package com.android.build.gradle.tasks
 
 import com.android.SdkConstants
 import com.android.build.api.variant.BuiltArtifacts
+import com.android.build.api.variant.impl.BuiltArtifactImpl
 import com.android.build.api.variant.impl.BuiltArtifactsImpl
-import com.android.build.api.variant.impl.VariantOutputImpl
-import com.android.build.api.variant.impl.dirName
 import com.android.build.api.variant.impl.getApiString
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.component.AndroidTestCreationConfig
@@ -35,6 +34,7 @@ import com.android.build.gradle.internal.scope.InternalArtifactType.PACKAGED_MAN
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.manifest.ManifestProviderImpl
+import com.android.build.gradle.internal.utils.parseTargetHash
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.tasks.ProcessApplicationManifest.Companion.getArtifactName
 import com.android.buildanalyzer.common.TaskCategory
@@ -50,7 +50,6 @@ import com.android.utils.FileUtils
 import com.android.utils.ILogger
 import com.google.common.base.Charsets
 import com.google.common.base.Preconditions
-import com.google.common.base.Strings
 import com.google.common.io.Files
 import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.file.DirectoryProperty
@@ -62,7 +61,6 @@ import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
-import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.PathSensitive
@@ -95,9 +93,6 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
 
     private var manifests: ArtifactCollection? = null
 
-    @get:Nested
-    abstract val apkData: Property<VariantOutputImpl>
-
     @get:Optional
     @get:PathSensitive(PathSensitivity.RELATIVE)
     @get:InputFiles
@@ -105,10 +100,7 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
         private set
 
     override fun doTaskAction() {
-        val dirName = apkData.get().variantOutputConfiguration.dirName()
-        val manifestOutputFolder =
-            if (Strings.isNullOrEmpty(dirName)) packagedManifestOutputDirectory.get().asFile
-            else packagedManifestOutputDirectory.get().file(dirName).asFile
+        val manifestOutputFolder = packagedManifestOutputDirectory.get().asFile
         FileUtils.mkdirs(manifestOutputFolder)
         val manifestOutputFile = File(manifestOutputFolder, SdkConstants.ANDROID_MANIFEST_XML)
         val navJsons = navigationJsons?.files ?: listOf<File>()
@@ -117,7 +109,8 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
             testApplicationId.get(),
             namespace.get(),
             minSdkVersion.get(),
-            targetSdkVersion.get(),
+            targetSdkVersion.orNull,
+            compileSdk.orNull,
             testedApplicationId.get(),
             instrumentationRunner.get(),
             handleProfiling.orNull,
@@ -127,7 +120,7 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
             computeProviders(),
             placeholdersValues.get(),
             navJsons,
-            jniLibsUseLegacyPackaging.orNull,
+            extractNativeLibs.orNull,
             debuggable.get(),
             manifestOutputFile,
             tmpDir.get().asFile
@@ -138,12 +131,11 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
             testApplicationId.get(),
             variantName,
             listOf(
-                apkData.get().toBuiltArtifact(
-                    manifestOutputFile
+                BuiltArtifactImpl.make(
+                    manifestOutputFile.absolutePath
                 )
             )
-        )
-            .saveToDirectory(packagedManifestOutputDirectory.get().asFile)
+        ).saveToDirectory(packagedManifestOutputDirectory.get().asFile)
     }
 
     /**
@@ -153,6 +145,7 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
      * @param namespace the namespace of the test application
      * @param minSdkVersion the minSdkVersion of the test application
      * @param targetSdkVersion the targetSdkVersion of the test application
+     * @param compileSdk the compile SDK API level of the test application
      * @param testedApplicationId the application id of the tested application
      * @param instrumentationRunner the name of the instrumentation runner
      * @param handleProfiling whether or not the Instrumentation object will turn profiling on and
@@ -164,10 +157,9 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
      * @param manifestProviders the manifest providers
      * @param manifestPlaceholders used placeholders in the manifest
      * @param navigationJsons the list of navigation JSON files
-     * @param jniLibsUseLegacyPackaging whether or not native libraries will be compressed in the
-     * APK. If false, native libraries will be uncompressed, so `android:extractNativeLibs="false"`
-     * will be injected in the manifest's application tag, unless that attribute is already
-     * explicitly set. If true, nothing if injected.
+     * @param extractNativeLibs the value to assign to the injected android:extractNativeLibs
+     * attribute. The attribute will not be injected if null. Even if not null, the attribute will
+     * not be modified if it's already present in the test's source manifest.
      * @param debuggable whether the variant is debuggable
      * @param outManifest the output location for the merged manifest
      * @param tmpDir temporary dir used for processing
@@ -176,7 +168,8 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
         testApplicationId: String,
         namespace: String,
         minSdkVersion: String,
-        targetSdkVersion: String,
+        targetSdkVersion: String?,
+        compileSdk: Int?,
         testedApplicationId: String,
         instrumentationRunner: String,
         handleProfiling: Boolean?,
@@ -186,7 +179,7 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
         manifestProviders: List<ManifestProvider?>,
         manifestPlaceholders: Map<String?, Any?>,
         navigationJsons: Collection<File>,
-        jniLibsUseLegacyPackaging: Boolean?,
+        extractNativeLibs: Boolean?,
         debuggable: Boolean,
         outManifest: File,
         tmpDir: File
@@ -216,13 +209,14 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
         var tempFile1: File? = null
         var tempFile2: File? = null
         try {
+            val targetSdkVersionOrNull = targetSdkVersion?.takeIf { targetSdkVersion != "-1" }
             FileUtils.mkdirs(tmpDir)
             var generatedTestManifest: File =
                 File.createTempFile("tempFile1ProcessTestManifest", ".xml", tmpDir)
                     .also { tempFile1 = it }
             // we are generating the manifest and if there is an existing one,
             // it will be merged with the generated one
-            logger.verbose("Generating in %1\$s", generatedTestManifest!!.absolutePath)
+            logger.verbose("Generating in %1\$s", generatedTestManifest.absolutePath)
             if (handleProfiling != null) {
                 Preconditions.checkNotNull(
                     functionalTest,
@@ -231,10 +225,10 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
                 generateInstrumentedTestManifest(
                     testApplicationId,
                     minSdkVersion,
-                    if (targetSdkVersion == "-1") null else targetSdkVersion,
+                    targetSdkVersionOrNull,
                     testedApplicationId,
                     instrumentationRunner,
-                    handleProfiling!!,
+                    handleProfiling,
                     functionalTest!!,
                     generatedTestManifest
                 )
@@ -242,7 +236,7 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
                 generateUnitTestManifest(
                     testApplicationId,
                     minSdkVersion,
-                    if (targetSdkVersion == "-1") null else targetSdkVersion,
+                    targetSdkVersionOrNull,
                     generatedTestManifest,
                     testApplicationId,
                     instrumentationRunner)
@@ -285,9 +279,9 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
                 if (testLabel != null) {
                     intermediateInvoker.setOverride(ManifestSystemProperty.Instrumentation.LABEL, testLabel)
                 }
-                if (targetSdkVersion != "-1") {
+                targetSdkVersionOrNull?.let {
                     intermediateInvoker.setOverride(
-                        ManifestSystemProperty.UsesSdk.TARGET_SDK_VERSION, targetSdkVersion
+                        ManifestSystemProperty.UsesSdk.TARGET_SDK_VERSION, it
                     )
                 }
                 tempFile2 = File.createTempFile("tempFile2ProcessTestManifest", ".xml", tmpDir)
@@ -307,8 +301,14 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
                 .setPlaceHolderValues(manifestPlaceholders)
                 .addNavigationJsons(navigationJsons)
                 .setNamespace(namespace)
-            if (jniLibsUseLegacyPackaging == false) {
-                finalInvoker.withFeatures(ManifestMerger2.Invoker.Feature.DO_NOT_EXTRACT_NATIVE_LIBS)
+            extractNativeLibs?.let {
+                // android:extractNativeLibs unrecognized if using compile SDK < 23.
+                if (compileSdk == null || compileSdk >= 23) {
+                    finalInvoker.setOverride(
+                        ManifestSystemProperty.Application.EXTRACT_NATIVE_LIBS,
+                        it.toString()
+                    )
+                }
             }
             if (debuggable) {
                 finalInvoker.withFeatures(ManifestMerger2.Invoker.Feature.DEBUGGABLE)
@@ -386,6 +386,7 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
     abstract val minSdkVersion: Property<String>
 
     @get:Input
+    @get:Optional
     abstract val targetSdkVersion: Property<String>
 
     @get:Input
@@ -412,7 +413,7 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
 
     @get:Optional
     @get:Input
-    abstract val jniLibsUseLegacyPackaging: Property<Boolean>
+    abstract val extractNativeLibs: Property<Boolean>
 
     @get:Input
     abstract val debuggable: Property<Boolean>
@@ -420,6 +421,10 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
     @get:PathSensitive(PathSensitivity.RELATIVE)
     @get:InputFiles
     abstract val manifestOverlays: ListProperty<File>
+
+    @get:Input
+    @get:Optional
+    abstract val compileSdk: Property<Int>
 
     /**
      * Compute the final list of providers based on the manifest file collection.
@@ -475,9 +480,8 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
             task.testManifestFile
                 .fileProvider(creationConfig.sources.manifestFile)
             task.testManifestFile.disallowChanges()
-            creationConfig.sources.manifestOverlays.forEach(task.manifestOverlays::add)
-            task.manifestOverlays.disallowChanges()
-            task.apkData.set(creationConfig.outputs.getMainSplit())
+            task.manifestOverlays.setDisallowChanges(
+                creationConfig.sources.manifestOverlayFiles.map { it.filter(File::isFile) })
             task.componentType.setDisallowChanges(creationConfig.componentType.toString())
             task.tmpDir.setDisallowChanges(
                 creationConfig.paths.intermediatesDir(
@@ -486,7 +490,7 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
                     creationConfig.dirName
                 )
             )
-            task.minSdkVersion.setDisallowChanges(creationConfig.minSdkVersion.getApiString())
+            task.minSdkVersion.setDisallowChanges(creationConfig.minSdk.getApiString())
             task.targetSdkVersion.setDisallowChanges(creationConfig.targetSdkVersion.getApiString())
 
             task.testApplicationId.setDisallowChanges(creationConfig.applicationId)
@@ -495,10 +499,14 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
 
             task.instrumentationRunner.setDisallowChanges(creationConfig.instrumentationRunner)
             if (creationConfig is InstrumentedTestCreationConfig) {
-                task.handleProfiling.setDisallowChanges(creationConfig.handleProfiling)
-                task.functionalTest.setDisallowChanges(creationConfig.functionalTest)
-                task.testLabel.setDisallowChanges(creationConfig.testLabel)
+                task.handleProfiling.set(creationConfig.handleProfiling)
+                task.functionalTest.set(creationConfig.functionalTest)
+                task.testLabel.set(creationConfig.testLabel)
             }
+            task.handleProfiling.disallowChanges()
+            task.functionalTest.disallowChanges()
+            task.testLabel.disallowChanges()
+
             task.manifests = creationConfig
                 .variantDependencies
                 .getArtifactCollection(
@@ -525,20 +533,24 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
             }
             when (creationConfig) {
                 is AndroidTestCreationConfig -> {
-                    task.jniLibsUseLegacyPackaging.setDisallowChanges(
+                    task.extractNativeLibs.setDisallowChanges(
                         creationConfig.packaging.jniLibs.useLegacyPackaging
                     )
                 }
                 is TestVariantCreationConfig -> {
-                    task.jniLibsUseLegacyPackaging.setDisallowChanges(
+                    task.extractNativeLibs.setDisallowChanges(
                         creationConfig.packaging.jniLibs.useLegacyPackaging
                     )
                 }
                 else -> {
-                    task.jniLibsUseLegacyPackaging.disallowChanges()
+                    task.extractNativeLibs.disallowChanges()
                 }
             }
             task.debuggable.setDisallowChanges(creationConfig.debuggable)
+            task.compileSdk
+                .setDisallowChanges(
+                    parseTargetHash(creationConfig.global.compileSdkHashString).apiLevel
+                )
         }
     }
 

@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.dsl
 
+import com.android.build.api.dsl.ApplicationAndroidResources
 import com.android.build.api.dsl.ComposeOptions
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.api.AndroidSourceSet
@@ -68,4 +69,7 @@ open class BaseAppModuleExtension(
 
     override val libraryRequests: MutableCollection<LibraryRequest>
         get() = publicExtensionImpl.libraryRequests
+
+    override val androidResources: ApplicationAndroidResources
+        get() = publicExtensionImpl.androidResources
 }

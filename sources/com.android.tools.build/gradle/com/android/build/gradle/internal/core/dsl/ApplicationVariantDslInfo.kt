@@ -59,5 +59,7 @@ interface ApplicationVariantDslInfo:
 
     val isProfileable: Boolean
 
+    val generateLocaleConfig: Boolean
+
     override val androidResourcesDsl: AndroidResourcesDslInfo
 }

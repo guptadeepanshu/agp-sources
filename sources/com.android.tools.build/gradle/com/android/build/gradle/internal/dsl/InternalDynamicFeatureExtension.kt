@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.dsl
 
+import com.android.build.api.dsl.DynamicFeatureAndroidResources
 import com.android.build.api.dsl.DynamicFeatureBuildFeatures
 import com.android.build.api.dsl.DynamicFeatureBuildType
 import com.android.build.api.dsl.DynamicFeatureDefaultConfig
@@ -29,4 +30,5 @@ interface InternalDynamicFeatureExtension :
             DynamicFeatureBuildFeatures,
             DynamicFeatureBuildType,
             DynamicFeatureDefaultConfig,
-            DynamicFeatureProductFlavor>
+            DynamicFeatureProductFlavor,
+            DynamicFeatureAndroidResources>

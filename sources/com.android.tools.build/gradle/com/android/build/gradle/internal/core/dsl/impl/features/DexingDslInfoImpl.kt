@@ -20,14 +20,11 @@ import com.android.build.api.dsl.ApplicationBuildType
 import com.android.build.api.dsl.BuildType
 import com.android.build.gradle.internal.core.MergedFlavor
 import com.android.build.gradle.internal.core.dsl.features.DexingDslInfo
-import com.android.build.gradle.internal.services.BaseServices
-import com.android.build.gradle.options.IntegerOption
 import java.io.File
 
 class DexingDslInfoImpl(
     private val buildTypeObj: BuildType,
-    private val mergedFlavor: MergedFlavor,
-    private val services: BaseServices
+    private val mergedFlavor: MergedFlavor
 ): DexingDslInfo {
 
     // Only require specific multidex opt-in for legacy multidex.
@@ -55,8 +52,4 @@ class DexingDslInfoImpl(
             value = mergedFlavor.multiDexKeepFile
             return value
         }
-
-    // TODO: move to global scope
-    override val targetDeployApiFromIDE: Int? =
-        services.projectOptions.get(IntegerOption.IDE_TARGET_DEVICE_API)
 }

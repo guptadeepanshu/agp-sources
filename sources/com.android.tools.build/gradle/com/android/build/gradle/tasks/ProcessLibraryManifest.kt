@@ -19,9 +19,8 @@ import com.android.SdkConstants
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.BuiltArtifacts
+import com.android.build.api.variant.impl.BuiltArtifactImpl
 import com.android.build.api.variant.impl.BuiltArtifactsImpl
-import com.android.build.api.variant.impl.VariantOutputImpl
-import com.android.build.api.variant.impl.dirName
 import com.android.build.api.variant.impl.getApiString
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.component.ComponentCreationConfig
@@ -36,7 +35,6 @@ import com.android.build.gradle.options.BooleanOption
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.manifmerger.ManifestMerger2
 import com.android.utils.FileUtils
-import com.google.common.annotations.VisibleForTesting
 import com.google.common.base.Preconditions
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
@@ -47,7 +45,6 @@ import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
-import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.OutputFile
@@ -93,13 +90,8 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
     val aaptFriendlyManifestOutputFile: File?
         get() = if (aaptFriendlyManifestOutputDirectory.isPresent) FileUtils.join(
             aaptFriendlyManifestOutputDirectory.get().asFile,
-            mainSplit.get().dirName(),
             SdkConstants.ANDROID_MANIFEST_XML
         ) else null
-
-    @VisibleForTesting
-    @get:Nested
-    abstract val mainSplit: Property<VariantOutputImpl>
 
     private var isNamespaced = false
 
@@ -126,7 +118,6 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
             it.reportFile.set(reportFile)
             it.mergeBlameFile.set(mergeBlameFile)
             it.aaptFriendlyManifestOutputDirectory.set(aaptFriendlyManifestOutputDirectory)
-            it.mainSplit.set(mainSplit.get().toSerializedForm())
             it.tmpDir.set(tmpDir.get())
             it.disableMinSdkVersionCheck.set(disableMinSdkVersionCheck)
         }
@@ -147,7 +138,6 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
         abstract val reportFile: RegularFileProperty
         abstract val mergeBlameFile: RegularFileProperty
         abstract val aaptFriendlyManifestOutputDirectory: DirectoryProperty
-        abstract val mainSplit: Property<VariantOutputImpl.SerializedForm>
         abstract val tmpDir: DirectoryProperty
         abstract val disableMinSdkVersionCheck: Property<Boolean>
     }
@@ -176,12 +166,14 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
                 parameters.targetSdkVersion.orNull,
                 parameters.maxSdkVersion.orNull,
                 testOnly = false,
+                extractNativeLibs = null,
                 parameters.manifestOutputFile.asFile.get().absolutePath,
                 parameters.aaptFriendlyManifestOutputFile.asFile.orNull?.absolutePath /* outInstantRunManifestLocation */,
                 ManifestMerger2.MergeType.LIBRARY /* outInstantAppManifestLocation */,
                 parameters.manifestPlaceholders.get(),
                 optionalFeatures,
                 emptyList(),
+                generatedLocaleConfigAttribute = null,
                 parameters.reportFile.asFile.get(),
                 LoggerWrapper.getLogger(ProcessLibraryManifest::class.java)
             )
@@ -203,12 +195,11 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
                     parameters.namespace.get(),
                     parameters.variantName.get(),
                     listOf(
-                        parameters.mainSplit.get().toBuiltArtifact(
-                            parameters.aaptFriendlyManifestOutputFile.asFile.get()
+                        BuiltArtifactImpl.make(
+                            outputFile = parameters.aaptFriendlyManifestOutputFile.asFile.get().absolutePath
                         )
                     )
-                )
-                    .saveToDirectory(parameters.aaptFriendlyManifestOutputDirectory.asFile.get())
+                ).saveToDirectory(parameters.aaptFriendlyManifestOutputDirectory.asFile.get())
             }
         }
 
@@ -292,23 +283,21 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
             task: ProcessLibraryManifest
         ) {
             super.configure(task)
-            task.minSdkVersion.setDisallowChanges(creationConfig.minSdkVersion.getApiString())
+            task.minSdkVersion.setDisallowChanges(creationConfig.minSdk.getApiString())
             task.targetSdkVersion
                 .setDisallowChanges(
                     if (targetSdkVersion == null || targetSdkVersion.apiLevel < 1) null
                     else targetSdkVersion.getApiString()
                 )
             task.maxSdkVersion.setDisallowChanges(maxSdkVersion)
-            task.mainSplit.set(creationConfig.services.provider { creationConfig.outputs.getMainSplit() })
-            task.mainSplit.disallowChanges()
             task.isNamespaced = creationConfig.global.namespacedAndroidResources
             creationConfig.manifestPlaceholdersCreationConfig?.placeholders?.let {
                 task.manifestPlaceholders.setDisallowChanges(it)
             }
             task.mainManifest.fileProvider(creationConfig.sources.manifestFile)
             task.mainManifest.disallowChanges()
-            creationConfig.sources.manifestOverlays.forEach(task.manifestOverlays::add)
-            task.manifestOverlays.disallowChanges()
+            task.manifestOverlays.setDisallowChanges(
+                creationConfig.sources.manifestOverlayFiles.map { it.filter(File::isFile) })
             task.namespace.setDisallowChanges(creationConfig.namespace)
             task.tmpDir.setDisallowChanges(creationConfig.paths.intermediatesDir(
                     "tmp",

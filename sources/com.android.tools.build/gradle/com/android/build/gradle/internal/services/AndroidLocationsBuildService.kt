@@ -24,12 +24,15 @@ import com.android.prefs.AbstractAndroidLocations
 import com.android.prefs.AndroidLocationsProvider
 import com.android.utils.ILogger
 import org.gradle.api.Project
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.logging.Logging
 import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.services.BuildService
 import org.gradle.api.services.BuildServiceParameters
+import java.io.File
 import java.nio.file.Path
 import javax.inject.Inject
+import kotlin.io.path.absolutePathString
 
 /**
  * A build service around [AndroidLocations] in order to make this basically a singleton
@@ -63,10 +66,30 @@ abstract class AndroidLocationsBuildService @Inject constructor(
         // nothing to be done here
     }
 
+    /**
+     * Use [ConfigPhaseFileCreator] to create android folder during configuration phase to avoid
+     * configuration cache miss.
+     */
     private val androidLocations = AndroidLocations(
         EnvironmentProviderImpl(GradleEnvironmentProviderImpl(providerFactory)),
         LoggerWrapper(Logging.getLogger("AndroidLocations"))
-    )
+    ).also { androidLocations ->
+        providerFactory.of(AndroidDirectoryCreator::class.java) {
+            it.parameters.androidDir.set(File(androidLocations.computeAndroidFolder().absolutePathString()))
+        }.get()
+    }
+
+    abstract class AndroidDirectoryCreator :
+            ConfigPhaseFileCreator<String, AndroidDirectoryCreator.Params> {
+        interface Params : ConfigPhaseFileCreator.Params {
+            val androidDir: DirectoryProperty
+        }
+
+        override fun obtain(): String {
+            parameters.androidDir.get().asFile.mkdirs()
+            return IGNORE_FILE_CREATION
+        }
+    }
 
     class RegistrationAction(
         project: Project

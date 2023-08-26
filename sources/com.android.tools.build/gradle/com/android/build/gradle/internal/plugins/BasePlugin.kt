@@ -19,7 +19,6 @@ package com.android.build.gradle.internal.plugins
 import com.android.SdkConstants
 import com.android.build.api.dsl.BuildFeatures
 import com.android.build.api.dsl.CommonExtension
-import com.android.build.api.dsl.ExecutionProfile
 import com.android.build.api.dsl.SettingsExtension
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
 import com.android.build.api.variant.AndroidComponentsExtension
@@ -31,12 +30,14 @@ import com.android.build.gradle.internal.ApiObjectFactory
 import com.android.build.gradle.internal.AvdComponentsBuildService
 import com.android.build.gradle.internal.BadPluginException
 import com.android.build.gradle.internal.ClasspathVerifier.checkClasspathSanity
+import com.android.build.gradle.internal.CompileOptions
 import com.android.build.gradle.internal.DependencyConfigurator
 import com.android.build.gradle.internal.ExtraModelInfo
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.SdkLocator.sdkTestDirectory
 import com.android.build.gradle.internal.TaskManager
 import com.android.build.gradle.internal.VariantManager
+import com.android.build.gradle.internal.VariantTaskManager
 import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig
@@ -68,6 +69,7 @@ import com.android.build.gradle.internal.ide.v2.GlobalSyncService
 import com.android.build.gradle.internal.ide.v2.NativeModelBuilder
 import com.android.build.gradle.internal.lint.LintFixBuildService
 import com.android.build.gradle.internal.profile.AnalyticsUtil
+import com.android.build.gradle.internal.projectIsolationRequested
 import com.android.build.gradle.internal.scope.DelayedActionsExecutor
 import com.android.build.gradle.internal.services.Aapt2DaemonBuildService
 import com.android.build.gradle.internal.services.Aapt2ThreadPoolBuildService
@@ -87,6 +89,7 @@ import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfigImpl
 import com.android.build.gradle.internal.tasks.factory.TaskManagerConfig
 import com.android.build.gradle.internal.tasks.factory.TaskManagerConfigImpl
+import com.android.build.gradle.internal.testing.ManagedDeviceRegistry
 import com.android.build.gradle.internal.utils.enforceMinimumVersionsOfPlugins
 import com.android.build.gradle.internal.utils.getKotlinPluginVersion
 import com.android.build.gradle.internal.utils.syncAgpAndKgpSources
@@ -96,7 +99,6 @@ import com.android.build.gradle.internal.variant.VariantFactory
 import com.android.build.gradle.internal.variant.VariantInputModel
 import com.android.build.gradle.internal.variant.VariantModel
 import com.android.build.gradle.internal.variant.VariantModelImpl
-import com.android.build.gradle.options.StringOption
 import com.android.build.gradle.options.SyncOptions
 import com.android.builder.errors.IssueReporter.Type
 import com.android.builder.model.v2.ide.ProjectType
@@ -124,17 +126,18 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.function.Consumer
 
 /** Base class for all Android plugins */
-@Suppress("UnstableApiUsage")
 abstract class BasePlugin<
                 BuildFeaturesT: BuildFeatures,
                 BuildTypeT: com.android.build.api.dsl.BuildType,
                 DefaultConfigT: com.android.build.api.dsl.DefaultConfig,
                 ProductFlavorT: com.android.build.api.dsl.ProductFlavor,
+                AndroidResourcesT: com.android.build.api.dsl.AndroidResources,
                 AndroidT: CommonExtension<
                         BuildFeaturesT,
                         BuildTypeT,
                         DefaultConfigT,
-                        ProductFlavorT>,
+                        ProductFlavorT,
+                        AndroidResourcesT>,
                 AndroidComponentsT:
                         AndroidComponentsExtension<
                                 in AndroidT,
@@ -158,11 +161,13 @@ abstract class BasePlugin<
             BuildTypeT: com.android.build.api.dsl.BuildType,
             DefaultConfigT: com.android.build.api.dsl.DefaultConfig,
             ProductFlavorT: com.android.build.api.dsl.ProductFlavor,
+            AndroidResourcesT: com.android.build.api.dsl.AndroidResources,
             AndroidT: CommonExtension<
                     out BuildFeaturesT,
                     out BuildTypeT,
                     out DefaultConfigT,
-                    out ProductFlavorT>>(
+                    out ProductFlavorT,
+                    out AndroidResourcesT>>(
         val oldExtension: BaseExtension,
         val newExtension: AndroidT,
         val bootClasspathConfig: BootClasspathConfigImpl,
@@ -198,13 +203,17 @@ abstract class BasePlugin<
         )
     }
 
+    val managedDeviceRegistry: ManagedDeviceRegistry by lazy(LazyThreadSafetyMode.NONE) {
+        ManagedDeviceRegistry(newExtension.testOptions)
+    }
+
     private val globalConfig by lazy {
         withProject("globalConfig") { project ->
             @Suppress("DEPRECATION")
             GlobalTaskCreationConfigImpl(
                 project,
                 extension,
-                (newExtension as CommonExtensionImpl<*, *, *, *>),
+                (newExtension as CommonExtensionImpl<*, *, *, *, *>),
                 dslServices,
                 versionedSdkLoaderService,
                 bootClasspathConfig,
@@ -212,7 +221,8 @@ abstract class BasePlugin<
                 createCustomLintChecksConfig(project),
                 createAndroidJarConfig(project),
                 createFakeDependencyConfig(project),
-                createSettingsOptions()
+                createSettingsOptions(dslServices),
+                managedDeviceRegistry
             )
         }
     }
@@ -308,7 +318,7 @@ abstract class BasePlugin<
         buildOutputs: NamedDomainObjectContainer<com.android.build.gradle.api.BaseVariantOutput>,
         extraModelInfo: ExtraModelInfo,
         versionedSdkLoaderService: VersionedSdkLoaderService
-    ): ExtensionData<BuildFeaturesT, BuildTypeT, DefaultConfigT, ProductFlavorT, AndroidT>
+    ): ExtensionData<BuildFeaturesT, BuildTypeT, DefaultConfigT, ProductFlavorT, AndroidResourcesT, AndroidT>
 
     protected abstract fun createComponentExtension(
         dslServices: DslServices,
@@ -328,7 +338,7 @@ abstract class BasePlugin<
         globalTaskCreationConfig: GlobalTaskCreationConfig,
         localConfig: TaskManagerConfig,
         extension: BaseExtension,
-    ): TaskManager<VariantBuilderT, CreationConfigT>
+    ): VariantTaskManager<VariantBuilderT, CreationConfigT>
 
     protected abstract fun getProjectType(): Int
 
@@ -403,8 +413,11 @@ abstract class BasePlugin<
             .forEach(projectServices.deprecationReporter::reportOptionIssuesIfAny)
         IncompatibleProjectOptionsReporter.check(projectOptions, issueReporter)
 
-        // Enforce minimum versions of certain plugins
-        enforceMinimumVersionsOfPlugins(project, issueReporter)
+        // TODO(b/189990965) Re-enable checking minimum versions of certain plugins once
+        // https://github.com/gradle/gradle/issues/23838 is fixed
+        if (!projectIsolationRequested(project.providers)) {
+            enforceMinimumVersionsOfPlugins(project, issueReporter)
+        }
 
         // Apply the Java plugin
         project.plugins.apply(JavaBasePlugin::class.java)
@@ -457,7 +470,7 @@ abstract class BasePlugin<
             return lintChecks
         }
 
-        private fun createAndroidJarConfig(project: Project): Configuration  {
+        fun createAndroidJarConfig(project: Project): Configuration  {
             val androidJarConfig: Configuration = project.configurations
                 .maybeCreate(VariantDependencies.CONFIG_NAME_ANDROID_APIS)
             androidJarConfig.description = "Configuration providing various types of Android JAR file"
@@ -471,7 +484,10 @@ abstract class BasePlugin<
             ).get()
 
             val fakeDependency = project.dependencies.create(project.files(fakeJarService.lazyCachedFakeJar))
-            return project.configurations.detachedConfiguration(fakeDependency)
+            val configuration = project.configurations.detachedConfiguration(fakeDependency)
+            configuration.isCanBeConsumed = false
+            configuration.isCanBeResolved = true
+            return configuration
         }
     }
 
@@ -500,7 +516,7 @@ abstract class BasePlugin<
         project: Project,
         registry: ToolingModelBuilderRegistry,
         variantInputModel: VariantInputModel<DefaultConfig, BuildType, ProductFlavor, SigningConfig>,
-        extensionData: ExtensionData<BuildFeaturesT, BuildTypeT, DefaultConfigT, ProductFlavorT, AndroidT>,
+        extensionData: ExtensionData<BuildFeaturesT, BuildTypeT, DefaultConfigT, ProductFlavorT, AndroidResourcesT, AndroidT>,
         extraModelInfo: ExtraModelInfo,
         globalConfig: GlobalTaskCreationConfig
     ) {
@@ -591,7 +607,11 @@ abstract class BasePlugin<
             return
         }
         hasCreatedTasks.set(true)
+
         variantManager.variantApiOperationsRegistrar.executeDslFinalizationBlocks()
+
+        (globalConfig.compileOptions as CompileOptions).finalizeSourceAndTargetCompatibility(project)
+
         if (extension.compileSdkVersion == null) {
             if (SyncOptions.getModelQueryMode(projectServices.projectOptions)
                 == SyncOptions.EvaluationMode.IDE
@@ -705,11 +725,14 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
             .configureDependencySubstitutions()
             .configureDependencyChecks()
             .configureGeneralTransforms(globalConfig.namespacedAndroidResources)
-            .configureVariantTransforms(variants, variantManager.nestedComponents, globalConfig)
+            .configureVariantTransforms(
+                variants.map { it.variant },
+                variantManager.nestedComponents,
+                globalConfig
+            )
             .configureAttributeMatchingStrategies(variantInputModel)
             .configureCalculateStackFramesTransforms(globalConfig)
-            .configurePrivacySandboxSdkConsumerTransforms(
-                    globalConfig.compileSdkHashString, globalConfig.buildToolsRevision, globalConfig)
+            .configurePrivacySandboxSdkConsumerTransforms()
                 .apply {
                     // Registering Jacoco transforms causes the jacoco configuration to be created.
                     // Ensure there are is at least one variant with enableAndroidTestCoverage
@@ -718,13 +741,19 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
                         configureJacocoTransforms()
                     }
                 }
+                .configurePrivacySandboxSdkVariantTransforms(
+                        variants.map { it.variant },
+                        globalConfig.compileSdkHashString,
+                        globalConfig.buildToolsRevision,
+                        globalConfig
+                )
 
         // Run the old Variant API, after the variants and tasks have been created.
         @Suppress("DEPRECATION")
         val apiObjectFactory = ApiObjectFactory(extension, variantFactory, dslServices)
         for (variant in variants) {
             apiObjectFactory.create(variant.variant)
-            variant.variant.oldVariantApiCompleted()
+            variant.variant.oldVariantApiLegacySupport?.oldVariantApiCompleted()
         }
 
         // lock the Properties of the variant API after the old API because
@@ -807,19 +836,6 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
         return false
     }
 
-    private val settingsExtension: SettingsExtension? by lazy(LazyThreadSafetyMode.NONE) {
-        // Query for the settings extension via extra properties.
-        // This is deposited here by the SettingsPlugin
-        val properties = project?.extensions?.extraProperties
-        if (properties == null) {
-            null
-        } else if (properties.has("_android_settings")) {
-            properties.get("_android_settings") as? SettingsExtension
-        } else {
-            null
-        }
-    }
-
     // Initialize the android extension with values from the android settings extension
     protected fun initExtensionFromSettings(extension: AndroidT) {
         settingsExtension?.let {
@@ -848,7 +864,7 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
             this.defaultConfig.minSdkPreview = minSdkPreview
         }
 
-        settings.ndkVersion?.let { ndkVersion ->
+        settings.ndkVersion.let { ndkVersion ->
             this.ndkVersion = ndkVersion
         }
 
@@ -856,70 +872,9 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
             this.ndkPath = ndkPath
         }
 
-        settings.buildToolsVersion?.let { buildToolsVersion ->
+        settings.buildToolsVersion.let { buildToolsVersion ->
             this.buildToolsVersion = buildToolsVersion
         }
-    }
-
-    // Create settings options, to be used in the global config,
-    // with values from the android settings extension
-    private fun createSettingsOptions(): SettingsOptions {
-        // resolve settings extension
-        val actualSettingsExtension = settingsExtension ?: run {
-            dslServices.logger.info("Using default execution profile")
-            return SettingsOptions(DEFAULT_EXECUTION_PROFILE)
-        }
-
-        // Map the profiles to make it easier to look them up
-        val executionProfiles = actualSettingsExtension.execution.profiles.associate { profile ->
-            profile.name to profile
-        }
-
-        val buildProfileOptions = { profile: ExecutionProfile ->
-            ExecutionProfileOptions(
-                name = profile.name,
-                r8Options = profile.r8.let { r8 ->
-                    ToolExecutionOptions(
-                        jvmArgs = r8.jvmOptions,
-                        runInSeparateProcess = r8.runInSeparateProcess
-                    )
-                }
-            )
-        }
-
-        // If the string option is set use that one instead
-        val actualProfileName =
-            dslServices.projectOptions[StringOption.EXECUTION_PROFILE_SELECTION] ?:
-            actualSettingsExtension.execution.defaultProfile
-        // Find the selected (or the only) profile
-        val executionProfile =
-            if (actualProfileName == null) {
-                if (executionProfiles.isEmpty()) { // No profiles declared, and none selected, return default
-                    dslServices.logger.info("Using default execution profile")
-                    DEFAULT_EXECUTION_PROFILE
-                } else if (executionProfiles.size == 1) { // if there is exactly one profile use that
-                    dslServices.logger.info("Using only execution profile '${executionProfiles.keys.first()}'")
-                    buildProfileOptions(executionProfiles.values.first())
-                } else { // no profile selected
-                    dslServices.issueReporter.reportError(Type.GENERIC, "Found ${executionProfiles.size} execution profiles ${executionProfiles.keys}, but no profile was selected.\n")
-                    null
-                }
-            } else {
-                if (!executionProfiles.containsKey(actualProfileName)) { // invalid profile selected
-                    dslServices.issueReporter.reportError(Type.GENERIC,"Selected profile '$actualProfileName' does not exist")
-                    null
-                } else {
-                    if (actualProfileName == dslServices.projectOptions[StringOption.EXECUTION_PROFILE_SELECTION]) {
-                        dslServices.logger.info("Using execution profile from android.settings.executionProfile '$actualProfileName'")
-                    } else {
-                        dslServices.logger.info("Using execution profile from dsl '$actualProfileName'")
-                    }
-
-                    buildProfileOptions(executionProfiles[actualProfileName]!!)
-                }
-            }
-
-        return SettingsOptions(executionProfile = executionProfile)
     }
 
     // Create the "special" configuration for test buddy APKs. It will be resolved by the test

@@ -18,11 +18,8 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.artifact.impl.InternalScopedArtifacts
-import com.android.build.api.transform.QualifiedContent
 import com.android.build.api.variant.ScopedArtifacts
-import com.android.build.gradle.internal.InternalScope
 import com.android.build.gradle.internal.component.ApkCreationConfig
-import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.PublishingSpecs
@@ -68,34 +65,38 @@ class ClassesClasspathUtils(
             else ScopedArtifacts.Scope.PROJECT
         ).getFinalArtifacts(ScopedArtifact.CLASSES)
 
-        @Suppress("DEPRECATION") // Legacy support
-        val desugaringClasspathScopes: MutableSet<QualifiedContent.ScopeType> =
-            mutableSetOf(QualifiedContent.Scope.PROVIDED_ONLY)
+        val desugaringClasspathScopes = mutableSetOf(
+            InternalScopedArtifacts.InternalScope.COMPILE_ONLY
+        )
         if (classesAlteredTroughVariantAPI) {
             subProjectsClasses = creationConfig.services.fileCollection()
             externalLibraryClasses = creationConfig.services.fileCollection()
             mixedScopeClasses = creationConfig.services.fileCollection()
             dexExternalLibsInArtifactTransform = false
         } else if (enableDexingArtifactTransform) {
-            subProjectsClasses = creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.SUB_PROJECT)
-                .getFinalArtifacts(ScopedArtifact.CLASSES)
+            subProjectsClasses =
+                creationConfig
+                    .artifacts
+                    .forScope(InternalScopedArtifacts.InternalScope.SUB_PROJECTS)
+                    .getFinalArtifacts(ScopedArtifact.CLASSES)
             externalLibraryClasses = creationConfig.services.fileCollection()
             mixedScopeClasses = creationConfig.services.fileCollection()
             dexExternalLibsInArtifactTransform = false
 
-            @Suppress("DEPRECATION") // Legacy support
-            run {
-                desugaringClasspathScopes.add(QualifiedContent.Scope.EXTERNAL_LIBRARIES)
-                desugaringClasspathScopes.add(QualifiedContent.Scope.TESTED_CODE)
-                desugaringClasspathScopes.add(QualifiedContent.Scope.SUB_PROJECTS)
-            }
+            desugaringClasspathScopes.add(InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS)
+            desugaringClasspathScopes.add(InternalScopedArtifacts.InternalScope.TESTED_CODE)
+            desugaringClasspathScopes.add(InternalScopedArtifacts.InternalScope.SUB_PROJECTS)
         } else {
-            // legacy Transform API
-            @Suppress("DEPRECATION") // Legacy support
-            subProjectsClasses = creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.SUB_PROJECT)
-                .getFinalArtifacts(ScopedArtifact.CLASSES)
-            externalLibraryClasses = creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS)
-                .getFinalArtifacts(ScopedArtifact.CLASSES)
+            subProjectsClasses =
+                creationConfig
+                    .artifacts
+                    .forScope(InternalScopedArtifacts.InternalScope.SUB_PROJECTS)
+                    .getFinalArtifacts(ScopedArtifact.CLASSES)
+            externalLibraryClasses =
+                creationConfig
+                    .artifacts
+                    .forScope(InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS)
+                    .getFinalArtifacts(ScopedArtifact.CLASSES)
 
             // mixed scoped classes are not possible any longer since each jar is individually
             // present in a single scope.
@@ -137,49 +138,17 @@ class ClassesClasspathUtils(
             creationConfig.services.fileCollection()
         }
 
-        @Suppress("DEPRECATION") // Legacy support
         desugaringClasspathClasses =
             getArtifactFiles(desugaringClasspathScopes, ScopedArtifact.CLASSES)
     }
 
-    private fun getArtifactFiles(inputScopes: Collection<QualifiedContent.ScopeType>, type: ScopedArtifact) =
+    private fun getArtifactFiles(inputScopes: Collection<InternalScopedArtifacts.InternalScope>, type: ScopedArtifact) =
         creationConfig.services.fileCollection().also {
-            if (inputScopes.contains(InternalScope.LOCAL_DEPS)) {
+            inputScopes.forEach { scope ->
                 it.from(
-                    creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.LOCAL_DEPS)
-                        .getFinalArtifacts(type)
-                )
-            }
-            if (inputScopes.contains(InternalScope.FEATURES)) {
-                it.from(
-                    creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.FEATURES)
-                        .getFinalArtifacts(type)
-                )
-            }
-            if (inputScopes.contains(QualifiedContent.Scope.SUB_PROJECTS)) {
-                it.from(
-                    creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.SUB_PROJECT)
-                        .getFinalArtifacts(type)
-                )
-            }
-            if (inputScopes.contains(QualifiedContent.Scope.TESTED_CODE)) {
-                it.from(
-                    creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.TESTED_CODE)
-                        .getFinalArtifacts(type)
-                )
-            }
-            if (inputScopes.contains(QualifiedContent.Scope.PROVIDED_ONLY)) {
-                it.from(
-                    creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.PROVIDED)
-                        .getFinalArtifacts(type)
-                )
-            }
-            if (inputScopes.contains(QualifiedContent.Scope.EXTERNAL_LIBRARIES)) {
-                it.from(
-                    creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS)
+                    creationConfig.artifacts.forScope(scope)
                         .getFinalArtifacts(type)
                 )
             }
         }
-
 }

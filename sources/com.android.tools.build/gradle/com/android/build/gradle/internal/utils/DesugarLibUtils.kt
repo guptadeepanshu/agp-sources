@@ -21,13 +21,16 @@ package com.android.build.gradle.internal.utils
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.impl.getFeatureLevel
 import com.android.build.gradle.internal.dependency.GenericTransformParameters
+import com.android.build.gradle.internal.dependency.L8DesugarLibTransform
 import com.android.build.gradle.internal.dependency.VariantDependencies.Companion.CONFIG_NAME_CORE_LIBRARY_DESUGARING
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.builder.dexing.D8DesugaredMethodsGenerator
 import com.android.sdklib.AndroidTargetHash
 import com.google.common.io.ByteStreams
+import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
+import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.api.artifacts.transform.CacheableTransform
 import org.gradle.api.artifacts.transform.InputArtifact
 import org.gradle.api.artifacts.transform.TransformAction
@@ -38,7 +41,6 @@ import org.gradle.api.attributes.Attribute
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.FileSystemLocation
-import org.gradle.api.file.RegularFile
 import org.gradle.api.internal.artifacts.ArtifactAttributes
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
@@ -49,20 +51,19 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
+import java.io.File
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.util.zip.ZipInputStream
 
 // The name of desugar config json file
 private const val DESUGAR_LIB_CONFIG_FILE = "desugar.json"
-private const val ANDROID_SUBDIR = "android"
 
-// The output of L8 invocation, which is the dex output of desugar lib jar
-const val DESUGAR_LIB_DEX = "_internal-desugar-lib-dex"
-
+const val DESUGARED_DESUGAR_LIB = "_internal-desugared-desugar-lib"
 // The output of DesugarLibConfigExtractor which extracts the desugar config json file from
 // desugar lib configuration jar
 const val DESUGAR_LIB_CONFIG = "_internal-desugar-lib-config"
+private const val DESUGAR_LIB_COMPONENT_NAME = "desugar_jdk_libs_configuration"
 private const val DESUGAR_LIB_LINT = "_internal-desugar-lib-lint"
 const val D8_DESUGAR_METHODS = "_internal-d8-desugar-methods"
 private val ATTR_LINT_MIN_SDK: Attribute<String> = Attribute.of("lint-min-sdk", String::class.java)
@@ -77,6 +78,26 @@ val ATTR_ENABLE_CORE_LIBRARY_DESUGARING: Attribute<String> =
 fun getDesugarLibJarFromMaven(services: TaskCreationServices): FileCollection {
     val configuration = getDesugarLibConfiguration(services)
     return getArtifactCollection(configuration)
+}
+
+/**
+ * Returns a jar which is a desugared version of desugar library jars
+ */
+fun getDesugaredDesugarLib(
+        services: TaskCreationServices,
+        minSdkVersion: Int,
+        fullBootClasspath: ConfigurableFileCollection
+): FileCollection {
+    val configuration = getDesugarLibConfiguration(services)
+
+    registerDesugaredDesugarLibTransform(
+        services,
+        minSdkVersion,
+        getDesugarLibConfig(services),
+        fullBootClasspath
+    )
+
+    return getDesugaredDesugarLibFromTransfrom(configuration)
 }
 
 /** Implementation of provider holding JSON file value. */
@@ -109,11 +130,20 @@ abstract class DesugarConfigJson : ValueSource<String, DesugarConfigJson.Paramet
 fun getDesugarLibConfig(services: TaskCreationServices): Provider<String> {
     val configuration = services.configurations.findByName(CONFIG_NAME_CORE_LIBRARY_DESUGARING)!!
 
-    registerDesugarLibConfigTransform(services)
+    registerDesugarLibConfigTransform(services.dependencies)
 
     return services.providerOf(DesugarConfigJson::class.java) {
         it.parameters.desugarJson.setFrom(getDesugarLibConfigFromTransform(configuration))
     }
+}
+
+/**
+ * Returns a desugar.json file extracted from desugar lib configuration jar.
+ */
+fun getDesugarLibConfigFile(project: Project): List<File> {
+    val configuration = project.configurations.findByName(CONFIG_NAME_CORE_LIBRARY_DESUGARING)!!
+
+    return getDesugarLibConfigFromTransform(configuration).files.toList()
 }
 
 /**
@@ -175,6 +205,20 @@ private fun getDesugarLibConfigFromTransform(configuration: Configuration): File
     }.artifacts.artifactFiles
 }
 
+private fun getDesugaredDesugarLibFromTransfrom(configuration: Configuration): FileCollection {
+    return configuration.incoming.artifactView { configuration ->
+        configuration.componentFilter { id ->
+            !id.displayName.contains(DESUGAR_LIB_COMPONENT_NAME)
+        }
+        configuration.attributes {
+            it.attribute(
+                ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE,
+                DESUGARED_DESUGAR_LIB
+            )
+        }
+    }.artifacts.artifactFiles
+}
+
 private fun getArtifactCollection(configuration: Configuration): FileCollection =
     configuration.incoming.artifactView { config ->
         config.attributes {
@@ -185,10 +229,27 @@ private fun getArtifactCollection(configuration: Configuration): FileCollection 
         }
     }.artifacts.artifactFiles
 
-private fun registerDesugarLibConfigTransform(services: TaskCreationServices) {
-    services.dependencies.registerTransform(DesugarLibConfigExtractor::class.java) { spec ->
+private fun registerDesugarLibConfigTransform(dependencies: DependencyHandler) {
+    dependencies.registerTransform(DesugarLibConfigExtractor::class.java) { spec ->
         spec.from.attribute(ArtifactAttributes.ARTIFACT_FORMAT, ArtifactTypeDefinition.JAR_TYPE)
         spec.to.attribute(ArtifactAttributes.ARTIFACT_FORMAT, DESUGAR_LIB_CONFIG)
+    }
+}
+
+private fun registerDesugaredDesugarLibTransform(
+    services: TaskCreationServices,
+    minSdkVersion: Int,
+    libConfiguration: Provider<String>,
+    fullBootClasspath: ConfigurableFileCollection
+) {
+    services.dependencies.registerTransform(L8DesugarLibTransform::class.java) { spec ->
+        spec.parameters { parameters ->
+            parameters.minSdkVersion.set(minSdkVersion)
+            parameters.libConfiguration.set(libConfiguration)
+            parameters.fullBootClasspath.from(fullBootClasspath)
+        }
+        spec.from.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, ArtifactTypeDefinition.JAR_TYPE)
+        spec.to.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, DESUGARED_DESUGAR_LIB)
     }
 }
 

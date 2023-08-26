@@ -34,13 +34,14 @@ import com.android.build.api.variant.impl.GlobalVariantBuilderConfig
 import com.android.build.api.variant.impl.GlobalVariantBuilderConfigImpl
 import com.android.build.api.variant.impl.HasAndroidTest
 import com.android.build.api.variant.impl.HasTestFixtures
+import com.android.build.api.variant.impl.HasUnitTest
 import com.android.build.api.variant.impl.InternalVariantBuilder
-import com.android.build.api.variant.impl.VariantImpl
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
 import com.android.build.gradle.internal.api.ReadOnlyObjectProvider
 import com.android.build.gradle.internal.api.VariantFilter
 import com.android.build.gradle.internal.component.ApkCreationConfig
+import com.android.build.gradle.internal.component.LibraryCreationConfig
 import com.android.build.gradle.internal.component.NestedComponentCreationConfig
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig
@@ -76,6 +77,7 @@ import com.android.build.gradle.internal.services.VariantBuilderServices
 import com.android.build.gradle.internal.services.VariantBuilderServicesImpl
 import com.android.build.gradle.internal.services.VariantServicesImpl
 import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.internal.tasks.SigningConfigUtils.Companion.createSigningOverride
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfigImpl.Companion.toExecutionEnum
 import com.android.build.gradle.internal.variant.ComponentInfo
@@ -87,7 +89,6 @@ import com.android.build.gradle.internal.variant.VariantFactory
 import com.android.build.gradle.internal.variant.VariantInputModel
 import com.android.build.gradle.internal.variant.VariantPathHelper
 import com.android.build.gradle.options.BooleanOption
-import com.android.build.gradle.options.SigningOptions
 import com.android.builder.core.AbstractProductFlavor.DimensionRequest
 import com.android.builder.core.ComponentType
 import com.android.builder.core.ComponentTypeImpl
@@ -109,7 +110,7 @@ import java.util.stream.Collectors
 /** Class to create, manage variants.  */
 @Suppress("UnstableApiUsage")
 class VariantManager<
-        CommonExtensionT: CommonExtension<*, *, *, *>,
+        CommonExtensionT: CommonExtension<*, *, *, *, *>,
         VariantBuilderT : VariantBuilder,
         VariantDslInfoT: VariantDslInfo,
         VariantT : VariantCreationConfig>(
@@ -407,6 +408,7 @@ class VariantManager<
                     .setUpSourceSet(
                             computeSourceSetName(dslInfoBuilder.name, componentType),
                             componentType.isTestComponent) as DefaultAndroidSourceSet
+            addExtraSourceSets(variantSourceSet)
             dslInfoBuilder.variantSourceProvider = variantSourceSet
         }
         if (productFlavorList.size > 1) {
@@ -416,7 +418,14 @@ class VariantManager<
                             computeSourceSetName(dslInfoBuilder.flavorName,
                                                     componentType),
                             componentType.isTestComponent) as DefaultAndroidSourceSet
+            addExtraSourceSets(multiFlavorSourceSet)
             dslInfoBuilder.multiFlavorSourceProvider = multiFlavorSourceSet
+        }
+    }
+
+    private fun addExtraSourceSets(sourceSet: DefaultAndroidSourceSet) {
+        variantApiOperationsRegistrar.onEachSourceSetExtensions { name: String ->
+            sourceSet.extras.create(name)
         }
     }
 
@@ -547,10 +556,7 @@ class VariantManager<
             variantPropertiesApiServices,
             taskCreationServices,
             globalTaskCreationConfig
-        ).also {
-            // register testFixtures component to the main variant
-            mainComponentInfo.variant.testFixturesComponent = it
-        }
+        )
     }
 
     /** Create a TestVariantData for the specified testedVariantData.  */
@@ -734,10 +740,6 @@ class VariantManager<
             unitTest
         }
 
-        // register
-        testedComponentInfo
-                .variant
-                .testComponents[variantDslInfo.componentType] = testComponent
         return testComponent
     }
 
@@ -790,21 +792,25 @@ class VariantManager<
                 addVariant(variantInfo)
                 val variant = variantInfo.variant
                 val variantBuilder = variantInfo.variantBuilder
-                val minSdkVersion = variant.minSdkVersion
-                val targetSdkVersion = variant.targetSdkVersion
+                val minSdkVersion = variant.minSdk
+                val targetSdkVersion = when (variant) {
+                    is ApkCreationConfig -> variant.targetSdk
+                    is LibraryCreationConfig -> variant.targetSdk
+                    else -> minSdkVersion
+                }
                 if (minSdkVersion.apiLevel > targetSdkVersion.apiLevel) {
                     projectServices
-                            .issueReporter
-                            .reportWarning(
-                                    IssueReporter.Type.GENERIC, String.format(
-                                    Locale.US,
-                                    "minSdkVersion (%d) is greater than targetSdkVersion"
-                                            + " (%d) for variant \"%s\". Please change the"
-                                            + " values such that minSdkVersion is less than or"
-                                            + " equal to targetSdkVersion.",
-                                    minSdkVersion.apiLevel,
-                                    targetSdkVersion.apiLevel,
-                                    variant.name))
+                        .issueReporter
+                        .reportWarning(
+                            IssueReporter.Type.GENERIC, String.format(
+                                Locale.US,
+                                "minSdkVersion (%d) is greater than targetSdkVersion"
+                                        + " (%d) for variant \"%s\". Please change the"
+                                        + " values such that minSdkVersion is less than or"
+                                        + " equal to targetSdkVersion.",
+                                minSdkVersion.apiLevel,
+                                targetSdkVersion.apiLevel,
+                                variant.name))
                 }
 
                 val testFixturesEnabledForVariant =
@@ -848,16 +854,15 @@ class VariantManager<
                     )
                     unitTest?.let {
                         addTestComponent(it)
-                        variant.unitTest = it as UnitTestImpl
+                        (variant as HasUnitTest).unitTest = it as UnitTestImpl
                     }
                 }
 
                 // Now that unitTest and/or androidTest have been created and added to the main
                 // user visible variant object, we can run the onVariants() actions
-                val userVisibleVariant = (variant as VariantImpl<*>)
-                    .createUserVisibleVariantObject<Variant>(projectServices,
-                        variantApiOperationsRegistrar,
-                        variantInfo.stats)
+                val userVisibleVariant = variant.createUserVisibleVariantObject<Variant>(
+                    variantInfo.stats
+                )
 
                 // The variant object is created, let's create the user extension variant scoped objects
                 // and store them in our newly created variant object.
@@ -895,12 +900,12 @@ class VariantManager<
                 variantAnalytics?.let {
                     it
                         .setIsDebug(buildType.isDebuggable)
-                        .setMinSdkVersion(AnalyticsUtil.toProto(minSdkVersion))
+                        .setMinSdkVersion(AnalyticsUtil.toProto(variant.minSdk))
                         .setMinifyEnabled(variant.optimizationCreationConfig.minifiedEnabled)
                         .setVariantType(variant.componentType.analyticsVariantType)
                         .setDexBuilder(GradleBuildVariant.DexBuilderTool.D8_DEXER)
                         .setDexMerger(GradleBuildVariant.DexMergerTool.D8_MERGER)
-                        .setHasUnitTest(variant.unitTest != null)
+                        .setHasUnitTest((variant as? HasUnitTest)?.unitTest != null)
                         .setHasAndroidTest((variant as? HasAndroidTest)?.androidTest != null)
                         .setHasTestFixtures((variant as? HasTestFixtures)?.testFixtures != null)
 
@@ -916,14 +921,22 @@ class VariantManager<
                             && supportType != Java8LangSupport.UNUSED) {
                             variantAnalytics.java8LangSupport = AnalyticsUtil.toProto(supportType)
                         }
+                        variantAnalytics.targetSdkVersion = AnalyticsUtil.toProto(
+                            variant.targetSdk
+                        )
+                    } else if (variant is LibraryCreationConfig) {
+                        // Report the targetSdkVersion in libraries so that we can track the usage
+                        // of the deprecated API.
+                        variantAnalytics.targetSdkVersion = AnalyticsUtil.toProto(
+                            variant.targetSdk
+                        )
                     }
 
                     if (variant.optimizationCreationConfig.minifiedEnabled) {
                         // If code shrinker is used, it can only be R8
                         variantAnalytics.codeShrinker = GradleBuildVariant.CodeShrinkerTool.R8
                     }
-                    variantAnalytics.targetSdkVersion = AnalyticsUtil.toProto(targetSdkVersion)
-                    variant.maxSdkVersion?.let { version ->
+                    variant.maxSdk?.let { version ->
                         variantAnalytics.setMaxSdkVersion(
                             ApiVersion.newBuilder().setApiLevel(version.toLong()))
                     }
@@ -944,27 +957,6 @@ class VariantManager<
     private fun addTestFixturesComponent(testFixturesComponent: TestFixturesCreationConfig) {
         nestedComponents.add(testFixturesComponent)
         testFixturesComponents.add(testFixturesComponent)
-    }
-
-    private fun createSigningOverride(): SigningConfig? {
-        SigningOptions.readSigningOptions(dslServices.projectOptions)?.let { signingOptions ->
-            val signingConfigDsl = dslServices.newDecoratedInstance(SigningConfig::class.java, SigningOptions.SIGNING_CONFIG_NAME, dslServices)
-            signingConfigDsl.storeFile(File(signingOptions.storeFile))
-            signingConfigDsl.storePassword(signingOptions.storePassword)
-            signingConfigDsl.keyAlias(signingOptions.keyAlias)
-            signingConfigDsl.keyPassword(signingOptions.keyPassword)
-            signingOptions.storeType?.let {
-                signingConfigDsl.storeType(it)
-            }
-            signingOptions.v1Enabled?.let {
-                signingConfigDsl.enableV1Signing = it
-            }
-            signingOptions.v2Enabled?.let {
-                signingConfigDsl.enableV2Signing = it
-            }
-            return signingConfigDsl
-        }
-        return null
     }
 
     private fun getLazyManifestParser(
@@ -1027,13 +1019,13 @@ class VariantManager<
     }
 
     init {
-        signingOverride = createSigningOverride()
+        signingOverride = createSigningOverride(dslServices)
         variantFilter = VariantFilter(ReadOnlyObjectProvider())
         variantBuilderServices = VariantBuilderServicesImpl(projectServices)
         variantPropertiesApiServices = VariantServicesImpl(
             projectServices,
             // detects whether we are running the plugin under unit test mode
-            forUnitTesting = project.hasProperty("_agp_internal_test_mode_")
+            forUnitTesting = project.providers.gradleProperty("_agp_internal_test_mode_").isPresent
         )
         taskCreationServices = TaskCreationServicesImpl(projectServices)
     }

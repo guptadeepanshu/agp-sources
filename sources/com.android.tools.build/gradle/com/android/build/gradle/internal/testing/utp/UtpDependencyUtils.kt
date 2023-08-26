@@ -79,6 +79,12 @@ enum class UtpDependency(
             UtpDependencies::additionalTestOutputPlugin,
             ANDROID_TOOLS_UTP_PLUGIN_MAVEN_GROUP_ID,
             ANDROID_TOOLS_UTP_PLUGIN_VERSION),
+    ANDROID_TEST_PLUGIN_APK_INSTALLER(
+            "android-test-plugin-host-apk-installer",
+            "com.android.tools.utp.plugins.host.apkinstaller.AndroidTestApkInstallerPlugin",
+            UtpDependencies::testPluginApkInstaller,
+            ANDROID_TOOLS_UTP_PLUGIN_MAVEN_GROUP_ID,
+            ANDROID_TOOLS_UTP_PLUGIN_VERSION),
     ANDROID_TEST_COVERAGE_PLUGIN(
             "android-test-plugin-host-coverage",
             "com.android.tools.utp.plugins.host.coverage.AndroidTestCoveragePlugin",
@@ -91,6 +97,12 @@ enum class UtpDependency(
             UtpDependencies::testLogcatPlugin,
             ANDROID_TOOLS_UTP_PLUGIN_MAVEN_GROUP_ID,
             ANDROID_TOOLS_UTP_PLUGIN_VERSION),
+    ANDROID_TEST_PLUGIN_HOST_EMULATOR_CONTROL(
+                "android-test-plugin-host-emulator-control",
+                "com.android.tools.utp.plugins.host.emulatorcontrol.EmulatorControlPlugin",
+                UtpDependencies::testEmulatorAccessPlugin,
+                ANDROID_TOOLS_UTP_PLUGIN_MAVEN_GROUP_ID,
+                ANDROID_TOOLS_UTP_PLUGIN_VERSION),
     ANDROID_TEST_PLUGIN_HOST_RETENTION(
             "android-test-plugin-host-retention",
             "com.android.tools.utp.plugins.host.icebox.IceboxPlugin",
@@ -161,11 +173,19 @@ abstract class UtpDependencies {
 
     @get:Optional
     @get:Classpath
+    abstract val testEmulatorAccessPlugin: ConfigurableFileCollection
+
+    @get:Optional
+    @get:Classpath
     abstract val testPluginHostRetention: ConfigurableFileCollection
 
     @get:Optional
     @get:Classpath
     abstract val testPluginResultListenerGradle: ConfigurableFileCollection
+
+    @get:Optional
+    @get:Classpath
+    abstract val testPluginApkInstaller: ConfigurableFileCollection
 }
 
 /**

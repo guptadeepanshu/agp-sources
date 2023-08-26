@@ -20,6 +20,7 @@ import java.io.File
 import java.io.InputStream
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
+import kotlin.math.min
 
 class Apk internal constructor(val dexes: List<DexFile>, val name: String = "")
 
@@ -110,9 +111,7 @@ internal class DexHeader(
     val classDefs: Span,
     val data: Span,
 ) {
-
     internal companion object {
-
         val Empty = DexHeader(
             stringIds = Span.Empty,
             typeIds = Span.Empty,
@@ -128,7 +127,12 @@ internal data class DexMethod(
     val parent: String,
     val name: String,
     val prototype: DexPrototype,
-) {
+): Comparator<DexMethod> by Comparator {
+    companion object {
+        val Comparator: java.util.Comparator<DexMethod> =
+                compareBy<DexMethod>({ it.parent }, { it.name })
+                        .thenBy(DexPrototype.Comparator) { it.prototype }
+    }
 
     val returnType: String get() = prototype.returnType
     val parameters: String = prototype.parameters.joinToString("")
@@ -150,9 +154,31 @@ internal data class DexMethod(
  * result, we allocate this data structure separately from the [DexMethod].
  */
 internal data class DexPrototype(
-    val returnType: String,
-    val parameters: List<String>,
-)
+        val returnType: String,
+        val parameters: List<String>
+): Comparator<DexPrototype> by Comparator {
+    companion object {
+
+        val Comparator =
+            compareBy<DexPrototype, List<String>>(listComparator()) { it.parameters }
+                .thenBy { it.returnType }
+    }
+}
+
+internal fun <T: Comparable<T>> listComparator(): Comparator<List<T>> {
+    return object : Comparator<List<T>> {
+        override fun compare(list: List<T>, other: List<T>): Int {
+            val minSize = min(list.size, other.size)
+            for (i in 0 until minSize) {
+                val comparison = compareValues(list[i], other[i])
+                if (comparison != 0) {
+                    return comparison
+                }
+            }
+            return list.size - other.size
+        }
+    }
+}
 
 /**
  * A simple tuple of Integers indicating a range of data in a binary file.
@@ -213,17 +239,20 @@ internal class MutableDexFileData(
 
 data class MethodData(var flags: Int) {
 
-    inline val isHot: Boolean get() = isFlagSet(MethodFlags.HOT)
+    inline val isHot: Boolean get() = MethodFlags.isHot(flags)
 
     @Suppress("NOTHING_TO_INLINE")
-    inline fun isFlagSet(flag: Int): Boolean {
-        return flags and flag == flag
-    }
+    inline fun isFlagSet(flag: Int): Boolean = MethodFlags.isFlagSet(flags, flag)
 
-    fun print(os: Appendable) = with(os) {
-        if (isFlagSet(MethodFlags.HOT)) append(HOT)
-        if (isFlagSet(MethodFlags.STARTUP)) append(STARTUP)
-        if (isFlagSet(MethodFlags.POST_STARTUP)) append(POST_STARTUP)
+    fun print(os: Appendable) = MethodData.printFlags(flags, os)
+
+    companion object {
+
+        internal fun printFlags(flags: Int, os: Appendable) = with(os) {
+            if (MethodFlags.isHot(flags)) os.append(HOT)
+            if (MethodFlags.isStartup(flags)) os.append(STARTUP)
+            if (MethodFlags.isPostStartup(flags)) os.append(POST_STARTUP)
+        }
     }
 }
 
@@ -250,6 +279,17 @@ object MethodFlags {
 
     /** Combined value of flags */
     const val ALL = HOT or STARTUP or POST_STARTUP
+
+    inline fun isHot(flags: Int): Boolean = isFlagSet(flags, MethodFlags.HOT)
+
+    inline fun isStartup(flags: Int): Boolean = isFlagSet(flags, MethodFlags.STARTUP)
+
+    inline fun isPostStartup(flags: Int): Boolean = isFlagSet(flags, MethodFlags.POST_STARTUP)
+
+    @Suppress("NOTHING_TO_INLINE")
+    inline fun isFlagSet(flags: Int, flag: Int): Boolean {
+        return (flags and flag) == flag
+    }
 }
 
 internal fun splitParameters(parameters: String): List<String> {

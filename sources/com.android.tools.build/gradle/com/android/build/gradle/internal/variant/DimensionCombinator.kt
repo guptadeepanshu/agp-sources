@@ -265,7 +265,7 @@ private fun createProductFlavorCombinations(
     // indices.
     return if (flavorList == null || flavorList.isEmpty()) {
         errorReporter.reportError(
-            IssueReporter.Type.GENERIC,
+            IssueReporter.Type.EMPTY_FLAVOR_DIMENSION,
             "No flavor is associated with flavor dimension '$dimension'."
         )
     } else {

@@ -64,20 +64,12 @@ public abstract class AndroidReportTask extends DefaultTask implements AndroidTe
 
     private boolean ignoreFailures;
 
-    private boolean testFailed;
-
     @OutputDirectory
     public abstract DirectoryProperty getReportsDir();
 
     @Override
     @OutputDirectory
     public abstract DirectoryProperty getResultsDir();
-
-    @Override
-    @Internal // This is an output, not an input of this task
-    public boolean getTestFailed() {
-        return testFailed;
-    }
 
     @Override
     public boolean getIgnoreFailures() {
@@ -137,7 +129,6 @@ public abstract class AndroidReportTask extends DefaultTask implements AndroidTe
         CompositeTestResults compositeTestResults = report.generateReport();
 
         if (!compositeTestResults.getFailures().isEmpty()) {
-            testFailed = true;
             String reportUrl =
                     new ConsoleRenderer().asClickableFileUrl(new File(reportOutDir, "index.html"));
             String message = "There were failing tests. See the report at: " + reportUrl;

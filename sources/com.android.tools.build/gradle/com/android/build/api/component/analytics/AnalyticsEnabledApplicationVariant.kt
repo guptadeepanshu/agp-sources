@@ -18,6 +18,7 @@ package com.android.build.api.component.analytics
 
 import com.android.build.api.variant.AndroidResources
 import com.android.build.api.variant.AndroidTest
+import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.GeneratesApk
 import com.android.build.api.variant.ApkPackaging
 import com.android.build.api.variant.ApplicationVariant
@@ -154,5 +155,12 @@ open class AnalyticsEnabledApplicationVariant @Inject constructor(
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.SHRINK_RESOURCES_VALUE
             return delegate.shrinkResources
+        }
+
+    override val targetSdk: AndroidVersion
+        get()  {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                    VariantPropertiesMethodType.TARGET_SDK_VERSION_VALUE
+            return delegate.targetSdk
         }
 }

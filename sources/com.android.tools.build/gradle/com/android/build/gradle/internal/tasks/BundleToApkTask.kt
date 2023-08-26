@@ -22,14 +22,20 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.Aapt2Input
 import com.android.build.gradle.internal.services.getAapt2Executable
+import com.android.build.gradle.internal.signing.SigningConfigData
 import com.android.build.gradle.internal.signing.SigningConfigDataProvider
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.toImmutableSet
 import com.android.build.gradle.options.BooleanOption
 import com.android.buildanalyzer.common.TaskCategory
+import com.android.bundle.RuntimeEnabledSdkConfigProto
+import com.android.bundle.SdkMetadataOuterClass
+import com.android.ide.common.signing.CertificateInfo
+import com.android.ide.common.signing.KeystoreHelper
 import com.android.tools.build.bundletool.commands.BuildApksCommand
 import com.android.tools.build.bundletool.androidtools.Aapt2Command
+import com.android.tools.build.bundletool.transparency.CodeTransparencyCryptoUtils
 import com.android.utils.FileUtils
 import com.google.common.util.concurrent.MoreExecutors
 import org.gradle.api.file.ConfigurableFileCollection
@@ -82,6 +88,7 @@ abstract class BundleToApkTask : NonIncrementalTask() {
             it.androidPrivacySandboxSdkArchives.from(androidPrivacySandboxSdkArchives)
             it.outputFile.set(outputFile)
             signingConfigData.resolve()?.let { config ->
+                it.keystoreType.set(config.storeType)
                 it.keystoreFile.set(config.storeFile)
                 it.keystorePassword.set(config.storePassword)
                 it.keyAlias.set(config.keyAlias)
@@ -97,6 +104,7 @@ abstract class BundleToApkTask : NonIncrementalTask() {
         abstract val aapt2File: Property<File>
         abstract val androidPrivacySandboxSdkArchives: ConfigurableFileCollection
         abstract val outputFile: RegularFileProperty
+        abstract val keystoreType: Property<String>
         abstract val keystoreFile: Property<File>
         abstract val keystorePassword: Property<String>
         abstract val keyAlias: Property<String>
@@ -129,10 +137,38 @@ abstract class BundleToApkTask : NonIncrementalTask() {
 
             if (!parameters.androidPrivacySandboxSdkArchives.isEmpty) {
                 val asars = parameters.androidPrivacySandboxSdkArchives.files.map { it.toPath() }
+
+                val cert = KeystoreHelper.getCertificateInfo(
+                        parameters.keystoreType.get(),
+                        parameters.keystoreFile.orNull,
+                        parameters.keystorePassword.orNull,
+                        parameters.keyPassword.orNull,
+                        parameters.keyAlias.orNull
+                )
+
                 command.setRuntimeEnabledSdkArchivePaths(asars.toImmutableSet())
+                command.setLocalDeploymentRuntimeEnabledSdkConfig(
+                        getLocalDeploymentRuntimeSdkConfig(cert))
             }
 
             command.build().execute()
+        }
+
+        private fun getLocalDeploymentRuntimeSdkConfig(cert: CertificateInfo)
+                : RuntimeEnabledSdkConfigProto.LocalDeploymentRuntimeEnabledSdkConfig {
+
+            val certificateDigest =
+                    CodeTransparencyCryptoUtils.getCertificateFingerprint(cert.certificate)
+                            .replace(' ', ':')
+
+            return RuntimeEnabledSdkConfigProto.LocalDeploymentRuntimeEnabledSdkConfig
+                    .newBuilder().apply {
+                        certificateOverrides =
+                                RuntimeEnabledSdkConfigProto.CertificateOverrides.newBuilder()
+                                        .apply {
+                                            defaultCertificateOverride = certificateDigest
+                                        }.build()
+                    }.build()
         }
     }
 

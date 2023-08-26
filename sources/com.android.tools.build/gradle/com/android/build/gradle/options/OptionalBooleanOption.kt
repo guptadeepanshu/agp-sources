@@ -42,6 +42,8 @@ enum class OptionalBooleanOption(
     // Flags for Android Test Retention
     ENABLE_TEST_FAILURE_RETENTION_COMPRESS_SNAPSHOT("android.experimental.testOptions.emulatorSnapshots.compressSnapshots", ApiStage.Experimental),
 
+    ENABLE_API_MODELING_AND_GLOBAL_SYNTHETICS("android.enableApiModelingAndGlobalSynthetics", ApiStage.Experimental),
+
     /* ----------------
     * SOFTLY ENFORCED FEATURES
     */

@@ -136,7 +136,7 @@ abstract class FeatureSetMetadataWriterTask : NonIncrementalTask() {
         ) {
             super.configure(task)
 
-            task.minSdkVersion = creationConfig.minSdkVersion.apiLevel
+            task.minSdkVersion = creationConfig.minSdk.apiLevel
 
             task.inputFiles = creationConfig.variantDependencies.getArtifactFileCollection(
                 AndroidArtifacts.ConsumedConfigType.REVERSE_METADATA_VALUES,

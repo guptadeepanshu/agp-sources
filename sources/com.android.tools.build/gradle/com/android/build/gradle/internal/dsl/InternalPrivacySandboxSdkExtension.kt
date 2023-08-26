@@ -19,7 +19,9 @@ package com.android.build.gradle.internal.dsl
 import com.android.build.api.dsl.PrivacySandboxSdkBundle
 import com.android.build.api.dsl.PrivacySandboxSdkExtension
 import org.gradle.api.Action
+import com.android.build.api.dsl.SigningConfig
 
 interface InternalPrivacySandboxSdkExtension: PrivacySandboxSdkExtension {
+    fun signingConfig(action: Action<SigningConfig>)
     fun bundle(action: Action<PrivacySandboxSdkBundle>)
 }

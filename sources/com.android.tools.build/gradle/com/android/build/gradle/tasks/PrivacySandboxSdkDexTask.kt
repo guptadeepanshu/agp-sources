@@ -88,7 +88,6 @@ abstract class PrivacySandboxSdkDexTask: NewIncrementalTask() {
             mixedScopeChangedClasses = emptySet(),
             projectOutputs = DexArchiveBuilderTaskDelegate.DexingOutputs(
                 output.asFile.get(),
-                null,
                 globalSyntheticsOutput.asFile.get()
             ),
             subProjectOutputs = null,
@@ -152,6 +151,10 @@ abstract class PrivacySandboxSdkDexTask: NewIncrementalTask() {
                 // Enable desugaring by default as speed isn't a high priority for the privacy
                 // sandbox SDK plugin
                 withDesugaring.setDisallowChanges(true)
+
+                enableApiModeling.setDisallowChanges(true)
+                enableGlobalSynthetics.setDisallowChanges(true)
+
                 minSdkVersion.setDisallowChanges(minSdk)
                 errorFormatMode.setDisallowChanges(SyncOptions.ErrorFormatMode.HUMAN_READABLE)
 

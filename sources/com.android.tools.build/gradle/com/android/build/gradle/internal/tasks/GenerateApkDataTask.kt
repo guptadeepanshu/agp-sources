@@ -270,9 +270,9 @@ abstract class GenerateApkDataTask : NonIncrementalTask() {
 
             task.mainPkgName.setDisallowChanges(creationConfig.applicationId)
 
-            task.minSdkVersion.setDisallowChanges(creationConfig.minSdkVersion.apiLevel)
+            task.minSdkVersion.setDisallowChanges(creationConfig.minSdk.apiLevel)
 
-            task.targetSdkVersion.setDisallowChanges(creationConfig.targetSdkVersion.apiLevel)
+            task.targetSdkVersion.setDisallowChanges(creationConfig.targetSdk.apiLevel)
 
             creationConfig.services.initializeAapt2Input(task.aapt2)
         }

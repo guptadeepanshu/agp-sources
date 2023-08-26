@@ -19,8 +19,7 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
-import com.android.build.api.transform.QualifiedContent.Scope
-import com.android.build.api.transform.QualifiedContent.ScopeType
+import com.android.build.api.artifact.impl.InternalScopedArtifacts
 import com.android.builder.files.KeyedFileCache
 import com.android.builder.files.IncrementalRelativeFileSets
 import com.android.builder.files.RelativeFile
@@ -43,7 +42,6 @@ import java.io.IOException
 import java.io.UncheckedIOException
 import java.util.Collections
 import java.util.HashSet
-
 
 /**
  * Creates an [IncrementalFileMergerInput] from a file (either a directory or jar file). All
@@ -205,25 +203,25 @@ private fun computeFilesFromDir(dir: File): Set<RelativeFile> {
 }
 
 /**
- * Creates a list of [IncrementalFileMergerInput] from a map of [File]s to [Scope]s.
+ * Creates a list of [IncrementalFileMergerInput] from a map of [File]s to [InternalScopedArtifacts.InternalScope]s.
  *
- * @param inputMap map of files to their corresponding scopes
- * @param changedInputs map of files to file status, passed from the incremental task, or null if
+ * @param inputMap map of files to their corresponding merging priority
+ * @param changes map of files to file status, passed from the incremental task, or null if
  * the task is not incremental
  * @param zipCache the zip cache; the cache will not be modified
  * @param cacheUpdates receives updates to the cache
  * @param full is this a full build? If not, then it is an incremental build; in full builds
  * the output is not cleaned, it is the responsibility of the caller to ensure the output
  * is properly set up; `full` cannot be `false` if changedInputs is null
- * @param scopeMap receives a mapping from all generated inputs to their scopes
+ * @param priorityMap receives a mapping from all generated inputs to their merging priority
  */
-fun toInputs(
-    inputMap: MutableMap<File, ScopeType>,
+internal fun toInputs(
+    inputMap: MutableMap<File, JavaResMergingPriority>,
     changes: SerializableInputChanges?,
     zipCache: KeyedFileCache,
     cacheUpdates: MutableList<Runnable>,
     full: Boolean,
-    scopeMap: MutableMap<IncrementalFileMergerInput, ScopeType>
+    priorityMap: MutableMap<IncrementalFileMergerInput, JavaResMergingPriority>
 ): ImmutableList<IncrementalFileMergerInput> {
     if (full) {
         cacheUpdates.add(IOExceptionRunnable.asRunnable { zipCache.clear() })
@@ -231,7 +229,7 @@ fun toInputs(
     val changedInputs = changes?.let { collectChanges(it) }
 
     val builder = ImmutableList.builder<IncrementalFileMergerInput>()
-    for ((input, scope) in inputMap.entries) {
+    for ((input, priority) in inputMap.entries) {
         val fileMergerInput: IncrementalFileMergerInput? = if (full) {
             toNonIncrementalInput(input, zipCache, cacheUpdates)
         } else {
@@ -244,8 +242,8 @@ fun toInputs(
 
         fileMergerInput?.let {
             builder.add(it)
-            // Add mapping of fileMergerInput to its scope
-            scopeMap[it] = scope
+            // Add mapping of fileMergerInput to its priority
+            priorityMap[it] = priority
         }
     }
 

@@ -37,6 +37,7 @@ import com.android.build.gradle.internal.tasks.factory.TaskFactoryUtils;
 import com.android.build.gradle.internal.tasks.factory.TaskManagerConfig;
 import com.android.build.gradle.internal.test.TestApplicationTestData;
 import com.android.build.gradle.internal.variant.ComponentInfo;
+import com.android.build.gradle.options.BooleanOption;
 import com.android.build.gradle.tasks.CheckTestedAppObfuscation;
 import com.android.build.gradle.tasks.ManifestProcessorTask;
 import com.android.build.gradle.tasks.ProcessTestManifest;
@@ -102,12 +103,27 @@ public class TestApplicationTaskManager
                                 AndroidArtifacts.ArtifactScope.ALL,
                                 APK);
 
+        FileCollection privacySandboxSdkApks =
+                testVariantProperties
+                                .getServices()
+                                .getProjectOptions()
+                                .get(BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT)
+                        ? testVariantProperties
+                                .getVariantDependencies()
+                                .getArtifactFileCollection(
+                                        AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
+                                        AndroidArtifacts.ArtifactScope.ALL,
+                                        AndroidArtifacts.ArtifactType
+                                                .ANDROID_PRIVACY_SANDBOX_SDK_APKS)
+                        : null;
+
         TestApplicationTestData testData =
                 new TestApplicationTestData(
                         testVariantProperties.getNamespace(),
                         testVariantProperties,
                         testingApk,
-                        testedApks);
+                        testedApks,
+                        privacySandboxSdkApks);
 
         configureTestData(testVariantProperties, testData);
 

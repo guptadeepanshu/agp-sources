@@ -18,6 +18,7 @@ package com.android.build.gradle.internal.lint
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.dsl.Lint
+import com.android.build.gradle.internal.caching.DisabledCachingReason.COPY_TASK
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.getBuildService
@@ -41,7 +42,7 @@ import java.nio.file.Files
  * Does not declare its inputs because doing so would cause this task to not run when the
  * [AndroidLintTask] fails
  */
-@DisableCachingByDefault
+@DisableCachingByDefault(because = COPY_TASK)
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.LINT)
 abstract class AndroidLintCopyReportTask : UnsafeOutputsTask("The lintOptions DSL has configured potentially multiple lint tasks to write to the same location, but task should not have overlapping outputs.") {
 

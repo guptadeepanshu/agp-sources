@@ -29,6 +29,7 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.internal.services.getLintParallelBuildService
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
@@ -850,6 +851,9 @@ abstract class AndroidLintTask : NonIncrementalTask() {
         }
         systemPropertyInputs.initialize(project.providers, lintMode)
         environmentVariableInputs.initialize(project.providers, lintMode)
+        this.usesService(
+            services.buildServiceRegistry.getLintParallelBuildService(services.projectOptions)
+        )
     }
 
     fun configureForStandalone(

@@ -32,6 +32,23 @@ object NoDebugReporter : ShrinkerDebugReporter {
     override fun close() = Unit
 }
 
+class FileReporter(
+    reportFile: File
+) : ShrinkerDebugReporter {
+    private val writer: PrintWriter = reportFile.let { PrintWriter(it) }
+    override fun debug(f: () -> String) {
+        writer.println(f())
+    }
+
+    override fun info(f: () -> String) {
+        writer.println(f())
+    }
+
+    override fun close() {
+        writer.close()
+    }
+}
+
 class LoggerAndFileDebugReporter(
     private val logDebug: (String) -> Unit,
     private val logInfo: (String) -> Unit,

@@ -25,6 +25,7 @@ import com.google.common.base.Preconditions
 import com.google.common.base.Verify
 import org.gradle.api.Action
 import org.gradle.api.ExtensiblePolymorphicDomainObjectContainer
+import org.gradle.api.Incubating
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.tasks.testing.Test
 import javax.inject.Inject
@@ -73,6 +74,10 @@ abstract class TestOptions @Inject constructor(dslServices: DslServices) :
                 "The value of `execution` cannot be null."
             )!!
         }
+
+    @Incubating
+    override val emulatorControl: com.android.build.api.dsl.EmulatorControl  =
+        dslServices.newDecoratedInstance(EmulatorControl::class.java, dslServices)
 
     override val emulatorSnapshots: com.android.build.api.dsl.EmulatorSnapshots =
         dslServices.newInstance(EmulatorSnapshots::class.java, dslServices)
@@ -125,6 +130,16 @@ abstract class TestOptions @Inject constructor(dslServices: DslServices) :
         fun applyConfiguration(task: Test) {
             testTasks.add(task)
         }
+    }
+
+    // (Implementing interface for kotlin)
+    override fun emulatorControl(action: com.android.build.api.dsl.EmulatorControl.() -> Unit) {
+        action.invoke(emulatorControl)
+    }
+
+    // Runtime only for groovy decorator to generate the closure based block
+    fun emulatorControl(action: Action<com.android.build.api.dsl.EmulatorControl>) {
+        action.execute(emulatorControl)
     }
 
     // (Implementing interface for kotlin)

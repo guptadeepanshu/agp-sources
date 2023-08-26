@@ -22,17 +22,15 @@ import com.android.build.api.component.impl.TestFixturesImpl
 import com.android.build.api.component.impl.features.DexingCreationConfigImpl
 import com.android.build.api.component.impl.getAndroidResources
 import com.android.build.api.component.impl.isTestApk
-import com.android.build.api.dsl.CommonExtension
-import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
 import com.android.build.api.variant.AndroidResources
+import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.ApkPackaging
 import com.android.build.api.variant.ApplicationVariant
 import com.android.build.api.variant.Component
 import com.android.build.api.variant.DependenciesInfo
 import com.android.build.api.variant.DependenciesInfoBuilder
 import com.android.build.api.variant.Renderscript
-import com.android.build.api.variant.Variant
-import com.android.build.api.variant.VariantBuilder
+import com.android.build.api.variant.VariantOutputConfiguration
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.features.DexingCreationConfig
 import com.android.build.gradle.internal.core.VariantSources
@@ -41,13 +39,11 @@ import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.publishing.VariantPublishingInfo
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.MutableTaskContainer
-import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
-import com.android.build.gradle.options.IntegerOption
 import com.android.build.gradle.options.StringOption
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.provider.Property
@@ -93,8 +89,8 @@ open class ApplicationVariantImpl @Inject constructor(
 
     override val dependenciesInfo: DependenciesInfo by lazy {
         DependenciesInfoImpl(
-                dependenciesInfoBuilder.includedInApk,
-                dependenciesInfoBuilder.includedInBundle
+                dependenciesInfoBuilder.includeInApk,
+                dependenciesInfoBuilder.includeInBundle
         )
     }
 
@@ -110,8 +106,8 @@ open class ApplicationVariantImpl @Inject constructor(
         SigningConfigImpl(
             dslInfo.signingConfig,
             internalServices,
-            minSdkVersion.apiLevel,
-            internalServices.projectOptions.get(IntegerOption.IDE_TARGET_DEVICE_API)
+            minSdk.apiLevel,
+            global.targetDeployApiFromIDE
         )
     }
 
@@ -119,7 +115,7 @@ open class ApplicationVariantImpl @Inject constructor(
         ApkPackagingImpl(
             dslInfo.packaging,
             internalServices,
-            minSdkVersion.apiLevel
+            minSdk.apiLevel
         )
     }
 
@@ -133,12 +129,22 @@ open class ApplicationVariantImpl @Inject constructor(
     override val renderscript: Renderscript? by lazy {
         renderscriptCreationConfig?.renderscript
     }
+    override val targetSdk: AndroidVersion by lazy(LazyThreadSafetyMode.NONE) {
+        variantBuilder.targetSdkVersion
+    }
 
     override val isMinifyEnabled: Boolean
         get() = variantBuilder.isMinifyEnabled
 
     override val shrinkResources: Boolean
         get() = variantBuilder.shrinkResources
+
+
+    override val targetSdkVersion: AndroidVersion
+        get() = targetSdk
+
+    override val targetSdkOverride: AndroidVersion?
+        get() = variantBuilder.mutableTargetSdk?.sanitize()
 
     // ---------------------------------------------------------------------------------------------
     // INTERNAL API
@@ -180,27 +186,49 @@ open class ApplicationVariantImpl @Inject constructor(
     override val consumesFeatureJars: Boolean
         get() = optimizationCreationConfig.minifiedEnabled && global.hasDynamicFeatures
 
-    override fun createVersionNameProperty(): Property<String?> =
+    private fun createVersionNameProperty(): Property<String?> =
         internalServices.newNullablePropertyBackingDeprecatedApi(
             String::class.java,
             dslInfo.versionName,
         )
 
-    override fun createVersionCodeProperty() : Property<Int?> =
+    private fun createVersionCodeProperty() : Property<Int?> =
         internalServices.newNullablePropertyBackingDeprecatedApi(
             Int::class.java,
             dslInfo.versionCode,
         )
 
+    private val variantOutputs = mutableListOf<VariantOutputImpl>()
+
+    override val outputs: VariantOutputList
+        get() = VariantOutputList(variantOutputs.toList())
+
+    override fun addVariantOutput(variantOutputConfiguration: VariantOutputConfiguration) {
+        variantOutputs.add(
+            VariantOutputImpl(
+                createVersionCodeProperty(),
+                createVersionNameProperty(),
+                internalServices.newPropertyBackingDeprecatedApi(Boolean::class.java, true),
+                variantOutputConfiguration,
+                variantOutputConfiguration.baseName(this),
+                variantOutputConfiguration.fullName(this),
+                internalServices.newPropertyBackingDeprecatedApi(
+                    String::class.java,
+                    internalServices.projectInfo.getProjectBaseName().map {
+                        paths.getOutputFileName(it, variantOutputConfiguration.baseName(this))
+                    },
+                )
+            )
+        )
+    }
+
     override fun <T : Component> createUserVisibleVariantObject(
-            projectServices: ProjectServices,
-            operationsRegistrar: VariantApiOperationsRegistrar<out CommonExtension<*, *, *, *>, out VariantBuilder, out Variant>,
             stats: GradleBuildVariant.Builder?
     ): T =
         if (stats == null) {
             this as T
         } else {
-            projectServices.objectFactory.newInstance(
+            services.newInstance(
                 AnalyticsEnabledApplicationVariant::class.java,
                 this,
                 stats
@@ -223,4 +251,13 @@ open class ApplicationVariantImpl @Inject constructor(
 
     override val isWearAppUnbundled: Boolean?
         get() = dslInfo.isWearAppUnbundled
+
+    override val generateLocaleConfig: Boolean
+        get() = dslInfo.generateLocaleConfig
+
+    override val enableApiModeling: Boolean
+        get() = isApiModelingEnabled()
+
+    override val enableGlobalSynthetics: Boolean
+        get() = isGlobalSyntheticsEnabled()
 }

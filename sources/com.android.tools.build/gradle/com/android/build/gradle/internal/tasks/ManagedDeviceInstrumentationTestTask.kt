@@ -18,8 +18,6 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
 import com.android.build.api.artifact.ScopedArtifact
-import com.android.build.api.dsl.Device
-import com.android.build.api.instrumentation.ManagedDeviceTestRunnerFactory
 import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.internal.AvdComponentsBuildService
 import com.android.build.gradle.internal.LoggerWrapper
@@ -27,6 +25,7 @@ import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.component.AndroidTestCreationConfig
 import com.android.build.gradle.internal.component.InstrumentedTestCreationConfig
 import com.android.build.gradle.internal.computeManagedDeviceEmulatorMode
+import com.android.build.gradle.internal.dsl.EmulatorControl
 import com.android.build.gradle.internal.dsl.EmulatorSnapshots
 import com.android.build.gradle.internal.dsl.ManagedVirtualDevice
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
@@ -39,9 +38,11 @@ import com.android.build.gradle.internal.test.recordOkInstrumentedTestRun
 import com.android.build.gradle.internal.test.report.ReportType
 import com.android.build.gradle.internal.test.report.TestReport
 import com.android.build.gradle.internal.testing.TestData
+import com.android.build.gradle.internal.testing.utp.EmulatorControlConfig
 import com.android.build.gradle.internal.testing.utp.ManagedDeviceTestRunner
 import com.android.build.gradle.internal.testing.utp.RetentionConfig
 import com.android.build.gradle.internal.testing.utp.UtpDependencies
+import com.android.build.gradle.internal.testing.utp.createEmulatorControlConfig
 import com.android.build.gradle.internal.testing.utp.createRetentionConfig
 import com.android.build.gradle.internal.testing.utp.maybeCreateUtpConfigurations
 import com.android.build.gradle.internal.testing.utp.resolveDependencies
@@ -55,11 +56,8 @@ import com.android.repository.Revision
 import com.android.utils.FileUtils
 import com.google.common.annotations.VisibleForTesting
 import com.google.common.base.Preconditions
-import java.io.File
-import java.util.logging.Level
 import org.gradle.api.GradleException
 import org.gradle.api.InvalidUserDataException
-import org.gradle.api.Project
 import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
@@ -81,6 +79,8 @@ import org.gradle.api.tasks.options.Option
 import org.gradle.internal.logging.ConsoleRenderer
 import org.gradle.work.DisableCachingByDefault
 import org.gradle.workers.WorkerExecutor
+import java.io.File
+import java.util.logging.Level
 
 /**
  * Runs instrumentation tests of a variant on a device defined in the DSL.
@@ -98,6 +98,9 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
 
         @get: Input
         abstract val executionEnum: Property<TestOptions.Execution>
+
+        @get: Input
+        abstract val emulatorControlConfig: Property<EmulatorControlConfig>
 
         @get: Input
         abstract val retentionConfig: Property<RetentionConfig>
@@ -137,6 +140,10 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
         @get: Input
         abstract val enableEmulatorDisplay: Property<Boolean>
 
+        @get: Input
+        @get: Optional
+        abstract val getTargetIsSplitApk: Property<Boolean>
+
         fun createTestRunner(
             workerExecutor: WorkerExecutor, numShards: Int?): ManagedDeviceTestRunner {
 
@@ -154,6 +161,7 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
                 workerExecutor,
                 utpDependencies,
                 sdkBuildService.get().sdkLoader(compileSdkVersion, buildToolsRevision),
+                emulatorControlConfig.get(),
                 retentionConfig.get(),
                 useOrchestrator,
                 numShards,
@@ -162,30 +170,9 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
                 avdComponents.get(),
                 installApkTimeout.getOrNull(),
                 enableEmulatorDisplay.get(),
-                utpLoggingLevel.get()
+                utpLoggingLevel.get(),
+                getTargetIsSplitApk.getOrElse(false)
             )
-        }
-
-        fun createTestRunner(
-            project: Project,
-            workerExecutor: WorkerExecutor,
-            factory: ManagedDeviceTestRunnerFactory,
-        ): com.android.build.api.instrumentation.ManagedDeviceTestRunner {
-            Preconditions.checkArgument(
-                customManagedDevice.get(),
-                "android.experimental.testOptions.managedDevices.customDevice must be enabled.")
-
-            val useOrchestrator = when(executionEnum.get()) {
-                TestOptions.Execution.ANDROIDX_TEST_ORCHESTRATOR,
-                TestOptions.Execution.ANDROID_TEST_ORCHESTRATOR -> true
-                else -> false
-            }
-
-            return factory.createTestRunner(
-                project,
-                workerExecutor,
-                useOrchestrator,
-                enableEmulatorDisplay.get())
         }
     }
 
@@ -203,7 +190,6 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
     @get: PathSensitive(PathSensitivity.RELATIVE)
     abstract val buddyApks: ConfigurableFileCollection
 
-    private var hasFailures: Boolean = false
     private var shouldIgnore: Boolean = false
 
     // For analytics only
@@ -213,12 +199,7 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
         private set
 
     @get: Nested
-    abstract val device: Property<Device>
-
-    @Internal
-    override fun getTestFailed(): Boolean {
-        return hasFailures
-    }
+    abstract val device: Property<ManagedVirtualDevice>
 
     @get:Classpath
     @get:Optional
@@ -259,6 +240,11 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
     @get: Input
     abstract val enableEmulatorDisplay: Property<Boolean>
 
+    @InputFiles
+    @PathSensitive(PathSensitivity.NONE)
+    @Optional
+    abstract fun getPrivacySandboxSdkApksFiles(): ConfigurableFileCollection
+
     @Option(
         option="enable-display",
         description = "Adding this option will display the emulator while testing, instead" +
@@ -291,19 +277,11 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
             true
         } else {
             try {
-                val runner = if (device is ManagedDeviceTestRunnerFactory) {
-                    testRunnerFactory.createTestRunner(
-                        project,
-                        workerExecutor,
-                        device as ManagedDeviceTestRunnerFactory
-                    )
-                } else if (device is ManagedVirtualDevice) {
-                    testRunnerFactory.createTestRunner(
-                        workerExecutor,
-                        testRunnerFactory.testShardsSize.getOrNull())
-                } else {
-                    error("Unsupported Managed Device: ${device.javaClass}")
-                }
+                val runner = testRunnerFactory.createTestRunner(
+                    workerExecutor,
+                    testRunnerFactory.testShardsSize.getOrNull()
+                )
+
                 runner.runTests(
                     device,
                     path,
@@ -315,7 +293,8 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
                     testData.get().getAsStaticData(),
                     installOptions.getOrElse(listOf()),
                     buddyApks.files,
-                    logger
+                    logger,
+                    getPrivacySandboxSdkApksFiles()?.files ?: setOf()
                 )
             } catch (e: Exception) {
                 recordCrashedInstrumentedTestRun(
@@ -341,7 +320,6 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
                 analyticsService.get())
 
         if (!success) {
-            hasFailures = true
             val reportUrl = ConsoleRenderer().asClickableFileUrl(
                     File(reportOutDir, "index.html"))
             val message = "There were failing tests. See the report at: $reportUrl"
@@ -352,8 +330,6 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
                 throw GradleException(message)
             }
         }
-
-        hasFailures = false
     }
 
     /**
@@ -368,9 +344,9 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
             .get()
     }
 
-    class CreationAction<DeviceType : Device>(
+    class CreationAction(
         creationConfig: InstrumentedTestCreationConfig,
-        private val device: DeviceType,
+        private val device: ManagedVirtualDevice,
         private val testData: AbstractTestDataImpl,
         private val testResultOutputDir: File,
         private val testReportOutputDir: File,
@@ -430,20 +406,18 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
 
             task.device.setDisallowChanges(device)
 
-            if (device is ManagedVirtualDevice) {
-                if (device.apiLevel <= 26 &&
-                    !projectOptions[BooleanOption.GRADLE_MANAGED_DEVICE_ALLOW_OLD_API_LEVEL_DEVICES]
-                ) {
-                    throw GradleException(
-                        """
-                        API level 26 and lower is currently not supported for Gradle Managed devices.
-                        Your current configuration requires API level ${device.apiLevel}.
-                        While it's not recommended, you can use API levels 26 and lower by adding
-                        android.experimental.testOptions.managedDevices.allowOldApiLevelDevices=true
-                        to your gradle.properties file.
-                        """.trimIndent()
-                    )
-                }
+            if (device.apiLevel <= 26 &&
+                !projectOptions[BooleanOption.GRADLE_MANAGED_DEVICE_ALLOW_OLD_API_LEVEL_DEVICES]
+            ) {
+                throw GradleException(
+                    """
+                    API level 26 and lower is currently not supported for Gradle Managed devices.
+                    Your current configuration requires API level ${device.apiLevel}.
+                    While it's not recommended, you can use API levels 26 and lower by adding
+                    android.experimental.testOptions.managedDevices.allowOldApiLevelDevices=true
+                    to your gradle.properties file.
+                    """.trimIndent()
+                )
             }
 
             task.testRunnerFactory.avdComponents.setDisallowChanges(
@@ -470,8 +444,7 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
             val executionEnum = globalConfig.testOptionExecutionEnum
             task.testRunnerFactory.executionEnum.setDisallowChanges(executionEnum)
             val useUtp = shouldEnableUtp(
-                projectOptions, globalConfig.testOptions,
-                testedConfig?.componentType
+                projectOptions, globalConfig.testOptions
             )
             task.testRunnerFactory.unifiedTestPlatform.setDisallowChanges(useUtp)
 
@@ -488,7 +461,9 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
                 task.testRunnerFactory.utpDependencies
                         .resolveDependencies(task.project.configurations)
             }
-
+            task.testRunnerFactory.getTargetIsSplitApk.setDisallowChanges(
+                    testedConfig?.componentType?.isDynamicFeature ?: false
+            )
             task.testRunnerFactory.customManagedDevice.setDisallowChanges(
                 globalConfig.services.projectOptions[
                         BooleanOption.GRADLE_MANAGED_DEVICE_CUSTOM_DEVICE]
@@ -510,11 +485,19 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
             )
 
             task.testRunnerFactory
+                .emulatorControlConfig
+                .setDisallowChanges(
+                    createEmulatorControlConfig(
+                        projectOptions,
+                        globalConfig.testOptions.emulatorControl as EmulatorControl))
+
+            task.testRunnerFactory
                 .retentionConfig
                 .setDisallowChanges(
                         createRetentionConfig(
                                 projectOptions,
                                 globalConfig.testOptions.emulatorSnapshots as EmulatorSnapshots))
+
             task.testRunnerFactory
                 .installApkTimeout
                 .setDisallowChanges(projectOptions[IntegerOption.INSTALL_APK_TIMEOUT])
@@ -554,6 +537,22 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
                 )
             }
             task.rClasses.disallowChanges()
+
+            if(creationConfig
+                            .services
+                            .projectOptions
+                            .get(BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT)
+                    && testedConfig != null) {
+                task.getPrivacySandboxSdkApksFiles()
+                    .setFrom(
+                        testedConfig
+                            .variantDependencies
+                            .getArtifactFileCollection(
+                                AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
+                                AndroidArtifacts.ArtifactScope.ALL,
+                                AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_APKS))
+            }
+            task.getPrivacySandboxSdkApksFiles().disallowChanges()
         }
     }
 }

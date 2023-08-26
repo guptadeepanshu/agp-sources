@@ -40,7 +40,7 @@ import java.lang.IllegalArgumentException
  * Generally the implementation will cache the created instances to reuse them.
  */
 interface LibraryService {
-    fun getLibrary(artifact: ResolvedArtifact): Library
+    fun getLibrary(artifact: ResolvedArtifact, additionalArtifacts: AdditionalArtifacts): Library
 }
 
 /**
@@ -116,9 +116,9 @@ class LibraryServiceImpl(
     /**
      * Returns a [Library] instance matching the provided a [ResolvedArtifact].
      */
-    override fun getLibrary(artifact: ResolvedArtifact): Library =
+    override fun getLibrary(artifact: ResolvedArtifact, additionalArtifacts: AdditionalArtifacts): Library =
         libraryCache.computeIfAbsent(artifact) {
-            createLibrary(it)
+            createLibrary(it, additionalArtifacts)
         }
 
     fun getAllLibraries(): Collection<Library> = libraryCache.values
@@ -226,6 +226,7 @@ class LibraryServiceImpl(
      */
     private fun createLibrary(
         artifact: ResolvedArtifact,
+        additionalArtifacts: AdditionalArtifacts
     ): Library {
         val id = artifact.componentIdentifier
 
@@ -264,6 +265,9 @@ class LibraryServiceImpl(
 
                         lintJar = artifact.publishedLintJar,
                         artifact = artifact.artifactFile!!,
+                        srcJar = additionalArtifacts.source,
+                        docJar = additionalArtifacts.javadoc,
+                        samplesJar = additionalArtifacts.sample,
                     )
                 }
 
@@ -274,7 +278,10 @@ class LibraryServiceImpl(
                     LibraryImpl.createJavaLibrary(
                         stringCache.cacheString(libraryInfo.computeKey()),
                         libraryInfo,
-                        folder
+                        folder,
+                        additionalArtifacts.source,
+                        additionalArtifacts.javadoc,
+                        additionalArtifacts.sample,
                     )
                 }
 
@@ -283,6 +290,9 @@ class LibraryServiceImpl(
                         stringCache.cacheString(libraryInfo.computeKey()),
                         libraryInfo,
                         artifact.artifactFile!!,
+                        additionalArtifacts.source,
+                        additionalArtifacts.javadoc,
+                        additionalArtifacts.sample
                     )
                 }
 
@@ -318,7 +328,10 @@ class LibraryServiceImpl(
             LibraryImpl.createJavaLibrary(
                 stringCache.cacheString(libraryInfo.computeKey()),
                 libraryInfo,
-                folder
+                folder,
+                additionalArtifacts.source,
+                additionalArtifacts.javadoc,
+                additionalArtifacts.sample,
             )
         } else {
             // In general, we do not need to provide the artifact for project dependencies

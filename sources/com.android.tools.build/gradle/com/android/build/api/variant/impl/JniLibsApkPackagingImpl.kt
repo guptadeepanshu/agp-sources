@@ -29,12 +29,14 @@ class JniLibsApkPackagingImpl(
     JniLibsApkPackaging {
 
     override val useLegacyPackaging =
-        variantServices.provider {
+        variantServices.propertyOf(
+            Boolean::class.java,
             dslPackaging.jniLibs.useLegacyPackaging ?: (minSdk < M)
-        }
+        )
 
     override val useLegacyPackagingFromBundle =
-        variantServices.provider {
+        variantServices.propertyOf(
+            Boolean::class.java,
             dslPackaging.jniLibs.useLegacyPackaging ?: false
-        }
+        )
 }

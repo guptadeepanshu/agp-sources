@@ -18,6 +18,7 @@ package com.android.build.api.variant.impl
 
 import com.android.build.api.variant.AndroidVersion
 import org.gradle.api.tasks.Internal
+import java.io.Serializable
 
 /**
  * Mutable version of [AndroidVersion].
@@ -27,7 +28,7 @@ import org.gradle.api.tasks.Internal
 data class MutableAndroidVersion @JvmOverloads constructor(
     @get:Internal internal var api: Int?,
     override var codename: String? = null
-): AndroidVersion {
+): AndroidVersion, Serializable {
 
     override val apiLevel: Int
         // this should be an internal issue only has we sanitize before exposing to the variant

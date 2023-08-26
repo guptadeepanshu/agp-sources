@@ -31,6 +31,7 @@ import com.android.build.gradle.internal.cxx.json.NativeBuildConfigValue
 import com.android.build.gradle.internal.cxx.json.NativeLibraryValue
 import com.android.build.gradle.internal.cxx.json.NativeToolchainValue
 import com.android.build.gradle.internal.cxx.logging.errorln
+import com.android.build.gradle.internal.cxx.logging.infoln
 import com.android.build.gradle.internal.cxx.logging.warnln
 import com.android.utils.cxx.CxxDiagnosticCode.EXTRA_OUTPUT
 import com.google.gson.GsonBuilder
@@ -225,6 +226,7 @@ fun readCmakeFileApiReply(
     }
 
     // Populate NativeLibraryValues#runtimeFiles
+
     targetIdToLink.forEach { (id, link) ->
         targetIdToNativeLibraryValue
             .computeIfAbsent(id) { NativeLibraryValue() }
@@ -236,7 +238,9 @@ fun readCmakeFileApiReply(
                             // Only accept .so
                             it.fragment.endsWith(".so") &&
                             // Ignore libraries under sysroot
-                            !it.fragment.startsWith(link.sysroot)
+                            // CMake does not guarantee slash types are consistent even within the
+                            // same reply.
+                            !it.fragment.replace("\\", "/").startsWith(link.sysroot.replace("\\", "/"))
                         }
                         .map {
                             File(cmakeFiles.paths.build)

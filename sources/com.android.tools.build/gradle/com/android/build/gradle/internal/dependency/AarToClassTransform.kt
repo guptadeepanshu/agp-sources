@@ -140,7 +140,9 @@ abstract class AarToClassTransform : TransformAction<AarToClassTransform.Params>
             }
             val rTxt = inputAar.getEntry(FN_RESOURCE_TEXT) ?: return
             val symbols = inputAar.getInputStream(rTxt).use { rTxtToSymbolTable(it, pkg) }
-            exportToCompiledJava(symbols, outputApiJar)
+            exportToCompiledJava(listOf(symbols), finalIds = false, rPackage = null) { entryPath, content ->
+                outputApiJar.addEntry(entryPath, content.inputStream())
+            }
         }
 
         private fun isClassesJar(entry: ZipEntry): Boolean {

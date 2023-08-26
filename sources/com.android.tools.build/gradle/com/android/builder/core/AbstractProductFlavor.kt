@@ -23,7 +23,8 @@ import com.android.builder.model.ProductFlavor
 import com.android.builder.model.SigningConfig
 import com.google.common.base.MoreObjects
 import com.google.common.base.Strings
-import com.google.common.collect.*
+import com.google.common.collect.Iterables
+import com.google.common.collect.Maps
 
 /**
  * Builder-level implementation of ProductFlavor.
@@ -251,9 +252,7 @@ abstract class AbstractProductFlavor(
     }
 
     /** Class representing a request with fallbacks.  */
-    class DimensionRequest(val requested: String, val fallbacks: ImmutableList<String>) {
-        fun getFallbacks(): List<String> = fallbacks
-    }
+    class DimensionRequest(val requested: String, val fallbacks: List<String>)
 
     /** map of dimension -> request  */
     private var missingDimensionSelections: MutableMap<String, DimensionRequest>? = null
@@ -317,7 +316,7 @@ abstract class AbstractProductFlavor(
      * ```
      */
     fun missingDimensionStrategy(dimension: String, requestedValue: String) {
-        missingDimensionStrategy(dimension, ImmutableList.of(requestedValue))
+        missingDimensionStrategy(dimension, listOf(requestedValue))
     }
 
     /**
@@ -383,7 +382,7 @@ abstract class AbstractProductFlavor(
      * ```
      */
     fun missingDimensionStrategy(dimension: String, vararg requestedValues: String) {
-        missingDimensionStrategy(dimension, ImmutableList.copyOf(requestedValues))
+        missingDimensionStrategy(dimension, listOf(*requestedValues))
     }
 
     /**
@@ -467,12 +466,13 @@ abstract class AbstractProductFlavor(
      */
     protected open fun computeRequestedAndFallBacks(requestedValues: List<String>): DimensionRequest { // default implementation is that the fallback's first item is the requested item.
         return DimensionRequest(
-                requestedValues[0],
-                ImmutableList.copyOf(requestedValues.subList(1, requestedValues.size)))
+            requestedValues[0],
+            requestedValues.subList(1, requestedValues.size)
+        )
     }
 
     val missingDimensionStrategies: Map<String, DimensionRequest>
-        get() = missingDimensionSelections ?: ImmutableMap.of()
+        get() = missingDimensionSelections ?: mapOf()
 
     /**
      * Merges a higher-priority flavor (overlay) on top of this one.

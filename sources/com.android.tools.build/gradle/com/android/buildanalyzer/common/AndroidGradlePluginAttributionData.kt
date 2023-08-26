@@ -90,6 +90,7 @@ data class AndroidGradlePluginAttributionData(
 
     data class BuildInfo(
         val agpVersion: String?,
+        val gradleVersion: String?,
         val configurationCacheIsOn: Boolean?
     ) : Serializable
 
@@ -251,6 +252,7 @@ data class AndroidGradlePluginAttributionData(
             if (info == null) return
             name("buildInfo").beginObject()
             info.agpVersion?.let { name("agpVersion").value(it) }
+            info.gradleVersion?.let{ name("gradleVersion").value(it) }
             info.configurationCacheIsOn?.let{ name("configurationCacheIsOn").value(it) }
             endObject()
         }
@@ -258,15 +260,17 @@ data class AndroidGradlePluginAttributionData(
         private fun JsonReader.readBuildInfo(): BuildInfo {
             beginObject()
             var agpVersion: String? = null
+            var gradleVersion: String? = null
             var configurationCacheIsOn: Boolean? = null
             while (hasNext()) {
                 when (nextName()) {
                     "agpVersion" -> agpVersion = nextString()
+                    "gradleVersion" -> gradleVersion = nextString()
                     "configurationCacheIsOn" -> configurationCacheIsOn = nextBoolean()
                 }
             }
             endObject()
-            return BuildInfo(agpVersion, configurationCacheIsOn)
+            return BuildInfo(agpVersion, gradleVersion, configurationCacheIsOn)
         }
 
         private fun JsonWriter.writeTaskToTaskInfoEntry(taskName:String, taskInfo: TaskInfo) {

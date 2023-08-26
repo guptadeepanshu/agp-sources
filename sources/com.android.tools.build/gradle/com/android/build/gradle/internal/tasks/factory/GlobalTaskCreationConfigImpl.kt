@@ -44,7 +44,9 @@ import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.BaseServices
 import com.android.build.gradle.internal.services.VersionedSdkLoaderService
 import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.internal.testing.ManagedDeviceRegistry
 import com.android.build.gradle.options.BooleanOption
+import com.android.build.gradle.options.IntegerOption
 import com.android.build.gradle.options.StringOption
 import com.android.builder.core.LibraryRequest
 import com.android.builder.testing.api.DeviceProvider
@@ -52,7 +54,6 @@ import com.android.builder.testing.api.TestServer
 import com.android.repository.Revision
 import com.android.utils.HelpfulEnumConverter
 import org.gradle.api.Action
-import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.attributes.AttributeContainer
@@ -63,7 +64,7 @@ import org.gradle.api.provider.Provider
 class GlobalTaskCreationConfigImpl(
     project: Project,
     private val oldExtension: BaseExtension,
-    private val extension: CommonExtensionImpl<*, *, *, *>,
+    private val extension: CommonExtensionImpl<*, *, *, *, *>,
     override val services: BaseServices,
     private val versionedSdkLoaderService: VersionedSdkLoaderService,
     bootClasspathConfig: BootClasspathConfigImpl,
@@ -71,7 +72,8 @@ class GlobalTaskCreationConfigImpl(
     override val lintChecks: Configuration,
     private val androidJar: Configuration,
     override val fakeDependency: Configuration,
-    override val settingsOptions: SettingsOptions
+    override val settingsOptions: SettingsOptions,
+    override val managedDeviceRegistry: ManagedDeviceRegistry,
 ) : GlobalTaskCreationConfig, BootClasspathConfig by bootClasspathConfig {
 
     companion object {
@@ -243,8 +245,6 @@ class GlobalTaskCreationConfigImpl(
             )
         }
 
-    override val enableGlobalSynthetics: Boolean
-        get() = services.projectOptions.get(BooleanOption.ENABLE_GLOBAL_SYNTHETICS)
-                && compileOptions.targetCompatibility.isCompatibleWith(JavaVersion.VERSION_14)
-                && compileOptions.sourceCompatibility.isCompatibleWith(JavaVersion.VERSION_14)
+    override val targetDeployApiFromIDE: Int? =
+        services.projectOptions.get(IntegerOption.IDE_TARGET_DEVICE_API)
 }

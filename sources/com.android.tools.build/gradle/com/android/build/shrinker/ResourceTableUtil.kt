@@ -47,6 +47,9 @@ internal fun Resources.ResourceTable.nullOutEntriesWithIds(ids: List<Int>)
                     type.entryBuilderList.forEach { entry ->
                         if (entryList.contains(entry.entryId.id)) {
                             entry.clearConfigValue()
+                            if (entry.hasOverlayableItem()) {
+                                entry.clearOverlayableItem()
+                            }
                         }
                     }
                 }

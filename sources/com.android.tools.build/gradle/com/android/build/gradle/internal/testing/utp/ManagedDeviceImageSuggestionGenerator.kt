@@ -19,7 +19,7 @@ package com.android.build.gradle.internal.testing.utp
 import com.android.build.api.dsl.ManagedVirtualDevice
 import com.android.build.gradle.internal.computeAbiFromArchitecture
 import com.android.testing.utils.computeSystemImageHashFromDsl
-import com.android.testing.utils.isWearTvOrAutoSource
+import com.android.testing.utils.isTvOrAutoSource
 import com.android.testing.utils.parseApiFromHash
 import com.android.testing.utils.parseVendorFromHash
 import com.android.testing.utils.parseAbiFromHash
@@ -256,8 +256,7 @@ class ManagedDeviceImageSuggestionGenerator (
             }.mapNotNull {
                 parseVendorFromHash(it)
             }.filterNot {
-                // Remove wear, tv, and auto sources
-                isWearTvOrAutoSource(it)
+                isTvOrAutoSource(it)
             }.toMutableSet()
         if (sources.isEmpty() ) {
             return null

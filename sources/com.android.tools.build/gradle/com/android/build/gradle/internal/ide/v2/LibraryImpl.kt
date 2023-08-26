@@ -35,6 +35,9 @@ data class LibraryImpl private constructor(
     override val libraryInfo: LibraryInfo? = null,
     override val artifact: File? = null,
     override val lintJar: File?,
+    override val srcJar: File?,
+    override val docJar: File?,
+    override val samplesJar: File?,
     override val androidLibraryData: AndroidLibraryData? = null
 ) : Library, Serializable {
     companion object {
@@ -52,18 +55,27 @@ data class LibraryImpl private constructor(
             projectInfo = projectInfo,
             artifact = artifactFile,
             lintJar = lintJar,
+            srcJar = null,
+            docJar = null,
+            samplesJar = null,
         )
 
         fun createJavaLibrary(
             key: String,
             libraryInfo: LibraryInfo,
             artifact: File,
+            srcJar: File?,
+            docJar: File?,
+            samplesJar: File?,
         ) = LibraryImpl(
             key = key,
             type = LibraryType.JAVA_LIBRARY,
             libraryInfo = libraryInfo,
             artifact = artifact,
-            lintJar = null
+            lintJar = null,
+            srcJar = srcJar,
+            docJar = docJar,
+            samplesJar = samplesJar,
         )
 
         fun createAndroidLibrary(
@@ -81,6 +93,9 @@ data class LibraryImpl private constructor(
             renderscriptFolder: File,
             proguardRules: File,
             lintJar: File?,
+            srcJar: File?,
+            docJar: File?,
+            samplesJar: File?,
             externalAnnotations: File,
             publicResources: File,
             symbolFile: File
@@ -90,6 +105,9 @@ data class LibraryImpl private constructor(
             libraryInfo = libraryInfo,
             artifact = artifact,
             lintJar = lintJar,
+            srcJar = srcJar,
+            docJar = docJar,
+            samplesJar = samplesJar,
             androidLibraryData = AndroidLibraryDataImpl(
                 manifest = manifest,
                 compileJarFiles = compileJarFiles,
@@ -115,7 +133,10 @@ data class LibraryImpl private constructor(
             type = LibraryType.RELOCATED,
             libraryInfo = libraryInfo,
             artifact = null,
-            lintJar = null
+            lintJar = null,
+            srcJar = null,
+            docJar = null,
+            samplesJar = null,
         )
 
         fun createNoArtifactFileLibrary(
@@ -126,7 +147,10 @@ data class LibraryImpl private constructor(
             type = LibraryType.NO_ARTIFACT_FILE,
             libraryInfo = libraryInfo,
             artifact = null,
-            lintJar = null
+            lintJar = null,
+            srcJar = null,
+            docJar = null,
+            samplesJar = null,
         )
     }
 }

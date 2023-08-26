@@ -18,10 +18,11 @@ package com.android.build.gradle.internal.privaysandboxsdk
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.dsl.PrivacySandboxSdkExtension
+import com.android.build.api.dsl.SigningConfig
 import com.android.build.gradle.internal.dsl.PrivacySandboxSdkBundleImpl
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryConfigurations
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryDependencies
-import com.android.build.gradle.internal.fusedlibrary.FusedLibraryVariantScopeImpl
+import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.tasks.factory.BootClasspathConfig
 import com.android.build.gradle.internal.utils.validatePreviewTargetValue
@@ -29,7 +30,6 @@ import com.android.builder.core.DefaultApiVersion
 import com.android.builder.model.ApiVersion
 import org.gradle.api.Project
 import org.gradle.api.artifacts.component.ComponentIdentifier
-import org.gradle.api.artifacts.component.ProjectComponentIdentifier
 import org.gradle.api.file.ProjectLayout
 import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Provider
@@ -38,6 +38,7 @@ import org.gradle.api.specs.Spec
 class PrivacySandboxSdkVariantScopeImpl(
         project: Project,
         override val services: TaskCreationServices,
+        val dslServices: DslServices,
         private val extensionProvider: () -> PrivacySandboxSdkExtension,
         private val bootClasspathConfigProvider: () -> BootClasspathConfig
 ): PrivacySandboxSdkVariantScope{
@@ -70,8 +71,8 @@ class PrivacySandboxSdkVariantScopeImpl(
     }
     override val bootClasspath: Provider<List<RegularFile>>
             get() = bootClasspathConfigProvider.invoke().bootClasspath
-
     override val bundle: PrivacySandboxSdkBundleImpl
         get() = extension.bundle as PrivacySandboxSdkBundleImpl
-
+    override val signingConfig: SigningConfig
+        get() = extension.signingConfig
 }

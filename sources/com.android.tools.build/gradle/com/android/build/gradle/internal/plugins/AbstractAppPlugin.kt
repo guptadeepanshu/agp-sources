@@ -16,6 +16,7 @@
 package com.android.build.gradle.internal.plugins
 
 import com.android.AndroidProjectTypes
+import com.android.build.api.dsl.AndroidResources
 import com.android.build.api.dsl.BuildFeatures
 import com.android.build.api.dsl.BuildType
 import com.android.build.api.dsl.CommonExtension
@@ -38,11 +39,13 @@ abstract class AbstractAppPlugin<
         BuildTypeT: BuildType,
         DefaultConfigT: DefaultConfig,
         ProductFlavorT: ProductFlavor,
+        AndroidResourcesT: AndroidResources,
         AndroidT: CommonExtension<
                 BuildFeaturesT,
                 BuildTypeT,
                 DefaultConfigT,
-                ProductFlavorT>,
+                ProductFlavorT,
+                AndroidResourcesT>,
         AndroidComponentsT : AndroidComponentsExtension<
                 in AndroidT,
                 in VariantBuilderT,
@@ -55,7 +58,7 @@ abstract class AbstractAppPlugin<
         registry: ToolingModelBuilderRegistry?,
         componentFactory: SoftwareComponentFactory?,
         listenerRegistry: BuildEventsListenerRegistry?
-) : BasePlugin<BuildFeaturesT, BuildTypeT, DefaultConfigT, ProductFlavorT, AndroidT, AndroidComponentsT, VariantBuilderT, VariantDslInfoT, CreationConfigT, VariantT>(
+) : BasePlugin<BuildFeaturesT, BuildTypeT, DefaultConfigT, ProductFlavorT, AndroidResourcesT, AndroidT, AndroidComponentsT, VariantBuilderT, VariantDslInfoT, CreationConfigT, VariantT>(
         registry!!,
         componentFactory!!,
         listenerRegistry!!

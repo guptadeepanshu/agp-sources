@@ -24,7 +24,7 @@ import com.android.build.api.variant.impl.VariantOutputImpl
 import com.android.build.api.variant.impl.dirName
 import com.android.build.api.variant.impl.getApiString
 import com.android.build.api.variant.impl.getFilter
-import com.android.build.gradle.internal.component.ApkCreationConfig
+import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType.COMPATIBLE_SCREEN_MANIFEST
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
@@ -38,6 +38,7 @@ import com.google.common.io.Files
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.Optional
@@ -65,39 +66,32 @@ abstract class CompatibleScreensManifest : NonIncrementalTask() {
     abstract val applicationId: Property<String>
 
     @get:Input
-    abstract val componentType: Property<String>
-
-    @get:Input
-    lateinit var screenSizes: Set<String>
-        internal set
+    abstract val screenSizes: SetProperty<String>
 
     @get:OutputDirectory
     abstract val outputFolder: DirectoryProperty
 
     @get:Nested
-    abstract val variantOutputs : ListProperty<VariantOutputImpl>
+    abstract val variantOutputs: ListProperty<VariantOutputImpl>
 
     @get:Input
     @get:Optional
     abstract val minSdkVersion: Property<String?>
 
     override fun doTaskAction() {
-
         BuiltArtifactsImpl(
             artifactType = COMPATIBLE_SCREEN_MANIFEST,
             applicationId = applicationId.get(),
             variantName = variantName,
             elements = variantOutputs.get().mapNotNull {
-                val generatedManifest = generate(it)
-                if (generatedManifest != null)
+                generate(it)?.let { generatedManifest ->
                     BuiltArtifactImpl.make(
                         outputFile = generatedManifest.absolutePath,
                         versionCode = it.versionCode.orNull,
                         versionName = it.versionName.orNull,
                         variantOutputConfiguration = it.variantOutputConfiguration
                     )
-                else
-                    null
+                }
             }
         ).save(outputFolder.get())
     }
@@ -120,7 +114,7 @@ abstract class CompatibleScreensManifest : NonIncrementalTask() {
         // convert unsupported values to numbers.
         val density = convert(densityFilter.identifier, Density.XXHIGH, Density.XXXHIGH)
 
-        for (size in screenSizes) {
+        for (size in screenSizes.get()) {
             content.append("        <screen android:screenSize=\"")
                 .append(size)
                 .append("\" " + "android:screenDensity=\"")
@@ -154,10 +148,12 @@ abstract class CompatibleScreensManifest : NonIncrementalTask() {
         return density
     }
 
-    class CreationAction(creationConfig: ApkCreationConfig, private val screenSizes: Set<String>) :
-        VariantTaskCreationAction<CompatibleScreensManifest, ApkCreationConfig>(
-            creationConfig
-        ) {
+    class CreationAction(
+        creationConfig: ApplicationCreationConfig,
+        private val screenSizes: Set<String>
+    ): VariantTaskCreationAction<CompatibleScreensManifest, ApplicationCreationConfig>(
+        creationConfig
+    ) {
 
         override val name: String
             get() = computeTaskName("create", "CompatibleScreenManifests")
@@ -179,17 +175,16 @@ abstract class CompatibleScreensManifest : NonIncrementalTask() {
         ) {
             super.configure(task)
 
-            task.screenSizes = screenSizes
+            task.screenSizes.setDisallowChanges(screenSizes)
             task.applicationId.setDisallowChanges(creationConfig.applicationId)
 
-            task.componentType.set(creationConfig.componentType.toString())
-            task.componentType.disallowChanges()
+            task.variantOutputs.setDisallowChanges(
+                creationConfig.outputs.getEnabledVariantOutputs()
+            )
 
-            creationConfig.outputs.getEnabledVariantOutputs().forEach(task.variantOutputs::add)
-            task.variantOutputs.disallowChanges()
-
-            task.minSdkVersion.set(task.project.provider { creationConfig.minSdkVersion.getApiString() })
-            task.minSdkVersion.disallowChanges()
+            task.minSdkVersion.setDisallowChanges(
+                task.project.provider { creationConfig.minSdk.getApiString() }
+            )
         }
     }
 }

@@ -23,6 +23,7 @@ import com.android.build.gradle.internal.scope.BootClasspathBuilder
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServicesImpl
 import com.android.build.gradle.internal.services.VersionedSdkLoaderService
+import com.android.builder.core.LibraryRequest
 import com.google.common.collect.ImmutableList
 import org.gradle.api.Action
 import org.gradle.api.Project
@@ -36,10 +37,27 @@ class BootClasspathConfigImpl(
     project: Project,
     private val projectServices: ProjectServices,
     private val versionedSdkLoaderService: VersionedSdkLoaderService,
-    // TODO: Remove dependency on common extension
-    private val extension: CommonExtensionImpl<*,*,*,*>?,
+    private val libraryRequests: List<LibraryRequest>,
+    private val isJava8Compatible: () -> Boolean,
+    private val returnDefaultValuesForMockableJar: () -> Boolean,
     private val forUnitTest: Boolean
 ): BootClasspathConfig {
+
+    constructor(
+        project: Project,
+        projectServices: ProjectServices,
+        versionedSdkLoaderService: VersionedSdkLoaderService,
+        extension: CommonExtensionImpl<*,*,*,*,*>,
+        forUnitTest: Boolean
+    ): this(
+        project,
+        projectServices,
+        versionedSdkLoaderService,
+        libraryRequests = extension.libraryRequests,
+        isJava8Compatible = { extension.compileOptions.targetCompatibility.isJava8Compatible },
+        returnDefaultValuesForMockableJar = { extension.testOptions.unitTests.isReturnDefaultValues },
+        forUnitTest = forUnitTest
+    )
 
     override val fullBootClasspath: FileCollection by lazy {
         project.files(fullBootClasspathProvider)
@@ -126,7 +144,7 @@ class BootClasspathConfigImpl(
                     SdkComponentsBuildService.VersionedSdkLoader::annotationsJarProvider
                 ),
                 false,
-                ImmutableList.copyOf(extension?.libraryRequests ?: emptyList())
+                ImmutableList.copyOf(libraryRequests)
             )
         )
 
@@ -152,7 +170,7 @@ class BootClasspathConfigImpl(
         val versionedSdkLoader = versionedSdkLoaderService.versionedSdkLoader
 
         property.addAll(filteredBootClasspath)
-        if (extension?.compileOptions?.targetCompatibility?.isJava8Compatible != false) {
+        if (isJava8Compatible()) {
             property.add(
                 versionedSdkLoader
                     .flatMap(
@@ -188,7 +206,7 @@ class BootClasspathConfigImpl(
                     )
                     .attribute(
                         AndroidArtifacts.MOCKABLE_JAR_RETURN_DEFAULT_VALUES,
-                        extension?.testOptions?.unitTests?.isReturnDefaultValues ?: false
+                        returnDefaultValuesForMockableJar()
                     )
             }
         androidJar

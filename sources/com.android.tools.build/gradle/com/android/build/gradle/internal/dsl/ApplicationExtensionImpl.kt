@@ -16,13 +16,11 @@
 
 package com.android.build.gradle.internal.dsl
 
+import com.android.build.api.dsl.ApplicationAndroidResources
 import com.android.build.api.dsl.ApplicationBuildFeatures
 import com.android.build.api.dsl.ApplicationBuildType
 import com.android.build.api.dsl.ApplicationDefaultConfig
 import com.android.build.api.dsl.ApplicationProductFlavor
-import com.android.build.api.dsl.ApplicationPublishing
-import com.android.build.api.dsl.Bundle
-import com.android.build.api.dsl.DependenciesInfo
 import com.android.build.gradle.internal.plugins.DslContainerProvider
 import com.android.build.gradle.internal.services.DslServices
 import org.gradle.api.Action
@@ -41,7 +39,8 @@ abstract class ApplicationExtensionImpl @Inject constructor(
             ApplicationBuildFeatures,
             ApplicationBuildType,
             ApplicationDefaultConfig,
-            ApplicationProductFlavor>(
+            ApplicationProductFlavor,
+            ApplicationAndroidResources>(
         dslServices,
         dslContainers
     ),
@@ -49,4 +48,15 @@ abstract class ApplicationExtensionImpl @Inject constructor(
 
     override val buildFeatures: ApplicationBuildFeatures =
         dslServices.newInstance(ApplicationBuildFeaturesImpl::class.java)
+
+    override val androidResources: ApplicationAndroidResources =
+        dslServices.newDecoratedInstance(ApplicationAndroidResourcesImpl::class.java, dslServices)
+
+    override fun androidResources(action: Action<ApplicationAndroidResources>) {
+        action.execute(androidResources)
+    }
+
+    override fun androidResources(action: ApplicationAndroidResources.() -> Unit) {
+        action.invoke(androidResources)
+    }
 }

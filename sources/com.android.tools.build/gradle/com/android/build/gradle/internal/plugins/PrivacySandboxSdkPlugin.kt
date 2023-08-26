@@ -16,7 +16,6 @@
 
 package com.android.build.gradle.internal.plugins
 
-import com.android.Version
 import com.android.build.api.artifact.Artifact
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.attributes.BuildTypeAttr
@@ -39,6 +38,7 @@ import com.android.build.gradle.internal.services.SymbolTableBuildService
 import com.android.build.gradle.internal.services.TaskCreationServicesImpl
 import com.android.build.gradle.internal.services.VersionedSdkLoaderService
 import com.android.build.gradle.internal.tasks.AppMetadataTask
+import com.android.build.gradle.internal.tasks.SignAsbTask
 import com.android.build.gradle.internal.tasks.MergeJavaResourceTask
 import com.android.build.gradle.internal.tasks.PerModuleBundleTask
 import com.android.build.gradle.internal.tasks.ValidateSigningTask
@@ -100,14 +100,17 @@ class PrivacySandboxSdkPlugin @Inject constructor(
             PrivacySandboxSdkVariantScopeImpl(
                     project,
                     TaskCreationServicesImpl(projectServices),
+                    dslServices,
                     { extension },
             ) {
                 BootClasspathConfigImpl(
-                        project,
-                        projectServices,
-                        versionedSdkLoaderService,
-                        null,
-                        false
+                    project,
+                    projectServices,
+                    versionedSdkLoaderService,
+                    libraryRequests = listOf(),
+                    isJava8Compatible = { true },
+                    returnDefaultValuesForMockableJar = { false },
+                    forUnitTest = false
                 )
             }
         }
@@ -138,8 +141,8 @@ class PrivacySandboxSdkPlugin @Inject constructor(
         super.basePluginApply(project)
         if (!projectServices.projectOptions[BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT]) {
             throw GradleException(
-                    "Privacy Sandbox SDKs are not supported in Android Gradle plugin 8.0.x.\n" +
-                    "To build privacy sandbox SDKs, please use Android Gradle plugin 8.1.0-alpha01 or later."
+                    "Privacy Sandbox SDKs are not supported in Android Gradle plugin 8.1.x.\n" +
+                    "To build privacy sandbox SDKs, please use Android Gradle plugin 8.2.0-alpha01 or later."
             )
         }
 
@@ -174,7 +177,7 @@ class PrivacySandboxSdkPlugin @Inject constructor(
         // This is the configuration that will contain all the JAVA_API dependencies that are not
         // fused in the resulting aar library.
         val includedApiUnmerged = project.configurations.create("includeApiUnmerged").also {
-            it.isCanBeConsumed = true
+            it.isCanBeConsumed = false
             it.isCanBeResolved = true
             it.incoming.beforeResolve(
                     SegregatingConstraintHandler(
@@ -322,6 +325,7 @@ class PrivacySandboxSdkPlugin @Inject constructor(
                 PrivacySandboxSdkInternalArtifactType.ASAR,
                 listOf(
                         AppMetadataTask.PrivacySandboxSdkCreationAction(variantScope),
+                        SignAsbTask.CreationActionPrivacySandboxSdk(variantScope),
                         FusedLibraryMergeClasses.PrivacySandboxSdkCreationAction(variantScope),
                         GeneratePrivacySandboxAsar.CreationAction(variantScope),
                         MergeJavaResourceTask.PrivacySandboxSdkCreationAction(variantScope),

@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.tasks;
 
+import static com.android.build.gradle.internal.testing.utp.EmulatorControlConfigKt.createEmulatorControlConfig;
 import static com.android.build.gradle.internal.testing.utp.RetentionConfigKt.createRetentionConfig;
 import static com.android.build.gradle.internal.testing.utp.UtpTestUtilsKt.shouldEnableUtp;
 import static com.android.builder.core.BuilderConstants.CONNECTED;
@@ -41,6 +42,7 @@ import com.android.build.gradle.internal.SdkComponentsKt;
 import com.android.build.gradle.internal.component.AndroidTestCreationConfig;
 import com.android.build.gradle.internal.component.InstrumentedTestCreationConfig;
 import com.android.build.gradle.internal.component.VariantCreationConfig;
+import com.android.build.gradle.internal.dsl.EmulatorControl;
 import com.android.build.gradle.internal.dsl.EmulatorSnapshots;
 import com.android.build.gradle.internal.process.GradleProcessExecutor;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts;
@@ -59,6 +61,7 @@ import com.android.build.gradle.internal.testing.SimpleTestRunnable;
 import com.android.build.gradle.internal.testing.SimpleTestRunner;
 import com.android.build.gradle.internal.testing.TestData;
 import com.android.build.gradle.internal.testing.TestRunner;
+import com.android.build.gradle.internal.testing.utp.EmulatorControlConfig;
 import com.android.build.gradle.internal.testing.utp.RetentionConfig;
 import com.android.build.gradle.internal.testing.utp.UtpDependencies;
 import com.android.build.gradle.internal.testing.utp.UtpDependencyUtilsKt;
@@ -86,6 +89,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -151,6 +155,9 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
         public abstract Property<Execution> getExecutionEnum();
 
         @Input
+        public abstract Property<EmulatorControlConfig> getEmulatorControlConfig();
+
+        @Input
         public abstract Property<RetentionConfig> getRetentionConfig();
 
         @Internal
@@ -158,6 +165,9 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
 
         @Nested
         public abstract UtpDependencies getUtpDependencies();
+
+        @Input
+        public abstract Property<Boolean> getTargetIsSplitApk();
 
         /**
          * Property for the serials passed into the connectedCheck task. This is used to filter the
@@ -217,12 +227,14 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                                 .sdkLoader(
                                         getBuildTools().getCompileSdkVersion(),
                                         getBuildTools().getBuildToolsRevision()),
+                        getEmulatorControlConfig().get(),
                         getRetentionConfig().get(),
                         useOrchestrator,
                         getUninstallIncompatibleApks().get(),
                         utpTestResultListener,
                         utpLoggingLevel(),
-                        getInstallApkTimeout().getOrNull());
+                        getInstallApkTimeout().getOrNull(),
+                        getTargetIsSplitApk().getOrElse(false));
             } else {
                 switch (getExecutionEnum().get()) {
                     case ANDROID_TEST_ORCHESTRATOR:
@@ -284,7 +296,6 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
     }
 
     private boolean ignoreFailures;
-    private boolean testFailed;
 
     // For analytics only
     private ArtifactCollection dependencies;
@@ -402,7 +413,6 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                 getAnalyticsService().get());
 
         if (!success) {
-            testFailed = true;
             String reportUrl = new ConsoleRenderer().asClickableFileUrl(
                     new File(reportOutDir, "index.html"));
             String message = "There were failing tests. See the report at: " + reportUrl;
@@ -414,8 +424,6 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                 throw new GradleException(message);
             }
         }
-
-        testFailed = false;
     }
 
     public static void checkForNonApks(
@@ -563,12 +571,6 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
     @Override
     public void setIgnoreFailures(boolean ignoreFailures) {
         this.ignoreFailures = ignoreFailures;
-    }
-
-    @Override
-    @Internal // This is the result after running this task
-    public boolean getTestFailed() {
-        return testFailed;
     }
 
     @InputFiles
@@ -799,7 +801,7 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                         .getConnectedCheckDeviceSerials()
                         .set(connectedCheckTargetSerials);
             }
-            boolean useUtp = shouldEnableUtp(projectOptions, testOptions, componentType);
+            boolean useUtp = shouldEnableUtp(projectOptions, testOptions);
             task.getTestRunnerFactory().getUnifiedTestPlatform().set(useUtp);
             if (useUtp) {
                 if (!projectOptions.get(BooleanOption.ANDROID_TEST_USES_UNIFIED_TEST_PLATFORM)) {
@@ -827,6 +829,12 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                     .set(projectOptions.get(BooleanOption.UNINSTALL_INCOMPATIBLE_APKS));
 
             task.getTestRunnerFactory()
+                    .getEmulatorControlConfig()
+                    .set(
+                            createEmulatorControlConfig(
+                                    projectOptions,
+                                    (EmulatorControl) testOptions.getEmulatorControl()));
+            task.getTestRunnerFactory()
                     .getRetentionConfig()
                     .set(
                             createRetentionConfig(
@@ -836,6 +844,10 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
             task.getTestRunnerFactory()
                     .getInstallApkTimeout()
                     .set(projectOptions.getProvider(IntegerOption.INSTALL_APK_TIMEOUT));
+
+            task.getTestRunnerFactory()
+                    .getTargetIsSplitApk()
+                    .set(componentType != null && componentType.isDynamicFeature());
             task.getCodeCoverageEnabled().set(creationConfig.isAndroidTestCoverageEnabled());
             boolean useJacocoTransformOutputs =
                     creationConfig.isAndroidTestCoverageEnabled();
@@ -850,14 +862,19 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                                             : AndroidArtifacts.ArtifactType.CLASSES_JAR);
 
             String flavorFolder = testData.getFlavorName().get();
+            //  TODO(b/271294549): Move BuildTarget into testData
+            String buildTarget = "";
             if (!flavorFolder.isEmpty()) {
+                buildTarget = variantName.substring(flavorFolder.length()).toLowerCase(Locale.US);
                 flavorFolder = FD_FLAVORS + "/" + flavorFolder;
+            } else {
+                buildTarget = variantName;
             }
             String providerFolder =
                     type == Type.INTERNAL_CONNECTED_DEVICE_PROVIDER
                             ? CONNECTED
                             : DEVICE + "/" + deviceProviderName;
-            final String subFolder = "/" + providerFolder + "/" + flavorFolder;
+            final String subFolder = "/" + providerFolder + "/" + buildTarget + "/" + flavorFolder;
 
             String rootLocation = testOptions.getResultsDir();
             if (rootLocation == null) {

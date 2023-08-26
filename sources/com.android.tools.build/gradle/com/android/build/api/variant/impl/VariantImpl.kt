@@ -35,8 +35,6 @@ import com.android.build.api.variant.Packaging
 import com.android.build.api.variant.ResValue
 import com.android.build.api.variant.Variant
 import com.android.build.gradle.internal.component.ApkCreationConfig
-import com.android.build.gradle.internal.component.TestComponentCreationConfig
-import com.android.build.gradle.internal.component.TestFixturesCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.component.features.BuildConfigCreationConfig
 import com.android.build.gradle.internal.component.features.FeatureNames
@@ -57,7 +55,6 @@ import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
-import com.android.builder.core.ComponentType
 import com.android.utils.appendCapitalized
 import com.android.utils.capitalizeAndAppend
 import org.gradle.api.file.RegularFile
@@ -92,7 +89,7 @@ abstract class VariantImpl<DslInfoT: VariantDslInfo>(
     variantServices,
     taskCreationServices,
     global
-), Variant, VariantCreationConfig {
+), Variant, VariantCreationConfig, HasUnitTest {
 
     override val description: String
         get() = if (componentIdentity.productFlavors.isNotEmpty()) {
@@ -109,13 +106,15 @@ abstract class VariantImpl<DslInfoT: VariantDslInfo>(
     // PUBLIC API
     // ---------------------------------------------------------------------------------------------
 
-    override val minSdkVersion: AndroidVersion by lazy {
+    override val minSdk: AndroidVersion by lazy {
         variantBuilder.minSdkVersion
     }
 
-    override val targetSdkVersion: AndroidVersion by lazy {
-        variantBuilder.targetSdkVersion
-    }
+    override val minSdkVersion: AndroidVersion
+        get() = minSdk
+
+    override val maxSdk: Int?
+        get() = variantBuilder.maxSdk
 
     override val maxSdkVersion: Int?
         get() = variantBuilder.maxSdk
@@ -199,15 +198,9 @@ abstract class VariantImpl<DslInfoT: VariantDslInfo>(
         )
     }
 
-    override val testComponents = mutableMapOf<ComponentType, TestComponentCreationConfig>()
-    override var testFixturesComponent: TestFixturesCreationConfig? = null
-
     private val externalExtensions: Map<Class<*>, Any>? by lazy {
         variantBuilder.getRegisteredExtensions()
     }
-
-    override val targetSdkVersionOverride: AndroidVersion?
-        get() = variantBuilder.mutableTargetSdk?.sanitize()
 
     override val resValues: MapProperty<ResValue.Key, ResValue> by lazy {
         resValuesCreationConfig?.resValues
@@ -242,7 +235,8 @@ abstract class VariantImpl<DslInfoT: VariantDslInfo>(
             internalServices.mapPropertyOf(
                 String::class.java,
                 Any::class.java,
-                dslInfo.experimentalProperties
+                dslInfo.experimentalProperties,
+                disallowUnsafeRead = false
             )
 
     override val nestedComponents: List<ComponentImpl<*>>

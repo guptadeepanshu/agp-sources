@@ -22,7 +22,6 @@ import com.android.build.gradle.api.JavaCompileOptions
 import com.android.build.gradle.internal.core.dsl.features.AndroidResourcesDslInfo
 import com.android.builder.core.AbstractProductFlavor
 import com.android.builder.core.ComponentType
-import com.google.common.collect.ImmutableMap
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 
@@ -35,7 +34,7 @@ interface ComponentDslInfo {
 
     val componentType: ComponentType
 
-    val missingDimensionStrategies: ImmutableMap<String, AbstractProductFlavor.DimensionRequest>
+    val missingDimensionStrategies: Map<String, AbstractProductFlavor.DimensionRequest>
 
     /**
      * Returns the application ID for this variant. This could be coming from the manifest or could

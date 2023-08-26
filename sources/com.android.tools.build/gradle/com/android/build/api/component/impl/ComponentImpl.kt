@@ -31,14 +31,9 @@ import com.android.build.api.variant.Component
 import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.Instrumentation
 import com.android.build.api.variant.JavaCompilation
-import com.android.build.api.variant.VariantOutputConfiguration
 import com.android.build.api.variant.impl.FileBasedDirectoryEntryImpl
 import com.android.build.api.variant.impl.FlatSourceDirectoriesImpl
 import com.android.build.api.variant.impl.SourcesImpl
-import com.android.build.api.variant.impl.VariantOutputImpl
-import com.android.build.api.variant.impl.VariantOutputList
-import com.android.build.api.variant.impl.baseName
-import com.android.build.api.variant.impl.fullName
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.features.AndroidResourcesCreationConfig
 import com.android.build.gradle.internal.component.features.AssetsCreationConfig
@@ -50,48 +45,27 @@ import com.android.build.gradle.internal.core.ProductFlavor
 import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.core.dsl.ComponentDslInfo
 import com.android.build.gradle.internal.core.dsl.PublishableComponentDslInfo
-import com.android.build.gradle.internal.dependency.AndroidAttributes
 import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.dependency.getProvidedClasspath
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType
-import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType
-import com.android.build.gradle.internal.publishing.PublishedConfigSpec
-import com.android.build.gradle.internal.publishing.PublishingSpecs.Companion.getVariantPublishingSpec
-import com.android.build.gradle.internal.scope.BuildArtifactSpec.Companion.get
-import com.android.build.gradle.internal.scope.BuildArtifactSpec.Companion.has
 import com.android.build.gradle.internal.scope.BuildFeatureValues
-import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.MutableTaskContainer
-import com.android.build.gradle.internal.scope.publishArtifactToConfiguration
-import com.android.build.gradle.internal.scope.publishArtifactToDefaultVariant
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
-import com.android.build.gradle.internal.testFixtures.testFixturesClassifier
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
-import com.android.build.gradle.options.BooleanOption
+import com.android.build.gradle.options.OptionalBooleanOption.ENABLE_API_MODELING_AND_GLOBAL_SYNTHETICS
 import com.android.builder.core.ComponentType
 import com.android.utils.appendCapitalized
-import com.google.common.collect.ImmutableList
-import org.gradle.api.artifacts.Dependency
-import org.gradle.api.artifacts.ProjectDependency
-import org.gradle.api.artifacts.SelfResolvingDependency
-import com.google.common.base.Preconditions
-import org.gradle.api.attributes.DocsType
-import org.gradle.api.attributes.LibraryElements
+import org.gradle.api.JavaVersion
 import org.gradle.api.file.FileCollection
-import org.gradle.api.file.FileSystemLocation
-import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import java.io.File
 import java.util.Locale
-import java.util.concurrent.Callable
-import java.util.concurrent.atomic.AtomicBoolean
 import java.util.function.Predicate
-import java.util.stream.Collectors
 
 abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
     open val componentIdentity: ComponentIdentity,
@@ -178,15 +152,11 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
     override val runtimeConfiguration = variantDependencies.runtimeClasspath
 
     override val annotationProcessorConfiguration =
-        variantDependencies.annotationProcessorConfiguration
+        variantDependencies.annotationProcessorConfiguration!!
 
     // ---------------------------------------------------------------------------------------------
     // INTERNAL API
     // ---------------------------------------------------------------------------------------------
-
-    // this is technically a public API for the Application Variant (only)
-    override val outputs: VariantOutputList
-        get() = VariantOutputList(variantOutputs.toList())
 
     override val componentType: ComponentType
         get() = dslInfo.componentType
@@ -194,7 +164,7 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
     override val dirName: String
         get() = paths.dirName
 
-    override val baseName: String
+    final override val baseName: String
         get() = paths.baseName
 
     override val productFlavorList: List<ProductFlavor> = dslInfo.componentIdentity.productFlavors.map {
@@ -204,47 +174,6 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
     // ---------------------------------------------------------------------------------------------
     // Private stuff
     // ---------------------------------------------------------------------------------------------
-
-    private val variantOutputs = mutableListOf<VariantOutputImpl>()
-
-    override fun addVariantOutput(
-        variantOutputConfiguration: VariantOutputConfiguration,
-        outputFileName: Provider<String>?
-    ) {
-        variantOutputs.add(
-            VariantOutputImpl(
-                createVersionCodeProperty(),
-                createVersionNameProperty(),
-                internalServices.newPropertyBackingDeprecatedApi(Boolean::class.java, true),
-                variantOutputConfiguration,
-                variantOutputConfiguration.baseName(this),
-                variantOutputConfiguration.fullName(this),
-                internalServices.newPropertyBackingDeprecatedApi(
-                    String::class.java,
-                    outputFileName
-                        ?: internalServices.projectInfo.getProjectBaseName().map {
-                            paths.getOutputFileName(it, variantOutputConfiguration.baseName(this))
-                        }
-                )
-            )
-        )
-    }
-
-    // default impl for variants that don't actually have versionName
-    protected open fun createVersionNameProperty(): Property<String?> {
-        val stringValue: String? = null
-        return internalServices.nullablePropertyOf(String::class.java, stringValue).also {
-            it.disallowChanges()
-        }
-    }
-
-    // default impl for variants that don't actually have versionCode
-    protected open fun createVersionCodeProperty() : Property<Int?> {
-        val intValue: Int? = null
-        return internalServices.nullablePropertyOf(Int::class.java, intValue).also {
-            it.disallowChanges()
-        }
-    }
 
     override fun computeTaskName(prefix: String): String =
         prefix.appendCapitalized(name)
@@ -261,32 +190,9 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
         configType: ConsumedConfigType,
         classesType: AndroidArtifacts.ArtifactType,
         generatedBytecodeKey: Any?
-    ): FileCollection {
-        var mainCollection = variantDependencies
-            .getArtifactFileCollection(configType, ArtifactScope.ALL, classesType)
-        oldVariantApiLegacySupport?.let {
-            mainCollection = mainCollection.plus(
-                it.variantData.getGeneratedBytecode(generatedBytecodeKey)
-            )
-        }
-        // Add R class jars to the front of the classpath as libraries might also export
-        // compile-only classes. This behavior is verified in CompileRClassFlowTest
-        // While relying on this order seems brittle, it avoids doubling the number of
-        // files on the compilation classpath by exporting the R class separately or
-        // and is much simpler than having two different outputs from each library, with
-        // and without the R class, as AGP publishing code assumes there is exactly one
-        // artifact for each publication.
-        mainCollection =
-            internalServices.fileCollection(
-                *listOfNotNull(
-                    androidResourcesCreationConfig?.getCompiledRClasses(configType),
-                    buildConfigCreationConfig?.compiledBuildConfig,
-                    getCompiledManifest(),
-                    mainCollection
-                ).toTypedArray()
-            )
-        return mainCollection
-    }
+    ): FileCollection = getJavaClasspath(
+        this, configType, classesType, generatedBytecodeKey
+    )
 
     override val providedOnlyClasspath: FileCollection by lazy {
         getProvidedClasspath(
@@ -305,59 +211,10 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
 
     /** Publish intermediate artifacts in the BuildArtifactsHolder based on PublishingSpecs.  */
     override fun publishBuildArtifacts() {
-        for (outputSpec in getVariantPublishingSpec(componentType).outputs) {
-            val buildArtifactType = outputSpec.outputType
-            // Gradle only support publishing single file.  Therefore, unless Gradle starts
-            // supporting publishing multiple files, PublishingSpecs should not contain any
-            // OutputSpec with an appendable ArtifactType.
-            if (has(buildArtifactType) && get(buildArtifactType).appendable) {
-                throw RuntimeException(
-                    "Appendable ArtifactType '${buildArtifactType.name()}' cannot be published."
-                )
-            }
-            val artifactProvider = artifacts.get(buildArtifactType)
-            val artifactContainer = artifacts.getArtifactContainer(buildArtifactType)
-            if (!artifactContainer.needInitialProducer().get()) {
-                val isPublicationConfigs =
-                    outputSpec.publishedConfigTypes.any { it.isPublicationConfig }
-
-                if (isPublicationConfigs) {
-                    val components = (dslInfo as PublishableComponentDslInfo).publishInfo.components
-                    for(component in components) {
-                        publishIntermediateArtifact(
-                                artifactProvider,
-                                outputSpec.artifactType,
-                                outputSpec.publishedConfigTypes.map {
-                                    PublishedConfigSpec(it, component) }.toSet(),
-                                outputSpec.libraryElements?.let {
-                                    internalServices.named(LibraryElements::class.java, it)
-                                }
-                            )
-                    }
-                } else {
-                    publishIntermediateArtifact(
-                            artifactProvider,
-                            outputSpec.artifactType,
-                            outputSpec.publishedConfigTypes.map { PublishedConfigSpec(it) }.toSet(),
-                            outputSpec.libraryElements?.let {
-                                internalServices.named(LibraryElements::class.java, it)
-                            }
-                        )
-                }
-            }
-        }
-    }
-
-    private fun getCompiledManifest(): FileCollection {
-        val manifestClassRequired = dslInfo.componentType.requiresManifest &&
-                services.projectOptions[BooleanOption.GENERATE_MANIFEST_CLASS]
-        val isTest = dslInfo.componentType.isForTesting
-        val isAar = dslInfo.componentType.isAar
-        return if (manifestClassRequired && !isAar && !isTest) {
-            internalServices.fileCollection(artifacts.get(InternalArtifactType.COMPILE_MANIFEST_JAR))
-        } else {
-            internalServices.fileCollection()
-        }
+        com.android.build.gradle.internal.scope.publishBuildArtifacts(
+            this,
+            (dslInfo as? PublishableComponentDslInfo)?.publishInfo
+        )
     }
 
     override val modelV1LegacySupport = ModelV1LegacySupportImpl(dslInfo, variantSources)
@@ -367,7 +224,8 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
             this,
             dslInfo,
             variantData!!,
-            variantSources
+            variantSources,
+            internalServices
         )
     }
 
@@ -416,41 +274,11 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
      * @return a non null, but possibly empty FileCollection
      * @param filePredicate the file predicate used to filter the local file dependencies
      */
-    override fun computeLocalFileDependencies(filePredicate: Predicate<File>): FileCollection {
-        val configuration = variantDependencies.runtimeClasspath
-
-        // Get a list of local file dependencies. There is currently no API to filter the
-        // files here, so we need to filter it in the return statement below. That means that if,
-        // for example, filePredicate filters out all files but jars in the return statement, but an
-        // AarProducerTask produces an aar, then the returned FileCollection contains only jars but
-        // still has AarProducerTask as a dependency.
-        val dependencies =
-            Callable<Collection<SelfResolvingDependency>> {
-                configuration
-                    .allDependencies
-                    .stream()
-                    .filter { it: Dependency? -> it is SelfResolvingDependency }
-                    .filter { it: Dependency? -> it !is ProjectDependency }
-                    .map { it: Dependency -> it as SelfResolvingDependency }
-                    .collect(
-                        ImmutableList.toImmutableList()
-                    )
-            }
-
-        // Create a file collection builtBy the dependencies.  The files are resolved later.
-        return internalServices.fileCollection(
-            Callable<Collection<File>> {
-                dependencies.call().stream()
-                    .flatMap { it: SelfResolvingDependency ->
-                        it
-                            .resolve()
-                            .stream()
-                    }
-                    .filter(filePredicate)
-                    .collect(Collectors.toList())
-            })
-            .builtBy(dependencies)
-    }
+    override fun computeLocalFileDependencies(filePredicate: Predicate<File>): FileCollection =
+        variantDependencies.computeLocalFileDependencies(
+            internalServices,
+            filePredicate
+        )
 
     /**
      * Returns the packaged local Jars
@@ -478,78 +306,19 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
         )
     }
 
-    /**
-     * Publish an intermediate artifact.
-     *
-     * @param artifact Provider of File or FileSystemLocation to be published.
-     * @param artifactType the artifact type.
-     * @param configSpecs the PublishedConfigSpec.
-     * @param libraryElements the artifact's library elements
-     */
-    private fun publishIntermediateArtifact(
-        artifact: Provider<out FileSystemLocation>,
-        artifactType: AndroidArtifacts.ArtifactType,
-        configSpecs: Set<PublishedConfigSpec>,
-        libraryElements: LibraryElements?
-    ) {
-        Preconditions.checkState(configSpecs.isNotEmpty())
-        for (configSpec in configSpecs) {
-            val config = variantDependencies.getElements(configSpec)
-            val configType = configSpec.configType
-            if (config != null) {
-                if (configType.isPublicationConfig) {
-                    var classifier: String? = null
-                    val isSourcePublication = configType == PublishedConfigType.SOURCE_PUBLICATION
-                    val isJavaDocPublication =
-                        configType == PublishedConfigType.JAVA_DOC_PUBLICATION
-                    if (configSpec.isClassifierRequired) {
-                        classifier = if (isSourcePublication) {
-                            componentIdentity.name + "-" + DocsType.SOURCES
-                        } else if (isJavaDocPublication) {
-                            componentIdentity.name + "-" + DocsType.JAVADOC
-                        } else {
-                            componentIdentity.name
-                        }
-                    } else if (componentType.isTestFixturesComponent) {
-                        classifier = testFixturesClassifier
-                    } else if (isSourcePublication) {
-                        classifier = DocsType.SOURCES
-                    } else if (isJavaDocPublication) {
-                        classifier = DocsType.JAVADOC
-                    }
-                    publishArtifactToDefaultVariant(config, artifact, artifactType, classifier)
-                } else {
-                    publishArtifactToConfiguration(
-                        config,
-                        artifact,
-                        artifactType,
-                        AndroidAttributes(null, libraryElements)
-                    )
-                }
-            }
-        }
+
+    fun isApiModelingEnabled(): Boolean {
+        return internalServices.projectOptions.get(ENABLE_API_MODELING_AND_GLOBAL_SYNTHETICS)
+            ?: !debuggable
     }
 
-    // registrar for all post old variant API actions.
-    private val postOldVariantActions = mutableListOf<() -> Unit>()
-
-    private val oldVariantAPICompleted = AtomicBoolean(false)
-
-    override fun oldVariantApiCompleted() {
-        synchronized(postOldVariantActions) {
-            oldVariantAPICompleted.set(true)
-            postOldVariantActions.forEach { action -> action() }
-            postOldVariantActions.clear()
-        }
+    fun isGlobalSyntheticsEnabled(): Boolean {
+        return internalServices.projectOptions.get(ENABLE_API_MODELING_AND_GLOBAL_SYNTHETICS)
+            ?: (!debuggable || isJavaLanguageLevelAbove14())
     }
 
-    override fun registerPostOldVariantApiAction(action: () -> Unit) {
-        synchronized(postOldVariantActions) {
-            if (oldVariantAPICompleted.get()) {
-                action()
-            } else {
-                postOldVariantActions.add(action)
-            }
-        }
+    private fun isJavaLanguageLevelAbove14(): Boolean {
+        return global.compileOptions.sourceCompatibility.isCompatibleWith(JavaVersion.VERSION_14) &&
+                global.compileOptions.targetCompatibility.isCompatibleWith(JavaVersion.VERSION_14)
     }
 }

@@ -46,12 +46,14 @@ interface InternalCommonExtension<
         BuildFeaturesT : com.android.build.api.dsl.BuildFeatures,
         BuildTypeT : com.android.build.api.dsl.BuildType,
         DefaultConfigT : com.android.build.api.dsl.DefaultConfig,
-        ProductFlavorT : com.android.build.api.dsl.ProductFlavor> :
+        ProductFlavorT : com.android.build.api.dsl.ProductFlavor,
+        AndroidResourcesT : com.android.build.api.dsl.AndroidResources> :
     CommonExtension<
         BuildFeaturesT,
         BuildTypeT,
         DefaultConfigT,
-        ProductFlavorT>, Lockable {
+        ProductFlavorT,
+        AndroidResourcesT>, Lockable {
 
     override val aaptOptions: AaptOptionsImpl
 
@@ -77,7 +79,7 @@ interface InternalCommonExtension<
     fun signingConfigs(action: Action<NamedDomainObjectContainer<SigningConfig>>)
     fun aaptOptions(action: Action<AaptOptionsImpl>)
     fun adbOptions(action: Action<AdbOptionsImpl>)
-    fun androidResources(action: Action<AndroidResources>)
+    fun androidResources(action: Action<AndroidResourcesT>)
     fun buildFeatures(action: Action<BuildFeaturesT>)
     fun compileOptions(action: Action<CompileOptionsImpl>)
     fun composeOptions(action: Action<ComposeOptions>)

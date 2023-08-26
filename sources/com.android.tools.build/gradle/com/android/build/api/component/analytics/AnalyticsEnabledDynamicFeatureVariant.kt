@@ -18,6 +18,7 @@ package com.android.build.api.component.analytics
 
 import com.android.build.api.variant.AndroidResources
 import com.android.build.api.variant.AndroidTest
+import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.GeneratesApk
 import com.android.build.api.variant.ApkPackaging
 import com.android.build.api.variant.DynamicFeatureVariant
@@ -88,4 +89,7 @@ open class AnalyticsEnabledDynamicFeatureVariant @Inject constructor(
 
     override val packaging: ApkPackaging
         get() = generatesApk.packaging
+
+    override val targetSdk: AndroidVersion
+        get() = generatesApk.targetSdk
 }

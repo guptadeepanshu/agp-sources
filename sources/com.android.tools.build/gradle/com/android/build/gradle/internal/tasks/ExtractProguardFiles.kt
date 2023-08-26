@@ -17,26 +17,21 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.build.gradle.ProguardFiles
+import com.android.build.gradle.internal.caching.DisabledCachingReason.FAST_TASK
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.build.gradle.options.BooleanOption
 import com.android.buildanalyzer.common.TaskCategory
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.provider.Property
-import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.work.DisableCachingByDefault
 
-@DisableCachingByDefault
+@DisableCachingByDefault(because = FAST_TASK)
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.OPTIMIZATION)
 abstract class ExtractProguardFiles : NonIncrementalGlobalTask() {
-
-    @get:Input
-    abstract val enableKeepRClass: Property<Boolean>
 
     @get:Internal("only for task execution")
     abstract val buildDirectory: DirectoryProperty
@@ -48,7 +43,7 @@ abstract class ExtractProguardFiles : NonIncrementalGlobalTask() {
         for (name in ProguardFiles.KNOWN_FILE_NAMES) {
             val defaultProguardFile = ProguardFiles.getDefaultProguardFile(name, buildDirectory)
             if (!defaultProguardFile.isFile) {
-                ProguardFiles.createProguardFile(name, defaultProguardFile, enableKeepRClass.get())
+                ProguardFiles.createProguardFile(name, defaultProguardFile)
             }
         }
     }
@@ -62,15 +57,7 @@ abstract class ExtractProguardFiles : NonIncrementalGlobalTask() {
 
         override fun configure(task: ExtractProguardFiles) {
             super.configure(task)
-
-            task.enableKeepRClass.setDisallowChanges(
-                !creationConfig.services.projectOptions.get(BooleanOption.ENABLE_R_TXT_RESOURCE_SHRINKING)
-            )
             task.buildDirectory.setDisallowChanges(creationConfig.services.projectInfo.buildDirectory)
-
-            task.outputs.doNotCacheIf(
-                "This task is fast-running, so the cacheability overhead could outweigh its benefit"
-            ) { true }
         }
 
         override fun handleProvider(taskProvider: TaskProvider<ExtractProguardFiles>) {

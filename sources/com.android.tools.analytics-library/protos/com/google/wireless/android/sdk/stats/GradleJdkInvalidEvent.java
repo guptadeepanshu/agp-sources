@@ -266,6 +266,14 @@ private static final long serialVersionUID = 0L;
      * <code>INVALID_GRADLE_JVM_TABLE_ENTRY_JAVA_HOME = 19;</code>
      */
     INVALID_GRADLE_JVM_TABLE_ENTRY_JAVA_HOME(19),
+    /**
+     * <pre>
+     * Unsupported gradleJvm #GRADLE_LOCAL_JAVA_HOME macro to configure Gradle JDK
+     * </pre>
+     *
+     * <code>UNSUPPORTED_GRADLE_LOCAL_JAVA_HOME_MACRO = 20;</code>
+     */
+    UNSUPPORTED_GRADLE_LOCAL_JAVA_HOME_MACRO(20),
     ;
 
     /**
@@ -431,6 +439,14 @@ private static final long serialVersionUID = 0L;
      * <code>INVALID_GRADLE_JVM_TABLE_ENTRY_JAVA_HOME = 19;</code>
      */
     public static final int INVALID_GRADLE_JVM_TABLE_ENTRY_JAVA_HOME_VALUE = 19;
+    /**
+     * <pre>
+     * Unsupported gradleJvm #GRADLE_LOCAL_JAVA_HOME macro to configure Gradle JDK
+     * </pre>
+     *
+     * <code>UNSUPPORTED_GRADLE_LOCAL_JAVA_HOME_MACRO = 20;</code>
+     */
+    public static final int UNSUPPORTED_GRADLE_LOCAL_JAVA_HOME_MACRO_VALUE = 20;
 
 
     public final int getNumber() {
@@ -473,6 +489,7 @@ private static final long serialVersionUID = 0L;
         case 17: return UNDEFINED_GRADLE_JVM_TABLE_ENTRY;
         case 18: return UNDEFINED_GRADLE_JVM_TABLE_ENTRY_JAVA_HOME;
         case 19: return INVALID_GRADLE_JVM_TABLE_ENTRY_JAVA_HOME;
+        case 20: return UNSUPPORTED_GRADLE_LOCAL_JAVA_HOME_MACRO;
         default: return null;
       }
     }

@@ -276,6 +276,18 @@ abstract class PackageBundleTask : NonIncrementalTask() {
                         .setNegate(!it)
                 )
             }
+            parameters.bundleOptions.get().enableCountrySet?.let {
+                splitsConfig.addSplitDimension(
+                    Config.SplitDimension.newBuilder()
+                        .setValue(Config.SplitDimension.Value.COUNTRY_SET)
+                        .setSuffixStripping(
+                            Config.SuffixStripping.newBuilder()
+                                .setEnabled(true)
+                                .setDefaultSuffix(parameters.bundleOptions.get().defaultCountrySet?: "")
+                        )
+                        .setNegate(!it)
+                )
+            }
 
             val uncompressNativeLibrariesConfig = Config.UncompressNativeLibraries.newBuilder()
                 .setEnabled(!parameters.compressNativeLibs.get())
@@ -453,6 +465,12 @@ abstract class PackageBundleTask : NonIncrementalTask() {
         val defaultDeviceTier: String?,
         @get:Input
         val enableStoreArchive: Boolean,
+        @get:Input
+        @get:Optional
+        val enableCountrySet: Boolean?,
+        @get:Input
+        @get:Optional
+        val defaultCountrySet: String?,
     ) : Serializable
 
     data class AssetPackOptionsForAssetPackBundle(
@@ -585,11 +603,6 @@ abstract class PackageBundleTask : NonIncrementalTask() {
             task.compressNativeLibs.set(
                 componentProperties.packaging.jniLibs.useLegacyPackagingFromBundle
             )
-            // TODO(b/132103049, b/174695257) Deprecate the BooleanOption with instructions to use
-            //  the DSL instead.
-            if (!creationConfig.services.projectOptions[BooleanOption.ENABLE_UNCOMPRESSED_NATIVE_LIBS_IN_BUNDLE]) {
-                task.compressNativeLibs.set(true)
-            }
             task.compressNativeLibs.disallowChanges()
 
             if (creationConfig.dexingCreationConfig.needsMainDexListForBundle) {
@@ -609,7 +622,7 @@ abstract class PackageBundleTask : NonIncrementalTask() {
 
             task.bundleNeedsFusedStandaloneConfig.set(
                 task.project.providers.provider {
-                    creationConfig.minSdkVersion.getFeatureLevel() < MIN_SDK_FOR_SPLITS
+                    creationConfig.minSdk.getFeatureLevel() < MIN_SDK_FOR_SPLITS
                             && creationConfig.artifacts.get(InternalArtifactType.ASSET_PACK_BUNDLE).isPresent
                 }
             )
@@ -649,6 +662,8 @@ private fun com.android.build.api.dsl.Bundle.convert() =
       enableDeviceTier = deviceTier.enableSplit,
       defaultDeviceTier = deviceTier.defaultTier,
       enableStoreArchive = storeArchive.enable ?: true,
+      enableCountrySet = countrySet.enableSplit,
+      defaultCountrySet = countrySet.defaultSet,
     )
 
 private fun AssetPackBundleExtension.convert() =
@@ -661,6 +676,8 @@ private fun AssetPackBundleExtension.convert() =
         enableDeviceTier = deviceTier.enableSplit,
         defaultDeviceTier = deviceTier.defaultTier,
         enableStoreArchive = false,
+        enableCountrySet = countrySet.enableSplit,
+        defaultCountrySet = countrySet.defaultSet,
     )
 
 /**

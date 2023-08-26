@@ -311,21 +311,14 @@ abstract class DexMergingTask : NewIncrementalTask() {
                 task.sharedParams.mainDexListConfig.platformMultidexProguardRules
                     .setDisallowChanges(getPlatformRules())
 
-                val libraryScopes = setOf(
-                    QualifiedContent.Scope.TESTED_CODE
-                )
-                val libraryClasses = creationConfig.services.fileCollection().also {
-                    it.from(creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.TESTED_CODE)
-                        .getFinalArtifacts(ScopedArtifact.CLASSES))
-                    it.from(creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.PROVIDED)
-                        .getFinalArtifacts(ScopedArtifact.CLASSES))
-                }
-
-
-
                 val bootClasspath = creationConfig.global.bootClasspath
                 task.sharedParams.mainDexListConfig.libraryClasses
-                    .from(bootClasspath, libraryClasses).disallowChanges()
+                    .from(bootClasspath,
+                        creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.TESTED_CODE)
+                            .getFinalArtifacts(ScopedArtifact.CLASSES),
+                        creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.COMPILE_ONLY)
+                            .getFinalArtifacts(ScopedArtifact.CLASSES)
+                    ).disallowChanges()
             }
 
             // Input properties
@@ -341,7 +334,7 @@ abstract class DexMergingTask : NewIncrementalTask() {
                     task.fileDependencyDexDir
                 )
             }
-            if (creationConfig.global.enableGlobalSynthetics
+            if (creationConfig.enableGlobalSynthetics
                 && creationConfig.dexingCreationConfig.dexingType != NATIVE_MULTIDEX) {
                 task.globalSynthetics.from(
                     getGlobalSyntheticsInput(

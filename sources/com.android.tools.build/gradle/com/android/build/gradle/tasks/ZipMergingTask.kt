@@ -17,6 +17,7 @@
 package com.android.build.gradle.tasks
 
 import com.android.SdkConstants.FN_INTERMEDIATE_FULL_JAR
+import com.android.build.gradle.internal.caching.DisabledCachingReason.SIMPLE_MERGING_TASK
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
@@ -25,19 +26,20 @@ import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.packaging.JarFlinger
 import com.android.utils.FileUtils
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
+import org.gradle.work.DisableCachingByDefault
 import java.util.function.Predicate
 import java.util.zip.Deflater
 
 /** Task to merge the res/classes intermediate jars from a library into a single one  */
-@CacheableTask
+@DisableCachingByDefault(because = SIMPLE_MERGING_TASK)
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.MISC, secondaryTaskCategories = [TaskCategory.ZIPPING, TaskCategory.MERGING])
 abstract class ZipMergingTask : NonIncrementalTask() {
 
@@ -48,7 +50,7 @@ abstract class ZipMergingTask : NonIncrementalTask() {
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.NONE)
     @get:Optional
-    abstract val javaResInputFile: RegularFileProperty
+    abstract val javaResDirectory: DirectoryProperty
 
     @get:OutputFile
     abstract val outputFile: RegularFileProperty
@@ -75,9 +77,9 @@ abstract class ZipMergingTask : NonIncrementalTask() {
             if (lib.exists()) {
                 it.addJar(lib.toPath())
             }
-            val javaRes = javaResInputFile.orNull?.asFile
+            val javaRes = javaResDirectory.orNull?.asFile
             if (javaRes?.exists() == true) {
-                it.addJar(javaRes.toPath())
+                it.addDirectory(javaRes.toPath())
             }
         }
     }
@@ -111,8 +113,8 @@ abstract class ZipMergingTask : NonIncrementalTask() {
             val artifacts = creationConfig.artifacts
             artifacts.setTaskInputToFinalProduct(InternalArtifactType.RUNTIME_LIBRARY_CLASSES_JAR, task.libraryInputFile)
             artifacts.setTaskInputToFinalProduct(
-                InternalArtifactType.LIBRARY_JAVA_RES,
-                task.javaResInputFile
+                InternalArtifactType.JAVA_RES,
+                task.javaResDirectory
             )
         }
     }

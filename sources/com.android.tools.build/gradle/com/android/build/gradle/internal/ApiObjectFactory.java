@@ -16,11 +16,10 @@
 
 package com.android.build.gradle.internal;
 
-import static com.android.builder.core.ComponentTypeImpl.ANDROID_TEST;
-import static com.android.builder.core.ComponentTypeImpl.UNIT_TEST;
-
 import com.android.annotations.NonNull;
 import com.android.build.VariantOutput;
+import com.android.build.api.variant.impl.HasAndroidTest;
+import com.android.build.api.variant.impl.HasUnitTest;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.TestedAndroidConfig;
 import com.android.build.gradle.internal.api.ApkVariantOutputImpl;
@@ -30,7 +29,9 @@ import com.android.build.gradle.internal.api.ReadOnlyObjectProvider;
 import com.android.build.gradle.internal.api.TestVariantImpl;
 import com.android.build.gradle.internal.api.TestedVariant;
 import com.android.build.gradle.internal.api.UnitTestVariantImpl;
+import com.android.build.gradle.internal.component.AndroidTestCreationConfig;
 import com.android.build.gradle.internal.component.ComponentCreationConfig;
+import com.android.build.gradle.internal.component.UnitTestCreationConfig;
 import com.android.build.gradle.internal.component.VariantCreationConfig;
 import com.android.build.gradle.internal.crash.ExternalApiUsageException;
 import com.android.build.gradle.internal.dsl.VariantOutputFactory;
@@ -69,8 +70,11 @@ public class ApiObjectFactory {
 
         if (variantFactory.getComponentType().getHasTestComponents()) {
 
-            ComponentCreationConfig androidTestVariantProperties =
-                    variant.getTestComponents().get(ANDROID_TEST);
+            AndroidTestCreationConfig androidTestVariantProperties = null;
+
+            if (variant instanceof HasAndroidTest) {
+                androidTestVariantProperties = ((HasAndroidTest) variant).getAndroidTest();
+            }
 
             if (androidTestVariantProperties != null) {
                 TestVariantImpl androidTestVariant =
@@ -90,8 +94,11 @@ public class ApiObjectFactory {
                 ((TestedVariant) variantApi).setTestVariant(androidTestVariant);
             }
 
-            ComponentCreationConfig unitTestVariantProperties =
-                    variant.getTestComponents().get(UNIT_TEST);
+            UnitTestCreationConfig unitTestVariantProperties = null;
+
+            if (variant instanceof HasUnitTest) {
+                unitTestVariantProperties = ((HasUnitTest) variant).getUnitTest();
+            }
 
             if (unitTestVariantProperties != null) {
                 UnitTestVariantImpl unitTestVariant =
@@ -140,6 +147,7 @@ public class ApiObjectFactory {
                         component.getTaskContainer());
 
         component
+                .getOldVariantApiLegacySupport()
                 .getOutputs()
                 .forEach(
                         // pass the new api variant output object so the override method can

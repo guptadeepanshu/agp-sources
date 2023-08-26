@@ -18,6 +18,7 @@ package com.android.build.gradle.internal.ide.v2
 
 import com.android.SdkConstants
 import com.android.Version
+import com.android.build.api.dsl.AndroidResources
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.BuildFeatures
 import com.android.build.api.dsl.BuildType
@@ -25,8 +26,9 @@ import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.DefaultConfig
 import com.android.build.api.dsl.ProductFlavor
 import com.android.build.api.dsl.TestExtension
-import com.android.build.api.variant.HasTestFixtures
 import com.android.build.api.variant.impl.HasAndroidTest
+import com.android.build.api.variant.impl.HasTestFixtures
+import com.android.build.api.variant.impl.HasUnitTest
 import com.android.build.gradle.internal.TaskManager
 import com.android.build.gradle.internal.component.AndroidTestCreationConfig
 import com.android.build.gradle.internal.component.ApkCreationConfig
@@ -60,6 +62,7 @@ import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.AnchorTaskNames
 import com.android.build.gradle.internal.tasks.DeviceProviderInstrumentTestTask
+import com.android.build.gradle.internal.utils.getDesugarLibConfigFile
 import com.android.build.gradle.internal.utils.getDesugaredMethods
 import com.android.build.gradle.internal.utils.toImmutableSet
 import com.android.build.gradle.internal.variant.VariantModel
@@ -110,11 +113,13 @@ class ModelBuilder<
         BuildTypeT : BuildType,
         DefaultConfigT : DefaultConfig,
         ProductFlavorT : ProductFlavor,
+        AndroidResourcesT : AndroidResources,
         ExtensionT : CommonExtension<
                 BuildFeaturesT,
                 BuildTypeT,
                 DefaultConfigT,
-                ProductFlavorT>>(
+                ProductFlavorT,
+                AndroidResourcesT>>(
     private val project: Project,
     private val variantModel: VariantModel,
     private val extension: ExtensionT,
@@ -238,7 +243,7 @@ class ModelBuilder<
         val variantDimensionInfo = DimensionInformation.createFrom(variants)
         val androidTests = DimensionInformation.createFrom(variantModel.testComponents.filterIsInstance<AndroidTestCreationConfig>())
         val unitTests = DimensionInformation.createFrom(variantModel.testComponents.filterIsInstance<UnitTestCreationConfig>())
-        val testFixtures = DimensionInformation.createFrom(variants.mapNotNull { it.testFixturesComponent })
+        val testFixtures = DimensionInformation.createFrom(variants.mapNotNull { (it as? HasTestFixtures)?.testFixtures })
 
         // for now grab the first buildFeatureValues as they cannot be different.
         val buildFeatures = variantModel.buildFeatures
@@ -369,6 +374,10 @@ class ModelBuilder<
         } else {
             listOf()
         }
+        val desugarLibConfig = if (extension.compileOptions.isCoreLibraryDesugaringEnabled)
+            getDesugarLibConfigFile(project)
+        else
+            listOf()
 
         return AndroidProjectImpl(
             namespace = namespace ?: "",
@@ -384,6 +393,7 @@ class ModelBuilder<
             flags = getFlags(),
             lintChecksJars = getLocalCustomLintChecksForModel(project, variantModel.syncIssueReporter),
             modelSyncFiles = modelSyncFiles,
+            desugarLibConfig = desugarLibConfig,
         )
     }
     /**
@@ -460,7 +470,7 @@ class ModelBuilder<
                 } else null
 
         val extensionImpl =
-            extension as? CommonExtensionImpl<*, *, *, *>
+            extension as? CommonExtensionImpl<*, *, *, *, *>
                 ?: throw RuntimeException("Wrong extension provided to v2 ModelBuilder")
         val compileSdkVersion = extensionImpl.compileSdkVersion ?: "unknown"
 
@@ -532,17 +542,21 @@ class ModelBuilder<
             globalLibraryBuildService.localJarCache
         )
 
+        val dontBuildRuntimeClasspath = parameter.dontBuildRuntimeClasspath
         return VariantDependenciesImpl(
             name = variantName,
-            mainArtifact = createDependencies(variant, buildMapping, libraryService),
-            androidTestArtifact = variant.testComponents[ComponentTypeImpl.ANDROID_TEST]?.let {
-                createDependencies(it, buildMapping, libraryService)
+                mainArtifact = createDependencies(variant,
+                        buildMapping,
+                        libraryService,
+                        dontBuildRuntimeClasspath),
+            androidTestArtifact = (variant as? HasAndroidTest)?.androidTest?.let {
+                createDependencies(it, buildMapping, libraryService, dontBuildRuntimeClasspath)
             },
-            unitTestArtifact = variant.testComponents[ComponentTypeImpl.UNIT_TEST]?.let {
-                createDependencies(it, buildMapping, libraryService)
+            unitTestArtifact = (variant as? HasUnitTest)?.unitTest?.let {
+                createDependencies(it, buildMapping, libraryService, dontBuildRuntimeClasspath)
             },
-            testFixturesArtifact = variant.testFixturesComponent?.let {
-                createDependencies(it, buildMapping, libraryService)
+            testFixturesArtifact = (variant as? HasTestFixtures)?.testFixtures?.let {
+                createDependencies(it, buildMapping, libraryService, dontBuildRuntimeClasspath)
             },
             libraryService.getAllLibraries().associateBy { it.key }
         )
@@ -555,13 +569,13 @@ class ModelBuilder<
         return BasicVariantImpl(
             name = variant.name,
             mainArtifact = createBasicArtifact(variant, features),
-            androidTestArtifact = variant.testComponents[ComponentTypeImpl.ANDROID_TEST]?.let {
+            androidTestArtifact = (variant as? HasAndroidTest)?.androidTest?.let {
                 createBasicArtifact(it, features)
             },
-            unitTestArtifact = variant.testComponents[ComponentTypeImpl.UNIT_TEST]?.let {
+            unitTestArtifact = (variant as? HasUnitTest)?.unitTest?.let {
                 createBasicArtifact(it, features)
             },
-            testFixturesArtifact = variant.testFixturesComponent?.let {
+            testFixturesArtifact = (variant as? HasTestFixtures)?.testFixtures?.let {
                 createBasicArtifact(it, features)
             },
             buildType = variant.buildType,
@@ -591,13 +605,13 @@ class ModelBuilder<
             name = variant.name,
             displayName = variant.baseName,
             mainArtifact = createAndroidArtifact(variant),
-            androidTestArtifact = variant.testComponents[ComponentTypeImpl.ANDROID_TEST]?.let {
+            androidTestArtifact = (variant as? HasAndroidTest)?.androidTest?.let {
                 createAndroidArtifact(it)
             },
-            unitTestArtifact = variant.testComponents[ComponentTypeImpl.UNIT_TEST]?.let {
+            unitTestArtifact = (variant as? HasUnitTest)?.unitTest?.let {
                 createJavaArtifact(it)
             },
-            testFixturesArtifact = variant.testFixturesComponent?.let {
+            testFixturesArtifact = (variant as? HasTestFixtures)?.testFixtures?.let {
                 createAndroidArtifact(it)
             },
             testedTargetVariant = getTestTargetVariant(variant),
@@ -605,7 +619,7 @@ class ModelBuilder<
             desugaredMethods = getDesugaredMethods(
                 variant.services,
                 variant.isCoreLibraryDesugaringEnabledLintCheck,
-                variant.minSdkVersion,
+                variant.minSdk,
                 variant.global
             ).files.toList(),
         )
@@ -673,12 +687,14 @@ class ModelBuilder<
             component.signingConfigImpl else null
 
         val minSdkVersion =
-                ApiVersionImpl(component.minSdkVersion.apiLevel, component.minSdkVersion.codename)
-        val targetSdkVersionOverride = component.targetSdkVersionOverride?.let {
-            ApiVersionImpl(it.apiLevel, it.codename)
-        }
+                ApiVersionImpl(component.minSdk.apiLevel, component.minSdk.codename)
+        val targetSdkVersionOverride = when (component) {
+            is ApkCreationConfig -> component.targetSdkOverride
+            is LibraryCreationConfig -> component.targetSdkOverride
+            else -> null
+        }?.let { ApiVersionImpl(it.apiLevel, it.codename) }
         val maxSdkVersion =
-                if (component is VariantCreationConfig) component.maxSdkVersion else null
+                if (component is VariantCreationConfig) component.maxSdk else null
 
         val modelSyncFiles = if (component is ApplicationCreationConfig || component is LibraryCreationConfig || component is TestVariantCreationConfig || component is DynamicFeatureCreationConfig) {
             listOf(
@@ -733,7 +749,7 @@ class ModelBuilder<
             desugaredMethodsFiles = getDesugaredMethods(
                 component.services,
                 coreLibDesugaring,
-                component.minSdkVersion,
+                component.minSdk,
                 component.global
             ).files.toList()
         )
@@ -798,7 +814,19 @@ class ModelBuilder<
         component: ComponentCreationConfig,
         buildMapping: BuildMapping,
         libraryService: LibraryService,
+        dontBuildRuntimeClasspath: Boolean
     ): ArtifactDependencies {
+        if (dontBuildRuntimeClasspath && component.variantDependencies.isLibraryConstraintsApplied) {
+            variantModel.syncIssueReporter.reportWarning(IssueReporter.Type.GENERIC, """
+                You have experimental IDE flag gradle.ide.gradle.skip.runtime.classpath.for.libraries enabled,
+                but AGP boolean option ${BooleanOption.EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS.propertyName} is not used.
+
+                Please set below in gradle.properties:
+
+                ${BooleanOption.EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS.propertyName}=true
+
+            """.trimIndent())
+        }
 
         val inputs = ArtifactCollectionsInputsImpl(
             variantDependencies = component.variantDependencies,
@@ -811,7 +839,9 @@ class ModelBuilder<
         return FullDependencyGraphBuilder(
             inputs,
             component.variantDependencies,
-            libraryService
+            libraryService,
+            component.services.projectOptions.get(BooleanOption.ADDITIONAL_ARTIFACTS_IN_MODEL),
+            dontBuildRuntimeClasspath
         ).build()
     }
 
@@ -839,6 +869,10 @@ class ModelBuilder<
         flags.put(
             BooleanFlag.UNIFIED_TEST_PLATFORM,
             projectOptions[BooleanOption.ANDROID_TEST_USES_UNIFIED_TEST_PLATFORM]
+        )
+        flags.put(
+            BooleanFlag.USE_ANDROID_X,
+            projectOptions[BooleanOption.USE_ANDROID_X]
         )
 
         return AndroidGradlePluginProjectFlagsImpl(flags.build())
@@ -879,7 +913,7 @@ class ModelBuilder<
 
         // get the manifest in descending order of priority. First one to return
         val manifests = mutableListOf<File>()
-        manifests.addAll(component.sources.manifestOverlays.map { it.get() })
+        manifests.addAll(component.sources.manifestOverlayFiles.get().filter { it.isFile })
         val mainManifest = component.sources.manifestFile.get()
         if (mainManifest.isFile) {
             manifests.add(mainManifest)

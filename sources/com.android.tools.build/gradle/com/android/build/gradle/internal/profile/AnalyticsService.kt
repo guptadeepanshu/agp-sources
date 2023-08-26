@@ -34,7 +34,7 @@ import com.google.wireless.android.sdk.stats.GradleTransformExecution
 import org.gradle.api.Project
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
-import org.gradle.api.provider.ProviderFactory
+import org.gradle.api.provider.SetProperty
 import org.gradle.api.services.BuildService
 import org.gradle.api.services.BuildServiceParameters
 import org.gradle.build.event.BuildEventsListenerRegistry
@@ -44,7 +44,6 @@ import java.io.File
 import java.util.Base64
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
-import javax.inject.Inject
 
 /**
  * [AnalyticsService] records execution spans of tasks and workers. At the end of the build,
@@ -69,10 +68,8 @@ abstract class AnalyticsService :
         val profileDir: Property<File?>
         val taskMetadata: MapProperty<String, TaskMetadata>
         val rootProjectPath: Property<String>
+        val applicationId: SetProperty<String>
     }
-
-    @get:Inject
-    abstract val provider: ProviderFactory
 
     private val resourceManager: AnalyticsResourceManager = initializeResourceManager()
 
@@ -88,6 +85,7 @@ abstract class AnalyticsService :
             parameters.profileDir.orNull,
             ConcurrentHashMap(parameters.taskMetadata.get()),
             parameters.rootProjectPath.get(),
+            parameters.applicationId,
             NameAnonymizerSerializer().fromJson(parameters.anonymizer.get())
         )
     }
@@ -178,10 +176,6 @@ abstract class AnalyticsService :
 
     override fun recordEvent(event: AndroidStudioEvent.Builder) {
         resourceManager.recordEvent(event)
-    }
-
-    override fun recordApplicationId(metadataFile: File) {
-        resourceManager.recordApplicationId(metadataFile)
     }
 
     class RegistrationAction(

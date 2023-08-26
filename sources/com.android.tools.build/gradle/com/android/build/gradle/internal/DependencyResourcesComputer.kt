@@ -16,6 +16,7 @@
 package com.android.build.gradle.internal
 
 import com.android.SdkConstants.FD_RES_VALUES
+import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.features.AndroidResourcesCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
@@ -30,6 +31,7 @@ import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
@@ -82,6 +84,11 @@ abstract class DependencyResourcesComputer {
     @get:Optional
     @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val generatedResOutputDir: ConfigurableFileCollection
+
+    @get:InputFiles
+    @get:Optional
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val generatedLocaleConfig: DirectoryProperty
 
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
@@ -167,6 +174,9 @@ abstract class DependencyResourcesComputer {
         generatedResFolders.addAll(generatedResOutputDir.files)
         generatedResFolders.addAll(extraGeneratedResFolders.files)
         generatedResFolders.addAll(microApkResDirectory.files)
+        if (generatedLocaleConfig.isPresent) {
+            generatedResFolders.add(generatedLocaleConfig.get().asFile)
+        }
 
         // if generated res files exist, add them to the generated source set.
         if (generatedResFolders.isNotEmpty() && sourceFolderSets.isNotEmpty()) {
@@ -211,7 +221,9 @@ abstract class DependencyResourcesComputer {
 
         creationConfig.sources.res { resSources ->
             addResourceSets(
-                resSources.getLocalSources()
+                resSources.getVariantSourcesWithFilter {
+                    !it.isUserAdded && !it.isGenerated
+                }
             ) {
                 services.newInstance(ResourceSourceSetInput::class.java)
             }
@@ -246,6 +258,13 @@ abstract class DependencyResourcesComputer {
                 creationConfig.artifacts.get(InternalArtifactType.GENERATED_RES)
             )
         }
+
+        if ((creationConfig as? ApplicationCreationConfig)?.generateLocaleConfig == true) {
+            generatedLocaleConfig.set(
+                creationConfig.artifacts.get(InternalArtifactType.GENERATED_LOCALE_CONFIG)
+            )
+        }
+        generatedLocaleConfig.disallowChanges()
 
         if (creationConfig.taskContainer.generateApkDataTask != null) {
             microApkResDirectory.from(microApkResDir)

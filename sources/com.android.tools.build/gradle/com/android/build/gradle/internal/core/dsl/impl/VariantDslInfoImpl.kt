@@ -43,7 +43,7 @@ internal abstract class VariantDslInfoImpl internal constructor(
     protected val dataProvider: ManifestDataProvider,
     services: VariantServices,
     buildDirectory: DirectoryProperty,
-    extension: CommonExtension<*, *, *, *>
+    extension: CommonExtension<*, *, *, *, *>
 ) : ConsumableComponentDslInfoImpl(
     componentIdentity,
     componentType,
@@ -75,17 +75,14 @@ internal abstract class VariantDslInfoImpl internal constructor(
     override val namespace: Provider<String>
         get() = extension.namespace?.let { services.provider { it } }
             ?: throw RuntimeException(
-                "Namespace not specified. Please specify a namespace in the module's " +
-                        "build.gradle file like so:\n\n" +
-                        "android {\n" +
-                        "    namespace 'com.example.namespace'\n" +
-                        "}\n\n" +
-                        "If the package attribute is specified in the source " +
-                        "AndroidManifest.xml, it can be migrated automatically to the namespace " +
-                        "value in the build.gradle file using the AGP Upgrade Assistant; please " +
-                        "refer to " +
-                        "https://developer.android.com/studio/build/agp-upgrade-assistant for " +
-                        "more information."
+                "Namespace not specified. Specify a namespace in the module's build file. " +
+                        "See https://d.android.com/r/tools/upgrade-assistant/set-namespace for " +
+                        "information about setting the namespace.\n\n" +
+                        "If you've specified the package attribute in the source " +
+                        "AndroidManifest.xml, you can use the AGP Upgrade Assistant to migrate " +
+                        "to the namespace value in the build file. Refer to " +
+                        "https://d.android.com/r/tools/upgrade-assistant/agp-upgrade-assistant " +
+                        "for general information about using the AGP Upgrade Assistant."
             )
 
     override val applicationId: Property<String> by lazy {

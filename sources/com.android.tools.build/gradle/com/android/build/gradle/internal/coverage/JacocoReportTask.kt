@@ -103,7 +103,7 @@ abstract class JacocoReportTask : NonIncrementalTask() {
 
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
-    abstract val javaSources: ListProperty<Provider<List<ConfigurableFileTree>>>
+    abstract val sources: ListProperty<Provider<List<ConfigurableFileTree>>>
 
     @get:Internal
     abstract val tabWidth: Property<Int>
@@ -132,9 +132,9 @@ abstract class JacocoReportTask : NonIncrementalTask() {
 
         // Jacoco requires source set directory roots rather than source files to produce
         // source code highlighting in reports.
-        val sourceFolders: List<File> = javaSources.get().map {
+        val sourceFolders: List<File> = sources.get().map {
             it.get().map(ConfigurableFileTree::getDir)
-        }.flatten()
+        }.flatten().distinctBy { it.absolutePath }
 
         workerExecutor
             .classLoaderIsolation { classpath: ClassLoaderWorkerSpec ->
@@ -181,9 +181,12 @@ abstract class JacocoReportTask : NonIncrementalTask() {
             task.reportName.setDisallowChanges(creationConfig.mainVariant.name)
             task.tabWidth.setDisallowChanges(4)
             creationConfig.mainVariant.sources.java { javaSources ->
-                task.javaSources.set(javaSources.getAsFileTrees())
+                task.sources.addAll(javaSources.getAsFileTrees())
             }
-            task.javaSources.disallowChanges()
+            creationConfig.mainVariant.sources.kotlin { kotlinSources ->
+                task.sources.addAll(kotlinSources.getAsFileTrees())
+            }
+            task.sources.disallowChanges()
             task.classFileCollection.fromDisallowChanges(
                 creationConfig.mainVariant.artifacts
                     .forScope(ScopedArtifacts.Scope.PROJECT)

@@ -111,7 +111,8 @@ class JavaCompileCreationAction(
         task.dependsOn(creationConfig.taskContainer.preBuildTask)
         task.extensions.add(PROPERTY_VARIANT_NAME_KEY, creationConfig.name)
 
-        // Use Gradle toolchain configured via java extension
+        // Configure javaCompiler, similar to the JavaBasePlugin
+        // (https://github.com/gradle/gradle/blob/66010b2/subprojects/plugins/src/main/java/org/gradle/api/plugins/JavaBasePlugin.java#L204)
         task.project.extensions.getByType(JavaPluginExtension::class.java).let {
             if (it.toolchain.languageVersion.isPresent) {
                 val toolchainService =

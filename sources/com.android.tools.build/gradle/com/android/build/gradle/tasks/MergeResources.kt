@@ -856,7 +856,7 @@ abstract class MergeResources : NewIncrementalTask() {
             task.minSdk
                 .setDisallowChanges(
                     task.project
-                        .provider { creationConfig.minSdkVersion.apiLevel })
+                        .provider { creationConfig.minSdk.apiLevel })
             task.processResources = processResources
             task.crunchPng = androidResourcesCreationConfig.isCrunchPngs
             val vectorDrawablesOptions = androidResourcesCreationConfig.vectorDrawables

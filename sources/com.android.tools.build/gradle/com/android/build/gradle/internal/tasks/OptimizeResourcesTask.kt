@@ -19,8 +19,8 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
 import com.android.build.api.artifact.ArtifactTransformationRequest
-import com.android.build.api.variant.impl.VariantOutputImpl
-import com.android.build.gradle.internal.component.ComponentCreationConfig
+import com.android.build.api.variant.MultiOutputHandler
+import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.Aapt2Input
 import com.android.build.gradle.internal.services.getAapt2Executable
@@ -41,7 +41,6 @@ import com.android.utils.StdLogger
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
@@ -80,7 +79,7 @@ abstract class OptimizeResourcesTask : NonIncrementalTask() {
     abstract val transformationRequest: Property<ArtifactTransformationRequest<OptimizeResourcesTask>>
 
     @get:Nested
-    abstract val variantOutputs : ListProperty<VariantOutputImpl>
+    abstract val outputsHandler: Property<MultiOutputHandler>
 
     @get:OutputDirectory
     abstract val optimizedProcessedRes: DirectoryProperty
@@ -92,16 +91,21 @@ abstract class OptimizeResourcesTask : NonIncrementalTask() {
                 workerExecutor.noIsolation(),
                 Aapt2OptimizeWorkAction::class.java
         ) { builtArtifact, outputLocation: Directory, parameters ->
-            val variantOutput = variantOutputs.get().find {
-                it.variantOutputConfiguration.outputType == builtArtifact.outputType
-                        && it.variantOutputConfiguration.filters == builtArtifact.filters
-            } ?: throw java.lang.RuntimeException("Cannot find variant output for $builtArtifact")
 
             parameters.inputResFile.set(File(builtArtifact.outputFile))
             parameters.aapt2Executable.set(aapt2.getAapt2Executable().toFile())
             parameters.enableResourceObfuscation.set(enableResourceObfuscation.get())
-            parameters.outputResFile.set(File(outputLocation.asFile,
-                    "resources-${variantOutput.baseName}-optimize${SdkConstants.DOT_RES}"))
+            parameters.outputResFile.set(
+                File(
+                    outputLocation.asFile,
+                    outputsHandler.get().getOutputNameForSplit(
+                        prefix = "resources",
+                        suffix = "optimize${SdkConstants.DOT_RES}",
+                        outputType = builtArtifact.outputType,
+                        filters = builtArtifact.filters
+                    )
+                )
+            )
 
             parameters.outputResFile.get().asFile
         }
@@ -120,8 +124,8 @@ abstract class OptimizeResourcesTask : NonIncrementalTask() {
     }
 
     class CreateAction(
-            creationConfig: ComponentCreationConfig
-    ) : VariantTaskCreationAction<OptimizeResourcesTask, ComponentCreationConfig>(creationConfig),
+        creationConfig: ApkCreationConfig
+    ) : VariantTaskCreationAction<OptimizeResourcesTask, ApkCreationConfig>(creationConfig),
         AndroidResourcesTaskCreationAction by AndroidResourcesTaskCreationActionImpl(creationConfig) {
         override val name: String
             get() = computeTaskName("optimize", "Resources")
@@ -151,15 +155,13 @@ abstract class OptimizeResourcesTask : NonIncrementalTask() {
 
         override fun configure(task: OptimizeResourcesTask) {
             super.configure(task)
-            val enabledVariantOutputs = creationConfig.outputs.getEnabledVariantOutputs()
-
             creationConfig.services.initializeAapt2Input(task.aapt2)
 
             task.enableResourceObfuscation.setDisallowChanges(false)
 
             task.transformationRequest.setDisallowChanges(transformationRequest)
 
-            task.variantOutputs.setDisallowChanges(enabledVariantOutputs)
+            task.outputsHandler.setDisallowChanges(MultiOutputHandler.create(creationConfig))
         }
     }
 }

@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.dsl
 
+import com.android.build.api.dsl.AndroidResources
 import com.android.build.api.dsl.ApkSigningConfig
 import com.android.build.api.dsl.BuildFeatures
 import com.android.build.api.dsl.ComposeOptions
@@ -46,14 +47,16 @@ abstract class CommonExtensionImpl<
         BuildFeaturesT : BuildFeatures,
         BuildTypeT : com.android.build.api.dsl.BuildType,
         DefaultConfigT : DefaultConfig,
-        ProductFlavorT : com.android.build.api.dsl.ProductFlavor>(
+        ProductFlavorT : com.android.build.api.dsl.ProductFlavor,
+        AndroidResourcesT : AndroidResources>(
             protected val dslServices: DslServices,
             dslContainers: DslContainerProvider<DefaultConfigT, BuildTypeT, ProductFlavorT, SigningConfig>
         ) : InternalCommonExtension<
         BuildFeaturesT,
         BuildTypeT,
         DefaultConfigT,
-        ProductFlavorT> {
+        ProductFlavorT,
+        AndroidResourcesT> {
 
     private val sourceSetManager = dslContainers.sourceSetManager
 

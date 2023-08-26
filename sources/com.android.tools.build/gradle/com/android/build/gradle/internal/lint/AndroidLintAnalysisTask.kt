@@ -312,7 +312,7 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
                     creationConfig.services,
                     (creationConfig as? ConsumableCreationConfig)
                         ?.isCoreLibraryDesugaringEnabledLintCheck ?: false,
-                    creationConfig.minSdkVersion,
+                    creationConfig.minSdk,
                     creationConfig.global
                 )
             )

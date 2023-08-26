@@ -113,9 +113,8 @@ public class ProguardFiles {
                         + "/global");
     }
 
-    public static void createProguardFile(
-            @NonNull String name, @NonNull File destination, @NonNull Boolean keepRClass)
-             throws IOException {
+    public static void createProguardFile(@NonNull String name, @NonNull File destination)
+            throws IOException {
         ProguardFile proguardFile = null;
         for (ProguardFile knownFile : ProguardFile.values()) {
             if (knownFile.fileName.equals(name)) {
@@ -160,13 +159,6 @@ public class ProguardFiles {
 
         sb.append("\n");
         append(sb, "proguard-common.txt");
-
-        if (keepRClass) {
-            String rFieldRule = "-keepclassmembers class **.R$* {\n" +
-                    "    public static <fields>;\n" +
-                    "}\n";
-            sb.append(rFieldRule);
-        }
 
         Files.asCharSink(destination, UTF_8).write(sb.toString());
     }

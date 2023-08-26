@@ -30,10 +30,8 @@ import com.android.build.gradle.internal.manifest.ManifestDataProvider
 import com.android.build.gradle.internal.profile.ProfilingMode
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.options.StringOption
-import com.android.build.gradle.options.Version
 import com.android.builder.core.ComponentType
 import com.android.builder.dexing.DexingType
-import com.android.builder.errors.IssueReporter
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
@@ -118,7 +116,7 @@ internal class TestProjectVariantDslInfoImpl(
 
     override val dexingDslInfo: DexingDslInfo by lazy {
         DexingDslInfoImpl(
-            buildTypeObj, mergedFlavor, services
+            buildTypeObj, mergedFlavor
         )
     }
 }

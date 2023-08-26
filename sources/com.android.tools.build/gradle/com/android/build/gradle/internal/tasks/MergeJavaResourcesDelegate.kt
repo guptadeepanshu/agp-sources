@@ -16,7 +16,8 @@
 
 package com.android.build.gradle.internal.tasks
 
-import com.android.build.gradle.internal.InternalScope
+import com.android.build.api.artifact.impl.InternalScopedArtifacts
+import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.packaging.PackagingFileAction
 import com.android.build.gradle.internal.packaging.ParsedPackagingOptions
@@ -41,20 +42,32 @@ import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.util.function.Predicate
 
-@Suppress("DEPRECATION") // Legacy support
-private fun isHighPriorityScope(scope: com.android.build.api.transform.QualifiedContent.ScopeType?): Boolean {
-    return scope == com.android.build.api.transform.QualifiedContent.Scope.PROJECT || scope == InternalScope.FEATURES
+internal enum class JavaResMergingPriority(val value: Int) {
+    HIGH(0),
+    MEDIUM(1),
+    LOW(2)
 }
+
+internal fun determinePriority(scope: InternalScopedArtifacts.InternalScope) =
+    when (scope) {
+        InternalScopedArtifacts.InternalScope.FEATURES -> JavaResMergingPriority.MEDIUM
+        else -> JavaResMergingPriority.LOW
+    }
+
+internal fun determinePriority(scope: ScopedArtifacts.Scope) =
+    when (scope) {
+        ScopedArtifacts.Scope.PROJECT -> JavaResMergingPriority.HIGH
+        else -> JavaResMergingPriority.LOW
+    }
 
 /**
  * A delegate which actually does the merging of java resources, for example for the
  * [MergeJavaResourceTask]
  */
-class MergeJavaResourcesDelegate(
+internal class MergeJavaResourcesDelegate(
     inputs: List<IncrementalFileMergerInput>,
     private val outputFile: File,
-    @Suppress("DEPRECATION") // Legacy support
-    private val scopeMap: MutableMap<IncrementalFileMergerInput, com.android.build.api.transform.QualifiedContent.ScopeType>,
+    private val priorityMap: MutableMap<IncrementalFileMergerInput, JavaResMergingPriority>,
     private val packagingOptions: ParsedPackagingOptions,
     private val incrementalStateFile: File,
     private val isIncremental: Boolean,
@@ -111,8 +124,7 @@ class MergeJavaResourcesDelegate(
          */
 
         // Sort inputs to move project scopes to the start.
-        @Suppress("DEPRECATION") // Legacy support
-        inputs.sortBy { if (scopeMap[it] == com.android.build.api.transform.QualifiedContent.Scope.PROJECT) 0 else 1 }
+        inputs.sortBy { priorityMap[it]?.value ?: JavaResMergingPriority.LOW.value }
 
         // Filter inputs.
         val inputFilter =
@@ -120,7 +132,7 @@ class MergeJavaResourcesDelegate(
         inputs =
                 inputs.map {
                     val filteredInput = FilterIncrementalFileMergerInput(it, inputFilter)
-                    scopeMap[filteredInput] = scopeMap[it]!!
+                    priorityMap[filteredInput] = priorityMap[it]!!
                     filteredInput
                 }.toMutableList()
 
@@ -168,7 +180,9 @@ class MergeJavaResourcesDelegate(
          * this specific case we will ignore all other inputs.
          */
         val highPriorityInputs =
-            scopeMap.keys.filter { isHighPriorityScope(scopeMap[it]) }.toSet()
+            priorityMap.keys.filter {
+                priorityMap[it] != JavaResMergingPriority.LOW
+            }.toSet()
 
         val output = object : DelegateIncrementalFileMergerOutput(baseOutput) {
             override fun create(

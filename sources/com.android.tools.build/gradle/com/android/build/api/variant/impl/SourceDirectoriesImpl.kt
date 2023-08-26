@@ -70,7 +70,7 @@ abstract class SourceDirectoriesImpl(
 
     override fun addStaticSourceDirectory(srcDir: String) {
         val directory = variantServices.projectInfo.projectDirectory.dir(srcDir)
-        if (!directory.asFile.exists() || !directory.asFile.isDirectory) {
+        if (directory.asFile.exists() && !directory.asFile.isDirectory) {
             throw IllegalArgumentException("$srcDir does not point to a directory")
         }
         addSource(

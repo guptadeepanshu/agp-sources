@@ -32,6 +32,7 @@ import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import java.io.File
+import java.nio.file.Path
 
 /**
  * Implementation of [TestData] for tests that run against
@@ -49,29 +50,47 @@ internal class BundleTestDataImpl constructor(
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
     @get:Optional
-    val apkBundle: FileCollection
+    val apkBundle: FileCollection,
+    privacySandboxSdkApks: FileCollection?
 ) : AbstractTestDataImpl(
     namespace,
     creationConfig,
     testApkDir,
-    null
+    null,
+    privacySandboxSdkApks
 ) {
 
     override val libraryType = creationConfig.services.provider { false }
 
-    override fun findTestedApks(deviceConfigProvider: DeviceConfigProvider): List<File> {
-        if (moduleName != null && deviceConfigProvider.apiLevel < 21) {
-            // Bundle tool fuses APKs below 21, requesting a module will return an error even if that
-            // module is fused.
-            // TODO(https://issuetracker.google.com/119663247): Return the fused APK if the requested module was fused.
-            Logging.getLogger(BundleTestDataImpl::class.java).warn(
-                "Testing dynamic features on devices API < 21 is not currently supported.")
-            return ImmutableList.of<File>()
+    override val testedApksFinder: ApksFinder
+        get() = _testedApksFinder ?:
+            BundleApksFinder(apkBundle.singleFile.toPath(), moduleName).also {
+                _testedApksFinder = it
+            }
+
+    private var _testedApksFinder: BundleApksFinder? = null
+
+    internal class BundleApksFinder(
+        private val apkPath: Path,
+        private val moduleName: String?
+    ): ApksFinder {
+
+        override fun findApks(deviceConfigProvider: DeviceConfigProvider): List<File> {
+            if (moduleName != null && deviceConfigProvider.apiLevel < 21) {
+                // Bundle tool fuses APKs below 21, requesting a module will return an error even
+                // if that module is fused.
+                // TODO(https://issuetracker.google.com/119663247): Return the fused APK if the
+                // requested module was fused.
+                Logging.getLogger(BundleTestDataImpl::class.java).warn(
+                    "Testing dynamic features on devices API < 21 is not currently supported.")
+                return ImmutableList.of<File>()
+            }
+            return getApkFiles(
+                apkPath,
+                deviceConfigProvider,
+                moduleName
+            ).map { it.toFile() }.toImmutableList()
         }
-        return getApkFiles(
-            apkBundle.singleFile.toPath(),
-            deviceConfigProvider,
-            moduleName
-        ).map { it.toFile() }.toImmutableList()
     }
+
 }

@@ -20,6 +20,7 @@ import com.android.build.api.dsl.AarMetadata
 import com.android.build.api.dsl.AbiSplit
 import com.android.build.api.dsl.AndroidResources
 import com.android.build.api.dsl.AnnotationProcessorOptions
+import com.android.build.api.dsl.ApplicationAndroidResources
 import com.android.build.api.dsl.ApplicationPublishing
 import com.android.build.api.dsl.AssetPackBundleExtension
 import com.android.build.api.dsl.Bundle
@@ -29,6 +30,7 @@ import com.android.build.api.dsl.BundleDeviceTier
 import com.android.build.api.dsl.BundleLanguage
 import com.android.build.api.dsl.BundleTexture
 import com.android.build.api.dsl.BundleCodeTransparency
+import com.android.build.api.dsl.BundleCountrySet
 import com.android.build.api.dsl.Cmake
 import com.android.build.api.dsl.LibraryPublishing
 import com.android.build.api.dsl.CompileOptions
@@ -56,12 +58,14 @@ import com.android.build.api.dsl.ViewBinding
 import com.android.build.gradle.internal.dsl.AaptOptions
 import com.android.build.gradle.internal.dsl.AarMetadataImpl
 import com.android.build.gradle.internal.dsl.AbiSplitOptions
+import com.android.build.gradle.internal.dsl.ApplicationAndroidResourcesImpl
 import com.android.build.gradle.internal.dsl.AnnotationProcessorOptions as AnnotationProcessorOptionsImpl
 import com.android.build.gradle.internal.dsl.ApplicationPublishingImpl
 import com.android.build.gradle.internal.dsl.AssetPackBundleExtensionImpl
 import com.android.build.gradle.internal.dsl.BundleOptions
 import com.android.build.gradle.internal.dsl.BundleOptionsAbi
 import com.android.build.gradle.internal.dsl.BundleOptionsCodeTransparency
+import com.android.build.gradle.internal.dsl.BundleOptionsCountrySet
 import com.android.build.gradle.internal.dsl.BundleOptionsDensity
 import com.android.build.gradle.internal.dsl.BundleOptionsDeviceTier
 import com.android.build.gradle.internal.dsl.BundleOptionsLanguage
@@ -104,12 +108,14 @@ val AGP_SUPPORTED_PROPERTY_TYPES: List<SupportedPropertyType> = listOf(
     SupportedPropertyType.Block(AbiSplit::class.java, AbiSplitOptions::class.java),
     SupportedPropertyType.Block(AndroidResources::class.java, AaptOptions::class.java),
     SupportedPropertyType.Block(AnnotationProcessorOptions::class.java, AnnotationProcessorOptionsImpl::class.java),
+    SupportedPropertyType.Block(ApplicationAndroidResources::class.java, ApplicationAndroidResourcesImpl::class.java),
     SupportedPropertyType.Block(ApplicationPublishing::class.java, ApplicationPublishingImpl::class.java),
     SupportedPropertyType.Block(AssetPackBundleExtension::class.java, AssetPackBundleExtensionImpl::class.java),
     SupportedPropertyType.Block(Bundle::class.java, BundleOptions::class.java),
     SupportedPropertyType.Block(BundleAbi::class.java, BundleOptionsAbi::class.java),
     SupportedPropertyType.Block(BundleDensity::class.java, BundleOptionsDensity::class.java),
     SupportedPropertyType.Block(BundleDeviceTier::class.java, BundleOptionsDeviceTier::class.java),
+    SupportedPropertyType.Block(BundleCountrySet::class.java, BundleOptionsCountrySet::class.java),
     SupportedPropertyType.Block(BundleLanguage::class.java, BundleOptionsLanguage::class.java),
     SupportedPropertyType.Block(BundleTexture::class.java, BundleOptionsTexture::class.java),
     SupportedPropertyType.Block(BundleCodeTransparency::class.java, BundleOptionsCodeTransparency::class.java),

@@ -26,15 +26,17 @@ import java.io.File
  */
 class PostProcessingBlockOptions(
     private val postProcessingBlock: PostProcessingBlock,
-    private val isTestComponent: Boolean
+    private val isTestComponent: Boolean,
 ) : PostProcessingOptions, ProguardFilesProvider by postProcessingBlock {
+
     override fun getDefaultProguardFiles(): List<File> = emptyList()
 
     // If the new DSL block is not used, all these flags need to be in the config files.
     override fun getPostprocessingFeatures(): PostprocessingFeatures = PostprocessingFeatures(
         postProcessingBlock.isRemoveUnusedCode,
         postProcessingBlock.isObfuscate,
-        postProcessingBlock.isOptimizeCode)
+        postProcessingBlock.isOptimizeCode
+    )
 
     override fun codeShrinkerEnabled(): Boolean {
         // For testing code, we only run ProGuard/R8 if main code is obfuscated.

@@ -42,13 +42,6 @@ open class AnalyticsEnabledTestFixtures @Inject constructor(
         )
     }
 
-    override val namespace: Provider<String>
-        get() {
-            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-                    VariantPropertiesMethodType.NAMESPACE_VALUE
-            return delegate.namespace
-        }
-
     override val aarMetadata: AarMetadata
         get() {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =

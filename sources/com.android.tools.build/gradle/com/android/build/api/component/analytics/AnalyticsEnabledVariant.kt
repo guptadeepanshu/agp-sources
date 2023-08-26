@@ -41,13 +41,6 @@ abstract class AnalyticsEnabledVariant (
     objectFactory: ObjectFactory
 ) : AnalyticsEnabledComponent(delegate, stats, objectFactory), Variant {
 
-    override val namespace: Provider<String>
-        get() {
-            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-                VariantPropertiesMethodType.NAMESPACE_VALUE
-            return delegate.namespace
-        }
-
     override val buildConfigFields: MapProperty<String, BuildConfigField<out Serializable>>
         get() {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
@@ -118,8 +111,18 @@ abstract class AnalyticsEnabledVariant (
             return userVisibleExternalNativeBuild
         }
 
+    private val userVisibleUnitTest: AnalyticsEnabledUnitTest? by lazy {
+        delegate.unitTest?.let {
+            objectFactory.newInstance(
+                AnalyticsEnabledUnitTest::class.java,
+                it,
+                stats
+            )
+        }
+    }
+
     override val unitTest: UnitTest?
-        get() = delegate.unitTest
+        get() = userVisibleUnitTest
 
     override fun <T> getExtension(type: Class<T>): T? {
         stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
@@ -141,11 +144,25 @@ abstract class AnalyticsEnabledVariant (
             return delegate.proguardFiles
         }
 
+    override val minSdk: AndroidVersion
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                    VariantPropertiesMethodType.MIN_SDK_VERSION_VALUE
+            return delegate.minSdk
+        }
+
     override val minSdkVersion: AndroidVersion
         get() {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.MIN_SDK_VERSION_VALUE
             return delegate.minSdkVersion
+        }
+
+    override val maxSdk: Int?
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                    VariantPropertiesMethodType.MAX_SDK_VERSION_VALUE
+            return delegate.maxSdk
         }
 
     override val maxSdkVersion: Int?

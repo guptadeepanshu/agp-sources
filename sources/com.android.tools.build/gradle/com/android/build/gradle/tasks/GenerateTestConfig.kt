@@ -17,8 +17,8 @@
 package com.android.build.gradle.tasks
 
 import com.android.build.api.artifact.SingleArtifact
+import com.android.build.api.variant.VariantOutputConfiguration
 import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
-import com.android.build.api.variant.impl.VariantOutputImpl
 import com.android.build.gradle.internal.component.UnitTestCreationConfig
 import com.android.build.gradle.internal.dsl.TestOptions
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
@@ -151,9 +151,6 @@ abstract class GenerateTestConfig @Inject constructor(objectFactory: ObjectFacto
         @get:Input
         val buildDirectoryPath: String
 
-        @get:Nested
-        val mainVariantOutput: VariantOutputImpl
-
         @get:Input
         val packageNameOfFinalRClass: Provider<String>
 
@@ -167,7 +164,6 @@ abstract class GenerateTestConfig @Inject constructor(objectFactory: ObjectFacto
                 creationConfig.artifacts.get(PACKAGED_MANIFESTS)
             }
 
-            mainVariantOutput = creationConfig.mainVariant.outputs.getMainSplit()
             packageNameOfFinalRClass = creationConfig.mainVariant.namespace
             buildDirectoryPath =
                     creationConfig.services.projectInfo.buildDirectory.get().asFile.toRelativeString(
@@ -176,8 +172,9 @@ abstract class GenerateTestConfig @Inject constructor(objectFactory: ObjectFacto
 
         fun computeProperties(projectDir: File): TestConfigProperties {
             val manifestOutput =
-                BuiltArtifactsLoaderImpl().load(mergedManifest)?.getBuiltArtifact(mainVariantOutput)
-                    ?: error("Unable to find manifest output")
+                BuiltArtifactsLoaderImpl().load(mergedManifest)?.getBuiltArtifact(
+                    VariantOutputConfiguration.OutputType.SINGLE
+                ) ?: error("Unable to find manifest output")
 
             return TestConfigProperties(
                 resourceApk?.get()?.asFile?.relativeTo(projectDir)?.toString(),

@@ -34,6 +34,7 @@ import com.android.build.gradle.internal.core.SettingsOptions
 import com.android.build.gradle.internal.dsl.LanguageSplitOptions
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.BaseServices
+import com.android.build.gradle.internal.testing.ManagedDeviceRegistry
 import com.android.builder.core.LibraryRequest
 import com.android.builder.testing.api.DeviceProvider
 import com.android.builder.testing.api.TestServer
@@ -125,6 +126,8 @@ interface GlobalTaskCreationConfig: BootClasspathConfig {
 
     val versionedNdkHandler: SdkComponentsBuildService.VersionedNdkHandler
 
+    val managedDeviceRegistry: ManagedDeviceRegistry
+
     // configurations that may need to be accessible
     val lintPublish: Configuration
     val lintChecks: Configuration
@@ -137,5 +140,11 @@ interface GlobalTaskCreationConfig: BootClasspathConfig {
 
     val buildAnalyzerIssueReporter: BuildAnalyzerIssueReporter?
 
-    val enableGlobalSynthetics: Boolean
+    /**
+     * Returns the API to which device/emulator we're deploying via the IDE or null if not.
+     * Can be used to optimize some build steps when deploying via the IDE.
+     *
+     * This has no relation with targetSdkVersion from build.gradle/manifest.
+     */
+    val targetDeployApiFromIDE: Int?
 }

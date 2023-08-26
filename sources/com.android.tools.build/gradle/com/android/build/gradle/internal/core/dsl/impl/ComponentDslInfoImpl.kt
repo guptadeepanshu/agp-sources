@@ -47,7 +47,7 @@ internal abstract class ComponentDslInfoImpl internal constructor(
     final override val productFlavorList: List<ProductFlavor>,
     protected val services: VariantServices,
     private val buildDirectory: DirectoryProperty,
-    protected val extension: CommonExtension<*, *, *, *>
+    protected val extension: CommonExtension<*, *, *, *, *>
 ): ComponentDslInfo, MultiVariantComponentDslInfo {
 
     /**

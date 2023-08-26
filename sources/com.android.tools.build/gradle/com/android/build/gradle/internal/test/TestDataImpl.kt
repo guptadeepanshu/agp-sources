@@ -15,7 +15,7 @@
  */
 package com.android.build.gradle.internal.test
 
-import com.android.build.api.variant.VariantOutputConfiguration
+import com.android.build.api.variant.impl.BuiltArtifactsImpl
 import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
 import com.android.build.gradle.internal.component.AndroidTestCreationConfig
 import com.android.build.gradle.internal.test.BuiltArtifactsSplitOutputMatcher.computeBestOutput
@@ -30,41 +30,48 @@ import java.io.File
 /**
  * Implementation of [TestData] on top of a [AndroidTestCreationConfig]
  */
-class TestDataImpl(
+class TestDataImpl (
     namespace: Provider<String>,
     testConfig: AndroidTestCreationConfig,
     testApkDir: Provider<Directory>,
-    testedApksDir: FileCollection?
+    testedApksDir: FileCollection?,
+    privacySandboxSdkApks: FileCollection?
 ) : AbstractTestDataImpl(
     namespace,
     testConfig,
     testApkDir,
-    testedApksDir
+    testedApksDir,
+    privacySandboxSdkApks
 ) {
+    @get: Input
+    val supportedAbis: Set<String> =
+        testConfig.nativeBuildCreationConfig?.supportedAbis ?: emptySet()
 
-    init {
-        if (testConfig.outputs.getSplitsByType(
-                VariantOutputConfiguration.OutputType.ONE_OF_MANY
-            ).isNotEmpty()
-        ) {
-            throw RuntimeException("Multi-output in test variant not yet supported")
-        }
-    }
 
     override val libraryType =
         testConfig.services.provider { testConfig.mainVariant.componentType.isAar }
 
-    @get:Input
-    val supportedAbis: Set<String> =
-        testConfig.nativeBuildCreationConfig?.supportedAbis ?: emptySet()
+    override val testedApksFinder: ApksFinder
+        get() = _testedApksFinder ?:
+            TestedApksFinder(
+                testedApksDir?.let { BuiltArtifactsLoaderImpl().load(testedApksDir) },
+                supportedAbis).also {
+                    _testedApksFinder = it
+            }
 
-    override fun findTestedApks(deviceConfigProvider: DeviceConfigProvider): List<File> {
-        testedApksDir ?: return emptyList()
-        val apks = ImmutableList.builder<File>()
-        val builtArtifacts = BuiltArtifactsLoaderImpl().load(testedApksDir)
-            ?: return ImmutableList.of()
-        apks.addAll(computeBestOutput(deviceConfigProvider, builtArtifacts, supportedAbis))
-        return apks.build()
+    private var _testedApksFinder: TestedApksFinder? = null
+
+    internal class TestedApksFinder(
+        private val builtArtifacts: BuiltArtifactsImpl?,
+        private val supportedAbis: Set<String>
+    ): ApksFinder {
+
+        override fun findApks(deviceConfigProvider: DeviceConfigProvider): List<File> {
+            builtArtifacts ?: return emptyList()
+            val apks = ImmutableList.builder<File>()
+            apks.addAll(computeBestOutput(deviceConfigProvider, builtArtifacts, supportedAbis))
+            return apks.build()
+        }
     }
 
 }

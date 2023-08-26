@@ -17,6 +17,7 @@
 package com.android.build.gradle.internal.plugins;
 
 import com.android.annotations.NonNull;
+import com.android.build.api.dsl.ApplicationAndroidResources;
 import com.android.build.api.dsl.ApplicationBuildFeatures;
 import com.android.build.api.dsl.ApplicationBuildType;
 import com.android.build.api.dsl.ApplicationDefaultConfig;
@@ -33,7 +34,6 @@ import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.api.BaseVariantOutput;
 import com.android.build.gradle.internal.AppModelBuilder;
 import com.android.build.gradle.internal.ExtraModelInfo;
-import com.android.build.gradle.internal.TaskManager;
 import com.android.build.gradle.internal.component.ApplicationCreationConfig;
 import com.android.build.gradle.internal.component.TestComponentCreationConfig;
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig;
@@ -52,6 +52,7 @@ import com.android.build.gradle.internal.tasks.factory.BootClasspathConfig;
 import com.android.build.gradle.internal.tasks.factory.BootClasspathConfigImpl;
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig;
 import com.android.build.gradle.internal.tasks.factory.TaskManagerConfig;
+import com.android.build.gradle.internal.testing.ManagedDeviceRegistry;
 import com.android.build.gradle.internal.variant.ApplicationVariantFactory;
 import com.android.build.gradle.internal.variant.ComponentInfo;
 import com.android.build.gradle.internal.variant.VariantModel;
@@ -73,6 +74,7 @@ public class AppPlugin
                 ApplicationBuildType,
                 ApplicationDefaultConfig,
                 ApplicationProductFlavor,
+                ApplicationAndroidResources,
                 com.android.build.api.dsl.ApplicationExtension,
                 ApplicationAndroidComponentsExtension,
                 ApplicationVariantBuilder,
@@ -106,23 +108,27 @@ public class AppPlugin
     @NonNull
     @Override
     protected ExtensionData<
-            ApplicationBuildFeatures,
-            ApplicationBuildType,
-            ApplicationDefaultConfig,
-            ApplicationProductFlavor,
-            ApplicationExtension> createExtension(
-            @NonNull DslServices dslServices,
-            @NonNull
-                    DslContainerProvider<DefaultConfig, BuildType, ProductFlavor, SigningConfig>
-                            dslContainers,
-            @NonNull NamedDomainObjectContainer<BaseVariantOutput> buildOutputs,
-            @NonNull ExtraModelInfo extraModelInfo,
-            @NonNull VersionedSdkLoaderService versionedSdkLoaderService) {
+                    ApplicationBuildFeatures,
+                    ApplicationBuildType,
+                    ApplicationDefaultConfig,
+                    ApplicationProductFlavor,
+                    ApplicationAndroidResources,
+                    ApplicationExtension>
+            createExtension(
+                    @NonNull DslServices dslServices,
+                    @NonNull
+                            DslContainerProvider<
+                                            DefaultConfig, BuildType, ProductFlavor, SigningConfig>
+                                    dslContainers,
+                    @NonNull NamedDomainObjectContainer<BaseVariantOutput> buildOutputs,
+                    @NonNull ExtraModelInfo extraModelInfo,
+                    @NonNull VersionedSdkLoaderService versionedSdkLoaderService) {
         ApplicationExtensionImpl applicationExtension =
                 dslServices.newDecoratedInstance(ApplicationExtensionImpl.class, dslServices, dslContainers);
 
         // detects whether we are running the plugin under unit test mode
-        boolean forUnitTesting = project.hasProperty("_agp_internal_test_mode_");
+        boolean forUnitTesting =
+                project.getProviders().gradleProperty("_agp_internal_test_mode_").isPresent();
 
         BootClasspathConfigImpl bootClasspathConfig =
                 new BootClasspathConfigImpl(
@@ -188,6 +194,7 @@ public class AppPlugin
         public ApplicationAndroidComponentsExtensionImplCompat(
                 @NonNull DslServices dslServices,
                 @NonNull SdkComponents sdkComponents,
+                @NonNull ManagedDeviceRegistry deviceRegistry,
                 @NonNull
                         VariantApiOperationsRegistrar<
                                         ApplicationExtension,
@@ -195,7 +202,12 @@ public class AppPlugin
                                         ApplicationVariant>
                                 variantApiOperations,
                 @NonNull ApplicationExtension applicationExtension) {
-            super(dslServices, sdkComponents, variantApiOperations, applicationExtension);
+            super(
+                    dslServices,
+                    sdkComponents,
+                    deviceRegistry,
+                    variantApiOperations,
+                    applicationExtension);
         }
     }
 
@@ -235,6 +247,7 @@ public class AppPlugin
                                 ApplicationAndroidComponentsExtensionImplCompat.class,
                                 dslServices,
                                 sdkComponents,
+                                getManagedDeviceRegistry(),
                                 variantApiOperationsRegistrar,
                                 getExtension());
 
@@ -243,7 +256,7 @@ public class AppPlugin
 
     @NonNull
     @Override
-    protected TaskManager<ApplicationVariantBuilder, ApplicationCreationConfig> createTaskManager(
+    protected ApplicationTaskManager createTaskManager(
             @NonNull Project project,
             @NonNull
                     Collection<

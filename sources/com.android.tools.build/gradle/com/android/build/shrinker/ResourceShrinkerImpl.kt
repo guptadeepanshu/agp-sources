@@ -94,6 +94,9 @@ class ResourceShrinkerImpl(
             debugReporter.debug { "The root reachable resources are:" }
             debugReporter.debug { roots.joinToString("\n", transform = { " $it" }) }
         }
+        debugReporter.debug { "Unused resources are: " }
+        debugReporter.debug { unused.joinToString("\n", transform = { " $it" })}
+
     }
 
     override fun close() {

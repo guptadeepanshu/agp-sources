@@ -15,6 +15,7 @@
  */
 package com.android.build.gradle.internal.coverage
 
+import com.android.build.gradle.internal.caching.DisabledCachingReason.FAST_TASK
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
@@ -22,53 +23,45 @@ import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
-import com.android.builder.utils.zipEntry
-import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.tasks.OutputFile
+import com.android.utils.FileUtils
+import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.work.DisableCachingByDefault
 import org.gradle.workers.WorkAction
 import org.gradle.workers.WorkParameters
-import java.util.jar.JarOutputStream
 
 /**
  * Writes the java resource file for jacoco to work out of the box.
  *
  * See https://issuetracker.google.com/151471144 for context
- *
- * Caching disabled by default for this task because the task does very little work.
- * The taskAction does no complex processing -- it just writes a file to disk with some
- *  statically determinate content.
- * Calculating cache hit/miss and fetching results is likely more expensive than
- *  simply executing the task.
  */
-@DisableCachingByDefault
+@DisableCachingByDefault(because = FAST_TASK)
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.TEST)
 abstract class JacocoPropertiesTask : NonIncrementalTask() {
 
-    @get:OutputFile
-    abstract val propertiesJar: RegularFileProperty
+    @get:OutputDirectory
+    abstract val propertiesDir: DirectoryProperty
 
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(WriteJacocoPropertiesFile::class.java) {
-            it.propertiesJar.setDisallowChanges(propertiesJar)
+            it.propertiesDir.setDisallowChanges(propertiesDir)
         }
     }
 
     abstract class WriteJacocoPropertiesFile : WorkAction<WriteJacocoPropertiesFile.Parameters> {
 
         interface Parameters : WorkParameters {
-            val propertiesJar: RegularFileProperty
+            val propertiesDir: DirectoryProperty
         }
 
         override fun execute() {
-            JarOutputStream(
-                parameters.propertiesJar.get().asFile.outputStream()
-                    .buffered()
-            ).use { jar ->
-                jar.putNextEntry(zipEntry("jacoco-agent.properties"))
-                jar.write("#Injected by the Android Gradle Plugin\noutput=none\n".toByteArray())
-            }
+            FileUtils.writeToFile(
+                FileUtils.join(
+                    parameters.propertiesDir.asFile.get(), "jacoco-agent.properties"
+                ),
+                "#Injected by the Android Gradle Plugin\noutput=none\n"
+            )
         }
     }
 
@@ -82,9 +75,8 @@ abstract class JacocoPropertiesTask : NonIncrementalTask() {
 
         override fun handleProvider(taskProvider: TaskProvider<JacocoPropertiesTask>) {
             creationConfig.artifacts
-                .setInitialProvider(taskProvider, JacocoPropertiesTask::propertiesJar)
-                .withName("jacoco-properties.jar")
-                .on(InternalArtifactType.JACOCO_CONFIG_RESOURCES_JAR)
+                .setInitialProvider(taskProvider, JacocoPropertiesTask::propertiesDir)
+                .on(InternalArtifactType.JACOCO_CONFIG_RESOURCES)
         }
     }
 }

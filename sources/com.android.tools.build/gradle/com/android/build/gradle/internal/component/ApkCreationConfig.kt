@@ -16,16 +16,18 @@
 
 package com.android.build.gradle.internal.component
 
+import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.ApkPackaging
 import com.android.build.api.variant.impl.BundleConfigImpl
 import com.android.build.api.variant.impl.SigningConfigImpl
 import com.android.build.gradle.internal.component.features.DexingCreationConfig
-import java.io.File
 
 /**
  * Interface for properties common to all variant generating APKs
  */
 interface ApkCreationConfig: ConsumableCreationConfig {
+    val targetSdk: AndroidVersion
+    val targetSdkOverride: AndroidVersion?
 
     val embedsMicroApp: Boolean
 
@@ -56,4 +58,8 @@ interface ApkCreationConfig: ConsumableCreationConfig {
     val packageJacocoRuntime: Boolean
 
     val dexingCreationConfig: DexingCreationConfig
+
+    val enableApiModeling: Boolean
+
+    val enableGlobalSynthetics: Boolean
 }

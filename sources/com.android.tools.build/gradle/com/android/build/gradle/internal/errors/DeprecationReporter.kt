@@ -57,8 +57,6 @@ interface DeprecationReporter {
 
         VERSION_8_2(Version.VERSION_8_2),
 
-        VERSION_8_1(Version.VERSION_8_1),
-
         VERSION_8_0(Version.VERSION_8_0),
 
         // Obsolete dx Dex Options
@@ -87,24 +85,18 @@ interface DeprecationReporter {
             "https://developer.android.com/studio/build/maven-publish-plugin for more information."
         ),
 
-        ENABLE_UNCOMPRESSED_NATIVE_LIBS_IN_BUNDLE(
-            Version.VERSION_8_1,
-            """
-                You can add the following to your build.gradle instead:
-                android {
-                    packagingOptions {
-                        jniLibs {
-                            useLegacyPackaging = true
-                        }
-                    }
-                }
-            """.trimIndent()
-        ),
         TRANSFORM_API(
             Version.VERSION_8_0,
             """
                 The Transform API support has been removed in AGP 8.0.
             """.trimIndent()
+        ),
+
+        DENSITY_SPLIT_API(
+            Version.VERSION_9_0,
+            "Density-based apk split feature is deprecated and will be removed in AGP 9.0. " +
+                    "Use Android App Bundle (https://developer.android.com/guide/app-bundle) " +
+                    "to generate optimized APKs."
         )
         ;
 

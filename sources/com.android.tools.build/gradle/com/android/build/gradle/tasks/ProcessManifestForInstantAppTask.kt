@@ -30,6 +30,7 @@ import com.android.build.gradle.internal.workeractions.DecoratedWorkParameters
 import com.android.build.gradle.internal.workeractions.WorkActionAdapter
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.manifmerger.ManifestMerger2
+import com.android.manifmerger.ManifestUtils
 import com.android.manifmerger.XmlDocument
 import com.android.utils.FileUtils
 import com.android.utils.PositionXmlParser
@@ -118,7 +119,7 @@ abstract class ProcessManifestForInstantAppTask @Inject constructor(
         private fun setTargetSandboxVersionAttribute(
             document: Document
         ): String? {
-            return ManifestMerger2.setManifestAndroidAttribute(
+            return ManifestUtils.setManifestAndroidAttribute(
                 document, SdkConstants.ATTR_TARGET_SANDBOX_VERSION, "2"
             )
         }

@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.dsl
 
+import com.android.build.api.dsl.LibraryAndroidResources
 import com.android.build.api.dsl.LibraryBuildFeatures
 import com.android.build.api.dsl.LibraryBuildType
 import com.android.build.api.dsl.LibraryDefaultConfig
@@ -39,7 +40,8 @@ abstract class LibraryExtensionImpl @Inject constructor(
             LibraryBuildFeatures,
             LibraryBuildType,
             LibraryDefaultConfig,
-            LibraryProductFlavor>(
+            LibraryProductFlavor,
+            LibraryAndroidResources>(
         dslServices,
         dslContainers
     ),

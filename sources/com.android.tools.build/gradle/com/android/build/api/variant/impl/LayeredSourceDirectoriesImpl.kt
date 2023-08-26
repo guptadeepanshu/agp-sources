@@ -107,10 +107,9 @@ open class LayeredSourceDirectoriesImpl(
     fun getVariantSources(): List<DirectoryEntries> = variantSources.get()
 
     /**
-     * Returns the list of local source files which filters out the user added folders as well as
-     * any generated folders.
+     * Returns the list of local source directories matching the given [filter]
      */
-    fun getLocalSources(): Map<String, Provider<out Collection<Directory>>> =
+    fun getVariantSourcesWithFilter(filter: (DirectoryEntry) -> Boolean = { _ -> true } ): Map<String, Provider<out Collection<Directory>>> =
         getVariantSources().associate { directoryEntries ->
             val projectDir = variantServices.provider {
                 variantServices.projectInfo.projectDirectory
@@ -123,7 +122,7 @@ open class LayeredSourceDirectoriesImpl(
             // up providers together and flatten the list of list into just one list.
             var currentZippedValue: Provider<out Collection<Directory>>? = null
             directoryEntries.directoryEntries
-                .filterNot { it.isUserAdded || it.isGenerated }
+                .filter(filter)
                 .forEach {
                     currentZippedValue = if (currentZippedValue == null) {
                         it.asFiles(projectDir)

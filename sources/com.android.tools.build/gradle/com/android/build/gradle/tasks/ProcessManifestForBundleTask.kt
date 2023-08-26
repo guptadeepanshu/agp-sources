@@ -17,9 +17,9 @@
 package com.android.build.gradle.tasks
 
 import com.android.SdkConstants
-import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
-import com.android.build.api.variant.impl.VariantOutputImpl
+import com.android.build.api.variant.MultiOutputHandler
 import com.android.build.gradle.internal.component.ApkCreationConfig
+import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
@@ -67,15 +67,14 @@ abstract class ProcessManifestForBundleTask: NonIncrementalTask() {
     abstract val applicationMergedManifests: DirectoryProperty
 
     @get:Nested
-    abstract val mainSplit: Property<VariantOutputImpl>
+    abstract val outputsHandler: Property<MultiOutputHandler>
 
     @TaskAction
     override fun doTaskAction() {
-
-        val builtArtifact = BuiltArtifactsLoaderImpl().load(applicationMergedManifests)
-            ?.getBuiltArtifact(mainSplit.get())
-            ?: throw RuntimeException("Cannot find main split from generated manifest files at" +
-                    " ${applicationMergedManifests.asFile.get().absolutePath}")
+        val builtArtifact = outputsHandler.get().getMainSplitArtifact(
+            applicationMergedManifests
+        ) ?: throw RuntimeException("Cannot find main split from generated manifest files at" +
+                " ${applicationMergedManifests.asFile.get().absolutePath}")
 
         File(builtArtifact.outputFile).copyTo(
             target = bundleManifest.get().asFile, overwrite = true)
@@ -106,7 +105,8 @@ abstract class ProcessManifestForBundleTask: NonIncrementalTask() {
                 InternalArtifactType.MERGED_MANIFESTS,
                 task.applicationMergedManifests
             )
-            task.mainSplit.setDisallowChanges(creationConfig.outputs.getMainSplit())
+
+            task.outputsHandler.setDisallowChanges(MultiOutputHandler.create(creationConfig))
         }
     }
 }

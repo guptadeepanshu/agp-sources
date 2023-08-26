@@ -17,6 +17,7 @@
 package com.android.build.gradle.internal.dsl
 
 import com.android.build.api.dsl.SdkComponents
+import com.android.build.api.variant.Aidl
 import com.android.build.gradle.internal.services.DslServices
 import com.android.repository.Revision
 import org.gradle.api.file.Directory
@@ -53,4 +54,23 @@ open class SdkComponentsImpl @Inject constructor(
         }
     override val bootClasspath: Provider<List<RegularFile>>
         get() = bootclasspathProvider.get()
+
+    override val aidl: Provider<Aidl> by lazy(LazyThreadSafetyMode.NONE) {
+        val aidlExecutable = dslServices.sdkComponents.flatMap {
+            it.sdkLoader(compileSdkVersion, buildToolsRevision).aidlExecutableProvider
+        }
+
+        val aidlFramework = dslServices.sdkComponents.flatMap {
+            it.sdkLoader(compileSdkVersion, buildToolsRevision).aidlFrameworkProvider
+        }
+
+        dslServices.provider(
+            Aidl::class.java,
+            DefaultAidl(
+                aidlExecutable,
+                aidlFramework,
+                buildToolsRevision.map { it.toString() }
+            )
+        )
+    }
 }

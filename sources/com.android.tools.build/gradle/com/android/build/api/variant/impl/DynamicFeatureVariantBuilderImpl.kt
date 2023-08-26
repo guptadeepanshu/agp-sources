@@ -46,7 +46,7 @@ open class DynamicFeatureVariantBuilderImpl @Inject constructor(
 
     override var enableAndroidTest: Boolean = true
 
-    override var enableTestFixtures: Boolean = dslInfo.testFixtures.enable
+    override var enableTestFixtures: Boolean = dslInfo.testFixtures?.enable ?: false
 
     override fun <T : VariantBuilder> createUserVisibleVariantObject(
             projectServices: ProjectServices,

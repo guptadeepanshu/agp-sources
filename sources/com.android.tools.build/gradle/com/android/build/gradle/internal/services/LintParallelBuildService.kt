@@ -50,8 +50,8 @@ abstract class LintParallelBuildService : BuildService<BuildServiceParameters.No
         }
 
         private fun calculateMaxParallelUsagesInProcess(maxRuntimeMemory: Long): Int {
-            // We assume lint will use about 512 megabytes per analysis task.
-            val memoryPerLintTask = 512 * 1024 * 1024
+            // We assume lint will use less than 1 gigabyte per analysis task.
+            val memoryPerLintTask = 1024 * 1024 * 1024
             // Multiply maxRuntimeMemory by 0.75 to save memory for other things too
             val maxLintMemory = (maxRuntimeMemory * 0.75).toLong()
             return Math.floorDiv(maxLintMemory, memoryPerLintTask).coerceAtLeast(1).toInt()

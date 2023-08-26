@@ -29,6 +29,7 @@ class DexParameters(
     val desugarBootclasspath: List<File>,
     val desugarClasspath: List<File>,
     val coreLibDesugarConfig: String?,
+    val enableApiModeling: Boolean,
     val errorFormatMode: SyncOptions.ErrorFormatMode,
 ) {
 
@@ -36,7 +37,6 @@ class DexParameters(
             dexPerClass: Boolean,
             bootClasspath: DexArchiveBuilderTaskDelegate.ClasspathServiceKey,
             classpath: DexArchiveBuilderTaskDelegate.ClasspathServiceKey,
-            coreLibDesugarOutputKeepRuleFile: File?,
     ): DexParametersForWorkers {
         return DexParametersForWorkers(
             minSdkVersion = minSdkVersion,
@@ -46,7 +46,7 @@ class DexParameters(
             desugarBootclasspath = bootClasspath,
             desugarClasspath = classpath,
             coreLibDesugarConfig = coreLibDesugarConfig,
-            coreLibDesugarOutputKeepRuleFile = coreLibDesugarOutputKeepRuleFile,
+            enableApiModeling = enableApiModeling,
             errorFormatMode = errorFormatMode)
     }
 }
@@ -64,7 +64,7 @@ class DexParametersForWorkers(
     val desugarBootclasspath: DexArchiveBuilderTaskDelegate.ClasspathServiceKey,
     val desugarClasspath: DexArchiveBuilderTaskDelegate.ClasspathServiceKey,
     val coreLibDesugarConfig: String?,
-    val coreLibDesugarOutputKeepRuleFile: File?,
+    val enableApiModeling: Boolean,
     val errorFormatMode: SyncOptions.ErrorFormatMode
 ) : Serializable {
 

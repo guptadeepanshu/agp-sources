@@ -17,12 +17,15 @@
 package com.android.build.gradle.internal.services
 
 import com.android.builder.packaging.JarFlinger
-import com.android.builder.utils.SynchronizedFile
 import org.gradle.api.Project
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
+import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.services.BuildService
 import org.gradle.api.services.BuildServiceParameters
 import java.io.File
+import javax.inject.Inject
 
 private const val FAKE_DEPENDENCY_JAR = "FakeDependency.jar"
 private const val ANDROID_SUBDIR = "android"
@@ -34,16 +37,35 @@ abstract class FakeDependencyJarBuildService : BuildService<FakeDependencyJarBui
         val gradleUserHome: Property<File>
     }
 
-    val lazyCachedFakeJar: File by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
-        SynchronizedFile.getInstanceWithMultiProcessLocking(
-            parameters.gradleUserHome.get().resolve(ANDROID_SUBDIR)
-        ).write {
-            val fakeJar = it.resolve(FAKE_DEPENDENCY_JAR)
-            if (!fakeJar.exists()) {
-                fakeJar.parentFile.mkdirs()
-                JarFlinger(fakeJar.toPath()).use {}
+    @get:Inject
+    abstract val providerFactory: ProviderFactory
+
+    @get:Inject
+    abstract val objectFactory: ObjectFactory
+
+    /**
+     * Use [ConfigPhaseFileCreator] to create fake dependency jar during configuration phase to
+     * avoid configuration cache miss.
+     */
+    val lazyCachedFakeJar: File = providerFactory.of(FakeDependencyJarCreator::class.java) {
+        it.parameters.fakeDependencyJar.set(
+                parameters.gradleUserHome.get().resolve(ANDROID_SUBDIR).resolve(FAKE_DEPENDENCY_JAR)
+        )
+    }.get()
+
+    abstract class FakeDependencyJarCreator :
+            ConfigPhaseFileCreator<File, FakeDependencyJarCreator.Params> {
+        interface Params: ConfigPhaseFileCreator.Params {
+            val fakeDependencyJar: RegularFileProperty
+        }
+
+        override fun obtain(): File {
+            val fakeDependencyJar = parameters.fakeDependencyJar.get().asFile
+            if (!fakeDependencyJar.exists()) {
+                fakeDependencyJar.parentFile.mkdirs()
+                JarFlinger(fakeDependencyJar.toPath()).use {}
             }
-            fakeJar
+            return fakeDependencyJar
         }
     }
 

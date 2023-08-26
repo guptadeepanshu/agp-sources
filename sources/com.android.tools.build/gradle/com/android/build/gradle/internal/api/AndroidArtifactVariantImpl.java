@@ -83,7 +83,13 @@ public abstract class AndroidArtifactVariantImpl extends BaseVariantImpl
         }
         synchronized (this) {
             if (_versionName == null) {
-                _versionName = component.getOutputs().getMainSplit().getVersionName().getOrNull();
+                _versionName =
+                        component
+                                .getOldVariantApiLegacySupport()
+                                .getOutputs()
+                                .getMainSplit()
+                                .getVersionName()
+                                .getOrNull();
             }
         }
 
@@ -105,7 +111,13 @@ public abstract class AndroidArtifactVariantImpl extends BaseVariantImpl
 
         synchronized (this) {
             if (_versionCode == null) {
-                _versionCode = component.getOutputs().getMainSplit().getVersionCode().getOrElse(-1);
+                _versionCode =
+                        component
+                                .getOldVariantApiLegacySupport()
+                                .getOutputs()
+                                .getMainSplit()
+                                .getVersionCode()
+                                .getOrElse(-1);
             }
         }
         return _versionCode;

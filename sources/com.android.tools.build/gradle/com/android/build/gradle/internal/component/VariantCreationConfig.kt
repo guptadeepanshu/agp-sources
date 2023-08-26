@@ -16,20 +16,18 @@
 
 package com.android.build.gradle.internal.component
 
-import com.android.build.api.component.impl.UnitTestImpl
-import com.android.builder.core.ComponentType
+import com.android.build.api.variant.Component
+import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.provider.MapProperty
 
 interface VariantCreationConfig: ConsumableCreationConfig {
-    val maxSdkVersion: Int?
+    val maxSdk: Int?
 
     val experimentalProperties: MapProperty<String, Any>
 
-    val testComponents: MutableMap<ComponentType, TestComponentCreationConfig>
-
     val nestedComponents: List<ComponentCreationConfig>
 
-    var unitTest: UnitTestImpl?
-
-    var testFixturesComponent: TestFixturesCreationConfig?
+    fun <T: Component> createUserVisibleVariantObject(
+        stats: GradleBuildVariant.Builder?
+    ): T
 }

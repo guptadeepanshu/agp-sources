@@ -24,12 +24,9 @@ import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.getDirectories
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
-import com.android.builder.dexing.isProguardRule
+import com.android.build.gradle.internal.utils.getOrderedFileTree
 import org.gradle.api.file.Directory
-import org.gradle.api.file.FileTree
 import org.gradle.api.tasks.TaskProvider
-import java.io.File
-import java.util.StringTokenizer
 
 /**
  * Configuration action for a task to merge generated proguard files.
@@ -72,11 +69,8 @@ class MergeGeneratedProguardFilesCreationAction(
                         directory,
                         SdkConstants.META_INF,
                         SdkConstants.PROGUARD_RULES_FOLDER_NAME
-                    )
+                    )?.getOrderedFileTree()
                 }
-                    .map {
-                        it.asFileTree
-                    }
             }
         )
     }

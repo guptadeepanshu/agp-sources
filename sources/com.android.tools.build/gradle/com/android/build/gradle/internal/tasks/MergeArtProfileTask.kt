@@ -16,6 +16,8 @@
 
 package com.android.build.gradle.internal.tasks
 
+import com.android.build.gradle.internal.api.BaselineProfiles
+import com.android.build.gradle.internal.caching.DisabledCachingReason.SIMPLE_MERGING_TASK
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
@@ -28,18 +30,18 @@ import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
+import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.work.DisableCachingByDefault
 
-@DisableCachingByDefault
+@DisableCachingByDefault(because = SIMPLE_MERGING_TASK)
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.ART_PROFILE, secondaryTaskCategories = [TaskCategory.MERGING])
 abstract class MergeArtProfileTask: MergeFileTask() {
 
-    @get:InputFiles
-    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:Classpath // The order of `inputFiles` is important
     abstract override val inputFiles: ConfigurableFileCollection
 
     // Use InputFiles rather than InputFile to allow the file not to exist
@@ -55,7 +57,12 @@ abstract class MergeArtProfileTask: MergeFileTask() {
         workerExecutor.noIsolation().submit(MergeFilesWorkAction::class.java) {
             it.initializeFromAndroidVariantTask(this)
             it.inputFiles.from(inputFiles)
-            it.inputFiles.from(profileSourceDirectories.get().map(Directory::getAsFileTree))
+
+            it.inputFiles.from(
+                profileSourceDirectories.get().map { directory -> directory.asFileTree.files }
+                    .flatten()
+                    .filter(BaselineProfiles::shouldBeMerged)
+            )
             if (profileSource.get().asFile.isFile) {
                 it.inputFiles.from(profileSource)
             }
@@ -70,7 +77,7 @@ abstract class MergeArtProfileTask: MergeFileTask() {
         }
 
         override fun run() {
-            mergeFiles(parameters.inputFiles.files, parameters.outputFile.get().asFile)
+            mergeFiles(parameters.inputFiles.files.filter { it.isFile }, parameters.outputFile.get().asFile)
         }
     }
 
@@ -88,7 +95,9 @@ abstract class MergeArtProfileTask: MergeFileTask() {
             creationConfig.artifacts.setInitialProvider(
                 taskProvider,
                 MergeFileTask::outputFile
-            ).on(InternalArtifactType.MERGED_ART_PROFILE)
+            ).withName(BaselineProfiles.BaselineProfileFileName)
+                .on(InternalArtifactType.MERGED_ART_PROFILE)
+
         }
 
         override fun configure(task: MergeArtProfileTask) {
@@ -103,9 +112,10 @@ abstract class MergeArtProfileTask: MergeFileTask() {
             task.inputFiles.fromDisallowChanges(aarProfilesArtifactCollection.artifactFiles)
 
             // for backwards compat we need to keep reading the old location for baseline profile
-            val artProfile = creationConfig.sources.artProfile
+            creationConfig.sources.artProfile?.let { artProfile ->
+                task.profileSource.fileProvider(artProfile)
+            }
 
-            task.profileSource.fileProvider(artProfile)
             task.profileSource.disallowChanges()
 
             creationConfig.sources.baselineProfiles {

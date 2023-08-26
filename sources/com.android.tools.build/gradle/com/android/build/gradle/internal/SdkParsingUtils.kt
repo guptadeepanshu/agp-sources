@@ -158,7 +158,7 @@ internal fun warnIfCompileSdkTooNew(
     androidGradlePluginVersion: String,
     suppressWarningIfTooNewForVersions: String? = null,
     ) {
-    if (version <= maxVersion) return
+    if (version.compareTo(maxVersion.apiLevel, maxVersion.codename) <= 0) return
     val suppressName = version.apiString
     val suppressSet = suppressWarningIfTooNewForVersions?.splitToSequence(",")?.filter(String::isNotEmpty)?.toSet() ?: setOf()
     if (suppressSet.contains(suppressName)) return

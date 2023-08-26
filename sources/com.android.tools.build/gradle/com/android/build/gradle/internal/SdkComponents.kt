@@ -242,6 +242,14 @@ abstract class SdkComponentsBuildService @Inject constructor(
             sdkLoadStrategy.getOptionalLibraries()
         }
 
+        val aidlExecutableProvider: Provider<RegularFile> = objectFactory.fileProperty().fileProvider(
+            providerFactory.provider { sdkLoadStrategy.getAidlExecutable() }
+        )
+
+        val aidlFrameworkProvider: Provider<RegularFile> = objectFactory.fileProperty().fileProvider(
+            providerFactory.provider { sdkLoadStrategy.getAidlFramework() }
+        )
+
         /**
          * The API versions file from the platform being compiled against.
          *

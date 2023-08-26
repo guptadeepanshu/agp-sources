@@ -58,7 +58,7 @@ public class PostProcessingBlock implements ProguardFilesProvider, PostProcessin
     @NonNull private final DslServices dslServices;
     @NonNull private final ComponentType componentType;
 
-    private boolean removeUnusedCode = true;
+    private boolean removeUnusedCode;
     private boolean removeUnusedResources;
     private boolean obfuscate;
     private boolean optimizeCode;

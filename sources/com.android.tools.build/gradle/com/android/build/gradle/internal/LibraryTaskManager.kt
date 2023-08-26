@@ -28,6 +28,7 @@ import com.android.build.gradle.internal.component.LibraryCreationConfig
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig
 import com.android.build.gradle.internal.dependency.ConfigurationVariantMapping
+import com.android.build.gradle.internal.dsl.ModuleBooleanPropertyKeys
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType
 import com.android.build.gradle.internal.publishing.ComponentPublishingInfo
 import com.android.build.gradle.internal.publishing.PublishedConfigSpec
@@ -38,7 +39,6 @@ import com.android.build.gradle.internal.services.DokkaParallelBuildService
 import com.android.build.gradle.internal.tasks.AarMetadataTask
 import com.android.build.gradle.internal.tasks.BundleLibraryClassesDir
 import com.android.build.gradle.internal.tasks.BundleLibraryClassesJar
-import com.android.build.gradle.internal.tasks.BundleLibraryJavaRes
 import com.android.build.gradle.internal.tasks.CheckManifest
 import com.android.build.gradle.internal.tasks.ExportConsumerProguardFilesTask
 import com.android.build.gradle.internal.tasks.JacocoTask
@@ -60,6 +60,7 @@ import com.android.build.gradle.tasks.CompileLibraryResourcesTask
 import com.android.build.gradle.tasks.ExtractAnnotations
 import com.android.build.gradle.tasks.ExtractDeepLinksTask
 import com.android.build.gradle.tasks.ExtractDeepLinksTask.AarCreationAction
+import com.android.build.gradle.tasks.ExtractSupportedLocalesTask
 import com.android.build.gradle.tasks.JavaDocGenerationTask
 import com.android.build.gradle.tasks.JavaDocJarTask
 import com.android.build.gradle.tasks.MergeResources
@@ -85,7 +86,7 @@ class LibraryTaskManager(
     globalConfig: GlobalTaskCreationConfig,
     localConfig: TaskManagerConfig,
     extension: BaseExtension
-) : TaskManager<LibraryVariantBuilder, LibraryCreationConfig>(
+) : VariantTaskManager<LibraryVariantBuilder, LibraryCreationConfig>(
     project,
     variants,
     testComponents,
@@ -127,8 +128,8 @@ class LibraryTaskManager(
         taskFactory.register(
             ProcessLibraryManifest.CreationAction(
                 libraryVariant,
-                libraryVariant.targetSdkVersion,
-                libraryVariant.maxSdkVersion
+                libraryVariant.targetSdk,
+                libraryVariant.maxSdk
             )
         )
         createRenderscriptTask(libraryVariant)
@@ -193,6 +194,15 @@ class LibraryTaskManager(
         ) {
             taskFactory.register(ExtractAnnotations.CreationAction(libraryVariant))
         }
+
+        // No jacoco transformation for library variants, however, we need to publish the classes
+        // pre transformation as the artifact is used in the jacoco report task.
+        libraryVariant.artifacts.forScope(ScopedArtifacts.Scope.PROJECT)
+            .publishCurrent(
+                ScopedArtifact.CLASSES,
+                InternalScopedArtifact.PRE_JACOCO_TRANSFORMED_CLASSES,
+            )
+
         val instrumented = libraryVariant.isAndroidTestCoverageEnabled
 
         maybeCreateTransformClassesWithAsmTask(libraryVariant)
@@ -209,7 +219,6 @@ class LibraryTaskManager(
 
         // Also create a directory containing the same classes for incremental dexing
         taskFactory.register(BundleLibraryClassesDir.CreationAction(libraryVariant))
-        taskFactory.register(BundleLibraryJavaRes.CreationAction(libraryVariant))
 
         // Create a jar with both classes and java resources.  This artifact is not
         // used by the Android application plugin and the task usually don't need to
@@ -258,6 +267,18 @@ class LibraryTaskManager(
 
         // Add a task to write the local lint AAR file
         taskFactory.register(LibraryLocalLintCreationAction(libraryVariant))
+
+        val experimentalProperties = libraryVariant.experimentalProperties
+        experimentalProperties.finalizeValue()
+        if (!libraryVariant.debuggable &&
+                (ModuleBooleanPropertyKeys.VERIFY_AAR_CLASSES.getValueAsOptionalBoolean(
+                        experimentalProperties.get()) ?:
+                globalConfig.services.projectOptions[BooleanOption.VERIFY_AAR_CLASSES])) {
+            createVerifyLibraryClassesTask(libraryVariant)
+        }
+
+        taskFactory.register(ExtractSupportedLocalesTask.CreationAction(libraryVariant))
+
         createBundleTask(libraryVariant)
     }
 
@@ -346,20 +367,6 @@ class LibraryTaskManager(
         }
     }
 
-    override fun createDependencyStreams(creationConfig: ComponentCreationConfig) {
-        super.createDependencyStreams(creationConfig)
-
-        // add the same jars twice in the same stream as the EXTERNAL_LIB in the task manager
-        // so that filtering of duplicates in proguard can work.
-        creationConfig
-            .artifacts
-            .forScope(InternalScopedArtifacts.InternalScope.LOCAL_DEPS)
-            .setInitialContent(
-                ScopedArtifact.CLASSES,
-                creationConfig.computeLocalPackagedJars()
-            )
-    }
-
     private class MergeResourceCallback(private val variant: LibraryCreationConfig) :
         TaskProviderCallback<MergeResources> {
         override fun handleProvider(taskProvider: TaskProvider<MergeResources>) {
@@ -427,24 +434,13 @@ class LibraryTaskManager(
         )
     }
 
-    fun createLibraryAssetsTask(variant: LibraryCreationConfig) {
+    private fun createLibraryAssetsTask(variant: LibraryCreationConfig) {
         taskFactory.register(LibraryAssetCreationAction(variant))
     }
 
-    override fun getJavaResMergingScopes(
-        creationConfig: ComponentCreationConfig
-    ): Set<InternalScopedArtifacts.InternalScope> =
-        if (creationConfig.componentType.isTestComponent) {
-            setOf(
-                InternalScopedArtifacts.InternalScope.SUB_PROJECT,
-                InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS,
-                InternalScopedArtifacts.InternalScope.LOCAL_DEPS,
-            )
-        } else {
-            setOf(
-                InternalScopedArtifacts.InternalScope.LOCAL_DEPS,
-            )
-        }
+    override val javaResMergingScopes = setOf(
+        InternalScopedArtifacts.InternalScope.LOCAL_DEPS,
+    )
 
     override fun createPrepareLintJarForPublishTask() {
         super.createPrepareLintJarForPublishTask()

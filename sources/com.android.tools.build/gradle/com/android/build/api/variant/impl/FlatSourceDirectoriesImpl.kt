@@ -20,6 +20,7 @@ import com.android.build.api.variant.SourceDirectories
 import com.android.build.gradle.internal.services.VariantServices
 import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.file.Directory
+import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.util.PatternFilterable
 import java.io.File
@@ -101,24 +102,29 @@ class FlatSourceDirectoriesImpl(
     /*
      * Internal API that can only be used by the model.
      */
-    override fun variantSourcesForModel(filter: (DirectoryEntry) -> Boolean ): List<File> {
-        val files = mutableListOf<File>()
+    override fun variantSourcesForModel(filter: (DirectoryEntry) -> Boolean ): List<File> =
+        variantSourcesFileCollectionForModel(filter).files.toList()
+
+    internal fun variantSourcesFileCollectionForModel(
+        filter: (DirectoryEntry) -> Boolean
+    ): FileCollection {
+        val fileCollection = variantServices.fileCollection()
         variantSources.get()
             .filter { filter.invoke(it) }
             .forEach {
                 if (it is TaskProviderBasedDirectoryEntryImpl) {
-                    files.add(it.directoryProvider.get().asFile)
+                    fileCollection.from(it.directoryProvider)
                 } else {
-                    val asDirectoryProperties = it.asFiles(
-                      variantServices.provider {
-                          variantServices.projectInfo.projectDirectory
-                      }
+                    fileCollection.from(
+                        it.asFiles(
+                            variantServices.provider {
+                                variantServices.projectInfo.projectDirectory
+                            }
+                        )
                     )
-                    asDirectoryProperties.get().forEach { directory ->
-                        files.add(directory.asFile)
-                    }
                 }
             }
-        return files
+        fileCollection.disallowChanges()
+        return fileCollection
     }
 }

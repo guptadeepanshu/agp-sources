@@ -273,7 +273,7 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
 
             task.mergeBlameLogFolder.setDisallowChanges(creationConfig.artifacts.get(InternalArtifactType.MERGED_RES_BLAME_FOLDER))
 
-            task.minSdkVersion = creationConfig.minSdkVersion.apiLevel
+            task.minSdkVersion = creationConfig.minSdk.apiLevel
 
             task.resConfig = androidResourcesCreationConfig.resourceConfigurations
 

@@ -18,6 +18,7 @@ package com.android.build.gradle.internal.testing;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.build.gradle.internal.testing.utp.PrivacySandboxSdkInstallBundle;
 import com.android.builder.testing.api.DeviceConnector;
 import com.android.ddmlib.testrunner.RemoteAndroidTestRunner;
 import com.android.ide.common.process.ProcessExecutor;
@@ -48,7 +49,7 @@ public class SimpleTestRunner extends BaseTestRunner {
             @NonNull String variantName,
             @NonNull StaticTestData testData,
             @NonNull Map<DeviceConnector, ImmutableList<File>> apksForDevice,
-            @NonNull Set<File> dependencyApks,
+            @NonNull PrivacySandboxSdkInstallBundle privacySandboxSdkInstallBundle,
             @NonNull Set<File> helperApks,
             int timeoutInMs,
             @NonNull Collection<String> installOptions,
@@ -70,7 +71,7 @@ public class SimpleTestRunner extends BaseTestRunner {
                             variantName,
                             apks.getValue(),
                             testData,
-                            dependencyApks,
+                            privacySandboxSdkInstallBundle.getSdkApkSet(),
                             helperApks,
                             resultsDir,
                             additionalTestOutputEnabled,

@@ -37,7 +37,7 @@ internal abstract class TestedVariantDslInfoImpl internal constructor(
     dataProvider: ManifestDataProvider,
     services: VariantServices,
     buildDirectory: DirectoryProperty,
-    extension: InternalTestedExtension<*, *, *, *>
+    extension: InternalTestedExtension<*, *, *, *, *>
 ) : VariantDslInfoImpl(
     componentIdentity,
     componentType,

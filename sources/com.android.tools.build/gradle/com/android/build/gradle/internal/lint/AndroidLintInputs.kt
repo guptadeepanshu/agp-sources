@@ -28,6 +28,7 @@ import com.android.build.api.variant.impl.LayeredSourceDirectoriesImpl
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
+import com.android.build.gradle.internal.component.LibraryCreationConfig
 import com.android.build.gradle.internal.component.UnitTestCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.dependency.VariantDependencies
@@ -946,9 +947,13 @@ abstract class VariantInputs {
         manifestMergeReport.disallowChanges()
         namespace.setDisallowChanges(creationConfig.namespace)
 
-        minSdkVersion.initialize(creationConfig.minSdkVersion)
+        minSdkVersion.initialize(creationConfig.minSdk)
 
-        targetSdkVersion.initialize(creationConfig.targetSdkVersion)
+        if (creationConfig is ApkCreationConfig) {
+            targetSdkVersion.initialize(creationConfig.targetSdk)
+        } else if (creationConfig is LibraryCreationConfig) {
+            targetSdkVersion.initialize(creationConfig.targetSdk)
+        }
 
         resValues.setDisallowChanges(
             creationConfig.resValuesCreationConfig?.resValues,
@@ -1023,7 +1028,8 @@ abstract class VariantInputs {
                     .initialize(
                         testFixturesCreationConfig.sources,
                         lintMode,
-                        projectDir = creationConfig.services.provider { creationConfig.services.projectInfo.projectDirectory }
+                        projectDir = creationConfig.services.provider { creationConfig.services.projectInfo.projectDirectory },
+                        testFixtureOnly = true
                     )
             )
         }
@@ -1259,17 +1265,19 @@ abstract class SourceProviderInput {
     @get:Input
     abstract val instrumentationTestOnly: Property<Boolean>
 
+    @get:Input
+    abstract val testFixtureOnly: Property<Boolean>
+
     internal fun initialize(
         sources: InternalSources,
         lintMode: LintMode,
         projectDir: Provider<Directory>,
         unitTestOnly: Boolean = false,
-        instrumentationTestOnly: Boolean = false
+        instrumentationTestOnly: Boolean = false,
+        testFixtureOnly: Boolean = false
     ): SourceProviderInput {
         this.manifestFiles.add(sources.manifestFile)
-        sources.manifestOverlays.forEach { manifest ->
-            this.manifestFiles.add(manifest)
-        }
+        this.manifestFiles.addAll(sources.manifestOverlayFiles.map { it.filter(File::isFile) })
         this.manifestFiles.disallowChanges()
 
         fun FlatSourceDirectoriesImpl.getFilteredSourceProviders(into: ConfigurableFileCollection) {
@@ -1338,6 +1346,7 @@ abstract class SourceProviderInput {
         this.debugOnly.setDisallowChanges(false) //TODO
         this.unitTestOnly.setDisallowChanges(unitTestOnly)
         this.instrumentationTestOnly.setDisallowChanges(instrumentationTestOnly)
+        this.testFixtureOnly.setDisallowChanges(testFixtureOnly)
         return this
     }
 
@@ -1363,6 +1372,7 @@ abstract class SourceProviderInput {
         this.debugOnly.setDisallowChanges(false)
         this.unitTestOnly.setDisallowChanges(unitTestOnly)
         this.instrumentationTestOnly.setDisallowChanges(false)
+        this.testFixtureOnly.setDisallowChanges(false)
         return this
     }
 
@@ -1376,6 +1386,7 @@ abstract class SourceProviderInput {
                 debugOnly = debugOnly.get(),
                 unitTestOnly = unitTestOnly.get(),
                 instrumentationTestOnly = instrumentationTestOnly.get(),
+                testFixture = testFixtureOnly.get()
             )
         )
     }
@@ -1528,7 +1539,7 @@ abstract class AndroidArtifactInput : ArtifactInput() {
                 getDesugaredMethods(
                         creationConfig.services,
                         coreLibDesugaring,
-                        creationConfig.minSdkVersion,
+                        creationConfig.minSdk,
                         creationConfig.global
                 )
         ).disallowChanges()
@@ -1560,6 +1571,7 @@ abstract class AndroidArtifactInput : ArtifactInput() {
             testedVariant = null,
             project = project,
             projectOptions = projectOptions,
+            isLibraryConstraintsApplied = false,
             isSelfInstrumenting = false,
         )
         artifactCollectionsInputs.setDisallowChanges(
@@ -1678,6 +1690,7 @@ abstract class JavaArtifactInput : ArtifactInput() {
             testedVariant = null,
             project = project,
             projectOptions = projectOptions,
+            isLibraryConstraintsApplied = false,
             isSelfInstrumenting = false,
         )
         artifactCollectionsInputs.setDisallowChanges(
@@ -1910,6 +1923,7 @@ class LintFromMaven(val files: FileCollection, val version: String) {
                 )
             )
             config.isTransitive = true
+            config.isCanBeConsumed = false
             config.isCanBeResolved = true
             return LintFromMaven(config, lintVersion)
         }

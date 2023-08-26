@@ -17,6 +17,7 @@
 package com.android.build.gradle.internal.ide.dependencies
 
 import com.android.build.gradle.internal.attributes.VariantAttr
+import com.android.build.gradle.internal.dependency.AdditionalArtifactType
 import com.android.build.gradle.internal.dependency.ResolutionResultProvider
 import com.android.build.gradle.internal.ide.v2.ArtifactDependenciesImpl
 import com.android.build.gradle.internal.ide.v2.GraphItemImpl
@@ -26,6 +27,7 @@ import com.android.build.gradle.internal.testFixtures.isProjectTestFixturesCapab
 import com.android.builder.model.v2.ide.ArtifactDependencies
 import com.android.builder.model.v2.ide.GraphItem
 import com.android.builder.model.v2.ide.UnresolvedDependency
+import org.gradle.api.artifacts.component.ComponentIdentifier
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
 import org.gradle.api.artifacts.result.DependencyResult
 import org.gradle.api.artifacts.result.ResolvedDependencyResult
@@ -37,14 +39,16 @@ import java.io.File
 class FullDependencyGraphBuilder(
     private val inputs: ArtifactCollectionsInputs,
     private val resolutionResultProvider: ResolutionResultProvider,
-    private val libraryService: LibraryService
+    private val libraryService: LibraryService,
+    private val addAdditionalArtifactsInModel: Boolean,
+    private val dontBuildRuntimeClasspath: Boolean
 ) {
 
     private val unresolvedDependencies = mutableMapOf<String, UnresolvedDependency>()
 
     fun build(): ArtifactDependencies = ArtifactDependenciesImpl(
         buildGraph(AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH),
-        buildGraph(AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH),
+        if (dontBuildRuntimeClasspath) null else buildGraph(AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH),
         unresolvedDependencies.values.toList()
     )
 
@@ -62,6 +66,10 @@ class FullDependencyGraphBuilder(
 
         val artifactMap = artifacts.associateBy { it.variant.toKey() }
 
+        val javadocArtifacts = resolveAdditionalArtifact(configType, AdditionalArtifactType.JAVADOC)
+        val sourceArtifacts = resolveAdditionalArtifact(configType, AdditionalArtifactType.SOURCE)
+        val sampleArtifacts = resolveAdditionalArtifact(configType, AdditionalArtifactType.SAMPLE)
+
         // Keep a list of the visited nodes so that we don't revisit them in different branches.
         // This is a map so that we can easy get the matching GraphItem for it,
         val visited = mutableMapOf<ResolvedVariantResult, GraphItem>()
@@ -71,7 +79,8 @@ class FullDependencyGraphBuilder(
         // setup via constraints, which is the case for our compile classpath always as the
         // constraints come from the runtime classpath
         for (dependency in roots.filter { !it.isConstraint }) {
-            handleDependency(dependency, visited, artifactMap)?.let {
+            handleDependency(dependency, visited, artifactMap,
+                    javadocArtifacts, sourceArtifacts, sampleArtifacts)?.let {
                 items.add(it)
             }
         }
@@ -81,7 +90,7 @@ class FullDependencyGraphBuilder(
         val unvisitedArtifacts = artifacts.filter { it.componentIdentifier is OpaqueComponentArtifactIdentifier }
 
         for (artifact in unvisitedArtifacts) {
-            val library = libraryService.getLibrary(artifact)
+            val library = libraryService.getLibrary(artifact, AdditionalArtifacts(null, null, null))
             items.add(GraphItemImpl(library.key, null))
         }
 
@@ -91,7 +100,10 @@ class FullDependencyGraphBuilder(
     private fun handleDependency(
         dependency: DependencyResult,
         visited: MutableMap<ResolvedVariantResult, GraphItem>,
-        artifactMap: Map<VariantKey, ResolvedArtifact>
+        artifactMap: Map<VariantKey, ResolvedArtifact>,
+        javadocArtifacts: Map<ComponentIdentifier, File>,
+        sourceArtifacts: Map<ComponentIdentifier, File>,
+        sampleArtifacts: Map<ComponentIdentifier, File>
     ): GraphItem? {
         if (dependency.isConstraint) return null
         if (dependency !is ResolvedDependencyResult) {
@@ -133,6 +145,11 @@ class FullDependencyGraphBuilder(
             dependency.selected.getDependenciesForVariant(variant)
         }
 
+        val javadoc = javadocArtifacts[variant.owner]
+        val source = sourceArtifacts[variant.owner]
+        val sample = sampleArtifacts[variant.owner]
+        val additionalArtifacts = AdditionalArtifacts(javadoc, source, sample)
+
         val library = if (artifact == null) {
             val owner = variant.owner
 
@@ -163,7 +180,8 @@ class FullDependencyGraphBuilder(
                         dependencyType = ResolvedArtifact.DependencyType.RELOCATED_ARTIFACT,
                         isWrappedModule = false,
                         buildMapping = inputs.buildMapping
-                    )
+                    ),
+                    additionalArtifacts
                 )
             } else if (owner is ProjectComponentIdentifier && inputs.projectPath == owner.projectPath) {
                 // Scenario 2
@@ -186,7 +204,8 @@ class FullDependencyGraphBuilder(
                         dependencyType = ResolvedArtifact.DependencyType.ANDROID,
                         isWrappedModule = false,
                         buildMapping = inputs.buildMapping
-                    )
+                    ),
+                    additionalArtifacts
                 )
             } else if (owner !is ProjectComponentIdentifier && variantDependencies.isNotEmpty()) {
                 // Scenario 3
@@ -202,7 +221,8 @@ class FullDependencyGraphBuilder(
                         dependencyType = ResolvedArtifact.DependencyType.NO_ARTIFACT_FILE,
                         isWrappedModule = false,
                         buildMapping = inputs.buildMapping
-                    )
+                    ),
+                    additionalArtifacts
                 )
             } else {
                 // Scenario 4 or other unknown scenario
@@ -210,7 +230,7 @@ class FullDependencyGraphBuilder(
             }
         } else {
             // get the matching library item
-            libraryService.getLibrary(artifact)
+            libraryService.getLibrary(artifact, additionalArtifacts)
         }
 
         if (library != null) {
@@ -225,7 +245,8 @@ class FullDependencyGraphBuilder(
 
             // Now visit children, and add them as dependencies
             variantDependencies.forEach {
-                handleDependency(it, visited, artifactMap)?.let { childGraphItem ->
+                handleDependency(it, visited, artifactMap,
+                        javadocArtifacts, sourceArtifacts, sampleArtifacts)?.let { childGraphItem ->
                     libraryGraphItem.addDependency(childGraphItem)
                 }
             }
@@ -233,5 +254,18 @@ class FullDependencyGraphBuilder(
         }
 
         return null
+    }
+
+    private fun resolveAdditionalArtifact(
+            configType: AndroidArtifacts.ConsumedConfigType,
+            additionalArtifactType: AdditionalArtifactType
+    ): Map<ComponentIdentifier, File> {
+        return if (addAdditionalArtifactsInModel) {
+            resolutionResultProvider
+                    .getAdditionalArtifacts(configType, additionalArtifactType)
+                    .associate { it.variant.owner to it.file }
+        } else {
+            mapOf()
+        }
     }
 }

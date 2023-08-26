@@ -36,9 +36,24 @@ fun recordOkInstrumentedTestRun(
     coverageEnabled: Boolean,
     testCount: Int,
     analyticsService: AnalyticsService
+) =
+    recordOkInstrumentedTestRun(
+        gatherTestLibraries(dependencies),
+        execution,
+        coverageEnabled,
+        testCount,
+        analyticsService
+    )
+
+fun recordOkInstrumentedTestRun(
+    testLibraries: TestLibraries,
+    execution: TestOptions.Execution,
+    coverageEnabled: Boolean,
+    testCount: Int,
+    analyticsService: AnalyticsService
 ) {
     recordTestRun(
-        dependencies = dependencies,
+        testLibraries = testLibraries,
         execution = execution,
         coverageEnabled = coverageEnabled,
         testCount = testCount,
@@ -56,7 +71,7 @@ fun recordOkUnitTestRun(
     isIdeInvocation: Boolean
 ) {
     recordTestRun(
-        dependencies = dependencies,
+        testLibraries = gatherTestLibraries(dependencies),
         execution = null,
         coverageEnabled = coverageEnabled,
         testCount = testCount,
@@ -74,9 +89,22 @@ fun recordCrashedInstrumentedTestRun(
     execution: TestOptions.Execution,
     coverageEnabled: Boolean,
     analyticsService: AnalyticsService
+) =
+    recordCrashedInstrumentedTestRun(
+        gatherTestLibraries(dependencies),
+        execution,
+        coverageEnabled,
+        analyticsService
+    )
+
+fun recordCrashedInstrumentedTestRun(
+    testLibraries: TestLibraries,
+    execution: TestOptions.Execution,
+    coverageEnabled: Boolean,
+    analyticsService: AnalyticsService
 ) {
     recordTestRun(
-        dependencies = dependencies,
+        testLibraries = testLibraries,
         execution = execution,
         coverageEnabled = coverageEnabled,
         testCount = 0,
@@ -93,7 +121,7 @@ fun recordCrashedUnitTestRun(
     isIdeInvocation: Boolean
 ) {
     recordTestRun(
-        dependencies = dependencies,
+        testLibraries = gatherTestLibraries(dependencies),
         execution = null,
         coverageEnabled = coverageEnabled,
         testCount = 0,
@@ -107,7 +135,7 @@ fun recordCrashedUnitTestRun(
 }
 
 private fun recordTestRun(
-    dependencies: ArtifactCollection,
+    testLibraries: TestLibraries,
     execution: TestOptions.Execution?,
     coverageEnabled: Boolean,
     testCount: Int,
@@ -123,7 +151,7 @@ private fun recordTestRun(
         crashed = infrastructureCrashed
         gradleVersion = Version.ANDROID_GRADLE_PLUGIN_VERSION
         codeCoverageEnabled = coverageEnabled
-        testLibraries = gatherTestLibraries(dependencies)
+        this.testLibraries = testLibraries
         if (execution != null) testExecution = AnalyticsUtil.toProto(execution)
     }.build()
 
@@ -139,7 +167,7 @@ private fun recordTestRun(
     )
 }
 
-private fun gatherTestLibraries(dependencies: ArtifactCollection): TestLibraries {
+fun gatherTestLibraries(dependencies: ArtifactCollection): TestLibraries {
     return TestLibraries.newBuilder().also { testLibraries ->
         dependencies.artifacts.forEach { resolvedArtifact ->
             val id = resolvedArtifact.id.componentIdentifier

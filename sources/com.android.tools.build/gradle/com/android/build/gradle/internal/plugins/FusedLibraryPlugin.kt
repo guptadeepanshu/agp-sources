@@ -304,7 +304,7 @@ class FusedLibraryPlugin @Inject constructor(
         // This is the configuration that will contain all the JAVA_API dependencies that are not
         // fused in the resulting aar library.
         val includedApiUnmerged = project.configurations.create("includeApiUnmerged").also {
-            it.isCanBeConsumed = true
+            it.isCanBeConsumed = false
             it.isCanBeResolved = true
             it.incoming.beforeResolve(
                     SegregatingConstraintHandler(

@@ -40,3 +40,11 @@ constructor(dslServices: DslServices): SigningConfig {
         set(value) { _storeFile = value?.absolutePath }
 
 }
+
+internal fun SigningConfig.isPresent(): Boolean {
+    return this.storeFile != null ||
+            this.storePassword != null ||
+            this.keyAlias != null ||
+            this.keyPassword != null
+}
+

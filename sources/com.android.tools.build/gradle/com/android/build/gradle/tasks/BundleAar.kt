@@ -20,6 +20,9 @@ import android.databinding.tool.DataBindingBuilder
 import com.android.SdkConstants
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.gradle.internal.component.ComponentCreationConfig
+import com.android.build.gradle.internal.component.KmpCreationConfig
+import com.android.build.gradle.internal.component.LibraryCreationConfig
+import com.android.build.gradle.internal.component.TestFixturesCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.LIBRARY_AND_LOCAL_JARS_JNI
 import com.android.build.gradle.internal.scope.getOutputPath
@@ -107,9 +110,9 @@ abstract class BundleAar : Zip(), VariantAwareTask {
             return hasLocalAarDependencies
         }
 
-    abstract class BaseCreationAction(
-        creationConfig: ComponentCreationConfig
-    ) : VariantTaskCreationAction<BundleAar, ComponentCreationConfig>(
+    abstract class BaseCreationAction<T: ComponentCreationConfig>(
+        creationConfig: T
+    ) : VariantTaskCreationAction<BundleAar, T>(
         creationConfig
     ) {
         override val type: Class<BundleAar>
@@ -166,15 +169,19 @@ abstract class BundleAar : Zip(), VariantAwareTask {
                 task.from(artifacts.get(InternalArtifactType.PUBLIC_RES))
                 task.from(artifacts.get(InternalArtifactType.NAVIGATION_JSON_FOR_AAR))
             }
-            task.from(artifacts.get(InternalArtifactType.ANNOTATIONS_ZIP))
             task.from(artifacts.get(InternalArtifactType.AAR_MAIN_JAR))
             task.from(
                 artifacts.get(InternalArtifactType.AAR_LIBS_DIRECTORY),
                 prependToCopyPath(SdkConstants.LIBS_FOLDER)
             )
-            task.from(
-                creationConfig.artifacts.get(InternalArtifactType.LIBRARY_ASSETS),
-                prependToCopyPath(SdkConstants.FD_ASSETS))
+
+            if (creationConfig !is KmpCreationConfig) {
+                task.from(artifacts.get(InternalArtifactType.ANNOTATIONS_ZIP))
+                task.from(
+                    creationConfig.artifacts.get(InternalArtifactType.LIBRARY_ASSETS),
+                    prependToCopyPath(SdkConstants.FD_ASSETS)
+                )
+            }
             task.from(
                 artifacts.get(InternalArtifactType.AAR_METADATA)
             ) {
@@ -197,8 +204,8 @@ abstract class BundleAar : Zip(), VariantAwareTask {
      * renderscript, jni, lint jar, prefab package.
      */
     class TestFixturesCreationAction(
-        creationConfig: ComponentCreationConfig
-    ) : BaseCreationAction(creationConfig) {
+        creationConfig: TestFixturesCreationConfig
+    ) : BaseCreationAction<TestFixturesCreationConfig>(creationConfig) {
 
         override val name: String
             get() = computeTaskName("bundle", "Aar")
@@ -210,7 +217,7 @@ abstract class BundleAar : Zip(), VariantAwareTask {
             val propertyProvider = { task: BundleAar -> task.archiveFile }
             creationConfig.artifacts.setInitialProvider(taskProvider,BundleAar::mappedOutput, propertyProvider)
                 .atLocation(creationConfig.paths.aarLocation)
-                .withName(creationConfig.outputs.getMainSplit().outputFileName)
+                .withName(creationConfig.aarOutputFileName)
                 .on(SingleArtifact.AAR)
         }
 
@@ -224,8 +231,8 @@ abstract class BundleAar : Zip(), VariantAwareTask {
     }
 
     class TestFixturesLocalLintCreationAction(
-        creationConfig: ComponentCreationConfig
-    ) : BaseCreationAction(creationConfig) {
+        creationConfig: TestFixturesCreationConfig
+    ) : BaseCreationAction<TestFixturesCreationConfig>(creationConfig) {
 
         override val name: String
             get() = computeTaskName("bundle", "LocalLintAar")
@@ -275,7 +282,7 @@ abstract class BundleAar : Zip(), VariantAwareTask {
      * module.
      */
     class LibraryLocalLintCreationAction(
-        creationConfig: ComponentCreationConfig
+        creationConfig: LibraryCreationConfig
     ) : AbstractLibraryCreationAction(creationConfig) {
 
         override val name: String
@@ -314,7 +321,7 @@ abstract class BundleAar : Zip(), VariantAwareTask {
     }
 
     class LibraryCreationAction(
-        creationConfig: ComponentCreationConfig
+        creationConfig: LibraryCreationConfig
     ) : AbstractLibraryCreationAction(creationConfig) {
 
         override val name: String
@@ -329,7 +336,7 @@ abstract class BundleAar : Zip(), VariantAwareTask {
             creationConfig.let {
                 it.artifacts.setInitialProvider(taskProvider, BundleAar::mappedOutput) { task: BundleAar -> task.archiveFile }
                     .atLocation(it.paths.aarLocation)
-                    .withName(it.outputs.getMainSplit().outputFileName)
+                    .withName(it.aarOutputFileName)
                     .on(SingleArtifact.AAR)
             }
         }
@@ -340,8 +347,8 @@ abstract class BundleAar : Zip(), VariantAwareTask {
     }
 
     abstract class AbstractLibraryCreationAction(
-        creationConfig: ComponentCreationConfig
-    ) : BaseCreationAction(creationConfig){
+        creationConfig: LibraryCreationConfig
+    ) : BaseCreationAction<LibraryCreationConfig>(creationConfig){
 
         override fun configure(
             task: BundleAar
@@ -385,6 +392,66 @@ abstract class BundleAar : Zip(), VariantAwareTask {
             }
 
             task.from(creationConfig.artifacts.get(InternalArtifactType.LIBRARY_ART_PROFILE))
+        }
+    }
+
+    class KotlinMultiplatformCreationAction(
+        creationConfig: KmpCreationConfig
+    ) : BaseCreationAction<KmpCreationConfig>(creationConfig) {
+
+        override val name: String
+            get() = computeTaskName("bundle", "Aar")
+
+        override fun handleProvider(
+            taskProvider: TaskProvider<BundleAar>
+        ) {
+            super.handleProvider(taskProvider)
+            creationConfig.taskContainer.bundleLibraryTask = taskProvider
+
+            creationConfig.artifacts.setInitialProvider(
+                taskProvider,
+                BundleAar::mappedOutput,
+                BundleAar::getArchiveFile
+            ).atLocation(creationConfig.paths.aarLocation)
+                .withName(creationConfig.aarOutputFileName)
+                .on(SingleArtifact.AAR)
+        }
+
+        override fun configure(task: BundleAar) {
+            super.configure(task)
+            task.destinationDirectory.set(creationConfig.paths.aarLocation)
+            task.archiveExtension.set(BuilderConstants.EXT_LIB_ARCHIVE)
+        }
+    }
+
+    class KotlinMultiplatformLocalLintCreationAction(
+        creationConfig: KmpCreationConfig
+    ) : BaseCreationAction<KmpCreationConfig>(creationConfig) {
+
+        override val name: String
+            get() = computeTaskName("bundle", "LocalLintAar")
+
+        override fun handleProvider(taskProvider: TaskProvider<BundleAar>) {
+            super.handleProvider(taskProvider)
+            val outputFile =
+                InternalArtifactType.LOCAL_AAR_FOR_LINT
+                    .getOutputPath(
+                        creationConfig.artifacts.buildDirectory,
+                        creationConfig.name
+                    )
+            val propertyProvider = { task: BundleAar -> task.archiveFile }
+            creationConfig.artifacts
+                .setInitialProvider(taskProvider, BundleAar::mappedOutput, propertyProvider)
+                .withName("out.aar")
+                .atLocation(outputFile)
+                .on(InternalArtifactType.LOCAL_AAR_FOR_LINT)
+        }
+
+        override fun configure(task: BundleAar) {
+            super.configure(task)
+
+            // No need to compress this archive because it's just an intermediate artifact.
+            task.entryCompression = ZipEntryCompression.STORED
         }
     }
 

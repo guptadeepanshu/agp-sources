@@ -125,13 +125,12 @@ abstract class BuildType @Inject @WithLazyInitialization(methodName="lazyInit") 
             return this.externalNativeBuild
         }
 
-    private val _postProcessing: PostProcessingBlock = dslServices.newInstance(
+    val _postProcessing: PostProcessingBlock = dslServices.newInstance(
         PostProcessingBlock::class.java,
         dslServices,
         componentType
     )
-    private var _postProcessingConfiguration: PostProcessingConfiguration? = null
-    private var postProcessingDslMethodUsed: String? = null
+
     private var _shrinkResources = false
 
     /*
@@ -243,7 +242,7 @@ abstract class BuildType @Inject @WithLazyInitialization(methodName="lazyInit") 
         enableUnitTestCoverage = thatBuildType.enableUnitTestCoverage
         enableAndroidTestCoverage = thatBuildType.enableAndroidTestCoverage
         externalNativeBuildOptions._initWith(thatBuildType.externalNativeBuildOptions)
-        _postProcessing.initWith(that.postprocessing)
+        _postProcessing.initWith(that._postProcessing)
         isCrunchPngs = thatBuildType.isCrunchPngs
         isCrunchPngsDefault = thatBuildType.isCrunchPngsDefault
         setMatchingFallbacks(thatBuildType.matchingFallbacks)
@@ -309,13 +308,11 @@ abstract class BuildType @Inject @WithLazyInitialization(methodName="lazyInit") 
         }
 
     override fun proguardFile(proguardFile: Any): BuildType {
-        checkPostProcessingConfiguration(PostProcessingConfiguration.OLD_DSL, "proguardFile")
         proguardFiles.add(dslServices.file(proguardFile))
         return this
     }
 
     override fun proguardFiles(vararg files: Any): BuildType {
-        checkPostProcessingConfiguration(PostProcessingConfiguration.OLD_DSL, "proguardFiles")
         for (file in files) {
             proguardFile(file)
         }
@@ -336,7 +333,6 @@ abstract class BuildType @Inject @WithLazyInitialization(methodName="lazyInit") 
      * full path to the files. They are identical except for enabling optimizations.
      */
     override fun setProguardFiles(proguardFileIterable: Iterable<*>): BuildType {
-        checkPostProcessingConfiguration(PostProcessingConfiguration.OLD_DSL, "setProguardFiles")
         val replacementFiles = Iterables.toArray(proguardFileIterable, Any::class.java)
         proguardFiles.clear()
         proguardFiles(
@@ -350,13 +346,11 @@ abstract class BuildType @Inject @WithLazyInitialization(methodName="lazyInit") 
 
 
     override fun testProguardFile(proguardFile: Any): BuildType {
-        checkPostProcessingConfiguration(PostProcessingConfiguration.OLD_DSL, "testProguardFile")
         testProguardFiles.add(dslServices.file(proguardFile))
         return this
     }
 
     override fun testProguardFiles(vararg proguardFiles: Any): BuildType {
-        checkPostProcessingConfiguration(PostProcessingConfiguration.OLD_DSL, "testProguardFiles")
         for (proguardFile in proguardFiles) {
             testProguardFile(proguardFile)
         }
@@ -370,9 +364,6 @@ abstract class BuildType @Inject @WithLazyInitialization(methodName="lazyInit") 
      * Test code needs to be processed to apply the same obfuscation as was done to main code.
      */
     fun setTestProguardFiles(files: Iterable<*>): BuildType {
-        checkPostProcessingConfiguration(
-            PostProcessingConfiguration.OLD_DSL, "setTestProguardFiles"
-        )
         testProguardFiles.clear()
         testProguardFiles(
             *Iterables.toArray(
@@ -387,17 +378,11 @@ abstract class BuildType @Inject @WithLazyInitialization(methodName="lazyInit") 
         get() = super.consumerProguardFiles
 
     override fun consumerProguardFile(proguardFile: Any): BuildType {
-        checkPostProcessingConfiguration(
-            PostProcessingConfiguration.OLD_DSL, "consumerProguardFile"
-        )
         consumerProguardFiles.add(dslServices.file(proguardFile))
         return this
     }
 
     override fun consumerProguardFiles(vararg proguardFiles: Any): BuildType {
-        checkPostProcessingConfiguration(
-            PostProcessingConfiguration.OLD_DSL, "consumerProguardFiles"
-        )
         for (proguardFile in proguardFiles) {
             consumerProguardFile(proguardFile)
         }
@@ -418,9 +403,6 @@ abstract class BuildType @Inject @WithLazyInitialization(methodName="lazyInit") 
      * This is only valid for Library project. This is ignored in Application project.
      */
     fun setConsumerProguardFiles(proguardFileIterable: Iterable<*>): BuildType {
-        checkPostProcessingConfiguration(
-            PostProcessingConfiguration.OLD_DSL, "setConsumerProguardFiles"
-        )
         consumerProguardFiles.clear()
         consumerProguardFiles(
             *Iterables.toArray(
@@ -465,22 +447,17 @@ abstract class BuildType @Inject @WithLazyInitialization(methodName="lazyInit") 
         action.invoke(shaders)
     }
 
-    override var isMinifyEnabled: Boolean = false
+    override var isMinifyEnabled: Boolean
         get() =
             // Try to return a sensible value for the model and other Gradle plugins inspecting the DSL.
-            if (_postProcessingConfiguration != PostProcessingConfiguration.POSTPROCESSING_BLOCK) {
-                field
-            } else {
-                (_postProcessing.isRemoveUnusedCode ||
-                        _postProcessing.isObfuscate ||
-                        _postProcessing.isOptimizeCode)
-            }
+            _postProcessing.isRemoveUnusedCode ||
+                    _postProcessing.isObfuscate ||
+                    _postProcessing.isOptimizeCode
+
         set(value) {
-            checkPostProcessingConfiguration(
-                PostProcessingConfiguration.OLD_DSL,
-                "setMinifyEnabled"
-            )
-            field = value
+            _postProcessing.isRemoveUnusedCode = value
+            _postProcessing.isObfuscate = value
+            _postProcessing.isOptimizeCode = value
         }
 
     /**
@@ -491,18 +468,10 @@ abstract class BuildType @Inject @WithLazyInitialization(methodName="lazyInit") 
     override var isShrinkResources: Boolean
         get() =
             // Try to return a sensible value for the model and other Gradle plugins inspecting the DSL.
-            if (_postProcessingConfiguration != PostProcessingConfiguration.POSTPROCESSING_BLOCK) {
-                _shrinkResources
-            } else {
-                _postProcessing.isRemoveUnusedResources
-            }
+            _postProcessing.isRemoveUnusedResources
         set(value) {
             checkShrinkResourceEligibility(componentType, dslServices, value)
-            checkPostProcessingConfiguration(
-                PostProcessingConfiguration.OLD_DSL,
-                "setShrinkResources"
-            )
-            this._shrinkResources = value
+            _postProcessing.isRemoveUnusedResources = value
         }
 
     /**
@@ -525,14 +494,14 @@ abstract class BuildType @Inject @WithLazyInitialization(methodName="lazyInit") 
 
     abstract override var isCrunchPngs: Boolean?
 
+    var postProcessingBlockUsed = false
+
     /** This DSL is incubating and subject to change.  */
     @get:Internal
     @get:Incubating
     override val postprocessing: PostProcessingBlock
         get() {
-            checkPostProcessingConfiguration(
-                PostProcessingConfiguration.POSTPROCESSING_BLOCK, "getPostProcessing"
-            )
+            checkPostProcessingConfiguration()
             return _postProcessing
         }
 
@@ -540,9 +509,7 @@ abstract class BuildType @Inject @WithLazyInitialization(methodName="lazyInit") 
     @Incubating
     @Internal
     fun postprocessing(action: Action<PostProcessingBlock>) {
-        checkPostProcessingConfiguration(
-            PostProcessingConfiguration.POSTPROCESSING_BLOCK, "postProcessing"
-        )
+        checkPostProcessingConfiguration()
         action.execute(_postProcessing)
     }
 
@@ -550,45 +517,10 @@ abstract class BuildType @Inject @WithLazyInitialization(methodName="lazyInit") 
         postprocessing(Action { action.invoke(it) })
     }
 
-    /** Describes how postProcessing was configured. Not to be used from the DSL.  */
-    // TODO(b/140406102): Should be internal.
-    val postProcessingConfiguration: PostProcessingConfiguration
-        // If the user didn't configure anything, stick to the old DSL.
-        get() = _postProcessingConfiguration ?: PostProcessingConfiguration.OLD_DSL
-
-    /**
-     * Checks that the user is consistently using either the new or old DSL for configuring bytecode
-     * postProcessing.
-     */
-    private fun checkPostProcessingConfiguration(
-        used: PostProcessingConfiguration,
-        methodName: String
-    ) {
-        if (!dslChecksEnabled) {
-            return
-        }
-        if (_postProcessingConfiguration == null) {
-            _postProcessingConfiguration = used
-            postProcessingDslMethodUsed = methodName
-        } else if (_postProcessingConfiguration != used) {
-            Preconditions.checkNotNull(postProcessingDslMethodUsed)
-            val message: String = when (used) {
-                PostProcessingConfiguration.POSTPROCESSING_BLOCK -> // TODO: URL with more details.
-                    String.format(
-                        "The `postProcessing` block cannot be used with together with the `%s` method.",
-                        postProcessingDslMethodUsed
-                    )
-                PostProcessingConfiguration.OLD_DSL -> // TODO: URL with more details.
-                    String.format(
-                        "The `%s` method cannot be used with together with the `postProcessing` block.",
-                        methodName
-                    )
-            }
-            dslServices.issueReporter.reportError(
-                IssueReporter.Type.GENERIC,
-                message,
-                methodName
-            )
+    private fun checkPostProcessingConfiguration() {
+        if (!postProcessingBlockUsed) {
+            postProcessingBlockUsed = true
+            _postProcessing.isRemoveUnusedCode = true
         }
     }
 

@@ -34,8 +34,22 @@ open class AnalyticsEnabledLibraryVariant @Inject constructor(
     delegate, stats, objectFactory
 ), LibraryVariant {
 
+    private val userVisibleAndroidTest: AnalyticsEnabledAndroidTest? by lazy {
+        delegate.androidTest?.let {
+            objectFactory.newInstance(
+                AnalyticsEnabledAndroidTest::class.java,
+                it,
+                stats
+            )
+        }
+    }
+
     override val androidTest: AndroidTest?
-        get() = delegate.androidTest
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.ANDROID_TEST_VALUE
+            return userVisibleAndroidTest
+        }
 
     private val userVisibleTestFixtures: TestFixtures? by lazy {
         delegate.testFixtures?.let {

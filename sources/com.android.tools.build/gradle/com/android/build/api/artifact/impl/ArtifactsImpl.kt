@@ -93,9 +93,8 @@ class ArtifactsImpl(
         publicScopedArtifacts[ScopedArtifacts.Scope.PROJECT]?.let {
             it.setInitialContent(
                 ScopedArtifact.JAVA_RES,
-                project.files().also { configurableFileCollection ->
-                    configurableFileCollection.from(get(InternalArtifactType.MERGED_JAVA_RES))
-                }
+                this,
+                InternalArtifactType.MERGED_JAVA_RES
             )
         }
     }

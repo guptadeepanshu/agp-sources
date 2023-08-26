@@ -46,7 +46,6 @@ import java.io.File
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.nio.file.Path
-import java.util.ArrayList
 
 /**
  * Delegate for the [DexArchiveBuilderTask]. This is where the actual processing happens. Using the
@@ -96,11 +95,7 @@ class DexArchiveBuilderTaskDelegate(
 ) {
     private val outputMapping = OutputMapping(isIncremental)
 
-    //(b/141854812) Temporarily disable incremental support when core library desugaring enabled in release build
-    private val isIncremental =
-        isIncremental && projectOutputs.keepRules == null && subProjectOutputs?.keepRules == null
-                && externalLibsOutputs?.keepRules == null && mixedScopeOutputs?.keepRules == null
-                && outputMapping.canProcessIncrementally
+    private val isIncremental = isIncremental && outputMapping.canProcessIncrementally
 
     private val changedFiles =
         with(
@@ -167,7 +162,6 @@ class DexArchiveBuilderTaskDelegate(
                 val processInputType = { classes: Set<File>,
                                          changedClasses: Set<FileChange>,
                                          outputDir: File,
-                                         outputKeepRules: File?,
                                          globalSynthetics: File?,
                                          // Not null iff desugaring is enabled
                                          desugarGraphDir: File? ->
@@ -175,7 +169,6 @@ class DexArchiveBuilderTaskDelegate(
                         inputFiles = classes,
                         inputFileChanges = changedClasses,
                         outputDir = outputDir,
-                        outputKeepRules = outputKeepRules,
                         globalSyntheticsDir = globalSynthetics,
                         desugarGraphDir = desugarGraphDir,
                         bootClasspathKey = bootclasspathServiceKey,
@@ -186,7 +179,6 @@ class DexArchiveBuilderTaskDelegate(
                     projectClasses,
                     projectChangedClasses,
                     projectOutputs.dex,
-                    projectOutputs.keepRules,
                     projectOutputs.globalSynthetics,
                     desugarGraphDir?.resolve("currentProject")
                 )
@@ -195,7 +187,6 @@ class DexArchiveBuilderTaskDelegate(
                         subProjectClasses,
                         subProjectChangedClasses,
                         subProjectOutputs.dex,
-                        subProjectOutputs.keepRules,
                         subProjectOutputs.globalSynthetics,
                         desugarGraphDir?.resolve("otherProjects")
                     )
@@ -205,7 +196,6 @@ class DexArchiveBuilderTaskDelegate(
                         mixedScopeClasses,
                         mixedScopeChangedClasses,
                         mixedScopeOutputs.dex,
-                        mixedScopeOutputs.keepRules,
                         mixedScopeOutputs.globalSynthetics,
                         desugarGraphDir?.resolve("mixedScopes")
                     )
@@ -215,7 +205,6 @@ class DexArchiveBuilderTaskDelegate(
                         externalLibClasses,
                         externalLibChangedClasses,
                         externalLibsOutputs.dex,
-                        externalLibsOutputs.keepRules,
                         externalLibsOutputs.globalSynthetics,
                         desugarGraphDir?.resolve("externalLibs")
                     )
@@ -238,7 +227,6 @@ class DexArchiveBuilderTaskDelegate(
         inputFiles: Set<File>,
         inputFileChanges: Set<FileChange>,
         outputDir: File,
-        outputKeepRules: File?,
         globalSyntheticsDir: File?,
         desugarGraphDir: File?, // Not null iff desugaring is enabled
         bootClasspathKey: ClasspathServiceKey,
@@ -247,7 +235,6 @@ class DexArchiveBuilderTaskDelegate(
         if (!isIncremental) {
             FileUtils.cleanOutputDir(outputDir)
             globalSyntheticsDir?.let { FileUtils.cleanOutputDir(it) }
-            outputKeepRules?.let { FileUtils.cleanOutputDir(it) }
             desugarGraphDir?.let { FileUtils.cleanOutputDir(it) }
         } else {
             removeChangedJarOutputs(inputFileChanges, outputDir, globalSyntheticsDir)
@@ -269,7 +256,6 @@ class DexArchiveBuilderTaskDelegate(
                 classpath = classpathKey,
                 changedFiles = changedFiles,
                 desugarGraphDir = desugarGraphDir,
-                outputKeepRulesDir = outputKeepRules,
                 globalSyntheticsDir = globalSyntheticsDir
             )
         }
@@ -286,7 +272,6 @@ class DexArchiveBuilderTaskDelegate(
                 classpath = classpathKey,
                 changedFiles = changedFiles,
                 desugarGraphDir = desugarGraphDir,
-                outputKeepRulesDir = outputKeepRules,
                 globalSyntheticsDir = globalSyntheticsDir
             )
         }
@@ -312,13 +297,13 @@ class DexArchiveBuilderTaskDelegate(
                     }
                     ClassFileInput.CLASS_MATCHER.test(it.normalizedPath) -> {
                         // We are in DexFilePerClassFile output mode
-                        DexFilePerClassFile.getDexOutputRelativePathsOfClassFile(
+                        DexFilePerClassFile.getDexOutputRelativePath(
                             classFileRelativePath = it.normalizedPath
-                        ).forEach { outputRelativePath ->
+                        ).let { outputRelativePath ->
                             FileUtils.deleteIfExists(outputDir.resolve(outputRelativePath))
                         }
                         globalSyntheticsDir?.let {globalSyntheticsDir ->
-                            DexFilePerClassFile.getGlobalOutputRelativePathOfClassFile(
+                            DexFilePerClassFile.getGlobalSyntheticOutputRelativePath(
                                 it.normalizedPath
                             ).let { outputRelativePath ->
                                 FileUtils.deleteIfExists(globalSyntheticsDir.resolve(outputRelativePath))
@@ -354,7 +339,6 @@ class DexArchiveBuilderTaskDelegate(
         classpath: ClasspathServiceKey,
         changedFiles: Set<File>,
         desugarGraphDir: File?, // Not null iff desugaring is enabled
-        outputKeepRulesDir: File?,
         globalSyntheticsDir: File?
     ) {
         if (dexParams.withDesugaring) {
@@ -366,7 +350,6 @@ class DexArchiveBuilderTaskDelegate(
                 classpath = classpath,
                 changedFiles = changedFiles,
                 desugarGraphDir = desugarGraphDir!!,
-                outputKeepRulesDir = outputKeepRulesDir,
                 globalSyntheticsDir = globalSyntheticsDir
             )
         } else {
@@ -382,7 +365,6 @@ class DexArchiveBuilderTaskDelegate(
                 classpath = classpath,
                 changedFiles = setOf(),
                 desugarGraphDir = null,
-                outputKeepRulesDir = outputKeepRulesDir,
                 globalSyntheticsDir = globalSyntheticsDir
             )
         }
@@ -391,12 +373,10 @@ class DexArchiveBuilderTaskDelegate(
     /**  Output directories for dex files and keep rules. */
     class DexingOutputs(
         val dex: File,
-        val keepRules: File?,
         val globalSynthetics: File?
     ) {
         constructor(outputs: DexArchiveBuilderTask.DexingOutputs) : this(
             outputs.dex.asFile.get(),
-            outputs.keepRules.asFile.orNull,
             outputs.globalSynthetics.asFile.orNull
         )
     }
@@ -409,27 +389,18 @@ class DexArchiveBuilderTaskDelegate(
         classpath: ClasspathServiceKey,
         changedFiles: Set<File>,
         desugarGraphDir: File?, // Not null iff desugaring is enabled
-        outputKeepRulesDir: File?,
         globalSyntheticsDir: File?
     ) {
         inputs.getRoots().forEach { loggerWrapper.verbose("Dexing ${it.absolutePath}") }
 
         for (bucketId in 0 until numberOfBuckets) {
-            // For directory inputs, we prefer dexPerClass mode to support incremental dexing per
-            // class, but dexPerClass mode is not supported by D8 when generating keep rules for
-            // core library desugaring
-            val dexPerClass = inputs is DirectoryBucketGroup && outputKeepRulesDir == null
 
             fun computeOutputPath(outputDir: File, dexOutput: Boolean): File {
                 return when(inputs) {
                     is DirectoryBucketGroup -> {
-                        if (dexPerClass) {
-                            outputDir.also { FileUtils.mkdirs(it) }
-                        } else {
-                            // running in dexIndexMode, dex output location is determined by
-                            // bucket and outputDir
-                            outputDir.resolve(bucketId.toString()).also { FileUtils.mkdirs(it) }
-                        }
+                        // For directory inputs, we choose dexPerClass mode to support incremental
+                        // dexing per class
+                        outputDir.also { FileUtils.mkdirs(it) }
                     }
                     is JarBucketGroup -> {
                         outputMapping.getOutputForJar(
@@ -448,22 +419,6 @@ class DexArchiveBuilderTaskDelegate(
                 computeOutputPath(globalSyntheticsDir, false)
             } else null
 
-            val outputKeepRuleFile = outputKeepRulesDir?.let { outputKeepRuleDir ->
-                when (inputs) {
-                    is DirectoryBucketGroup -> outputKeepRuleDir.resolve(bucketId.toString())
-                    is JarBucketGroup ->
-                        outputMapping.getOutputForJar(
-                            inputs.jarFile,
-                            outputKeepRuleDir,
-                            bucketId,
-                            false
-                        )
-                }.also {
-                    FileUtils.mkdirs(it.parentFile)
-                    it.createNewFile()
-                }
-            }
-
             val classBucket = ClassBucket(inputs, bucketId)
             workerExecutor.noIsolation().submit(DexWorkAction::class.java) { params ->
                 params.initializeWith(projectPath, taskPath, analyticsService)
@@ -473,10 +428,9 @@ class DexArchiveBuilderTaskDelegate(
                         dexOutputPath = preDexOutputFile,
                         globalSyntheticsOutput = globalSyntheticsOutput,
                         dexParams = dexParams.toDexParametersForWorkers(
-                                dexPerClass,
+                                inputs is DirectoryBucketGroup,
                                 bootClasspath,
                                 classpath,
-                                outputKeepRuleFile,
                         ),
                         isIncremental = isIncremental,
                         changedFiles = changedFiles,

@@ -32,6 +32,7 @@ import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.FileCollection
 import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.Provider
 
 abstract class AnalyticsEnabledComponent(
     open val delegate: Component,
@@ -171,6 +172,13 @@ abstract class AnalyticsEnabledComponent(
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.FLAVOR_NAME_VALUE
             return delegate.flavorName
+        }
+
+    override val namespace: Provider<String>
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.NAMESPACE_VALUE
+            return delegate.namespace
         }
 
     override val name: String

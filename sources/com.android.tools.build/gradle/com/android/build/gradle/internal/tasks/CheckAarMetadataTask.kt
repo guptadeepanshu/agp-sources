@@ -30,6 +30,7 @@ import com.android.build.gradle.internal.ide.dependencies.getIdString
 import com.android.build.gradle.internal.tasks.AarMetadataTask.Companion.DEFAULT_MIN_COMPILE_SDK_EXTENSION
 import com.android.build.gradle.internal.utils.parseTargetHash
 import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.build.gradle.options.BooleanOption
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.core.ToolsRevisionUtils
 import com.android.ide.common.repository.AgpVersion
@@ -114,6 +115,9 @@ abstract class CheckAarMetadataTask : NonIncrementalTask() {
     @get:Input
     abstract val maxRecommendedStableCompileSdkVersionForThisAgp: Property<Int>
 
+    @get:Input
+    abstract val disableCompileSdkChecks: Property<Boolean>
+
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(
             CheckAarMetadataWorkAction::class.java
@@ -141,6 +145,7 @@ abstract class CheckAarMetadataTask : NonIncrementalTask() {
                 maxRecommendedStableCompileSdkVersionForThisAgp
             )
             it.projectPath.set(projectPath)
+            it.disableCompileSdkChecks.set(disableCompileSdkChecks)
         }
     }
 
@@ -187,6 +192,10 @@ abstract class CheckAarMetadataTask : NonIncrementalTask() {
                 creationConfig.global.versionedSdkLoader.flatMap { sdkLoader ->
                     sdkLoader.targetAndroidVersionProvider.map { it.featureLevel }
                 }
+            )
+
+            task.disableCompileSdkChecks.setDisallowChanges(
+                creationConfig.services.projectOptions[BooleanOption.DISABLE_COMPILE_SDK_CHECKS]
             )
         }
     }
@@ -332,108 +341,110 @@ abstract class CheckAarMetadataWorkAction: WorkAction<CheckAarMetadataWorkParame
             }
         }
 
-        // check forceCompileSdkPreview
-        val forceCompileSdkPreview = aarMetadataReader.forceCompileSdkPreview
-        if (forceCompileSdkPreview != null) {
-            val compileSdkVersion = parameters.compileSdkVersion.get()
-            val compileSdkPreview = parseTargetHash(parameters.compileSdkVersion.get()).codeName
-            if (compileSdkPreview != forceCompileSdkPreview) {
-                errorMessages.add(
-                    """
-                        Dependency '$displayName' requires libraries and applications that
-                        depend on it to compile against codename "$forceCompileSdkPreview" of the
-                        Android APIs.
-
-                        ${parameters.projectPath.get()} is currently compiled against $compileSdkVersion.
-
-                        Recommended action: Use a different version of dependency '$displayName',
-                        or set compileSdkPreview to "$forceCompileSdkPreview" in your build.gradle
-                        file if you intend to experiment with that preview SDK.
-                    """.trimIndent()
-                )
-            }
-        }
-
-        // check compileSdkVersion
-        val minCompileSdk = aarMetadataReader.minCompileSdk
-        if (minCompileSdk != null) {
-            val minCompileSdkInt = minCompileSdk.toIntOrNull()
-            if (minCompileSdkInt == null) {
-                errorMessages.add(
-                    """
-                        The AAR metadata for dependency '$displayName' has an invalid
-                        $MIN_COMPILE_SDK_PROPERTY value ($minCompileSdk).
-
-                        $MIN_COMPILE_SDK_PROPERTY must be an integer.
-                        """.trimIndent()
-                )
-            } else {
+        if (!parameters.disableCompileSdkChecks.get()) {
+            // check forceCompileSdkPreview
+            val forceCompileSdkPreview = aarMetadataReader.forceCompileSdkPreview
+            if (forceCompileSdkPreview != null) {
                 val compileSdkVersion = parameters.compileSdkVersion.get()
-                val compileSdkVersionInt =
-                    getApiIntFromString(compileSdkVersion).let {
-                        if (it > SdkVersionInfo.HIGHEST_KNOWN_API) {
-                            parameters.platformSdkApiLevel.get()
-                        } else {
-                            it
-                        }
-                    }
-                if (minCompileSdkInt > compileSdkVersionInt) {
-                    val maxRecommendedCompileSdk = parameters.maxRecommendedStableCompileSdkVersionForThisAgp.get()
-                    val recommendation = if (minCompileSdkInt <= maxRecommendedCompileSdk) {
-                        """
-                            Recommended action: Update this project to use a newer compileSdk
-                            of at least $minCompileSdk, for example $maxRecommendedCompileSdk.
-                        """.trimIndent()
-                    } else {
-                        """
-                            Also, the maximum recommended compile SDK version for Android Gradle
-                            plugin ${parameters.agpVersion.get()} is $maxRecommendedCompileSdk.
-
-                            Recommended action: Update this project's version of the Android Gradle
-                            plugin to one that supports $minCompileSdk, then update this project to use
-                            compileSdk of at least $minCompileSdk.
-                        """.trimIndent()
-                    }
+                val compileSdkPreview = parseTargetHash(parameters.compileSdkVersion.get()).codeName
+                if (compileSdkPreview != forceCompileSdkPreview) {
                     errorMessages.add(
                         """
                             Dependency '$displayName' requires libraries and applications that
-                            depend on it to compile against version $minCompileSdk or later of the
+                            depend on it to compile against codename "$forceCompileSdkPreview" of the
                             Android APIs.
 
                             ${parameters.projectPath.get()} is currently compiled against $compileSdkVersion.
-                        """.trimIndent() + "\n\n" + recommendation + "\n\n" + """
-                            Note that updating a library or application's compileSdk (which
-                            allows newer APIs to be used) can be done separately from updating
-                            targetSdk (which opts the app in to new runtime behavior) and
-                            minSdk (which determines which devices the app can be installed
-                            on).
+
+                            Recommended action: Use a different version of dependency '$displayName',
+                            or set compileSdkPreview to "$forceCompileSdkPreview" in your build.gradle
+                            file if you intend to experiment with that preview SDK.
                         """.trimIndent()
                     )
                 }
             }
-        }
 
-        // check SDK extension level
-        val minCompileSdkExtension = aarMetadataReader.minCompileSdkExtension
-        if (minCompileSdkExtension != null) {
-            val minCompileSdkExtensionInt = minCompileSdkExtension.toIntOrNull()
-            if (minCompileSdkExtensionInt == null) {
-                errorMessages.add(
-                    """
+            // check compileSdkVersion
+            val minCompileSdk = aarMetadataReader.minCompileSdk
+            if (minCompileSdk != null) {
+                val minCompileSdkInt = minCompileSdk.toIntOrNull()
+                if (minCompileSdkInt == null) {
+                    errorMessages.add(
+                        """
+                            The AAR metadata for dependency '$displayName' has an invalid
+                            $MIN_COMPILE_SDK_PROPERTY value ($minCompileSdk).
+
+                            $MIN_COMPILE_SDK_PROPERTY must be an integer.
+                            """.trimIndent()
+                    )
+                } else {
+                    val compileSdkVersion = parameters.compileSdkVersion.get()
+                    val compileSdkVersionInt =
+                        getApiIntFromString(compileSdkVersion).let {
+                            if (it > SdkVersionInfo.HIGHEST_KNOWN_API) {
+                                parameters.platformSdkApiLevel.get()
+                            } else {
+                                it
+                            }
+                        }
+                    if (minCompileSdkInt > compileSdkVersionInt) {
+                        val maxRecommendedCompileSdk =
+                            parameters.maxRecommendedStableCompileSdkVersionForThisAgp.get()
+                        val recommendation = if (minCompileSdkInt <= maxRecommendedCompileSdk) {
+                            """
+                                Recommended action: Update this project to use a newer compileSdk
+                                of at least $minCompileSdk, for example $maxRecommendedCompileSdk.
+                            """.trimIndent()
+                        } else {
+                            """
+                                Also, the maximum recommended compile SDK version for Android Gradle
+                                plugin ${parameters.agpVersion.get()} is $maxRecommendedCompileSdk.
+
+                                Recommended action: Update this project's version of the Android Gradle
+                                plugin to one that supports $minCompileSdk, then update this project to use
+                                compileSdk of at least $minCompileSdk.
+                            """.trimIndent()
+                        }
+                        errorMessages.add(
+                            """
+                                Dependency '$displayName' requires libraries and applications that
+                                depend on it to compile against version $minCompileSdk or later of the
+                                Android APIs.
+
+                                ${parameters.projectPath.get()} is currently compiled against $compileSdkVersion.
+                            """.trimIndent() + "\n\n" + recommendation + "\n\n" + """
+                                Note that updating a library or application's compileSdk (which
+                                allows newer APIs to be used) can be done separately from updating
+                                targetSdk (which opts the app in to new runtime behavior) and
+                                minSdk (which determines which devices the app can be installed
+                                on).
+                            """.trimIndent()
+                        )
+                    }
+                }
+            }
+
+            // check SDK extension level
+            val minCompileSdkExtension = aarMetadataReader.minCompileSdkExtension
+            if (minCompileSdkExtension != null) {
+                val minCompileSdkExtensionInt = minCompileSdkExtension.toIntOrNull()
+                if (minCompileSdkExtensionInt == null) {
+                    errorMessages.add(
+                        """
                         The AAR metadata for dependency '$displayName' has an invalid
                         $MIN_COMPILE_SDK_EXTENSION_PROPERTY value ($minCompileSdkExtension).
 
                         $MIN_COMPILE_SDK_EXTENSION_PROPERTY must be an integer.
                         """.trimIndent()
-                )
-            } else {
-                val compileSdkExtension =
-                    parseTargetHash(parameters.compileSdkVersion.get()).sdkExtension
-                        ?: parameters.platformSdkExtension.orNull
-                        ?: DEFAULT_MIN_COMPILE_SDK_EXTENSION
-                if (minCompileSdkExtensionInt > compileSdkExtension) {
-                    errorMessages.add(
-                        """
+                    )
+                } else {
+                    val compileSdkExtension =
+                        parseTargetHash(parameters.compileSdkVersion.get()).sdkExtension
+                            ?: parameters.platformSdkExtension.orNull
+                            ?: DEFAULT_MIN_COMPILE_SDK_EXTENSION
+                    if (minCompileSdkExtensionInt > compileSdkExtension) {
+                        errorMessages.add(
+                            """
                             Dependency '$displayName' requires libraries and applications that
                             depend on it to compile against an SDK with an extension level of
                             $minCompileSdkExtension or higher.
@@ -441,7 +452,8 @@ abstract class CheckAarMetadataWorkAction: WorkAction<CheckAarMetadataWorkParame
                             Recommended action: Update this project to use a compileSdkExtension
                             value of at least $minCompileSdkExtension.
                         """.trimIndent()
-                    )
+                        )
+                    }
                 }
             }
         }
@@ -507,6 +519,7 @@ abstract class CheckAarMetadataWorkParameters: WorkParameters {
     abstract val agpVersion: Property<String>
     abstract val maxRecommendedStableCompileSdkVersionForThisAgp: Property<Int>
     abstract val projectPath: Property<String>
+    abstract val disableCompileSdkChecks: Property<Boolean>
 }
 
 data class AarMetadataReader(val inputStream: InputStream) {

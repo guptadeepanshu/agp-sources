@@ -21,6 +21,7 @@ import com.android.build.api.artifact.ArtifactKind
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.file.RegularFile
+import org.gradle.api.file.RegularFileProperty
 
 @Suppress("ClassName")
 sealed class
@@ -36,7 +37,7 @@ PrivacySandboxSdkInternalArtifactType<T : FileSystemLocation>(
     object SANDBOX_MANIFEST: PrivacySandboxSdkInternalArtifactType<RegularFile>(ArtifactKind.FILE), Replaceable
 
     // final .asb file ready to be uploaded to Play Store
-    object ASB: PrivacySandboxSdkInternalArtifactType<RegularFile>(ArtifactKind.FILE, category = Category.OUTPUTS), Replaceable
+    object ASB: PrivacySandboxSdkInternalArtifactType<RegularFile>(ArtifactKind.FILE, category = Category.OUTPUTS), Transformable
     // Locally derived Android Sdk Archive file for local testing
     object ASAR: PrivacySandboxSdkInternalArtifactType<RegularFile>(ArtifactKind.FILE, category = Category.OUTPUTS), Replaceable
 

@@ -21,6 +21,7 @@ import com.android.SdkConstants.DOT_DEX
 import com.android.SdkConstants.FD_ASSETS
 import com.android.SdkConstants.FD_DEX
 import com.android.build.api.artifact.SingleArtifact
+import com.android.build.api.artifact.SingleArtifact.MERGED_NATIVE_LIBS
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
@@ -32,7 +33,6 @@ import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVaria
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.MODULE_PATH
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.InternalArtifactType.MERGED_NATIVE_LIBS
 import com.android.build.gradle.internal.scope.InternalArtifactType.STRIPPED_NATIVE_LIBS
 import com.android.build.gradle.internal.scope.InternalMultipleArtifactType
 import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
@@ -49,7 +49,6 @@ import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.IgnoreEmptyDirectories
@@ -70,7 +69,6 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.function.Predicate
 import java.util.zip.Deflater
-import javax.inject.Inject
 
 /**
  * Task that zips a module's bundle elements into a zip file. This gets published
@@ -79,8 +77,7 @@ import javax.inject.Inject
  */
 @DisableCachingByDefault
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.BUNDLE_PACKAGING)
-abstract class PerModuleBundleTask @Inject constructor(objects: ObjectFactory) :
-    NonIncrementalTask() {
+abstract class PerModuleBundleTask: NonIncrementalTask() {
 
     @get:Optional
     @get:OutputDirectory
@@ -102,9 +99,9 @@ abstract class PerModuleBundleTask @Inject constructor(objects: ObjectFactory) :
     @get:PathSensitive(PathSensitivity.NAME_ONLY)
     abstract val resFiles: RegularFileProperty
 
-    @get:InputFiles
-    @get:PathSensitive(PathSensitivity.RELATIVE)
-    abstract val javaResFiles: ConfigurableFileCollection
+    @get:InputFile
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
+    abstract val javaResJar: RegularFileProperty
 
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
@@ -185,7 +182,7 @@ abstract class PerModuleBundleTask @Inject constructor(objects: ObjectFactory) :
             // featureJavaResFiles.files.isNotEmpty() because we want to use featureJavaResFiles
             // even if it's empty (which will be the case when using proguard)
             val javaResFilesSet =
-                if (hasFeatureDexFiles()) featureJavaResFiles.files else javaResFiles.files
+                if (hasFeatureDexFiles()) featureJavaResFiles.files else setOf(javaResJar.asFile.get())
             addHybridFolder(
                 jarCreator, javaResFilesSet, Relocator("root"),
                 JarCreator.EXCLUDE_CLASSES
@@ -273,8 +270,8 @@ abstract class PerModuleBundleTask @Inject constructor(objects: ObjectFactory) :
                     PrivacySandboxSdkInternalArtifactType.LINKED_MERGE_RES_FOR_ASB
                 )
             )
-            task.javaResFiles.fromDisallowChanges(
-                    creationConfig.artifacts.get(FusedLibraryInternalArtifactType.MERGED_JAVA_RES)
+            task.javaResJar.setDisallowChanges(
+                creationConfig.artifacts.get(FusedLibraryInternalArtifactType.MERGED_JAVA_RES)
             )
 
             // Not applicable
@@ -338,7 +335,7 @@ abstract class PerModuleBundleTask @Inject constructor(objects: ObjectFactory) :
                     artifacts.get(InternalArtifactType.DESUGAR_LIB_DEX)
                 )
             }
-            if (creationConfig.global.enableGlobalSynthetics
+            if (creationConfig.enableGlobalSynthetics
                 && creationConfig.dexingCreationConfig.dexingType == DexingType.NATIVE_MULTIDEX
                 && !creationConfig.optimizationCreationConfig.minifiedEnabled) {
                 task.dexFiles.from(
@@ -354,12 +351,8 @@ abstract class PerModuleBundleTask @Inject constructor(objects: ObjectFactory) :
                     AndroidAttributes(MODULE_PATH to task.project.path)
                 )
             )
-            task.javaResFiles.from(
-                if (creationConfig.optimizationCreationConfig.minifiedEnabled) {
-                    artifacts.get(InternalArtifactType.SHRUNK_JAVA_RES)
-                } else {
-                    artifacts.get(InternalArtifactType.MERGED_JAVA_RES)
-                }
+            task.javaResJar.setDisallowChanges(
+                artifacts.get(InternalArtifactType.MERGED_JAVA_RES)
             )
             task.nativeLibsFiles.from(getNativeLibsFiles(creationConfig))
             task.featureJavaResFiles.from(

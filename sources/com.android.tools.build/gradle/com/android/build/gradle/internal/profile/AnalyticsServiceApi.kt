@@ -105,6 +105,4 @@ interface AnalyticsServiceApi {
      * at the end of configuration when [AnalyticsService] is instantiated.
      */
     fun setInitialMemorySampleForConfiguration(sample: GradleBuildMemorySample)
-
-    fun recordApplicationId(metadataFile: File)
 }

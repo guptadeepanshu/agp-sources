@@ -34,11 +34,13 @@ import java.io.File
 import java.util.logging.Level
 import org.gradle.api.logging.Logger
 import org.gradle.workers.WorkerExecutor
+import java.nio.file.Path
 
 class ManagedDeviceTestRunner(
     private val workerExecutor: WorkerExecutor,
     private val utpDependencies: UtpDependencies,
     private val versionedSdkLoader: SdkComponentsBuildService.VersionedSdkLoader,
+    private val emulatorControlConfig: EmulatorControlConfig,
     private val retentionConfig: RetentionConfig,
     private val useOrchestrator: Boolean,
     private val numShards: Int?,
@@ -48,6 +50,7 @@ class ManagedDeviceTestRunner(
     private val installApkTimeout: Int?,
     private val enableEmulatorDisplay: Boolean,
     private val utpLoggingLevel: Level = Level.WARNING,
+    private val targetIsSplitApk: Boolean,
     private val configFactory: UtpConfigFactory = UtpConfigFactory(),
     private val runUtpTestSuiteAndWaitFunc: (
         List<UtpRunnerConfig>, String, String, File, ILogger
@@ -55,13 +58,14 @@ class ManagedDeviceTestRunner(
         runUtpTestSuiteAndWait(
             runnerConfigs, workerExecutor, projectPath, variantName, resultsDir, logger,
             null, utpDependencies)
-    }
-): com.android.build.api.instrumentation.ManagedDeviceTestRunner {
+    },
+) {
 
     /**
      * @param additionalTestOutputDir output directory for additional test output, or null if disabled
+     * @param dependencyApks are the private sandbox SDK APKs
      */
-    override fun runTests(
+    fun runTests(
         managedDevice: Device,
         runId: String,
         outputDirectory: File,
@@ -72,7 +76,8 @@ class ManagedDeviceTestRunner(
         testData: StaticTestData,
         additionalInstallOptions: List<String>,
         helperApks: Set<File>,
-        logger: Logger
+        logger: Logger,
+        dependencyApks: Set<File>
     ): Boolean {
         managedDevice as ManagedVirtualDevice
         val logger = LoggerWrapper(logger)
@@ -91,6 +96,7 @@ class ManagedDeviceTestRunner(
             enableEmulatorDisplay
         )
         val testedApks = getTestedApks(testData, utpManagedDevice, logger)
+        val extractedSdkApks = getExtractedSdkApks(testData, utpManagedDevice)
         val runnerConfigs = mutableListOf<UtpRunnerConfig>()
         try {
             avdComponents.lockManager.lock(numShards ?: 1).use { lock ->
@@ -128,13 +134,14 @@ class ManagedDeviceTestRunner(
                             configFactory.createRunnerConfigProtoForManagedDevice(
                                 shardedManagedDevice,
                                 testData,
-                                testedApks,
+                                TargetApkConfigBundle(testedApks, targetIsSplitApk),
                                 additionalInstallOptions,
                                 helperApks,
                                 utpDependencies,
                                 versionedSdkLoader,
                                 utpOutputDir,
                                 utpTmpDir,
+                                emulatorControlConfig,
                                 retentionConfig,
                                 coverageOutputDirectory,
                                 additionalTestOutputDir,
@@ -143,6 +150,7 @@ class ManagedDeviceTestRunner(
                                 emulatorGpuFlag,
                                 showEmulatorKernelLogging,
                                 installApkTimeout,
+                                extractedSdkApks,
                                 shardConfig
                             )
                         }
@@ -286,6 +294,12 @@ class ManagedDeviceTestRunner(
                 return testedApks
             }
             return listOf()
+        }
+
+        fun getExtractedSdkApks(
+                testData: StaticTestData, device: UtpManagedDevice): List<List<Path>> {
+            val deviceConfigProvider = ManagedDeviceConfigProvider(device)
+            return testData.privacySandboxInstallBundlesFinder(deviceConfigProvider)
         }
     }
 }

@@ -80,6 +80,13 @@ open class AnalyticsEnabledGeneratesApk(
             return userVisibleApkPackaging
         }
 
+    override val targetSdk: AndroidVersion
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                    VariantPropertiesMethodType.TARGET_SDK_VERSION_VALUE
+            return delegate.targetSdk
+        }
+
     override val targetSdkVersion: AndroidVersion
         get() {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =

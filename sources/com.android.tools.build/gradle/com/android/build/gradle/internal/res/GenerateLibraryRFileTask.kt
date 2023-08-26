@@ -240,51 +240,35 @@ abstract class GenerateLibraryRFileTask : ProcessAndroidResources() {
             task.platformAttrRTxt.fromDisallowChanges(creationConfig.global.platformAttrs)
 
             val nonTransitiveRClass = projectOptions[BooleanOption.NON_TRANSITIVE_R_CLASS]
-            val compileClasspathLibraryRClasses = projectOptions[BooleanOption.COMPILE_CLASSPATH_LIBRARY_R_CLASSES]
 
-            if (!nonTransitiveRClass || !compileClasspathLibraryRClasses) {
+            if (!nonTransitiveRClass) {
                 // We need the dependencies for generating our own R class or for generating R
                 // classes of the dependencies:
                 //   * If we're creating a transitive (non-namespaced) R class, then we need the
                 //     dependencies to include them in the local R class.
-                //   * If we're using the runtime classpath (not compile classpath) then we need the
-                //     dependencies for generating the R classes for each of them.
-                //   * If both above are true then we use the dependencies for generating both the
-                //     local R class and the dependencies' R classes.
-                //   * The only case when we don't need the dependencies is if we are generating a
-                //     namespaced (non-transitive) local R class AND we're using the compile
-                //     classpath R class flow.
-                val consumedConfigType =
-                    if (compileClasspathLibraryRClasses) {
-                        COMPILE_CLASSPATH
-                    } else {
-                        RUNTIME_CLASSPATH
-                    }
+                //   * Dependencies are not required if we are generating a
+                //     namespaced (non-transitive) local R class.
                 task.dependencies.from(
                     creationConfig.variantDependencies.getArtifactFileCollection(
-                    consumedConfigType,
+                    COMPILE_CLASSPATH,
                     ALL,
                     AndroidArtifacts.ArtifactType.SYMBOL_LIST_WITH_PACKAGE_NAME
                 ))
             }
 
             task.nonTransitiveRClass.set(nonTransitiveRClass)
-            task.compileClasspathLibraryRClasses.setDisallowChanges(compileClasspathLibraryRClasses)
+            task.compileClasspathLibraryRClasses.setDisallowChanges(true)
             task.namespace.setDisallowChanges(creationConfig.namespace)
 
             creationConfig.artifacts.setTaskInputToFinalProduct(
                 SingleArtifact.MERGED_MANIFEST, task.mergedManifestFile)
 
-            task.mainSplit = creationConfig.outputs.getMainSplit()
-
-            // This task can produce R classes with either constant IDs ("0") or sequential IDs
-            // mimicking the way AAPT2 numbers IDs. If we're generating a compile time only R class
+            // This task can produces R classes with constant IDs.
+            // For generating a compile time only R class
             // (either for the small merge in app or when using compile classpath resources in libs)
-            // we want to use the constant IDs; otherwise, we will use sequential IDs.
-            // In either case, the IDs are fake, and therefore are non-final.
-            task.useConstantIds.set(
-                (projectOptions[BooleanOption.ENABLE_APP_COMPILE_TIME_R_CLASS] && !isLibrary)
-                        || projectOptions[BooleanOption.COMPILE_CLASSPATH_LIBRARY_R_CLASSES])
+            // we want to use the constant IDs; rather than sequential IDs.
+            // The IDs are fake, and therefore are non-final.
+            task.useConstantIds.setDisallowChanges(true)
             task.symbolTableBuildService.setDisallowChanges(getBuildService(creationConfig.services.buildServiceRegistry))
 
             creationConfig.artifacts.setTaskInputToFinalProduct(
@@ -333,7 +317,6 @@ abstract class GenerateLibraryRFileTask : ProcessAndroidResources() {
             task.nonTransitiveRClass.setDisallowChanges(projectOptions[BooleanOption.NON_TRANSITIVE_R_CLASS])
             task.compileClasspathLibraryRClasses.setDisallowChanges(false)
             task.namespace.setDisallowChanges(creationConfig.namespace)
-            task.mainSplit = creationConfig.outputs.getMainSplit()
             task.useConstantIds.setDisallowChanges(false)
             task.symbolTableBuildService.setDisallowChanges(getBuildService(creationConfig.services.buildServiceRegistry))
 

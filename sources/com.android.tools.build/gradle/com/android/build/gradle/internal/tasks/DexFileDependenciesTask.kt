@@ -47,7 +47,6 @@ import org.gradle.api.tasks.CompileClasspath
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
-import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskProvider
 import java.io.File
 
@@ -57,10 +56,6 @@ abstract class DexFileDependenciesTask: NonIncrementalTask() {
 
     @get:OutputDirectory
     abstract val outputDirectory: DirectoryProperty
-
-    @get:Optional
-    @get:OutputDirectory
-    abstract val outputKeepRules: DirectoryProperty
 
     @get:Optional
     @get:OutputDirectory
@@ -85,6 +80,9 @@ abstract class DexFileDependenciesTask: NonIncrementalTask() {
     @get:Input
     abstract val libConfiguration: Property<String>
 
+    @get:Input
+    abstract val enableApiModeling: Property<Boolean>
+
     private lateinit var errorFormatMode: SyncOptions.ErrorFormatMode
 
     // TODO: make incremental
@@ -104,7 +102,7 @@ abstract class DexFileDependenciesTask: NonIncrementalTask() {
                 it.outputFile.set(outputDirectory.dir("${index}_${input.name}"))
                 it.errorFormatMode.set(errorFormatMode)
                 it.libConfiguration.set(libConfiguration)
-                it.outputKeepRules.set(outputKeepRules.dir("${index}_${input.name}"))
+                it.enableApiModeling.set(enableApiModeling)
                 it.outputGlobalSynthetics.set(outputGlobalSynthetics.dir("${index}_${input.name}"))
             }
         }
@@ -119,7 +117,7 @@ abstract class DexFileDependenciesTask: NonIncrementalTask() {
         abstract val outputFile: DirectoryProperty
         abstract val errorFormatMode: Property<SyncOptions.ErrorFormatMode>
         abstract val libConfiguration: Property<String>
-        abstract val outputKeepRules: DirectoryProperty
+        abstract val enableApiModeling: Property<Boolean>
         abstract val outputGlobalSynthetics: DirectoryProperty
     }
 
@@ -142,7 +140,7 @@ abstract class DexFileDependenciesTask: NonIncrementalTask() {
                             closer.register(it)
                         },
                         coreLibDesugarConfig = parameters.libConfiguration.orNull,
-                        coreLibDesugarOutputKeepRuleFile = parameters.outputKeepRules.asFile.orNull,
+                        enableApiModeling = parameters.enableApiModeling.get(),
                         messageReceiver = MessageReceiverImpl(
                             errorFormatMode = parameters.errorFormatMode.get(),
                             logger = Logging.getLogger(DexFileDependenciesWorkerAction::class.java)
@@ -182,12 +180,7 @@ abstract class DexFileDependenciesTask: NonIncrementalTask() {
                 DexFileDependenciesTask::outputDirectory
             ).on(InternalArtifactType.EXTERNAL_FILE_LIB_DEX_ARCHIVES)
 
-            if (dexingCreationConfig.needsShrinkDesugarLibrary) {
-                creationConfig.artifacts
-                    .setInitialProvider(taskProvider, DexFileDependenciesTask::outputKeepRules)
-                    .on(InternalArtifactType.DESUGAR_LIB_EXTERNAL_FILE_LIB_KEEP_RULES)
-            }
-            if (creationConfig.global.enableGlobalSynthetics) {
+            if (creationConfig.enableGlobalSynthetics) {
                 creationConfig.artifacts
                     .setInitialProvider(taskProvider, DexFileDependenciesTask::outputGlobalSynthetics)
                     .on(InternalArtifactType.GLOBAL_SYNTHETICS_FILE_LIB)
@@ -246,8 +239,10 @@ abstract class DexFileDependenciesTask: NonIncrementalTask() {
 
             if (dexingCreationConfig.isCoreLibraryDesugaringEnabled) {
                 task.libConfiguration.set(getDesugarLibConfig(creationConfig.services))
+                // bootclasspath is required by d8 to do API conversion for library desugaring
                 task.bootClasspath.from(creationConfig.global.bootClasspath)
             }
+            task.enableApiModeling.set(creationConfig.enableApiModeling)
 
             task.classpath.disallowChanges()
             task.bootClasspath.disallowChanges()

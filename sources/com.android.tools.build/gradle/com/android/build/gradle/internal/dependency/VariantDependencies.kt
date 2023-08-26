@@ -16,7 +16,12 @@
 
 package com.android.build.gradle.internal.dependency
 
+import com.android.Version
+import com.android.build.api.attributes.AgpVersionAttr
+import com.android.build.api.attributes.BuildTypeAttr
+import com.android.build.api.attributes.ProductFlavorAttr
 import com.android.build.gradle.internal.component.VariantCreationConfig
+import com.android.build.gradle.internal.core.dsl.KmpComponentDslInfo
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.ANDROID_RES
@@ -30,10 +35,13 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactTyp
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.LINT_MODEL
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.PACKAGED_DEPENDENCIES
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType
+import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType
 import com.android.build.gradle.internal.publishing.PublishedConfigSpec
+import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.ProjectOptions
 import com.android.builder.core.ComponentType
+import com.android.builder.core.ComponentTypeImpl
 import com.google.common.base.MoreObjects
 import com.google.common.collect.ImmutableList
 import org.gradle.api.Action
@@ -42,17 +50,31 @@ import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.artifacts.ArtifactView
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.Dependency
+import org.gradle.api.artifacts.ProjectDependency
+import org.gradle.api.artifacts.SelfResolvingDependency
 import org.gradle.api.artifacts.component.ComponentIdentifier
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
 import org.gradle.api.artifacts.result.ResolutionResult
+import org.gradle.api.artifacts.type.ArtifactTypeDefinition
+import org.gradle.api.attributes.Attribute
 import org.gradle.api.attributes.AttributeContainer
+import org.gradle.api.attributes.Bundling
+import org.gradle.api.attributes.Category
+import org.gradle.api.attributes.DocsType
+import org.gradle.api.attributes.LibraryElements
+import org.gradle.api.attributes.Usage
+import org.gradle.api.attributes.java.TargetJvmEnvironment
 import org.gradle.api.file.FileCollection
 import org.gradle.api.specs.Spec
-
+import java.io.File
+import java.util.concurrent.Callable
+import java.util.function.Predicate
 
 interface ResolutionResultProvider {
     fun getResolutionResult(configType: ConsumedConfigType): ResolutionResult
+
+    fun getAdditionalArtifacts(configType: ConsumedConfigType, type: AdditionalArtifactType): ArtifactCollection
 }
 /**
  * Object that represents the dependencies of variant.
@@ -70,13 +92,14 @@ class VariantDependencies internal constructor(
     private val sourceSetRuntimeConfigurations: Collection<Configuration>,
     val sourceSetImplementationConfigurations: Collection<Configuration>,
     private val elements: Map<PublishedConfigSpec, Configuration>,
-    private val providedClasspath: Configuration,
-    val annotationProcessorConfiguration: Configuration,
+    private val providedClasspath: Configuration?,
+    val annotationProcessorConfiguration: Configuration?,
     private val reverseMetadataValuesConfiguration: Configuration?,
     val wearAppConfiguration: Configuration?,
     private val testedVariant: VariantCreationConfig?,
     private val project: Project,
     private val projectOptions: ProjectOptions,
+    val isLibraryConstraintsApplied: Boolean,
     isSelfInstrumenting: Boolean,
 ): ResolutionResultProvider {
 
@@ -109,6 +132,47 @@ class VariantDependencies internal constructor(
         ConsumedConfigType.COMPILE_CLASSPATH -> compileClasspath.incoming.resolutionResult
         ConsumedConfigType.RUNTIME_CLASSPATH -> runtimeClasspath.incoming.resolutionResult
         else -> throw RuntimeException("Unsupported ConsumedConfigType value: $configType")
+    }
+
+    override fun getAdditionalArtifacts(
+            configType: ConsumedConfigType,
+            type: AdditionalArtifactType
+    ): ArtifactCollection {
+        val configuration = when (configType) {
+            ConsumedConfigType.COMPILE_CLASSPATH -> compileClasspath
+            ConsumedConfigType.RUNTIME_CLASSPATH -> runtimeClasspath
+            else -> throw RuntimeException("Unsupported ConsumedConfigType value: $configType")
+        }
+        val docsType = when(type) {
+            AdditionalArtifactType.SOURCE -> DocsType.SOURCES
+            AdditionalArtifactType.JAVADOC -> DocsType.JAVADOC
+            AdditionalArtifactType.SAMPLE -> SAMPLE_SOURCE_TYPE
+        }
+
+        val buildType = configuration.attributes.getAttribute(BuildTypeAttr.ATTRIBUTE)
+        val flavorMap = configuration.attributes.keySet()
+                .filter { it.type == ProductFlavorAttr::class.java }
+                .associateWith { configuration.attributes.getAttribute(it) } as Map<Attribute<ProductFlavorAttr>, ProductFlavorAttr>
+
+        return configuration.incoming.artifactView { view ->
+            view.isLenient = true
+            view.withVariantReselection()
+            val objects = project.objects
+
+            view.attributes.apply {
+                attribute(BuildTypeAttr.ATTRIBUTE, buildType)
+                flavorMap.entries.forEach {
+                    attribute(it.key, it.value)
+                }
+
+                attribute(DocsType.DOCS_TYPE_ATTRIBUTE, objects.named(DocsType::class.java, docsType))
+                attribute(Category.CATEGORY_ATTRIBUTE, objects.named(Category::class.java, Category.DOCUMENTATION))
+                attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, ArtifactTypeDefinition.JAR_TYPE)
+                attribute(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE, objects.named(LibraryElements::class.java, LibraryElements.JAR))
+                attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling::class.java, Bundling.EXTERNAL))
+                attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage::class.java, Usage.JAVA_RUNTIME))
+            }
+        }.artifacts
     }
 
     @JvmOverloads
@@ -224,8 +288,8 @@ class VariantDependencies internal constructor(
         return when (configType) {
             ConsumedConfigType.COMPILE_CLASSPATH -> compileClasspath
             ConsumedConfigType.RUNTIME_CLASSPATH -> runtimeClasspath
-            ConsumedConfigType.PROVIDED_CLASSPATH -> providedClasspath
-            ConsumedConfigType.ANNOTATION_PROCESSOR -> annotationProcessorConfiguration
+            ConsumedConfigType.PROVIDED_CLASSPATH -> providedClasspath!!
+            ConsumedConfigType.ANNOTATION_PROCESSOR -> annotationProcessorConfiguration!!
             ConsumedConfigType.REVERSE_METADATA_VALUES ->
                 checkNotNull(reverseMetadataValuesConfiguration) {
                     "reverseMetadataValuesConfiguration is null"
@@ -270,6 +334,30 @@ class VariantDependencies internal constructor(
             .artifacts
     }
 
+    fun computeLocalFileDependencies(
+        services: VariantServices,
+        filePredicate: Predicate<File>
+    ): FileCollection {
+        // Get a list of local file dependencies. There is currently no API to filter the
+        // files here, so we need to filter it in the return statement below. That means that if,
+        // for example, filePredicate filters out all files but jars in the return statement, but an
+        // AarProducerTask produces an aar, then the returned FileCollection contains only jars but
+        // still has AarProducerTask as a dependency.
+        val dependencies = Callable {
+                runtimeClasspath
+                    .allDependencies
+                    .filterIsInstance<SelfResolvingDependency>()
+                    .filter { it !is ProjectDependency }
+            }
+
+        // Create a file collection builtBy the dependencies.  The files are resolved later.
+        return services.fileCollection(Callable {
+            dependencies.call()
+                .flatMap { it.resolve() }
+                .filter { filePredicate.test(it) }
+        }).builtBy(dependencies)
+    }
+
     companion object {
 
         const val CONFIG_NAME_COMPILE = "compile"
@@ -288,9 +376,119 @@ class VariantDependencies internal constructor(
         const val CONFIG_NAME_LINTPUBLISH = "lintPublish"
         const val CONFIG_NAME_TESTED_APKS = "testedApks"
         const val CONFIG_NAME_CORE_LIBRARY_DESUGARING = "coreLibraryDesugaring"
+        const val SAMPLE_SOURCE_TYPE = "samplessources"
 
         @Deprecated("")
         const val CONFIG_NAME_FEATURE = "feature"
+
+        fun createForKotlinMultiplatform(
+            project: Project,
+            projectOptions: ProjectOptions,
+            dslInfo: KmpComponentDslInfo,
+            apiClasspath: Configuration,
+            compileClasspath: Configuration,
+            runtimeClasspath: Configuration,
+            apiElements: Configuration?,
+            runtimeElements: Configuration?,
+            apiPublication: Configuration?,
+            runtimePublication: Configuration?
+        ): VariantDependencies {
+
+            project.objects.named(
+                TargetJvmEnvironment::class.java,
+                TargetJvmEnvironment.ANDROID
+            ).let { androidTarget ->
+                listOfNotNull(
+                    compileClasspath,
+                    runtimeClasspath,
+                    apiElements,
+                    runtimeElements,
+                    apiPublication,
+                    runtimePublication
+                ).forEach {
+                    it.attributes.attribute(
+                        TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE,
+                        androidTarget
+                    )
+                }
+            }
+
+            project.objects.named(
+                AgpVersionAttr::class.java,
+                Version.ANDROID_GRADLE_PLUGIN_VERSION
+            ).let { agpVersion ->
+                listOfNotNull(compileClasspath, runtimeClasspath, apiElements, runtimeElements).forEach {
+                    it.attributes.attribute(AgpVersionAttr.ATTRIBUTE, agpVersion)
+                }
+            }
+
+            listOfNotNull(apiElements, apiPublication).forEach {
+                it.extendsFrom(apiClasspath)
+            }
+
+            listOfNotNull(runtimeElements, runtimePublication).forEach {
+                it.extendsFrom(runtimeClasspath)
+            }
+
+            // add dependency on main project
+            if (dslInfo.componentType.isTestComponent) {
+                compileClasspath.dependencies.add(project.dependencies.create(project))
+                runtimeClasspath.dependencies.add(project.dependencies.create(project))
+            }
+
+            project.objects.named(
+                LibraryElements::class.java,
+                AndroidArtifacts.ArtifactType.AAR.type
+            ).let { aar ->
+                apiPublication?.attributes?.attribute(
+                    LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE,
+                    aar
+                )
+                runtimePublication?.attributes?.attribute(
+                    LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE,
+                    aar
+                )
+            }
+
+            val elements = mutableMapOf<PublishedConfigSpec, Configuration>()
+
+            runtimeElements?.let {
+                elements[PublishedConfigSpec(PublishedConfigType.RUNTIME_ELEMENTS)] = runtimeElements
+            }
+            apiElements?.let {
+                elements[PublishedConfigSpec(PublishedConfigType.API_ELEMENTS)] = apiElements
+            }
+
+            apiPublication?.let {
+                elements[PublishedConfigSpec(
+                    PublishedConfigType.API_PUBLICATION, dslInfo.componentIdentity.name
+                )] = apiPublication
+            }
+            runtimePublication?.let {
+                elements[PublishedConfigSpec(
+                    PublishedConfigType.RUNTIME_PUBLICATION, dslInfo.componentIdentity.name
+                )] = runtimePublication
+            }
+
+            return VariantDependencies(
+                variantName = dslInfo.componentIdentity.name,
+                componentType = ComponentTypeImpl.KMP_ANDROID,
+                compileClasspath = compileClasspath,
+                runtimeClasspath = runtimeClasspath,
+                sourceSetRuntimeConfigurations = emptySet(),
+                sourceSetImplementationConfigurations = emptySet(),
+                elements = elements,
+                providedClasspath = null,
+                annotationProcessorConfiguration = null,
+                reverseMetadataValuesConfiguration = null,
+                wearAppConfiguration = null,
+                testedVariant = null,
+                project = project,
+                projectOptions = projectOptions,
+                isLibraryConstraintsApplied = false,
+                isSelfInstrumenting = false
+            )
+        }
 
         private fun isArtifactTypeSubtractedForInstrumentationTests(
             artifactType: AndroidArtifacts.ArtifactType
@@ -341,4 +539,10 @@ class VariantDependencies internal constructor(
             }
         }
     }
+}
+
+enum class AdditionalArtifactType {
+    JAVADOC,
+    SOURCE,
+    SAMPLE,
 }

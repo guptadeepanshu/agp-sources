@@ -28,16 +28,6 @@ class VariantOutputList(
     val variantOutputs: List<VariantOutputImpl>): List<VariantOutputImpl> by variantOutputs {
 
     /**
-     * Return a [List] of [VariantOutputImpl] for variant output which [VariantOutput.outputType]
-     * is the same as the passed parameter.
-     *
-     * @param outputType desired output type filter.
-     * @return a possibly empty [List] of [VariantOutputImpl]
-     */
-    fun getSplitsByType(outputType: VariantOutputConfiguration.OutputType): List<VariantOutputImpl> =
-        variantOutputs.filter { it.outputType == outputType }
-
-    /**
      * Returns the list of enabled [VariantOutput]
      */
     fun getEnabledVariantOutputs(): List<VariantOutputImpl> =
@@ -65,11 +55,3 @@ class VariantOutputList(
                 it.outputType == VariantOutputConfiguration.OutputType.ONE_OF_MANY
             }
 }
-/**
- * Finds the [VariantOutputImpl] for the provided [VariantOutputConfiguration] or null if
- * cannot be found.
- */
-fun List<VariantOutputImpl>.getVariantOutput(variantConfiguration: VariantOutputConfiguration) =
-    firstOrNull { variantConfiguration.outputType == it.outputType
-            && variantConfiguration.filters == it.filters }
-

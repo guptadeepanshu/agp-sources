@@ -20,6 +20,7 @@ import com.android.SdkConstants.DOT_JAR
 import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.internal.TaskManager
+import com.android.build.gradle.internal.caching.DisabledCachingReason.SIMPLE_MERGING_TASK
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.scope.InternalArtifactType
@@ -30,10 +31,10 @@ import com.android.builder.dexing.ClassFileInput.CLASS_MATCHER
 import com.android.builder.packaging.JarFlinger
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskProvider
+import org.gradle.work.DisableCachingByDefault
 import java.util.zip.Deflater
 
 /**
@@ -43,7 +44,7 @@ import java.util.zip.Deflater
  * because the base needs to know which classes came from which modules to eventually split the
  * classes to the correct APKs via the Dex Splitter.
  */
-@CacheableTask
+@DisableCachingByDefault(because = SIMPLE_MERGING_TASK)
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.COMPILED_CLASSES, secondaryTaskCategories = [TaskCategory.MERGING])
 abstract class MergeClassesTask : NonIncrementalTask() {
 
@@ -94,12 +95,10 @@ abstract class MergeClassesTask : NonIncrementalTask() {
     ) {
         override val type = MergeClassesTask::class.java
         override val name: String = computeTaskName("merge", "Classes")
-        private val inputFiles = creationConfig.services.fileCollection().run {
-            from(
-                creationConfig.artifacts.forScope(ScopedArtifacts.Scope.ALL)
-                    .getFinalArtifacts(ScopedArtifact.CLASSES)
-            )
-        }
+        private val inputFiles = creationConfig
+            .artifacts
+            .forScope(ScopedArtifacts.Scope.ALL)
+            .getFinalArtifacts(ScopedArtifact.CLASSES)
 
         override fun handleProvider(
             taskProvider: TaskProvider<MergeClassesTask>

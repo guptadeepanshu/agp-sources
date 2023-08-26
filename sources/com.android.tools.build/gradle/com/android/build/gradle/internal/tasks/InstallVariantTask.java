@@ -290,8 +290,7 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
             }
 
             task.minSdkVersion =
-                    VariantApiExtensionsKt.toSharedAndroidVersion(
-                            creationConfig.getMinSdkVersion());
+                    VariantApiExtensionsKt.toSharedAndroidVersion(creationConfig.getMinSdk());
 
             task.setDescription("Installs the " + creationConfig.getDescription() + ".");
             task.setGroup(TaskManager.INSTALL_GROUP);

@@ -36,7 +36,7 @@ const val DEFAULT_EMULATOR_GRPC_PORT = "8554"
 private val LOG = Logger.getLogger("IceboxConfigUtils")
 
 /** Returns the Emulator registration directory. */
-private fun computeRegistrationDirectoryContainer(): Path? {
+fun computeRegistrationDirectoryContainer(): Path? {
     val os = System.getProperty("os.name").lowercase(Locale.ROOT)
     when {
         os.startsWith("mac") -> {
@@ -101,7 +101,8 @@ data class EmulatorGrpcInfo(
     val port: Int,
     val token: String?,
     val serverCert: String?,
-    val jwks: String?
+    val jwks: String?,
+    val allowlist: String?
 )
 
 fun findGrpcInfo(deviceSerial: String, file: Path): EmulatorGrpcInfo? {
@@ -118,7 +119,8 @@ fun findGrpcInfo(deviceSerial: String, file: Path): EmulatorGrpcInfo? {
             discovered.getOrDefault("grpc.port", DEFAULT_EMULATOR_GRPC_PORT).toInt(),
             discovered.getOrDefault("grpc.token", ""),
             discovered.getOrDefault("grpc.server_cert", ""),
-            discovered.getOrDefault("grpc.jwks", "")
+            discovered.getOrDefault("grpc.jwks", ""),
+            discovered.getOrDefault("grpc.allowlist", "")
         )
     } else {
         return null
@@ -140,12 +142,12 @@ fun findGrpcInfo(deviceSerial: String): EmulatorGrpcInfo {
             }
             .filterNotNull()
             .firstOrNull()
-            ?: EmulatorGrpcInfo(DEFAULT_EMULATOR_GRPC_PORT.toInt(), null, null, null)
+            ?: EmulatorGrpcInfo(DEFAULT_EMULATOR_GRPC_PORT.toInt(), null, null, null, null)
     } catch (exception: Throwable) {
         LOG.fine(
             "Failed to parse emulator gRPC port, fallback to default," +
                     " exception ${exception}"
         )
-        return EmulatorGrpcInfo(DEFAULT_EMULATOR_GRPC_PORT.toInt(), null, null, null)
+        return EmulatorGrpcInfo(DEFAULT_EMULATOR_GRPC_PORT.toInt(), null, null, null, null)
     }
 }

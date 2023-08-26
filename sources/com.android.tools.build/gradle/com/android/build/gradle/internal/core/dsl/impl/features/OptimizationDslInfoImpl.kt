@@ -81,14 +81,10 @@ class OptimizationDslInfoImpl(
         }
     }
 
-
     override val postProcessingOptions: PostProcessingOptions by lazy {
-        if ((buildTypeObj as com.android.build.gradle.internal.dsl.BuildType)
-                .postProcessingConfiguration ==
-            com.android.build.gradle.internal.dsl.BuildType.PostProcessingConfiguration.POSTPROCESSING_BLOCK
-        ) {
+        if ((buildTypeObj as com.android.build.gradle.internal.dsl.BuildType).postProcessingBlockUsed) {
             PostProcessingBlockOptions(
-                buildTypeObj.postprocessing, componentType.isTestComponent
+                buildTypeObj._postProcessing, componentType.isTestComponent,
             )
         } else object : PostProcessingOptions {
             override fun getProguardFiles(type: ProguardFileType): Collection<File> =

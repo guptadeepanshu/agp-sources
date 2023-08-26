@@ -132,14 +132,17 @@ abstract class FusedLibraryManifestMergerTask : ManifestProcessorTask() {
                         targetSdkVersion = null,
                         maxSdkVersion = null,
                         testOnly = false,
+                        extractNativeLibs = null,
                         outMergedManifestLocation = outMergedManifestLocation.get().asFile.absolutePath,
                         outAaptSafeManifestLocation = null,
                         mergeType = ManifestMerger2.MergeType.FUSED_LIBRARY,
                         placeHolders = emptyMap(),
                         optionalFeatures = listOf(ManifestMerger2.Invoker.Feature.NO_PLACEHOLDER_REPLACEMENT),
                         dependencyFeatureNames = emptyList(),
+                        generatedLocaleConfigAttribute = null,
                         reportFile = reportFile.get().asFile,
-                        logger = LoggerWrapper.getLogger(FusedLibraryManifestMergerTask::class.java))
+                        logger = LoggerWrapper.getLogger(FusedLibraryManifestMergerTask::class.java)
+                )
             }
         }
     }

@@ -225,7 +225,7 @@ abstract class BaseVariantData(
             filterType: DiscoverableFilterType,
             splits: Splits
         ): Set<String> {
-            return HashSet(filterType.getConfiguredFilters(splits))
+            return filterType.getConfiguredFilters(splits).toSet()
         }
     }
 }

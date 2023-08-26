@@ -25,10 +25,10 @@ import org.gradle.api.artifacts.transform.TransformAction
 import org.gradle.api.artifacts.transform.TransformOutputs
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.FileSystemLocation
-import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
-import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
@@ -39,17 +39,20 @@ import java.io.File
 import java.io.IOException
 import java.net.URL
 import java.net.URLClassLoader
+import java.nio.file.AccessDeniedException
 import java.nio.file.Files
 import java.nio.file.Path
+import java.util.logging.Level
+import java.util.logging.Logger
+import java.util.stream.Collectors
 import java.util.zip.ZipEntry
+import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
 import javax.inject.Inject
 import javax.tools.ToolProvider
 import kotlin.io.path.extension
 import kotlin.io.path.inputStream
-import kotlin.io.path.isDirectory
 import kotlin.io.path.pathString
-import kotlin.streams.toList
 
 /*
 * Invokes the specified library intended to generate client SDK shim code for interacting with a
@@ -64,7 +67,7 @@ abstract class ExtractSdkShimTransform : TransformAction<ExtractSdkShimTransform
         // This is temporary until permanent method of getting apigenerator dependencies is finished.
         @get:InputFiles
         @get:PathSensitive(PathSensitivity.NONE)
-        val apiGeneratorAndRuntimeDependenciesJars: ConfigurableFileCollection
+        val apiGenerator: ConfigurableFileCollection
 
         @get:Nested
         val buildTools: BuildToolsExecutableInput
@@ -80,6 +83,9 @@ abstract class ExtractSdkShimTransform : TransformAction<ExtractSdkShimTransform
         @get:InputFiles
         @get:PathSensitive(PathSensitivity.NONE)
         val runtimeDependencies: ConfigurableFileCollection
+
+        @get:Input
+        val requireServices: Property<Boolean>
     }
 
     @get:Inject
@@ -91,19 +97,28 @@ abstract class ExtractSdkShimTransform : TransformAction<ExtractSdkShimTransform
 
     override fun transform(transformOutputs: TransformOutputs) {
         val sdkInterfaceDescriptorJar = inputArtifact.get().asFile
+        if (!sdkInterfaceDescriptorJar.isFile) {
+            throw IOException("${sdkInterfaceDescriptorJar.absolutePath} must be a file.")
+        }
+        if (checkEmptyJar(sdkInterfaceDescriptorJar)) {
+            if (parameters.requireServices.get()) {
+                throw RuntimeException(
+                        "Unable to proceed generating shim with no provided sdk descriptor entries in: " +
+                                "${sdkInterfaceDescriptorJar.absolutePath}." +
+                                "Privacy Sandbox Sdk modules require at least one service declaration.")
+            }
+            return
+        }
         val output = transformOutputs.file("sdk-shim-generated.jar")
         val aidlExecutable = parameters.buildTools.aidlExecutableProvider().get().absoluteFile
         val totalClasspath =
                 parameters.bootstrapClasspath.files + parameters.runtimeDependencies.files
         val totalClasspathStr = totalClasspath.joinToString(File.pathSeparator) { it.path }
-        val apiGeneratorJarsFiles = parameters.apiGeneratorAndRuntimeDependenciesJars.files
+        val apiGeneratorJarsFiles = parameters.apiGenerator.files
                 ?: error("No library has been specified for client SDK shim generation.")
         val apiGeneratorUrls: Array<URL> =
                 apiGeneratorJarsFiles.mapNotNull { it.toURI().toURL() }.toTypedArray()
         val tempDirForApiGeneratorOutputs = Files.createTempDirectory("extract-shim-transform")
-        if (!sdkInterfaceDescriptorJar.isFile) {
-            throw IOException("${sdkInterfaceDescriptorJar.absolutePath} must be a file.")
-        }
         try {
             val kotlinOutDir = File(tempDirForApiGeneratorOutputs.toFile(), "kotlin-compiled")
             val javaOutDir = File(tempDirForApiGeneratorOutputs.toFile(), "java-compiled")
@@ -116,9 +131,8 @@ abstract class ExtractSdkShimTransform : TransformAction<ExtractSdkShimTransform
                         outputDirectory = tempDirForApiGeneratorOutputs)
             }
 
-            val generatedFiles: List<Path>
-            Files.walk(tempDirForApiGeneratorOutputs).use { stream ->
-                generatedFiles = stream.filter { Files.isRegularFile(it) }.toList()
+            val generatedFiles: List<Path> = Files.walk(tempDirForApiGeneratorOutputs).use { stream ->
+                 stream.filter { Files.isRegularFile(it) }.collect(Collectors.toList())
             }
 
             // Java sources are produced by the apigenerator invoking the aidl compiler, therefore
@@ -130,8 +144,20 @@ abstract class ExtractSdkShimTransform : TransformAction<ExtractSdkShimTransform
                 writeCompiledClassesToZip(kotlinOutDir, outJar)
                 writeCompiledClassesToZip(javaOutDir, outJar)
             }
-        } finally {
-            FileUtils.cleanOutputDir(tempDirForApiGeneratorOutputs.toFile())
+        }
+        finally {
+            try {
+                FileUtils.deleteRecursivelyIfExists(tempDirForApiGeneratorOutputs.toFile())
+            } catch (e: AccessDeniedException) {
+                Logger.getLogger(ExtractCompileSdkShimTransform::class.java.name)
+                        .log(Level.WARNING, e.message)
+            }
+        }
+    }
+
+    private fun checkEmptyJar(sdkInterfaceDescriptorJar: File): Boolean {
+        ZipInputStream(sdkInterfaceDescriptorJar?.inputStream()).use { jar ->
+            return jar.nextEntry == null
         }
     }
 

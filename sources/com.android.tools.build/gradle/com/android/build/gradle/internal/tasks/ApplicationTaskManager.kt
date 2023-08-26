@@ -18,6 +18,7 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.build.api.artifact.MultipleArtifact
 import com.android.build.api.artifact.ScopedArtifact
+import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.component.impl.isTestApk
 import com.android.build.api.variant.ApplicationVariantBuilder
 import com.android.build.api.variant.ScopedArtifacts
@@ -26,6 +27,7 @@ import com.android.build.gradle.internal.AbstractAppTaskManager
 import com.android.build.gradle.internal.component.AndroidTestCreationConfig
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
+import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig
 import com.android.build.gradle.internal.dsl.AbstractPublishing
@@ -35,22 +37,30 @@ import com.android.build.gradle.internal.publishing.PublishedConfigSpec
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.databinding.DataBindingExportFeatureNamespacesTask
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
+import com.android.build.gradle.internal.tasks.factory.TaskConfigAction
 import com.android.build.gradle.internal.tasks.factory.TaskManagerConfig
+import com.android.build.gradle.internal.tasks.factory.TaskProviderCallback
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.android.build.gradle.internal.tasks.featuresplit.FeatureSetMetadataWriterTask
 import com.android.build.gradle.internal.variant.ComponentInfo
 import com.android.build.gradle.internal.variant.VariantModel
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.tasks.BuildPrivacySandboxSdkApks
+import com.android.build.gradle.tasks.ExtractSupportedLocalesTask
+import com.android.build.gradle.tasks.GenerateLocaleConfigTask
 import com.android.build.gradle.tasks.sync.ApplicationVariantModelTask
 import com.android.build.gradle.tasks.sync.AppIdListTask
 import com.android.builder.core.ComponentType
+import com.android.builder.errors.IssueReporter
+import com.android.builder.internal.aapt.AaptUtils
 import org.gradle.api.Action
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.artifacts.ArtifactView
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.attributes.AttributeContainer
 import org.gradle.api.file.FileCollection
+import org.gradle.api.tasks.TaskProvider
 
 class ApplicationTaskManager(
     project: Project,
@@ -89,6 +99,8 @@ class ApplicationTaskManager(
 
         val variant = variantInfo.variant
 
+        createBundleTask(variant)
+
         taskFactory.register(ApplicationVariantModelTask.CreationAction(variant))
 
         // Base feature specific tasks.
@@ -109,6 +121,22 @@ class ApplicationTaskManager(
 
         taskFactory.register(MergeArtProfileTask.CreationAction(variant))
         taskFactory.register(CompileArtProfileTask.CreationAction(variant))
+
+        if (variant.generateLocaleConfig) {
+            val resourceConfigs = variant.androidResourcesCreationConfig?.resourceConfigurations
+            if (!resourceConfigs.isNullOrEmpty() &&
+                AaptUtils.getNonDensityResConfigs(resourceConfigs).toList().isNotEmpty()) {
+                variant.services.issueReporter.reportError(
+                    IssueReporter.Type.GENERIC,
+                    "You cannot specify languages in resource configurations when " +
+                    "automatic locale generation is enabled. To use resource configurations, " +
+                    "please provide the locale config manually: " +
+                    "https://d.android.com/r/tools/locale-config"
+                )
+            }
+            taskFactory.register(ExtractSupportedLocalesTask.CreationAction(variant))
+            taskFactory.register(GenerateLocaleConfigTask.CreationAction(variant))
+        }
 
         if (variant.buildFeatures.dataBinding
                 && globalConfig.hasDynamicFeatures) {
@@ -140,6 +168,24 @@ class ApplicationTaskManager(
                 configType
             )
         }
+    }
+
+    private fun createBundleTask(component: ComponentCreationConfig) {
+        taskFactory.register(
+            component.computeTaskName("bundle"),
+            null,
+            object : TaskConfigAction<Task> {
+                override fun configure(task: Task) {
+                    task.description = "Assembles bundle for variant " + component.name
+                    task.dependsOn(component.artifacts.get(SingleArtifact.BUNDLE))
+                }
+            },
+            object : TaskProviderCallback<Task> {
+                override fun handleProvider(taskProvider: TaskProvider<Task>) {
+                    component.taskContainer.bundleTask = taskProvider
+                }
+            }
+        )
     }
 
     /** Configure variantData to generate embedded wear application.  */
@@ -254,8 +300,8 @@ class ApplicationTaskManager(
         taskFactory.register(PerModuleBundleTask.CreationAction(variant))
 
         val debuggable = variantInfo.variantBuilder.debuggable
-        val includeSdkInfoInApk = variantInfo.variantBuilder.dependenciesInfo.includedInApk
-        val includeSdkInfoInBundle = variantInfo.variantBuilder.dependenciesInfo.includedInBundle
+        val includeSdkInfoInApk = variantInfo.variantBuilder.dependenciesInfo.includeInApk
+        val includeSdkInfoInBundle = variantInfo.variantBuilder.dependenciesInfo.includeInBundle
         if (!debuggable) {
             taskFactory.register(PerModuleReportDependenciesTask.CreationAction(variant))
         }

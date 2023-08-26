@@ -234,8 +234,12 @@ internal fun DefaultAndroidSourceSet.convert(
     customDirectories = customDirectories,
 )
 
+/**
+ * Returns source dirs that should be added to the model, but avoids getting the generated ones
+ * as they are handled separately in the model.
+ */
 private fun variantSourcesForModel(sourceDirectories: SourceDirectoriesImpl?) =
-    sourceDirectories?.variantSourcesForModel { it.shouldBeAddedToIdeModel } ?: emptyList()
+    sourceDirectories?.variantSourcesForModel { it.shouldBeAddedToIdeModel && !it.isGenerated } ?: emptyList()
 
 internal fun AndroidResources.convert() = AaptOptionsImpl(
     namespacing = if (namespaced) REQUIRED else DISABLED

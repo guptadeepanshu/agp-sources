@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.dsl
 
+import com.android.build.api.dsl.TestAndroidResources
 import com.android.build.api.dsl.TestBuildFeatures
 import com.android.build.api.dsl.TestBuildType
 import com.android.build.api.dsl.TestDefaultConfig
@@ -29,4 +30,5 @@ interface InternalTestExtension :
                 TestBuildFeatures,
                 TestBuildType,
                 TestDefaultConfig,
-                TestProductFlavor>
+                TestProductFlavor,
+                TestAndroidResources>

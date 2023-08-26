@@ -32,7 +32,8 @@ data class VersionsImpl(
 
 data class VersionImpl(
     override val major: Int,
-    override val minor: Int
+    override val minor: Int,
+    override val humanReadable: String? = null,
 ): Version, Serializable {
     companion object {
         @JvmStatic

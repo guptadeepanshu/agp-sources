@@ -85,6 +85,8 @@ private class ReferencesForResourceFinder(
          */
         private const val ANDROID_RES = "android_res/"
 
+        private const val CONSTRAINT_REFERENCED_IDS = "constraint_referenced_ids"
+
         private fun Reference.asItem(): Resources.Item =
             Resources.Item.newBuilder().setRef(this).build()
     }
@@ -221,6 +223,9 @@ private class ReferencesForResourceFinder(
     }
 
     private fun fillFromAttribute(attribute: XmlAttribute) {
+        if (attribute.name == CONSTRAINT_REFERENCED_IDS) {
+            fillFromConstraintReferencedIds(attribute.value)
+        }
         if (attribute.hasCompiledItem()) {
             findFromItem(attribute.compiledItem)
         }
@@ -228,6 +233,16 @@ private class ReferencesForResourceFinder(
         if (current.type == ResourceType.XML) {
             maybeAndroidResUrl(attribute.value, markAsReachable = true)
         }
+    }
+
+    private fun fillFromConstraintReferencedIds(value: String?) {
+        value
+            ?.split(",")
+            ?.map { it.trim() }
+            ?.forEach {
+                model.resourceStore.getResources(ResourceType.ID, it)
+                    .forEach(ResourceUsageModel::markReachable)
+            }
     }
 
     private fun maybeAndroidResUrl(text: String, markAsReachable: Boolean) {

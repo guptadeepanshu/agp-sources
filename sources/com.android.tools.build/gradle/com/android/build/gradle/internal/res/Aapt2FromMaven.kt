@@ -142,6 +142,8 @@ class Aapt2FromMaven(val aapt2Directory: FileCollection, val version: String) {
                     )
                 )
             )
+            configuration.isCanBeConsumed = false
+            configuration.isCanBeResolved = true
 
             project.dependencies.registerTransform(Aapt2Extractor::class.java) {
                 it.parameters.projectName.set(project.name)

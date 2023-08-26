@@ -30,7 +30,6 @@ import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.api.BaseVariantOutput;
 import com.android.build.gradle.internal.ExtraModelInfo;
 import com.android.build.gradle.internal.LibraryTaskManager;
-import com.android.build.gradle.internal.TaskManager;
 import com.android.build.gradle.internal.component.LibraryCreationConfig;
 import com.android.build.gradle.internal.component.TestComponentCreationConfig;
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig;
@@ -47,6 +46,7 @@ import com.android.build.gradle.internal.tasks.factory.BootClasspathConfig;
 import com.android.build.gradle.internal.tasks.factory.BootClasspathConfigImpl;
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig;
 import com.android.build.gradle.internal.tasks.factory.TaskManagerConfig;
+import com.android.build.gradle.internal.testing.ManagedDeviceRegistry;
 import com.android.build.gradle.internal.variant.ComponentInfo;
 import com.android.build.gradle.internal.variant.LibraryVariantFactory;
 import com.android.build.gradle.options.BooleanOption;
@@ -68,6 +68,7 @@ public class LibraryPlugin
                 com.android.build.api.dsl.LibraryBuildType,
                 com.android.build.api.dsl.LibraryDefaultConfig,
                 com.android.build.api.dsl.LibraryProductFlavor,
+                com.android.build.api.dsl.LibraryAndroidResources,
                 LibraryExtension,
                 LibraryAndroidComponentsExtension,
                 LibraryVariantBuilder,
@@ -86,24 +87,28 @@ public class LibraryPlugin
     @NonNull
     @Override
     protected ExtensionData<
-            LibraryBuildFeatures,
-            com.android.build.api.dsl.LibraryBuildType,
-            com.android.build.api.dsl.LibraryDefaultConfig,
-            com.android.build.api.dsl.LibraryProductFlavor,
-            LibraryExtension> createExtension(
-            @NonNull DslServices dslServices,
-            @NonNull
-                    DslContainerProvider<DefaultConfig, BuildType, ProductFlavor, SigningConfig>
-                            dslContainers,
-            @NonNull NamedDomainObjectContainer<BaseVariantOutput> buildOutputs,
-            @NonNull ExtraModelInfo extraModelInfo,
-            VersionedSdkLoaderService versionedSdkLoaderService) {
+                    LibraryBuildFeatures,
+                    com.android.build.api.dsl.LibraryBuildType,
+                    com.android.build.api.dsl.LibraryDefaultConfig,
+                    com.android.build.api.dsl.LibraryProductFlavor,
+                    com.android.build.api.dsl.LibraryAndroidResources,
+                    LibraryExtension>
+            createExtension(
+                    @NonNull DslServices dslServices,
+                    @NonNull
+                            DslContainerProvider<
+                                            DefaultConfig, BuildType, ProductFlavor, SigningConfig>
+                                    dslContainers,
+                    @NonNull NamedDomainObjectContainer<BaseVariantOutput> buildOutputs,
+                    @NonNull ExtraModelInfo extraModelInfo,
+                    VersionedSdkLoaderService versionedSdkLoaderService) {
         LibraryExtensionImpl libraryExtension =
                 dslServices.newDecoratedInstance(
                         LibraryExtensionImpl.class, dslServices, dslContainers);
 
         // detects whether we are running the plugin under unit test mode
-        boolean forUnitTesting = project.hasProperty("_agp_internal_test_mode_");
+        boolean forUnitTesting =
+                project.getProviders().gradleProperty("_agp_internal_test_mode_").isPresent();
 
         BootClasspathConfigImpl bootClasspathConfig =
                 new BootClasspathConfigImpl(
@@ -174,12 +179,18 @@ public class LibraryPlugin
         public LibraryAndroidComponentsExtensionImplCompat(
                 @NonNull DslServices dslServices,
                 @NonNull SdkComponents sdkComponents,
+                @NonNull ManagedDeviceRegistry deviceRegistry,
                 @NonNull
                         VariantApiOperationsRegistrar<
                                         LibraryExtension, LibraryVariantBuilder, LibraryVariant>
                                 variantApiOperations,
                 @NonNull com.android.build.gradle.LibraryExtension libraryExtension) {
-            super(dslServices, sdkComponents, variantApiOperations, libraryExtension);
+            super(
+                    dslServices,
+                    sdkComponents,
+                    deviceRegistry,
+                    variantApiOperations,
+                    libraryExtension);
         }
     }
 
@@ -217,6 +228,7 @@ public class LibraryPlugin
                                 LibraryAndroidComponentsExtensionImplCompat.class,
                                 dslServices,
                                 sdkComponents,
+                                getManagedDeviceRegistry(),
                                 variantApiOperationsRegistrar,
                                 getExtension());
 
@@ -247,7 +259,7 @@ public class LibraryPlugin
 
     @NonNull
     @Override
-    protected TaskManager<LibraryVariantBuilder, LibraryCreationConfig> createTaskManager(
+    protected LibraryTaskManager createTaskManager(
             @NonNull Project project,
             @NonNull
                     Collection<

@@ -17,18 +17,10 @@
 package com.android.build.gradle.internal.component
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
-import com.android.build.api.dsl.CommonExtension
-import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
-import com.android.build.api.component.impl.features.ManifestPlaceholdersCreationConfigImpl
 import com.android.build.api.variant.AndroidVersion
-import com.android.build.api.variant.Component
 import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.InternalSources
 import com.android.build.api.variant.JavaCompilation
-import com.android.build.api.variant.Variant
-import com.android.build.api.variant.VariantBuilder
-import com.android.build.api.variant.VariantOutputConfiguration
-import com.android.build.api.variant.impl.VariantOutputList
 import com.android.build.gradle.internal.component.features.AndroidResourcesCreationConfig
 import com.android.build.gradle.internal.component.features.AssetsCreationConfig
 import com.android.build.gradle.internal.component.features.BuildConfigCreationConfig
@@ -38,17 +30,14 @@ import com.android.build.gradle.internal.component.features.ResValuesCreationCon
 import com.android.build.gradle.internal.component.legacy.ModelV1LegacySupport
 import com.android.build.gradle.internal.component.legacy.OldVariantApiLegacySupport
 import com.android.build.gradle.internal.core.ProductFlavor
-import com.android.build.gradle.internal.core.dsl.features.ManifestPlaceholdersDslInfo
 import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.MutableTaskContainer
-import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.variant.VariantPathHelper
 import com.android.builder.core.ComponentType
-import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Provider
 import java.io.File
@@ -81,10 +70,7 @@ interface ComponentCreationConfig : ComponentIdentity {
     val applicationId: Provider<String>
     val namespace: Provider<String>
     val debuggable: Boolean
-
-    val minSdkVersion: AndroidVersion
-    val targetSdkVersion: AndroidVersion
-    val targetSdkVersionOverride: AndroidVersion?
+    val minSdk: AndroidVersion
 
     // ---------------------------------------------------------------------------------------------
     // OPTIONAL FEATURES
@@ -96,11 +82,6 @@ interface ComponentCreationConfig : ComponentIdentity {
     val buildConfigCreationConfig: BuildConfigCreationConfig?
     val instrumentationCreationConfig: InstrumentationCreationConfig?
     val manifestPlaceholdersCreationConfig: ManifestPlaceholdersCreationConfig?
-
-    // TODO figure out whether these properties are needed by all
-    // TODO : remove as it is now in Variant.
-    // ---------------------------------------------------------------------------------------------
-    val outputs: VariantOutputList
 
     // ---------------------------------------------------------------------------------------------
     // INTERNAL DELEGATES
@@ -137,11 +118,6 @@ interface ComponentCreationConfig : ComponentIdentity {
 
     val javaCompilation: JavaCompilation
 
-    fun addVariantOutput(
-        variantOutputConfiguration: VariantOutputConfiguration,
-        outputFileName: Provider<String>? = null
-    )
-
     fun computeLocalFileDependencies(filePredicate: Predicate<File>): FileCollection
 
     fun computeLocalPackagedJars(): FileCollection
@@ -154,35 +130,13 @@ interface ComponentCreationConfig : ComponentIdentity {
     /** Publish intermediate artifacts in the BuildArtifactsHolder based on PublishingSpecs.  */
     fun publishBuildArtifacts()
 
-    fun <T: Component> createUserVisibleVariantObject(
-        projectServices: ProjectServices,
-        operationsRegistrar: VariantApiOperationsRegistrar<out CommonExtension<*, *, *, *>, out VariantBuilder, out Variant>,
-        stats: GradleBuildVariant.Builder?
-    ): T
-
     // ---------------------------------------------------------------------------------------------
     // LEGACY SUPPORT
     // ---------------------------------------------------------------------------------------------
 
     @Deprecated("DO NOT USE, this is just for model v1 legacy support")
-    val modelV1LegacySupport: ModelV1LegacySupport
+    val modelV1LegacySupport: ModelV1LegacySupport?
 
     @Deprecated("DO NOT USE, this is just for old variant API legacy support")
     val oldVariantApiLegacySupport: OldVariantApiLegacySupport?
-
-    /**
-     * Notification that the old variant API ran successfully.
-     */
-    fun oldVariantApiCompleted()
-
-    /**
-     * Registers an action to run once the old variant API has completed.
-     * The action will run in an undetermined thread.
-     *
-     * Note that if the variant API has already completed, the action will run
-     * immediately in the calling thread.
-     *
-     * @param action lambda to run once old variant API completed.
-     */
-    fun registerPostOldVariantApiAction(action: () -> Unit)
 }

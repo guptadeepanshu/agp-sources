@@ -16,6 +16,7 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
+import com.android.build.gradle.internal.caching.DisabledCachingReason.SIMPLE_MERGING_TASK
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.GENERATED_PROGUARD_FILE
@@ -36,12 +37,9 @@ import java.io.IOException
 /**
  * Configuration action for a merge-Proguard-files task.
  *
- *
- * Caching disabled by default for this task in line with behavior of parent class.
- *
  * @see MergeFileTask
  */
-@DisableCachingByDefault
+@DisableCachingByDefault(because = SIMPLE_MERGING_TASK)
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.OPTIMIZATION)
 abstract class MergeConsumerProguardFilesTask : MergeFileTask() {
 

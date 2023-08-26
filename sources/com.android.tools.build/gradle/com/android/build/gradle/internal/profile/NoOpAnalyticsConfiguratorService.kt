@@ -23,6 +23,7 @@ import com.google.wireless.android.sdk.stats.GradleBuildProfileSpan
 import com.google.wireless.android.sdk.stats.GradleBuildProject
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.Project
+import org.gradle.api.provider.Provider
 import org.gradle.api.services.BuildServiceParameters
 import org.gradle.build.event.BuildEventsListenerRegistry
 
@@ -52,6 +53,8 @@ abstract class NoOpAnalyticsConfiguratorService : AnalyticsConfiguratorService()
     ) {
         block.call()
     }
+
+    override fun recordApplicationId(applicationId: Provider<String>) {}
 
     /**
      * Registers [NoOpAnalyticsConfiguratorService] service. The name of the service needs to match

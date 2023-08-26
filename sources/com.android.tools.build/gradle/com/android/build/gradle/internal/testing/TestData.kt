@@ -31,6 +31,7 @@ import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import java.io.File
+import java.nio.file.Path
 
 /**
  * Data representing the test app and the tested application/library. Used as task input.
@@ -157,4 +158,14 @@ interface TestData {
      * @return the file to install or null if non is compatible.
      */
     fun findTestedApks(deviceConfigProvider: DeviceConfigProvider): List<File>
+
+
+    /**
+     * TODO: pending migration from extractApkFilesBypassingBundleTool to getApkFiles
+     *
+     * Returns extracted dependency APK files to install for privacy sandbox apps.
+     *
+     * @suppress Do not use from production code. This API is exposed for prototype.
+     */
+    fun privacySandboxInstallBundlesFinder(deviceConfigProvider: DeviceConfigProvider): List<List<Path>>
 }

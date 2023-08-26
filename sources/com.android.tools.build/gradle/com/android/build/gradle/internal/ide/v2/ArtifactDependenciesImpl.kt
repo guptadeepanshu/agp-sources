@@ -26,12 +26,12 @@ import java.io.Serializable
  */
 data class ArtifactDependenciesImpl(
     override val compileDependencies: List<GraphItem>,
-    override val runtimeDependencies: List<GraphItem>,
+    override val runtimeDependencies: List<GraphItem>?,
     override val unresolvedDependencies: List<UnresolvedDependency>
 ) : ArtifactDependencies, Serializable {
     companion object {
         @JvmStatic
-        private val serialVersionUID: Long = 1L
+        private val serialVersionUID: Long = 2L
     }
 }
 

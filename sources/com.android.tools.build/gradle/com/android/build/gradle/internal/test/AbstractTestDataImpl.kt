@@ -18,9 +18,12 @@ package com.android.build.gradle.internal.test
 import com.android.SdkConstants
 import com.android.build.gradle.internal.component.InstrumentedTestCreationConfig
 import com.android.build.gradle.internal.tasks.databinding.DATA_BINDING_TRIGGER_CLASS
+import com.android.build.gradle.internal.tasks.extractApkFilesBypassingBundleTool
 import com.android.build.gradle.internal.testing.StaticTestData
 import com.android.build.gradle.internal.testing.TestData
+import com.android.builder.testing.api.DeviceConfigProvider
 import com.android.ide.common.util.toPathString
+import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableMap
 import com.google.common.io.Files
 import org.gradle.api.file.ConfigurableFileCollection
@@ -29,9 +32,12 @@ import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
+import java.io.File
+import java.nio.file.Path
 import java.util.zip.ZipFile
 
 /**
@@ -46,10 +52,38 @@ abstract class AbstractTestDataImpl(
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
     @get:Optional
-    val testedApksDir: FileCollection?
+    val testedApksDir: FileCollection?,
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.NONE)
+    @get:Optional
+    val privacySandboxSdkApks: FileCollection?
 ) : TestData {
 
     private var extraInstrumentationTestRunnerArgs: Map<String, String> = mutableMapOf()
+
+    @get:Internal
+    val privacyInstallBundlesFinder: ApkBundlesFinder
+        get() = _privacyInstallBundlesFinder ?:
+            object: ApkBundlesFinder {
+                val privacySandboxApks: Set<File>? = privacySandboxSdkApks?.files
+
+                override fun findBundles(
+                    deviceConfigProvider: DeviceConfigProvider
+                ): List<List<Path>> {
+                    privacySandboxApks ?: return emptyList()
+                    val privacySandboxInstallBundles = ImmutableList.builder<List<Path>>()
+                    privacySandboxApks.forEach {  apk ->
+                        privacySandboxInstallBundles.add(
+                            extractApkFilesBypassingBundleTool(apk.toPath()))
+                    }
+                    return privacySandboxInstallBundles.build()
+                }
+            }.also { _privacyInstallBundlesFinder = it }
+
+    private var _privacyInstallBundlesFinder: ApkBundlesFinder? = null
+
+    @get:Internal
+    abstract val testedApksFinder: ApksFinder
 
     override val applicationId = creationConfig.applicationId
 
@@ -84,7 +118,7 @@ abstract class AbstractTestDataImpl(
     override val testCoverageEnabled =
         creationConfig.services.provider { creationConfig.isAndroidTestCoverageEnabled }
 
-    override val minSdkVersion = creationConfig.services.provider { creationConfig.minSdkVersion }
+    override val minSdkVersion = creationConfig.services.provider { creationConfig.minSdk }
 
     override val flavorName = creationConfig.services.provider { creationConfig.flavorName ?: "" }
 
@@ -111,7 +145,8 @@ abstract class AbstractTestDataImpl(
                 flavorName.get(),
                 getTestApk().get(),
                 testDirectories.files.toList(),
-                this::findTestedApks
+                testedApksFinder,
+                privacyInstallBundlesFinder
         )
     }
 
@@ -167,4 +202,11 @@ abstract class AbstractTestDataImpl(
                 }
                 false
             }
+
+    override fun findTestedApks(deviceConfigProvider: DeviceConfigProvider): List<File> =
+        testedApksFinder.findApks(deviceConfigProvider)
+
+    override fun privacySandboxInstallBundlesFinder(
+        deviceConfigProvider: DeviceConfigProvider): List<List<Path>> =
+        privacyInstallBundlesFinder.findBundles(deviceConfigProvider)
 }

@@ -93,8 +93,8 @@ class DefaultSourcesProviderImpl(
     override val mainManifestFile: File
         get() = variantSources.mainManifestFilePath
 
-    override val manifestOverlays: List<File>
-        get() = variantSources.manifestOverlays
+    override val manifestOverlayFiles: List<File>
+        get() = variantSources.manifestOverlayFiles
 
     override val sourceProvidersNames: List<String>
         get() = variantSources.getSortedSourceProviders().map { it.name }

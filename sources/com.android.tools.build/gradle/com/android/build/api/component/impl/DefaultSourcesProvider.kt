@@ -101,7 +101,7 @@ interface DefaultSourcesProvider {
 
     val mainManifestFile: File
 
-    val manifestOverlays: List<File>
+    val manifestOverlayFiles: List<File>
 
     val sourceProvidersNames: List<String>
 }

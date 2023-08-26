@@ -17,7 +17,6 @@
 package com.android.build.gradle.internal.attribution
 
 import com.android.Version
-import com.android.build.gradle.internal.isConfigurationCache
 import com.android.build.gradle.internal.services.ServiceRegistrationAction
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.utils.getBuildscriptDependencies
@@ -130,7 +129,8 @@ abstract class BuildAnalyzerConfiguratorService: BuildService<BuildServiceParame
             parameters.buildInfo.set(
                 AndroidGradlePluginAttributionData.BuildInfo(
                     agpVersion = Version.ANDROID_GRADLE_PLUGIN_VERSION,
-                    configurationCacheIsOn = project.gradle.startParameter.isConfigurationCache
+                    gradleVersion = project.gradle.gradleVersion,
+                    configurationCacheIsOn = project.gradle.startParameter.isConfigurationCacheRequested
                 )
             )
             parameters.taskNameToTaskInfoMap.set(taskNameToTaskInfoMap)

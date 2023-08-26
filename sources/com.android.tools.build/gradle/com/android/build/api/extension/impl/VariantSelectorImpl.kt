@@ -45,6 +45,10 @@ open class VariantSelectorImpl : VariantSelector {
         }
     }
 
+    override fun withFlavor(dimension: String, flavorName: String): VariantSelectorImpl {
+        return withFlavor(dimension to flavorName)
+    }
+
     override fun withName(pattern: Pattern): VariantSelectorImpl {
         return object : VariantSelectorImpl() {
             override fun appliesTo(variant: ComponentIdentity): Boolean {

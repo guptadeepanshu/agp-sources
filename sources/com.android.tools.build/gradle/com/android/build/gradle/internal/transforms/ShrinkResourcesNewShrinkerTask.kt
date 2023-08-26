@@ -19,10 +19,10 @@ package com.android.build.gradle.internal.transforms
 import com.android.build.api.artifact.ArtifactTransformationRequest
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.variant.BuiltArtifact
-import com.android.build.api.variant.impl.VariantOutputImpl
+import com.android.build.api.variant.MultiOutputHandler
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.component.ApkCreationConfig
-import com.android.build.gradle.internal.component.ConsumableCreationConfig
+import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.shrinker.LinkedResourcesFormat
 import com.android.build.shrinker.LoggerAndFileDebugReporter
 import com.android.build.shrinker.ResourceShrinkerImpl
@@ -33,7 +33,6 @@ import com.android.build.shrinker.usages.DexUsageRecorder
 import com.android.build.shrinker.usages.ProtoAndroidManifestUsageRecorder
 import com.android.build.shrinker.usages.ToolsAttributeUsageRecorder
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.InternalMultipleArtifactType
 import com.android.build.gradle.internal.services.Aapt2DaemonServiceKey
 import com.android.build.gradle.internal.services.Aapt2Input
 import com.android.build.gradle.internal.services.getAaptDaemon
@@ -41,6 +40,7 @@ import com.android.build.gradle.internal.services.registerAaptService
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.internal.workeractions.DecoratedWorkParameters
 import com.android.build.gradle.internal.workeractions.WorkActionAdapter
 import com.android.build.gradle.options.BooleanOption
@@ -55,7 +55,6 @@ import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.logging.Logging
 import org.gradle.api.logging.LogLevel
-import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
@@ -99,7 +98,7 @@ abstract class ShrinkResourcesNewShrinkerTask : NonIncrementalTask() {
     abstract val artifactTransformationRequest: Property<ArtifactTransformationRequest<ShrinkResourcesNewShrinkerTask>>
 
     @get:Nested
-    abstract val variantOutputs: ListProperty<VariantOutputImpl>
+    abstract val outputsHandler: Property<MultiOutputHandler>
 
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.NAME_ONLY)
@@ -129,17 +128,27 @@ abstract class ShrinkResourcesNewShrinkerTask : NonIncrementalTask() {
 
             parameters.usePreciseShrinking.set(usePreciseShrinking)
 
-            val variant = variantOutputs.get().find {
-                it.variantOutputConfiguration.outputType == builtArtifact.outputType
-                        && it.variantOutputConfiguration.filters == builtArtifact.filters
-            } ?: throw java.lang.RuntimeException("Cannot find variant output for $builtArtifact")
-            val variantName = variant.baseName
-
             parameters.outputFile.set(
-                File(directory.asFile, "resources-$variantName-stripped.ap_")
+                File(
+                    directory.asFile,
+                    outputsHandler.get().getOutputNameForSplit(
+                        prefix = "resources",
+                        suffix = "stripped.ap_",
+                        outputType = builtArtifact.outputType,
+                        filters = builtArtifact.filters
+                    )
+                )
             )
             parameters.shrunkProtoFile.set(
-                File(directory.asFile, "resources-$variantName-proto-stripped.ap_")
+                File(
+                    directory.asFile,
+                    outputsHandler.get().getOutputNameForSplit(
+                        prefix = "resources",
+                        suffix = "proto-stripped.ap_",
+                        outputType = builtArtifact.outputType,
+                        filters = builtArtifact.filters
+                    )
+                )
             )
             parameters.originalFile.set(File(builtArtifact.outputFile))
 
@@ -148,7 +157,15 @@ abstract class ShrinkResourcesNewShrinkerTask : NonIncrementalTask() {
                 parameters.originalProtoFile.set(originalResourcesForBundle)
             } else {
                 parameters.originalProtoFile.set(
-                    File(directory.asFile, "original-$variantName-proto.ap_")
+                    File(
+                        directory.asFile,
+                        outputsHandler.get().getOutputNameForSplit(
+                            prefix = "original",
+                            suffix = "proto.ap_",
+                            outputType = builtArtifact.outputType,
+                            filters = builtArtifact.filters
+                        )
+                    )
                 )
                 parameters.requiresInitialConversionToProto.set(true)
             }
@@ -170,8 +187,8 @@ abstract class ShrinkResourcesNewShrinkerTask : NonIncrementalTask() {
     }
 
     class CreationAction(
-        creationConfig: ConsumableCreationConfig
-    ) : VariantTaskCreationAction<ShrinkResourcesNewShrinkerTask, ConsumableCreationConfig>(
+        creationConfig: ApkCreationConfig
+    ) : VariantTaskCreationAction<ShrinkResourcesNewShrinkerTask, ApkCreationConfig>(
         creationConfig
     ) {
         override val type = ShrinkResourcesNewShrinkerTask::class.java
@@ -210,12 +227,11 @@ abstract class ShrinkResourcesNewShrinkerTask : NonIncrementalTask() {
                 task.resourceDir
             )
 
-            creationConfig.outputs.getEnabledVariantOutputs().forEach(task.variantOutputs::add)
-
             // If we have only one variant there is no splits configured and we can consume proto
             // resources already created for bundles.
-            val variantOutputs = creationConfig.outputs.variantOutputs
-            if (variantOutputs.size == 1 && variantOutputs.all { it.filters.isEmpty() }) {
+            if (creationConfig !is ApplicationCreationConfig ||
+                (creationConfig.outputs.variantOutputs.size == 1 &&
+                        creationConfig.outputs.variantOutputs.all { it.filters.isEmpty() })) {
                 creationConfig.artifacts.setTaskInputToFinalProduct(
                     InternalArtifactType.LINKED_RES_FOR_BUNDLE,
                     task.originalResourcesForBundle
@@ -224,15 +240,13 @@ abstract class ShrinkResourcesNewShrinkerTask : NonIncrementalTask() {
 
             task.artifactTransformationRequest.set(transformationRequest)
 
-            when (creationConfig) {
-                is ApkCreationConfig ->
-                    task.dex.from(
-                        PackageAndroidArtifact.CreationAction.getDexFolders(creationConfig))
-                else ->
-                    task.dex.from(creationConfig.artifacts.getAll(InternalMultipleArtifactType.DEX))
-            }
+            task.dex.from(
+                PackageAndroidArtifact.CreationAction.getDexFolders(creationConfig)
+            )
 
             creationConfig.services.initializeAapt2Input(task.aapt)
+
+            task.outputsHandler.setDisallowChanges(MultiOutputHandler.create(creationConfig))
         }
     }
 }

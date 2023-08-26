@@ -19,6 +19,7 @@ package com.android.build.gradle.internal.tasks
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.variant.impl.BuiltArtifactImpl
 import com.android.build.api.variant.impl.BuiltArtifactsImpl
+import com.android.build.gradle.internal.caching.DisabledCachingReason.FAST_TASK
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
@@ -31,11 +32,8 @@ import org.gradle.work.DisableCachingByDefault
 
 /**
  * [org.gradle.api.Task] that produces the IDE listing file that will be passed through the model.
- *
- * This task is fast-running, so we should not make it `@Cacheable` as the cacheability overhead
- * could outweigh its benefit.
  */
-@DisableCachingByDefault
+@DisableCachingByDefault(because = FAST_TASK)
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.SYNC)
 abstract class BundleIdeModelProducerTask : NonIncrementalTask() {
     @get:InputFile
@@ -95,10 +93,6 @@ abstract class BundleIdeModelProducerTask : NonIncrementalTask() {
                     SingleArtifact.BUNDLE,
                     task.finalBundleFile)
             task.applicationId.setDisallowChanges(creationConfig.applicationId)
-
-            task.outputs.doNotCacheIf(
-                    "This task is fast-running, so the cacheability overhead could outweigh its benefit"
-            ) { true }
         }
     }
 }

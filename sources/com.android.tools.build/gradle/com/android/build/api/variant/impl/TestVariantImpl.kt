@@ -20,25 +20,21 @@ import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.component.analytics.AnalyticsEnabledTestVariant
 import com.android.build.api.component.impl.features.DexingCreationConfigImpl
 import com.android.build.api.component.impl.getAndroidResources
-import com.android.build.api.dsl.CommonExtension
-import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
 import com.android.build.api.variant.AndroidResources
+import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.ApkPackaging
 import com.android.build.api.variant.Component
 import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.TestVariant
-import com.android.build.api.variant.Variant
-import com.android.build.api.variant.VariantBuilder
 import com.android.build.gradle.internal.component.TestVariantCreationConfig
 import com.android.build.gradle.internal.component.features.DexingCreationConfig
 import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.core.dsl.TestProjectVariantDslInfo
 import com.android.build.gradle.internal.dependency.VariantDependencies
-import com.android.build.gradle.internal.dsl.ModulePropertyKeys
+import com.android.build.gradle.internal.dsl.ModuleBooleanPropertyKeys
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.MutableTaskContainer
-import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
@@ -93,7 +89,7 @@ open class TestVariantImpl @Inject constructor(
     //         tested application id from the APK metadata file for uninstalling.
     override val testedApplicationId: Provider<String> by lazy {
         experimentalProperties.flatMap {
-            if (ModulePropertyKeys.SELF_INSTRUMENTING.getValueAsBoolean(it)) {
+            if (ModuleBooleanPropertyKeys.SELF_INSTRUMENTING.getValueAsBoolean(it)) {
                 applicationId
             } else {
                 calculateTestedApplicationId(variantDependencies)
@@ -121,7 +117,7 @@ open class TestVariantImpl @Inject constructor(
         ApkPackagingImpl(
             dslInfo.packaging,
             internalServices,
-            minSdkVersion.apiLevel
+            minSdk.apiLevel
         )
     }
 
@@ -140,6 +136,15 @@ open class TestVariantImpl @Inject constructor(
             internalServices
         )
     }
+    override val targetSdk: AndroidVersion by lazy(LazyThreadSafetyMode.NONE) {
+        variantBuilder.targetSdkVersion
+    }
+
+    override val targetSdkVersion: AndroidVersion
+        get() = targetSdk
+
+    override val targetSdkOverride: AndroidVersion?
+        get() = variantBuilder.mutableTargetSdk?.sanitize()
 
     // always false for this type
     override val embedsMicroApp: Boolean
@@ -163,8 +168,8 @@ open class TestVariantImpl @Inject constructor(
             SigningConfigImpl(
                 it,
                 internalServices,
-                minSdkVersion.apiLevel,
-                services.projectOptions.get(IntegerOption.IDE_TARGET_DEVICE_API)
+                minSdk.apiLevel,
+                global.targetDeployApiFromIDE
             )
         }
     }
@@ -199,17 +204,21 @@ open class TestVariantImpl @Inject constructor(
     }
 
     override fun <T : Component> createUserVisibleVariantObject(
-            projectServices: ProjectServices,
-            operationsRegistrar: VariantApiOperationsRegistrar<out CommonExtension<*, *, *, *>, out VariantBuilder, out Variant>,
             stats: GradleBuildVariant.Builder?
     ): T =
         if (stats == null) {
             this as T
         } else {
-            projectServices.objectFactory.newInstance(
+            services.newInstance(
                 AnalyticsEnabledTestVariant::class.java,
                 this,
                 stats
             ) as T
         }
+
+    override val enableApiModeling: Boolean
+        get() = isApiModelingEnabled()
+
+    override val enableGlobalSynthetics: Boolean
+        get() = isGlobalSyntheticsEnabled()
 }

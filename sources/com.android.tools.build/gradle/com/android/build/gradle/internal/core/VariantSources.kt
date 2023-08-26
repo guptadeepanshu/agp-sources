@@ -24,7 +24,6 @@ import com.android.builder.model.v2.CustomSourceDirectory
 import com.android.builder.model.SourceProvider
 import com.google.common.collect.Lists
 import java.io.File
-import java.util.function.Function
 
 /**
  * Represents the sources for a Variant
@@ -68,6 +67,14 @@ class VariantSources internal constructor(
             } else null
         }
 
+    /** Returns the paths to the manifest overlay files. The files may or may not exist. */
+    val manifestOverlayFiles: List<File>
+        get() = listOfNotNull(
+            variantSourceProvider?.manifestFile,
+            buildTypeSourceProvider?.manifestFile,
+            multiFlavorSourceProvider?.manifestFile,
+        ) + flavorSourceProviders.map { it.manifestFile }
+
     /** Returns the path to the art profile file. It may or may not exist. */
     val artProfile: File
         get() {
@@ -104,25 +111,6 @@ class VariantSources internal constructor(
 
         return providers
     }
-
-    val manifestOverlays: List<File>
-        get() {
-            val inputs = mutableListOf<File>()
-
-            val gatherManifest: (SourceProvider) -> Unit = {
-                val variantLocation = it.manifestFile
-                if (variantLocation.isFile) {
-                    inputs.add(variantLocation)
-                }
-            }
-
-            variantSourceProvider?.let(gatherManifest)
-            buildTypeSourceProvider?.let(gatherManifest)
-            multiFlavorSourceProvider?.let(gatherManifest)
-            flavorSourceProviders.forEach(gatherManifest)
-
-            return inputs
-        }
 
     /**
      * Returns a map af all customs source directories registered. Key is the source set name as

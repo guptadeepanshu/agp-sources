@@ -16,12 +16,19 @@
 
 package com.android.build.gradle.internal.component
 
+import com.android.build.api.variant.AndroidVersion
 import org.gradle.api.provider.Provider
 
 /**
  * Interface for properties common to all test components.
  */
 interface TestCreationConfig: ComponentCreationConfig {
+
+    /**
+     * In unit tests, we don't produce an apk. However, we still need to set the target sdk version
+     * in the test manifest as robolectric depends on it.
+     */
+    val targetSdkVersion: AndroidVersion
 
     /**
      * In unit tests, there is no dexing. However aapt2 requires the instrumentation tag to be

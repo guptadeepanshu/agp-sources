@@ -32,12 +32,14 @@ class TestApplicationTestData constructor(
     namespace: Provider<String>,
     creationConfig: TestVariantCreationConfig,
     testApkDir: Provider<Directory>,
-    testedApksDir: FileCollection
+    testedApksDir: FileCollection,
+    privacySandboxSdkApks: FileCollection?,
 ) : AbstractTestDataImpl(
     namespace,
     creationConfig,
     testApkDir,
-    testedApksDir
+    testedApksDir,
+    privacySandboxSdkApks
 ) {
 
     override val libraryType = creationConfig.services.provider { false }
@@ -50,14 +52,23 @@ class TestApplicationTestData constructor(
     override val testedApplicationId: Provider<String> =
         testedApksDir.elements.map { BuiltArtifactsLoaderImpl().load(it.single())?.applicationId!! }
 
-    override fun findTestedApks(deviceConfigProvider: DeviceConfigProvider): List<File> {
-        testedApksDir ?: return emptyList()
+    override val testedApksFinder: ApksFinder
+        get() = _testedApksFinder ?:
+                ApplicationApksFinder(
+                    testedApksDir?.let { BuiltArtifactsLoaderImpl().load(testedApksDir) }
+                ).also { _testedApksFinder = it }
 
-        // retrieve all the published files.
-        val builtArtifacts: BuiltArtifacts? = BuiltArtifactsLoaderImpl().load(testedApksDir)
-        return if (builtArtifacts != null) builtArtifacts.elements.stream()
-            .map(BuiltArtifact::outputFile)
-            .map { pathname: String -> File(pathname) }
-            .collect(Collectors.toList()) else ImmutableList.of()
+    private var _testedApksFinder: ApplicationApksFinder? = null
+
+    internal class ApplicationApksFinder(
+        private val builtArtifacts: BuiltArtifacts?
+    ): ApksFinder {
+
+        override fun findApks(deviceConfigProvider: DeviceConfigProvider): List<File> {
+            return if (builtArtifacts != null) builtArtifacts.elements.stream()
+                .map(BuiltArtifact::outputFile)
+                .map { pathname: String -> File(pathname) }
+                .collect(Collectors.toList()) else ImmutableList.of()
+        }
     }
 }

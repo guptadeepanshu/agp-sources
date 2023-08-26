@@ -138,6 +138,8 @@ class InAndOutDirectoryOperationRequestImpl<TaskT: Task>(
         val builtArtifactsReference = AtomicReference<BuiltArtifactsImpl>()
 
         initializeInput(
+            type,
+            type,
             taskProvider,
             from,
             currentProvider,
@@ -147,7 +149,7 @@ class InAndOutDirectoryOperationRequestImpl<TaskT: Task>(
 
         // set the output location, so public uses of the API do not have to do it.
         taskProvider.configure { task ->
-            into(task).set(type.getOutputPath(artifacts.buildDirectory, taskProvider.name))
+            into(task).set(artifacts.calculateOutputPath(type, task))
         }
 
         // if this is a public type with an associated listing file used by studio, automatically
@@ -169,7 +171,7 @@ class InAndOutDirectoryOperationRequestImpl<TaskT: Task>(
         )
     }
 
-    fun <ArtifactTypeT, ArtifactTypeU> toTransformMany(
+    internal fun <ArtifactTypeT, ArtifactTypeU> toTransformMany(
         sourceType: ArtifactTypeT,
         targetType: ArtifactTypeU,
         atLocation: String? = null
@@ -203,7 +205,15 @@ class InAndOutDirectoryOperationRequestImpl<TaskT: Task>(
         val builtArtifactsReference = AtomicReference<BuiltArtifactsImpl>()
         val inputProvider = artifacts.get(sourceType)
 
-        initializeInput(taskProvider, inputLocation, inputProvider, outputLocation, builtArtifactsReference)
+        initializeInput(
+            sourceType,
+            targetType,
+            taskProvider,
+            inputLocation,
+            inputProvider,
+            outputLocation,
+            builtArtifactsReference
+        )
 
         return ArtifactTransformationRequestImpl(
             builtArtifactsReference,
@@ -233,17 +243,33 @@ class InAndOutDirectoryOperationRequestImpl<TaskT: Task>(
          * Keep this method as a static to avoid all possible unwanted variable capturing from
          * lambdas.
          */
-        fun <T : Task> initializeInput(
+        fun <T : Task, ArtifactTypeT, ArtifactTypeU> initializeInput(
+            sourceType: ArtifactTypeT,
+            targetType: ArtifactTypeU,
             taskProvider: TaskProvider<T>,
             inputLocation: (T) -> FileSystemLocationProperty<Directory>,
             inputProvider: Provider<Directory>,
             buildMetadataFileLocation: (T) -> FileSystemLocationProperty<Directory>,
             builtArtifactsReference: AtomicReference<BuiltArtifactsImpl>
-        ) {
+        ) where ArtifactTypeT : Single<Directory>,
+                ArtifactTypeT : Artifact.ContainsMany,
+                ArtifactTypeU : Single<Directory>,
+                ArtifactTypeU : Artifact.ContainsMany {
+
             taskProvider.configure { task: T ->
                 inputLocation(task).set(inputProvider)
                 task.doLast {
-                    builtArtifactsReference.get().save(buildMetadataFileLocation(task).get())
+                    if (builtArtifactsReference.get() == null) {
+                        throw IllegalArgumentException(
+                            "Unable to transform artifact ${sourceType.name()} " +
+                                    ("to ${targetType.name() }".takeIf { sourceType != targetType } ?: "") +
+                                    "using registered task ${task.name}.\n" +
+                                    "No builtArtifact output was found, did you forget to call " +
+                                    "ArtifactTransformationRequest.submit in the task action?"
+                        )
+                    } else {
+                        builtArtifactsReference.get().save(buildMetadataFileLocation(task).get())
+                    }
                 }
             }
         }

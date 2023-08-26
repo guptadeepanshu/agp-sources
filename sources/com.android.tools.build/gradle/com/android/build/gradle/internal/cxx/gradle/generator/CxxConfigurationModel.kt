@@ -291,7 +291,7 @@ fun tryCreateConfigurationParameters(
         rootDir = projectInfo.rootDir,
         buildFile = projectInfo.buildFile,
         isDebuggable = variant.debuggable,
-        minSdkVersion = variant.minSdkVersion.toSharedAndroidVersion(),
+        minSdkVersion = variant.minSdk.toSharedAndroidVersion(),
         compileSdkVersion = globalConfig.compileSdkHashString,
         ndkVersion = globalConfig.ndkVersion,
         ndkPath = globalConfig.ndkPath,

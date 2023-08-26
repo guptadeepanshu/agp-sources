@@ -244,17 +244,23 @@ abstract class JavaDocGenerationTask : NonIncrementalTask() {
                 task.project.dependencies.create(DOKKA_BASE_PLUGIN),
                 task.project.dependencies.create(DOKKA_JAVADOC_PLUGIN)
             )
+            dokkaPluginConfig.isCanBeConsumed = false
+            dokkaPluginConfig.isCanBeResolved = true
             task.dokkaPlugins.fromDisallowChanges(dokkaPluginConfig)
 
             val runtimeConfig = task.project.configurations.detachedConfiguration(
                 task.project.dependencies.create(DOKKA_CORE),
                 task.project.dependencies.create(DOKKA_JAVADOC_PLUGIN)
             )
+            runtimeConfig.isCanBeConsumed = false
+            runtimeConfig.isCanBeResolved = true
             task.dokkaRuntimeClasspath.fromDisallowChanges(runtimeConfig)
 
             val dokkaCore = task.project.configurations.detachedConfiguration(
                 task.project.dependencies.create(DOKKA_CORE)
             )
+            dokkaCore.isCanBeConsumed = false
+            dokkaCore.isCanBeResolved = true
             task.dokkaCoreClasspath.fromDisallowChanges(dokkaCore)
 
             creationConfig.sources.java { javaSources -> task.sources.from(javaSources.all) }

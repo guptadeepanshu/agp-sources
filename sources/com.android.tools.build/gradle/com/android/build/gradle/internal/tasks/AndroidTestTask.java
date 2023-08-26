@@ -26,7 +26,5 @@ import org.gradle.api.tasks.VerificationTask;
 public interface AndroidTestTask extends VerificationTask {
 
     DirectoryProperty getResultsDir();
-
-    boolean getTestFailed();
 }
 

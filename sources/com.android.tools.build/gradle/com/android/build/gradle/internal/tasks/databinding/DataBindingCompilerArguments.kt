@@ -57,9 +57,6 @@ val KAPT_FIX_KOTLIN_VERSION: KotlinVersion = KotlinVersion(1, 5, 20)
 class DataBindingCompilerArguments constructor(
 
     @get:Input
-    val incremental: Boolean,
-
-    @get:Input
     val artifactType: CompilerArguments.Type,
 
     @get:Input
@@ -162,7 +159,7 @@ class DataBindingCompilerArguments constructor(
 
     override fun asArguments(): Iterable<String> {
         val arguments = CompilerArguments(
-            incremental = incremental,
+            incremental = true,
             artifactType = artifactType,
             modulePackage = packageName.get(),
             minApi = minApi,
@@ -230,11 +227,9 @@ class DataBindingCompilerArguments constructor(
                     else null
 
             return DataBindingCompilerArguments(
-                incremental = creationConfig.services.projectOptions
-                    .get(BooleanOption.ENABLE_INCREMENTAL_DATA_BINDING),
                 artifactType = getModuleType(creationConfig),
                 packageName = creationConfig.namespace,
-                minApi = creationConfig.minSdkVersion.apiLevel,
+                minApi = creationConfig.minSdk.apiLevel,
                 apiVersionsFile = creationConfig.global.versionedSdkLoader.flatMap { it.apiVersionsFile },
                 dependencyArtifactsDir = artifacts.get(DATA_BINDING_DEPENDENCY_ARTIFACTS),
                 layoutInfoDir = artifacts.get(getLayoutInfoArtifactType(creationConfig)),

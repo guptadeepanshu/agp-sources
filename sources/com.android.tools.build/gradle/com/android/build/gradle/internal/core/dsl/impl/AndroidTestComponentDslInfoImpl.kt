@@ -50,7 +50,7 @@ internal class AndroidTestComponentDslInfoImpl(
     buildDirectory: DirectoryProperty,
     override val mainVariantDslInfo: TestedVariantDslInfo,
     private val signingConfigOverride: SigningConfig?,
-    extension: InternalTestedExtension<*, *, *, *>
+    extension: InternalTestedExtension<*, *, *, *, *>
 ) : ConsumableComponentDslInfoImpl(
     componentIdentity,
     componentType,
@@ -116,7 +116,7 @@ internal class AndroidTestComponentDslInfoImpl(
 
     override val dexingDslInfo: DexingDslInfo by lazy {
         DexingDslInfoImpl(
-            buildTypeObj, mergedFlavor, services
+            buildTypeObj, mergedFlavor
         )
     }
 

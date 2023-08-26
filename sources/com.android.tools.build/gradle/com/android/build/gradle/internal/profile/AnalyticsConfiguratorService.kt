@@ -24,10 +24,14 @@ import com.google.wireless.android.sdk.stats.GradleBuildProfileSpan
 import com.google.wireless.android.sdk.stats.GradleBuildProject
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.Project
+import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.Provider
+import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.services.BuildService
 import org.gradle.api.services.BuildServiceParameters
 import org.gradle.build.event.BuildEventsListenerRegistry
 import java.util.concurrent.ConcurrentHashMap
+import javax.inject.Inject
 
 /**
  * A build service used to configure [AnalyticsService].
@@ -37,13 +41,17 @@ import java.util.concurrent.ConcurrentHashMap
  */
 abstract class AnalyticsConfiguratorService : BuildService<BuildServiceParameters.None> {
 
+    @get:Inject
+    abstract val objectFactory: ObjectFactory
+
     private val resourcesManager = AnalyticsResourceManager(
         GradleBuildProfile.newBuilder(),
         ConcurrentHashMap(),
         false,
         null,
         ConcurrentHashMap(),
-        null
+        null,
+        objectFactory.setProperty(String::class.java),
     )
 
     private enum class State {
@@ -81,6 +89,10 @@ abstract class AnalyticsConfiguratorService : BuildService<BuildServiceParameter
         block: Recorder.VoidBlock
     ) {
         resourcesManager.recordBlockAtConfiguration(executionType, projectPath, variant, block)
+    }
+
+    open fun recordApplicationId(applicationId: Provider<String>) {
+        resourcesManager.recordApplicationId(applicationId)
     }
 
     open fun createAnalyticsService(

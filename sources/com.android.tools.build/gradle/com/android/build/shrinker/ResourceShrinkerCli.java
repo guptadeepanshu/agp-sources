@@ -41,6 +41,7 @@ public class ResourceShrinkerCli {
     private static final String OUTPUT_ARG = "--output";
     private static final String RES_ARG = "--raw_resources";
     private static final String HELP_ARG = "--help";
+    private static final String PRINT_USAGE_LOG = "--print_usage_log";
 
     private static final String ANDROID_MANIFEST_XML = "AndroidManifest.xml";
     private static final String RESOURCES_PB = "resources.pb";
@@ -49,6 +50,7 @@ public class ResourceShrinkerCli {
     private static class Options {
         private String input;
         private String output;
+        private String usageLog;
         private final List<String> rawResources = new ArrayList<>();
         private boolean help;
 
@@ -78,6 +80,17 @@ public class ResourceShrinkerCli {
                                 "More than one output not supported");
                     }
                     options.output = args[i];
+                } else if (arg.startsWith(PRINT_USAGE_LOG)) {
+                    i++;
+                    if (i == args.length) {
+                        throw new ResourceShrinkingFailedException(
+                                "No argument given for usage log");
+                    }
+                    if (options.usageLog != null) {
+                        throw new ResourceShrinkingFailedException(
+                                "More than usage log not supported");
+                    }
+                    options.usageLog = args[i];
                 } else if (arg.startsWith(RES_ARG)) {
                     i++;
                     if (i == args.length) {
@@ -100,6 +113,10 @@ public class ResourceShrinkerCli {
 
         public String getOutput() {
             return output;
+        }
+
+        public String getUsageLog() {
+            return usageLog;
         }
 
         public List<String> getRawResources() {
@@ -142,6 +159,12 @@ public class ResourceShrinkerCli {
         for (String rawResource : options.getRawResources()) {
             resourceUsageRecorders.add(new ToolsAttributeUsageRecorder(Paths.get(rawResource)));
         }
+        // If the apk contains a raw folder, find keep rules in there
+        if (new ZipFile(options.getInput())
+                .stream().anyMatch(zipEntry -> zipEntry.getName().startsWith("res/raw"))) {
+            Path rawPath = fileSystemProto.getPath("res", "raw");
+            resourceUsageRecorders.add(new ToolsAttributeUsageRecorder(rawPath));
+        }
         ResourcesGatherer gatherer =
                 new ProtoResourceTableGatherer(fileSystemProto.getPath(RESOURCES_PB));
         ProtoResourcesGraphBuilder res =
@@ -153,7 +176,9 @@ public class ResourceShrinkerCli {
                         null,
                         resourceUsageRecorders,
                         List.of(res),
-                        NoDebugReporter.INSTANCE, // TODO(b/245721222): Add log output options
+                        options.usageLog != null
+                                ? new FileReporter(Paths.get(options.usageLog).toFile())
+                                : NoDebugReporter.INSTANCE,
                         false, // TODO(b/245721267): Add support for bundles
                         true);
         resourceShrinker.analyze();

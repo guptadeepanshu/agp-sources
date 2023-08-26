@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.dsl
 
+import com.android.build.api.dsl.LibraryAndroidResources
 import com.android.build.api.dsl.LibraryBuildFeatures
 import com.android.build.api.dsl.LibraryBuildType
 import com.android.build.api.dsl.LibraryDefaultConfig
@@ -31,7 +32,8 @@ interface InternalLibraryExtension :
             LibraryBuildFeatures,
             LibraryBuildType,
             LibraryDefaultConfig,
-            LibraryProductFlavor> {
+            LibraryProductFlavor,
+            LibraryAndroidResources> {
 
     override var aidlPackagedList: MutableCollection<String>
     fun publishing(action: Action<LibraryPublishing>)

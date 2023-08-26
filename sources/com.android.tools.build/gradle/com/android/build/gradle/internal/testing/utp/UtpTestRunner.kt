@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.testing.utp
 
+import com.android.annotations.NonNull
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.testing.BaseTestRunner
 import com.android.build.gradle.internal.testing.StaticTestData
@@ -39,12 +40,14 @@ class UtpTestRunner @JvmOverloads constructor(
         executor: ExecutorServiceAdapter,
         private val utpDependencies: UtpDependencies,
         private val versionedSdkLoader: SdkComponentsBuildService.VersionedSdkLoader,
+        private val emulatorControlConfig: EmulatorControlConfig,
         private val retentionConfig: RetentionConfig,
         private val useOrchestrator: Boolean,
         private val uninstallIncompatibleApks: Boolean,
         private val utpTestResultListener: UtpTestResultListener?,
         private val utpLoggingLevel: Level,
         private val installApkTimeout: Int?,
+        private val targetIsSplitApk: Boolean,
         private val configFactory: UtpConfigFactory = UtpConfigFactory(),
         private val runUtpTestSuiteAndWaitFunc: (
             List<UtpRunnerConfig>, String, String, File, ILogger
@@ -52,7 +55,7 @@ class UtpTestRunner @JvmOverloads constructor(
             runUtpTestSuiteAndWait(
                 runnerConfigs, workerExecutor, projectName, variantName, resultsDir, logger,
                 utpTestResultListener, utpDependencies)
-        }
+        },
 )
     : BaseTestRunner(splitSelectExec, processExecutor, executor) {
 
@@ -61,7 +64,7 @@ class UtpTestRunner @JvmOverloads constructor(
             variantName: String,
             testData: StaticTestData,
             apksForDevice: MutableMap<DeviceConnector, ImmutableList<File>>,
-            dependencyApks: Set<File>,
+            privacySandboxSdkInstallBundle: PrivacySandboxSdkInstallBundle,
             helperApks: MutableSet<File>,
             timeoutInMs: Int,
             installOptions: MutableCollection<String>,
@@ -83,7 +86,7 @@ class UtpTestRunner @JvmOverloads constructor(
                 configFactory.createRunnerConfigProtoForLocalDevice(
                     deviceConnector,
                     testData,
-                    apks,
+                    TargetApkConfigBundle(apks, targetIsSplitApk),
                     installOptions,
                     helperApks,
                     uninstallIncompatibleApks,
@@ -91,6 +94,7 @@ class UtpTestRunner @JvmOverloads constructor(
                     versionedSdkLoader,
                     utpOutputDir,
                     utpTmpDir,
+                    emulatorControlConfig,
                     retentionConfig,
                     File(coverageDir, deviceConnector.name),
                     useOrchestrator,
@@ -103,7 +107,8 @@ class UtpTestRunner @JvmOverloads constructor(
                     resultListenerServerMetadata.clientCert,
                     resultListenerServerMetadata.clientPrivateKey,
                     resultListenerServerMetadata.serverCert,
-                    installApkTimeout
+                    installApkTimeout,
+                    privacySandboxSdkInstallBundle.extractedApkMap[deviceConnector]?: emptyList()
                 )
             }
             UtpRunnerConfig(

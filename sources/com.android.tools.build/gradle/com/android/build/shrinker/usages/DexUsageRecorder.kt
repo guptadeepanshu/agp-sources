@@ -20,9 +20,6 @@ import com.android.SdkConstants.DOT_DEX
 import com.android.build.shrinker.ResourceShrinkerModel
 import com.android.build.shrinker.obfuscation.ClassAndMethod
 import com.android.build.shrinker.usages.AppCompat.isAppCompatClass
-import com.android.builder.dexing.AnalysisCallback
-import com.android.builder.dexing.MethodVisitingStatus
-import com.android.builder.dexing.runResourceShrinkerAnalysis
 import com.android.ide.common.resources.usage.ResourceUsageModel
 import com.android.resources.ResourceType
 import com.android.tools.r8.references.MethodReference

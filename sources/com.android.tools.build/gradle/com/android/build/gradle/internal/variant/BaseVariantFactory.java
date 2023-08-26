@@ -26,7 +26,6 @@ import com.android.build.api.component.impl.UnitTestImpl;
 import com.android.build.api.dsl.CommonExtension;
 import com.android.build.api.variant.ComponentIdentity;
 import com.android.build.api.variant.VariantBuilder;
-import com.android.build.api.variant.impl.VariantOutputConfigurationImpl;
 import com.android.build.gradle.internal.BuildTypeData;
 import com.android.build.gradle.internal.ProductFlavorData;
 import com.android.build.gradle.internal.api.BaseVariantImpl;
@@ -54,10 +53,8 @@ import com.android.build.gradle.internal.services.TaskCreationServices;
 import com.android.build.gradle.internal.services.VariantServices;
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig;
 import com.android.build.gradle.options.BooleanOption;
-import com.android.builder.core.BuilderConstants;
 import com.android.builder.errors.IssueReporter;
 import com.android.builder.errors.IssueReporter.Type;
-import com.google.common.collect.ImmutableList;
 import org.gradle.api.Project;
 
 /** Common superclass for all {@link VariantFactory} implementations. */
@@ -90,35 +87,20 @@ public abstract class BaseVariantFactory<
             @NonNull VariantServices variantServices,
             @NonNull TaskCreationServices taskCreationServices,
             @NonNull GlobalTaskCreationConfig globalConfig) {
-        TestFixturesImpl testFixturesComponent =
-                dslServices.newInstance(
-                        TestFixturesImpl.class,
-                        componentIdentity,
-                        buildFeatures,
-                        dslInfo,
-                        variantDependencies,
-                        variantSources,
-                        paths,
-                        artifacts,
-                        taskContainer,
-                        mainVariant,
-                        variantServices,
-                        taskCreationServices,
-                        globalConfig);
-        // create default output
-        String outputFileNameSuffix =
-                "-"
-                        + testFixturesComponent.getBaseName()
-                        + "-testFixtures."
-                        + BuilderConstants.EXT_LIB_ARCHIVE;
-        testFixturesComponent.addVariantOutput(
-                new VariantOutputConfigurationImpl(false, ImmutableList.of()),
-                testFixturesComponent
-                        .getServices()
-                        .getProjectInfo()
-                        .getProjectBaseName()
-                        .map(it -> it + outputFileNameSuffix));
-        return testFixturesComponent;
+        return dslServices.newInstance(
+                TestFixturesImpl.class,
+                componentIdentity,
+                buildFeatures,
+                dslInfo,
+                variantDependencies,
+                variantSources,
+                paths,
+                artifacts,
+                taskContainer,
+                mainVariant,
+                variantServices,
+                taskCreationServices,
+                globalConfig);
     }
 
     @NonNull
@@ -137,27 +119,21 @@ public abstract class BaseVariantFactory<
             @NonNull VariantServices variantServices,
             @NonNull TaskCreationServices taskCreationServices,
             @NonNull GlobalTaskCreationConfig globalConfig) {
-        UnitTestImpl unitTestProperties =
-                dslServices.newInstance(
-                        UnitTestImpl.class,
-                        componentIdentity,
-                        createUnitTestBuildFeatures(buildFeatures),
-                        dslInfo,
-                        variantDependencies,
-                        variantSources,
-                        paths,
-                        artifacts,
-                        variantData,
-                        taskContainer,
-                        testedVariant,
-                        variantServices,
-                        taskCreationServices,
-                        globalConfig);
-
-        unitTestProperties.addVariantOutput(
-                new VariantOutputConfigurationImpl(false, ImmutableList.of()), null);
-
-        return unitTestProperties;
+        return dslServices.newInstance(
+                UnitTestImpl.class,
+                componentIdentity,
+                createUnitTestBuildFeatures(buildFeatures),
+                dslInfo,
+                variantDependencies,
+                variantSources,
+                paths,
+                artifacts,
+                variantData,
+                taskContainer,
+                testedVariant,
+                variantServices,
+                taskCreationServices,
+                globalConfig);
     }
 
     @NonNull
@@ -176,27 +152,21 @@ public abstract class BaseVariantFactory<
             @NonNull VariantServices variantServices,
             @NonNull TaskCreationServices taskCreationServices,
             @NonNull GlobalTaskCreationConfig globalConfig) {
-        AndroidTestImpl androidTestProperties =
-                dslServices.newInstance(
-                        AndroidTestImpl.class,
-                        componentIdentity,
-                        buildFeatures,
-                        dslInfo,
-                        variantDependencies,
-                        variantSources,
-                        paths,
-                        artifacts,
-                        variantData,
-                        taskContainer,
-                        testedVariant,
-                        variantServices,
-                        taskCreationServices,
-                        globalConfig);
-
-        androidTestProperties.addVariantOutput(
-                new VariantOutputConfigurationImpl(false, ImmutableList.of()), null);
-
-        return androidTestProperties;
+        return dslServices.newInstance(
+                AndroidTestImpl.class,
+                componentIdentity,
+                buildFeatures,
+                dslInfo,
+                variantDependencies,
+                variantSources,
+                paths,
+                artifacts,
+                variantData,
+                taskContainer,
+                testedVariant,
+                variantServices,
+                taskCreationServices,
+                globalConfig);
     }
 
     @Nullable
@@ -220,7 +190,7 @@ public abstract class BaseVariantFactory<
     @Override
     public void preVariantCallback(
             @NonNull Project project,
-            @NonNull CommonExtension<?, ?, ?, ?> dslExtension,
+            @NonNull CommonExtension<?, ?, ?, ?, ?> dslExtension,
             @NonNull
                     VariantInputModel<DefaultConfig, BuildType, ProductFlavor, SigningConfig>
                             model) {
@@ -251,10 +221,14 @@ public abstract class BaseVariantFactory<
         if (!buildConfig) {
             IssueReporter issueReporter = dslServices.getIssueReporter();
 
+            String suggestion =
+                    "To enable the feature, add the following to your module-level build.gradle:\n"
+                            + "`android.buildFeatures.buildConfig true`";
             if (!model.getDefaultConfigData().getDefaultConfig().getBuildConfigFields().isEmpty()) {
                 issueReporter.reportError(
                         Type.GENERIC,
-                        "defaultConfig contains custom BuildConfig fields, but the feature is disabled.");
+                        "defaultConfig contains custom BuildConfig fields, but the feature is disabled.\n"
+                                + suggestion);
             }
 
             for (BuildTypeData<BuildType> buildType : model.getBuildTypes().values()) {
@@ -262,7 +236,8 @@ public abstract class BaseVariantFactory<
                     issueReporter.reportError(
                             Type.GENERIC,
                             String.format(
-                                    "Build Type '%s' contains custom BuildConfig fields, but the feature is disabled.",
+                                    "Build Type '%s' contains custom BuildConfig fields, but the feature is disabled.\n"
+                                            + suggestion,
                                     buildType.getBuildType().getName()));
                 }
             }
@@ -273,7 +248,8 @@ public abstract class BaseVariantFactory<
                     issueReporter.reportError(
                             Type.GENERIC,
                             String.format(
-                                    "Product Flavor '%s' contains custom BuildConfig fields, but the feature is disabled.",
+                                    "Product Flavor '%s' contains custom BuildConfig fields, but the feature is disabled.\n"
+                                            + suggestion,
                                     productFlavor.getProductFlavor().getName()));
                 }
             }

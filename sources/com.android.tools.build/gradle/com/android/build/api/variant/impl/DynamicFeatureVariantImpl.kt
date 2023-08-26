@@ -24,15 +24,12 @@ import com.android.build.api.component.impl.features.DexingCreationConfigImpl
 import com.android.build.api.component.impl.features.OptimizationCreationConfigImpl
 import com.android.build.api.component.impl.getAndroidResources
 import com.android.build.api.component.impl.isTestApk
-import com.android.build.api.dsl.CommonExtension
-import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
 import com.android.build.api.variant.AndroidResources
+import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.ApkPackaging
 import com.android.build.api.variant.Component
 import com.android.build.api.variant.DynamicFeatureVariant
 import com.android.build.api.variant.Renderscript
-import com.android.build.api.variant.Variant
-import com.android.build.api.variant.VariantBuilder
 import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig
 import com.android.build.gradle.internal.component.features.DexingCreationConfig
 import com.android.build.gradle.internal.core.VariantSources
@@ -43,7 +40,6 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactSco
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.MutableTaskContainer
-import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.ModuleMetadata
@@ -120,7 +116,7 @@ open class DynamicFeatureVariantImpl @Inject constructor(
         ApkPackagingImpl(
             dslInfo.packaging,
             internalServices,
-            minSdkVersion.apiLevel
+            minSdk.apiLevel
         )
     }
 
@@ -143,6 +139,15 @@ open class DynamicFeatureVariantImpl @Inject constructor(
             internalServices
         )
     }
+    override val targetSdk: AndroidVersion  by lazy(LazyThreadSafetyMode.NONE) {
+        variantBuilder.targetSdkVersion
+    }
+
+    override val targetSdkVersion: AndroidVersion
+        get() = targetSdk
+
+    override val targetSdkOverride: AndroidVersion?
+        get() = variantBuilder.mutableTargetSdk?.sanitize()
 
     // always false for this type
     override val embedsMicroApp: Boolean
@@ -237,7 +242,7 @@ open class DynamicFeatureVariantImpl @Inject constructor(
     // The public API does not expose this so this is ok, but it's safer to make it read-only
     // directly to catch potential errors.
     // The old API has a check for this type of plugins to avoid calling set() on it.
-    override fun createVersionNameProperty(): Property<String?> =
+    override val baseModuleVersionName: Property<String?> =
         internalServices.nullablePropertyOf(
             String::class.java,
             baseModuleMetadata.map { it.versionName },
@@ -251,7 +256,7 @@ open class DynamicFeatureVariantImpl @Inject constructor(
     // The public API does not expose this so this is ok, but it's safer to make it read-only
     // directly to catch potential errors.
     // The old API has a check for this type of plugins to avoid calling set() on it.
-    override fun createVersionCodeProperty() : Property<Int?> =
+    override val baseModuleVersionCode : Property<Int?> =
         internalServices.nullablePropertyOf(
             Int::class.java,
             baseModuleMetadata.map { it.versionCode?.toInt() },
@@ -261,14 +266,12 @@ open class DynamicFeatureVariantImpl @Inject constructor(
         }
 
     override fun <T : Component> createUserVisibleVariantObject(
-            projectServices: ProjectServices,
-            operationsRegistrar: VariantApiOperationsRegistrar<out CommonExtension<*, *, *, *>, out VariantBuilder, out Variant>,
             stats: GradleBuildVariant.Builder?
     ): T =
         if (stats == null) {
             this as T
         } else {
-            projectServices.objectFactory.newInstance(
+            services.newInstance(
                 AnalyticsEnabledDynamicFeatureVariant::class.java,
                 this,
                 stats
@@ -285,4 +288,10 @@ open class DynamicFeatureVariantImpl @Inject constructor(
             baseModuleMetadata
         )
     }
+
+    override val enableApiModeling: Boolean
+        get() = isApiModelingEnabled()
+
+    override val enableGlobalSynthetics: Boolean
+        get() = isGlobalSyntheticsEnabled()
 }

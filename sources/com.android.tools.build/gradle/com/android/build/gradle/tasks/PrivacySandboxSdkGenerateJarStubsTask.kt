@@ -20,7 +20,6 @@ import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifa
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInternalArtifactType
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
-import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
@@ -42,7 +41,6 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.work.DisableCachingByDefault
 import java.net.URLClassLoader
-import java.nio.file.Files
 import java.nio.file.Path
 import java.util.zip.ZipFile
 
@@ -127,8 +125,10 @@ abstract class PrivacySandboxSdkGenerateJarStubsTask : DefaultTask() {
         override fun configure(task: PrivacySandboxSdkGenerateJarStubsTask) {
             val apiPackagerCoordinates = creationConfig.services.projectOptions
                     .get(StringOption.ANDROID_PRIVACY_SANDBOX_SDK_API_PACKAGER)?.split(",")
-                    ?: defaultApiPackagerRuntimeDependencies
+                    ?: listOf(PLAY_SDK_API_PACKAGER_ARTIFACT)
             val apiPackager = creationConfig.services.configurations.detachedConfiguration()
+            apiPackager.isCanBeConsumed = false
+            apiPackager.isCanBeResolved = true
             val apiPackagerDeps = apiPackagerCoordinates.map {
                 creationConfig.services.dependencies.create(it)
             }
@@ -165,11 +165,7 @@ abstract class PrivacySandboxSdkGenerateJarStubsTask : DefaultTask() {
         /** Name of jar file containing api description that is packaged in an ASAR file. */
         const val privacySandboxSdkStubJarFilename: String = "sdk-interface-descriptors.jar"
 
-        /* If there are no set API packager dependencies, the following can be used. */
-        val defaultApiPackagerRuntimeDependencies = listOf(
-                "androidx.privacysandbox.tools:tools:1.0.0-SNAPSHOT",
-                "androidx.privacysandbox.tools:tools-apipackager:1.0.0-SNAPSHOT"
-        )
+        private const val PLAY_SDK_API_PACKAGER_ARTIFACT = "androidx.privacysandbox.tools:tools-apipackager:1.0.0-alpha02"
     }
 }
 

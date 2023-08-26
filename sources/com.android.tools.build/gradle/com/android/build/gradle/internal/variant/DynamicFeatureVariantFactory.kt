@@ -25,7 +25,6 @@ import com.android.build.api.variant.DynamicFeatureVariantBuilder
 import com.android.build.api.variant.impl.DynamicFeatureVariantBuilderImpl
 import com.android.build.api.variant.impl.DynamicFeatureVariantImpl
 import com.android.build.api.variant.impl.GlobalVariantBuilderConfig
-import com.android.build.api.variant.impl.VariantOutputConfigurationImpl
 import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig
 import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.core.dsl.DynamicFeatureVariantDslInfo
@@ -81,8 +80,7 @@ internal class DynamicFeatureVariantFactory(
         taskCreationServices: TaskCreationServices,
         globalConfig: GlobalTaskCreationConfig,
         ): DynamicFeatureCreationConfig {
-        val variantProperties = dslServices
-            .newInstance(
+        return dslServices.newInstance(
                 DynamicFeatureVariantImpl::class.java,
                 variantBuilder,
                 buildFeatures,
@@ -97,13 +95,6 @@ internal class DynamicFeatureVariantFactory(
                 taskCreationServices,
                 globalConfig,
             )
-
-        // create default output
-        variantProperties.addVariantOutput(
-            variantOutputConfiguration = VariantOutputConfigurationImpl()
-        )
-
-        return variantProperties
     }
 
     override fun createBuildFeatureValues(
@@ -143,7 +134,7 @@ internal class DynamicFeatureVariantFactory(
         return UnitTestBuildFeaturesValuesImpl(
             buildFeatures,
             projectOptions,
-            dataBindingOverride = if (!dataBinding.isEnabledForTests) {
+            dataBindingOverride = if (!dataBinding.enableForTests) {
                 false
             } else {
                 null // means whatever is default.
@@ -165,7 +156,7 @@ internal class DynamicFeatureVariantFactory(
         return AndroidTestBuildFeatureValuesImpl(
             buildFeatures,
             projectOptions,
-            dataBindingOverride = if (!dataBinding.isEnabledForTests) {
+            dataBindingOverride = if (!dataBinding.enableForTests) {
                 false
             } else {
                 null // means whatever is default.

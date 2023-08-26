@@ -32,6 +32,7 @@ import com.android.annotations.Nullable;
 import com.android.build.api.artifact.impl.ArtifactsImpl;
 import com.android.build.api.dsl.ApplicationExtension;
 import com.android.build.api.variant.impl.HasAndroidTest;
+import com.android.build.api.variant.impl.HasUnitTest;
 import com.android.build.api.variant.impl.TestVariantImpl;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.TestAndroidConfig;
@@ -600,7 +601,12 @@ public class ModelBuilder<Extension extends BaseExtension>
 
         VariantSources variantSources = modelLegacySupport.getVariantSources();
 
-        List<File> manifests = new ArrayList<>(variantSources.getManifestOverlays());
+        List<File> manifests = new ArrayList<>();
+        for (File manifest : variantSources.getManifestOverlayFiles()) {
+            if (manifest.isFile()) {
+                manifests.add(manifest);
+            }
+        }
         File mainManifest = variantSources.getMainManifestIfExists();
         if (mainManifest != null) {
             manifests.add(mainManifest);
@@ -765,26 +771,17 @@ public class ModelBuilder<Extension extends BaseExtension>
         if (component instanceof VariantCreationConfig) {
             VariantCreationConfig variant = (VariantCreationConfig) component;
 
-            for (ComponentType componentType : ComponentType.Companion.getTestComponents()) {
-                ComponentCreationConfig testVariant =
-                        variant.getTestComponents().get(componentType);
-                if (testVariant != null) {
-                    switch ((ComponentTypeImpl) componentType) {
-                        case ANDROID_TEST:
-                            extraAndroidArtifacts.add(
-                                    createAndroidArtifact(
-                                            componentType.getArtifactName(), testVariant));
-                            break;
-                        case UNIT_TEST:
-                            clonedExtraJavaArtifacts.add(
-                                    createUnitTestsJavaArtifact(componentType, testVariant));
-                            break;
-                        default:
-                            throw new IllegalArgumentException(
-                                    String.format(
-                                            "Unsupported test variant type %s.", componentType));
-                    }
-                }
+            if (variant instanceof HasUnitTest && ((HasUnitTest) variant).getUnitTest() != null) {
+                clonedExtraJavaArtifacts.add(
+                        createUnitTestsJavaArtifact(((HasUnitTest) variant).getUnitTest()));
+            }
+
+            if (variant instanceof HasAndroidTest
+                    && ((HasAndroidTest) variant).getAndroidTest() != null) {
+                extraAndroidArtifacts.add(
+                        createAndroidArtifact(
+                                ComponentTypeImpl.ANDROID_TEST.getArtifactName(),
+                                ((HasAndroidTest) variant).getAndroidTest()));
             }
         }
 
@@ -867,7 +864,7 @@ public class ModelBuilder<Extension extends BaseExtension>
     }
 
     private JavaArtifactImpl createUnitTestsJavaArtifact(
-            @NonNull ComponentType componentType, @NonNull ComponentCreationConfig component) {
+            @NonNull UnitTestCreationConfig component) {
         ArtifactsImpl artifacts = component.getArtifacts();
 
         SourceProviders sourceProviders = determineSourceProviders(component);
@@ -912,7 +909,7 @@ public class ModelBuilder<Extension extends BaseExtension>
                 variantModel.getMockableJarArtifact().getFiles().stream().findFirst().orElse(null);
 
         return new JavaArtifactImpl(
-                componentType.getArtifactName(),
+                ComponentTypeImpl.UNIT_TEST.getArtifactName(),
                 component.getTaskContainer().getAssembleTask().getName(),
                 component.getTaskContainer().getCompileTask().getName(),
                 Sets.newHashSet(TaskManager.CREATE_MOCKABLE_JAR_TASK_NAME),
@@ -1181,7 +1178,7 @@ public class ModelBuilder<Extension extends BaseExtension>
                 .java(
                         javaSources -> {
                             fileCollection.from(
-                                    javaSources.variantSourcesForModel$gradle_core(
+                                    javaSources.variantSourcesFileCollectionForModel$gradle_core(
                                             directoryEntry ->
                                                     directoryEntry.isGenerated()
                                                             && directoryEntry

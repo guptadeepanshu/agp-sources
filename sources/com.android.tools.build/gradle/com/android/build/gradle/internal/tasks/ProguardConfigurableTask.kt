@@ -21,7 +21,6 @@ import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.artifact.impl.InternalScopedArtifacts
 import com.android.build.api.variant.ScopedArtifacts.Scope
 import com.android.build.gradle.ProguardFiles
-import com.android.build.gradle.internal.InternalScope
 import com.android.build.gradle.internal.PostprocessingFeatures
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
@@ -43,7 +42,6 @@ import com.android.build.gradle.internal.tasks.factory.features.OptimizationTask
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.google.common.base.Preconditions
-import com.google.common.collect.Sets
 import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
@@ -56,6 +54,7 @@ import org.gradle.api.provider.Provider
 import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
@@ -93,9 +92,9 @@ abstract class ProguardConfigurableTask(
     @get:Classpath
     abstract val classes: ConfigurableFileCollection
 
-    @get:InputFiles
-    @get:PathSensitive(PathSensitivity.RELATIVE)
-    abstract val resources: ConfigurableFileCollection
+    @get:InputFile
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
+    abstract val resourcesJar: RegularFileProperty
 
     @get:Classpath
     abstract val referencedClasses: ConfigurableFileCollection
@@ -120,6 +119,10 @@ abstract class ProguardConfigurableTask(
     @get:Internal
     lateinit var libraryKeepRules: ArtifactCollection
         private set
+
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val libraryKeepRulesFileCollection: ConfigurableFileCollection
 
     @get:Input
     abstract val ignoredLibraryKeepRules: SetProperty<String>
@@ -208,58 +211,49 @@ abstract class ProguardConfigurableTask(
         // Override to make this true in proguard
         protected open val defaultObfuscate: Boolean = false
 
-        // These filters assume a file can't be class and resources at the same time.
+        // These filters assume a file can't be class and resourcesJar at the same time.
         private val referencedClasses: FileCollection
 
         private val referencedResources: FileCollection
 
         private val classes: FileCollection
 
-        private val resources: FileCollection
-
-        private val inputScopes: MutableSet<com.android.build.api.transform.QualifiedContent.ScopeType> =
+        private val externalInputScopes =
             when {
                 componentType.isAar -> mutableSetOf(
-                    com.android.build.api.transform.QualifiedContent.Scope.PROJECT,
-                    InternalScope.LOCAL_DEPS
+                    InternalScopedArtifacts.InternalScope.LOCAL_DEPS
                 )
                 includeFeaturesInScopes -> mutableSetOf(
-                    com.android.build.api.transform.QualifiedContent.Scope.PROJECT,
-                    com.android.build.api.transform.QualifiedContent.Scope.SUB_PROJECTS,
-                    com.android.build.api.transform.QualifiedContent.Scope.EXTERNAL_LIBRARIES,
-                    InternalScope.FEATURES
+                    InternalScopedArtifacts.InternalScope.SUB_PROJECTS,
+                    InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS,
+                    InternalScopedArtifacts.InternalScope.FEATURES
                 )
                 else -> mutableSetOf(
-                    com.android.build.api.transform.QualifiedContent.Scope.PROJECT,
-                    com.android.build.api.transform.QualifiedContent.Scope.SUB_PROJECTS,
-                    com.android.build.api.transform.QualifiedContent.Scope.EXTERNAL_LIBRARIES
+                    InternalScopedArtifacts.InternalScope.SUB_PROJECTS,
+                    InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS
                 )
             }
 
         init {
-            val referencedScopes: Set<com.android.build.api.transform.QualifiedContent.Scope> = run {
-                val set = Sets.newHashSetWithExpectedSize<com.android.build.api.transform.QualifiedContent.Scope>(5)
-                if (componentType.isAar) {
-                    set.add(com.android.build.api.transform.QualifiedContent.Scope.SUB_PROJECTS)
-                    set.add(com.android.build.api.transform.QualifiedContent.Scope.EXTERNAL_LIBRARIES)
-                }
+            val referencedButNotMergedScopes =
+                mutableSetOf(InternalScopedArtifacts.InternalScope.COMPILE_ONLY).apply {
+                    if (componentType.isAar) {
+                        add(InternalScopedArtifacts.InternalScope.SUB_PROJECTS)
+                        add(InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS)
+                    }
 
                 if (componentType.isTestComponent) {
-                    set.add(com.android.build.api.transform.QualifiedContent.Scope.TESTED_CODE)
+                    add(InternalScopedArtifacts.InternalScope.TESTED_CODE)
                 }
-
-                set.add(com.android.build.api.transform.QualifiedContent.Scope.PROVIDED_ONLY)
-
-                Sets.immutableEnumSet(set)
-            }
+            }.toSet()
 
             // Check for overlap in scopes
             Preconditions.checkState(
-                referencedScopes.intersect(inputScopes).isEmpty(),
+                referencedButNotMergedScopes.intersect(externalInputScopes).isEmpty(),
                 """|Referenced and non-referenced inputs must not overlap.
-                   |Referenced scope: ${referencedScopes}
-                   |Non referenced scopes: ${inputScopes}
-                   |Overlap: ${referencedScopes.intersect(inputScopes)}
+                   |Referenced scope: $referencedButNotMergedScopes
+                   |Non referenced scopes: $externalInputScopes
+                   |Overlap: ${referencedButNotMergedScopes.intersect(externalInputScopes)}
                 """.trimMargin()
             )
 
@@ -268,94 +262,26 @@ abstract class ProguardConfigurableTask(
                     creationConfig.artifacts.forScope(Scope.PROJECT)
                         .getFinalArtifacts(ScopedArtifact.CLASSES)
                 )
-                if (inputScopes.contains(InternalScope.LOCAL_DEPS)) {
+                externalInputScopes.forEach { scope ->
                     it.from(
-                        creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.LOCAL_DEPS)
+                        creationConfig.artifacts.forScope(scope)
                             .getFinalArtifacts(ScopedArtifact.CLASSES)
                     )
-                }
-                if (inputScopes.contains(com.android.build.api.transform.QualifiedContent.Scope.EXTERNAL_LIBRARIES)) {
-                    it.from(creationConfig.artifacts.forScope(
-                        InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS
-                    ).getFinalArtifacts(ScopedArtifact.CLASSES))
-                }
-                if (inputScopes.contains(com.android.build.api.transform.QualifiedContent.Scope.SUB_PROJECTS)) {
-                    it.from(creationConfig.artifacts.forScope(
-                        InternalScopedArtifacts.InternalScope.SUB_PROJECT
-                    ).getFinalArtifacts(ScopedArtifact.CLASSES))
-                }
-                if (inputScopes.contains(InternalScope.FEATURES)) {
-                    it.from(
-                        creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.FEATURES)
-                            .getFinalArtifacts(ScopedArtifact.CLASSES)
-                    )
-                }
-            }
-            resources = creationConfig.services.fileCollection().also {
-                if (inputScopes.contains(com.android.build.api.transform.QualifiedContent.Scope.PROJECT)) {
-                    it.from(creationConfig.artifacts.forScope(
-                        Scope.PROJECT
-                    ).getFinalArtifacts(ScopedArtifact.JAVA_RES))
-                }
-                if (inputScopes.contains(InternalScope.LOCAL_DEPS)) {
-                    it.from(
-                        creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.LOCAL_DEPS)
-                            .getFinalArtifacts(ScopedArtifact.JAVA_RES)
-                    )
-                }
-                if (inputScopes.contains(com.android.build.api.transform.QualifiedContent.Scope.EXTERNAL_LIBRARIES)) {
-                    it.from(creationConfig.artifacts.forScope(
-                        InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS
-                    ).getFinalArtifacts(ScopedArtifact.JAVA_RES))
-                }
-                if (inputScopes.contains(com.android.build.api.transform.QualifiedContent.Scope.SUB_PROJECTS)) {
-                    it.from(creationConfig.artifacts.forScope(
-                        InternalScopedArtifacts.InternalScope.SUB_PROJECT
-                    ).getFinalArtifacts(ScopedArtifact.JAVA_RES))
                 }
             }
 
             referencedClasses = creationConfig.services.fileCollection().also {
-                if (referencedScopes.contains(com.android.build.api.transform.QualifiedContent.Scope.SUB_PROJECTS)) {
+
+                referencedButNotMergedScopes.forEach { scope ->
                     it.from(creationConfig.artifacts.forScope(
-                        InternalScopedArtifacts.InternalScope.SUB_PROJECT
-                    ).getFinalArtifacts(ScopedArtifact.CLASSES))
-                }
-                if (referencedScopes.contains(com.android.build.api.transform.QualifiedContent.Scope.TESTED_CODE)) {
-                    it.from(creationConfig.artifacts.forScope(
-                        InternalScopedArtifacts.InternalScope.TESTED_CODE
-                    ).getFinalArtifacts(ScopedArtifact.CLASSES))
-                }
-                if (referencedScopes.contains(com.android.build.api.transform.QualifiedContent.Scope.PROVIDED_ONLY)) {
-                    it.from(creationConfig.artifacts.forScope(
-                        InternalScopedArtifacts.InternalScope.PROVIDED
-                    ).getFinalArtifacts(ScopedArtifact.CLASSES))
-                }
-                if (referencedScopes.contains(com.android.build.api.transform.QualifiedContent.Scope.EXTERNAL_LIBRARIES)) {
-                    it.from(creationConfig.artifacts.forScope(
-                        InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS
+                        scope
                     ).getFinalArtifacts(ScopedArtifact.CLASSES))
                 }
             }
             referencedResources = creationConfig.services.fileCollection().also {
-                if (referencedScopes.contains(com.android.build.api.transform.QualifiedContent.Scope.SUB_PROJECTS)) {
+                referencedButNotMergedScopes.forEach { scope ->
                     it.from(creationConfig.artifacts.forScope(
-                        InternalScopedArtifacts.InternalScope.SUB_PROJECT
-                    ).getFinalArtifacts(ScopedArtifact.JAVA_RES))
-                }
-                if (referencedScopes.contains(com.android.build.api.transform.QualifiedContent.Scope.TESTED_CODE)) {
-                    it.from(creationConfig.artifacts.forScope(
-                        InternalScopedArtifacts.InternalScope.TESTED_CODE
-                    ).getFinalArtifacts(ScopedArtifact.JAVA_RES))
-                }
-                if (referencedScopes.contains(com.android.build.api.transform.QualifiedContent.Scope.PROVIDED_ONLY)) {
-                    it.from(creationConfig.artifacts.forScope(
-                        InternalScopedArtifacts.InternalScope.PROVIDED
-                    ).getFinalArtifacts(ScopedArtifact.JAVA_RES))
-                }
-                if (referencedScopes.contains(com.android.build.api.transform.QualifiedContent.Scope.EXTERNAL_LIBRARIES)) {
-                    it.from(creationConfig.artifacts.forScope(
-                        InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS
+                        scope
                     ).getFinalArtifacts(ScopedArtifact.JAVA_RES))
                 }
             }
@@ -420,8 +346,6 @@ abstract class ProguardConfigurableTask(
                 }
             }
 
-            task.resources.from(resources)
-
             task.referencedClasses.from(referencedClasses)
 
             task.referencedResources.from(referencedResources)
@@ -444,6 +368,7 @@ abstract class ProguardConfigurableTask(
                             ALL,
                             FILTERED_PROGUARD_RULES
                     )
+            task.libraryKeepRulesFileCollection.from(task.libraryKeepRules.artifactFiles)
             task.ignoredLibraryKeepRules.set(optimizationCreationConfig.ignoredLibraryKeepRules)
             task.ignoreAllLibraryKeepRules.set(optimizationCreationConfig.ignoreAllLibraryKeepRules)
 
@@ -455,7 +380,7 @@ abstract class ProguardConfigurableTask(
                     // All -dontwarn rules for test dependencies should go in here:
                     val configurationFiles = task.project.files(
                         optimizationCreationConfig.proguardFiles,
-                        task.libraryKeepRules.artifactFiles
+                        task.libraryKeepRulesFileCollection
                     )
                     task.configurationFiles.from(configurationFiles)
                 }
@@ -466,7 +391,7 @@ abstract class ProguardConfigurableTask(
                     // All -dontwarn rules for test dependen]cies should go in here:
                     val configurationFiles = task.project.files(
                         optimizationCreationConfig.proguardFiles,
-                        task.libraryKeepRules.artifactFiles
+                        task.libraryKeepRulesFileCollection
                     )
                     task.configurationFiles.from(configurationFiles)
                 }
@@ -515,7 +440,7 @@ abstract class ProguardConfigurableTask(
             val configurationFiles = task.project.files(
                 optimizationCreationConfig.proguardFiles,
                 aaptProguardFile,
-                task.libraryKeepRules.artifactFiles
+                task.libraryKeepRulesFileCollection
             )
 
             if (task.includeFeaturesInScopes.get()) {

@@ -19,7 +19,6 @@ package com.android.build.gradle.internal.tasks
 import com.android.build.api.artifact.MultipleArtifact
 import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.artifact.impl.InternalScopedArtifacts
-import com.android.build.api.transform.QualifiedContent
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.errors.MessageReceiverImpl
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
@@ -157,27 +156,6 @@ abstract class D8BundleMainDexListTask : NonIncrementalTask() {
     ), DexingTaskCreationAction by DexingTaskCreationActionImpl(
         creationConfig
     ) {
-        private val libraryClasses: FileCollection
-
-        init {
-            @Suppress("DEPRECATION") // Legacy support
-            val libraryScopes = setOf(
-                com.android.build.api.transform.QualifiedContent.Scope.TESTED_CODE
-            )
-
-            @Suppress("DEPRECATION") // Legacy support
-            libraryClasses = creationConfig.services.fileCollection().also {
-                it.from(creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.TESTED_CODE)
-                    .getFinalArtifacts(ScopedArtifact.CLASSES)
-                )
-
-
-                it.from(creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.PROVIDED)
-                    .getFinalArtifacts(ScopedArtifact.CLASSES)
-                )
-            }
-        }
-
         override val name: String = creationConfig.computeTaskName("bundleMultiDexList")
         override val type: Class<D8BundleMainDexListTask> = D8BundleMainDexListTask::class.java
 
@@ -207,7 +185,15 @@ abstract class D8BundleMainDexListTask : NonIncrementalTask() {
                 .setDisallowChanges(
                     SyncOptions.getErrorFormatMode(creationConfig.services.projectOptions))
 
-            task.libraryClasses.from(libraryClasses).disallowChanges()
+            task.libraryClasses.from(creationConfig.services.fileCollection().also {
+                it.from(creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.TESTED_CODE)
+                    .getFinalArtifacts(ScopedArtifact.CLASSES)
+                )
+
+                it.from(creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.COMPILE_ONLY)
+                    .getFinalArtifacts(ScopedArtifact.CLASSES)
+                )
+            }).disallowChanges()
 
             task.baseDexDirs.from(
                 creationConfig.artifacts.getAll(InternalMultipleArtifactType.DEX))

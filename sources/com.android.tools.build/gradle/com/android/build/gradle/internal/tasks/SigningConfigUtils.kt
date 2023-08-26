@@ -18,8 +18,11 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
 import com.android.build.gradle.internal.cxx.json.PlainFileGsonTypeAdaptor
+import com.android.build.gradle.internal.dsl.SigningConfig
+import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.signing.SigningConfigData
 import com.android.build.gradle.internal.signing.SigningConfigVersions
+import com.android.build.gradle.options.SigningOptions
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import org.apache.commons.io.FileUtils
@@ -109,6 +112,27 @@ class SigningConfigUtils {
             val gsonBuilder = GsonBuilder()
             gsonBuilder.registerTypeAdapter(File::class.java, PlainFileGsonTypeAdaptor())
             gsonBuilder.create()
+        }
+
+        fun createSigningOverride(dslServices: DslServices): SigningConfig? {
+            SigningOptions.readSigningOptions(dslServices.projectOptions)?.let { signingOptions ->
+                val signingConfigDsl = dslServices.newDecoratedInstance(SigningConfig::class.java, SigningOptions.SIGNING_CONFIG_NAME, dslServices)
+                signingConfigDsl.storeFile(File(signingOptions.storeFile))
+                signingConfigDsl.storePassword(signingOptions.storePassword)
+                signingConfigDsl.keyAlias(signingOptions.keyAlias)
+                signingConfigDsl.keyPassword(signingOptions.keyPassword)
+                signingOptions.storeType?.let {
+                    signingConfigDsl.storeType(it)
+                }
+                signingOptions.v1Enabled?.let {
+                    signingConfigDsl.enableV1Signing = it
+                }
+                signingOptions.v2Enabled?.let {
+                    signingConfigDsl.enableV2Signing = it
+                }
+                return signingConfigDsl
+            }
+            return null
         }
     }
 }

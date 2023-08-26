@@ -26,6 +26,8 @@ import com.android.build.gradle.internal.testing.utp.UtpDependency.ANDROID_TEST_
 import com.android.build.gradle.internal.testing.utp.UtpDependency.ANDROID_TEST_DEVICE_INFO_PLUGIN
 import com.android.build.gradle.internal.testing.utp.UtpDependency.ANDROID_TEST_LOGCAT_PLUGIN
 import com.android.build.gradle.internal.testing.utp.UtpDependency.ANDROID_TEST_PLUGIN
+import com.android.build.gradle.internal.testing.utp.UtpDependency.ANDROID_TEST_PLUGIN_APK_INSTALLER
+import com.android.build.gradle.internal.testing.utp.UtpDependency.ANDROID_TEST_PLUGIN_HOST_EMULATOR_CONTROL
 import com.android.build.gradle.internal.testing.utp.UtpDependency.ANDROID_TEST_PLUGIN_HOST_RETENTION
 import com.android.build.gradle.internal.testing.utp.UtpDependency.ANDROID_TEST_PLUGIN_RESULT_LISTENER_GRADLE
 import com.android.builder.testing.api.DeviceConnector
@@ -33,11 +35,14 @@ import com.android.sdklib.BuildToolInfo
 import com.android.tools.utp.plugins.deviceprovider.ddmlib.proto.AndroidDeviceProviderDdmlibConfigProto.DdmlibAndroidDeviceProviderConfig
 import com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedAndroidDeviceProviderProto.GradleManagedAndroidDeviceProviderConfig
 import com.android.tools.utp.plugins.host.additionaltestoutput.proto.AndroidAdditionalTestOutputConfigProto.AndroidAdditionalTestOutputConfig
+import com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.AndroidApkInstallerConfig
 import com.android.tools.utp.plugins.host.coverage.proto.AndroidTestCoverageConfigProto.AndroidTestCoverageConfig
+import com.android.tools.utp.plugins.host.emulatorcontrol.proto.EmulatorControlPluginProto.EmulatorControlPlugin
 import com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto
 import com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.IceboxPlugin
 import com.android.tools.utp.plugins.host.logcat.proto.AndroidTestLogcatConfigProto.AndroidTestLogcatConfig
 import com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerConfigProto.GradleAndroidTestResultListenerConfig
+import com.google.common.collect.Iterables
 import com.google.protobuf.Any
 import com.google.protobuf.Message
 import com.google.testing.platform.plugin.android.proto.AndroidDevicePluginProto.AndroidDevicePlugin
@@ -51,11 +56,12 @@ import com.google.testing.platform.proto.api.config.RunnerConfigProto
 import com.google.testing.platform.proto.api.core.ExtensionProto
 import com.google.testing.platform.proto.api.core.LabelProto
 import com.google.testing.platform.proto.api.core.PathProto
-import com.google.testing.platform.proto.api.core.TestArtifactProto
 import com.google.testing.platform.proto.api.service.ServerConfigProto
-import java.io.File
-import java.util.concurrent.TimeUnit
 import org.gradle.api.logging.Logging
+import java.io.File
+import java.nio.file.Path
+import java.util.concurrent.TimeUnit
+import kotlin.io.path.absolutePathString
 
 // This is an arbitrary string. This ID is used to lookup test results from UTP.
 // UTP can run multiple test fixtures at a time so we have to give a name for
@@ -74,7 +80,7 @@ private const val DEFAULT_ADB_SERVER_PORT = 5037
 
 private const val TEST_RUNNER_LOG_FILE_NAME = "test-results.log"
 
-private  val AM_INSTRUMENT_COMMAND_TIME_OUT_SECONDS = TimeUnit.DAYS.toSeconds(365)
+private val AM_INSTRUMENT_COMMAND_TIME_OUT_SECONDS = TimeUnit.DAYS.toSeconds(365)
 
 // Relative path to the UTP outputDir for test log directory.
 private const val TEST_LOG_DIR = "testlog"
@@ -99,7 +105,7 @@ class UtpConfigFactory {
     fun createRunnerConfigProtoForLocalDevice(
         device: DeviceConnector,
         testData: StaticTestData,
-        appApks: Iterable<File>,
+        targetApkConfigBundle: TargetApkConfigBundle,
         additionalInstallOptions: Iterable<String>,
         helperApks: Iterable<File>,
         uninstallIncompatibleApks: Boolean,
@@ -107,6 +113,7 @@ class UtpConfigFactory {
         versionedSdkLoader: SdkComponentsBuildService.VersionedSdkLoader,
         outputDir: File,
         tmpDir: File,
+        emulatorControlConfig: EmulatorControlConfig,
         retentionConfig: RetentionConfig,
         coverageOutputDir: File,
         useOrchestrator: Boolean,
@@ -116,16 +123,16 @@ class UtpConfigFactory {
         resultListenerClientPrivateKey: File,
         trustCertCollection: File,
         installApkTimeout: Int?,
-        shardConfig: ShardConfig? = null
+        extractedSdkApks: List<List<Path>>,
+        shardConfig: ShardConfig? = null,
     ): RunnerConfigProto.RunnerConfig {
         return RunnerConfigProto.RunnerConfig.newBuilder().apply {
             val grpcInfo = findGrpcInfo(device.serialNumber)
             addDevice(createLocalDevice(device, uninstallIncompatibleApks, utpDependencies))
             addTestFixture(
                 createTestFixture(
-                    grpcInfo.port,
-                    grpcInfo.token,
-                    appApks,
+                    grpcInfo,
+                    targetApkConfigBundle,
                     additionalInstallOptions,
                     helperApks,
                     testData,
@@ -133,6 +140,7 @@ class UtpConfigFactory {
                     versionedSdkLoader,
                     outputDir,
                     tmpDir,
+                    emulatorControlConfig,
                     retentionConfig,
                     useOrchestrator,
                     additionalTestOutputDir,
@@ -141,30 +149,36 @@ class UtpConfigFactory {
                     },
                     coverageOutputDir,
                     installApkTimeout,
-                    shardConfig
+                    shardConfig,
+                    false,
+                    extractedSdkApks,
                 )
             )
             singleDeviceExecutor = createSingleDeviceExecutor(device.serialNumber, shardConfig)
             addTestResultListener(
-                    createTestResultListener(
-                            utpDependencies,
-                            testResultListenerServerPort,
-                            resultListenerClientCert,
-                            resultListenerClientPrivateKey,
-                            trustCertCollection,
-                            device.serialNumber))
+                createTestResultListener(
+                    utpDependencies,
+                    testResultListenerServerPort,
+                    resultListenerClientCert,
+                    resultListenerClientPrivateKey,
+                    trustCertCollection,
+                    device.serialNumber
+                )
+            )
         }.build()
     }
 
     private fun createTestResultListener(
-            utpDependencies: UtpDependencies,
-            testResultListenerServerPort: Int,
-            resultListenerClientCert: File,
-            resultListenerClientPrivateKey: File,
-            trustCertCollection: File,
-            deviceId: String): ExtensionProto.Extension {
+        utpDependencies: UtpDependencies,
+        testResultListenerServerPort: Int,
+        resultListenerClientCert: File,
+        resultListenerClientPrivateKey: File,
+        trustCertCollection: File,
+        deviceId: String
+    ): ExtensionProto.Extension {
         return ANDROID_TEST_PLUGIN_RESULT_LISTENER_GRADLE.toExtensionProto(
-            utpDependencies, GradleAndroidTestResultListenerConfig::newBuilder) {
+            utpDependencies, GradleAndroidTestResultListenerConfig::newBuilder
+        ) {
             resultListenerServerPort = testResultListenerServerPort
             resultListenerClientCertFilePath = resultListenerClientCert.absolutePath
             resultListenerClientPrivateKeyFilePath = resultListenerClientPrivateKey.absolutePath
@@ -184,13 +198,14 @@ class UtpConfigFactory {
     fun createRunnerConfigProtoForManagedDevice(
         device: UtpManagedDevice,
         testData: StaticTestData,
-        appApks: Iterable<File>,
+        targetApkConfigBundle: TargetApkConfigBundle,
         additionalInstallOptions: Iterable<String>,
         helperApks: Iterable<File>,
         utpDependencies: UtpDependencies,
         versionedSdkLoader: SdkComponentsBuildService.VersionedSdkLoader,
         outputDir: File,
         tmpDir: File,
+        emulatorControlConfig: EmulatorControlConfig,
         retentionConfig: RetentionConfig,
         coverageOutputDir: File,
         additionalTestOutputDir: File?,
@@ -199,33 +214,39 @@ class UtpConfigFactory {
         emulatorGpuFlag: String,
         showEmulatorKernelLogging: Boolean,
         installApkTimeout: Int?,
-        shardConfig: ShardConfig? = null
+        extractedSdkApks: List<List<Path>>,
+        shardConfig: ShardConfig? = null,
     ): RunnerConfigProto.RunnerConfig {
         return RunnerConfigProto.RunnerConfig.newBuilder().apply {
             addDevice(
                 createGradleManagedDevice(
-                    device, utpDependencies, emulatorGpuFlag, showEmulatorKernelLogging))
+                    device, utpDependencies, emulatorGpuFlag, showEmulatorKernelLogging
+                )
+            )
             addTestFixture(
                 createTestFixture(
-                    null, null, appApks, additionalInstallOptions, helperApks, testData,
+                    null, targetApkConfigBundle, additionalInstallOptions, helperApks, testData,
                     utpDependencies, versionedSdkLoader,
-                    outputDir, tmpDir, retentionConfig, useOrchestrator,
+                    outputDir, tmpDir, emulatorControlConfig, retentionConfig, useOrchestrator,
                     additionalTestOutputDir,
                     additionalTestOutputDir?.let {
                         findAdditionalTestOutputDirectoryOnManagedDevice(device, testData)
                     },
-                    coverageOutputDir, installApkTimeout, shardConfig
+                    coverageOutputDir, installApkTimeout, shardConfig, true,
+                    extractedSdkApks,
                 )
             )
             singleDeviceExecutor = createSingleDeviceExecutor(device.id, shardConfig)
             addTestResultListener(
-                    createTestResultListener(
-                            utpDependencies,
-                            testResultListenerServerMetadata.serverPort,
-                            testResultListenerServerMetadata.clientCert,
-                            testResultListenerServerMetadata.clientPrivateKey,
-                            testResultListenerServerMetadata.serverCert,
-                            device.id))
+                createTestResultListener(
+                    utpDependencies,
+                    testResultListenerServerMetadata.serverPort,
+                    testResultListenerServerMetadata.clientCert,
+                    testResultListenerServerMetadata.clientPrivateKey,
+                    testResultListenerServerMetadata.serverCert,
+                    device.id
+                )
+            )
         }.build()
     }
 
@@ -257,11 +278,12 @@ class UtpConfigFactory {
         uninstallIncompatibleApks: Boolean,
         utpDependencies: UtpDependencies
     ): ExtensionProto.Extension {
-        val localConfig =  LocalAndroidDeviceProvider.newBuilder().apply {
+        val localConfig = LocalAndroidDeviceProvider.newBuilder().apply {
             serial = device.serialNumber
         }.build()
         return ANDROID_DEVICE_PROVIDER_DDMLIB.toExtensionProto(
-            utpDependencies, DdmlibAndroidDeviceProviderConfig::newBuilder) {
+            utpDependencies, DdmlibAndroidDeviceProviderConfig::newBuilder
+        ) {
             localAndroidDeviceProviderConfig = Any.pack(localConfig)
             this.uninstallIncompatibleApks = uninstallIncompatibleApks
         }
@@ -278,7 +300,8 @@ class UtpConfigFactory {
                 id = managedDevice.id
             }
             provider = createGradleDeviceProvider(
-                managedDevice, utpDependencies, emulatorGpuFlag, showEmulatorKernelLogging)
+                managedDevice, utpDependencies, emulatorGpuFlag, showEmulatorKernelLogging
+            )
         }.build()
     }
 
@@ -289,7 +312,8 @@ class UtpConfigFactory {
         showEmulatorKernelLogging: Boolean,
     ): ExtensionProto.Extension {
         return ANDROID_DEVICE_PROVIDER_GRADLE.toExtensionProto(
-            utpDependencies, GradleManagedAndroidDeviceProviderConfig::newBuilder) {
+            utpDependencies, GradleManagedAndroidDeviceProviderConfig::newBuilder
+        ) {
             managedDeviceBuilder.apply {
                 avdFolder = Any.pack(PathProto.Path.newBuilder().apply {
                     path = deviceInfo.avdFolder
@@ -315,9 +339,8 @@ class UtpConfigFactory {
      * then the Icebox plugin will attempt to determine it (if enabled by the retentionConfig).
      */
     private fun createTestFixture(
-        grpcPort: Int?,
-        grpcToken: String?,
-        appApks: Iterable<File>,
+        grpcInfo: EmulatorGrpcInfo?,
+        targetApkConfigBundle: TargetApkConfigBundle,
         additionalInstallOptions: Iterable<String>,
         helperApks: Iterable<File>,
         testData: StaticTestData,
@@ -325,15 +348,19 @@ class UtpConfigFactory {
         versionedSdkLoader: SdkComponentsBuildService.VersionedSdkLoader,
         outputDir: File,
         tmpDir: File,
+        emulatorControlConfig: EmulatorControlConfig,
         retentionConfig: RetentionConfig,
         useOrchestrator: Boolean,
         additionalTestOutputDir: File?,
         additionalTestOutputOnDeviceDir: String?,
         coverageOutputDir: File,
         installApkTimeout: Int?,
-        shardConfig: ShardConfig?
+        shardConfig: ShardConfig?,
+        isManagedDevice: Boolean,
+        extractedSdkApks: List<List<Path>>,
     ): FixtureProto.TestFixture {
         return FixtureProto.TestFixture.newBuilder().apply {
+            var additionalTestParams: MutableMap<String, String> = mutableMapOf()
             testFixtureIdBuilder.apply {
                 id = UTP_TEST_FIXTURE_ID
             }
@@ -343,18 +370,50 @@ class UtpConfigFactory {
                 versionedSdkLoader
             )
 
+            if (emulatorControlConfig.enabled) {
+                // Looks like emulator access is on the menu.
+                val cfg = createTokenConfig(
+                    emulatorControlConfig.allowedEndpoints,
+                    emulatorControlConfig.secondsValid,
+                    "gradle-utp-emulator-control",
+                    grpcInfo
+                )
+
+                if (cfg != INVALID_JWT_CONFIG) {
+                    additionalTestParams["grpc.port"] = grpcInfo?.port.toString()
+                    additionalTestParams["grpc.token"] = cfg.token
+                    addHostPlugin(
+                        createEmulatorControlPlugin(
+                            grpcInfo?.port,
+                            cfg.token,
+                            cfg.jwkPath,
+                            utpDependencies,
+                            emulatorControlConfig
+                        )
+                    )
+                } else {
+                    logger.warn(
+                        "Control of the emulator is not supported for emulators without " +
+                                "security features enabled. Please upgrade to a " +
+                                "later version of the emulator."
+                    )
+                }
+            }
+
             val debug =
                 (testData.instrumentationRunnerArguments
                     .getOrDefault("debug", "false")
                     .toBoolean())
+
             if (retentionConfig.enabled && !debug) {
+                additionalTestParams["debug"] = "true"
                 testDriver = createTestDriver(
                     testData, utpDependencies, useOrchestrator,
-                    additionalTestOutputOnDeviceDir, shardConfig, mapOf("debug" to "true")
+                    additionalTestOutputOnDeviceDir, shardConfig, additionalTestParams
                 )
                 addHostPlugin(
                     createIceboxPlugin(
-                        grpcPort, grpcToken, testData, utpDependencies, retentionConfig,
+                        grpcInfo?.port, grpcInfo?.token, testData, utpDependencies, retentionConfig,
                         useOrchestrator
                     )
                 )
@@ -365,43 +424,98 @@ class UtpConfigFactory {
                                 "automated test snapshot."
                     )
                 }
-                testDriver = createTestDriver(testData, utpDependencies, useOrchestrator,
-                                              additionalTestOutputOnDeviceDir, shardConfig)
+                testDriver = createTestDriver(
+                    testData,
+                    utpDependencies,
+                    useOrchestrator,
+                    additionalTestOutputOnDeviceDir,
+                    shardConfig, additionalTestParams
+                )
             }
-            addHostPlugin(createAndroidTestPlugin(
-                    testData, appApks, additionalInstallOptions, helperApks, installApkTimeout, utpDependencies))
+            addHostPlugin(
+                createApkInstallerPlugin(
+                    targetApkConfigBundle,
+                    extractedSdkApks,
+                    helperApks,
+                    installApkTimeout,
+                    additionalInstallOptions,
+                    testData,
+                    isManagedDevice,
+                    utpDependencies,
+                )
+            )
+            // This line is required since AndroidTestPlugin sends event message to context after
+            // installing the APKs
+            addHostPlugin(createAndroidTestPlugin(utpDependencies))
             addHostPlugin(createAndroidTestDeviceInfoPlugin(utpDependencies))
-            addHostPlugin(createAndroidTestLogcatPlugin(
-                    testData.instrumentationTargetPackageId, utpDependencies))
+            addHostPlugin(
+                createAndroidTestLogcatPlugin(
+                    testData.instrumentationTargetPackageId, utpDependencies
+                )
+            )
             if (testData.isTestCoverageEnabled) {
-                addHostPlugin(createAndroidTestCoveragePlugin(
-                    coverageOutputDir, useOrchestrator, testData, utpDependencies
-                ))
+                addHostPlugin(
+                    createAndroidTestCoveragePlugin(
+                        coverageOutputDir, useOrchestrator, testData, utpDependencies
+                    )
+                )
             }
             if (additionalTestOutputDir != null) {
                 addHostPlugin(
                     createAdditionalTestOutputPlugin(
                         additionalTestOutputDir,
                         additionalTestOutputOnDeviceDir,
-                        utpDependencies))
+                        utpDependencies
+                    )
+                )
             }
         }.build()
     }
 
+    private fun createEmulatorControlPlugin(
+        grpcPort: Int?,
+        jwtToken: String,
+        jwkPath: String,
+        utpDependencies: UtpDependencies,
+        emulatorControlConfig: EmulatorControlConfig
+    ): ExtensionProto.Extension {
+        return ANDROID_TEST_PLUGIN_HOST_EMULATOR_CONTROL.toExtensionProto(
+            utpDependencies, EmulatorControlPlugin::newBuilder
+        ) {
+            emulatorGrpcPort = grpcPort ?: 0
+            token = jwtToken
+            jwkFile = jwkPath
+            emulatorClientPrivateKeyFilePath = ""
+            emulatorClientCaFilePath = ""
+            trustedCollectionRootPath = ""
+            tlsCfgPrefix = ""
+        }
+    }
+
+    private fun createAndroidTestPlugin(
+        utpDependencies: UtpDependencies
+    ): ExtensionProto.Extension {
+        return ANDROID_TEST_PLUGIN.toExtensionProto(
+            utpDependencies, AndroidDevicePlugin::newBuilder
+        ) {
+        }
+    }
+
     private fun createIceboxPlugin(
-            grpcPort: Int?,
-            grpcToken: String?,
-            testData: StaticTestData,
-            utpDependencies: UtpDependencies,
-            retentionConfig: RetentionConfig,
-            rebootBetweenTestCases: Boolean
+        grpcPort: Int?,
+        grpcToken: String?,
+        testData: StaticTestData,
+        utpDependencies: UtpDependencies,
+        retentionConfig: RetentionConfig,
+        rebootBetweenTestCases: Boolean
     ): ExtensionProto.Extension {
         return ANDROID_TEST_PLUGIN_HOST_RETENTION.toExtensionProto(
-            utpDependencies, IceboxPlugin::newBuilder) {
+            utpDependencies, IceboxPlugin::newBuilder
+        ) {
             appPackage = testData.testedApplicationId
             emulatorGrpcAddress = DEFAULT_EMULATOR_GRPC_ADDRESS
-            emulatorGrpcPort = grpcPort?:0
-            emulatorGrpcToken = grpcToken?:""
+            emulatorGrpcPort = grpcPort ?: 0
+            emulatorGrpcToken = grpcToken ?: ""
             snapshotCompression = if (retentionConfig.compressSnapshots) {
                 IceboxPluginProto.Compression.TARGZ
             } else {
@@ -439,7 +553,8 @@ class UtpConfigFactory {
                         path = versionedSdkLoader.sdkDirectoryProvider.get().asFile.absolutePath
                     }
                     adbPathBuilder.apply {
-                        path = versionedSdkLoader.adbExecutableProvider.get().asFile.absolutePath
+                        path =
+                            versionedSdkLoader.adbExecutableProvider.get().asFile.absolutePath
                     }
                     aaptPathBuilder.apply {
                         path = versionedSdkLoader.buildToolInfoProvider.get()
@@ -470,7 +585,8 @@ class UtpConfigFactory {
         additionalTestParams: Map<String, String> = mapOf(),
     ): ExtensionProto.Extension {
         return ANDROID_DRIVER_INSTRUMENTATION.toExtensionProto(
-            utpDependencies, AndroidInstrumentationDriver::newBuilder) {
+            utpDependencies, AndroidInstrumentationDriver::newBuilder
+        ) {
             androidInstrumentationRuntimeBuilder.apply {
                 instrumentationInfoBuilder.apply {
                     appPackage = testData.testedApplicationId
@@ -481,8 +597,10 @@ class UtpConfigFactory {
                     putAllArgsMap(testData.instrumentationRunnerArguments)
                     putAllArgsMap(additionalTestParams)
 
-                    useTestStorageService = testData.instrumentationRunnerArguments.getOrDefault(
-                        "useTestStorageService", "false").toBoolean()
+                    useTestStorageService =
+                        testData.instrumentationRunnerArguments.getOrDefault(
+                            "useTestStorageService", "false"
+                        ).toBoolean()
 
                     if (testData.isTestCoverageEnabled) {
                         putArgsMap("coverage", "true")
@@ -493,7 +611,8 @@ class UtpConfigFactory {
                         }
                         putArgsMap(
                             testCoverageArgName,
-                            testData.getTestCoverageFilePath(useOrchestrator))
+                            testData.getTestCoverageFilePath(useOrchestrator)
+                        )
                     }
 
                     if (additionalTestOutputOnDeviceDir != null) {
@@ -504,11 +623,12 @@ class UtpConfigFactory {
                     if (shardConfig != null) {
                         require(
                             !testData.instrumentationRunnerArguments.containsKey("numShards") &&
-                            !testData.instrumentationRunnerArguments.containsKey("shardIndex")) {
+                                    !testData.instrumentationRunnerArguments.containsKey("shardIndex")
+                        ) {
                             "testInstrumentationRunnerArguments.[numShards | shardIndex] is " +
-                            "currently incompatible with sharding support for Gradle Managed " +
-                            "Devices, and you should try running this test again without setting " +
-                            "this property."
+                                    "currently incompatible with sharding support for Gradle Managed " +
+                                    "Devices, and you should try running this test again without setting " +
+                                    "this property."
                         }
                         putArgsMap("numShards", shardConfig.totalCount.toString())
                         putArgsMap("shardIndex", shardConfig.index.toString())
@@ -522,63 +642,6 @@ class UtpConfigFactory {
         }
     }
 
-    /**
-     * @param additionalInstallOptions an additional install options to be used for installing
-     *   app (tested-) APKs and test APK. These options are not used for the test helper APKs.
-     */
-    private fun createAndroidTestPlugin(
-            testData: StaticTestData,
-            appApks: Iterable<File>,
-            additionalInstallOptions: Iterable<String>,
-            helperApks: Iterable<File>,
-            installApkTimeoutSeconds: Int?,
-            utpDependencies: UtpDependencies
-    ): ExtensionProto.Extension {
-        return ANDROID_TEST_PLUGIN.toExtensionProto(
-            utpDependencies, AndroidDevicePlugin::newBuilder) {
-            addTestApksBuilder().apply {
-                testApkBuilder.apply {
-                    type = TestArtifactProto.ArtifactType.ANDROID_APK
-                    sourcePathBuilder.apply {
-                        path = testData.testApk.absolutePath
-                    }
-                }
-                additionalInstallOptions.forEach { option ->
-                    addInstallOptionsBuilder().apply {
-                        commandLineParameter = option
-                    }
-                }
-            }
-            appApks.forEach { appApk ->
-                addTestApksBuilder().apply {
-                    testApkBuilder.apply {
-                        type = TestArtifactProto.ArtifactType.ANDROID_APK
-                        sourcePathBuilder.apply {
-                            path = appApk.absolutePath
-                        }
-                    }
-                    additionalInstallOptions.forEach { option ->
-                        addInstallOptionsBuilder().apply {
-                            commandLineParameter = option
-                        }
-                    }
-                }
-            }
-            helperApks.forEach { helperApk ->
-                addTestServiceApksBuilder().apply {
-                    type = TestArtifactProto.ArtifactType.ANDROID_APK
-                    sourcePathBuilder.apply {
-                        path = helperApk.absolutePath
-                    }
-                }
-            }
-
-            installApkTimeoutBuilder.apply{
-                seconds = installApkTimeoutSeconds?.toLong() ?: 0L
-            }
-        }
-    }
-
     private fun createAndroidTestDeviceInfoPlugin(utpDependencies: UtpDependencies): ExtensionProto.Extension {
         return ANDROID_TEST_DEVICE_INFO_PLUGIN.toExtensionProto(utpDependencies)
     }
@@ -588,17 +651,19 @@ class UtpConfigFactory {
      *
      * It specifies two paths, a directory or file path to writes test coverage files on device and
      * a destination directory on a host. This logic used to be implemented in SimpleTestRunnable
-     * and this new implementation is compatible with it (a drop-in replacemant).
+     * and this new implementation is compatible with it (a drop-in replacement).
      */
     private fun createAndroidTestCoveragePlugin(
         coverageOutputDir: File,
         useOrchestrator: Boolean,
         testData: StaticTestData,
-        utpDependencies:UtpDependencies): ExtensionProto.Extension {
+        utpDependencies: UtpDependencies
+    ): ExtensionProto.Extension {
         val coverageFilePath = testData.getTestCoverageFilePath(useOrchestrator)
 
         return ANDROID_TEST_COVERAGE_PLUGIN.toExtensionProto(
-            utpDependencies, AndroidTestCoverageConfig::newBuilder) {
+            utpDependencies, AndroidTestCoverageConfig::newBuilder
+        ) {
             if (useOrchestrator) {
                 multipleCoverageFilesInDirectory = coverageFilePath
             } else {
@@ -607,7 +672,8 @@ class UtpConfigFactory {
             outputDirectoryOnHost = coverageOutputDir.absolutePath + File.separator
             runAsPackageName = testData.instrumentationTargetPackageId
             useTestStorageService = testData.instrumentationRunnerArguments.getOrDefault(
-                "useTestStorageService", "false").toBoolean()
+                "useTestStorageService", "false"
+            ).toBoolean()
         }
     }
 
@@ -618,9 +684,11 @@ class UtpConfigFactory {
             customCoveragePath.isNotBlank() -> {
                 customCoveragePath
             }
+
             useOrchestrator -> {
                 "/data/data/${instrumentationTargetPackageId}/coverage_data/"
             }
+
             else -> {
                 "/data/data/${instrumentationTargetPackageId}/coverage.ec"
             }
@@ -630,9 +698,11 @@ class UtpConfigFactory {
     private fun createAdditionalTestOutputPlugin(
         additionalTestOutputDir: File,
         additionalTestOutputOnDeviceDir: String?,
-        utpDependencies:UtpDependencies): ExtensionProto.Extension {
+        utpDependencies: UtpDependencies
+    ): ExtensionProto.Extension {
         return ANDROID_TEST_ADDITIONAL_TEST_OUTPUT_PLUGIN.toExtensionProto(
-            utpDependencies, AndroidAdditionalTestOutputConfig::newBuilder) {
+            utpDependencies, AndroidAdditionalTestOutputConfig::newBuilder
+        ) {
             additionalOutputDirectoryOnHost =
                 additionalTestOutputDir.absolutePath + File.separator
             additionalTestOutputOnDeviceDir?.let {
@@ -643,16 +713,90 @@ class UtpConfigFactory {
 
     private fun createAndroidTestLogcatPlugin(
         testPackageName: String,
-        utpDependencies:UtpDependencies): ExtensionProto.Extension {
+        utpDependencies: UtpDependencies
+    ): ExtensionProto.Extension {
         return ANDROID_TEST_LOGCAT_PLUGIN.toExtensionProto(
-                utpDependencies, AndroidTestLogcatConfig::newBuilder) {
+            utpDependencies, AndroidTestLogcatConfig::newBuilder
+        ) {
             targetTestProcessName = testPackageName
+        }
+    }
+
+    // APK install sequence is aligned with legacy installer for better compatibility
+    private fun createApkInstallerPlugin(
+        targetApkConfigBundle: TargetApkConfigBundle,
+        extractedSdkApks: List<List<Path>>,
+        helperApks: Iterable<File>,
+        installApkTimeout: Int?,
+        additionalInstallOptions: Iterable<String>,
+        testData: StaticTestData,
+        isManagedDevice: Boolean,
+        utpDependencies: UtpDependencies,
+    ): ExtensionProto.Extension {
+        return ANDROID_TEST_PLUGIN_APK_INSTALLER.toExtensionProto(
+            utpDependencies, AndroidApkInstallerConfig::newBuilder
+        ) {
+
+            if (extractedSdkApks.isNotEmpty() && extractedSdkApks[0].isNotEmpty()) {
+                extractedSdkApks.forEach { apks ->
+                    addApksToInstallBuilder().apply {
+                        addAllApkPaths(apks.map { it.absolutePathString() })
+                        installOptionsBuilder.apply {
+                            addAllCommandLineParameter(additionalInstallOptions)
+                            installAsSplitApk = (apks.size > 1)
+                            if (installApkTimeout != null) setInstallApkTimeout(
+                                installApkTimeout
+                            )
+                        }.build()
+                    }.build()
+                }
+            }
+
+            if (Iterables.size(targetApkConfigBundle.appApks) > 0) {
+                addApksToInstallBuilder().apply {
+                    addAllApkPaths(targetApkConfigBundle.appApks.map { it.absolutePath })
+                    installOptionsBuilder.apply {
+                        addAllCommandLineParameter(additionalInstallOptions)
+                        installAsSplitApk = targetApkConfigBundle.isSplitApk
+                        if (installApkTimeout != null) setInstallApkTimeout(installApkTimeout)
+                    }.build()
+                    uninstallAfterTest = !isManagedDevice
+                    addAllApksPackageName(
+                        listOf(
+                            testData.testedApplicationId,
+                            testData.applicationId
+                        )
+                    )
+                }.build()
+            }
+
+            if (Iterables.size(helperApks) > 0) {
+                addApksToInstallBuilder().apply {
+                    addAllApkPaths(helperApks.map { it.absolutePath })
+                    installOptionsBuilder.apply {
+                        addAllCommandLineParameter(additionalInstallOptions)
+                        if (installApkTimeout != null) setInstallApkTimeout(installApkTimeout)
+                        installAsTestService = true
+                    }.build()
+                }.build()
+            }
+
+            if (testData.testApk.absolutePath.isNotEmpty()) {
+                addApksToInstallBuilder().apply {
+                    addAllApkPaths(listOf(testData.testApk.absolutePath))
+                    installOptionsBuilder.apply {
+                        addAllCommandLineParameter(additionalInstallOptions)
+                        if (installApkTimeout != null) setInstallApkTimeout(installApkTimeout)
+                    }.build()
+                }.build()
+            }
         }
     }
 
     private fun createSingleDeviceExecutor(
         identifier: String,
-        shardConfig: ShardConfig?): ExecutorProto.SingleDeviceExecutor {
+        shardConfig: ShardConfig?
+    ): ExecutorProto.SingleDeviceExecutor {
         return ExecutorProto.SingleDeviceExecutor.newBuilder().apply {
             deviceExecutionBuilder.apply {
                 deviceIdBuilder.apply {
@@ -675,8 +819,9 @@ class UtpConfigFactory {
      * Creates [ExtensionProto.Extension] for the given [UtpDependency] with a config.
      */
     private fun UtpDependency.toExtensionProto(
-            utpDependencies: UtpDependencies,
-            config: Any? = null): ExtensionProto.Extension {
+        utpDependencies: UtpDependencies,
+        config: Any? = null
+    ): ExtensionProto.Extension {
         val builder = ExtensionProto.Extension.newBuilder().apply {
             label = LabelProto.Label.newBuilder().apply {
                 label = name
@@ -697,7 +842,8 @@ class UtpConfigFactory {
     private fun <T : Message.Builder> UtpDependency.toExtensionProto(
         utpDependencies: UtpDependencies,
         newBuilder: () -> T,
-        configFunc: T.() -> Unit): ExtensionProto.Extension {
+        configFunc: T.() -> Unit
+    ): ExtensionProto.Extension {
         val config = newBuilder().apply {
             configFunc(this)
         }.build()

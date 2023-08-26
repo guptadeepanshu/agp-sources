@@ -18,13 +18,14 @@ package com.android.build.gradle.tasks
 
 import com.android.SdkConstants
 import com.android.build.api.artifact.SingleArtifact
+import com.android.build.api.variant.MultiOutputHandler
 import com.android.build.api.variant.impl.BuiltArtifactImpl
 import com.android.build.api.variant.impl.BuiltArtifactsImpl
 import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
 import com.android.build.api.variant.impl.VariantOutputImpl
 import com.android.build.api.variant.impl.dirName
 import com.android.build.gradle.internal.LoggerWrapper
-import com.android.build.gradle.internal.component.ApkCreationConfig
+import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
@@ -35,7 +36,6 @@ import com.android.manifmerger.ManifestMerger2
 import com.android.utils.FileUtils
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
@@ -58,10 +58,7 @@ import java.io.File
 abstract class ProcessMultiApkApplicationManifest: ManifestProcessorTask() {
 
     @get:Nested
-    abstract val variantOutputs: ListProperty<VariantOutputImpl>
-
-    @get:Nested
-    abstract val singleVariantOutput: Property<VariantOutputImpl>
+    abstract val outputsHandler: Property<MultiOutputHandler>
 
     @get:Input
     abstract val applicationId: Property<String>
@@ -92,15 +89,20 @@ abstract class ProcessMultiApkApplicationManifest: ManifestProcessorTask() {
 
         val multiApkManifestOutputs = mutableListOf<BuiltArtifactImpl>()
 
-        for (variantOutput in variantOutputs.get()) {
+        for (variantOutput in outputsHandler.get().getOutputs { true }) {
             val compatibleScreenManifestForSplit =
-                compatibleScreenManifests.getBuiltArtifact(variantOutput)
+                compatibleScreenManifests.getBuiltArtifact(variantOutput.variantOutputConfiguration)
 
             val mergedManifestOutputFile =
                 processVariantOutput(compatibleScreenManifestForSplit?.outputFile, variantOutput)
 
             multiApkManifestOutputs.add(
-                variantOutput.toBuiltArtifact(mergedManifestOutputFile)
+                BuiltArtifactImpl.make(
+                    outputFile = mergedManifestOutputFile.absolutePath,
+                    versionCode = variantOutput.versionCode,
+                    versionName = variantOutput.versionName,
+                    variantOutputConfiguration = variantOutput.variantOutputConfiguration
+                )
             )
         }
         BuiltArtifactsImpl(
@@ -108,15 +110,14 @@ abstract class ProcessMultiApkApplicationManifest: ManifestProcessorTask() {
             applicationId = applicationId.get(),
             variantName = variantName,
             elements = multiApkManifestOutputs.toList()
-        )
-            .save(multiApkManifestOutputDirectory.get())
+        ).save(multiApkManifestOutputDirectory.get())
     }
 
     private fun processVariantOutput(
         compatibleScreensManifestFilePath: String?,
-        variantOutput: VariantOutputImpl
+        variantOutput: VariantOutputImpl.SerializedForm,
     ): File {
-        val dirName = variantOutput.dirName()
+        val dirName = variantOutput.variantOutputConfiguration.dirName()
 
         val mergedManifestOutputFile = File(
             multiApkManifestOutputDirectory.get().asFile,
@@ -127,8 +128,8 @@ abstract class ProcessMultiApkApplicationManifest: ManifestProcessorTask() {
         )
 
         if (compatibleScreensManifestFilePath == null) {
-            if (variantOutput.versionCode.orNull == singleVariantOutput.get().versionCode.orNull
-                && variantOutput.versionName.orNull == singleVariantOutput.get().versionName.orNull) {
+            if (variantOutput.versionCode == outputsHandler.get().mainVersionCode
+                && variantOutput.versionName == outputsHandler.get().mainVersionName) {
 
                 mainMergedManifest.get().asFile.copyTo(mergedManifestOutputFile, overwrite = true)
                 return mergedManifestOutputFile
@@ -145,18 +146,20 @@ abstract class ProcessMultiApkApplicationManifest: ManifestProcessorTask() {
             packageOverride = null,
             namespace = namespace.get(),
             false,
-            variantOutput.versionCode.orNull,
-            variantOutput.versionName.orNull,
+            variantOutput.versionCode,
+            variantOutput.versionName,
             null,
             null,
             null,
             testOnly = false,
+            extractNativeLibs = null,
             mergedManifestOutputFile.absolutePath /* aaptFriendlyManifestOutputFile */,
             null,
             ManifestMerger2.MergeType.APPLICATION,
             mapOf(),
             listOf(),
             listOf(),
+            generatedLocaleConfigAttribute = null,
             null,
             LoggerWrapper.getLogger(ProcessApplicationManifest::class.java),
             checkIfPackageInMainManifest = false
@@ -165,8 +168,8 @@ abstract class ProcessMultiApkApplicationManifest: ManifestProcessorTask() {
     }
 
     class CreationAction(
-        creationConfig: ApkCreationConfig
-    ) : VariantTaskCreationAction<ProcessMultiApkApplicationManifest, ApkCreationConfig>(creationConfig) {
+        creationConfig: ApplicationCreationConfig
+    ) : VariantTaskCreationAction<ProcessMultiApkApplicationManifest, ApplicationCreationConfig>(creationConfig) {
         override val name: String
             get() = computeTaskName("process", "Manifest")
         override val type: Class<ProcessMultiApkApplicationManifest>
@@ -184,18 +187,12 @@ abstract class ProcessMultiApkApplicationManifest: ManifestProcessorTask() {
         override fun configure(task: ProcessMultiApkApplicationManifest) {
             super.configure(task)
 
-            creationConfig
-                .outputs
-                .getEnabledVariantOutputs()
-                .forEach(task.variantOutputs::add)
-            task.variantOutputs.disallowChanges()
-            task.singleVariantOutput.setDisallowChanges(
-                creationConfig.outputs.getMainSplit()
+            task.outputsHandler.setDisallowChanges(
+                MultiOutputHandler.create(creationConfig)
             )
 
             task.compatibleScreensManifest.setDisallowChanges(
-                creationConfig.artifacts.get(
-                    InternalArtifactType.COMPATIBLE_SCREEN_MANIFEST)
+                creationConfig.artifacts.get(InternalArtifactType.COMPATIBLE_SCREEN_MANIFEST)
             )
 
             creationConfig

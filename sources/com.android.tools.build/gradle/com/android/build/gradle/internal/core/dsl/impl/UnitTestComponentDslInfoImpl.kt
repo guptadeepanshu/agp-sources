@@ -39,7 +39,7 @@ internal class UnitTestComponentDslInfoImpl(
     services: VariantServices,
     buildDirectory: DirectoryProperty,
     override val mainVariantDslInfo: TestedVariantDslInfo,
-    extension: InternalTestedExtension<*, *, *, *>
+    extension: InternalTestedExtension<*, *, *, *, *>
 ) : ComponentDslInfoImpl(
     componentIdentity,
     componentType,

@@ -19,6 +19,7 @@ package com.android.build.gradle.internal.plugins;
 import com.android.AndroidProjectTypes;
 import com.android.annotations.NonNull;
 import com.android.build.api.dsl.SdkComponents;
+import com.android.build.api.dsl.TestAndroidResources;
 import com.android.build.api.dsl.TestBuildFeatures;
 import com.android.build.api.dsl.TestBuildType;
 import com.android.build.api.dsl.TestDefaultConfig;
@@ -50,6 +51,7 @@ import com.android.build.gradle.internal.tasks.factory.BootClasspathConfig;
 import com.android.build.gradle.internal.tasks.factory.BootClasspathConfigImpl;
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig;
 import com.android.build.gradle.internal.tasks.factory.TaskManagerConfig;
+import com.android.build.gradle.internal.testing.ManagedDeviceRegistry;
 import com.android.build.gradle.internal.variant.ComponentInfo;
 import com.android.build.gradle.internal.variant.TestVariantFactory;
 import com.android.build.gradle.options.BooleanOption;
@@ -71,6 +73,7 @@ public class TestPlugin
                 TestBuildType,
                 TestDefaultConfig,
                 TestProductFlavor,
+                TestAndroidResources,
                 com.android.build.api.dsl.TestExtension,
                 TestAndroidComponentsExtension,
                 TestVariantBuilder,
@@ -98,24 +101,28 @@ public class TestPlugin
     @NonNull
     @Override
     protected ExtensionData<
-            TestBuildFeatures,
-            TestBuildType,
-            TestDefaultConfig,
-            TestProductFlavor,
-            com.android.build.api.dsl.TestExtension> createExtension(
-            @NonNull DslServices dslServices,
-            @NonNull
-                    DslContainerProvider<DefaultConfig, BuildType, ProductFlavor, SigningConfig>
-                            dslContainers,
-            @NonNull NamedDomainObjectContainer<BaseVariantOutput> buildOutputs,
-            @NonNull ExtraModelInfo extraModelInfo,
-            VersionedSdkLoaderService versionedSdkLoaderService) {
+                    TestBuildFeatures,
+                    TestBuildType,
+                    TestDefaultConfig,
+                    TestProductFlavor,
+                    TestAndroidResources,
+                    com.android.build.api.dsl.TestExtension>
+            createExtension(
+                    @NonNull DslServices dslServices,
+                    @NonNull
+                            DslContainerProvider<
+                                            DefaultConfig, BuildType, ProductFlavor, SigningConfig>
+                                    dslContainers,
+                    @NonNull NamedDomainObjectContainer<BaseVariantOutput> buildOutputs,
+                    @NonNull ExtraModelInfo extraModelInfo,
+                    VersionedSdkLoaderService versionedSdkLoaderService) {
         TestExtensionImpl testExtension =
                 dslServices.newDecoratedInstance(
                         TestExtensionImpl.class, dslServices, dslContainers);
 
         // detects whether we are running the plugin under unit test mode
-        boolean forUnitTesting = project.hasProperty("_agp_internal_test_mode_");
+        boolean forUnitTesting =
+                project.getProviders().gradleProperty("_agp_internal_test_mode_").isPresent();
 
         BootClasspathConfigImpl bootClasspathConfig =
                 new BootClasspathConfigImpl(
@@ -179,6 +186,7 @@ public class TestPlugin
         public TestAndroidComponentsExtensionImplCompat(
                 @NonNull DslServices dslServices,
                 @NonNull SdkComponents sdkComponents,
+                @NonNull ManagedDeviceRegistry deviceRegistry,
                 @NonNull
                         VariantApiOperationsRegistrar<
                                         com.android.build.api.dsl.TestExtension,
@@ -186,7 +194,12 @@ public class TestPlugin
                                         com.android.build.api.variant.TestVariant>
                                 variantApiOperations,
                 @NonNull TestExtension libraryExtension) {
-            super(dslServices, sdkComponents, variantApiOperations, libraryExtension);
+            super(
+                    dslServices,
+                    sdkComponents,
+                    deviceRegistry,
+                    variantApiOperations,
+                    libraryExtension);
         }
     }
 
@@ -226,6 +239,7 @@ public class TestPlugin
                                 TestAndroidComponentsExtensionImplCompat.class,
                                 dslServices,
                                 sdkComponents,
+                                getManagedDeviceRegistry(),
                                 variantApiOperationsRegistrar,
                                 getExtension());
 

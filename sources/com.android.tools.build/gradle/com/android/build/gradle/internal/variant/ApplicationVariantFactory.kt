@@ -158,7 +158,7 @@ class ApplicationVariantFactory(
         return UnitTestBuildFeaturesValuesImpl(
             buildFeatures,
             projectOptions,
-            dataBindingOverride = if (!dataBinding.isEnabledForTests) {
+            dataBindingOverride = if (!dataBinding.enableForTests) {
                 false
             } else {
                 null // means whatever is default.
@@ -180,7 +180,7 @@ class ApplicationVariantFactory(
         return AndroidTestBuildFeatureValuesImpl(
             buildFeatures,
             projectOptions,
-            dataBindingOverride = if (!dataBinding.isEnabledForTests) {
+            dataBindingOverride = if (!dataBinding.enableForTests) {
                 false
             } else {
                 null // means whatever is default.
