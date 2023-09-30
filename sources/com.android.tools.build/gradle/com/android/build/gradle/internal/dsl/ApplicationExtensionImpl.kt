@@ -51,12 +51,4 @@ abstract class ApplicationExtensionImpl @Inject constructor(
 
     override val androidResources: ApplicationAndroidResources =
         dslServices.newDecoratedInstance(ApplicationAndroidResourcesImpl::class.java, dslServices)
-
-    override fun androidResources(action: Action<ApplicationAndroidResources>) {
-        action.execute(androidResources)
-    }
-
-    override fun androidResources(action: ApplicationAndroidResources.() -> Unit) {
-        action.invoke(androidResources)
-    }
 }

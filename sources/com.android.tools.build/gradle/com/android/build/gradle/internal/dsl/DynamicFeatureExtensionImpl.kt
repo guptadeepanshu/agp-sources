@@ -48,4 +48,6 @@ abstract class DynamicFeatureExtensionImpl @Inject constructor(
 
     override val buildFeatures: DynamicFeatureBuildFeatures =
         dslServices.newInstance(DynamicFeatureBuildFeaturesImpl::class.java)
+    override val androidResources: DynamicFeatureAndroidResources
+            = dslServices.newDecoratedInstance(DynamicFeatureAndroidResourcesImpl::class.java, dslServices)
 }

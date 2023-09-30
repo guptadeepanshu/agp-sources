@@ -50,4 +50,7 @@ abstract class TestExtensionImpl @Inject constructor(
         dslServices.newInstance(TestBuildFeaturesImpl::class.java)
 
     override var targetProjectPath: String? = null
+
+    override val androidResources: TestAndroidResources
+            = dslServices.newDecoratedInstance(TestAndroidResourcesImpl::class.java, dslServices)
 }

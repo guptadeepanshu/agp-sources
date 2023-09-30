@@ -30,6 +30,7 @@ import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.buildanalyzer.common.TaskCategory
 import com.google.common.annotations.VisibleForTesting
+import com.google.common.collect.Iterables
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFile
@@ -171,15 +172,14 @@ abstract class GenerateTestConfig @Inject constructor(objectFactory: ObjectFacto
         }
 
         fun computeProperties(projectDir: File): TestConfigProperties {
-            val manifestOutput =
-                BuiltArtifactsLoaderImpl().load(mergedManifest)?.getBuiltArtifact(
-                    VariantOutputConfiguration.OutputType.SINGLE
-                ) ?: error("Unable to find manifest output")
+            val manifestsOutputs = BuiltArtifactsLoaderImpl().load(mergedManifest)
+                    ?: error("Unable to find manifest output")
+            val manifestFile = Iterables.getOnlyElement(manifestsOutputs.elements).outputFile
 
             return TestConfigProperties(
                 resourceApk?.get()?.asFile?.relativeTo(projectDir)?.toString(),
                 mergedAssets.get().asFile.relativeTo(projectDir).toString(),
-                File(manifestOutput.outputFile).relativeTo(projectDir).toString(),
+                File(manifestFile).relativeTo(projectDir).toString(),
                 packageNameOfFinalRClass.get()
             )
         }

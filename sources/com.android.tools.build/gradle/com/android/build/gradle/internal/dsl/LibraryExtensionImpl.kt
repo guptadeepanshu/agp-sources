@@ -69,4 +69,7 @@ abstract class LibraryExtensionImpl @Inject constructor(
             Prefab::class.java,
             PrefabModuleFactory(dslServices)
         )
+
+    override val androidResources: LibraryAndroidResources
+     = dslServices.newDecoratedInstance(LibraryAndroidResourcesImpl::class.java, dslServices)
 }
