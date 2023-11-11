@@ -17,6 +17,7 @@
 package com.android.build.gradle.tasks
 
 import com.android.build.api.artifact.SingleArtifact
+import com.android.build.api.variant.FilterConfiguration
 import com.android.build.api.variant.VariantOutputConfiguration
 import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
 import com.android.build.gradle.internal.component.UnitTestCreationConfig
@@ -152,19 +153,25 @@ abstract class GenerateTestConfig @Inject constructor(objectFactory: ObjectFacto
         @get:Input
         val buildDirectoryPath: String
 
+        @get:Optional
+        @get:Input
+        val targetConfiguration: Collection<FilterConfiguration>?
+
         @get:Input
         val packageNameOfFinalRClass: Provider<String>
 
         init {
             resourceApk = creationConfig.artifacts.get(APK_FOR_LOCAL_TEST)
+
             mergedAssets = creationConfig.mainVariant.artifacts.get(SingleArtifact.ASSETS)
+
+            targetConfiguration = creationConfig.paths.targetFilterConfigurations
             mergedManifest = if (creationConfig.mainVariant.componentType.isApk) {
                 // for application
                 creationConfig.mainVariant.artifacts.get(PACKAGED_MANIFESTS)
             } else {
                 creationConfig.artifacts.get(PACKAGED_MANIFESTS)
             }
-
             packageNameOfFinalRClass = creationConfig.mainVariant.namespace
             buildDirectoryPath =
                     creationConfig.services.projectInfo.buildDirectory.get().asFile.toRelativeString(
@@ -174,7 +181,7 @@ abstract class GenerateTestConfig @Inject constructor(objectFactory: ObjectFacto
         fun computeProperties(projectDir: File): TestConfigProperties {
             val manifestsOutputs = BuiltArtifactsLoaderImpl().load(mergedManifest)
                     ?: error("Unable to find manifest output")
-            val manifestFile = Iterables.getOnlyElement(manifestsOutputs.elements).outputFile
+            val manifestFile = manifestsOutputs.getMainSplit(targetConfiguration).outputFile
 
             return TestConfigProperties(
                 resourceApk?.get()?.asFile?.relativeTo(projectDir)?.toString(),

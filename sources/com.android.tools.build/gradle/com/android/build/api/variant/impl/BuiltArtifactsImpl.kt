@@ -19,6 +19,7 @@ package com.android.build.api.variant.impl
 import com.android.build.api.artifact.Artifact
 import com.android.build.api.variant.BuiltArtifact
 import com.android.build.api.variant.BuiltArtifacts
+import com.android.build.api.variant.FilterConfiguration
 import com.android.build.api.variant.VariantOutputConfiguration
 import com.android.ide.common.build.CommonBuiltArtifacts
 import com.android.ide.common.build.CommonBuiltArtifactsTypeAdapter
@@ -101,6 +102,39 @@ class BuiltArtifactsImpl @JvmOverloads constructor(
             elementType
         )
     }
+    /**
+     * Finds the main split in the current variant context or throws a [RuntimeException] if there
+     * are none.
+     */
+    fun getMainSplit(targetConfigurations: Collection<FilterConfiguration>?): BuiltArtifactImpl =
+        getMainSplitOrNull(targetConfigurations)
+            ?: throw RuntimeException("Cannot determine main split information, file a bug.")
+
+    /**
+     * Finds the main split in the current variant context or null if there are no variant output.
+     */
+    private fun getMainSplitOrNull(targetConfigurations: Collection<FilterConfiguration>?): BuiltArtifactImpl? =
+        elements.find { builtArtifact ->
+            builtArtifact.outputType == VariantOutputConfiguration.OutputType.SINGLE
+        }
+            ?: elements.find {
+                it.outputType == VariantOutputConfiguration.OutputType.UNIVERSAL
+            }
+            ?: targetConfigurations?.let {
+                elements
+                    .asSequence()
+                    .filter { it.outputType == VariantOutputConfiguration.OutputType.ONE_OF_MANY }
+                    .maxWithOrNull { artifact1, artifact2 ->
+                        VariantOutputList.findBetterMatch(
+                            artifact1.variantOutputConfiguration,
+                            artifact2.variantOutputConfiguration,
+                            targetConfigurations
+                        )
+                    }
+            }
+            ?: elements.find {
+                it.outputType == VariantOutputConfiguration.OutputType.ONE_OF_MANY
+            }
 
     override fun save(out: Directory) {
         val outFile = File(out.asFile, METADATA_FILE_NAME)

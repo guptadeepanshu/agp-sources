@@ -189,7 +189,8 @@ class OldVariantApiLegacySupportImpl(
                 versionCodeProperty = versionCodeProperty,
                 versionNameProperty = versionNameProperty,
                 outputFileName = (component as? LibraryCreationConfig)?.aarOutputFileName
-            )
+            ),
+            component.paths.targetFilterConfigurations
         )
     }
 

@@ -167,14 +167,17 @@ abstract class L8DexDesugarLibTask : NonIncrementalTask() {
                 } else {
                     task.dexFiles.from(creationConfig.artifacts.getAll(InternalMultipleArtifactType.DEX))
                 }
-
-                if (creationConfig.global.hasDynamicFeatures) {
+                // For feature dex, it is produced by d8/r8 in feature module and published to
+                // application(not for androidTest component). The reason why we don't use
+                //  consumesFeatureJars is because that API is only for minified build.
+                if (!creationConfig.componentType.isForTesting &&
+                    creationConfig.global.hasDynamicFeatures) {
                     task.dexFiles.from(
-                            creationConfig.variantDependencies.getArtifactFileCollection(
-                                    AndroidArtifacts.ConsumedConfigType.REVERSE_METADATA_VALUES,
-                                    AndroidArtifacts.ArtifactScope.ALL,
-                                    AndroidArtifacts.ArtifactType.FEATURE_PUBLISHED_DEX
-                            )
+                        creationConfig.variantDependencies.getArtifactFileCollection(
+                            AndroidArtifacts.ConsumedConfigType.REVERSE_METADATA_VALUES,
+                            AndroidArtifacts.ArtifactScope.ALL,
+                            AndroidArtifacts.ArtifactType.FEATURE_PUBLISHED_DEX
+                        )
                     )
                 }
             }
