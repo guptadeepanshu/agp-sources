@@ -176,6 +176,8 @@ public class SdkVersionInfo {
             case 32: return "12L";
             case 33:
                 return "13.0";
+            case 34:
+                return "14.0";
                 // If you add more versions here, also update #HIGHEST_KNOWN_STABLE_API
             default:
                 return null;
@@ -269,6 +271,8 @@ public class SdkVersionInfo {
                 return "Sv2";
             case 33:
                 return "Tiramisu";
+            case 34:
+                return "UpsideDownCake";
             // If you add more versions here, also update #getBuildCodes and
             // #HIGHEST_KNOWN_API
 
@@ -323,6 +327,8 @@ public class SdkVersionInfo {
             case 32: return "S_V2";
             case 33:
                 return "TIRAMISU";
+            case 34:
+                return "UPSIDE_DOWN_CAKE";
                 // If you add more versions here, also update #getCodeName and
                 // #HIGHEST_KNOWN_API
         }
