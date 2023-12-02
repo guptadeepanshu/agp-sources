@@ -363,6 +363,8 @@ public class AvdManager {
      */
     public static final String AVD_INI_ANDROID_CODENAME = "image.androidVersion.codename";
 
+    public static final String AVD_INI_ANDROID_EXTENSION_LEVEL = "image.androidVersion.ext";
+
     /**
      * Pattern to match pixel-sized skin "names", e.g. "320x480".
      */
@@ -1573,6 +1575,11 @@ public class AvdManager {
                     }
                     if (version.getCodename() != null) {
                         properties.put(AVD_INI_ANDROID_CODENAME, version.getCodename());
+                    }
+                    if (!version.isBaseExtension() && version.getExtensionLevel() != null) {
+                        properties.put(
+                                AVD_INI_ANDROID_EXTENSION_LEVEL,
+                                Integer.toString(version.getExtensionLevel()));
                     }
                 }
             }

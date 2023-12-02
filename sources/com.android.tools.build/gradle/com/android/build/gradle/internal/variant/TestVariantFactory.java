@@ -44,7 +44,7 @@ import com.android.build.gradle.internal.core.dsl.UnitTestComponentDslInfo;
 import com.android.build.gradle.internal.dependency.VariantDependencies;
 import com.android.build.gradle.internal.dsl.BuildType;
 import com.android.build.gradle.internal.dsl.DefaultConfig;
-import com.android.build.gradle.internal.dsl.ModuleBooleanPropertyKeys;
+import com.android.build.gradle.internal.dsl.ModulePropertyKey;
 import com.android.build.gradle.internal.dsl.ProductFlavor;
 import com.android.build.gradle.internal.dsl.SigningConfig;
 import com.android.build.gradle.internal.plugins.DslContainerProvider;
@@ -259,7 +259,7 @@ public class TestVariantFactory
         // RuntimeClasspath here otherwise.
 
         // TODO, we should do this after we created the variant object, not before.
-        if (!ModuleBooleanPropertyKeys.SELF_INSTRUMENTING.getValueAsBoolean(
+        if (!ModulePropertyKey.BooleanWithDefault.SELF_INSTRUMENTING.getValue(
                 testExtension.getExperimentalProperties())) {
             handler.add(CONFIG_NAME_COMPILE_ONLY, handler.project(projectNotation));
         }

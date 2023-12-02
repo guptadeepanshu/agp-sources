@@ -16,7 +16,6 @@
 
 package com.android.build.gradle.internal.cxx.json
 
-import com.android.build.gradle.internal.core.Abi
 import com.android.build.gradle.internal.cxx.build.CxxRegularBuilder.Companion.BUILD_TARGETS_PLACEHOLDER
 import com.android.build.gradle.internal.cxx.logging.PassThroughPrefixingLoggingEnvironment
 import com.android.build.gradle.internal.cxx.logging.errorln
@@ -35,9 +34,12 @@ import java.io.IOException
  * Lint [NativeBuildConfigValueMini]. Emphasis is on detecting problematic information
  * early because it may be easier to diagnose here.
  */
-fun NativeBuildConfigValueMini.lint(json : File) {
+fun NativeBuildConfigValueMini.lint(
+    json : File,
+    defaultAbis: List<String>,
+    supportedAbis: List<String>) {
     // Set up a logger that will output the name of the offending JSON file.
-    PassThroughPrefixingLoggingEnvironment(file = json).use {
+    PassThroughPrefixingLoggingEnvironment(file = json).use { logger ->
         for (buildFile in buildFiles) {
             if (!buildFile.isFile) {
                 errorln(
@@ -89,23 +91,26 @@ fun NativeBuildConfigValueMini.lint(json : File) {
             if (abiName.isEmpty()) {
                 errorln(LIBRARY_ABI_NAME_DID_NOT_EXIST, "expected ${name}.abi to exist")
             } else {
-                val abi = Abi.getByName(abiName)
-                if (abi == null) {
+                if (!supportedAbis.contains(abiName)) {
                     errorln(
                         LIBRARY_ABI_NAME_IS_INVALID,
-                        "${name}.abi '$abiName' is invalid. Valid values are '${Abi.getDefaultValues().joinToString { it.tag }}'")
+                        "${name}.abi '$abiName' is invalid. Valid values are '${defaultAbis.sorted().joinToString()}'")
                 }
             }
         }
 
         // Libraries for a single JSON should all have the same ABI
         val allAbis = libraries.values
-            .mapNotNull { it.abi }
-            .mapNotNull { Abi.getByName(it) }
-            .mapNotNull { it.tag }
+            .mapNotNull { it.abi.toString() }
+            .filter { supportedAbis.contains(it) }
             .distinct()
         if (allAbis.size > 1) {
-            errorln(LIBRARY_HAD_MULTIPLE_ABIS, "unexpected mismatched library ABIs: ${allAbis.joinToString()}")
+            errorln(LIBRARY_HAD_MULTIPLE_ABIS, "unexpected mismatched library ABIs: ${allAbis.sorted().joinToString()}")
+        }
+
+        if (logger.errors.isNotEmpty()) {
+            // Don't continue the build if lint errors where issued.
+            error("Failed C/C++ configuration.")
         }
     }
 }

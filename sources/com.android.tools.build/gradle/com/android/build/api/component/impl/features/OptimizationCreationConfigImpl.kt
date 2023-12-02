@@ -77,6 +77,15 @@ class OptimizationCreationConfigImpl(
 
     override val ignoreAllLibraryKeepRules: Boolean = dslInfo.ignoreAllLibraryKeepRules
 
+    override val ignoreFromInBaselineProfile: Provider<Set<String>> =
+        internalServices.setPropertyOf(
+            String::class.java,
+            dslInfo.ignoreFromInBaselineProfile
+        )
+
+    override val ignoreFromAllExternalDependenciesInBaselineProfile: Boolean =
+        dslInfo.ignoreFromAllExternalDependenciesInBaselineProfile
+
     override val postProcessingFeatures: PostprocessingFeatures?
         get() = dslInfo.postProcessingOptions.getPostprocessingFeatures()
 
@@ -93,6 +102,7 @@ class OptimizationCreationConfigImpl(
                 minifyCodeBuilder?.isMinifyEnabled ?: false
             }
         }
+
     override val resourcesShrink: Boolean
         get() {
             return when (component) {

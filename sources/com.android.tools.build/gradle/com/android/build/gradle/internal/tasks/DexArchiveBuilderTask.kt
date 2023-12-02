@@ -66,7 +66,7 @@ import kotlin.math.max
 /**
  * Task that converts CLASS files to dex archives, [com.android.builder.dexing.DexArchive].
  * This will process class files, and for each of the input scopes (project, subprojects, external
- * Maven libraries, mixed-scope classses), corresponding dex archive will be produced.
+ * Maven libraries, mixed-scope classes), corresponding dex archive will be produced.
  *
  * This task is incremental, only changed classes will be converted again. If only a single class
  * file is changed, only that file will be dex'ed. Additionally, if a jar changes, only classes in

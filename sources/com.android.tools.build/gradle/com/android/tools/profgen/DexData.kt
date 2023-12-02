@@ -22,7 +22,7 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import kotlin.math.min
 
-class Apk internal constructor(val dexes: List<DexFile>, val name: String = "")
+class Apk(val dexes: List<DexFile>, val name: String = "")
 
 fun Apk(file: File, name: String = ""): Apk {
     return Apk(file.readBytes(), name)

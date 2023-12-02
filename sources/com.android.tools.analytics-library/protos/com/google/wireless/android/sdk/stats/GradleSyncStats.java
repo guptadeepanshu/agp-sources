@@ -655,6 +655,14 @@ private static final long serialVersionUID = 0L;
     TRIGGER_REFACTOR_MIGRATE_TO_NON_TRANSITIVE_R_CLASSES(1204),
     /**
      * <pre>
+     * Migrate BuildConfig setting from gradle.properties to build files
+     * </pre>
+     *
+     * <code>TRIGGER_REFACTOR_MIGRATE_BUILD_CONFIG_FROM_GRADLE_PROPERTIES = 1205;</code>
+     */
+    TRIGGER_REFACTOR_MIGRATE_BUILD_CONFIG_FROM_GRADLE_PROPERTIES(1205),
+    /**
+     * <pre>
      * Last marker for syncs caused by a refactor
      * </pre>
      *
@@ -1572,6 +1580,14 @@ private static final long serialVersionUID = 0L;
     public static final int TRIGGER_REFACTOR_MIGRATE_TO_NON_TRANSITIVE_R_CLASSES_VALUE = 1204;
     /**
      * <pre>
+     * Migrate BuildConfig setting from gradle.properties to build files
+     * </pre>
+     *
+     * <code>TRIGGER_REFACTOR_MIGRATE_BUILD_CONFIG_FROM_GRADLE_PROPERTIES = 1205;</code>
+     */
+    public static final int TRIGGER_REFACTOR_MIGRATE_BUILD_CONFIG_FROM_GRADLE_PROPERTIES_VALUE = 1205;
+    /**
+     * <pre>
      * Last marker for syncs caused by a refactor
      * </pre>
      *
@@ -2147,6 +2163,7 @@ private static final long serialVersionUID = 0L;
         case 1202: return TRIGGER_REFACTOR_MIGRATE_TO_RESOURCE_NAMESPACES;
         case 1203: return TRIGGER_REFACTOR_MODULE_RENAMED;
         case 1204: return TRIGGER_REFACTOR_MIGRATE_TO_NON_TRANSITIVE_R_CLASSES;
+        case 1205: return TRIGGER_REFACTOR_MIGRATE_BUILD_CONFIG_FROM_GRADLE_PROPERTIES;
         case 1299: return TRIGGER_REFACTOR_LAST_MARKER;
         case 1500: return TRIGGER_PSD_FIRST_MARKER;
         case 1501: return TRIGGER_PSD_DEPENDENCY_REMOVED;

@@ -16,6 +16,8 @@
 
 package com.android.ddmlib;
 
+import static com.android.ddmlib.Log.LogLevel.INFO;
+
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.ddmlib.HeapSegment.HeapSegmentElement;
@@ -30,6 +32,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -495,6 +498,14 @@ public class ClientData {
 
         mDebuggerInterest = DebuggerStatus.DEFAULT;
         mThreadMap = new TreeMap<Integer, ThreadInfo>();
+
+        // Log pid to help troubleshoot "Cannot connect to debugger" issued.
+        if (Log.isAtLeast(INFO)) {
+            String msg =
+                    String.format(Locale.US, "Device '%s' ", client.getDevice().getName())
+                            + String.format(Locale.US, "tracking jdwp process (pid=%d)", pid);
+            Log.i("ddms_client", msg);
+        }
     }
 
     /**
@@ -573,6 +584,19 @@ public class ClientData {
          */
         if (!names.mProcessName.isEmpty() && !PRE_INITIALIZED.equals(names.mProcessName)) {
             mClientNames = names;
+
+            // Log when pid gets a name to debug issue likes "Cannot connect to debugger"
+            if (Log.isAtLeast(INFO)) {
+                String msg =
+                        String.format(Locale.US, "Device '%s' ", mClient.getDevice().getName())
+                                + String.format(
+                                        Locale.US,
+                                        "jdwp process '%d' is now known as pkg='%s' (proc='%s')",
+                                        getPid(),
+                                        names.mPackageName,
+                                        names.mProcessName);
+                Log.i("ddms_client", msg);
+            }
         }
     }
 

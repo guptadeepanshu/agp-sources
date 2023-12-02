@@ -37,6 +37,7 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactTyp
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType
 import com.android.build.gradle.internal.publishing.PublishedConfigSpec
+import com.android.build.gradle.internal.publishing.getAttributes
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.ProjectOptions
@@ -67,6 +68,7 @@ import org.gradle.api.attributes.Usage
 import org.gradle.api.attributes.java.TargetJvmEnvironment
 import org.gradle.api.file.FileCollection
 import org.gradle.api.specs.Spec
+import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import java.io.File
 import java.util.concurrent.Callable
 import java.util.function.Predicate
@@ -160,7 +162,9 @@ class VariantDependencies internal constructor(
             val objects = project.objects
 
             view.attributes.apply {
-                attribute(BuildTypeAttr.ATTRIBUTE, buildType)
+                buildType?.let {
+                    attribute(BuildTypeAttr.ATTRIBUTE, buildType)
+                }
                 flavorMap.entries.forEach {
                     attribute(it.key, it.value)
                 }
@@ -317,6 +321,9 @@ class VariantDependencies internal constructor(
         val attributesAction =
             Action { container: AttributeContainer ->
                 container.attribute(AndroidArtifacts.ARTIFACT_TYPE, artifactType.type)
+                artifactType.getAttributes { type, name ->
+                    project.objects.named(type, name)
+                }.addAttributesToContainer(container)
                 attributes?.addAttributesToContainer(container)
             }
         val filter = getComponentFilter(scope)
@@ -344,18 +351,43 @@ class VariantDependencies internal constructor(
         // AarProducerTask produces an aar, then the returned FileCollection contains only jars but
         // still has AarProducerTask as a dependency.
         val dependencies = Callable {
-                runtimeClasspath
-                    .allDependencies
-                    .filterIsInstance<SelfResolvingDependency>()
-                    .filter { it !is ProjectDependency }
-            }
+            runtimeClasspath
+                .allDependencies
+                .filterIsInstance<SelfResolvingDependency>()
+                .filter { it !is ProjectDependency }
+        }
 
         // Create a file collection builtBy the dependencies.  The files are resolved later.
-        return services.fileCollection(Callable {
-            dependencies.call()
-                .flatMap { it.resolve() }
-                .filter { filePredicate.test(it) }
-        }).builtBy(dependencies)
+        return if (componentType.isDynamicFeature) {
+            val excludedDirectories = computeArtifactCollection(
+                ConsumedConfigType.PROVIDED_CLASSPATH,
+                ArtifactScope.PROJECT,
+                AndroidArtifacts.ArtifactType.PACKAGED_DEPENDENCIES,
+                null
+            ).artifactFiles
+
+            services.fileCollection(
+                Callable {
+                    excludedDirectories.elements.map { excludedDirectoriesSet ->
+                        val excludedDirectoriesContent = excludedDirectoriesSet.asSequence()
+                            .filter { it.asFile.isFile }
+                            .flatMapTo(HashSet()) { it.asFile.readLines(Charsets.UTF_8).asSequence() }
+
+                        dependencies.call()
+                            .flatMap { it.resolve() }
+                            .filter {
+                                filePredicate.test(it) &&
+                                        !excludedDirectoriesContent.contains(it.absolutePath)
+                            }
+                    }
+                }).builtBy(dependencies).builtBy(excludedDirectories.buildDependencies)
+        } else {
+            services.fileCollection(Callable {
+                dependencies.call()
+                    .flatMap { it.resolve() }
+                    .filter { filePredicate.test(it) }
+            }).builtBy(dependencies)
+        }
     }
 
     companion object {
@@ -390,22 +422,42 @@ class VariantDependencies internal constructor(
             runtimeClasspath: Configuration,
             apiElements: Configuration?,
             runtimeElements: Configuration?,
+            sourcesElements: Configuration?,
             apiPublication: Configuration?,
             runtimePublication: Configuration?
         ): VariantDependencies {
+            val incomingConfigurations = listOf(compileClasspath, runtimeClasspath)
+            val outgoingConfigurations = listOfNotNull(
+                apiElements, runtimeElements, sourcesElements, apiPublication, runtimePublication
+            )
+            val publicationConfigurations = listOfNotNull(
+                apiPublication, runtimePublication
+            )
+
+            // This is set to be able to consume artifacts published with the library plugin.
+            // For the artifacts of the new android multiplatform plugin, kotlin plugin has a compatibility rules that
+            // equates `androidJvm` with `jvm`, together with the `TargetJvmEnvironment` we are able to select the
+            // android variant.
+            incomingConfigurations.forEach {
+                it.attributes.attribute(
+                   KotlinPlatformType.attribute,
+                   KotlinPlatformType.androidJvm
+                )
+
+                it.attributes.attribute(
+                    Category.CATEGORY_ATTRIBUTE,
+                    project.objects.named(Category::class.java, Category.LIBRARY)
+                )
+            }
 
             project.objects.named(
                 TargetJvmEnvironment::class.java,
                 TargetJvmEnvironment.ANDROID
             ).let { androidTarget ->
-                listOfNotNull(
-                    compileClasspath,
-                    runtimeClasspath,
-                    apiElements,
-                    runtimeElements,
-                    apiPublication,
-                    runtimePublication
-                ).forEach {
+                // TODO(b/289214845): Figure out with JB which attribute to add to disambiguate
+                //  android from jvm for publication as the kotlin plugin doesn't publish with
+                //  target jvm environment attribute.
+                (incomingConfigurations + outgoingConfigurations).forEach {
                     it.attributes.attribute(
                         TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE,
                         androidTarget
@@ -417,7 +469,8 @@ class VariantDependencies internal constructor(
                 AgpVersionAttr::class.java,
                 Version.ANDROID_GRADLE_PLUGIN_VERSION
             ).let { agpVersion ->
-                listOfNotNull(compileClasspath, runtimeClasspath, apiElements, runtimeElements).forEach {
+                // Add the agp version attribute to all configurations but the publication
+                (incomingConfigurations + outgoingConfigurations - publicationConfigurations.toSet()).forEach {
                     it.attributes.attribute(AgpVersionAttr.ATTRIBUTE, agpVersion)
                 }
             }

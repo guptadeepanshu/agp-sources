@@ -21,8 +21,10 @@ import static com.android.ddmlib.internal.Debugger.ConnectionState.ST_NOT_CONNEC
 import static com.android.ddmlib.internal.Debugger.ConnectionState.ST_READY;
 
 import com.android.annotations.NonNull;
+import com.android.ddmlib.AndroidDebugBridge;
 import com.android.ddmlib.ClientData;
 import com.android.ddmlib.ClientData.DebuggerStatus;
+import com.android.ddmlib.DDMLibJdwpTracer;
 import com.android.ddmlib.JdwpHandshake;
 import com.android.ddmlib.Log;
 import com.android.ddmlib.internal.jdwp.chunkhandler.JdwpPacket;
@@ -73,6 +75,10 @@ public class Debugger extends JdwpPipe {
     /* this goes up and down; synchronize methods that access the field */
     private SocketChannel mChannel;
 
+    // JDWP events are forwarded to this tracer. In the default DDMLib configuration this is a
+    // no-op.
+    private final DDMLibJdwpTracer jdwpTracer;
+
     /**
      * Create a new Debugger object, configured to listen for connections on a specific port.
      */
@@ -99,6 +105,8 @@ public class Debugger extends JdwpPipe {
         mReadBuffer = ByteBuffer.allocate(INITIAL_BUF_SIZE);
         mPreDataBuffer = ByteBuffer.allocate(PRE_DATA_BUF_SIZE);
         mConnState = ST_NOT_CONNECTED;
+
+        jdwpTracer = AndroidDebugBridge.newJdwpTracer();
 
         Log.d("ddms", "Created: " + this.toString());
     }
@@ -229,6 +237,9 @@ public class Debugger extends JdwpPipe {
             }
             mListenChannel = null;
             closeData();
+
+            jdwpTracer.setName("debugger." + mClient.getClientData().getPackageName());
+            jdwpTracer.close();
         } catch (IOException ioe) {
             Log.w("ddms", "Failed to close listener " + this);
         }
@@ -375,7 +386,12 @@ public class Debugger extends JdwpPipe {
             if (mReadBuffer.position() != 0) {
                 Log.v("ddms", "Checking " + mReadBuffer.position() + " bytes");
             }
-            return JdwpPacket.findPacket(mReadBuffer);
+            JdwpPacket packet = JdwpPacket.findPacket(mReadBuffer);
+            if (packet != null) {
+                jdwpTracer.onUpstreamPacket(
+                        ByteBuffer.wrap(packet.getPayload().array(), 0, packet.getLength()));
+            }
+            return packet;
         } else {
             Log.e("ddms", "Receiving data in state = " + mConnState);
         }
@@ -426,6 +442,8 @@ public class Debugger extends JdwpPipe {
     @Override
     protected void send(@NonNull JdwpPacket packet) throws IOException {
         packet.log("Debugger: forwarding jdwp packet from Client to Java Debugger");
+        jdwpTracer.onDownstreamPacket(
+                ByteBuffer.wrap(packet.getPayload().array(), 0, packet.getLength()));
         synchronized (this) {
             if (mChannel == null) {
                 /*

@@ -53,6 +53,12 @@ interface LintModelExternalLibrary : LintModelLibrary {
 
   /** The actual resolved Maven coordinates of this library. */
   val resolvedCoordinates: LintModelMavenName
+
+  /**
+   * The directory containing the partial results of lint analysis on the library, or null if no
+   * lint analysis was done.
+   */
+  val partialResultsDir: File?
 }
 
 interface LintModelAndroidLibrary : LintModelExternalLibrary {
@@ -104,7 +110,8 @@ class DefaultLintModelAndroidLibrary(
   override val externalAnnotations: File,
   override val proguardRules: File,
   override val provided: Boolean,
-  override val resolvedCoordinates: LintModelMavenName
+  override val resolvedCoordinates: LintModelMavenName,
+  override val partialResultsDir: File? = null
 ) : DefaultLintModelLibrary(), LintModelAndroidLibrary {
   override fun toString(): String = "AndroidLibrary($resolvedCoordinates)"
 }
@@ -113,7 +120,8 @@ class DefaultLintModelJavaLibrary(
   override val identifier: String,
   override val jarFiles: List<File>,
   override val resolvedCoordinates: LintModelMavenName,
-  override val provided: Boolean
+  override val provided: Boolean,
+  override val partialResultsDir: File? = null
 ) : DefaultLintModelLibrary(), LintModelJavaLibrary {
   override fun toString(): String = "JavaLibrary($resolvedCoordinates)"
 

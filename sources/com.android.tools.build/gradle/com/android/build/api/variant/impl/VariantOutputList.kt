@@ -27,21 +27,21 @@ import org.gradle.api.tasks.Nested
 class VariantOutputList(
     @get:Nested
     val variantOutputs: List<VariantOutputImpl>,
-    private val targetConfigurations: Collection<FilterConfiguration>? = null): List<VariantOutputImpl> by variantOutputs {
+        private val targetConfigurations: Collection<FilterConfiguration>? = null): List<VariantOutputImpl> by variantOutputs {
 
     /**
      * Returns the list of enabled [VariantOutput]
      */
     fun getEnabledVariantOutputs(): List<VariantOutputImpl> =
-        variantOutputs.filter { it.enabled.get() }
+            variantOutputs.filter { it.enabled.get() }
 
     /**
      * Finds the main split in the current variant context or throws a [RuntimeException] if there
      * are none.
      */
     fun getMainSplit(): VariantOutputImpl =
-        getMainSplitOrNull()
-            ?: throw RuntimeException("Cannot determine main split information, file a bug.")
+            getMainSplitOrNull()
+                    ?: throw RuntimeException("Cannot determine main split information, file a bug.")
 
     /**
      * Finds the main split in the current variant context or null if there are no variant output.
@@ -97,7 +97,6 @@ class VariantOutputList(
                 }
             }
             return 0
-       }
-
+        }
     }
 }

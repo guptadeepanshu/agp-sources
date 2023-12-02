@@ -27,6 +27,7 @@ import com.android.build.gradle.internal.cxx.logging.errorln
 import com.android.build.gradle.internal.cxx.logging.infoln
 import com.android.build.gradle.internal.cxx.logging.logStructured
 import com.android.build.gradle.internal.cxx.model.CxxAbiModel
+import com.android.build.gradle.internal.cxx.model.name
 import com.android.build.gradle.internal.cxx.model.ninjaLogFile
 import com.android.build.gradle.internal.cxx.process.ExecuteProcessType.BUILD_PROCESS
 import com.android.build.gradle.internal.cxx.process.createExecuteProcessCommand
@@ -310,7 +311,7 @@ class CxxRegularBuilder(val abi: CxxAbiModel) : CxxBuilder {
                 val targetNames = buildStep
                     .libraries
                     .stream()
-                    .map { library -> library.artifactName + "_" + abi.abi.tag }
+                    .map { library -> library.artifactName + "_" + abi.name }
                     .toList()
                 infoln("Build multiple targets ${targetNames.joinToString(" ")}")
                 "targets"

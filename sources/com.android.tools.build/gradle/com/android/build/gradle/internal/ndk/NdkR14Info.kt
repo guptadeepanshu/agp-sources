@@ -24,9 +24,9 @@ import java.io.File
  */
 open class NdkR14Info(val root: File) : DefaultNdkInfo(root) {
 
-    override fun getToolchainAbi(abi: Abi): Abi {
-        return if (abi == Abi.MIPS) {
-            Abi.MIPS64
+    override fun getToolchainAbi(abi: String): String {
+        return if (abi == Abi.MIPS.tag) {
+            Abi.MIPS64.tag
         } else abi
     }
 

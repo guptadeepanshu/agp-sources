@@ -19,7 +19,6 @@ package com.android.build.gradle.internal.core.dsl.impl
 import com.android.build.api.dsl.ApplicationProductFlavor
 import com.android.build.api.dsl.BuildType
 import com.android.build.api.dsl.CommonExtension
-import com.android.build.api.dsl.Lint
 import com.android.build.api.dsl.Packaging
 import com.android.build.api.dsl.ProductFlavor
 import com.android.build.api.variant.ComponentIdentity
@@ -91,9 +90,6 @@ internal abstract class VariantDslInfoImpl internal constructor(
             initApplicationId()
         )
     }
-
-    override val lintOptions: Lint
-        get() = extension.lint
     override val packaging: Packaging
         get() = extension.packagingOptions
     override val experimentalProperties: Map<String, Any>

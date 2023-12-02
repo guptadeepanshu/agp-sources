@@ -22,6 +22,7 @@ import com.android.build.api.component.impl.features.AssetsCreationConfigImpl
 import com.android.build.api.component.impl.features.DexingCreationConfigImpl
 import com.android.build.api.component.impl.features.ManifestPlaceholdersCreationConfigImpl
 import com.android.build.api.component.impl.features.OptimizationCreationConfigImpl
+import com.android.build.api.dsl.KotlinMultiplatformAndroidCompilation
 import com.android.build.api.instrumentation.AsmClassVisitorFactory
 import com.android.build.api.instrumentation.FramesComputationMode
 import com.android.build.api.instrumentation.InstrumentationParameters
@@ -36,7 +37,6 @@ import com.android.build.api.variant.ResValue
 import com.android.build.api.variant.SigningConfig
 import com.android.build.api.variant.impl.ApkPackagingImpl
 import com.android.build.api.variant.impl.KmpVariantImpl
-import com.android.build.api.variant.impl.KotlinMultiplatformAndroidCompilation
 import com.android.build.api.variant.impl.ResValueKeyImpl
 import com.android.build.api.variant.impl.SigningConfigImpl
 import com.android.build.gradle.internal.component.AndroidTestCreationConfig
@@ -107,9 +107,9 @@ open class KmpAndroidTestImpl @Inject constructor(
     override val targetSdkVersion: AndroidVersion
         get() = targetSdk
     override val targetSdk: AndroidVersion
-        get() = dslInfo.targetSdkVersion ?: minSdk
+        get() = global.androidTestOptions.targetSdkVersion ?: minSdk
     override val targetSdkOverride: AndroidVersion?
-        get() = dslInfo.targetSdkVersion
+        get() = null
     override val testedApplicationId: Provider<String>
         get() = applicationId
     override val instrumentationRunner: Property<String> by lazy {
@@ -128,8 +128,12 @@ open class KmpAndroidTestImpl @Inject constructor(
 
     override val applicationId: Property<String>
         get() = dslInfo.applicationId
-    override val instrumentationRunnerArguments: Map<String, String>
-        get() = dslInfo.instrumentationRunnerArguments
+    override val instrumentationRunnerArguments: MapProperty<String, String> by lazy(LazyThreadSafetyMode.NONE) {
+        internalServices.mapPropertyOf(
+            String::class.java,
+            String::class.java,
+            dslInfo.instrumentationRunnerArguments)
+    }
     override val handleProfiling: Property<Boolean> =
         internalServices.propertyOf(Boolean::class.java, dslInfo.handleProfiling)
     override val functionalTest: Property<Boolean> =

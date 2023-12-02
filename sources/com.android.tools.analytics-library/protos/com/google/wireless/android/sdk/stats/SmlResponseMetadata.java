@@ -16,6 +16,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private SmlResponseMetadata() {
+    serverExperimentIds_ = emptyIntList();
   }
 
   @java.lang.Override
@@ -54,6 +55,27 @@ private static final long serialVersionUID = 0L;
             rpcGlobalId_ = input.readInt64();
             break;
           }
+          case 16: {
+            if (!((mutable_bitField0_ & 0x00000002) != 0)) {
+              serverExperimentIds_ = newIntList();
+              mutable_bitField0_ |= 0x00000002;
+            }
+            serverExperimentIds_.addInt(input.readInt32());
+            break;
+          }
+          case 18: {
+            int length = input.readRawVarint32();
+            int limit = input.pushLimit(length);
+            if (!((mutable_bitField0_ & 0x00000002) != 0) && input.getBytesUntilLimit() > 0) {
+              serverExperimentIds_ = newIntList();
+              mutable_bitField0_ |= 0x00000002;
+            }
+            while (input.getBytesUntilLimit() > 0) {
+              serverExperimentIds_.addInt(input.readInt32());
+            }
+            input.popLimit(limit);
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -69,6 +91,9 @@ private static final long serialVersionUID = 0L;
       throw new com.google.protobuf.InvalidProtocolBufferException(
           e).setUnfinishedMessage(this);
     } finally {
+      if (((mutable_bitField0_ & 0x00000002) != 0)) {
+        serverExperimentIds_.makeImmutable(); // C
+      }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
     }
@@ -114,6 +139,45 @@ private static final long serialVersionUID = 0L;
     return rpcGlobalId_;
   }
 
+  public static final int SERVER_EXPERIMENT_IDS_FIELD_NUMBER = 2;
+  private com.google.protobuf.Internal.IntList serverExperimentIds_;
+  /**
+   * <pre>
+   * AIDA server-side experiment ids.
+   * </pre>
+   *
+   * <code>repeated int32 server_experiment_ids = 2;</code>
+   * @return A list containing the serverExperimentIds.
+   */
+  @java.lang.Override
+  public java.util.List<java.lang.Integer>
+      getServerExperimentIdsList() {
+    return serverExperimentIds_;
+  }
+  /**
+   * <pre>
+   * AIDA server-side experiment ids.
+   * </pre>
+   *
+   * <code>repeated int32 server_experiment_ids = 2;</code>
+   * @return The count of serverExperimentIds.
+   */
+  public int getServerExperimentIdsCount() {
+    return serverExperimentIds_.size();
+  }
+  /**
+   * <pre>
+   * AIDA server-side experiment ids.
+   * </pre>
+   *
+   * <code>repeated int32 server_experiment_ids = 2;</code>
+   * @param index The index of the element to return.
+   * @return The serverExperimentIds at the given index.
+   */
+  public int getServerExperimentIds(int index) {
+    return serverExperimentIds_.getInt(index);
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -131,6 +195,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000001) != 0)) {
       output.writeInt64(1, rpcGlobalId_);
     }
+    for (int i = 0; i < serverExperimentIds_.size(); i++) {
+      output.writeInt32(2, serverExperimentIds_.getInt(i));
+    }
     unknownFields.writeTo(output);
   }
 
@@ -143,6 +210,15 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000001) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt64Size(1, rpcGlobalId_);
+    }
+    {
+      int dataSize = 0;
+      for (int i = 0; i < serverExperimentIds_.size(); i++) {
+        dataSize += com.google.protobuf.CodedOutputStream
+          .computeInt32SizeNoTag(serverExperimentIds_.getInt(i));
+      }
+      size += dataSize;
+      size += 1 * getServerExperimentIdsList().size();
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -164,6 +240,8 @@ private static final long serialVersionUID = 0L;
       if (getRpcGlobalId()
           != other.getRpcGlobalId()) return false;
     }
+    if (!getServerExperimentIdsList()
+        .equals(other.getServerExperimentIdsList())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -179,6 +257,10 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + RPC_GLOBAL_ID_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getRpcGlobalId());
+    }
+    if (getServerExperimentIdsCount() > 0) {
+      hash = (37 * hash) + SERVER_EXPERIMENT_IDS_FIELD_NUMBER;
+      hash = (53 * hash) + getServerExperimentIdsList().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -315,6 +397,8 @@ private static final long serialVersionUID = 0L;
       super.clear();
       rpcGlobalId_ = 0L;
       bitField0_ = (bitField0_ & ~0x00000001);
+      serverExperimentIds_ = emptyIntList();
+      bitField0_ = (bitField0_ & ~0x00000002);
       return this;
     }
 
@@ -347,6 +431,11 @@ private static final long serialVersionUID = 0L;
         result.rpcGlobalId_ = rpcGlobalId_;
         to_bitField0_ |= 0x00000001;
       }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        serverExperimentIds_.makeImmutable();
+        bitField0_ = (bitField0_ & ~0x00000002);
+      }
+      result.serverExperimentIds_ = serverExperimentIds_;
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -398,6 +487,16 @@ private static final long serialVersionUID = 0L;
       if (other == com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance()) return this;
       if (other.hasRpcGlobalId()) {
         setRpcGlobalId(other.getRpcGlobalId());
+      }
+      if (!other.serverExperimentIds_.isEmpty()) {
+        if (serverExperimentIds_.isEmpty()) {
+          serverExperimentIds_ = other.serverExperimentIds_;
+          bitField0_ = (bitField0_ & ~0x00000002);
+        } else {
+          ensureServerExperimentIdsIsMutable();
+          serverExperimentIds_.addAll(other.serverExperimentIds_);
+        }
+        onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -480,6 +579,113 @@ private static final long serialVersionUID = 0L;
     public Builder clearRpcGlobalId() {
       bitField0_ = (bitField0_ & ~0x00000001);
       rpcGlobalId_ = 0L;
+      onChanged();
+      return this;
+    }
+
+    private com.google.protobuf.Internal.IntList serverExperimentIds_ = emptyIntList();
+    private void ensureServerExperimentIdsIsMutable() {
+      if (!((bitField0_ & 0x00000002) != 0)) {
+        serverExperimentIds_ = mutableCopy(serverExperimentIds_);
+        bitField0_ |= 0x00000002;
+       }
+    }
+    /**
+     * <pre>
+     * AIDA server-side experiment ids.
+     * </pre>
+     *
+     * <code>repeated int32 server_experiment_ids = 2;</code>
+     * @return A list containing the serverExperimentIds.
+     */
+    public java.util.List<java.lang.Integer>
+        getServerExperimentIdsList() {
+      return ((bitField0_ & 0x00000002) != 0) ?
+               java.util.Collections.unmodifiableList(serverExperimentIds_) : serverExperimentIds_;
+    }
+    /**
+     * <pre>
+     * AIDA server-side experiment ids.
+     * </pre>
+     *
+     * <code>repeated int32 server_experiment_ids = 2;</code>
+     * @return The count of serverExperimentIds.
+     */
+    public int getServerExperimentIdsCount() {
+      return serverExperimentIds_.size();
+    }
+    /**
+     * <pre>
+     * AIDA server-side experiment ids.
+     * </pre>
+     *
+     * <code>repeated int32 server_experiment_ids = 2;</code>
+     * @param index The index of the element to return.
+     * @return The serverExperimentIds at the given index.
+     */
+    public int getServerExperimentIds(int index) {
+      return serverExperimentIds_.getInt(index);
+    }
+    /**
+     * <pre>
+     * AIDA server-side experiment ids.
+     * </pre>
+     *
+     * <code>repeated int32 server_experiment_ids = 2;</code>
+     * @param index The index to set the value at.
+     * @param value The serverExperimentIds to set.
+     * @return This builder for chaining.
+     */
+    public Builder setServerExperimentIds(
+        int index, int value) {
+      ensureServerExperimentIdsIsMutable();
+      serverExperimentIds_.setInt(index, value);
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * AIDA server-side experiment ids.
+     * </pre>
+     *
+     * <code>repeated int32 server_experiment_ids = 2;</code>
+     * @param value The serverExperimentIds to add.
+     * @return This builder for chaining.
+     */
+    public Builder addServerExperimentIds(int value) {
+      ensureServerExperimentIdsIsMutable();
+      serverExperimentIds_.addInt(value);
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * AIDA server-side experiment ids.
+     * </pre>
+     *
+     * <code>repeated int32 server_experiment_ids = 2;</code>
+     * @param values The serverExperimentIds to add.
+     * @return This builder for chaining.
+     */
+    public Builder addAllServerExperimentIds(
+        java.lang.Iterable<? extends java.lang.Integer> values) {
+      ensureServerExperimentIdsIsMutable();
+      com.google.protobuf.AbstractMessageLite.Builder.addAll(
+          values, serverExperimentIds_);
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * AIDA server-side experiment ids.
+     * </pre>
+     *
+     * <code>repeated int32 server_experiment_ids = 2;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearServerExperimentIds() {
+      serverExperimentIds_ = emptyIntList();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }

@@ -26,6 +26,7 @@ private static final long serialVersionUID = 0L;
     imageKind_ = 0;
     files_ = java.util.Collections.emptyList();
     properties_ = java.util.Collections.emptyList();
+    deviceName_ = 0;
   }
 
   @java.lang.Override
@@ -152,6 +153,18 @@ private static final long serialVersionUID = 0L;
               }
             }
             input.popLimit(oldLimit);
+            break;
+          }
+          case 80: {
+            int rawValue = input.readEnum();
+              @SuppressWarnings("deprecation")
+            com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorDeviceName value = com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorDeviceName.valueOf(rawValue);
+            if (value == null) {
+              unknownFields.mergeVarintField(10, rawValue);
+            } else {
+              bitField0_ |= 0x00000080;
+              deviceName_ = rawValue;
+            }
             break;
           }
           default: {
@@ -511,6 +524,417 @@ private static final long serialVersionUID = 0L;
     }
 
     // @@protoc_insertion_point(enum_scope:android_studio.EmulatorAvdInfo.EmulatorAvdProperty)
+  }
+
+  /**
+   * Protobuf enum {@code android_studio.EmulatorAvdInfo.EmulatorDeviceName}
+   */
+  public enum EmulatorDeviceName
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>UNKNOWN_EMULATOR_DEVICE_NAME = 0;</code>
+     */
+    UNKNOWN_EMULATOR_DEVICE_NAME(0),
+    /**
+     * <code>RESIZABLE = 1;</code>
+     */
+    RESIZABLE(1),
+    /**
+     * <code>FOLDABLE_7_6_IN = 2;</code>
+     */
+    FOLDABLE_7_6_IN(2),
+    /**
+     * <code>SMALL_PHONE = 3;</code>
+     */
+    SMALL_PHONE(3),
+    /**
+     * <code>MEDIUM_PHONE = 4;</code>
+     */
+    MEDIUM_PHONE(4),
+    /**
+     * <code>MEDIUM_TABLET = 5;</code>
+     */
+    MEDIUM_TABLET(5),
+    /**
+     * <code>PIXEL_C = 6;</code>
+     */
+    PIXEL_C(6),
+    /**
+     * <code>PIXEL = 7;</code>
+     */
+    PIXEL(7),
+    /**
+     * <code>PIXEL_XL = 8;</code>
+     */
+    PIXEL_XL(8),
+    /**
+     * <code>PIXEL_2 = 9;</code>
+     */
+    PIXEL_2(9),
+    /**
+     * <code>PIXEL_2_XL = 10;</code>
+     */
+    PIXEL_2_XL(10),
+    /**
+     * <code>PIXEL_3 = 11;</code>
+     */
+    PIXEL_3(11),
+    /**
+     * <code>PIXEL_3_XL = 12;</code>
+     */
+    PIXEL_3_XL(12),
+    /**
+     * <code>PIXEL_3A = 13;</code>
+     */
+    PIXEL_3A(13),
+    /**
+     * <code>PIXEL_3A_XL = 14;</code>
+     */
+    PIXEL_3A_XL(14),
+    /**
+     * <code>PIXEL_4 = 15;</code>
+     */
+    PIXEL_4(15),
+    /**
+     * <code>PIXEL_4_XL = 16;</code>
+     */
+    PIXEL_4_XL(16),
+    /**
+     * <code>PIXEL_4A = 17;</code>
+     */
+    PIXEL_4A(17),
+    /**
+     * <code>PIXEL_5 = 18;</code>
+     */
+    PIXEL_5(18),
+    /**
+     * <code>PIXEL_6 = 19;</code>
+     */
+    PIXEL_6(19),
+    /**
+     * <code>PIXEL_6_PRO = 20;</code>
+     */
+    PIXEL_6_PRO(20),
+    /**
+     * <code>PIXEL_6A = 21;</code>
+     */
+    PIXEL_6A(21),
+    /**
+     * <code>PIXEL_7_PRO = 22;</code>
+     */
+    PIXEL_7_PRO(22),
+    /**
+     * <code>PIXEL_7 = 23;</code>
+     */
+    PIXEL_7(23),
+    /**
+     * <code>PIXEL_FOLD = 24;</code>
+     */
+    PIXEL_FOLD(24),
+    /**
+     * <code>PIXEL_TABLET = 25;</code>
+     */
+    PIXEL_TABLET(25),
+    /**
+     * <code>AUTOMOTIVE_1024P_LANDSCAPE = 26;</code>
+     */
+    AUTOMOTIVE_1024P_LANDSCAPE(26),
+    /**
+     * <code>DESKTOP_SMALL = 27;</code>
+     */
+    DESKTOP_SMALL(27),
+    /**
+     * <code>DESKTOP_MEDIUM = 28;</code>
+     */
+    DESKTOP_MEDIUM(28),
+    /**
+     * <code>DESKTOP_LARGE = 29;</code>
+     */
+    DESKTOP_LARGE(29),
+    /**
+     * <code>TV_4K = 30;</code>
+     */
+    TV_4K(30),
+    /**
+     * <code>TV_1080P = 31;</code>
+     */
+    TV_1080P(31),
+    /**
+     * <code>TV_720P = 32;</code>
+     */
+    TV_720P(32),
+    /**
+     * <code>WEAROS_LARGE_ROUND = 33;</code>
+     */
+    WEAROS_LARGE_ROUND(33),
+    /**
+     * <code>WEAROS_SMALL_ROUND = 34;</code>
+     */
+    WEAROS_SMALL_ROUND(34),
+    /**
+     * <code>WEAROS_RECT = 35;</code>
+     */
+    WEAROS_RECT(35),
+    /**
+     * <code>WEAROS_SQUARE = 36;</code>
+     */
+    WEAROS_SQUARE(36),
+    ;
+
+    /**
+     * <code>UNKNOWN_EMULATOR_DEVICE_NAME = 0;</code>
+     */
+    public static final int UNKNOWN_EMULATOR_DEVICE_NAME_VALUE = 0;
+    /**
+     * <code>RESIZABLE = 1;</code>
+     */
+    public static final int RESIZABLE_VALUE = 1;
+    /**
+     * <code>FOLDABLE_7_6_IN = 2;</code>
+     */
+    public static final int FOLDABLE_7_6_IN_VALUE = 2;
+    /**
+     * <code>SMALL_PHONE = 3;</code>
+     */
+    public static final int SMALL_PHONE_VALUE = 3;
+    /**
+     * <code>MEDIUM_PHONE = 4;</code>
+     */
+    public static final int MEDIUM_PHONE_VALUE = 4;
+    /**
+     * <code>MEDIUM_TABLET = 5;</code>
+     */
+    public static final int MEDIUM_TABLET_VALUE = 5;
+    /**
+     * <code>PIXEL_C = 6;</code>
+     */
+    public static final int PIXEL_C_VALUE = 6;
+    /**
+     * <code>PIXEL = 7;</code>
+     */
+    public static final int PIXEL_VALUE = 7;
+    /**
+     * <code>PIXEL_XL = 8;</code>
+     */
+    public static final int PIXEL_XL_VALUE = 8;
+    /**
+     * <code>PIXEL_2 = 9;</code>
+     */
+    public static final int PIXEL_2_VALUE = 9;
+    /**
+     * <code>PIXEL_2_XL = 10;</code>
+     */
+    public static final int PIXEL_2_XL_VALUE = 10;
+    /**
+     * <code>PIXEL_3 = 11;</code>
+     */
+    public static final int PIXEL_3_VALUE = 11;
+    /**
+     * <code>PIXEL_3_XL = 12;</code>
+     */
+    public static final int PIXEL_3_XL_VALUE = 12;
+    /**
+     * <code>PIXEL_3A = 13;</code>
+     */
+    public static final int PIXEL_3A_VALUE = 13;
+    /**
+     * <code>PIXEL_3A_XL = 14;</code>
+     */
+    public static final int PIXEL_3A_XL_VALUE = 14;
+    /**
+     * <code>PIXEL_4 = 15;</code>
+     */
+    public static final int PIXEL_4_VALUE = 15;
+    /**
+     * <code>PIXEL_4_XL = 16;</code>
+     */
+    public static final int PIXEL_4_XL_VALUE = 16;
+    /**
+     * <code>PIXEL_4A = 17;</code>
+     */
+    public static final int PIXEL_4A_VALUE = 17;
+    /**
+     * <code>PIXEL_5 = 18;</code>
+     */
+    public static final int PIXEL_5_VALUE = 18;
+    /**
+     * <code>PIXEL_6 = 19;</code>
+     */
+    public static final int PIXEL_6_VALUE = 19;
+    /**
+     * <code>PIXEL_6_PRO = 20;</code>
+     */
+    public static final int PIXEL_6_PRO_VALUE = 20;
+    /**
+     * <code>PIXEL_6A = 21;</code>
+     */
+    public static final int PIXEL_6A_VALUE = 21;
+    /**
+     * <code>PIXEL_7_PRO = 22;</code>
+     */
+    public static final int PIXEL_7_PRO_VALUE = 22;
+    /**
+     * <code>PIXEL_7 = 23;</code>
+     */
+    public static final int PIXEL_7_VALUE = 23;
+    /**
+     * <code>PIXEL_FOLD = 24;</code>
+     */
+    public static final int PIXEL_FOLD_VALUE = 24;
+    /**
+     * <code>PIXEL_TABLET = 25;</code>
+     */
+    public static final int PIXEL_TABLET_VALUE = 25;
+    /**
+     * <code>AUTOMOTIVE_1024P_LANDSCAPE = 26;</code>
+     */
+    public static final int AUTOMOTIVE_1024P_LANDSCAPE_VALUE = 26;
+    /**
+     * <code>DESKTOP_SMALL = 27;</code>
+     */
+    public static final int DESKTOP_SMALL_VALUE = 27;
+    /**
+     * <code>DESKTOP_MEDIUM = 28;</code>
+     */
+    public static final int DESKTOP_MEDIUM_VALUE = 28;
+    /**
+     * <code>DESKTOP_LARGE = 29;</code>
+     */
+    public static final int DESKTOP_LARGE_VALUE = 29;
+    /**
+     * <code>TV_4K = 30;</code>
+     */
+    public static final int TV_4K_VALUE = 30;
+    /**
+     * <code>TV_1080P = 31;</code>
+     */
+    public static final int TV_1080P_VALUE = 31;
+    /**
+     * <code>TV_720P = 32;</code>
+     */
+    public static final int TV_720P_VALUE = 32;
+    /**
+     * <code>WEAROS_LARGE_ROUND = 33;</code>
+     */
+    public static final int WEAROS_LARGE_ROUND_VALUE = 33;
+    /**
+     * <code>WEAROS_SMALL_ROUND = 34;</code>
+     */
+    public static final int WEAROS_SMALL_ROUND_VALUE = 34;
+    /**
+     * <code>WEAROS_RECT = 35;</code>
+     */
+    public static final int WEAROS_RECT_VALUE = 35;
+    /**
+     * <code>WEAROS_SQUARE = 36;</code>
+     */
+    public static final int WEAROS_SQUARE_VALUE = 36;
+
+
+    public final int getNumber() {
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static EmulatorDeviceName valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static EmulatorDeviceName forNumber(int value) {
+      switch (value) {
+        case 0: return UNKNOWN_EMULATOR_DEVICE_NAME;
+        case 1: return RESIZABLE;
+        case 2: return FOLDABLE_7_6_IN;
+        case 3: return SMALL_PHONE;
+        case 4: return MEDIUM_PHONE;
+        case 5: return MEDIUM_TABLET;
+        case 6: return PIXEL_C;
+        case 7: return PIXEL;
+        case 8: return PIXEL_XL;
+        case 9: return PIXEL_2;
+        case 10: return PIXEL_2_XL;
+        case 11: return PIXEL_3;
+        case 12: return PIXEL_3_XL;
+        case 13: return PIXEL_3A;
+        case 14: return PIXEL_3A_XL;
+        case 15: return PIXEL_4;
+        case 16: return PIXEL_4_XL;
+        case 17: return PIXEL_4A;
+        case 18: return PIXEL_5;
+        case 19: return PIXEL_6;
+        case 20: return PIXEL_6_PRO;
+        case 21: return PIXEL_6A;
+        case 22: return PIXEL_7_PRO;
+        case 23: return PIXEL_7;
+        case 24: return PIXEL_FOLD;
+        case 25: return PIXEL_TABLET;
+        case 26: return AUTOMOTIVE_1024P_LANDSCAPE;
+        case 27: return DESKTOP_SMALL;
+        case 28: return DESKTOP_MEDIUM;
+        case 29: return DESKTOP_LARGE;
+        case 30: return TV_4K;
+        case 31: return TV_1080P;
+        case 32: return TV_720P;
+        case 33: return WEAROS_LARGE_ROUND;
+        case 34: return WEAROS_SMALL_ROUND;
+        case 35: return WEAROS_RECT;
+        case 36: return WEAROS_SQUARE;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<EmulatorDeviceName>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        EmulatorDeviceName> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<EmulatorDeviceName>() {
+            public EmulatorDeviceName findValueByNumber(int number) {
+              return EmulatorDeviceName.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.EmulatorAvdInfo.getDescriptor().getEnumTypes().get(2);
+    }
+
+    private static final EmulatorDeviceName[] VALUES = values();
+
+    public static EmulatorDeviceName valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private EmulatorDeviceName(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:android_studio.EmulatorAvdInfo.EmulatorDeviceName)
   }
 
   private int bitField0_;
@@ -894,6 +1318,33 @@ private static final long serialVersionUID = 0L;
     return properties_converter_.convert(properties_.get(index));
   }
 
+  public static final int DEVICE_NAME_FIELD_NUMBER = 10;
+  private int deviceName_;
+  /**
+   * <pre>
+   * Device name of the AVD (for example, PIXEL_2)
+   * </pre>
+   *
+   * <code>optional .android_studio.EmulatorAvdInfo.EmulatorDeviceName device_name = 10;</code>
+   * @return Whether the deviceName field is set.
+   */
+  @java.lang.Override public boolean hasDeviceName() {
+    return ((bitField0_ & 0x00000080) != 0);
+  }
+  /**
+   * <pre>
+   * Device name of the AVD (for example, PIXEL_2)
+   * </pre>
+   *
+   * <code>optional .android_studio.EmulatorAvdInfo.EmulatorDeviceName device_name = 10;</code>
+   * @return The deviceName.
+   */
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorDeviceName getDeviceName() {
+    @SuppressWarnings("deprecation")
+    com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorDeviceName result = com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorDeviceName.valueOf(deviceName_);
+    return result == null ? com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorDeviceName.UNKNOWN_EMULATOR_DEVICE_NAME : result;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -934,6 +1385,9 @@ private static final long serialVersionUID = 0L;
     }
     for (int i = 0; i < properties_.size(); i++) {
       output.writeEnum(9, properties_.get(i));
+    }
+    if (((bitField0_ & 0x00000080) != 0)) {
+      output.writeEnum(10, deviceName_);
     }
     unknownFields.writeTo(output);
   }
@@ -982,6 +1436,10 @@ private static final long serialVersionUID = 0L;
       }
       size += dataSize;
       size += 1 * properties_.size();
+    }
+    if (((bitField0_ & 0x00000080) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(10, deviceName_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -1034,6 +1492,10 @@ private static final long serialVersionUID = 0L;
     if (!getFilesList()
         .equals(other.getFilesList())) return false;
     if (!properties_.equals(other.properties_)) return false;
+    if (hasDeviceName() != other.hasDeviceName()) return false;
+    if (hasDeviceName()) {
+      if (deviceName_ != other.deviceName_) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -1083,6 +1545,10 @@ private static final long serialVersionUID = 0L;
     if (getPropertiesCount() > 0) {
       hash = (37 * hash) + PROPERTIES_FIELD_NUMBER;
       hash = (53 * hash) + properties_.hashCode();
+    }
+    if (hasDeviceName()) {
+      hash = (37 * hash) + DEVICE_NAME_FIELD_NUMBER;
+      hash = (53 * hash) + deviceName_;
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -1244,6 +1710,8 @@ private static final long serialVersionUID = 0L;
       }
       properties_ = java.util.Collections.emptyList();
       bitField0_ = (bitField0_ & ~0x00000100);
+      deviceName_ = 0;
+      bitField0_ = (bitField0_ & ~0x00000200);
       return this;
     }
 
@@ -1314,6 +1782,10 @@ private static final long serialVersionUID = 0L;
         bitField0_ = (bitField0_ & ~0x00000100);
       }
       result.properties_ = properties_;
+      if (((from_bitField0_ & 0x00000200) != 0)) {
+        to_bitField0_ |= 0x00000080;
+      }
+      result.deviceName_ = deviceName_;
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -1423,6 +1895,9 @@ private static final long serialVersionUID = 0L;
           properties_.addAll(other.properties_);
         }
         onChanged();
+      }
+      if (other.hasDeviceName()) {
+        setDeviceName(other.getDeviceName());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -2412,6 +2887,65 @@ private static final long serialVersionUID = 0L;
     public Builder clearProperties() {
       properties_ = java.util.Collections.emptyList();
       bitField0_ = (bitField0_ & ~0x00000100);
+      onChanged();
+      return this;
+    }
+
+    private int deviceName_ = 0;
+    /**
+     * <pre>
+     * Device name of the AVD (for example, PIXEL_2)
+     * </pre>
+     *
+     * <code>optional .android_studio.EmulatorAvdInfo.EmulatorDeviceName device_name = 10;</code>
+     * @return Whether the deviceName field is set.
+     */
+    @java.lang.Override public boolean hasDeviceName() {
+      return ((bitField0_ & 0x00000200) != 0);
+    }
+    /**
+     * <pre>
+     * Device name of the AVD (for example, PIXEL_2)
+     * </pre>
+     *
+     * <code>optional .android_studio.EmulatorAvdInfo.EmulatorDeviceName device_name = 10;</code>
+     * @return The deviceName.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorDeviceName getDeviceName() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorDeviceName result = com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorDeviceName.valueOf(deviceName_);
+      return result == null ? com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorDeviceName.UNKNOWN_EMULATOR_DEVICE_NAME : result;
+    }
+    /**
+     * <pre>
+     * Device name of the AVD (for example, PIXEL_2)
+     * </pre>
+     *
+     * <code>optional .android_studio.EmulatorAvdInfo.EmulatorDeviceName device_name = 10;</code>
+     * @param value The deviceName to set.
+     * @return This builder for chaining.
+     */
+    public Builder setDeviceName(com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorDeviceName value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00000200;
+      deviceName_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Device name of the AVD (for example, PIXEL_2)
+     * </pre>
+     *
+     * <code>optional .android_studio.EmulatorAvdInfo.EmulatorDeviceName device_name = 10;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearDeviceName() {
+      bitField0_ = (bitField0_ & ~0x00000200);
+      deviceName_ = 0;
       onChanged();
       return this;
     }

@@ -15,6 +15,8 @@
  */
 package com.android.builder.model.v2.models
 
+import com.android.builder.model.v2.ide.ArtifactDependencies
+
 /**
  * The parameter for ModelBuilder to specify what to sync.
  *
@@ -29,14 +31,65 @@ interface ModelBuilderParameter {
     var variantName: String
 
     /**
-     * Don't build the runtime classpath. If true [ArtifactDependencies.runtimeDependencies] will
-     * be null. If false the resulting [VariantDependencies] will contain [ArtifactDependencies]
+     * Don't build the runtime classpath for the main artifact. If true
+     * [ArtifactDependencies.runtimeDependencies] will be null for
+     * [VariantDependencies.mainArtifact]
+     *
+     * If false the resulting [VariantDependencies] will contain [ArtifactDependencies]
      * with the [ArtifactDependencies.runtimeDependencies] populated.
      *
      * Note: this only ensures that the model builder doesn't request the runtime classpath
      * it does not ensure that it isn't resolved indirectly or through other models.
      * e.g. "android.dependency.useConstraints" may cause building the compile classpath to also
-     * resolve the runtime classpath.
+     * partially resolve the runtime classpath.
      */
     var dontBuildRuntimeClasspath: Boolean
+
+    /**
+     * Don't build the runtime classpath for the unit test artifact. If true
+     * [ArtifactDependencies.runtimeDependencies] will be null for
+     * [VariantDependencies.unitTestArtifact].
+     *
+     * See [dontBuildRuntimeClasspath] for additional details.
+     */
+    var dontBuildUnitTestRuntimeClasspath: Boolean
+
+    /**
+     * Don't build the runtime classpath for the unit test artifact. If true
+     * [ArtifactDependencies.runtimeDependencies] will be null for
+     * [VariantDependencies.androidTestArtifact].
+     *
+     * See [dontBuildRuntimeClasspath] for additional details.
+     */
+    var dontBuildAndroidTestRuntimeClasspath: Boolean
+
+    /**
+     * Don't build the runtime classpath for the unit test artifact. If true
+     * [ArtifactDependencies.runtimeDependencies] will be null for
+     * [VariantDependencies.testFixturesArtifact].
+     *
+     * See [dontBuildRuntimeClasspath] for additional details.
+     */
+    var dontBuildTestFixtureRuntimeClasspath: Boolean
+}
+
+/**
+ * Utility enum for pre-set values for which runtime classpaths to build in the model builder.
+ */
+enum class ClasspathParameterConfig(
+    private val mainRuntime: Boolean,
+    private val unitTestRuntime: Boolean,
+    private val androidTestRuntime: Boolean,
+    private val testFixturesRuntime: Boolean,
+) {
+    ALL(true, true, true, true),
+    ANDROID_TEST_ONLY(false, false, true, false),
+    NONE(false, false, false, false);
+
+    fun applyTo(param: ModelBuilderParameter) {
+        param.dontBuildRuntimeClasspath = !mainRuntime
+        param.dontBuildUnitTestRuntimeClasspath = !unitTestRuntime
+        param.dontBuildAndroidTestRuntimeClasspath = !androidTestRuntime
+        param.dontBuildTestFixtureRuntimeClasspath = !testFixturesRuntime
+    }
 }

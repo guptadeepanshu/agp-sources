@@ -17,8 +17,6 @@
 package com.android.build.gradle.internal.scope
 
 import com.android.SdkConstants
-import com.android.build.gradle.internal.ide.dependencies.BuildMapping
-import com.android.build.gradle.internal.ide.dependencies.computeBuildMapping
 import com.android.builder.core.BuilderConstants
 import org.gradle.api.Project
 import org.gradle.api.capabilities.Capability
@@ -138,6 +136,4 @@ class ProjectInfo(private val project: Project) {
     fun getJacocoAgent(): File {
         return File(getJacocoAgentOutputDirectory(), "jacocoagent.jar")
     }
-
-    fun computeBuildMapping(): BuildMapping = project.gradle.computeBuildMapping()
 }

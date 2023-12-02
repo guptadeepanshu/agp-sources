@@ -88,12 +88,12 @@ class ArchiveClassFileResourceProvider (
     }
 }
 
-public fun getClassDescriptorFromBinaryName(classBinaryName: String): String {
+fun getClassDescriptorFromBinaryName(classBinaryName: String): String {
     return "L$classBinaryName;"
 }
 
 private fun isClassFile(zipEntry: ZipEntry): Boolean {
-    val name = zipEntry.name.toLowerCase(Locale.getDefault())
+    val name = zipEntry.name.lowercase(Locale.getDefault())
     return name.endsWith(CLASS_EXTENSION)
             && !name.endsWith(MODULE_INFO_CLASS)
             && !name.startsWith("meta-inf")

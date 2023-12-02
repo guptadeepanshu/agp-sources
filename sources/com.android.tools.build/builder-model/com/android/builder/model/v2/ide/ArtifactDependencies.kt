@@ -38,7 +38,7 @@ interface ArtifactDependencies: AndroidModel {
      * The runtime dependency graph, this may be null if the IDE plugin requests that building
      * runtime classpath be skipped.
      *
-     * See [com.android.builder.model.v2.models.ModelBuilderParameter.dontBuildRuntimeClasspath].
+     * See [com.android.builder.model.v2.models.ModelBuilderParameter].
      *
      */
     val runtimeDependencies: List<GraphItem>?

@@ -22,6 +22,8 @@ import com.android.build.api.artifact.impl.InternalScopedArtifacts
 import com.android.build.gradle.internal.component.LibraryCreationConfig
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig
 import com.android.build.gradle.internal.dependency.ConfigurationVariantMapping
+import com.android.build.gradle.internal.lint.AndroidLintAnalysisTask
+import com.android.build.gradle.internal.lint.LintModelWriterTask
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.PublishedConfigSpec
 import com.android.build.gradle.internal.res.GenerateApiPublicTxtTask
@@ -36,6 +38,7 @@ import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.tasks.factory.TaskManagerConfig
 import com.android.build.gradle.internal.tasks.factory.TaskProviderCallback
 import com.android.build.gradle.options.BooleanOption
+import com.android.build.gradle.options.BooleanOption.LINT_ANALYSIS_PER_COMPONENT
 import com.android.build.gradle.tasks.BundleAar
 import com.android.build.gradle.tasks.CompileLibraryResourcesTask
 import com.android.build.gradle.tasks.ExtractAnnotations
@@ -220,6 +223,24 @@ class TestFixturesTaskManager(
         )
 
         createBundleTaskForTestFixtures(testFixturesComponent)
+
+        if (testFixturesComponent.services.projectOptions.get(LINT_ANALYSIS_PER_COMPONENT)
+            && globalConfig.lintOptions.ignoreTestFixturesSources.not()) {
+            taskFactory.register(
+                AndroidLintAnalysisTask.PerComponentCreationAction(
+                    testFixturesComponent,
+                    fatalOnly = false
+                )
+            )
+            taskFactory.register(
+                LintModelWriterTask.PerComponentCreationAction(
+                    testFixturesComponent,
+                    useModuleDependencyLintModels = false,
+                    fatalOnly = false,
+                    isMainModelForLocalReportTask = false
+                )
+            )
+        }
 
         // This hides the assemble test fixtures task from the task list.
         testFixturesComponent.taskContainer.assembleTask.configure { task: Task ->

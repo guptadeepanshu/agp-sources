@@ -139,8 +139,8 @@ public class GoogleCrashReporter implements CrashReporter {
 
   @Override
   @NonNull
-  public CompletableFuture<String> submit(@NonNull CrashReport report, boolean userReported) {
-    if (!userReported) { // all non user reported crash events are rate limited on the client side
+  public CompletableFuture<String> submit(@NonNull CrashReport report, boolean skipLimiter) {
+    if (!skipLimiter) { // non-user reported crash events are rate limited on the client side
       if (!rateLimiter.tryAcquire()) {
         CompletableFuture<String> f = new CompletableFuture<>();
         f.completeExceptionally(new RuntimeException("Exceeded Quota of crashes that can be reported"));

@@ -38,8 +38,9 @@ public enum BooleanOption
    */
   ENABLE_SDK_DOWNLOAD(6),
   /**
-   * <code>ENABLE_TEST_SHARDING = 7;</code>
+   * <code>ENABLE_TEST_SHARDING = 7 [deprecated = true];</code>
    */
+  @java.lang.Deprecated
   ENABLE_TEST_SHARDING(7),
   /**
    * <code>ENABLE_DEX_ARCHIVE = 8;</code>
@@ -694,6 +695,38 @@ public enum BooleanOption
    * <code>ENABLE_EMULATOR_CONTROL = 168;</code>
    */
   ENABLE_EMULATOR_CONTROL(168),
+  /**
+   * <code>FUSED_LIBRARY_SUPPORT = 169;</code>
+   */
+  FUSED_LIBRARY_SUPPORT(169),
+  /**
+   * <code>SUPPORT_PAST_STUDIO_VERSIONS = 170;</code>
+   */
+  SUPPORT_PAST_STUDIO_VERSIONS(170),
+  /**
+   * <code>ENABLE_SCREENSHOT_TEST = 171;</code>
+   */
+  ENABLE_SCREENSHOT_TEST(171),
+  /**
+   * <code>LINT_ANALYSIS_PER_COMPONENT = 172;</code>
+   */
+  LINT_ANALYSIS_PER_COMPONENT(172),
+  /**
+   * <code>ENABLE_VCS_INFO = 173;</code>
+   */
+  ENABLE_VCS_INFO(173),
+  /**
+   * <code>LINT_BASELINE_OMIT_LINE_NUMBERS = 174;</code>
+   */
+  LINT_BASELINE_OMIT_LINE_NUMBERS(174),
+  /**
+   * <code>LINT_USE_K2_UAST = 175;</code>
+   */
+  LINT_USE_K2_UAST(175),
+  /**
+   * <code>ANDROID_TEST_LEAVE_APKS_INSTALLED_AFTER_RUN = 177;</code>
+   */
+  ANDROID_TEST_LEAVE_APKS_INSTALLED_AFTER_RUN(177),
   UNRECOGNIZED(-1),
   ;
 
@@ -726,9 +759,9 @@ public enum BooleanOption
    */
   public static final int ENABLE_SDK_DOWNLOAD_VALUE = 6;
   /**
-   * <code>ENABLE_TEST_SHARDING = 7;</code>
+   * <code>ENABLE_TEST_SHARDING = 7 [deprecated = true];</code>
    */
-  public static final int ENABLE_TEST_SHARDING_VALUE = 7;
+  @java.lang.Deprecated public static final int ENABLE_TEST_SHARDING_VALUE = 7;
   /**
    * <code>ENABLE_DEX_ARCHIVE = 8;</code>
    */
@@ -1373,6 +1406,38 @@ public enum BooleanOption
    * <code>ENABLE_EMULATOR_CONTROL = 168;</code>
    */
   public static final int ENABLE_EMULATOR_CONTROL_VALUE = 168;
+  /**
+   * <code>FUSED_LIBRARY_SUPPORT = 169;</code>
+   */
+  public static final int FUSED_LIBRARY_SUPPORT_VALUE = 169;
+  /**
+   * <code>SUPPORT_PAST_STUDIO_VERSIONS = 170;</code>
+   */
+  public static final int SUPPORT_PAST_STUDIO_VERSIONS_VALUE = 170;
+  /**
+   * <code>ENABLE_SCREENSHOT_TEST = 171;</code>
+   */
+  public static final int ENABLE_SCREENSHOT_TEST_VALUE = 171;
+  /**
+   * <code>LINT_ANALYSIS_PER_COMPONENT = 172;</code>
+   */
+  public static final int LINT_ANALYSIS_PER_COMPONENT_VALUE = 172;
+  /**
+   * <code>ENABLE_VCS_INFO = 173;</code>
+   */
+  public static final int ENABLE_VCS_INFO_VALUE = 173;
+  /**
+   * <code>LINT_BASELINE_OMIT_LINE_NUMBERS = 174;</code>
+   */
+  public static final int LINT_BASELINE_OMIT_LINE_NUMBERS_VALUE = 174;
+  /**
+   * <code>LINT_USE_K2_UAST = 175;</code>
+   */
+  public static final int LINT_USE_K2_UAST_VALUE = 175;
+  /**
+   * <code>ANDROID_TEST_LEAVE_APKS_INSTALLED_AFTER_RUN = 177;</code>
+   */
+  public static final int ANDROID_TEST_LEAVE_APKS_INSTALLED_AFTER_RUN_VALUE = 177;
 
 
   public final int getNumber() {
@@ -1568,6 +1633,14 @@ public enum BooleanOption
       case 166: return SUPPRESS_EXTRACT_NATIVE_LIBS_WARNINGS;
       case 167: return EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS;
       case 168: return ENABLE_EMULATOR_CONTROL;
+      case 169: return FUSED_LIBRARY_SUPPORT;
+      case 170: return SUPPORT_PAST_STUDIO_VERSIONS;
+      case 171: return ENABLE_SCREENSHOT_TEST;
+      case 172: return LINT_ANALYSIS_PER_COMPONENT;
+      case 173: return ENABLE_VCS_INFO;
+      case 174: return LINT_BASELINE_OMIT_LINE_NUMBERS;
+      case 175: return LINT_USE_K2_UAST;
+      case 177: return ANDROID_TEST_LEAVE_APKS_INSTALLED_AFTER_RUN;
       default: return null;
     }
   }

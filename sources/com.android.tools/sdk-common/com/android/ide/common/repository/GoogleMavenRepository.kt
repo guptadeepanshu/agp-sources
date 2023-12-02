@@ -16,8 +16,12 @@
 package com.android.ide.common.repository
 
 import com.android.SdkConstants
+import com.android.ide.common.gradle.Dependency
+import com.android.ide.common.gradle.RichVersion
 import com.android.ide.common.gradle.Version
+import com.android.ide.common.gradle.VersionRange
 import com.google.common.collect.Maps
+import com.google.common.collect.Range
 import org.kxml2.io.KXmlParser
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
@@ -63,46 +67,42 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
 
     private var packageMap: MutableMap<String, PackageInfo>? = null
 
-    fun findVersion(dependency: GradleCoordinate, filter: Predicate<Version>? = null):
-        Version? = findVersion(dependency, filter, dependency.isPreview)
+    fun hasGroupId(groupId: String): Boolean {
+        return getPackageMap()[groupId] != null
+    }
+
+    fun findVersion(dependency: Dependency, filter: Predicate<Version>? = null): Version? =
+        findVersion(dependency, filter, dependency.explicitlyIncludesPreview)
 
     fun findVersion(
-        dependency: GradleCoordinate,
+        dependency: Dependency,
         predicate: Predicate<Version>?,
         allowPreview: Boolean = false
     ): Version? {
-        val groupId = dependency.groupId
-        val artifactId = dependency.artifactId
-        val version = dependency.lowerBoundVersion
+        fun predicate(version: Version) = predicate?.test(version) ?: true
+        val group = dependency.group ?: return null
         val filter = when {
-            dependency.acceptsGreaterRevisions() -> {
-                val prefix = dependency.revision.trimEnd('+')
-                if (predicate != null) {
-                    { v: Version -> predicate.test(v) && v.toString().startsWith(prefix) }
-                } else {
-                    { v: Version -> v.toString().startsWith(prefix) }
-                }
-            }
-            predicate != null -> {
-                { v: Version -> predicate.test(v) }
+            dependency.hasExplicitDistinctUpperBound -> {
+                { v: Version -> predicate(v) && dependency.version?.contains(v) ?: true }
             }
             else -> {
-                null
+                { v: Version -> predicate(v) && dependency.version?.accepts(v) ?: true }
             }
         }
 
-        // Temporary special casing for AndroidX: don't offer upgrades from 2.6 to 2.7 previews
-        if (groupId == "androidx.work") {
-            if (version < Version.prefixInfimum("2.7")) {
-                val artifactInfo = findArtifact(groupId, artifactId) ?: return null
+        if (group == "androidx.work") {
+            // NB not VersionRange.parse("[2.7,2.7.0)")
+            val range = Range.closedOpen(Version.parse("2.7"), Version.parse("2.7.0"))
+            val excludedRange = VersionRange(range)
+            // TODO: actually I'd like something like
+            //    dependency.version?.intersection(VersionRange([2.7,2.7.0)).isNotEmpty?
+            //  but that's currently a bit tricky to express.  We know that versions have the form
+            //  2.7.0-alpha01 so we can afford to be a bit loose here.
+            if (dependency.version?.accepts(Version.prefixInfimum("2.7.0")) == true) {
+                val artifactInfo = findArtifact(group, dependency.name) ?: return null
                 val snapshotFilter = getSnapshotVersionFilter(null)
                 artifactInfo.getVersions()
-                    .filter { v ->
-                        ((v < Version.prefixInfimum("2") || v >= Version.prefixInfimum("3")) ||
-                                (v < Version.prefixInfimum("2.7") ||
-                                        (v > Version.prefixInfimum("2.8") || !v.isPreview))) &&
-                                (filter == null || filter(v))
-                    }
+                    .filter { v -> !excludedRange.contains(v) && filter(v) }
                     .filter { allowPreview || !it.isPreview }
                     .filter { snapshotFilter(it) }
                     .maxOrNull()
@@ -111,7 +111,7 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
         }
 
         val compositeFilter = getSnapshotVersionFilter(filter)
-        return findVersion(groupId, artifactId, compositeFilter, allowPreview)
+        return findVersion(group, dependency.name, compositeFilter, allowPreview)
     }
 
     // In addition to the optional filter, add in filtering to disable suggestions to
@@ -155,7 +155,7 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
         groupId: String,
         artifactId: String,
         version: Version
-    ): List<GradleCoordinate> {
+    ): List<Dependency> {
         val packageInfo = getPackageMap()[groupId] ?: return emptyList()
         val artifactInfo = packageInfo.findArtifact(artifactId)
         return artifactInfo?.findCompileDependencies(version, packageInfo) ?: emptyList()
@@ -178,7 +178,7 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
 
     private data class ArtifactInfo(val id: String, val versions: String) {
 
-        private val dependencyInfo by lazy { HashMap<Version, List<GradleCoordinate>>() }
+        private val dependencyInfo by lazy { HashMap<Version, List<Dependency>>() }
 
         fun getVersions(): Sequence<Version> =
             versions.splitToSequence(",")
@@ -198,14 +198,14 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
         fun findCompileDependencies(
             version: Version,
             packageInfo: PackageInfo
-        ): List<GradleCoordinate> {
+        ): List<Dependency> {
             return dependencyInfo[version] ?: loadCompileDependencies(version, packageInfo)
         }
 
         private fun loadCompileDependencies(
             version: Version,
             packageInfo: PackageInfo
-        ): List<GradleCoordinate> {
+        ): List<Dependency> {
             if (findVersion({ it == version }, true) == null) {
                 // Do not attempt to load a pom file that is known not to exist
                 return emptyList()
@@ -254,7 +254,7 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
 
         fun findArtifact(id: String): ArtifactInfo? = artifacts[id]
 
-        fun loadCompileDependencies(id: String, version: Version): List<GradleCoordinate> {
+        fun loadCompileDependencies(id: String, version: Version): List<Dependency> {
             val file = "${pkg.replace('.', '/')}/$id/$version/$id-$version.pom"
             val stream = findData(file)
             return stream?.use { readCompileDependenciesFromPomFile(stream, file) } ?: emptyList()
@@ -290,10 +290,10 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
         private fun readCompileDependenciesFromPomFile(
             stream: InputStream,
             file: String
-        ): List<GradleCoordinate> {
+        ): List<Dependency> {
 
             return try {
-                val dependencies = mutableListOf<GradleCoordinate>()
+                val dependencies = mutableListOf<Dependency>()
                 val parser = KXmlParser()
                 parser.setInput(stream, SdkConstants.UTF_8)
                 while (parser.next() != XmlPullParser.END_DOCUMENT) {
@@ -316,7 +316,7 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
             }
         }
 
-        private fun readCompileDependency(parser: KXmlParser): GradleCoordinate? {
+        private fun readCompileDependency(parser: KXmlParser): Dependency? {
             var groupId = ""
             var artifactId = ""
             var version = ""
@@ -336,7 +336,7 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
                             check(artifactId, "artifactId")
                             check(version, "version")
                             return if (scope == "compile")
-                                GradleCoordinate(groupId, artifactId, version)
+                                Dependency(groupId, artifactId, RichVersion.parse(version))
                             else
                                 null
                         }
@@ -352,3 +352,4 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
         }
     }
 }
+

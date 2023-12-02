@@ -15,7 +15,6 @@
  */
 package com.android.build.gradle.internal.core.dsl
 
-import com.android.build.api.dsl.Lint
 import com.android.build.api.dsl.Packaging
 import com.android.build.api.variant.impl.MutableAndroidVersion
 import com.android.build.gradle.internal.core.dsl.features.NativeBuildDslInfo
@@ -25,8 +24,6 @@ import com.android.build.gradle.internal.core.dsl.features.NativeBuildDslInfo
  * build type, flavors) that are needed by main variants.
  */
 interface VariantDslInfo: ComponentDslInfo, ConsumableComponentDslInfo {
-    val lintOptions: Lint
-
     val packaging: Packaging
 
     val experimentalProperties: Map<String, Any>

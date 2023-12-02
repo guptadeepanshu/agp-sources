@@ -17,6 +17,7 @@
 
 package com.android.ide.common.repository
 
+import com.android.ide.common.gradle.Version
 import com.android.utils.XmlUtils
 import com.google.common.io.Files
 import com.google.common.io.Resources
@@ -71,16 +72,20 @@ fun main(args: Array<String>) {
                 start += "versions=\"".length
                 val end: Int = line.indexOf("\"", start)
                 val sub = line.substring(start, end)
-                var max: GradleVersion? = null
-                val maxStablePerMajor = TreeMap<Int, GradleVersion>(Collections.reverseOrder())
+                var max: Version? = null
+                val maxStablePerMajor = TreeMap<Int, Version>(Collections.reverseOrder())
                 sub.splitToSequence(",").forEach {
-                    val v = GradleVersion.parse(it)
+                    val v = Version.parse(it)
                     if (max == null || v > max!!) {
                         max = v
                     }
 
                     if (!v.isPreview) {
-                        maxStablePerMajor.compute(v.major) { _, old -> if (old == null) v else maxOf(old, v) }
+                        v.major?.let { major ->
+                            maxStablePerMajor.compute(major) { _, old ->
+                                if (old == null) v else maxOf(old, v)
+                            }
+                        } ?: error("Attempted to add a Version with no major: $v")
                     }
                 }
                 if (max != null) {

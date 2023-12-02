@@ -24,7 +24,7 @@ import java.io.Serializable
 /**
  * This class is responsible for locating symbol strip tool withing the NDK.
  */
-class SymbolStripExecutableFinder(val stripExecutables: Map<Abi, File>): Serializable {
+class SymbolStripExecutableFinder(val stripExecutables: Map<String, File>): Serializable {
 
     companion object {
         private const val serialVersionUID = 4L
@@ -45,7 +45,7 @@ class SymbolStripExecutableFinder(val stripExecutables: Map<Abi, File>): Seriali
      */
     fun stripToolExecutableFile(
             input: File,
-            abi: Abi?,
+            abi: String?,
             reportAndFallback: (String) -> File?): File? {
         if (abi == null) {
             return reportAndFallback("Unable to strip library '${input.absolutePath}' due to " +
@@ -65,7 +65,7 @@ fun createSymbolStripExecutableFinder(ndkHandler: NdkHandler): SymbolStripExecut
     if (!ndkHandler.ndkPlatform.isConfigured) {
         return SymbolStripExecutableFinder(mapOf())
     }
-    val stripExecutables = mutableMapOf<Abi, File>()
+    val stripExecutables = mutableMapOf<String, File>()
     for (abi in ndkHandler.ndkPlatform.getOrThrow().supportedAbis) {
         stripExecutables[abi] = ndkHandler.ndkPlatform.getOrThrow().ndkInfo.getStripExecutable(abi)
     }

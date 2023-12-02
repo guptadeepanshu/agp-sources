@@ -190,6 +190,78 @@ fun ArtProfile(
     return ArtProfile(profileData, apkName)
 }
 
+/**
+ * The Android SDK Level.
+ */
+internal typealias AndroidSdkLevel = Int
+
+/**
+ * The ART Profile + its transcoded variants grouped by [AndroidSdkLevel].
+ */
+class ArtProfileDexMetadata(
+    val profile: ArtProfile,
+    val dexMetadata: Map<AndroidSdkLevel, File>
+)
+
+/**
+ * This method is only useful when building dex metadata payloads for all known profile formats.
+ *
+ * If you just want to generate an ART Profile that is embedded into the APK / AAB use
+ * the [ArtProfile] factory function instead.
+ */
+fun buildArtProfileWithDexMetadata(
+        hrp: HumanReadableProfile,
+        obf: ObfuscationMap,
+        dexes: List<DexFile>,
+        apkName: String = "",
+        outputDir: File
+): ArtProfileDexMetadata {
+    val profile = ArtProfile(hrp, obf, dexes, apkName)
+    val dexMetadata = buildDexMetadata(apkName, profile, outputDir)
+    return ArtProfileDexMetadata(profile, dexMetadata)
+}
+
+/**
+ * [ArtProfileSerializer] + its supported API levels.
+ */
+internal data class SerializerInfo(val serializer: ArtProfileSerializer, val apiLevels: IntRange)
+
+/**
+ * Builds DM payloads for all known profile versions.
+ *
+ * @return a [Map] of `apiLevel` to the [File] containing the DM payload.
+ */
+internal fun buildDexMetadata(
+        apkName: String,
+        profile: ArtProfile,
+        outputDir: File,
+        infoList: List<SerializerInfo> = listOf(
+                SerializerInfo(ArtProfileSerializer.V0_1_5_S, 31..34),
+                SerializerInfo(ArtProfileSerializer.V0_1_0_P, 28..30),
+                SerializerInfo(ArtProfileSerializer.V0_0_9_OMR1, 27..27),
+                SerializerInfo(ArtProfileSerializer.V0_0_5_O, 26..26),
+                SerializerInfo(ArtProfileSerializer.V0_0_1_N, 24..25),
+        )
+): Map<AndroidSdkLevel, File> {
+    val fileMap = mutableMapOf<Int, File>()
+    infoList.forEachIndexed { i, info ->
+        // Name should match the name of the APK.
+        val output = File(File(outputDir, "$i"), "$apkName.dm")
+        require(output.parentFile.mkdirs())
+        output.outputStream()
+                .writeDm(
+                        profile,
+                        profile, // pre-merged profile
+                        profileVersion = info.serializer,
+                        metadataVersion = ArtProfileSerializer.METADATA_0_0_2
+                )
+        info.apiLevels.forEach { apiLevel ->
+            fileMap[apiLevel] = output
+        }
+    }
+    return fileMap
+}
+
 fun ArtProfile(src: InputStream): ArtProfile? {
     val version = src.readProfileVersion() ?: return null
     val profileData = version.read(src)

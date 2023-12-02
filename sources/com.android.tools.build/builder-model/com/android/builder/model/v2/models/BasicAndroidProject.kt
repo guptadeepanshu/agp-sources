@@ -39,6 +39,7 @@ interface BasicAndroidProject: AndroidModel {
     /**
      * Then name of the build this project belongs to.
      */
+    @Deprecated("Since AGP 8.2 this is not set; the IDE uses the Gradle build file system path for dependency resolution.")
     val buildName: String
 
     /**

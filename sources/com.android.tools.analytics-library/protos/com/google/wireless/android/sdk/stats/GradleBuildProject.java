@@ -381,6 +381,14 @@ private static final long serialVersionUID = 0L;
      * <code>PRIVACY_SANDBOX_SDK = 9;</code>
      */
     PRIVACY_SANDBOX_SDK(9),
+    /**
+     * <pre>
+     * The 'com.android.kotlin.multiplatform.library' plugin
+     * </pre>
+     *
+     * <code>KOTLIN_MULTIPLATFORM_ANDROID_LIBRARY = 10;</code>
+     */
+    KOTLIN_MULTIPLATFORM_ANDROID_LIBRARY(10),
     ;
 
     /**
@@ -459,6 +467,14 @@ private static final long serialVersionUID = 0L;
      * <code>PRIVACY_SANDBOX_SDK = 9;</code>
      */
     public static final int PRIVACY_SANDBOX_SDK_VALUE = 9;
+    /**
+     * <pre>
+     * The 'com.android.kotlin.multiplatform.library' plugin
+     * </pre>
+     *
+     * <code>KOTLIN_MULTIPLATFORM_ANDROID_LIBRARY = 10;</code>
+     */
+    public static final int KOTLIN_MULTIPLATFORM_ANDROID_LIBRARY_VALUE = 10;
 
 
     public final int getNumber() {
@@ -491,6 +507,7 @@ private static final long serialVersionUID = 0L;
         case 7: return DYNAMIC_FEATURE;
         case 8: return FUSED_LIBRARIES;
         case 9: return PRIVACY_SANDBOX_SDK;
+        case 10: return KOTLIN_MULTIPLATFORM_ANDROID_LIBRARY;
         default: return null;
       }
     }

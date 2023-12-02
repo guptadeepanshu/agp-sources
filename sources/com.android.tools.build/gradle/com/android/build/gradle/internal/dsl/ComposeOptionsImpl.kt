@@ -26,5 +26,9 @@ open class ComposeOptionsImpl @Inject constructor(private val dslServices: DslSe
         get() = null
         set(s: String?) { dslServices.logger.warn("ComposeOptions.kotlinCompilerVersion is deprecated. Compose now uses the kotlin compiler defined in your buildscript.") }
     override var kotlinCompilerExtensionVersion: String? = null
-    override var useLiveLiterals: Boolean = true
+
+    // Live Literal is now replaced by Live Edit.
+    // Support for useLiveLiterals in the Compose compiler will be removed
+    // in the future.
+    override var useLiveLiterals: Boolean = false
 }

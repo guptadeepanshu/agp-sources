@@ -68,6 +68,11 @@ private static final long serialVersionUID = 0L;
             doubleClicks_ = input.readUInt32();
             break;
           }
+          case 32: {
+            bitField0_ |= 0x00000008;
+            doubleClicksFromRender_ = input.readUInt32();
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -161,7 +166,8 @@ private static final long serialVersionUID = 0L;
   private int doubleClicks_;
   /**
    * <pre>
-   * Number of times a double click was used to "Goto Declaration"
+   * Number of times double click was used to "Goto Declaration"
+   * from component tree
    * </pre>
    *
    * <code>optional uint32 double_clicks = 3;</code>
@@ -173,7 +179,8 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * Number of times a double click was used to "Goto Declaration"
+   * Number of times double click was used to "Goto Declaration"
+   * from component tree
    * </pre>
    *
    * <code>optional uint32 double_clicks = 3;</code>
@@ -182,6 +189,35 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public int getDoubleClicks() {
     return doubleClicks_;
+  }
+
+  public static final int DOUBLE_CLICKS_FROM_RENDER_FIELD_NUMBER = 4;
+  private int doubleClicksFromRender_;
+  /**
+   * <pre>
+   * Number of times double click was used to "Goto Declaration"
+   * from device render
+   * </pre>
+   *
+   * <code>optional uint32 double_clicks_from_render = 4;</code>
+   * @return Whether the doubleClicksFromRender field is set.
+   */
+  @java.lang.Override
+  public boolean hasDoubleClicksFromRender() {
+    return ((bitField0_ & 0x00000008) != 0);
+  }
+  /**
+   * <pre>
+   * Number of times double click was used to "Goto Declaration"
+   * from device render
+   * </pre>
+   *
+   * <code>optional uint32 double_clicks_from_render = 4;</code>
+   * @return The doubleClicksFromRender.
+   */
+  @java.lang.Override
+  public int getDoubleClicksFromRender() {
+    return doubleClicksFromRender_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -207,6 +243,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000004) != 0)) {
       output.writeUInt32(3, doubleClicks_);
     }
+    if (((bitField0_ & 0x00000008) != 0)) {
+      output.writeUInt32(4, doubleClicksFromRender_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -227,6 +266,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000004) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeUInt32Size(3, doubleClicks_);
+    }
+    if (((bitField0_ & 0x00000008) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeUInt32Size(4, doubleClicksFromRender_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -258,6 +301,11 @@ private static final long serialVersionUID = 0L;
       if (getDoubleClicks()
           != other.getDoubleClicks()) return false;
     }
+    if (hasDoubleClicksFromRender() != other.hasDoubleClicksFromRender()) return false;
+    if (hasDoubleClicksFromRender()) {
+      if (getDoubleClicksFromRender()
+          != other.getDoubleClicksFromRender()) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -280,6 +328,10 @@ private static final long serialVersionUID = 0L;
     if (hasDoubleClicks()) {
       hash = (37 * hash) + DOUBLE_CLICKS_FIELD_NUMBER;
       hash = (53 * hash) + getDoubleClicks();
+    }
+    if (hasDoubleClicksFromRender()) {
+      hash = (37 * hash) + DOUBLE_CLICKS_FROM_RENDER_FIELD_NUMBER;
+      hash = (53 * hash) + getDoubleClicksFromRender();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -424,6 +476,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000002);
       doubleClicks_ = 0;
       bitField0_ = (bitField0_ & ~0x00000004);
+      doubleClicksFromRender_ = 0;
+      bitField0_ = (bitField0_ & ~0x00000008);
       return this;
     }
 
@@ -463,6 +517,10 @@ private static final long serialVersionUID = 0L;
       if (((from_bitField0_ & 0x00000004) != 0)) {
         result.doubleClicks_ = doubleClicks_;
         to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.doubleClicksFromRender_ = doubleClicksFromRender_;
+        to_bitField0_ |= 0x00000008;
       }
       result.bitField0_ = to_bitField0_;
       onBuilt();
@@ -521,6 +579,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasDoubleClicks()) {
         setDoubleClicks(other.getDoubleClicks());
+      }
+      if (other.hasDoubleClicksFromRender()) {
+        setDoubleClicksFromRender(other.getDoubleClicksFromRender());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -669,7 +730,8 @@ private static final long serialVersionUID = 0L;
     private int doubleClicks_ ;
     /**
      * <pre>
-     * Number of times a double click was used to "Goto Declaration"
+     * Number of times double click was used to "Goto Declaration"
+     * from component tree
      * </pre>
      *
      * <code>optional uint32 double_clicks = 3;</code>
@@ -681,7 +743,8 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * Number of times a double click was used to "Goto Declaration"
+     * Number of times double click was used to "Goto Declaration"
+     * from component tree
      * </pre>
      *
      * <code>optional uint32 double_clicks = 3;</code>
@@ -693,7 +756,8 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * Number of times a double click was used to "Goto Declaration"
+     * Number of times double click was used to "Goto Declaration"
+     * from component tree
      * </pre>
      *
      * <code>optional uint32 double_clicks = 3;</code>
@@ -708,7 +772,8 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * Number of times a double click was used to "Goto Declaration"
+     * Number of times double click was used to "Goto Declaration"
+     * from component tree
      * </pre>
      *
      * <code>optional uint32 double_clicks = 3;</code>
@@ -717,6 +782,65 @@ private static final long serialVersionUID = 0L;
     public Builder clearDoubleClicks() {
       bitField0_ = (bitField0_ & ~0x00000004);
       doubleClicks_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int doubleClicksFromRender_ ;
+    /**
+     * <pre>
+     * Number of times double click was used to "Goto Declaration"
+     * from device render
+     * </pre>
+     *
+     * <code>optional uint32 double_clicks_from_render = 4;</code>
+     * @return Whether the doubleClicksFromRender field is set.
+     */
+    @java.lang.Override
+    public boolean hasDoubleClicksFromRender() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <pre>
+     * Number of times double click was used to "Goto Declaration"
+     * from device render
+     * </pre>
+     *
+     * <code>optional uint32 double_clicks_from_render = 4;</code>
+     * @return The doubleClicksFromRender.
+     */
+    @java.lang.Override
+    public int getDoubleClicksFromRender() {
+      return doubleClicksFromRender_;
+    }
+    /**
+     * <pre>
+     * Number of times double click was used to "Goto Declaration"
+     * from device render
+     * </pre>
+     *
+     * <code>optional uint32 double_clicks_from_render = 4;</code>
+     * @param value The doubleClicksFromRender to set.
+     * @return This builder for chaining.
+     */
+    public Builder setDoubleClicksFromRender(int value) {
+      bitField0_ |= 0x00000008;
+      doubleClicksFromRender_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Number of times double click was used to "Goto Declaration"
+     * from device render
+     * </pre>
+     *
+     * <code>optional uint32 double_clicks_from_render = 4;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearDoubleClicksFromRender() {
+      bitField0_ = (bitField0_ & ~0x00000008);
+      doubleClicksFromRender_ = 0;
       onChanged();
       return this;
     }

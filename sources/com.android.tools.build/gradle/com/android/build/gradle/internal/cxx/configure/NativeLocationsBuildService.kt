@@ -52,7 +52,7 @@ abstract class NativeLocationsBuildService @Inject constructor(private val exec:
 
     private val androidLocationProvider get() = parameters.androidLocationsService.get()
     private val sdkComponents get() = parameters.sdkService.get()
-    private val cmakeLocations = mutableMapOf<CMakeLocatorParameters, File?>()
+    private val cmakeLocations = mutableMapOf<CMakeLocatorParameters, File>()
     private val ninjaLocations = mutableMapOf<NinjaLocatorParameters, File?>()
     private val toolVersions = mutableMapOf<File, String>()
 
@@ -66,18 +66,26 @@ abstract class NativeLocationsBuildService @Inject constructor(private val exec:
     ) : File? {
         ThreadLoggingEnvironment.requireExplicitLogger()
         synchronized(cmakeLocations) {
-            return cmakeLocations.computeIfAbsent(CMakeLocatorParameters(
+            val locatorKey = CMakeLocatorParameters(
                 cmakeVersionFromDsl = cmakeVersionFromDsl,
-                localPropertiesCMakeDir = localPropertiesCMakeDir)) {
-                CmakeLocator().findCmakePath(
-                    cmakeVersionFromDsl = cmakeVersionFromDsl,
-                    localPropertiesCMakeDir = localPropertiesCMakeDir,
-                    androidLocationsProvider = androidLocationProvider,
-                    sdkFolder = sdkComponents.sdkDirectoryProvider.get().asFile,
-                    versionExecutor = ::versionOf
-                ) { version -> sdkComponents.installCmake(version) }
-                    ?.resolve("bin/cmake$exe")
+                localPropertiesCMakeDir = localPropertiesCMakeDir)
+            if (cmakeLocations.contains(locatorKey)) {
+                return cmakeLocations[locatorKey]
             }
+            val location = CmakeLocator().findCmakePath(
+                cmakeVersionFromDsl = cmakeVersionFromDsl,
+                localPropertiesCMakeDir = localPropertiesCMakeDir,
+                androidLocationsProvider = androidLocationProvider,
+                sdkFolder = sdkComponents.sdkDirectoryProvider.get().asFile,
+                versionExecutor = ::versionOf,
+                downloader = { version -> sdkComponents.installCmake(version) }
+            ) ?.resolve("bin/cmake$exe")
+            // Only cache the location if it was found. Otherwise, we want the user to see the
+            // errors or warnings that findCmakePath emitted.
+            if (location != null) {
+                cmakeLocations[locatorKey] = location
+            }
+            return location
         }
     }
 

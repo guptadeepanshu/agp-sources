@@ -17,7 +17,7 @@
 package com.android.builder.model.v2.ide
 
 /**
- * Information to identify an external library dependencies
+ * Information to identify an external library dependency
  */
 interface LibraryInfo: ComponentInfo {
     val group: String

@@ -18,6 +18,7 @@ package com.android.build.gradle.internal.cxx.attribution
 
 import com.android.build.gradle.internal.cxx.logging.warnln
 import com.android.build.gradle.internal.cxx.model.CxxAbiModel
+import com.android.build.gradle.internal.cxx.model.name
 import com.android.build.gradle.internal.cxx.model.ninjaLogFile
 import com.android.builder.profile.ChromeTraceJson
 import com.android.builder.profile.TraceEventJson
@@ -247,7 +248,7 @@ private fun CxxAbiModel.createAttributionKey() : AttributionKey {
     return AttributionKey.newBuilder()
         .setModule(variant.module.gradleModulePathName)
         .setVariant(variant.variantName)
-        .setAbi(abi.tag)
+        .setAbi(name)
         .build()
 }
 

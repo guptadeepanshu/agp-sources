@@ -18,9 +18,10 @@ package com.android.build.gradle.internal.core.dsl.impl
 
 import com.android.build.api.component.impl.ComponentIdentityImpl
 import com.android.build.api.dsl.AarMetadata
-import com.android.build.api.dsl.Lint
+import com.android.build.api.dsl.KotlinMultiplatformAndroidExtension
 import com.android.build.api.dsl.Packaging
 import com.android.build.api.dsl.TestFixtures
+import com.android.build.api.variant.impl.KmpAndroidCompilationType
 import com.android.build.api.variant.impl.MutableAndroidVersion
 import com.android.build.gradle.ProguardFiles
 import com.android.build.gradle.internal.PostprocessingFeatures
@@ -33,9 +34,10 @@ import com.android.build.gradle.internal.core.dsl.features.NativeBuildDslInfo
 import com.android.build.gradle.internal.core.dsl.features.OptimizationDslInfo
 import com.android.build.gradle.internal.core.dsl.features.RenderscriptDslInfo
 import com.android.build.gradle.internal.core.dsl.features.ShadersDslInfo
-import com.android.build.gradle.internal.dsl.KeepRulesImpl
-import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidExtension
-import com.android.build.gradle.internal.dsl.OptimizationImpl
+import com.android.build.gradle.internal.dsl.LibraryKeepRulesImpl
+import com.android.build.gradle.internal.dsl.KmpOptimizationImpl
+import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidExtensionImpl
+import com.android.build.gradle.internal.plugins.KotlinMultiplatformAndroidPlugin.Companion.ANDROID_EXTENSION_ON_KOTLIN_EXTENSION_NAME
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.builder.core.ComponentTypeImpl
 import org.gradle.api.file.DirectoryProperty
@@ -48,12 +50,15 @@ class KmpVariantDslInfoImpl(
     extension: KotlinMultiplatformAndroidExtension,
     services: VariantServices,
     buildDirectory: DirectoryProperty,
+    withJava: Boolean,
 ): KmpComponentDslInfoImpl(
-    extension, services
+    extension, services, withJava
 ), KmpVariantDslInfo {
 
     override val componentType = ComponentTypeImpl.KMP_ANDROID
-    override val componentIdentity = ComponentIdentityImpl("kotlinAndroid")
+    override val componentIdentity = ComponentIdentityImpl(
+        KmpAndroidCompilationType.MAIN.defaultSourceSetName
+    )
 
     override val aarMetadata: AarMetadata
         get() = extension.aarMetadata
@@ -61,23 +66,24 @@ class KmpVariantDslInfoImpl(
     override val namespace: Provider<String> by lazy {
         extension.namespace?.let { services.provider { it } }
             ?: throw RuntimeException(
-                "Namespace not specified. Please " +
-                        "specify a namespace for the generated R and BuildConfig classes via " +
-                        "android.namespace in the module's build.gradle file like so:\n\n" +
-                        "android {\n" +
-                        "    namespace 'com.example.namespace'\n" +
-                        "}\n\n"
+                "Namespace not specified. Specify a namespace in the module's build file like so:\n" +
+                        "kotlin {\n" +
+                        "    $ANDROID_EXTENSION_ON_KOTLIN_EXTENSION_NAME {\n" +
+                        "        namespace = \"com.example.namespace\"\n" +
+                        "    }\n" +
+                        "}\n"
             )
     }
 
     override val maxSdkVersion: Int?
-        get() = extension.maxSdkVersion
+        get() = extension.maxSdk
 
     override val packaging: Packaging
-        get() = extension.packagingOptions
+        get() = extension.packaging
 
     override val testInstrumentationRunnerArguments: Map<String, String>
-        get() = extension.testInstrumentationRunnerArguments
+        get() = (extension as KotlinMultiplatformAndroidExtensionImpl).androidTestOnDeviceOptions
+            ?.instrumentationRunnerArguments ?: emptyMap()
 
     override val experimentalProperties: Map<String, Any>
         get() = extension.experimentalProperties
@@ -89,9 +95,9 @@ class KmpVariantDslInfoImpl(
     }
 
     override val enabledUnitTest: Boolean
-        get() = extension.enableUnitTest
+        get() = (extension as KotlinMultiplatformAndroidExtensionImpl).androidTestOnJvmOptions != null
     override val enableAndroidTest: Boolean
-        get() = extension.enableAndroidTest
+        get() = (extension as KotlinMultiplatformAndroidExtensionImpl).androidTestOnDeviceOptions != null
 
     // not supported
     override val targetSdkVersion: MutableAndroidVersion? = null
@@ -104,12 +110,6 @@ class KmpVariantDslInfoImpl(
     override val buildConfigDslInfo: BuildConfigDslInfo? = null
     override val manifestPlaceholdersDslInfo: ManifestPlaceholdersDslInfo? = null
 
-    // TODO(b/243387425): support lint
-    override val lintOptions: Lint
-        get() {
-            throw IllegalAccessException("Not supported")
-        }
-
     class KmpOptimizationDslInfoImpl(
         private val extension: KotlinMultiplatformAndroidExtension,
         private val services: VariantServices,
@@ -117,12 +117,16 @@ class KmpVariantDslInfoImpl(
     ): OptimizationDslInfo {
 
         private val keepRules =
-            (extension.optimization as OptimizationImpl).keepRules as KeepRulesImpl
+            (extension.optimization as KmpOptimizationImpl).keepRules as LibraryKeepRulesImpl
 
         override val ignoredLibraryKeepRules: Set<String>
-            get() = keepRules.dependencies
+            get() = keepRules.ignoreFrom
         override val ignoreAllLibraryKeepRules: Boolean
-            get() = keepRules.ignoreAllDependencies
+            get() = keepRules.ignoreFromAllExternalDependencies
+        override val ignoreFromInBaselineProfile: Set<String>
+            get() = emptySet()
+        override val ignoreFromAllExternalDependenciesInBaselineProfile: Boolean
+            get() = false
 
         override fun getProguardFiles(into: ListProperty<RegularFile>) {
             val result: MutableList<File> = ArrayList(gatherProguardFiles(ProguardFileType.EXPLICIT))
@@ -148,7 +152,7 @@ class KmpVariantDslInfoImpl(
 
                 override fun getPostprocessingFeatures(): PostprocessingFeatures? = null
 
-                override fun codeShrinkerEnabled(): Boolean = extension.isMinifyEnabled
+                override fun codeShrinkerEnabled(): Boolean = extension.optimization.minify
 
                 // No android resources
                 override fun resourcesShrinkingEnabled(): Boolean = false
@@ -156,9 +160,9 @@ class KmpVariantDslInfoImpl(
 
                 override fun getProguardFiles(type: ProguardFileType): Collection<File> {
                     return when (type) {
-                        ProguardFileType.EXPLICIT -> extension.proguardFiles
-                        ProguardFileType.TEST -> extension.testProguardFiles
-                        ProguardFileType.CONSUMER -> extension.consumerProguardFiles
+                        ProguardFileType.EXPLICIT -> extension.optimization.keepRules.files
+                        ProguardFileType.TEST -> extension.optimization.testKeepRules.files
+                        ProguardFileType.CONSUMER -> extension.optimization.consumerKeepRules.files
                     }
                 }
 

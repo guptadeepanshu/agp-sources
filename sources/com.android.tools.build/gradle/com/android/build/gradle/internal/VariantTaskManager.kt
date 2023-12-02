@@ -114,7 +114,7 @@ abstract class VariantTaskManager<VariantBuilderT : VariantBuilder, VariantT : V
         createPrepareLintJarForPublishTask()
 
         // create a lifecycle task to build the lintChecks dependencies
-        taskFactory.register(COMPILE_LINT_CHECKS_TASK) { task: Task ->
+        taskFactory.register(globalConfig.taskNames.compileLintChecks) { task: Task ->
             task.dependsOn(globalConfig.localCustomLintChecks)
         }
 
@@ -201,7 +201,8 @@ abstract class VariantTaskManager<VariantBuilderT : VariantBuilder, VariantT : V
             componentType,
             variantModel,
             variantPropertiesList,
-            testComponents
+            testComponents,
+            globalConfig.services.projectOptions.get(BooleanOption.LINT_ANALYSIS_PER_COMPONENT)
         )
         createReportTasks()
 
@@ -421,7 +422,7 @@ abstract class VariantTaskManager<VariantBuilderT : VariantBuilder, VariantT : V
                     SdkConstants.DATA_BINDING_ANNOTATION_PROCESSOR_ARTIFACT + ":" + version
                 project.dependencies
                     .add("androidTestAnnotationProcessor", dataBindingArtifact)
-                if (globalConfig.testOptions.unitTests.isIncludeAndroidResources) {
+                if (globalConfig.unitTestOptions.isIncludeAndroidResources) {
                     project.dependencies.add("testAnnotationProcessor", dataBindingArtifact)
                 }
             }

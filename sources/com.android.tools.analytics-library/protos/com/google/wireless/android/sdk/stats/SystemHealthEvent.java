@@ -101,6 +101,24 @@ private static final long serialVersionUID = 0L;
             bitField0_ |= 0x00000008;
             break;
           }
+          case 42: {
+            com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception.Builder subBuilder = null;
+            if (((bitField0_ & 0x00000010) != 0)) {
+              subBuilder = exception_.toBuilder();
+            }
+            exception_ = input.readMessage(com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(exception_);
+              exception_ = subBuilder.buildPartial();
+            }
+            bitField0_ |= 0x00000010;
+            break;
+          }
+          case 48: {
+            bitField0_ |= 0x00000020;
+            essentialsMode_ = input.readBool();
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -215,6 +233,14 @@ private static final long serialVersionUID = 0L;
      * <code>MEMORY_OOM_ERROR = 9;</code>
      */
     MEMORY_OOM_ERROR(9),
+    /**
+     * <pre>
+     * Exception reported to crash
+     * </pre>
+     *
+     * <code>EXCEPTION = 10;</code>
+     */
+    EXCEPTION(10),
     ;
 
     /**
@@ -294,6 +320,14 @@ private static final long serialVersionUID = 0L;
      * <code>MEMORY_OOM_ERROR = 9;</code>
      */
     public static final int MEMORY_OOM_ERROR_VALUE = 9;
+    /**
+     * <pre>
+     * Exception reported to crash
+     * </pre>
+     *
+     * <code>EXCEPTION = 10;</code>
+     */
+    public static final int EXCEPTION_VALUE = 10;
 
 
     public final int getNumber() {
@@ -326,6 +360,7 @@ private static final long serialVersionUID = 0L;
         case 7: return MEMORY_LOW_MEMORY_WARNING;
         case 8: return MEMORY_LONG_GC_PAUSE;
         case 9: return MEMORY_OOM_ERROR;
+        case 10: return EXCEPTION;
         default: return null;
       }
     }
@@ -3071,6 +3106,1318 @@ private static final long serialVersionUID = 0L;
 
   }
 
+  public interface ExceptionOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:android_studio.SystemHealthEvent.Exception)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * Stable signature for the exception
+     * </pre>
+     *
+     * <code>optional string stable_signature = 1;</code>
+     * @return Whether the stableSignature field is set.
+     */
+    boolean hasStableSignature();
+    /**
+     * <pre>
+     * Stable signature for the exception
+     * </pre>
+     *
+     * <code>optional string stable_signature = 1;</code>
+     * @return The stableSignature.
+     */
+    java.lang.String getStableSignature();
+    /**
+     * <pre>
+     * Stable signature for the exception
+     * </pre>
+     *
+     * <code>optional string stable_signature = 1;</code>
+     * @return The bytes for stableSignature.
+     */
+    com.google.protobuf.ByteString
+        getStableSignatureBytes();
+
+    /**
+     * <pre>
+     * Crash ReportID if assigned for the report
+     * Special value "[timeout]" indicates report id was not set in required
+     * time.
+     * </pre>
+     *
+     * <code>optional string crash_report_id = 2;</code>
+     * @return Whether the crashReportId field is set.
+     */
+    boolean hasCrashReportId();
+    /**
+     * <pre>
+     * Crash ReportID if assigned for the report
+     * Special value "[timeout]" indicates report id was not set in required
+     * time.
+     * </pre>
+     *
+     * <code>optional string crash_report_id = 2;</code>
+     * @return The crashReportId.
+     */
+    java.lang.String getCrashReportId();
+    /**
+     * <pre>
+     * Crash ReportID if assigned for the report
+     * Special value "[timeout]" indicates report id was not set in required
+     * time.
+     * </pre>
+     *
+     * <code>optional string crash_report_id = 2;</code>
+     * @return The bytes for crashReportId.
+     */
+    com.google.protobuf.ByteString
+        getCrashReportIdBytes();
+
+    /**
+     * <pre>
+     * Index of the exception in this session
+     * </pre>
+     *
+     * <code>optional int64 exception_index = 3;</code>
+     * @return Whether the exceptionIndex field is set.
+     */
+    boolean hasExceptionIndex();
+    /**
+     * <pre>
+     * Index of the exception in this session
+     * </pre>
+     *
+     * <code>optional int64 exception_index = 3;</code>
+     * @return The exceptionIndex.
+     */
+    long getExceptionIndex();
+
+    /**
+     * <pre>
+     * Index of exception with this signature in this session
+     * </pre>
+     *
+     * <code>optional int64 signature_index = 4;</code>
+     * @return Whether the signatureIndex field is set.
+     */
+    boolean hasSignatureIndex();
+    /**
+     * <pre>
+     * Index of exception with this signature in this session
+     * </pre>
+     *
+     * <code>optional int64 signature_index = 4;</code>
+     * @return The signatureIndex.
+     */
+    long getSignatureIndex();
+
+    /**
+     * <pre>
+     * As some reports may be skipped if they happen too often,
+     * this field tells how many were skipped for the given signature
+     * </pre>
+     *
+     * <code>optional int64 signature_reports_skipped = 5;</code>
+     * @return Whether the signatureReportsSkipped field is set.
+     */
+    boolean hasSignatureReportsSkipped();
+    /**
+     * <pre>
+     * As some reports may be skipped if they happen too often,
+     * this field tells how many were skipped for the given signature
+     * </pre>
+     *
+     * <code>optional int64 signature_reports_skipped = 5;</code>
+     * @return The signatureReportsSkipped.
+     */
+    long getSignatureReportsSkipped();
+  }
+  /**
+   * Protobuf type {@code android_studio.SystemHealthEvent.Exception}
+   */
+  public static final class Exception extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:android_studio.SystemHealthEvent.Exception)
+      ExceptionOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use Exception.newBuilder() to construct.
+    private Exception(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private Exception() {
+      stableSignature_ = "";
+      crashReportId_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Exception();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Exception(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              stableSignature_ = bs;
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              crashReportId_ = bs;
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              exceptionIndex_ = input.readInt64();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              signatureIndex_ = input.readInt64();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              signatureReportsSkipped_ = input.readInt64();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SystemHealthEvent_Exception_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SystemHealthEvent_Exception_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception.class, com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int STABLE_SIGNATURE_FIELD_NUMBER = 1;
+    private volatile java.lang.Object stableSignature_;
+    /**
+     * <pre>
+     * Stable signature for the exception
+     * </pre>
+     *
+     * <code>optional string stable_signature = 1;</code>
+     * @return Whether the stableSignature field is set.
+     */
+    @java.lang.Override
+    public boolean hasStableSignature() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <pre>
+     * Stable signature for the exception
+     * </pre>
+     *
+     * <code>optional string stable_signature = 1;</code>
+     * @return The stableSignature.
+     */
+    @java.lang.Override
+    public java.lang.String getStableSignature() {
+      java.lang.Object ref = stableSignature_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          stableSignature_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Stable signature for the exception
+     * </pre>
+     *
+     * <code>optional string stable_signature = 1;</code>
+     * @return The bytes for stableSignature.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getStableSignatureBytes() {
+      java.lang.Object ref = stableSignature_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        stableSignature_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int CRASH_REPORT_ID_FIELD_NUMBER = 2;
+    private volatile java.lang.Object crashReportId_;
+    /**
+     * <pre>
+     * Crash ReportID if assigned for the report
+     * Special value "[timeout]" indicates report id was not set in required
+     * time.
+     * </pre>
+     *
+     * <code>optional string crash_report_id = 2;</code>
+     * @return Whether the crashReportId field is set.
+     */
+    @java.lang.Override
+    public boolean hasCrashReportId() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <pre>
+     * Crash ReportID if assigned for the report
+     * Special value "[timeout]" indicates report id was not set in required
+     * time.
+     * </pre>
+     *
+     * <code>optional string crash_report_id = 2;</code>
+     * @return The crashReportId.
+     */
+    @java.lang.Override
+    public java.lang.String getCrashReportId() {
+      java.lang.Object ref = crashReportId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          crashReportId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Crash ReportID if assigned for the report
+     * Special value "[timeout]" indicates report id was not set in required
+     * time.
+     * </pre>
+     *
+     * <code>optional string crash_report_id = 2;</code>
+     * @return The bytes for crashReportId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getCrashReportIdBytes() {
+      java.lang.Object ref = crashReportId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        crashReportId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int EXCEPTION_INDEX_FIELD_NUMBER = 3;
+    private long exceptionIndex_;
+    /**
+     * <pre>
+     * Index of the exception in this session
+     * </pre>
+     *
+     * <code>optional int64 exception_index = 3;</code>
+     * @return Whether the exceptionIndex field is set.
+     */
+    @java.lang.Override
+    public boolean hasExceptionIndex() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <pre>
+     * Index of the exception in this session
+     * </pre>
+     *
+     * <code>optional int64 exception_index = 3;</code>
+     * @return The exceptionIndex.
+     */
+    @java.lang.Override
+    public long getExceptionIndex() {
+      return exceptionIndex_;
+    }
+
+    public static final int SIGNATURE_INDEX_FIELD_NUMBER = 4;
+    private long signatureIndex_;
+    /**
+     * <pre>
+     * Index of exception with this signature in this session
+     * </pre>
+     *
+     * <code>optional int64 signature_index = 4;</code>
+     * @return Whether the signatureIndex field is set.
+     */
+    @java.lang.Override
+    public boolean hasSignatureIndex() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <pre>
+     * Index of exception with this signature in this session
+     * </pre>
+     *
+     * <code>optional int64 signature_index = 4;</code>
+     * @return The signatureIndex.
+     */
+    @java.lang.Override
+    public long getSignatureIndex() {
+      return signatureIndex_;
+    }
+
+    public static final int SIGNATURE_REPORTS_SKIPPED_FIELD_NUMBER = 5;
+    private long signatureReportsSkipped_;
+    /**
+     * <pre>
+     * As some reports may be skipped if they happen too often,
+     * this field tells how many were skipped for the given signature
+     * </pre>
+     *
+     * <code>optional int64 signature_reports_skipped = 5;</code>
+     * @return Whether the signatureReportsSkipped field is set.
+     */
+    @java.lang.Override
+    public boolean hasSignatureReportsSkipped() {
+      return ((bitField0_ & 0x00000010) != 0);
+    }
+    /**
+     * <pre>
+     * As some reports may be skipped if they happen too often,
+     * this field tells how many were skipped for the given signature
+     * </pre>
+     *
+     * <code>optional int64 signature_reports_skipped = 5;</code>
+     * @return The signatureReportsSkipped.
+     */
+    @java.lang.Override
+    public long getSignatureReportsSkipped() {
+      return signatureReportsSkipped_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, stableSignature_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, crashReportId_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        output.writeInt64(3, exceptionIndex_);
+      }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        output.writeInt64(4, signatureIndex_);
+      }
+      if (((bitField0_ & 0x00000010) != 0)) {
+        output.writeInt64(5, signatureReportsSkipped_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, stableSignature_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, crashReportId_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(3, exceptionIndex_);
+      }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(4, signatureIndex_);
+      }
+      if (((bitField0_ & 0x00000010) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(5, signatureReportsSkipped_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception)) {
+        return super.equals(obj);
+      }
+      com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception other = (com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception) obj;
+
+      if (hasStableSignature() != other.hasStableSignature()) return false;
+      if (hasStableSignature()) {
+        if (!getStableSignature()
+            .equals(other.getStableSignature())) return false;
+      }
+      if (hasCrashReportId() != other.hasCrashReportId()) return false;
+      if (hasCrashReportId()) {
+        if (!getCrashReportId()
+            .equals(other.getCrashReportId())) return false;
+      }
+      if (hasExceptionIndex() != other.hasExceptionIndex()) return false;
+      if (hasExceptionIndex()) {
+        if (getExceptionIndex()
+            != other.getExceptionIndex()) return false;
+      }
+      if (hasSignatureIndex() != other.hasSignatureIndex()) return false;
+      if (hasSignatureIndex()) {
+        if (getSignatureIndex()
+            != other.getSignatureIndex()) return false;
+      }
+      if (hasSignatureReportsSkipped() != other.hasSignatureReportsSkipped()) return false;
+      if (hasSignatureReportsSkipped()) {
+        if (getSignatureReportsSkipped()
+            != other.getSignatureReportsSkipped()) return false;
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasStableSignature()) {
+        hash = (37 * hash) + STABLE_SIGNATURE_FIELD_NUMBER;
+        hash = (53 * hash) + getStableSignature().hashCode();
+      }
+      if (hasCrashReportId()) {
+        hash = (37 * hash) + CRASH_REPORT_ID_FIELD_NUMBER;
+        hash = (53 * hash) + getCrashReportId().hashCode();
+      }
+      if (hasExceptionIndex()) {
+        hash = (37 * hash) + EXCEPTION_INDEX_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getExceptionIndex());
+      }
+      if (hasSignatureIndex()) {
+        hash = (37 * hash) + SIGNATURE_INDEX_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getSignatureIndex());
+      }
+      if (hasSignatureReportsSkipped()) {
+        hash = (37 * hash) + SIGNATURE_REPORTS_SKIPPED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getSignatureReportsSkipped());
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code android_studio.SystemHealthEvent.Exception}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:android_studio.SystemHealthEvent.Exception)
+        com.google.wireless.android.sdk.stats.SystemHealthEvent.ExceptionOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SystemHealthEvent_Exception_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SystemHealthEvent_Exception_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception.class, com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception.Builder.class);
+      }
+
+      // Construct using com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        stableSignature_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        crashReportId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        exceptionIndex_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        signatureIndex_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        signatureReportsSkipped_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SystemHealthEvent_Exception_descriptor;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception getDefaultInstanceForType() {
+        return com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception build() {
+        com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception buildPartial() {
+        com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception result = new com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.stableSignature_ = stableSignature_;
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.crashReportId_ = crashReportId_;
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.exceptionIndex_ = exceptionIndex_;
+          to_bitField0_ |= 0x00000004;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.signatureIndex_ = signatureIndex_;
+          to_bitField0_ |= 0x00000008;
+        }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.signatureReportsSkipped_ = signatureReportsSkipped_;
+          to_bitField0_ |= 0x00000010;
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception) {
+          return mergeFrom((com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception other) {
+        if (other == com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception.getDefaultInstance()) return this;
+        if (other.hasStableSignature()) {
+          bitField0_ |= 0x00000001;
+          stableSignature_ = other.stableSignature_;
+          onChanged();
+        }
+        if (other.hasCrashReportId()) {
+          bitField0_ |= 0x00000002;
+          crashReportId_ = other.crashReportId_;
+          onChanged();
+        }
+        if (other.hasExceptionIndex()) {
+          setExceptionIndex(other.getExceptionIndex());
+        }
+        if (other.hasSignatureIndex()) {
+          setSignatureIndex(other.getSignatureIndex());
+        }
+        if (other.hasSignatureReportsSkipped()) {
+          setSignatureReportsSkipped(other.getSignatureReportsSkipped());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object stableSignature_ = "";
+      /**
+       * <pre>
+       * Stable signature for the exception
+       * </pre>
+       *
+       * <code>optional string stable_signature = 1;</code>
+       * @return Whether the stableSignature field is set.
+       */
+      public boolean hasStableSignature() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <pre>
+       * Stable signature for the exception
+       * </pre>
+       *
+       * <code>optional string stable_signature = 1;</code>
+       * @return The stableSignature.
+       */
+      public java.lang.String getStableSignature() {
+        java.lang.Object ref = stableSignature_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            stableSignature_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Stable signature for the exception
+       * </pre>
+       *
+       * <code>optional string stable_signature = 1;</code>
+       * @return The bytes for stableSignature.
+       */
+      public com.google.protobuf.ByteString
+          getStableSignatureBytes() {
+        java.lang.Object ref = stableSignature_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          stableSignature_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Stable signature for the exception
+       * </pre>
+       *
+       * <code>optional string stable_signature = 1;</code>
+       * @param value The stableSignature to set.
+       * @return This builder for chaining.
+       */
+      public Builder setStableSignature(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        stableSignature_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Stable signature for the exception
+       * </pre>
+       *
+       * <code>optional string stable_signature = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearStableSignature() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        stableSignature_ = getDefaultInstance().getStableSignature();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Stable signature for the exception
+       * </pre>
+       *
+       * <code>optional string stable_signature = 1;</code>
+       * @param value The bytes for stableSignature to set.
+       * @return This builder for chaining.
+       */
+      public Builder setStableSignatureBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        stableSignature_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object crashReportId_ = "";
+      /**
+       * <pre>
+       * Crash ReportID if assigned for the report
+       * Special value "[timeout]" indicates report id was not set in required
+       * time.
+       * </pre>
+       *
+       * <code>optional string crash_report_id = 2;</code>
+       * @return Whether the crashReportId field is set.
+       */
+      public boolean hasCrashReportId() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <pre>
+       * Crash ReportID if assigned for the report
+       * Special value "[timeout]" indicates report id was not set in required
+       * time.
+       * </pre>
+       *
+       * <code>optional string crash_report_id = 2;</code>
+       * @return The crashReportId.
+       */
+      public java.lang.String getCrashReportId() {
+        java.lang.Object ref = crashReportId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            crashReportId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Crash ReportID if assigned for the report
+       * Special value "[timeout]" indicates report id was not set in required
+       * time.
+       * </pre>
+       *
+       * <code>optional string crash_report_id = 2;</code>
+       * @return The bytes for crashReportId.
+       */
+      public com.google.protobuf.ByteString
+          getCrashReportIdBytes() {
+        java.lang.Object ref = crashReportId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          crashReportId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Crash ReportID if assigned for the report
+       * Special value "[timeout]" indicates report id was not set in required
+       * time.
+       * </pre>
+       *
+       * <code>optional string crash_report_id = 2;</code>
+       * @param value The crashReportId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCrashReportId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        crashReportId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Crash ReportID if assigned for the report
+       * Special value "[timeout]" indicates report id was not set in required
+       * time.
+       * </pre>
+       *
+       * <code>optional string crash_report_id = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCrashReportId() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        crashReportId_ = getDefaultInstance().getCrashReportId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Crash ReportID if assigned for the report
+       * Special value "[timeout]" indicates report id was not set in required
+       * time.
+       * </pre>
+       *
+       * <code>optional string crash_report_id = 2;</code>
+       * @param value The bytes for crashReportId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCrashReportIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        crashReportId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long exceptionIndex_ ;
+      /**
+       * <pre>
+       * Index of the exception in this session
+       * </pre>
+       *
+       * <code>optional int64 exception_index = 3;</code>
+       * @return Whether the exceptionIndex field is set.
+       */
+      @java.lang.Override
+      public boolean hasExceptionIndex() {
+        return ((bitField0_ & 0x00000004) != 0);
+      }
+      /**
+       * <pre>
+       * Index of the exception in this session
+       * </pre>
+       *
+       * <code>optional int64 exception_index = 3;</code>
+       * @return The exceptionIndex.
+       */
+      @java.lang.Override
+      public long getExceptionIndex() {
+        return exceptionIndex_;
+      }
+      /**
+       * <pre>
+       * Index of the exception in this session
+       * </pre>
+       *
+       * <code>optional int64 exception_index = 3;</code>
+       * @param value The exceptionIndex to set.
+       * @return This builder for chaining.
+       */
+      public Builder setExceptionIndex(long value) {
+        bitField0_ |= 0x00000004;
+        exceptionIndex_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Index of the exception in this session
+       * </pre>
+       *
+       * <code>optional int64 exception_index = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearExceptionIndex() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        exceptionIndex_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long signatureIndex_ ;
+      /**
+       * <pre>
+       * Index of exception with this signature in this session
+       * </pre>
+       *
+       * <code>optional int64 signature_index = 4;</code>
+       * @return Whether the signatureIndex field is set.
+       */
+      @java.lang.Override
+      public boolean hasSignatureIndex() {
+        return ((bitField0_ & 0x00000008) != 0);
+      }
+      /**
+       * <pre>
+       * Index of exception with this signature in this session
+       * </pre>
+       *
+       * <code>optional int64 signature_index = 4;</code>
+       * @return The signatureIndex.
+       */
+      @java.lang.Override
+      public long getSignatureIndex() {
+        return signatureIndex_;
+      }
+      /**
+       * <pre>
+       * Index of exception with this signature in this session
+       * </pre>
+       *
+       * <code>optional int64 signature_index = 4;</code>
+       * @param value The signatureIndex to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSignatureIndex(long value) {
+        bitField0_ |= 0x00000008;
+        signatureIndex_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Index of exception with this signature in this session
+       * </pre>
+       *
+       * <code>optional int64 signature_index = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearSignatureIndex() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        signatureIndex_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long signatureReportsSkipped_ ;
+      /**
+       * <pre>
+       * As some reports may be skipped if they happen too often,
+       * this field tells how many were skipped for the given signature
+       * </pre>
+       *
+       * <code>optional int64 signature_reports_skipped = 5;</code>
+       * @return Whether the signatureReportsSkipped field is set.
+       */
+      @java.lang.Override
+      public boolean hasSignatureReportsSkipped() {
+        return ((bitField0_ & 0x00000010) != 0);
+      }
+      /**
+       * <pre>
+       * As some reports may be skipped if they happen too often,
+       * this field tells how many were skipped for the given signature
+       * </pre>
+       *
+       * <code>optional int64 signature_reports_skipped = 5;</code>
+       * @return The signatureReportsSkipped.
+       */
+      @java.lang.Override
+      public long getSignatureReportsSkipped() {
+        return signatureReportsSkipped_;
+      }
+      /**
+       * <pre>
+       * As some reports may be skipped if they happen too often,
+       * this field tells how many were skipped for the given signature
+       * </pre>
+       *
+       * <code>optional int64 signature_reports_skipped = 5;</code>
+       * @param value The signatureReportsSkipped to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSignatureReportsSkipped(long value) {
+        bitField0_ |= 0x00000010;
+        signatureReportsSkipped_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * As some reports may be skipped if they happen too often,
+       * this field tells how many were skipped for the given signature
+       * </pre>
+       *
+       * <code>optional int64 signature_reports_skipped = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearSignatureReportsSkipped() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        signatureReportsSkipped_ = 0L;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:android_studio.SystemHealthEvent.Exception)
+    }
+
+    // @@protoc_insertion_point(class_scope:android_studio.SystemHealthEvent.Exception)
+    private static final com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception();
+    }
+
+    public static com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<Exception>
+        PARSER = new com.google.protobuf.AbstractParser<Exception>() {
+      @java.lang.Override
+      public Exception parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Exception(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<Exception> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Exception> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private int bitField0_;
   public static final int EVENT_TYPE_FIELD_NUMBER = 1;
   private int eventType_;
@@ -3205,6 +4552,71 @@ private static final long serialVersionUID = 0L;
     return memory_ == null ? com.google.wireless.android.sdk.stats.SystemHealthEvent.Memory.getDefaultInstance() : memory_;
   }
 
+  public static final int EXCEPTION_FIELD_NUMBER = 5;
+  private com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception exception_;
+  /**
+   * <pre>
+   * Exception details
+   * </pre>
+   *
+   * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+   * @return Whether the exception field is set.
+   */
+  @java.lang.Override
+  public boolean hasException() {
+    return ((bitField0_ & 0x00000010) != 0);
+  }
+  /**
+   * <pre>
+   * Exception details
+   * </pre>
+   *
+   * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+   * @return The exception.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception getException() {
+    return exception_ == null ? com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception.getDefaultInstance() : exception_;
+  }
+  /**
+   * <pre>
+   * Exception details
+   * </pre>
+   *
+   * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.SystemHealthEvent.ExceptionOrBuilder getExceptionOrBuilder() {
+    return exception_ == null ? com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception.getDefaultInstance() : exception_;
+  }
+
+  public static final int ESSENTIALS_MODE_FIELD_NUMBER = 6;
+  private boolean essentialsMode_;
+  /**
+   * <pre>
+   * Whether the IDE is in Essentials Mode
+   * </pre>
+   *
+   * <code>optional bool essentials_mode = 6;</code>
+   * @return Whether the essentialsMode field is set.
+   */
+  @java.lang.Override
+  public boolean hasEssentialsMode() {
+    return ((bitField0_ & 0x00000020) != 0);
+  }
+  /**
+   * <pre>
+   * Whether the IDE is in Essentials Mode
+   * </pre>
+   *
+   * <code>optional bool essentials_mode = 6;</code>
+   * @return The essentialsMode.
+   */
+  @java.lang.Override
+  public boolean getEssentialsMode() {
+    return essentialsMode_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -3231,6 +4643,12 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000008) != 0)) {
       output.writeMessage(4, getMemory());
     }
+    if (((bitField0_ & 0x00000010) != 0)) {
+      output.writeMessage(5, getException());
+    }
+    if (((bitField0_ & 0x00000020) != 0)) {
+      output.writeBool(6, essentialsMode_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -3255,6 +4673,14 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000008) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(4, getMemory());
+    }
+    if (((bitField0_ & 0x00000010) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(5, getException());
+    }
+    if (((bitField0_ & 0x00000020) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(6, essentialsMode_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -3290,6 +4716,16 @@ private static final long serialVersionUID = 0L;
       if (!getMemory()
           .equals(other.getMemory())) return false;
     }
+    if (hasException() != other.hasException()) return false;
+    if (hasException()) {
+      if (!getException()
+          .equals(other.getException())) return false;
+    }
+    if (hasEssentialsMode() != other.hasEssentialsMode()) return false;
+    if (hasEssentialsMode()) {
+      if (getEssentialsMode()
+          != other.getEssentialsMode()) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -3316,6 +4752,15 @@ private static final long serialVersionUID = 0L;
     if (hasMemory()) {
       hash = (37 * hash) + MEMORY_FIELD_NUMBER;
       hash = (53 * hash) + getMemory().hashCode();
+    }
+    if (hasException()) {
+      hash = (37 * hash) + EXCEPTION_FIELD_NUMBER;
+      hash = (53 * hash) + getException().hashCode();
+    }
+    if (hasEssentialsMode()) {
+      hash = (37 * hash) + ESSENTIALS_MODE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getEssentialsMode());
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -3448,6 +4893,7 @@ private static final long serialVersionUID = 0L;
         getUiFreezeFieldBuilder();
         getExitFieldBuilder();
         getMemoryFieldBuilder();
+        getExceptionFieldBuilder();
       }
     }
     @java.lang.Override
@@ -3473,6 +4919,14 @@ private static final long serialVersionUID = 0L;
         memoryBuilder_.clear();
       }
       bitField0_ = (bitField0_ & ~0x00000008);
+      if (exceptionBuilder_ == null) {
+        exception_ = null;
+      } else {
+        exceptionBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000010);
+      essentialsMode_ = false;
+      bitField0_ = (bitField0_ & ~0x00000020);
       return this;
     }
 
@@ -3528,6 +4982,18 @@ private static final long serialVersionUID = 0L;
           result.memory_ = memoryBuilder_.build();
         }
         to_bitField0_ |= 0x00000008;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        if (exceptionBuilder_ == null) {
+          result.exception_ = exception_;
+        } else {
+          result.exception_ = exceptionBuilder_.build();
+        }
+        to_bitField0_ |= 0x00000010;
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.essentialsMode_ = essentialsMode_;
+        to_bitField0_ |= 0x00000020;
       }
       result.bitField0_ = to_bitField0_;
       onBuilt();
@@ -3589,6 +5055,12 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasMemory()) {
         mergeMemory(other.getMemory());
+      }
+      if (other.hasException()) {
+        mergeException(other.getException());
+      }
+      if (other.hasEssentialsMode()) {
+        setEssentialsMode(other.getEssentialsMode());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -4129,6 +5601,217 @@ private static final long serialVersionUID = 0L;
         memory_ = null;
       }
       return memoryBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception exception_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception, com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception.Builder, com.google.wireless.android.sdk.stats.SystemHealthEvent.ExceptionOrBuilder> exceptionBuilder_;
+    /**
+     * <pre>
+     * Exception details
+     * </pre>
+     *
+     * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+     * @return Whether the exception field is set.
+     */
+    public boolean hasException() {
+      return ((bitField0_ & 0x00000010) != 0);
+    }
+    /**
+     * <pre>
+     * Exception details
+     * </pre>
+     *
+     * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+     * @return The exception.
+     */
+    public com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception getException() {
+      if (exceptionBuilder_ == null) {
+        return exception_ == null ? com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception.getDefaultInstance() : exception_;
+      } else {
+        return exceptionBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * Exception details
+     * </pre>
+     *
+     * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+     */
+    public Builder setException(com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception value) {
+      if (exceptionBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        exception_ = value;
+        onChanged();
+      } else {
+        exceptionBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00000010;
+      return this;
+    }
+    /**
+     * <pre>
+     * Exception details
+     * </pre>
+     *
+     * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+     */
+    public Builder setException(
+        com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception.Builder builderForValue) {
+      if (exceptionBuilder_ == null) {
+        exception_ = builderForValue.build();
+        onChanged();
+      } else {
+        exceptionBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00000010;
+      return this;
+    }
+    /**
+     * <pre>
+     * Exception details
+     * </pre>
+     *
+     * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+     */
+    public Builder mergeException(com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception value) {
+      if (exceptionBuilder_ == null) {
+        if (((bitField0_ & 0x00000010) != 0) &&
+            exception_ != null &&
+            exception_ != com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception.getDefaultInstance()) {
+          exception_ =
+            com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception.newBuilder(exception_).mergeFrom(value).buildPartial();
+        } else {
+          exception_ = value;
+        }
+        onChanged();
+      } else {
+        exceptionBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00000010;
+      return this;
+    }
+    /**
+     * <pre>
+     * Exception details
+     * </pre>
+     *
+     * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+     */
+    public Builder clearException() {
+      if (exceptionBuilder_ == null) {
+        exception_ = null;
+        onChanged();
+      } else {
+        exceptionBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000010);
+      return this;
+    }
+    /**
+     * <pre>
+     * Exception details
+     * </pre>
+     *
+     * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+     */
+    public com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception.Builder getExceptionBuilder() {
+      bitField0_ |= 0x00000010;
+      onChanged();
+      return getExceptionFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Exception details
+     * </pre>
+     *
+     * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+     */
+    public com.google.wireless.android.sdk.stats.SystemHealthEvent.ExceptionOrBuilder getExceptionOrBuilder() {
+      if (exceptionBuilder_ != null) {
+        return exceptionBuilder_.getMessageOrBuilder();
+      } else {
+        return exception_ == null ?
+            com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception.getDefaultInstance() : exception_;
+      }
+    }
+    /**
+     * <pre>
+     * Exception details
+     * </pre>
+     *
+     * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception, com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception.Builder, com.google.wireless.android.sdk.stats.SystemHealthEvent.ExceptionOrBuilder> 
+        getExceptionFieldBuilder() {
+      if (exceptionBuilder_ == null) {
+        exceptionBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception, com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception.Builder, com.google.wireless.android.sdk.stats.SystemHealthEvent.ExceptionOrBuilder>(
+                getException(),
+                getParentForChildren(),
+                isClean());
+        exception_ = null;
+      }
+      return exceptionBuilder_;
+    }
+
+    private boolean essentialsMode_ ;
+    /**
+     * <pre>
+     * Whether the IDE is in Essentials Mode
+     * </pre>
+     *
+     * <code>optional bool essentials_mode = 6;</code>
+     * @return Whether the essentialsMode field is set.
+     */
+    @java.lang.Override
+    public boolean hasEssentialsMode() {
+      return ((bitField0_ & 0x00000020) != 0);
+    }
+    /**
+     * <pre>
+     * Whether the IDE is in Essentials Mode
+     * </pre>
+     *
+     * <code>optional bool essentials_mode = 6;</code>
+     * @return The essentialsMode.
+     */
+    @java.lang.Override
+    public boolean getEssentialsMode() {
+      return essentialsMode_;
+    }
+    /**
+     * <pre>
+     * Whether the IDE is in Essentials Mode
+     * </pre>
+     *
+     * <code>optional bool essentials_mode = 6;</code>
+     * @param value The essentialsMode to set.
+     * @return This builder for chaining.
+     */
+    public Builder setEssentialsMode(boolean value) {
+      bitField0_ |= 0x00000020;
+      essentialsMode_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Whether the IDE is in Essentials Mode
+     * </pre>
+     *
+     * <code>optional bool essentials_mode = 6;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearEssentialsMode() {
+      bitField0_ = (bitField0_ & ~0x00000020);
+      essentialsMode_ = false;
+      onChanged();
+      return this;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

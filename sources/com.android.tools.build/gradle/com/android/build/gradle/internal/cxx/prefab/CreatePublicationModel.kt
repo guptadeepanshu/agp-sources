@@ -23,6 +23,7 @@ import com.android.build.gradle.internal.cxx.gradle.generator.CxxConfigurationMo
 import com.android.build.gradle.internal.cxx.logging.errorln
 import com.android.build.gradle.internal.cxx.model.jsonFile
 import com.android.build.gradle.internal.cxx.model.minSdkVersion
+import com.android.build.gradle.internal.cxx.model.name
 import com.android.utils.cxx.CxxDiagnosticCode.PREFAB_GRADLE_VERSION_NOT_COMPATIBLE_WITH_PREFAB
 import java.util.regex.Pattern
 
@@ -43,7 +44,7 @@ fun createPrefabPublication(
 
     val abis = configurationModel.activeAbis.map { abi ->
         PrefabAbiPublication(
-            abiName = abi.abi.tag,
+            abiName = abi.name,
             abiApi = abi.minSdkVersion,
             abiStl = abi.variant.stlType,
             abiNdkMajor = abi.variant.module.ndkVersion.major,

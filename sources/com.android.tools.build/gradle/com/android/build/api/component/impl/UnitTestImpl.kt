@@ -92,10 +92,10 @@ open class UnitTestImpl @Inject constructor(
      * in the test manifest as robolectric depends on it.
      */
     override val targetSdkVersion: AndroidVersion
-        get() = getMainTargetSdkVersion()
+        get() = global.unitTestOptions.targetSdkVersion ?: getMainTargetSdkVersion()
 
     /**
-     * Return the default runner as with unit tests, there is no dexing. However aapt2 requires
+     * Return the default runner as with unit tests, there is no dexing. However, aapt2 requires
      * the instrumentation tag to be present in the merged manifest to process android resources.
      */
     override val instrumentationRunner: Provider<String>

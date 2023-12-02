@@ -283,12 +283,26 @@ class ValueResourceParser2 {
 
         String name = resource.getName();
         if (!set.add(name) && resource.getType() != ResourceType.PUBLIC) {
+            String suffix =
+                    (hasOutdatedProductAttribute(resource))
+                            ? ". Probably you want to define a new flavor for building multiple APKs "
+                                    + "with different values for the same resource"
+                            : "";
             throw MergingException.withMessage(
-                            "Found item %s/%s more than one time",
-                            resource.getType().getDisplayName(), name)
+                            "Found item %s/%s more than one time" + suffix,
+                            resource.getType().getDisplayName(),
+                            name)
                     .withFile(from)
                     .build();
         }
+    }
+
+    private static boolean hasOutdatedProductAttribute(ResourceMergerItem resource) {
+        Node node = resource.getValue();
+        if (node != null) {
+            return node.getAttributes().getNamedItem("product") != null;
+        }
+        return false;
     }
 
     private static boolean hasFormatAttribute(Node node) {

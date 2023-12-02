@@ -31,6 +31,7 @@ import com.android.build.gradle.internal.fusedlibrary.getDslServices
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.tasks.MergeJavaResourceTask
+import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.tasks.FusedLibraryBundleAar
 import com.android.build.gradle.tasks.FusedLibraryBundleClasses
 import com.android.build.gradle.tasks.FusedLibraryClassesRewriteTask
@@ -41,6 +42,7 @@ import com.android.build.gradle.tasks.FusedLibraryMergeResourcesTask
 import com.google.wireless.android.sdk.stats.GradleBuildProject
 import groovy.namespace.QName
 import groovy.util.Node
+import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ArtifactCollection
@@ -272,6 +274,15 @@ class FusedLibraryPlugin @Inject constructor(
 
     override fun apply(project: Project) {
         super.basePluginApply(project)
+
+        if (!projectServices.projectOptions[BooleanOption.FUSED_LIBRARY_SUPPORT]) {
+            throw GradleException(
+                    "Fused Library Plugin is in development and is not yet supported.\n" +
+                            "To enable support for internal testing only, add\n" +
+                            "    ${BooleanOption.FUSED_LIBRARY_SUPPORT.propertyName}=true\n" +
+                            "to your project's gradle.properties file."
+            )
+        }
 
         // so far by default, we consume and publish only 'debug' variant
 

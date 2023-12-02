@@ -21,7 +21,9 @@ import groovy.lang.Closure
  * An AndroidSourceSet represents a logical group of Java, aidl and RenderScript sources
  * as well as Android and non-Android (Java-style) resources.
  */
-@Deprecated("Use  com.android.build.api.dsl.AndroidSourceSet")
+@Deprecated(
+    "Deprecated and moved to a new package",
+    ReplaceWith("com.android.build.api.dsl.AndroidSourceSet"))
 interface AndroidSourceSet: com.android.build.api.dsl.AndroidSourceSet {
 
     override fun getName(): String
@@ -35,19 +37,25 @@ interface AndroidSourceSet: com.android.build.api.dsl.AndroidSourceSet {
     /**
      * Returns the name of the compile configuration for this source set.
      */
-    @get:Deprecated("use {@link #getImplementationConfigurationName()}")
+    @get:Deprecated(
+        "This property is deprecated. Use getImplementationConfigurationName() instead",
+        ReplaceWith("implementationConfigurationName()"))
     val compileConfigurationName: String
 
     /**
      * Returns the name of the runtime configuration for this source set.
      */
-    @get:Deprecated("use {@link #getRuntimeOnlyConfigurationName()}")
+    @get:Deprecated(
+        "This property is deprecated. Use getRuntimeOnlyConfigurationName() instead",
+        ReplaceWith("runtimeOnlyConfigurationName"))
     val packageConfigurationName: String
 
     /**
      * Returns the name of the compiled-only configuration for this source set.
      */
-    @get:Deprecated("use {@link #getCompileOnlyConfigurationName()}")
+    @get:Deprecated(
+        "This property is deprecated. Use getCompileOnlyConfigurationName() instead",
+        ReplaceWith("compileOnlyConfigurationName"))
     val providedConfigurationName: String
 
     override val manifest: AndroidSourceFile
@@ -122,9 +130,9 @@ interface AndroidSourceSet: com.android.build.api.dsl.AndroidSourceSet {
 
     /**
      * The Android JNI source directory for this source set.
-     * @deprecated This is unused and will be removed in AGP 8.0
+     * @deprecated This is unused and will be removed in AGP 9.0
      */
-    @Deprecated("Unused")
+    @Deprecated("This property is unused and will be removed in AGP 9.0")
     override val jni: AndroidSourceDirectorySet
 
     /**
@@ -134,9 +142,9 @@ interface AndroidSourceSet: com.android.build.api.dsl.AndroidSourceSet {
      * @param configureClosure The closure to use to configure the JNI source.
      * @return this
      *
-     * @deprecated This is unused and will be removed in AGP 8.0
+     * @deprecated This is unused and will be removed in AGP 9.0
      */
-    @Deprecated("Unused")
+    @Deprecated("This property is unused and will be removed in AGP 9.0")
     fun jni(configureClosure: Closure<*>): AndroidSourceSet
 
     override val jniLibs: AndroidSourceDirectorySet

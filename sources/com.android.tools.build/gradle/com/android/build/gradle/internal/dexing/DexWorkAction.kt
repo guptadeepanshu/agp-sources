@@ -109,7 +109,7 @@ private fun processIncrementally(
         // Process only input files that are modified, added, or unchanged-but-impacted
         val filter: (File, String) -> Boolean = { rootPath: File, relativePath: String ->
             // Note that the `changedOrImpactedFiles` set may contain removed files, but those files
-            // will not not be selected as candidates in the process() method and therefore will not
+            // will not be selected as candidates in the process() method and therefore will not
             // make it to this filter.
             rootPath in changedOrImpactedFiles /* for jars (we don't track class files in jars) */ ||
                     rootPath.resolve(relativePath) in changedOrImpactedFiles /* for class files in dirs */

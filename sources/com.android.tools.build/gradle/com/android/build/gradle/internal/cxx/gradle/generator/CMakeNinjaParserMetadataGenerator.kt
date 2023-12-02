@@ -24,6 +24,7 @@ import com.android.build.gradle.internal.cxx.model.compileCommandsJsonFile
 import com.android.build.gradle.internal.cxx.model.jsonFile
 import com.android.build.gradle.internal.cxx.model.ninjaBuildFile
 import com.android.build.gradle.internal.cxx.model.createNinjaCommand
+import com.android.build.gradle.internal.cxx.model.name
 import com.android.build.gradle.internal.cxx.ninja.adaptNinjaToCxxBuild
 import com.android.build.gradle.internal.cxx.process.ExecuteProcessCommand
 import com.android.build.gradle.internal.cxx.process.ExecuteProcessType.CONFIGURE_PROCESS
@@ -61,7 +62,7 @@ internal class CMakeNinjaParserMetadataGenerator(
         // Build expected metadata
         val config = adaptNinjaToCxxBuild(
             ninjaBuildFile = abi.ninjaBuildFile,
-            abi = abi.abi.tag,
+            abi = abi.name,
             cxxBuildFolder = abi.cxxBuildFolder,
             createNinjaCommand = abi::createNinjaCommand,
             compileCommandsJsonBin = abi.compileCommandsJsonBinFile,

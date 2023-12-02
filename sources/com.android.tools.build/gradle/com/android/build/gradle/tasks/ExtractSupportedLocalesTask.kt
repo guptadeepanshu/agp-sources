@@ -21,9 +21,9 @@ import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
-import com.android.buildanalyzer.common.TaskCategory
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.ide.common.resources.generateLocaleList
 import com.android.ide.common.resources.readResourcesPropertiesFile
 import com.android.ide.common.resources.validateLocale
@@ -66,7 +66,7 @@ abstract class ExtractSupportedLocalesTask : NonIncrementalTask() {
     public override fun doTaskAction() {
         val resources = listOf(nonMainResSet.files, mainResSet.files).flatten()
 
-        val localeList = generateLocaleList(resources = resources)
+        val localeList = generateLocaleList(resources)
 
         var validatedDefaultLocale: String? = null
 

@@ -17,6 +17,7 @@
 package com.android.build.gradle.internal.services
 
 import com.android.build.gradle.internal.SdkComponentsBuildService
+import com.android.builder.model.v2.ide.ProjectType
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.ExtensiblePolymorphicDomainObjectContainer
 import org.gradle.api.NamedDomainObjectContainer
@@ -37,6 +38,15 @@ import java.io.File
  */
 interface DslServices: BaseServices {
 
+   /* enum class ProjectType {
+        APPLICATION,
+        LIBRARY,
+        DYNAMIC_FEATURE,
+        TEST,
+        FUSED_LIBRARIES,
+        LINT_STANDALONE
+    }*/
+
     val logger: Logger
     val buildDirectory: DirectoryProperty
 
@@ -44,6 +54,8 @@ interface DslServices: BaseServices {
     val sdkComponents: Provider<SdkComponentsBuildService>
     @Deprecated("Should not be used in new DSL object. Only for older DSL objects.")
     val versionedSdkLoaderService: VersionedSdkLoaderService
+    val projectType: ProjectType?
+
 
     fun <T> domainObjectSet(type: Class<T>): DomainObjectSet<T>
     fun <T> domainObjectContainer(

@@ -185,6 +185,10 @@ public enum StringOption
    * <code>ANDROID_PRIVACY_SANDBOX_SDK_API_PACKAGER = 43;</code>
    */
   ANDROID_PRIVACY_SANDBOX_SDK_API_PACKAGER(43),
+  /**
+   * <code>LINT_RESERVED_MEMORY_PER_TASK = 44;</code>
+   */
+  LINT_RESERVED_MEMORY_PER_TASK(44),
   UNRECOGNIZED(-1),
   ;
 
@@ -364,6 +368,10 @@ public enum StringOption
    * <code>ANDROID_PRIVACY_SANDBOX_SDK_API_PACKAGER = 43;</code>
    */
   public static final int ANDROID_PRIVACY_SANDBOX_SDK_API_PACKAGER_VALUE = 43;
+  /**
+   * <code>LINT_RESERVED_MEMORY_PER_TASK = 44;</code>
+   */
+  public static final int LINT_RESERVED_MEMORY_PER_TASK_VALUE = 44;
 
 
   public final int getNumber() {
@@ -434,6 +442,7 @@ public enum StringOption
       case 41: return ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR;
       case 42: return ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR_GENERATED_RUNTIME_DEPENDENCIES;
       case 43: return ANDROID_PRIVACY_SANDBOX_SDK_API_PACKAGER;
+      case 44: return LINT_RESERVED_MEMORY_PER_TASK;
       default: return null;
     }
   }

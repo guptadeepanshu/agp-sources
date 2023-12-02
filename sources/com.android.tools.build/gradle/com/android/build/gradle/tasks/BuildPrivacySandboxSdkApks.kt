@@ -122,7 +122,6 @@ abstract class BuildPrivacySandboxSdkApks : NonIncrementalTask() {
     }
     companion object {
 
-        @VisibleForTesting
         fun forEachInputFile(
                 inputFiles: Iterable<Path>,
                 outputDirectory: Path,

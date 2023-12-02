@@ -121,6 +121,21 @@ public class RenderSession {
     }
 
     /**
+     * Re-renders the layout as-is. In case of success, this should be followed by calls to {@link
+     * #getRootViews()} and {@link #getImage()} to access the result of the rendering. This call
+     * also allows triggering a forced measure.
+     *
+     * <p>This is equivalent to calling <code>render(SceneParams.DEFAULT_TIMEOUT, forceMeasure)
+     * </code>
+     *
+     * @param forceMeasure force running measure for the layout.
+     * @return a {@link Result} indicating the status of the action.
+     */
+    public Result render(boolean forceMeasure) {
+        return render(RenderParams.DEFAULT_TIMEOUT, forceMeasure);
+    }
+
+    /**
      * Re-renders the layout as-is, with a given timeout in case other renderings are being done.
      * In case of success, this should be followed by calls to {@link #getRootViews()} and
      * {@link #getImage()} to access the result of the rendering.

@@ -170,4 +170,16 @@ interface Variant : Component, HasAndroidResources {
      */
     @get:Incubating
     val components: List<Component>
+
+    /**
+     * Set up a new matching request for a given flavor dimension and value.
+     *
+     * @see [com.android.build.api.dsl.BaseFlavor.missingDimensionStrategy]
+     * To learn more, read [Select default flavors for missing dimensions](d.android.com//build/build-variants).
+     *
+     * @param dimension the flavor dimension
+     * @param requestedValues the flavor name(s)
+     */
+    @Incubating
+    fun missingDimensionStrategy(dimension: String, vararg requestedValues: String)
 }

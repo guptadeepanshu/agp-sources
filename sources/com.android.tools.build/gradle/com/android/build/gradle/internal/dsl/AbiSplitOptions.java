@@ -40,7 +40,7 @@ public abstract class AbiSplitOptions extends SplitOptions
     @Override
     protected Set<String> getDefaultValues() {
         Set<String> values = Sets.newHashSet();
-        for (Abi abi : Abi.getDefaultValues()) {
+        for (Abi abi : Abi.values()) {
             values.add(abi.getTag());
         }
         return values;

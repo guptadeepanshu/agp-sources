@@ -24,6 +24,7 @@ final class Hinge {
     private String mRanges;
     private int mDefaults;
     private String mAreas;
+    private boolean mChangeOrientationOnFold;
     private int mFoldAtPosture = -1;
     private String mPostureList;
     private String mHingeAnglePostureDefinitions;
@@ -66,6 +67,14 @@ final class Hinge {
 
     void setDefaults(int defaults) {
         this.mDefaults = defaults;
+    }
+
+    boolean getChangeOrientationOnFold() {
+        return mChangeOrientationOnFold;
+    }
+
+    void setChangeOrientationOnFold(boolean changeOrientationOnFold) {
+        mChangeOrientationOnFold = changeOrientationOnFold;
     }
 
     String getAreas() {
@@ -114,6 +123,7 @@ final class Hinge {
         h.mRanges = mRanges;
         h.mDefaults = mDefaults;
         h.mAreas = mAreas;
+        h.mChangeOrientationOnFold = mChangeOrientationOnFold;
         h.mFoldAtPosture = mFoldAtPosture;
         h.mPostureList = mPostureList;
         h.mHingeAnglePostureDefinitions = mHingeAnglePostureDefinitions;

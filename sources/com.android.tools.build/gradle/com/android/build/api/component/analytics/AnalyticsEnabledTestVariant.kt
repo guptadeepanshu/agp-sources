@@ -26,6 +26,7 @@ import com.android.build.api.variant.TestVariant
 import com.android.tools.build.gradle.internal.profile.VariantPropertiesMethodType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import javax.inject.Inject
@@ -55,6 +56,13 @@ open class AnalyticsEnabledTestVariant @Inject constructor(
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.INSTRUMENTATION_RUNNER_VALUE
             return delegate.instrumentationRunner
+        }
+
+    override val instrumentationRunnerArguments: MapProperty<String, String>
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.INSTRUMENTATION_RUNNER_ARGUMENTS_VALUE
+            return delegate.instrumentationRunnerArguments
         }
 
     override val handleProfiling: Property<Boolean>

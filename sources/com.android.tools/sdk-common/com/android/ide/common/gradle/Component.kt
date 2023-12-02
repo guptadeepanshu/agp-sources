@@ -15,11 +15,14 @@
  */
 package com.android.ide.common.gradle
 
+import java.io.Serializable
+
 data class Component(
     val module: Module,
     val version: Version,
-) {
+): Serializable {
     constructor(group: String, name: String, version: Version): this(Module(group, name), version)
+
     val group get() = module.group
     val name get() = module.name
 

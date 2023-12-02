@@ -133,7 +133,9 @@ fun rewriteLinkException(
     return rewriteException(e, errorFormatMode, true, logger, identifiedSourceSetMap) {
         var newFile = it
         if (mergingLog != null) {
-            newFile = mergingLog.find(it)
+            try {
+                newFile = mergingLog.find(it)
+            } catch (ignored: Exception) { }
         }
         // If the merging log fails to find the original position, then try the manifest merge blame
         if (it == newFile && manifestMergeBlameContents != null) {

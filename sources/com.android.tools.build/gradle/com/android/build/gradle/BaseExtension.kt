@@ -15,6 +15,7 @@
  */
 package com.android.build.gradle
 
+import com.android.SdkConstants
 import com.android.annotations.NonNull
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.BuildFeatures
@@ -368,8 +369,6 @@ abstract class BaseExtension protected constructor(
         // do not call this method from within the plugin code as it forces part of SDK initialization.
             return dslServices.sdkComponents.map {
                 it.versionedNdkHandler(
-                    compileSdkVersion
-                        ?: throw kotlin.IllegalStateException("compileSdkVersion not set in the android configuration"),
                     ndkVersion,
                     ndkPath
                 ).ndkPlatform.getOrThrow().ndkDirectory
@@ -450,7 +449,7 @@ abstract class BaseExtension protected constructor(
 
     abstract override var resourcePrefix: String?
 
-    abstract override var ndkVersion: String?
+    abstract override var ndkVersion: String
 
     abstract var ndkPath: String?
 

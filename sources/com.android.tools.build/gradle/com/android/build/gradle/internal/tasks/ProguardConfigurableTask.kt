@@ -26,6 +26,8 @@ import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
+import com.android.build.gradle.internal.dependency.AarToRClassTransform
+import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.PROJECT
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.APK_MAPPING
@@ -43,12 +45,17 @@ import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.google.common.base.Preconditions
 import org.gradle.api.artifacts.ArtifactCollection
+import org.gradle.api.artifacts.transform.TransformParameters
+import org.gradle.api.artifacts.transform.TransformSpec
+import org.gradle.api.attributes.Usage
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.ProjectLayout
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.internal.artifacts.ArtifactAttributes
+import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.provider.SetProperty
@@ -64,6 +71,7 @@ import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.work.DisableCachingByDefault
 import java.io.File
+import javax.inject.Inject
 
 /**
  * Base class for tasks that consume ProGuard configuration files.
@@ -135,6 +143,9 @@ abstract class ProguardConfigurableTask(
 
     @get:Input
     abstract val hasAllAccessTransformers: Property<Boolean>
+
+    @get:Inject
+    abstract val objectFactory: ObjectFactory
 
     /**
      * Users can have access to the default proguard file location through the
@@ -220,18 +231,16 @@ abstract class ProguardConfigurableTask(
 
         private val externalInputScopes =
             when {
-                componentType.isAar -> mutableSetOf(
+                componentType.isAar -> setOf(
                     InternalScopedArtifacts.InternalScope.LOCAL_DEPS
                 )
-                includeFeaturesInScopes -> mutableSetOf(
+                else -> setOf(
                     InternalScopedArtifacts.InternalScope.SUB_PROJECTS,
                     InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS,
-                    InternalScopedArtifacts.InternalScope.FEATURES
-                )
-                else -> mutableSetOf(
-                    InternalScopedArtifacts.InternalScope.SUB_PROJECTS,
-                    InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS
-                )
+                    InternalScopedArtifacts.InternalScope.FEATURES.takeIf {
+                        includeFeaturesInScopes
+                    }
+                ).filterNotNull().toSet()
             }
 
         init {
@@ -276,6 +285,14 @@ abstract class ProguardConfigurableTask(
                     it.from(creationConfig.artifacts.forScope(
                         scope
                     ).getFinalArtifacts(ScopedArtifact.CLASSES))
+                }
+
+                if (componentType.isAar) {
+                    it.from(creationConfig.variantDependencies.getArtifactFileCollection(
+                        AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
+                        AndroidArtifacts.ArtifactScope.ALL,
+                        AndroidArtifacts.ArtifactType.R_CLASS_JAR
+                    ))
                 }
             }
             referencedResources = creationConfig.services.fileCollection().also {
@@ -346,6 +363,7 @@ abstract class ProguardConfigurableTask(
                 }
             }
 
+            registerAarToRClassTransform(task)
             task.referencedClasses.from(referencedClasses)
 
             task.referencedResources.from(referencedResources)
@@ -354,6 +372,31 @@ abstract class ProguardConfigurableTask(
                 creationConfig.global.globalArtifacts.get(InternalArtifactType.DEFAULT_PROGUARD_FILES))
 
             applyProguardRules(task, creationConfig, task.testedMappingFile, testedConfig)
+        }
+
+        private fun registerAarToRClassTransform(task: ProguardConfigurableTask) {
+            val apiUsage: Usage = task.objectFactory.named(Usage::class.java, Usage.JAVA_API)
+
+            creationConfig.services.dependencies.registerTransform(
+                AarToRClassTransform::class.java
+            ) { reg: TransformSpec<TransformParameters.None> ->
+                reg.from.attribute(
+                    ArtifactAttributes.ARTIFACT_FORMAT,
+                    creationConfig.global.aarOrJarTypeToConsume.aar.type
+                )
+                reg.from.attribute(
+                    Usage.USAGE_ATTRIBUTE,
+                    apiUsage
+                )
+                reg.to.attribute(
+                    ArtifactAttributes.ARTIFACT_FORMAT,
+                    AndroidArtifacts.ArtifactType.R_CLASS_JAR.type
+                )
+                reg.to.attribute(
+                    Usage.USAGE_ATTRIBUTE,
+                    apiUsage
+                )
+            }
         }
 
         private fun applyProguardRules(

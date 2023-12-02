@@ -23,6 +23,7 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.PublishedConfigSpec
 import com.android.build.gradle.internal.publishing.PublishingSpecs
 import com.android.build.gradle.internal.publishing.VariantPublishingInfo
+import com.android.build.gradle.internal.publishing.getAttributes
 import com.android.build.gradle.internal.testFixtures.testFixturesClassifier
 import com.google.common.base.Preconditions
 import org.gradle.api.NamedDomainObjectContainer
@@ -192,7 +193,15 @@ private fun publishIntermediateArtifact(
                     config,
                     artifact,
                     artifactType,
-                    AndroidAttributes(null, libraryElements)
+                    artifactType.getAttributes(
+                        namedAttributes = libraryElements?.let {
+                            mapOf(
+                                LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE to libraryElements
+                            )
+                        }
+                    ) { type, name ->
+                        creationConfig.services.named(type, name)
+                    }
                 )
             }
         }

@@ -289,21 +289,20 @@ abstract class SdkComponentsBuildService @Inject constructor(
 
     class VersionedNdkHandler(
         ndkLocator: NdkLocator,
-        compileSdkVersion: String,
         objectFactory: ObjectFactory,
         providerFactory: ProviderFactory
-    ): NdkHandler(ndkLocator, compileSdkVersion) {
+    ): NdkHandler(ndkLocator) {
 
         val ndkDirectoryProvider: Provider<Directory> =
             objectFactory.directoryProperty().fileProvider(providerFactory.provider {
                 ndkPlatform.getOrThrow().ndkDirectory
             })
 
-        val objcopyExecutableMapProvider: Provider<Map<Abi, File>> = providerFactory.provider {
+        val objcopyExecutableMapProvider: Provider<Map<String, File>> = providerFactory.provider {
             if (!ndkPlatform.isConfigured) {
-                return@provider mapOf<Abi, File>()
+                return@provider mapOf<String, File>()
             }
-            val objcopyExecutables = mutableMapOf<Abi, File>()
+            val objcopyExecutables = mutableMapOf<String, File>()
             for (abi in ndkPlatform.getOrThrow().supportedAbis) {
                 objcopyExecutables[abi] =
                     ndkPlatform.getOrThrow().ndkInfo.getObjcopyExecutable(abi)
@@ -344,20 +343,17 @@ abstract class SdkComponentsBuildService @Inject constructor(
             buildToolsRevision)
 
     fun versionedNdkHandler(
-        compileSdkVersion: String,
         ndkVersion: String?,
         ndkPath: String?
     ): VersionedNdkHandler =
         VersionedNdkHandler(
             ndkLoader(ndkVersion, ndkPath),
-            compileSdkVersion,
             objectFactory,
             providerFactory)
 
     fun versionedNdkHandler(input: NdkHandlerInput) =
         VersionedNdkHandler(
             ndkLoader(input.ndkVersion.orNull, input.ndkPath.orNull),
-            input.compileSdkVersion.get(),
             objectFactory,
             providerFactory)
 
@@ -540,9 +536,6 @@ fun BuildToolsExecutableInput.initialize(
 abstract class NdkHandlerInput {
 
     @get:Input
-    abstract val compileSdkVersion: Property<String>
-
-    @get:Input
     @get:Optional
     abstract val ndkVersion: Property<String>
 
@@ -552,11 +545,9 @@ abstract class NdkHandlerInput {
 }
 
 fun NdkHandlerInput.initialize(creationConfig: ComponentCreationConfig) {
-    compileSdkVersion.setDisallowChanges(creationConfig.global.compileSdkHashString)
     ndkVersion.setDisallowChanges(creationConfig.global.ndkVersion)
     ndkPath.setDisallowChanges(creationConfig.global.ndkPath)
 }
 
 internal const val API_VERSIONS_FILE_NAME = "api-versions.xml"
 internal const val PLATFORM_API_VERSIONS_FILE_PATH = "data/$API_VERSIONS_FILE_NAME"
-internal const val PLATFORM_TOOLS_API_VERSIONS_FILE_PATH = "api/$API_VERSIONS_FILE_NAME"

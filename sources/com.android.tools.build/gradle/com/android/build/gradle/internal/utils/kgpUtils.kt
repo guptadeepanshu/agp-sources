@@ -18,8 +18,8 @@
 
 package com.android.build.gradle.internal.utils
 
+import com.android.build.api.dsl.AndroidSourceSet
 import com.android.build.gradle.BaseExtension
-import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.internal.api.DefaultAndroidSourceDirectorySet
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
@@ -29,6 +29,7 @@ import com.android.build.gradle.internal.services.getBuildService
 import com.android.utils.appendCapitalized
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.NamedDomainObjectContainer
+import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.artifacts.Configuration
@@ -43,7 +44,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 const val KOTLIN_ANDROID_PLUGIN_ID = "org.jetbrains.kotlin.android"
 const val KOTLIN_KAPT_PLUGIN_ID = "org.jetbrains.kotlin.kapt"
 const val KSP_PLUGIN_ID = "com.google.devtools.ksp"
-private val KOTLIN_MPP_PLUGIN_IDS = listOf("kotlin-multiplatform", "org.jetbrains.kotlin.multiplatform")
+const val KOTLIN_MPP_PLUGIN_ID = "org.jetbrains.kotlin.multiplatform"
+private val KOTLIN_MPP_PLUGIN_IDS = listOf("kotlin-multiplatform", KOTLIN_MPP_PLUGIN_ID)
 
 /**
  * Returns `true` if any of the Kotlin plugins is applied (there are many Kotlin plugins). If we
@@ -65,9 +67,7 @@ fun isKotlinPluginApplied(project: Project): Boolean {
  * is applied but version can't be determined.
  */
 fun getProjectKotlinPluginKotlinVersion(project: Project): KotlinVersion? {
-    val currVersion = getKotlinPluginVersion(project)
-    if (currVersion == null || currVersion == "unknown")
-        return null
+    val currVersion = getKotlinAndroidPluginVersion(project) ?: return null
     return parseKotlinVersion(currVersion)
 }
 
@@ -92,8 +92,12 @@ fun parseKotlinVersion(currVersion: String): KotlinVersion? {
  * returns the kotlin plugin version as string, or null if plugin is not applied to this project, or
  * "unknown" if plugin is applied but version can't be determined.
  */
-fun getKotlinPluginVersion(project: Project): String? {
+fun getKotlinAndroidPluginVersion(project: Project): String? {
     val plugin = project.plugins.findPlugin("kotlin-android") ?: return null
+    return getKotlinPluginVersionFromPlugin(plugin)
+}
+
+fun getKotlinPluginVersionFromPlugin(plugin: Plugin<*>): String? {
     return try {
         // No null checks below because we're catching all exceptions.
         // KGP 1.7.0+ has getPluginVersion and older version have getKotlinPluginVersion
@@ -105,7 +109,7 @@ fun getKotlinPluginVersion(project: Project): String? {
     } catch (e: Throwable) {
         // Defensively catch all exceptions because we don't want it to crash
         // if kotlin plugin code changes unexpectedly.
-        "unknown"
+        null
     }
 }
 
@@ -280,14 +284,11 @@ fun syncAgpAndKgpSources(
                 // so we can skip doing that.
                 return null
             }
-            val convention = this::class.java.getMethod("getConvention").invoke(this)
-            val plugins =
-                convention::class.java.getMethod("getPlugins")
-                    .invoke(convention) as Map<String, Any>
+            val extensions = this::class.java.getMethod("getExtensions").invoke(this)
+            val plugins = extensions::class.java.getMethod("getAsMap").invoke(extensions) as Map<String, Any>
             val kotlinConvention = plugins["kotlin"] ?: return null
 
-            return kotlinConvention::class.java.getMethod("getKotlin")
-                .invoke(kotlinConvention) as SourceDirectorySet
+            return kotlinConvention as SourceDirectorySet
         } else {
             val kotlinSourceSet: Any = kotlinSourceSets?.findByName(this.name) ?: return null
 

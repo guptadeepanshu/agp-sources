@@ -20,21 +20,20 @@ import com.android.SdkConstants
 import com.android.SdkConstants.ANDROID_URI
 import com.android.SdkConstants.ATTR_AUTO_VERIFY
 import com.android.SdkConstants.ATTR_HOST
+import com.android.SdkConstants.ATTR_MIMETYPE
 import com.android.SdkConstants.ATTR_NAME
 import com.android.SdkConstants.ATTR_PATH
 import com.android.SdkConstants.ATTR_PATH_PATTERN
 import com.android.SdkConstants.ATTR_PATH_PREFIX
 import com.android.SdkConstants.ATTR_PORT
 import com.android.SdkConstants.ATTR_SCHEME
-import com.android.SdkConstants.ATTR_MIMETYPE;
 import com.android.SdkConstants.TAG_ACTION
 import com.android.SdkConstants.TAG_CATEGORY
 import com.android.SdkConstants.TAG_DATA
 import com.android.ide.common.blame.SourceFilePosition
+import com.android.manifmerger.NavGraphExpander.expandNavGraphs
 import com.android.utils.XmlUtils
 import com.google.common.collect.ImmutableList
-import org.w3c.dom.Element
-import org.w3c.dom.NamedNodeMap
 import java.util.TreeSet
 
 /**
@@ -147,7 +146,10 @@ object NavGraphExpander {
             return
         }
         val actionRecorder = mergingReportBuilder.actionRecorder
-        val deepLinkGroups = deepLinks.groupBy { getDeepLinkUriBody(it, false) }
+        val deepLinkGroups = deepLinks.groupBy { getDeepLinkUriBody(it,
+            includeQuery = false,
+            includeFragment = false
+        ) }
         for (deepLinkGroup in deepLinkGroups.values) {
             val deepLink = deepLinkGroup.first()
             // first create <intent-filter> element
@@ -314,11 +316,16 @@ object NavGraphExpander {
         navigationFileAncestors.remove(navigationXmlId)
     }
 
-    private fun getDeepLinkUriBody(deepLink: DeepLink, includeQuery: Boolean): String {
+    private fun getDeepLinkUriBody(
+        deepLink: DeepLink,
+        includeQuery: Boolean,
+        includeFragment: Boolean
+    ): String {
         val hostString = if (deepLink.host == null) "//" else "//" + deepLink.host
         val portString = if (deepLink.port == -1) "" else ":" + deepLink.port
         val queryString = if (deepLink.query == null || !includeQuery) "" else "?${deepLink.query}"
-        return hostString + portString + deepLink.path + queryString
+        val fragmentString = if (deepLink.fragment == null || !includeFragment) "" else "#${deepLink.fragment}"
+        return hostString + portString + deepLink.path + queryString + fragmentString
     }
 
     /**
@@ -330,7 +337,7 @@ object NavGraphExpander {
      */
     private fun getDeepLinkUris(deepLink: DeepLink): List<String> {
         val builder: ImmutableList.Builder<String> = ImmutableList.builder()
-        val body = getDeepLinkUriBody(deepLink, true)
+        val body = getDeepLinkUriBody(deepLink, includeQuery = true, includeFragment = true)
         for (scheme in deepLink.schemes) {
             builder.add("$scheme:$body")
         }

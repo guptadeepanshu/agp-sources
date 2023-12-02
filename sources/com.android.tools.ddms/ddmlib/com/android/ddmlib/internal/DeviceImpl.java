@@ -41,6 +41,8 @@ import com.android.ddmlib.PropertyFetcher;
 import com.android.ddmlib.RawImage;
 import com.android.ddmlib.RemoteSplitApkInstaller;
 import com.android.ddmlib.ScreenRecorderOptions;
+import com.android.ddmlib.ServiceInfo;
+import com.android.ddmlib.ServiceReceiver;
 import com.android.ddmlib.ShellCommandUnresponsiveException;
 import com.android.ddmlib.SplitApkInstaller;
 import com.android.ddmlib.SyncException;
@@ -56,6 +58,7 @@ import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.Atomics;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -66,6 +69,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -77,6 +81,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /** A Device. It can be a physical device or an emulator. */
 public final class DeviceImpl implements IDevice {
@@ -408,12 +414,26 @@ public final class DeviceImpl implements IDevice {
                 // We want features supported by both device and host.
                 mAdbFeatures.retainAll(Arrays.asList(response.split(",")));
             } catch (TimeoutException | AdbCommandRejectedException | IOException e) {
-                Log.e(LOG_TAG, "Error obtaining features: " + e);
+                Log.e(LOG_TAG, new RuntimeException("Error obtaining features: ", e));
                 return new HashSet<>();
             }
 
             return mAdbFeatures;
         }
+    }
+
+    @NonNull
+    @Override
+    public Map<String, ServiceInfo> services() {
+
+        ServiceReceiver receiver = new ServiceReceiver();
+        try {
+            executeShellCommand("service list", receiver);
+        } catch (Exception e) {
+            Log.e(LOG_TAG, new RuntimeException("Error obtaining services: ", e));
+            return new HashMap<>();
+        }
+        return receiver.getRunningServices();
     }
 
     // The full list of features can be obtained from /etc/permissions/features*

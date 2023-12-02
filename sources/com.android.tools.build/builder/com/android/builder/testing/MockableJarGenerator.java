@@ -60,8 +60,8 @@ public class MockableJarGenerator {
     private static final String CONSTRUCTOR = "<init>";
     private static final String CLASS_CONSTRUCTOR = "<clinit>";
 
-    private static final ImmutableSet<String> ENUM_METHODS =  ImmutableSet.of(
-            CLASS_CONSTRUCTOR, "valueOf", "values", "$values");
+    private static final ImmutableSet<String> ENUM_METHODS =
+            ImmutableSet.of(CLASS_CONSTRUCTOR, "valueOf", "values", "$values");
 
     private static final ImmutableSet<Type> INTEGER_LIKE_TYPES = ImmutableSet.of(
             Type.INT_TYPE, Type.BYTE_TYPE, Type.BOOLEAN_TYPE, Type.CHAR_TYPE, Type.SHORT_TYPE);

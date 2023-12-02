@@ -16,15 +16,10 @@
 
 package com.android.build.api.extension.impl
 
-import com.android.build.api.artifact.MultipleArtifact
-import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.VariantSelector
-import com.android.build.gradle.internal.component.ComponentCreationConfig
-import com.android.build.gradle.internal.scope.InternalArtifactType
 import org.gradle.api.Action
 import java.util.concurrent.atomic.AtomicBoolean
-import kotlin.reflect.KClass
 
 /**
  * Registrar object to keep track of Variant API operations registered on the [Component]
@@ -63,37 +58,6 @@ open class OperationsRegistrar<Component: ComponentIdentity> {
         operations.forEach { operation ->
             if (operation.selector.appliesTo(userVisibleVariant)) {
                 operation.callBack.execute(userVisibleVariant)
-            }
-        }
-    }
-}
-
-class VariantOperationsRegistrar<Component: ComponentIdentity> : OperationsRegistrar<Component>() {
-
-    fun executeOperations(userVisibleVariant: Component, internalVariant: ComponentCreationConfig) {
-        super.executeOperations(userVisibleVariant)
-        wireAllFinalizedBy(internalVariant)
-    }
-
-    private fun wireAllFinalizedBy(variant: ComponentCreationConfig) {
-        InternalArtifactType::class.sealedSubclasses.forEach { kClass ->
-            handleFinalizedByForType(variant, kClass)
-        }
-    }
-
-    private fun handleFinalizedByForType(variant: ComponentCreationConfig, type: KClass<out InternalArtifactType<*>>) {
-        type.objectInstance?.let { artifact ->
-            artifact.finalizingArtifact?.forEach { artifactFinalizedBy ->
-                val artifactContainer = when(artifactFinalizedBy) {
-                    is SingleArtifact -> variant.artifacts.getArtifactContainer(artifact)
-                    is MultipleArtifact -> variant.artifacts.getArtifactContainer(artifact)
-                    else -> throw RuntimeException("Unhandled artifact type : $artifactFinalizedBy")
-                }
-                artifactContainer.getTaskProviders().forEach { taskProvider ->
-                    taskProvider.configure {
-                        it.finalizedBy(variant.artifacts.get(artifact))
-                    }
-                }
             }
         }
     }

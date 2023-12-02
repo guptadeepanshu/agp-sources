@@ -59,6 +59,11 @@ private static final long serialVersionUID = 0L;
                 input.readMessage(com.google.wireless.android.sdk.stats.TypingLatencyStats.LatencyRecord.PARSER, extensionRegistry));
             break;
           }
+          case 16: {
+            bitField0_ |= 0x00000001;
+            essentialHighlighting_ = input.readBool();
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -1292,6 +1297,7 @@ private static final long serialVersionUID = 0L;
 
   }
 
+  private int bitField0_;
   public static final int LATENCY_RECORDS_FIELD_NUMBER = 1;
   private java.util.List<com.google.wireless.android.sdk.stats.TypingLatencyStats.LatencyRecord> latencyRecords_;
   /**
@@ -1352,6 +1358,33 @@ private static final long serialVersionUID = 0L;
     return latencyRecords_.get(index);
   }
 
+  public static final int ESSENTIAL_HIGHLIGHTING_FIELD_NUMBER = 2;
+  private boolean essentialHighlighting_;
+  /**
+   * <pre>
+   * Whether the IDE was in Essential Highlighting or not
+   * </pre>
+   *
+   * <code>optional bool essential_highlighting = 2;</code>
+   * @return Whether the essentialHighlighting field is set.
+   */
+  @java.lang.Override
+  public boolean hasEssentialHighlighting() {
+    return ((bitField0_ & 0x00000001) != 0);
+  }
+  /**
+   * <pre>
+   * Whether the IDE was in Essential Highlighting or not
+   * </pre>
+   *
+   * <code>optional bool essential_highlighting = 2;</code>
+   * @return The essentialHighlighting.
+   */
+  @java.lang.Override
+  public boolean getEssentialHighlighting() {
+    return essentialHighlighting_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -1369,6 +1402,9 @@ private static final long serialVersionUID = 0L;
     for (int i = 0; i < latencyRecords_.size(); i++) {
       output.writeMessage(1, latencyRecords_.get(i));
     }
+    if (((bitField0_ & 0x00000001) != 0)) {
+      output.writeBool(2, essentialHighlighting_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -1381,6 +1417,10 @@ private static final long serialVersionUID = 0L;
     for (int i = 0; i < latencyRecords_.size(); i++) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(1, latencyRecords_.get(i));
+    }
+    if (((bitField0_ & 0x00000001) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(2, essentialHighlighting_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -1399,6 +1439,11 @@ private static final long serialVersionUID = 0L;
 
     if (!getLatencyRecordsList()
         .equals(other.getLatencyRecordsList())) return false;
+    if (hasEssentialHighlighting() != other.hasEssentialHighlighting()) return false;
+    if (hasEssentialHighlighting()) {
+      if (getEssentialHighlighting()
+          != other.getEssentialHighlighting()) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -1413,6 +1458,11 @@ private static final long serialVersionUID = 0L;
     if (getLatencyRecordsCount() > 0) {
       hash = (37 * hash) + LATENCY_RECORDS_FIELD_NUMBER;
       hash = (53 * hash) + getLatencyRecordsList().hashCode();
+    }
+    if (hasEssentialHighlighting()) {
+      hash = (37 * hash) + ESSENTIAL_HIGHLIGHTING_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getEssentialHighlighting());
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -1554,6 +1604,8 @@ private static final long serialVersionUID = 0L;
       } else {
         latencyRecordsBuilder_.clear();
       }
+      essentialHighlighting_ = false;
+      bitField0_ = (bitField0_ & ~0x00000002);
       return this;
     }
 
@@ -1581,6 +1633,7 @@ private static final long serialVersionUID = 0L;
     public com.google.wireless.android.sdk.stats.TypingLatencyStats buildPartial() {
       com.google.wireless.android.sdk.stats.TypingLatencyStats result = new com.google.wireless.android.sdk.stats.TypingLatencyStats(this);
       int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
       if (latencyRecordsBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0)) {
           latencyRecords_ = java.util.Collections.unmodifiableList(latencyRecords_);
@@ -1590,6 +1643,11 @@ private static final long serialVersionUID = 0L;
       } else {
         result.latencyRecords_ = latencyRecordsBuilder_.build();
       }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.essentialHighlighting_ = essentialHighlighting_;
+        to_bitField0_ |= 0x00000001;
+      }
+      result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
     }
@@ -1663,6 +1721,9 @@ private static final long serialVersionUID = 0L;
             latencyRecordsBuilder_.addAllMessages(other.latencyRecords_);
           }
         }
+      }
+      if (other.hasEssentialHighlighting()) {
+        setEssentialHighlighting(other.getEssentialHighlighting());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -2004,6 +2065,61 @@ private static final long serialVersionUID = 0L;
         latencyRecords_ = null;
       }
       return latencyRecordsBuilder_;
+    }
+
+    private boolean essentialHighlighting_ ;
+    /**
+     * <pre>
+     * Whether the IDE was in Essential Highlighting or not
+     * </pre>
+     *
+     * <code>optional bool essential_highlighting = 2;</code>
+     * @return Whether the essentialHighlighting field is set.
+     */
+    @java.lang.Override
+    public boolean hasEssentialHighlighting() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <pre>
+     * Whether the IDE was in Essential Highlighting or not
+     * </pre>
+     *
+     * <code>optional bool essential_highlighting = 2;</code>
+     * @return The essentialHighlighting.
+     */
+    @java.lang.Override
+    public boolean getEssentialHighlighting() {
+      return essentialHighlighting_;
+    }
+    /**
+     * <pre>
+     * Whether the IDE was in Essential Highlighting or not
+     * </pre>
+     *
+     * <code>optional bool essential_highlighting = 2;</code>
+     * @param value The essentialHighlighting to set.
+     * @return This builder for chaining.
+     */
+    public Builder setEssentialHighlighting(boolean value) {
+      bitField0_ |= 0x00000002;
+      essentialHighlighting_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Whether the IDE was in Essential Highlighting or not
+     * </pre>
+     *
+     * <code>optional bool essential_highlighting = 2;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearEssentialHighlighting() {
+      bitField0_ = (bitField0_ & ~0x00000002);
+      essentialHighlighting_ = false;
+      onChanged();
+      return this;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

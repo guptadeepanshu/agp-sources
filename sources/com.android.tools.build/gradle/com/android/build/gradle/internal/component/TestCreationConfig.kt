@@ -26,12 +26,13 @@ interface TestCreationConfig: ComponentCreationConfig {
 
     /**
      * In unit tests, we don't produce an apk. However, we still need to set the target sdk version
-     * in the test manifest as robolectric depends on it.
+     * in the test manifest as robolectric depends on it. Sdk version may be taken from test options
+     * if version defined there.
      */
     val targetSdkVersion: AndroidVersion
 
     /**
-     * In unit tests, there is no dexing. However aapt2 requires the instrumentation tag to be
+     * In unit tests, there is no dexing. However, aapt2 requires the instrumentation tag to be
      * present in the merged manifest to process android resources.
      */
     val instrumentationRunner: Provider<String>

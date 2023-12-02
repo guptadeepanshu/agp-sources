@@ -42,11 +42,8 @@ import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
-import com.android.build.gradle.internal.core.DEFAULT_EXECUTION_PROFILE
-import com.android.build.gradle.internal.core.ExecutionProfileOptions
-import com.android.build.gradle.internal.core.SettingsOptions
-import com.android.build.gradle.internal.core.ToolExecutionOptions
 import com.android.build.gradle.internal.core.dsl.VariantDslInfo
+import com.android.build.gradle.internal.core.dsl.impl.features.AndroidTestOptionsDslInfoImpl
 import com.android.build.gradle.internal.crash.afterEvaluate
 import com.android.build.gradle.internal.crash.runAction
 import com.android.build.gradle.internal.dependency.CONFIG_NAME_ANDROID_JDK_IMAGE
@@ -91,7 +88,7 @@ import com.android.build.gradle.internal.tasks.factory.TaskManagerConfig
 import com.android.build.gradle.internal.tasks.factory.TaskManagerConfigImpl
 import com.android.build.gradle.internal.testing.ManagedDeviceRegistry
 import com.android.build.gradle.internal.utils.enforceMinimumVersionsOfPlugins
-import com.android.build.gradle.internal.utils.getKotlinPluginVersion
+import com.android.build.gradle.internal.utils.getKotlinAndroidPluginVersion
 import com.android.build.gradle.internal.utils.syncAgpAndKgpSources
 import com.android.build.gradle.internal.variant.ComponentInfo
 import com.android.build.gradle.internal.variant.LegacyVariantInputManager
@@ -204,7 +201,7 @@ abstract class BasePlugin<
     }
 
     val managedDeviceRegistry: ManagedDeviceRegistry by lazy(LazyThreadSafetyMode.NONE) {
-        ManagedDeviceRegistry(newExtension.testOptions)
+        ManagedDeviceRegistry(AndroidTestOptionsDslInfoImpl((newExtension as CommonExtensionImpl<*, *, *, *, *>)))
     }
 
     private val globalConfig by lazy {
@@ -272,7 +269,8 @@ abstract class BasePlugin<
     protected val dslServices: DslServicesImpl by lazy {
         DslServicesImpl(
             projectServices,
-            sdkComponentsBuildService
+            sdkComponentsBuildService,
+            getProjectTypeV2()
         ) {
             versionedSdkLoaderService
         }
@@ -489,6 +487,22 @@ abstract class BasePlugin<
             configuration.isCanBeResolved = true
             return configuration
         }
+
+        // Create the "special" configuration for test buddy APKs. It will be resolved by the test
+        // running task, so that we can install all the found APKs before running tests.
+        internal fun createAndroidTestUtilConfiguration(project: Project) {
+            project.logger
+                .debug(
+                    "Creating configuration "
+                            + SdkConstants.GRADLE_ANDROID_TEST_UTIL_CONFIGURATION
+                )
+            val configuration = project.configurations
+                .maybeCreate(SdkConstants.GRADLE_ANDROID_TEST_UTIL_CONFIGURATION)
+            configuration.isVisible = false
+            configuration.description = "Additional APKs used during instrumentation testing."
+            configuration.isCanBeConsumed = false
+            configuration.isCanBeResolved = true
+        }
     }
 
     override fun configureExtension(project: Project) {
@@ -682,7 +696,7 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
                 .setCompileSdk(extension.compileSdkVersion)
                 .setBuildToolsVersion(extension.buildToolsRevision.toString()).splits =
                 AnalyticsUtil.toProto(extension.splits)
-            getKotlinPluginVersion(project)?.let {
+            getKotlinAndroidPluginVersion(project)?.let {
                 projectBuilder.kotlinPluginVersion = it
             }
         }
@@ -724,7 +738,7 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
         )
             .configureDependencySubstitutions()
             .configureDependencyChecks()
-            .configureGeneralTransforms(globalConfig.namespacedAndroidResources)
+            .configureGeneralTransforms(globalConfig.namespacedAndroidResources, globalConfig.aarOrJarTypeToConsume)
             .configureVariantTransforms(
                 variants.map { it.variant },
                 variantManager.nestedComponents,
@@ -875,21 +889,5 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
         settings.buildToolsVersion.let { buildToolsVersion ->
             this.buildToolsVersion = buildToolsVersion
         }
-    }
-
-    // Create the "special" configuration for test buddy APKs. It will be resolved by the test
-    // running task, so that we can install all the found APKs before running tests.
-    private fun createAndroidTestUtilConfiguration(project: Project) {
-        project.logger
-            .debug(
-                "Creating configuration "
-                        + SdkConstants.GRADLE_ANDROID_TEST_UTIL_CONFIGURATION
-            )
-        val configuration = project.configurations
-            .maybeCreate(SdkConstants.GRADLE_ANDROID_TEST_UTIL_CONFIGURATION)
-        configuration.isVisible = false
-        configuration.description = "Additional APKs used during instrumentation testing."
-        configuration.isCanBeConsumed = false
-        configuration.isCanBeResolved = true
     }
 }

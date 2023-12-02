@@ -584,7 +584,7 @@ interface AndroidConfig {
      *
      * @param version the NDK to use.
      */
-    val ndkVersion: String?
+    val ndkVersion: String
 
     /** Returns the list of files that form bootClasspath used for compilation.  */
     val bootClasspath: List<File>

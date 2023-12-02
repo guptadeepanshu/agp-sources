@@ -130,6 +130,10 @@ private static final long serialVersionUID = 0L;
      * <code>EXPAND = 4;</code>
      */
     EXPAND(4),
+    /**
+     * <code>MOUSE_OVER = 5;</code>
+     */
+    MOUSE_OVER(5),
     ;
 
     /**
@@ -152,6 +156,10 @@ private static final long serialVersionUID = 0L;
      * <code>EXPAND = 4;</code>
      */
     public static final int EXPAND_VALUE = 4;
+    /**
+     * <code>MOUSE_OVER = 5;</code>
+     */
+    public static final int MOUSE_OVER_VALUE = 5;
 
 
     public final int getNumber() {
@@ -179,6 +187,7 @@ private static final long serialVersionUID = 0L;
         case 2: return MOVE_DOWN;
         case 3: return COLLAPSE;
         case 4: return EXPAND;
+        case 5: return MOUSE_OVER;
         default: return null;
       }
     }

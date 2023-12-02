@@ -36,19 +36,23 @@ open class DefaultNdkInfo(protected val rootDirectory: File) : NdkInfo {
 
     private val platformConfigurator: PlatformConfigurator = PlatformConfigurator(rootDirectory)
 
-    private val abiInfoList: List<AbiInfo> = NdkAbiFile(ndkMetaAbisFile(rootDirectory)).abiInfoList
+    val abiInfoList: List<AbiInfo> = NdkAbiFile(ndkMetaAbisFile(rootDirectory)).abiInfoList
 
-    private val defaultToolchainVersions = Maps.newHashMap<Abi, String>()
+    private val defaultToolchainVersions = Maps.newHashMap<String, String>()
 
     override fun findSuitablePlatformVersion(
         abi: String,
         androidVersion: AndroidVersion?
     ): Int {
-        return platformConfigurator.findSuitablePlatformVersion(abi, androidVersion)
+        return platformConfigurator.findSuitablePlatformVersion(abi, abiInfoList, androidVersion)
     }
 
-    private fun getToolchainPrefix(abi: Abi): String {
-        return abi.gccToolchainPrefix
+    private fun getToolchainPrefix(abi: String): String {
+        return when(abi) {
+            Abi.X86.tag -> "x86"
+            Abi.X86_64.tag -> "x86_64"
+            else -> abiInfoList.single { it.name == abi }.triple
+        }
     }
 
     protected val hostTag: String by lazy {
@@ -79,7 +83,7 @@ open class DefaultNdkInfo(protected val rootDirectory: File) : NdkInfo {
      * @param abi target ABI of the toolchains
      * @return a directory that contains the executables.
      */
-    private fun getToolchainPath(abi: Abi): File {
+    private fun getToolchainPath(abi: String): File {
         val toolchainAbi = getToolchainAbi(abi)
         val version = getDefaultToolchainVersion(toolchainAbi).let {
             // TODO: Why would this ever be empty?
@@ -99,23 +103,25 @@ open class DefaultNdkInfo(protected val rootDirectory: File) : NdkInfo {
         return prebuiltFolder
     }
 
-    protected open fun getToolchainAbi(abi: Abi): Abi {
+    protected open fun getToolchainAbi(abi: String): String {
         return abi
     }
 
     /** Return the executable for removing debug symbols from a shared object.  */
-    override fun getStripExecutable(abi: Abi): File {
+    override fun getStripExecutable(abi: String): File {
         val toolchainAbi = getToolchainAbi(abi)
+        val triple = abiInfoList.single { info -> info.name == toolchainAbi }.triple
         return FileUtils.join(
-            getToolchainPath(toolchainAbi), "bin", toolchainAbi.gccExecutablePrefix + "-strip"
+            getToolchainPath(toolchainAbi), "bin", "$triple-strip"
         )
     }
 
     /** Return the executable for extracting debug metadata from a shared object.  */
-    override fun getObjcopyExecutable(abi: Abi): File {
+    override fun getObjcopyExecutable(abi: String): File {
         val toolchainAbi = getToolchainAbi(abi)
+        val triple = abiInfoList.single { info -> info.name == toolchainAbi }.triple
         return FileUtils.join(
-            getToolchainPath(toolchainAbi), "bin", toolchainAbi.gccExecutablePrefix + "-objcopy"
+            getToolchainPath(toolchainAbi), "bin", "$triple-objcopy"
         )
     }
 
@@ -126,7 +132,7 @@ open class DefaultNdkInfo(protected val rootDirectory: File) : NdkInfo {
      * The default version is the highest version found in the NDK for the specified toolchain
      * and ABI. The result is cached for performance.
      */
-    private fun getDefaultToolchainVersion(abi: Abi): String {
+    private fun getDefaultToolchainVersion(abi: String): String {
         val toolchainAbi = getToolchainAbi(abi)
         val defaultVersion = defaultToolchainVersions[toolchainAbi]
         if (defaultVersion != null) {
@@ -172,29 +178,28 @@ open class DefaultNdkInfo(protected val rootDirectory: File) : NdkInfo {
     override val default32BitsAbis  get() =
         abiInfoList
             .stream()
-            .filter { abiInfo -> abiInfo.isDefault && !abiInfo.isDeprecated }
-            .map { it.abi }
-            .filter { abi -> !abi.supports64Bits() }
+            .filter { abiInfo -> abiInfo.isDefault && !abiInfo.isDeprecated && abiInfo.bitness == 32 }
+            .map { it.name }
             .toList()
 
     override val defaultAbis get() =
         abiInfoList
             .stream()
             .filter { abiInfo -> abiInfo.isDefault && !abiInfo.isDeprecated }
-            .map<Abi>{ it.abi }
+            .map{ it.name }
             .toList()
 
     override val supported32BitsAbis get() =
         abiInfoList
             .stream()
-            .map  { it.abi }
-            .filter { abi -> !abi.supports64Bits() }
+            .filter { abiInfo -> abiInfo.bitness == 32 }
+            .map  { it.name }
             .toList()
 
     override val supportedAbis get() =
         abiInfoList
             .stream()
-            .map{ it.abi }
+            .map{ it.name }
             .toList()
 
     override val supportedStls = Stl.values().toList()
@@ -205,7 +210,7 @@ open class DefaultNdkInfo(protected val rootDirectory: File) : NdkInfo {
         else -> error("$buildSystem")
     }
 
-    override fun getStlSharedObjectFile(stl: Stl, abi: Abi): File {
+    override fun getStlSharedObjectFile(stl: Stl, abi: String): File {
         val stlBasePath = rootDirectory.resolve(when (stl) {
             Stl.LIBCXX_SHARED -> "sources/cxx-stl/llvm-libc++"
             Stl.GNUSTL_SHARED -> "sources/cxx-stl/gnu-libstdc++/4.9"
@@ -213,7 +218,7 @@ open class DefaultNdkInfo(protected val rootDirectory: File) : NdkInfo {
             else -> throw RuntimeException("Unexpected STL for packaging: $stl")
         })
 
-        val file = stlBasePath.resolve("libs/${abi.tag}/${stl.libraryName}")
+        val file = stlBasePath.resolve("libs/$abi/${stl.libraryName}")
         checkState(file.isFile, "Expected NDK STL shared object file at $file")
         return file
     }

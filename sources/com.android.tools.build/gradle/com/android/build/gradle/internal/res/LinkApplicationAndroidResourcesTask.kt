@@ -534,12 +534,11 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
                 ).withName("manifest_keep.txt").on(InternalArtifactType.LEGACY_MULTIDEX_AAPT_DERIVED_PROGUARD_RULES)
             }
 
-            if (creationConfig.services.projectOptions[BooleanOption.ENABLE_STABLE_IDS]) {
-                creationConfig.artifacts.setInitialProvider(
-                    taskProvider,
-                    LinkApplicationAndroidResourcesTask::stableIdsOutputFileProperty
-                ).withName("stableIds.txt").on(InternalArtifactType.STABLE_RESOURCE_IDS_FILE)
-            }
+            creationConfig.artifacts.setInitialProvider(
+                taskProvider,
+                LinkApplicationAndroidResourcesTask::stableIdsOutputFileProperty
+            ).withName("stableIds.txt").on(InternalArtifactType.STABLE_RESOURCE_IDS_FILE)
+
         }
 
         override fun configure(

@@ -25,6 +25,18 @@ interface LintModelVariant {
 
   val name: String
   val useSupportLibraryVectorDrawables: Boolean
+
+  /**
+   * The single artifact passed to lint for analysis, or the "main" artifact if multiple artifacts
+   * are passed to lint for analysis.
+   */
+  val artifact: LintModelArtifact
+
+  /**
+   * The single artifact passed to lint for analysis, or the "main" artifact if multiple artifacts
+   * are passed to lint for analysis.
+   */
+  @Deprecated("This property is deprecated.", ReplaceWith("artifact"))
   val mainArtifact: LintModelAndroidArtifact
   val testArtifact: LintModelJavaArtifact?
   val androidTestArtifact: LintModelAndroidArtifact?
@@ -66,11 +78,12 @@ interface LintModelVariant {
   val desugaredMethodsFiles: Collection<File>
 }
 
+/** mainArtifactOrNull is the "main" artifact if it being analyzed by lint, or null if not. */
 class DefaultLintModelVariant(
   override val module: LintModelModule,
   override val name: String,
   override val useSupportLibraryVectorDrawables: Boolean,
-  override val mainArtifact: LintModelAndroidArtifact,
+  mainArtifactOrNull: LintModelAndroidArtifact?,
   override val testArtifact: LintModelJavaArtifact?,
   override val androidTestArtifact: LintModelAndroidArtifact?,
   override val testFixturesArtifact: LintModelAndroidArtifact?,
@@ -105,4 +118,32 @@ class DefaultLintModelVariant(
   override val desugaredMethodsFiles: Collection<File>,
 ) : LintModelVariant {
   override fun toString(): String = name
+
+  override val artifact: LintModelArtifact by lazy {
+    return@lazy if (mainArtifactOrNull != null) {
+      mainArtifactOrNull
+    } else {
+      val nonNullArtifacts: List<LintModelArtifact> =
+        listOfNotNull(testArtifact, androidTestArtifact, testFixturesArtifact)
+      if (nonNullArtifacts.size != 1) {
+        throw RuntimeException("Unexpected number of artifacts")
+      }
+      nonNullArtifacts[0]
+    }
+  }
+
+  @Deprecated("This property is deprecated.", replaceWith = ReplaceWith("artifact"))
+  override val mainArtifact: LintModelAndroidArtifact by lazy {
+    return@lazy mainArtifactOrNull
+      ?: artifact as? LintModelAndroidArtifact
+        ?: DefaultLintModelAndroidArtifact(
+        applicationId = "",
+        generatedResourceFolders = listOf(),
+        generatedSourceFolders = listOf(),
+        desugaredMethodsFiles = listOf(),
+        dependencies = artifact.dependencies,
+        classOutputs = artifact.classOutputs,
+        type = artifact.type
+      )
+  }
 }

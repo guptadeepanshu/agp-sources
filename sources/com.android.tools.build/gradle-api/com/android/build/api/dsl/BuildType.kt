@@ -120,6 +120,7 @@ interface BuildType : Named, VariantDimension, ExtensionAware {
      * For more information about how to migrate, see
      * [https://developer.android.com/guide/topics/renderscript/migrate]
      */
+    @Deprecated("This dsl option has no effect and will be removed in AGP 9.0")
     var isRenderscriptDebuggable: Boolean
 
     /**

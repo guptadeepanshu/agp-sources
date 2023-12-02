@@ -1,11 +1,14 @@
 package com.android.build.gradle.internal.lint
 
+import com.android.build.gradle.internal.utils.createTargetSdkVersion
 import com.android.build.api.dsl.Lint
 import com.android.build.api.variant.impl.HasTestFixtures
 import com.android.build.gradle.internal.TaskManager
 import com.android.build.gradle.internal.component.AndroidTestCreationConfig
+import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
+import com.android.build.gradle.internal.component.TestCreationConfig
 import com.android.build.gradle.internal.component.UnitTestCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.tasks.LintModelMetadataTask
@@ -13,12 +16,14 @@ import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.tasks.factory.TaskFactory
 import com.android.build.gradle.internal.variant.VariantModel
 import com.android.builder.core.ComponentType
+import com.android.builder.errors.IssueReporter
 import com.android.utils.appendCapitalized
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.tasks.TaskProvider
 import java.io.File
+import java.util.Locale
 
 /** Factory for the LintModel based lint tasks */
 class LintTaskManager constructor(
@@ -45,8 +50,28 @@ class LintTaskManager constructor(
         componentType: ComponentType,
         variantModel: VariantModel,
         variantPropertiesList: List<VariantCreationConfig>,
-        testComponentPropertiesList: Collection<TestComponentCreationConfig>
+        testComponentPropertiesList: Collection<TestComponentCreationConfig>,
+        isPerComponent: Boolean
     ) {
+        return createLintTasks(
+            componentType,
+            defaultVariant = variantModel.defaultVariant,
+            variantPropertiesList,
+            testComponentPropertiesList,
+            isPerComponent
+        )
+    }
+
+
+    fun createLintTasks(
+        componentType: ComponentType,
+        defaultVariant: String?,
+        variantPropertiesList: List<VariantCreationConfig>,
+        testComponentPropertiesList: Collection<TestComponentCreationConfig>,
+        isPerComponent: Boolean
+    ) {
+        runConfigurationValidation(componentType, variantPropertiesList)
+
         if (componentType.isForTesting) {
             return // Don't  create lint tasks in test-only projects
         }
@@ -69,39 +94,94 @@ class LintTaskManager constructor(
         val needsCopyReportTask = needsCopyReportTask(globalTaskCreationConfig.lintOptions)
 
         for (variantWithTests in variantsWithTests.values) {
-            if (componentType.isAar) {
-                // We need the library lint models if checkDependencies is true
-                taskFactory.register(LintModelWriterTask.LintCreationAction(variantWithTests))
-                // We need the library lint model metadata if checkDependencies is false
-                taskFactory.register(LintModelMetadataTask.CreationAction(variantWithTests.main))
-            } else {
-                // We need app and dynamic feature models if there are dynamic features.
-                // TODO (b/180672373) consider also publishing dynamic feature and app lint models
-                //  with checkDependencies = true if that's necessary to properly run lint from an
-                //  app or dynamic feature module with checkDependencies = true.
+            val mainVariant = variantWithTests.main
+            if (componentType.isAar || componentType.isDynamicFeature) {
+                if (isPerComponent) {
+                    taskFactory.register(
+                        LintModelWriterTask.PerComponentCreationAction(
+                            mainVariant,
+                            useModuleDependencyLintModels = componentType.isAar,
+                            fatalOnly = true,
+                            isMainModelForLocalReportTask = false
+                        )
+                    )
+                } else {
+                    taskFactory.register(
+                        LintModelWriterTask.CreationAction(
+                            VariantWithTests(mainVariant, null, null, null),
+                            useModuleDependencyLintModels = componentType.isAar,
+                            fatalOnly = true,
+                            isForLocalReportTask = false
+                        )
+                    )
+                }
                 taskFactory.register(
-                    LintModelWriterTask.LintCreationAction(
-                        variantWithTests,
-                        checkDependencies = false
+                    AndroidLintAnalysisTask.LintVitalCreationAction(mainVariant)
+                )
+                if (componentType.isAar) {
+                    // We need the library lint model metadata if checkDependencies is false
+                    taskFactory.register(LintModelMetadataTask.CreationAction(mainVariant))
+
+                }
+            }
+            // We need app and dynamic feature models if there are dynamic features.
+            // TODO (b/180672373) consider also publishing dynamic feature and app lint models
+            //  with useModuleDependencyLintModels = true if that's necessary to properly run lint
+            //  from an app or dynamic feature module with checkDependencies = true.
+            if (isPerComponent) {
+                taskFactory.register(
+                    LintModelWriterTask.PerComponentCreationAction(
+                        mainVariant,
+                        useModuleDependencyLintModels = componentType.isAar,
+                        fatalOnly = false,
+                        isMainModelForLocalReportTask = false
                     )
                 )
+                taskFactory.register(
+                    AndroidLintAnalysisTask.PerComponentCreationAction(
+                        mainVariant,
+                        fatalOnly = false
+                    )
+                )
+            } else {
+                taskFactory.register(
+                    LintModelWriterTask.CreationAction(
+                        variantWithTests,
+                        useModuleDependencyLintModels = componentType.isAar,
+                        fatalOnly = false,
+                        isForLocalReportTask = false
+                    )
+                )
+                taskFactory.register(
+                    AndroidLintAnalysisTask.SingleVariantCreationAction(variantWithTests)
+                )
             }
-            taskFactory.register(
-                AndroidLintAnalysisTask.SingleVariantCreationAction(variantWithTests)
-            )
 
             if (componentType.isDynamicFeature) {
-                taskFactory.register(
-                    AndroidLintAnalysisTask.LintVitalCreationAction(variantWithTests.main)
-                )
-                taskFactory.register(
-                    LintModelWriterTask.LintVitalCreationAction(variantWithTests.main)
-                )
                 // Don't register any lint reporting tasks or lintFix task for dynamic features
                 // because any reporting and/or fixing is done when lint runs from the base app.
                 continue
             }
 
+            if (isPerComponent) {
+                taskFactory.register(
+                    LintModelWriterTask.PerComponentCreationAction(
+                        mainVariant,
+                        useModuleDependencyLintModels = true,
+                        fatalOnly = false,
+                        isMainModelForLocalReportTask = true
+                    )
+                )
+            } else {
+                taskFactory.register(
+                    LintModelWriterTask.CreationAction(
+                        variantWithTests,
+                        useModuleDependencyLintModels = true,
+                        fatalOnly = false,
+                        isForLocalReportTask = true
+                    )
+                )
+            }
             val updateLintBaselineTask =
                 taskFactory.register(AndroidLintTask.UpdateBaselineCreationAction(variantWithTests))
             val variantLintTask =
@@ -109,26 +189,50 @@ class LintTaskManager constructor(
                     .also { it.configure { task -> task.mustRunAfter(updateLintBaselineTask) } }
             val variantLintTextOutputTask =
                 taskFactory.register(
-                    AndroidLintTextOutputTask.SingleVariantCreationAction(variantWithTests.main)
+                    AndroidLintTextOutputTask.SingleVariantCreationAction(mainVariant)
                 )
 
             if (needsCopyReportTask) {
                 val copyLintReportTask =
-                    taskFactory.register(AndroidLintCopyReportTask.CreationAction(variantWithTests.main))
+                    taskFactory.register(AndroidLintCopyReportTask.CreationAction(mainVariant))
                 variantLintTextOutputTask.configure {
                     it.finalizedBy(copyLintReportTask)
                 }
             }
 
-            val mainVariant = variantWithTests.main
             if (mainVariant.componentType.isBaseModule &&
                 !mainVariant.debuggable &&
                 !(mainVariant as ApplicationCreationConfig).profileable &&
                 globalTaskCreationConfig.lintOptions.checkReleaseBuilds
             ) {
-                taskFactory.register(
-                    AndroidLintAnalysisTask.LintVitalCreationAction(mainVariant)
-                )
+                if (isPerComponent) {
+                    taskFactory.register(
+                        AndroidLintAnalysisTask.PerComponentCreationAction(
+                            mainVariant,
+                            fatalOnly = true
+                        )
+                    )
+                    taskFactory.register(
+                        LintModelWriterTask.PerComponentCreationAction(
+                            mainVariant,
+                            useModuleDependencyLintModels = true,
+                            fatalOnly = true,
+                            isMainModelForLocalReportTask = true
+                        )
+                    )
+                } else {
+                    taskFactory.register(
+                        AndroidLintAnalysisTask.LintVitalCreationAction(mainVariant)
+                    )
+                    taskFactory.register(
+                        LintModelWriterTask.CreationAction(
+                            VariantWithTests(mainVariant, null, null, null),
+                            useModuleDependencyLintModels = true,
+                            fatalOnly = true,
+                            isForLocalReportTask = true
+                        )
+                    )
+                }
                 val lintVitalTask =
                     taskFactory.register(AndroidLintTask.LintVitalCreationAction(mainVariant))
                         .also { it.configure { task -> task.mustRunAfter(updateLintBaselineTask) } }
@@ -152,7 +256,6 @@ class LintTaskManager constructor(
             return
         }
 
-        val defaultVariant = variantModel.defaultVariant
         if (defaultVariant != null) {
             taskFactory.configure(AndroidLintGlobalTask.GlobalCreationAction.name, AndroidLintGlobalTask::class.java) { globalTask ->
                 globalTask.dependsOn("lint".appendCapitalized(defaultVariant))
@@ -239,6 +342,40 @@ class LintTaskManager constructor(
     private fun getTaskPath(task: TaskProvider<out Task>) = getTaskPath(task.name)
 
     private fun getTaskPath(taskName: String) = TaskManager.getTaskPath(project, taskName)
+
+    private fun runConfigurationValidation(componentType: ComponentType, variantPropertiesList: List<VariantCreationConfig>) {
+        val targetSdkVersion = globalTaskCreationConfig.lintOptions.run { createTargetSdkVersion(targetSdk,targetSdkPreview) }
+        if (targetSdkVersion != null && !componentType.isAar) {
+            val versionToName = mutableMapOf<Int, MutableList<String>>()
+            for (variant in variantPropertiesList) {
+                val variantTargetSdkVersion = when (variant) {
+                    is ApkCreationConfig -> variant.targetSdk
+                    is TestCreationConfig -> variant.targetSdkVersion
+                    else -> null
+                }
+                if(variantTargetSdkVersion != null &&
+                    targetSdkVersion.apiLevel < variantTargetSdkVersion.apiLevel){
+                    versionToName.getOrPut(variantTargetSdkVersion.apiLevel, ::mutableListOf).add(variant.name)
+                }
+            }
+
+            versionToName.forEach { (variantSdkLevel, names) ->
+                globalTaskCreationConfig.services.issueReporter
+                    .reportError(
+                        IssueReporter.Type.GENERIC, String.format(
+                            Locale.US,
+                            "lint.targetSdk (%d) for non library is smaller than android.targetSdk (%d)"
+                                    + " for variants %s. Please change the"
+                                    + " values such that lint.targetSdk is greater than or"
+                                    + " equal to android.targetSdk.",
+                            targetSdkVersion.apiLevel,
+                            variantSdkLevel,
+                            names.joinToString(separator = ", ")
+                        )
+                    )
+            }
+        }
+    }
 
     companion object {
 

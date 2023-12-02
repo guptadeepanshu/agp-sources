@@ -1311,6 +1311,26 @@ public enum GradleTaskExecutionType
    * <code>VERIFY_LIBRARY_CLASSES = 323;</code>
    */
   VERIFY_LIBRARY_CLASSES(323),
+  /**
+   * <code>EXTRACT_VERSION_CONTROL_INFO = 324;</code>
+   */
+  EXTRACT_VERSION_CONTROL_INFO(324),
+  /**
+   * <code>EXPAND_ART_PROFILE_WILDCARDS = 325;</code>
+   */
+  EXPAND_ART_PROFILE_WILDCARDS(325),
+  /**
+   * <code>PREVIEW_SCREENSHOT_TEST = 326;</code>
+   */
+  PREVIEW_SCREENSHOT_TEST(326),
+  /**
+   * <code>ASARS_TO_COMPAT_SPLITS = 327;</code>
+   */
+  ASARS_TO_COMPAT_SPLITS(327),
+  /**
+   * <code>EXTRACT_PRIVACY_SANDBOX_COMPAT_APKS = 328;</code>
+   */
+  EXTRACT_PRIVACY_SANDBOX_COMPAT_APKS(328),
   UNRECOGNIZED(-1),
   ;
 
@@ -2610,6 +2630,26 @@ public enum GradleTaskExecutionType
    * <code>VERIFY_LIBRARY_CLASSES = 323;</code>
    */
   public static final int VERIFY_LIBRARY_CLASSES_VALUE = 323;
+  /**
+   * <code>EXTRACT_VERSION_CONTROL_INFO = 324;</code>
+   */
+  public static final int EXTRACT_VERSION_CONTROL_INFO_VALUE = 324;
+  /**
+   * <code>EXPAND_ART_PROFILE_WILDCARDS = 325;</code>
+   */
+  public static final int EXPAND_ART_PROFILE_WILDCARDS_VALUE = 325;
+  /**
+   * <code>PREVIEW_SCREENSHOT_TEST = 326;</code>
+   */
+  public static final int PREVIEW_SCREENSHOT_TEST_VALUE = 326;
+  /**
+   * <code>ASARS_TO_COMPAT_SPLITS = 327;</code>
+   */
+  public static final int ASARS_TO_COMPAT_SPLITS_VALUE = 327;
+  /**
+   * <code>EXTRACT_PRIVACY_SANDBOX_COMPAT_APKS = 328;</code>
+   */
+  public static final int EXTRACT_PRIVACY_SANDBOX_COMPAT_APKS_VALUE = 328;
 
 
   public final int getNumber() {
@@ -2960,6 +3000,11 @@ public enum GradleTaskExecutionType
       case 321: return EXTRACT_SUPPORTED_LOCALES;
       case 322: return GENERATE_LOCALE_CONFIG;
       case 323: return VERIFY_LIBRARY_CLASSES;
+      case 324: return EXTRACT_VERSION_CONTROL_INFO;
+      case 325: return EXPAND_ART_PROFILE_WILDCARDS;
+      case 326: return PREVIEW_SCREENSHOT_TEST;
+      case 327: return ASARS_TO_COMPAT_SPLITS;
+      case 328: return EXTRACT_PRIVACY_SANDBOX_COMPAT_APKS;
       default: return null;
     }
   }

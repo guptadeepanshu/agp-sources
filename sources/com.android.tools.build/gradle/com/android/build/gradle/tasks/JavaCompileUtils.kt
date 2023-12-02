@@ -21,6 +21,7 @@ package com.android.build.gradle.tasks
 import com.android.build.api.component.impl.AnnotationProcessorImpl
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.component.ComponentCreationConfig
+import com.android.build.gradle.internal.component.KmpComponentCreationConfig
 import com.android.build.gradle.internal.dependency.CONFIG_NAME_ANDROID_JDK_IMAGE
 import com.android.build.gradle.internal.dependency.JDK_IMAGE_OUTPUT_DIR
 import com.android.build.gradle.internal.dependency.JRT_FS_JAR
@@ -29,7 +30,6 @@ import com.android.build.gradle.internal.profile.AnalyticsService
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.EXTERNAL
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.PROJECT
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.JAR
-import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.PROCESSED_JAR
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.ANNOTATION_PROCESSOR
 import com.android.builder.errors.DefaultIssueReporter
 import com.android.builder.errors.IssueReporter
@@ -137,12 +137,17 @@ fun JavaCompile.configurePropertiesForAnnotationProcessing(
  * @see [JavaCompile.configurePropertiesForAnnotationProcessing]
  */
 fun JavaCompile.configureAnnotationProcessorPath(creationConfig: ComponentCreationConfig) {
+    if (creationConfig is KmpComponentCreationConfig) {
+        return
+    }
+
     // Optimization: For project jars, query for JAR instead of PROCESSED_JAR as project jars are
     // currently considered already processed (unlike external jars).
     val projectJars = creationConfig.variantDependencies
             .getArtifactFileCollection(ANNOTATION_PROCESSOR, PROJECT, JAR)
     val externalJars = creationConfig.variantDependencies
-            .getArtifactFileCollection(ANNOTATION_PROCESSOR, EXTERNAL, PROCESSED_JAR)
+            .getArtifactFileCollection(ANNOTATION_PROCESSOR, EXTERNAL,
+                    creationConfig.global.aarOrJarTypeToConsume.jar)
     options.annotationProcessorPath = projectJars.plus(externalJars)
 }
 

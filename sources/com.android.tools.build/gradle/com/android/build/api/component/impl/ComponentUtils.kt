@@ -20,6 +20,7 @@ package com.android.build.api.component.impl
 
 import com.android.build.api.variant.AndroidResources
 import com.android.build.api.variant.AndroidVersion
+import com.android.build.api.variant.impl.AndroidVersionImpl
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.LibraryCreationConfig
@@ -28,9 +29,9 @@ import com.android.build.gradle.internal.component.features.AndroidResourcesCrea
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.options.BooleanOption
-import com.android.build.gradle.options.IntegerOption
 import com.android.build.gradle.options.OptionalBooleanOption
 import com.android.build.gradle.options.StringOption
+import com.android.builder.core.DefaultApiVersion
 import com.android.builder.errors.IssueReporter
 import com.android.sdklib.AndroidTargetHash
 import com.google.common.base.Strings

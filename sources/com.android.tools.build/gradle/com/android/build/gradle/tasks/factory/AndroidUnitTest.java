@@ -25,13 +25,13 @@ import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.build.api.artifact.ScopedArtifact;
 import com.android.build.api.artifact.impl.ArtifactsImpl;
-import com.android.build.api.dsl.TestOptions;
 import com.android.build.api.variant.ScopedArtifacts;
 import com.android.build.gradle.internal.SdkComponentsBuildService;
 import com.android.build.gradle.internal.component.ComponentCreationConfig;
 import com.android.build.gradle.internal.component.UnitTestCreationConfig;
 import com.android.build.gradle.internal.component.VariantCreationConfig;
-import com.android.build.gradle.internal.dsl.TestOptions.UnitTestOptions;
+import com.android.build.gradle.internal.core.dsl.features.UnitTestOptionsDslInfo;
+import com.android.build.gradle.internal.coverage.JacocoOptions;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts;
 import com.android.build.gradle.internal.scope.BootClasspathBuilder;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
@@ -63,6 +63,7 @@ import org.gradle.api.tasks.testing.JUnitXmlReport;
 import org.gradle.api.tasks.testing.Test;
 import org.gradle.api.tasks.testing.TestTaskReports;
 import org.gradle.testing.jacoco.plugins.JacocoPlugin;
+import org.gradle.testing.jacoco.plugins.JacocoPluginExtension;
 import org.gradle.testing.jacoco.plugins.JacocoTaskExtension;
 import org.jetbrains.annotations.NotNull;
 
@@ -104,7 +105,7 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
     @Override
     @TaskAction
     public void executeTests() {
-        // Get the Jacoco extension to determine later if we have cove coverage enabled.
+        // Get the Jacoco extension to determine later if we have code coverage enabled.
         JacocoTaskExtension jcoExtension = getExtensions().findByType(JacocoTaskExtension.class);
         AndroidAnalyticsTestListener testListener =
                 new AndroidAnalyticsTestListener(
@@ -156,6 +157,13 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
         @Override
         public void configure(@NonNull AndroidUnitTest task) {
             super.configure(task);
+
+            JacocoPluginExtension pluginExtension =
+                    task.getProject().getExtensions().findByType(JacocoPluginExtension.class);
+            if (pluginExtension != null) {
+                pluginExtension.setToolVersion(JacocoOptions.DEFAULT_VERSION);
+            }
+
             unitTestCreationConfig.onTestedVariant(
                     testedConfig -> {
                         if (unitTestCreationConfig.isUnitTestCoverageEnabled()) {
@@ -178,10 +186,9 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
 
             VariantCreationConfig testedVariant = unitTestCreationConfig.getMainVariant();
 
-            TestOptions testOptions = creationConfig.getGlobal().getTestOptions();
+            UnitTestOptionsDslInfo testOptions = creationConfig.getGlobal().getUnitTestOptions();
 
-            boolean includeAndroidResources =
-                    testOptions.getUnitTests().isIncludeAndroidResources();
+            boolean includeAndroidResources = testOptions.isIncludeAndroidResources();
 
             ProjectOptions configOptions = creationConfig.getServices().getProjectOptions();
 
@@ -240,7 +247,7 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
                                             .getTestReportFolder(),
                                     task.getName()));
 
-            ((UnitTestOptions) testOptions.getUnitTests()).applyConfiguration(task);
+            testOptions.applyConfiguration(task);
 
             task.dependencies =
                     creationConfig

@@ -32,6 +32,7 @@ import com.android.build.gradle.internal.cxx.model.CxxAbiModel
 import com.android.build.gradle.internal.cxx.model.additionalProjectFilesIndexFile
 import com.android.build.gradle.internal.cxx.model.buildFileIndexFile
 import com.android.build.gradle.internal.cxx.model.compileCommandsJsonBinFile
+import com.android.build.gradle.internal.cxx.model.name
 import com.android.build.gradle.internal.cxx.model.symbolFolderIndexFile
 import com.android.build.gradle.internal.errors.SyncIssueReporter
 import com.android.build.gradle.internal.profile.AnalyticsService
@@ -115,7 +116,8 @@ class NativeModelBuilder(
         IssueReporterLoggingEnvironment(
             issueReporter,
             project.rootProject.rootDir,
-            null).use {
+            null,
+            allowStructuredLogging = true).use {
             val outcome = NativeModelBuilderOutcome.newBuilder().setGradlePath(project.path)
             try {
                 val analyticsService = getBuildService(
@@ -152,7 +154,7 @@ class NativeModelBuilder(
                         .map { (variantName, abis) ->
                             NativeVariantImpl(variantName, abis.map { (_, abi) ->
                                 NativeAbiImpl(
-                                    abi.abi.tag,
+                                    abi.name,
                                     abi.compileCommandsJsonBinFile.canonicalFile,
                                     abi.symbolFolderIndexFile.canonicalFile,
                                     abi.buildFileIndexFile.canonicalFile,
@@ -199,16 +201,16 @@ class NativeModelBuilder(
         configurationModels
                 .flatMap { (variantName, model) -> model.activeAbis.map { abi -> variantName to abi } }
                 .onEach { (variantName, abi) ->
-                    outcome.addAvailableVariantAbis("$variantName:${abi.abi.tag}")
+                    outcome.addAvailableVariantAbis("$variantName:${abi.name}")
                 }
-                .filter { (variantName, abi) -> filter(variantName, abi.abi.tag) }
+                .filter { (variantName, abi) -> filter(variantName, abi.name) }
                 .forEach { (variantName, abi) ->
                     try {
                         createGenerator(abi).configure(ops, ideRefreshExternalNativeModel)
-                        outcome.addSuccessfullyConfiguredVariantAbis("$variantName:${abi.abi.tag}")
+                        outcome.addSuccessfullyConfiguredVariantAbis("$variantName:${abi.name}")
                     } catch (e :Throwable) {
                         firstException = firstException ?: e
-                        val variantAbi = "$variantName:${abi.abi.tag}"
+                        val variantAbi = "$variantName:${abi.name}"
                         val message = "${outcome.gradlePath} $variantAbi failed to configure C/C++\n${e.message}\n" +
                                 "${e.stackTraceToString()}\n"
                         outcome.outcome = FAILED_DURING_GENERATE

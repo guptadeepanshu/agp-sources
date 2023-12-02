@@ -159,19 +159,23 @@ internal fun warnIfCompileSdkTooNew(
     suppressWarningIfTooNewForVersions: String? = null,
     ) {
     if (version.compareTo(maxVersion.apiLevel, maxVersion.codename) <= 0) return
-    val suppressName = version.apiString
-    val suppressSet = suppressWarningIfTooNewForVersions?.splitToSequence(",")?.filter(String::isNotEmpty)?.toSet() ?: setOf()
+    val suppressName = version.apiStringWithoutExtension
+    val suppressSet = suppressWarningIfTooNewForVersions
+        ?.splitToSequence(",")
+        ?.map { it.trim() }
+        ?.filter(String::isNotEmpty)
+        ?.toSet() ?: setOf()
     if (suppressSet.contains(suppressName)) return
 
     val currentCompileSdk = version.asDsl()
     val maxCompileSdk = AndroidVersion(maxVersion.apiLevel).asDsl() + (if (maxVersion.isPreview) " (and ${maxVersion.asDsl()})" else "")
     val stableOrPreview = (if (version.isPreview) "(stable or preview) " else "")
     val preview = (if (version.isPreview) "preview " else "")
-    val suppressOption = (if (suppressWarningIfTooNewForVersions.isNullOrEmpty()) {
+    val suppressOption = if (suppressWarningIfTooNewForVersions.isNullOrEmpty()) {
         "${com.android.build.gradle.options.StringOption.SUPPRESS_UNSUPPORTED_COMPILE_SDK.propertyName}=$suppressName"
     } else {
         "${com.android.build.gradle.options.StringOption.SUPPRESS_UNSUPPORTED_COMPILE_SDK.propertyName}=${suppressSet.joinToString(",")},$suppressName"
-    })
+    }
     issueReporter.reportWarning(
         IssueReporter.Type.COMPILE_SDK_VERSION_TOO_HIGH,
         """
@@ -189,7 +193,7 @@ internal fun warnIfCompileSdkTooNew(
             $suppressOption
         to this project's gradle.properties.
         """.trimIndent(),
-        getPlatformHashString(maxVersion)
+        suppressOption
     )
 }
 

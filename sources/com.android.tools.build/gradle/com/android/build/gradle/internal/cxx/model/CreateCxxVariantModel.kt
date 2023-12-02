@@ -16,7 +16,6 @@
 
 package com.android.build.gradle.internal.cxx.model
 
-import com.android.build.gradle.internal.cxx.caching.CachingEnvironment
 import com.android.build.gradle.internal.cxx.configure.AbiConfigurationKey
 import com.android.build.gradle.internal.cxx.configure.AbiConfigurator
 import com.android.build.gradle.internal.cxx.gradle.generator.CxxConfigurationParameters
@@ -29,11 +28,12 @@ import java.util.Locale
 fun createCxxVariantModel(
     configurationParameters: CxxConfigurationParameters,
     module: CxxModuleModel) : CxxVariantModel {
-    val validAbiList = CachingEnvironment(configurationParameters.cxxCacheFolder).use {
+    val validAbiList =
         AbiConfigurator(
                 AbiConfigurationKey(
-                        module.ndkSupportedAbiList,
-                        module.ndkDefaultAbiList,
+                        module.ndkMetaAbiList,
+                        module.ndkSupportedAbiList.toSet(),
+                        module.ndkDefaultAbiList.toSet(),
                         configurationParameters.nativeVariantConfig.externalNativeBuildAbiFilters,
                         configurationParameters.nativeVariantConfig.ndkAbiFilters,
                         configurationParameters.splitsAbiFilterSet,
@@ -41,7 +41,7 @@ fun createCxxVariantModel(
                         module.project.ideBuildTargetAbi
                 )
         ).validAbis.toList()
-    }
+
     with(module) {
         val arguments = configurationParameters.nativeVariantConfig.arguments
         val isDebuggable = configurationParameters.isDebuggable

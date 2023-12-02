@@ -246,4 +246,23 @@ public interface EmulatorAvdInfoOrBuilder extends
    * @return The properties at the given index.
    */
   com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdProperty getProperties(int index);
+
+  /**
+   * <pre>
+   * Device name of the AVD (for example, PIXEL_2)
+   * </pre>
+   *
+   * <code>optional .android_studio.EmulatorAvdInfo.EmulatorDeviceName device_name = 10;</code>
+   * @return Whether the deviceName field is set.
+   */
+  boolean hasDeviceName();
+  /**
+   * <pre>
+   * Device name of the AVD (for example, PIXEL_2)
+   * </pre>
+   *
+   * <code>optional .android_studio.EmulatorAvdInfo.EmulatorDeviceName device_name = 10;</code>
+   * @return The deviceName.
+   */
+  com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorDeviceName getDeviceName();
 }

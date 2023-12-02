@@ -13,8 +13,9 @@ public enum IntegerOption
    */
   UNKNOWN_INTEGER_OPTION(0),
   /**
-   * <code>ANDROID_TEST_SHARD_COUNT = 1;</code>
+   * <code>ANDROID_TEST_SHARD_COUNT = 1 [deprecated = true];</code>
    */
+  @java.lang.Deprecated
   ANDROID_TEST_SHARD_COUNT(1),
   /**
    * <code>ANDROID_SDK_CHANNEL = 2;</code>
@@ -88,9 +89,9 @@ public enum IntegerOption
    */
   public static final int UNKNOWN_INTEGER_OPTION_VALUE = 0;
   /**
-   * <code>ANDROID_TEST_SHARD_COUNT = 1;</code>
+   * <code>ANDROID_TEST_SHARD_COUNT = 1 [deprecated = true];</code>
    */
-  public static final int ANDROID_TEST_SHARD_COUNT_VALUE = 1;
+  @java.lang.Deprecated public static final int ANDROID_TEST_SHARD_COUNT_VALUE = 1;
   /**
    * <code>ANDROID_SDK_CHANNEL = 2;</code>
    */

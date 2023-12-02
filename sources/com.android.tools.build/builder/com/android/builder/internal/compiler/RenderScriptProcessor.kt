@@ -260,11 +260,6 @@ class RenderScriptProcessor(
         }
         builder.addArgs("-O")
         builder.addArgs(optimizationLevel.toString())
-        // TODO(146349244): investigate this
-        // Due to a device side bug, let's not enable this at this time.
-        //        if (mDebugBuild) {
-        //            command.add("-g");
-        //        }
 
         // Add the rest of the arguments and run the compiler once
         // res output

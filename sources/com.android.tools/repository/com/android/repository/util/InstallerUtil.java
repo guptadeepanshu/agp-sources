@@ -123,6 +123,9 @@ public class InstallerUtil {
                         progress.setFraction(progressMax);
                     }
                     Path linkTarget = out.getFileSystem().getPath(targetByteStream.toString());
+                    if (!Files.isDirectory(entryFile.getParent())) {
+                        Files.createDirectories(entryFile.getParent());
+                    }
                     Files.createSymbolicLink(entryFile, linkTarget);
                 } else if (entry.isDirectory()) {
                     Files.createDirectories(entryFile);

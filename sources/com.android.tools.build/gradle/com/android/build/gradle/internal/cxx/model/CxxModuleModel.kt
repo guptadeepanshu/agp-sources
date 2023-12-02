@@ -16,7 +16,6 @@
 
 package com.android.build.gradle.internal.cxx.model
 
-import com.android.build.gradle.internal.core.Abi
 import com.android.build.gradle.internal.cxx.configure.CmakeProperty.ANDROID_STL
 import com.android.build.gradle.internal.cxx.configure.CommandLineArgument
 import com.android.build.gradle.internal.cxx.configure.NdkBuildProperty.APP_STL
@@ -93,6 +92,19 @@ data class CxxModuleModel(
     val ndkFolder: File,
 
     /**
+     * Folder path to the NDK before symlinking
+     *   ex, /Android/sdk/ndk/20.0.5344622
+     */
+    val ndkFolderBeforeSymLinking: File,
+
+    /**
+     * If not null, the folder path to the NDK after it has been symlinked to the user's
+     * requested location. If null, then no symlinking is needed or performed.
+     *   ex, /path/to//ndk/25.1.8937393
+     */
+    val ndkFolderAfterSymLinking: File?,
+
+    /**
      * The version of the NDK
      *   ex, 20.0.5344622-rc1
      */
@@ -102,13 +114,13 @@ data class CxxModuleModel(
      * ABIs supported by this NDK
      *   ex, x86, x86_64
      */
-    val ndkSupportedAbiList: List<Abi>,
+    val ndkSupportedAbiList: List<String>,
 
     /**
      * ABIs that are default for this NDK
      *   ex, x86_64
      */
-    val ndkDefaultAbiList: List<Abi>,
+    val ndkDefaultAbiList: List<String>,
 
     /**
      * The default STL that will be used by the given NDK version if the user does not select one.
@@ -145,7 +157,7 @@ data class CxxModuleModel(
      * system STL, and the "none" STL) or for STLs that are not supported by the given NDK. ABIs not
      * supported by the given NDK will also not be present in the map.
      */
-    val stlSharedObjectMap: Map<Stl, Map<Abi, File>>,
+    val stlSharedObjectMap: Map<Stl, Map<String, File>>,
 
     /**
      * The project for this module

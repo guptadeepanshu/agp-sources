@@ -32,11 +32,14 @@ import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.AAPT_PROGUARD_FILE
 import com.android.build.gradle.internal.scope.InternalArtifactType.AAR_METADATA
 import com.android.build.gradle.internal.scope.InternalArtifactType.AIDL_PARCELABLE
+import com.android.build.gradle.internal.scope.InternalArtifactType.ANDROID_TEST_LINT_MODEL
+import com.android.build.gradle.internal.scope.InternalArtifactType.ANDROID_TEST_LINT_PARTIAL_RESULTS
 import com.android.build.gradle.internal.scope.InternalArtifactType.APK_ZIP
 import com.android.build.gradle.internal.scope.InternalArtifactType.BASE_MODULE_METADATA
 import com.android.build.gradle.internal.scope.InternalArtifactType.COMPILED_LOCAL_RESOURCES
 import com.android.build.gradle.internal.scope.InternalArtifactType.COMPILE_APP_CLASSES_JAR
 import com.android.build.gradle.internal.scope.InternalArtifactType.COMPILE_LIBRARY_CLASSES_JAR
+import com.android.build.gradle.internal.scope.InternalArtifactType.COMPILE_R_CLASS_JAR
 import com.android.build.gradle.internal.scope.InternalArtifactType.COMPILE_SYMBOL_LIST
 import com.android.build.gradle.internal.scope.InternalArtifactType.CONSUMER_PROGUARD_DIR
 import com.android.build.gradle.internal.scope.InternalArtifactType.DATA_BINDING_ARTIFACT
@@ -80,6 +83,10 @@ import com.android.build.gradle.internal.scope.InternalArtifactType.SIGNING_CONF
 import com.android.build.gradle.internal.scope.InternalArtifactType.SIGNING_CONFIG_VERSIONS
 import com.android.build.gradle.internal.scope.InternalArtifactType.SUPPORTED_LOCALE_LIST
 import com.android.build.gradle.internal.scope.InternalArtifactType.SYMBOL_LIST_WITH_PACKAGE_NAME
+import com.android.build.gradle.internal.scope.InternalArtifactType.TEST_FIXTURES_LINT_MODEL
+import com.android.build.gradle.internal.scope.InternalArtifactType.TEST_FIXTURES_LINT_PARTIAL_RESULTS
+import com.android.build.gradle.internal.scope.InternalArtifactType.UNIT_TEST_LINT_MODEL
+import com.android.build.gradle.internal.scope.InternalArtifactType.UNIT_TEST_LINT_PARTIAL_RESULTS
 import com.android.build.gradle.internal.utils.toImmutableSet
 import com.android.builder.core.ComponentType
 import com.android.builder.core.ComponentTypeImpl
@@ -205,8 +212,14 @@ class PublishingSpecs {
                 reverseMetadata(FEATURE_PUBLISHED_DEX, ArtifactType.FEATURE_PUBLISHED_DEX)
                 reverseMetadata(LINT_MODEL, ArtifactType.LINT_MODEL)
                 reverseMetadata(LINT_VITAL_LINT_MODEL, ArtifactType.LINT_VITAL_LINT_MODEL)
+                reverseMetadata(UNIT_TEST_LINT_MODEL, ArtifactType.UNIT_TEST_LINT_MODEL)
+                reverseMetadata(ANDROID_TEST_LINT_MODEL, ArtifactType.ANDROID_TEST_LINT_MODEL)
+                reverseMetadata(TEST_FIXTURES_LINT_MODEL, ArtifactType.TEST_FIXTURES_LINT_MODEL)
                 reverseMetadata(LINT_PARTIAL_RESULTS, ArtifactType.LINT_PARTIAL_RESULTS)
                 reverseMetadata(LINT_VITAL_PARTIAL_RESULTS, ArtifactType.LINT_VITAL_PARTIAL_RESULTS)
+                reverseMetadata(UNIT_TEST_LINT_PARTIAL_RESULTS, ArtifactType.UNIT_TEST_LINT_PARTIAL_RESULTS)
+                reverseMetadata(ANDROID_TEST_LINT_PARTIAL_RESULTS, ArtifactType.ANDROID_TEST_LINT_PARTIAL_RESULTS)
+                reverseMetadata(TEST_FIXTURES_LINT_PARTIAL_RESULTS, ArtifactType.TEST_FIXTURES_LINT_PARTIAL_RESULTS)
 
                 runtime(NAVIGATION_JSON, ArtifactType.NAVIGATION_JSON)
                 runtime(FEATURE_NAME, ArtifactType.FEATURE_NAME)
@@ -224,6 +237,7 @@ class PublishingSpecs {
                 api(COMPILE_LIBRARY_CLASSES_JAR, ArtifactType.CLASSES_JAR)
                 api(PREFAB_PACKAGE_CONFIGURATION, ArtifactType.PREFAB_PACKAGE_CONFIGURATION)
                 api(PREFAB_PACKAGE, ArtifactType.PREFAB_PACKAGE)
+                api(COMPILE_R_CLASS_JAR, ArtifactType.R_CLASS_JAR)
 
                 // manifest is published to both to compare and detect provided-only library
                 // dependencies.
@@ -261,7 +275,15 @@ class PublishingSpecs {
                 // dependencies.
                 output(LINT_PUBLISH_JAR, ArtifactType.LINT)
                 output(LINT_MODEL, ArtifactType.LINT_MODEL)
+                output(LINT_VITAL_LINT_MODEL, ArtifactType.LINT_VITAL_LINT_MODEL)
+                output(UNIT_TEST_LINT_MODEL, ArtifactType.UNIT_TEST_LINT_MODEL)
+                output(ANDROID_TEST_LINT_MODEL, ArtifactType.ANDROID_TEST_LINT_MODEL)
+                output(TEST_FIXTURES_LINT_MODEL, ArtifactType.TEST_FIXTURES_LINT_MODEL)
                 output(LINT_PARTIAL_RESULTS, ArtifactType.LINT_PARTIAL_RESULTS)
+                output(LINT_VITAL_PARTIAL_RESULTS, ArtifactType.LINT_VITAL_PARTIAL_RESULTS)
+                output(UNIT_TEST_LINT_PARTIAL_RESULTS, ArtifactType.UNIT_TEST_LINT_PARTIAL_RESULTS)
+                output(ANDROID_TEST_LINT_PARTIAL_RESULTS, ArtifactType.ANDROID_TEST_LINT_PARTIAL_RESULTS)
+                output(TEST_FIXTURES_LINT_PARTIAL_RESULTS, ArtifactType.TEST_FIXTURES_LINT_PARTIAL_RESULTS)
                 output(LOCAL_AAR_FOR_LINT, ArtifactType.LOCAL_AAR_FOR_LINT)
                 output(LINT_MODEL_METADATA, ArtifactType.LINT_MODEL_METADATA)
             }
@@ -322,9 +344,20 @@ class PublishingSpecs {
                 runtime(JAVA_RES, ArtifactType.JAVA_RES)
                 runtime(AAR_METADATA, ArtifactType.AAR_METADATA)
                 runtime(CONSUMER_PROGUARD_DIR, ArtifactType.UNFILTERED_PROGUARD_RULES)
-                // Publish LOCAL_AAR_FOR_LINT to API_AND_RUNTIME_ELEMENTS to support compileOnly
-                // module dependencies.
+
+                // Publish lint artifacts to API_AND_RUNTIME_ELEMENTS to support compileOnly module
+                // dependencies.
+                output(LINT_PUBLISH_JAR, ArtifactType.LINT)
+                output(LINT_MODEL, ArtifactType.LINT_MODEL)
+                output(LINT_VITAL_LINT_MODEL, ArtifactType.LINT_VITAL_LINT_MODEL)
+                output(UNIT_TEST_LINT_MODEL, ArtifactType.UNIT_TEST_LINT_MODEL)
+                output(ANDROID_TEST_LINT_MODEL, ArtifactType.ANDROID_TEST_LINT_MODEL)
+                output(LINT_PARTIAL_RESULTS, ArtifactType.LINT_PARTIAL_RESULTS)
+                output(LINT_VITAL_PARTIAL_RESULTS, ArtifactType.LINT_VITAL_PARTIAL_RESULTS)
+                output(UNIT_TEST_LINT_PARTIAL_RESULTS, ArtifactType.UNIT_TEST_LINT_PARTIAL_RESULTS)
+                output(ANDROID_TEST_LINT_PARTIAL_RESULTS, ArtifactType.ANDROID_TEST_LINT_PARTIAL_RESULTS)
                 output(LOCAL_AAR_FOR_LINT, ArtifactType.LOCAL_AAR_FOR_LINT)
+                output(LINT_MODEL_METADATA, ArtifactType.LINT_MODEL_METADATA)
             }
 
             // Publishing will be done manually from the lint standalone plugin for now.

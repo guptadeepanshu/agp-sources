@@ -29,7 +29,6 @@ import com.android.build.api.dsl.TestExtension
 import com.android.build.api.variant.impl.HasAndroidTest
 import com.android.build.api.variant.impl.HasTestFixtures
 import com.android.build.api.variant.impl.HasUnitTest
-import com.android.build.gradle.internal.TaskManager
 import com.android.build.gradle.internal.component.AndroidTestCreationConfig
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
@@ -46,11 +45,10 @@ import com.android.build.gradle.internal.ide.DependencyFailureHandler
 import com.android.build.gradle.internal.ide.ModelBuilder
 import com.android.build.gradle.internal.ide.dependencies.ArtifactCollectionsInputs
 import com.android.build.gradle.internal.ide.dependencies.ArtifactCollectionsInputsImpl
-import com.android.build.gradle.internal.ide.dependencies.BuildMapping
 import com.android.build.gradle.internal.ide.dependencies.FullDependencyGraphBuilder
+import com.android.build.gradle.internal.ide.dependencies.GraphEdgeCache
 import com.android.build.gradle.internal.ide.dependencies.LibraryService
 import com.android.build.gradle.internal.ide.dependencies.LibraryServiceImpl
-import com.android.build.gradle.internal.ide.dependencies.computeBuildMapping
 import com.android.build.gradle.internal.ide.dependencies.getVariantName
 import com.android.build.gradle.internal.lint.getLocalCustomLintChecksForModel
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
@@ -68,6 +66,7 @@ import com.android.build.gradle.internal.utils.toImmutableSet
 import com.android.build.gradle.internal.variant.VariantModel
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.ProjectOptionService
+import com.android.build.gradle.options.ProjectOptions
 import com.android.build.gradle.tasks.BuildPrivacySandboxSdkApks
 import com.android.build.gradle.tasks.sync.AbstractVariantModelTask
 import com.android.build.gradle.tasks.sync.AppIdListTask
@@ -76,7 +75,7 @@ import com.android.builder.errors.IssueReporter
 import com.android.builder.model.SyncIssue
 import com.android.builder.model.v2.ModelSyncFile
 import com.android.builder.model.v2.ide.AndroidGradlePluginProjectFlags.BooleanFlag
-import com.android.builder.model.v2.ide.ArtifactDependencies
+import com.android.builder.model.v2.ide.ArtifactDependenciesAdjacencyList
 import com.android.builder.model.v2.ide.BasicArtifact
 import com.android.builder.model.v2.ide.BundleInfo
 import com.android.builder.model.v2.ide.CodeShrinker
@@ -93,6 +92,7 @@ import com.android.builder.model.v2.models.BuildMap
 import com.android.builder.model.v2.models.ModelBuilderParameter
 import com.android.builder.model.v2.models.ProjectSyncIssues
 import com.android.builder.model.v2.models.VariantDependencies
+import com.android.builder.model.v2.models.VariantDependenciesAdjacencyList
 import com.android.builder.model.v2.models.Versions
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableMap
@@ -103,6 +103,7 @@ import org.gradle.tooling.provider.model.ParameterizedToolingModelBuilder
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
+import java.io.Serializable
 import javax.xml.namespace.QName
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.XMLStreamException
@@ -136,6 +137,7 @@ class ModelBuilder<
                 || className == AndroidProject::class.java.name
                 || className == AndroidDsl::class.java.name
                 || className == VariantDependencies::class.java.name
+                || className == VariantDependenciesAdjacencyList::class.java.name
                 || className == ProjectSyncIssues::class.java.name
     }
 
@@ -149,8 +151,9 @@ class ModelBuilder<
         AndroidProject::class.java.name -> buildAndroidProjectModel(project)
         AndroidDsl::class.java.name -> buildAndroidDslModel(project)
         ProjectSyncIssues::class.java.name -> buildProjectSyncIssueModel(project)
-        VariantDependencies::class.java.name -> throw RuntimeException(
-            "Please use parameterized Tooling API to obtain VariantDependencies model."
+        VariantDependencies::class.java.name,
+        VariantDependenciesAdjacencyList::class.java.name -> throw RuntimeException(
+            "Please use parameterized Tooling API to obtain ${className.split(".").last()} model."
         )
         else -> throw RuntimeException("Does not support model '$className'")
     }
@@ -164,6 +167,7 @@ class ModelBuilder<
         project: Project
     ): Any? = when (className) {
         VariantDependencies::class.java.name -> buildVariantDependenciesModel(project, parameter)
+        VariantDependenciesAdjacencyList::class.java.name -> buildVariantDependenciesModel(project, parameter, adjacencyList=true)
         Versions::class.java.name,
         BuildMap::class.java.name,
         AndroidProject::class.java.name,
@@ -176,15 +180,30 @@ class ModelBuilder<
 
     private fun buildModelVersions(): Versions {
         val v2Version = VersionImpl(0,1)
+        /**
+         * The minimum required model consumer version, to allow AGP to control support for older
+         * versions of Android Studio.
+         *
+         * Android Studio's model consumer version will be incremented after each release branching.
+         *
+         * The below Android Gradle plugin's minimumModelConsumerVersion will usually be increased
+         * after the next version of Studio becomes stable, dropping support for previous
+         * Android Studio versions.
+         */
+        val minimumModelConsumerVersion = VersionImpl(major = 64, minor = 0, humanReadable = "Android Studio Giraffe")
         return VersionsImpl(
             agp = Version.ANDROID_GRADLE_PLUGIN_VERSION,
-            versions = mapOf<String, Versions.Version>(
+            versions = mutableMapOf<String, Versions.Version>(
                 Versions.BASIC_ANDROID_PROJECT to v2Version,
                 Versions.ANDROID_PROJECT to v2Version,
                 Versions.ANDROID_DSL to v2Version,
                 Versions.VARIANT_DEPENDENCIES to v2Version,
                 Versions.NATIVE_MODULE to v2Version,
-            )
+            ).also {
+                if (variantModel.projectOptions[BooleanOption.SUPPORT_PAST_STUDIO_VERSIONS]) {
+                    it.put(Versions.MINIMUM_MODEL_CONSUMER, minimumModelConsumerVersion)
+                }
+            }
         )
     }
 
@@ -323,7 +342,6 @@ class ModelBuilder<
 
         return BasicAndroidProjectImpl(
             path = project.path,
-            buildName = getBuildName(project),
             buildFolder = project.layout.buildDirectory.get().asFile,
 
             projectType = variantModel.projectType,
@@ -390,32 +408,15 @@ class ModelBuilder<
             viewBindingOptions = ViewBindingOptionsImpl(
                 variantModel.variants.any { it.buildFeatures.viewBinding }
             ),
-            flags = getFlags(),
+            flags = getAgpFlags(
+                variants = variantModel.variants,
+                projectOptions = variantModel.projectOptions
+
+            ),
             lintChecksJars = getLocalCustomLintChecksForModel(project, variantModel.syncIssueReporter),
             modelSyncFiles = modelSyncFiles,
             desugarLibConfig = desugarLibConfig,
         )
-    }
-    /**
-     * Returns the current build name
-     */
-    private fun getBuildName(project: Project): String {
-        val currentGradle = project.gradle
-        val parentGradle = currentGradle.parent
-
-        return if (parentGradle != null) {
-            // search for the parent included builds for the current gradle, matching by the
-            // root dir
-            parentGradle.includedBuilds.singleOrNull {
-                // these values already canonicalized
-                //noinspection FileComparisons
-                it.projectDir == currentGradle.rootProject.projectDir
-            }?.name
-                ?: throw RuntimeException("Failed to get Gradle name for ${project.path}")
-        } else {
-            // this is top gradle so name is ":"
-            ":"
-        }
     }
 
     /**
@@ -521,15 +522,14 @@ class ModelBuilder<
 
     private fun buildVariantDependenciesModel(
         project: Project,
-        parameter: ModelBuilderParameter
-    ): VariantDependencies? {
+        parameter: ModelBuilderParameter,
+        adjacencyList: Boolean = false
+    ): Serializable? {
         // get the variant to return the dependencies for
         val variantName = parameter.variantName
         val variant = variantModel.variants
             .singleOrNull { it.name == variantName }
             ?: return null
-
-        val buildMapping = project.gradle.computeBuildMapping()
 
         val globalLibraryBuildService =
             getBuildService(
@@ -537,29 +537,76 @@ class ModelBuilder<
                 GlobalSyncService::class.java
             ).get()
 
-        val libraryService = LibraryServiceImpl(
-            globalLibraryBuildService.stringCache,
-            globalLibraryBuildService.localJarCache
-        )
+        val graphEdgeCache = globalLibraryBuildService.graphEdgeCache
+        val libraryService = LibraryServiceImpl(globalLibraryBuildService.libraryCache)
 
-        val dontBuildRuntimeClasspath = parameter.dontBuildRuntimeClasspath
-        return VariantDependenciesImpl(
-            name = variantName,
-                mainArtifact = createDependencies(variant,
-                        buildMapping,
-                        libraryService,
-                        dontBuildRuntimeClasspath),
-            androidTestArtifact = (variant as? HasAndroidTest)?.androidTest?.let {
-                createDependencies(it, buildMapping, libraryService, dontBuildRuntimeClasspath)
-            },
-            unitTestArtifact = (variant as? HasUnitTest)?.unitTest?.let {
-                createDependencies(it, buildMapping, libraryService, dontBuildRuntimeClasspath)
-            },
-            testFixturesArtifact = (variant as? HasTestFixtures)?.testFixtures?.let {
-                createDependencies(it, buildMapping, libraryService, dontBuildRuntimeClasspath)
-            },
-            libraryService.getAllLibraries().associateBy { it.key }
-        )
+        if (adjacencyList) {
+            return VariantDependenciesAdjacencyListImpl(
+                    name = variantName,
+                    mainArtifact = createDependenciesWithAdjacencyList(
+                            variant,
+                            libraryService,
+                            graphEdgeCache,
+                            parameter.dontBuildRuntimeClasspath
+                    ),
+                    androidTestArtifact = (variant as? HasAndroidTest)?.androidTest?.let {
+                        createDependenciesWithAdjacencyList(
+                                it,
+                                libraryService,
+                                graphEdgeCache,
+                                parameter.dontBuildAndroidTestRuntimeClasspath
+                        )
+                    },
+                    unitTestArtifact = (variant as? HasUnitTest)?.unitTest?.let {
+                        createDependenciesWithAdjacencyList(
+                                it,
+                                libraryService,
+                                graphEdgeCache,
+                                parameter.dontBuildUnitTestRuntimeClasspath
+                        )
+                    },
+                    testFixturesArtifact = (variant as? HasTestFixtures)?.testFixtures?.let {
+                        createDependenciesWithAdjacencyList(
+                                it,
+                                libraryService,
+                                graphEdgeCache,
+                                parameter.dontBuildTestFixtureRuntimeClasspath
+                        )
+                    },
+                    libraryService.getAllLibraries()
+            )
+        } else {
+            return VariantDependenciesImpl(
+                    name = variantName,
+                    mainArtifact = createDependencies(
+                            variant,
+                            libraryService,
+                            parameter.dontBuildRuntimeClasspath
+                    ),
+                    androidTestArtifact = (variant as? HasAndroidTest)?.androidTest?.let {
+                        createDependencies(
+                                it,
+                                libraryService,
+                                parameter.dontBuildAndroidTestRuntimeClasspath
+                        )
+                    },
+                    unitTestArtifact = (variant as? HasUnitTest)?.unitTest?.let {
+                        createDependencies(
+                                it,
+                                libraryService,
+                                parameter.dontBuildUnitTestRuntimeClasspath
+                        )
+                    },
+                    testFixturesArtifact = (variant as? HasTestFixtures)?.testFixtures?.let {
+                        createDependencies(
+                                it,
+                                libraryService,
+                                parameter.dontBuildTestFixtureRuntimeClasspath
+                        )
+                    },
+                    libraryService.getAllLibraries()
+            )
+        }
     }
 
     private fun createBasicVariant(
@@ -652,6 +699,8 @@ class ModelBuilder<
         component.androidResourcesCreationConfig?.compiledRClassArtifact?.get()?.asFile?.let {
             classesFolders.add(it)
         }
+
+        val generatedClassPaths = addGeneratedClassPaths(component, classesFolders)
 
         val testInfo: TestInfo? = when(component) {
             is TestVariantCreationConfig, is AndroidTestCreationConfig -> {
@@ -751,7 +800,8 @@ class ModelBuilder<
                 coreLibDesugaring,
                 component.minSdk,
                 component.global
-            ).files.toList()
+            ).files.toList(),
+            generatedClassPaths = generatedClassPaths
         )
     }
 
@@ -795,10 +845,12 @@ class ModelBuilder<
             }
         }
 
+        val generatedClassPaths = addGeneratedClassPaths(component, classesFolders)
+
         return JavaArtifactImpl(
             assembleTaskName = taskContainer.assembleTask.name,
             compileTaskName = taskContainer.compileTask.name,
-            ideSetupTaskNames = setOf(TaskManager.CREATE_MOCKABLE_JAR_TASK_NAME),
+            ideSetupTaskNames = setOf(component.global.taskNames.createMockableJar),
 
             classesFolders = classesFolders,
             generatedSourceFolders = ModelBuilder.getGeneratedSourceFoldersForUnitTests(component),
@@ -807,25 +859,46 @@ class ModelBuilder<
 
             mockablePlatformJar = variantModel.mockableJarArtifact.files.singleOrNull(),
             modelSyncFiles = listOf(),
+            generatedClassPaths = generatedClassPaths
         )
     }
 
     private fun createDependencies(
         component: ComponentCreationConfig,
-        buildMapping: BuildMapping,
         libraryService: LibraryService,
+        dontBuildRuntimeClasspath: Boolean,
+    ) = getGraphBuilder(dontBuildRuntimeClasspath, component, libraryService).build()
+
+    private fun createDependenciesWithAdjacencyList(
+        component: ComponentCreationConfig,
+        libraryService: LibraryService,
+        graphEdgeCache: GraphEdgeCache,
         dontBuildRuntimeClasspath: Boolean
-    ): ArtifactDependencies {
+    ): ArtifactDependenciesAdjacencyList = getGraphBuilder(
+        dontBuildRuntimeClasspath,
+        component,
+        libraryService,
+        graphEdgeCache
+    ).buildWithAdjacencyList()
+
+    private fun getGraphBuilder(
+        dontBuildRuntimeClasspath: Boolean,
+        component: ComponentCreationConfig,
+        libraryService: LibraryService,
+        graphEdgeCache: GraphEdgeCache? = null,
+    ): FullDependencyGraphBuilder {
         if (dontBuildRuntimeClasspath && component.variantDependencies.isLibraryConstraintsApplied) {
-            variantModel.syncIssueReporter.reportWarning(IssueReporter.Type.GENERIC, """
-                You have experimental IDE flag gradle.ide.gradle.skip.runtime.classpath.for.libraries enabled,
-                but AGP boolean option ${BooleanOption.EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS.propertyName} is not used.
+            variantModel.syncIssueReporter.reportWarning(
+                IssueReporter.Type.GENERIC, """
+                    You have experimental IDE flag gradle.ide.gradle.skip.runtime.classpath.for.libraries enabled,
+                    but AGP boolean option ${BooleanOption.EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS.propertyName} is not used.
 
-                Please set below in gradle.properties:
+                    Please set below in gradle.properties:
 
-                ${BooleanOption.EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS.propertyName}=true
+                    ${BooleanOption.EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS.propertyName}=true
 
-            """.trimIndent())
+                """.trimIndent()
+            )
         }
 
         val inputs = ArtifactCollectionsInputsImpl(
@@ -833,49 +906,16 @@ class ModelBuilder<
             projectPath = project.path,
             variantName = component.name,
             runtimeType = ArtifactCollectionsInputs.RuntimeType.FULL,
-            buildMapping = buildMapping
         )
 
         return FullDependencyGraphBuilder(
             inputs,
             component.variantDependencies,
             libraryService,
+            graphEdgeCache,
             component.services.projectOptions.get(BooleanOption.ADDITIONAL_ARTIFACTS_IN_MODEL),
             dontBuildRuntimeClasspath
-        ).build()
-    }
-
-    private fun getFlags(): AndroidGradlePluginProjectFlagsImpl {
-        val projectOptions = variantModel.projectOptions
-        val flags =
-            ImmutableMap.builder<BooleanFlag, Boolean>()
-
-        val finalResIds = !projectOptions[BooleanOption.USE_NON_FINAL_RES_IDS]
-
-        flags.put(BooleanFlag.APPLICATION_R_CLASS_CONSTANT_IDS, finalResIds)
-        flags.put(BooleanFlag.TEST_R_CLASS_CONSTANT_IDS, finalResIds)
-        flags.put(
-            BooleanFlag.JETPACK_COMPOSE,
-            variantModel.variants.any { it.buildFeatures.compose }
         )
-        flags.put(
-            BooleanFlag.ML_MODEL_BINDING,
-            variantModel.variants.any { it.buildFeatures.mlModelBinding }
-        )
-        flags.put(
-            BooleanFlag.TRANSITIVE_R_CLASS,
-            !projectOptions[BooleanOption.NON_TRANSITIVE_R_CLASS]
-        )
-        flags.put(
-            BooleanFlag.UNIFIED_TEST_PLATFORM,
-            projectOptions[BooleanOption.ANDROID_TEST_USES_UNIFIED_TEST_PLATFORM]
-        )
-        flags.put(
-            BooleanFlag.USE_ANDROID_X,
-            projectOptions[BooleanOption.USE_ANDROID_X]
-        )
-
-        return AndroidGradlePluginProjectFlagsImpl(flags.build())
     }
 
     private fun getBundleInfo(
@@ -1024,5 +1064,61 @@ class ModelBuilder<
             }
         }
         return null
+    }
+
+    private fun addGeneratedClassPaths(
+        component: ComponentCreationConfig,
+        classesFolders: MutableSet<File>
+    ): Map<String, File> {
+        val generatedClassPaths = mutableMapOf<String, File>()
+
+        val buildConfigJar = component.artifacts.get(InternalArtifactType.COMPILE_BUILD_CONFIG_JAR)
+        if (buildConfigJar.isPresent) {
+            classesFolders.add(buildConfigJar.get().asFile)
+            generatedClassPaths["buildConfigGeneratedClasses"] = buildConfigJar.get().asFile
+        }
+
+        return generatedClassPaths
+    }
+
+    companion object {
+        internal fun getAgpFlags(
+            variants: List<VariantCreationConfig>,
+            projectOptions: ProjectOptions
+        ): AndroidGradlePluginProjectFlagsImpl {
+            val flags =
+                ImmutableMap.builder<BooleanFlag, Boolean>()
+
+            val finalResIds = !projectOptions[BooleanOption.USE_NON_FINAL_RES_IDS]
+
+            flags.put(BooleanFlag.APPLICATION_R_CLASS_CONSTANT_IDS, finalResIds)
+            flags.put(BooleanFlag.TEST_R_CLASS_CONSTANT_IDS, finalResIds)
+            flags.put(
+                BooleanFlag.JETPACK_COMPOSE,
+                variants.any { it.buildFeatures.compose }
+            )
+            flags.put(
+                BooleanFlag.ML_MODEL_BINDING,
+                variants.any { it.buildFeatures.mlModelBinding }
+            )
+            flags.put(
+                BooleanFlag.TRANSITIVE_R_CLASS,
+                !projectOptions[BooleanOption.NON_TRANSITIVE_R_CLASS]
+            )
+            flags.put(
+                BooleanFlag.UNIFIED_TEST_PLATFORM,
+                projectOptions[BooleanOption.ANDROID_TEST_USES_UNIFIED_TEST_PLATFORM]
+            )
+            flags.put(
+                BooleanFlag.USE_ANDROID_X,
+                projectOptions[BooleanOption.USE_ANDROID_X]
+            )
+            flags.put(
+                BooleanFlag.ENABLE_VCS_INFO,
+                projectOptions[BooleanOption.ENABLE_VCS_INFO]
+            )
+
+            return AndroidGradlePluginProjectFlagsImpl(flags.build())
+        }
     }
 }

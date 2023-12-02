@@ -20,7 +20,7 @@ import com.android.SdkConstants
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
-import com.android.build.gradle.internal.dsl.ModuleBooleanPropertyKeys
+import com.android.build.gradle.internal.dsl.ModulePropertyKey
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
@@ -48,7 +48,6 @@ import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
-import java.lang.RuntimeException
 
 /**
  * Task that transforms a human readable art profile into a binary form version that can be shipped
@@ -189,12 +188,12 @@ abstract class CompileArtProfileTask: NonIncrementalTask() {
         @VisibleForTesting
         internal fun configureObfuscationMappingFile(task: CompileArtProfileTask) {
             if (creationConfig is VariantCreationConfig) {
-                task.useMappingFile.set(
+                task.useMappingFile.setDisallowChanges(
                     creationConfig.experimentalProperties.map {
-                        !ModuleBooleanPropertyKeys.ART_PROFILE_R8_REWRITING.getValueAsBoolean(it)
+                        !ModulePropertyKey.BooleanWithDefault.ART_PROFILE_R8_REWRITING.getValue(it)
                     })
             } else {
-                task.useMappingFile.set(true)
+                task.useMappingFile.setDisallowChanges(true)
             }
             task.obfuscationMappingFile.setDisallowChanges(
                 creationConfig.artifacts.get(SingleArtifact.OBFUSCATION_MAPPING_FILE)

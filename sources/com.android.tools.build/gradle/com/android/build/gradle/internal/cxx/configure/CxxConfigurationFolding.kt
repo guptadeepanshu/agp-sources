@@ -25,6 +25,7 @@ import com.android.build.gradle.internal.cxx.configure.MSBuildProperty.Platform
 import com.android.build.gradle.internal.cxx.logging.bugln
 import com.android.build.gradle.internal.cxx.model.CxxAbiModel
 import com.android.build.gradle.internal.cxx.model.buildSystemNameForTasks
+import com.android.build.gradle.internal.cxx.model.name
 import com.android.build.gradle.tasks.NativeBuildSystem
 import com.android.build.gradle.tasks.NativeBuildSystem.CMAKE
 import com.android.build.gradle.tasks.NativeBuildSystem.NINJA
@@ -278,8 +279,8 @@ class CxxConfigurationFolding(abis : List<CxxAbiModel>) {
             map[taskName] = listOf(abi.variant.variantName) to abi
         } else {
             val (priorVariants, priorAbi) = prior
-            if (priorAbi.abi != abi.abi) {
-                error("Expected ${priorAbi} but got ${abi.abi}")
+            if (priorAbi.name != abi.name) {
+                error("Expected ${priorAbi.name} but got ${abi.name}")
             }
             if (priorAbi.configurationArguments != abi.configurationArguments) {
                 error("Expected same configuration arguments")

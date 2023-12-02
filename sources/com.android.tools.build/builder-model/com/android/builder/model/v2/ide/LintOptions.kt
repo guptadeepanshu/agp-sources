@@ -181,4 +181,10 @@ interface LintOptions: AndroidModel {
      * of the earlier warnings.
      */
     val baseline: File?
+
+    /**
+     * The target sdk version used when generating a lint report for a library.
+     * This should only be set for libraries.
+     */
+    val targetSdk: ApiVersion?
 }

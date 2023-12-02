@@ -94,7 +94,7 @@ class ReportingPlugin implements org.gradle.api.Plugin<Project> {
 
         DslServices dslServices =
                 new DslServicesImpl(
-                        projectServices, project.getProviders().provider(() -> null), null);
+                        projectServices, project.getProviders().provider(() -> null), null, null);
 
         extension = project.getExtensions().create("android", TestOptions.class, dslServices);
 

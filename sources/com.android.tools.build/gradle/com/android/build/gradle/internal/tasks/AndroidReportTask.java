@@ -43,7 +43,6 @@ import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.plugins.JavaBasePlugin;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.InputFiles;
-import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
@@ -200,7 +199,9 @@ public abstract class AndroidReportTask extends DefaultTask implements AndroidTe
                             .provider(
                                     () -> {
                                         String dir =
-                                                creationConfig.getTestOptions().getResultsDir();
+                                                creationConfig
+                                                        .getAndroidTestOptions()
+                                                        .getResultsDir();
                                         String rootLocation =
                                                 dir != null && !dir.isEmpty()
                                                         ? dir
@@ -215,7 +216,10 @@ public abstract class AndroidReportTask extends DefaultTask implements AndroidTe
                     task.getProject()
                             .provider(
                                     () -> {
-                                        String dir = creationConfig.getTestOptions().getReportDir();
+                                        String dir =
+                                                creationConfig
+                                                        .getAndroidTestOptions()
+                                                        .getReportDir();
                                         String rootLocation =
                                                 dir != null && !dir.isEmpty()
                                                         ? dir

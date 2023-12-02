@@ -117,7 +117,7 @@ abstract class AarToClassTransform : TransformAction<AarToClassTransform.Params>
 
         private const val LIBS_FOLDER_SLASH = "$LIBS_FOLDER/"
 
-        private fun ZipFile.copyAllClassesJarsTo(outputApiJar: JarCreator) {
+        internal fun ZipFile.copyAllClassesJarsTo(outputApiJar: JarCreator) {
             entries()
                 .asSequence()
                 .filter(::isClassesJar)
@@ -130,7 +130,7 @@ abstract class AarToClassTransform : TransformAction<AarToClassTransform.Params>
             }
         }
 
-        private fun generateRClassJarFromRTxt(
+        internal fun generateRClassJarFromRTxt(
             outputApiJar: JarCreator,
             inputAar: ZipFile
         ) {

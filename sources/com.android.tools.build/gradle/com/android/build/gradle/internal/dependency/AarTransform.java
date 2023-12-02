@@ -37,6 +37,7 @@ import static com.android.SdkConstants.FN_SHARED_LIBRARY_ANDROID_MANIFEST_XML;
 import android.databinding.tool.DataBindingBuilder;
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
+import com.android.build.gradle.internal.publishing.AarOrJarTypeToConsume;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType;
 import com.android.build.gradle.internal.tasks.AarMetadataTask;
 import com.android.utils.FileUtils;
@@ -68,14 +69,14 @@ public abstract class AarTransform implements TransformAction<AarTransform.Param
     public abstract Provider<FileSystemLocation> getInputArtifact();
 
     @NonNull
-    public static ArtifactType[] getTransformTargets() {
+    public static ArtifactType[] getTransformTargets(AarOrJarTypeToConsume aarOrJarTypeToConsume) {
         return new ArtifactType[] {
+            aarOrJarTypeToConsume.getJar(),
             // For CLASSES, this transform is ues for runtime, and AarCompileClassesTransform is
             // used for compile
             ArtifactType.SHARED_CLASSES,
             ArtifactType.JAVA_RES,
             ArtifactType.SHARED_JAVA_RES,
-            ArtifactType.PROCESSED_JAR,
             ArtifactType.MANIFEST,
             ArtifactType.ANDROID_RES,
             ArtifactType.ASSETS,
@@ -107,6 +108,7 @@ public abstract class AarTransform implements TransformAction<AarTransform.Param
         switch (targetType) {
             case CLASSES_JAR:
             case JAVA_RES:
+            case JAR:
             case PROCESSED_JAR:
                 // even though resources are supposed to only be in the main jar of the AAR, this
                 // is not necessarily enforced by all build systems generating AAR so it's safer to

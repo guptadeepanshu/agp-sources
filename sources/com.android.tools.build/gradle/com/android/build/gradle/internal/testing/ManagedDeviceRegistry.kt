@@ -17,7 +17,6 @@
 package com.android.build.gradle.internal.testing
 
 import com.android.build.api.dsl.Device
-import com.android.build.api.dsl.TestOptions
 import com.android.build.api.instrumentation.manageddevice.DeviceDslRegistration
 import com.android.build.api.instrumentation.manageddevice.DeviceSetupConfigureAction
 import com.android.build.api.instrumentation.manageddevice.DeviceSetupInput
@@ -25,16 +24,13 @@ import com.android.build.api.instrumentation.manageddevice.DeviceSetupTaskAction
 import com.android.build.api.instrumentation.manageddevice.DeviceTestRunConfigureAction
 import com.android.build.api.instrumentation.manageddevice.DeviceTestRunInput
 import com.android.build.api.instrumentation.manageddevice.DeviceTestRunTaskAction
-import com.android.build.gradle.internal.setupTaskName
-import com.android.build.gradle.internal.tasks.ManagedDeviceSetupTask
-import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
-import java.io.File
+import com.android.build.gradle.internal.core.dsl.features.AndroidTestOptionsDslInfo
 
 /**
  * Implementation class of the Managed Device Registry.
  */
 class ManagedDeviceRegistry(
-    private val testOptions: TestOptions
+    private val testOptions: AndroidTestOptionsDslInfo
 ) : com.android.build.api.instrumentation.manageddevice.ManagedDeviceRegistry {
 
     /**

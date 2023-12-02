@@ -49,6 +49,7 @@ import com.android.build.gradle.internal.cxx.model.compileCommandsJsonBinFile
 import com.android.build.gradle.internal.cxx.model.compileCommandsJsonFile
 import com.android.build.gradle.internal.cxx.model.jsonFile
 import com.android.build.gradle.internal.cxx.model.createNinjaCommand
+import com.android.build.gradle.internal.cxx.model.name
 import com.android.build.gradle.internal.cxx.process.ExecuteProcessCommand
 import com.android.build.gradle.internal.cxx.process.createExecuteProcessCommand
 import com.android.ide.common.process.ProcessException
@@ -308,7 +309,7 @@ internal class CmakeServerExternalNativeJsonGenerator(
                             continue
                         }
                         val nativeLibraryValue = getNativeLibraryValue(abi, target, additionalProjectFilesIndexWriter)
-                        val libraryName = target.name + "-" + config.name + "-" + abi.abi.tag
+                        val libraryName = target.name + "-" + config.name + "-" + abi.name
                         Preconditions.checkNotNull(nativeBuildConfigValue.libraries)
                         nativeBuildConfigValue.libraries!![libraryName] = nativeLibraryValue
                     } // target
@@ -418,7 +419,7 @@ internal class CmakeServerExternalNativeJsonGenerator(
             additionalProjectFilesIndexWriter: BufferedWriter,
         ): NativeLibraryValue {
             val nativeLibraryValue = NativeLibraryValue()
-            nativeLibraryValue.abi = abi.abi.tag
+            nativeLibraryValue.abi = abi.name
             nativeLibraryValue.buildCommandComponents = abi.createNinjaCommand(target.name)
             nativeLibraryValue.artifactName = target.name
             nativeLibraryValue.buildType = if (abi.variant.isDebuggableEnabled) "debug" else "release"

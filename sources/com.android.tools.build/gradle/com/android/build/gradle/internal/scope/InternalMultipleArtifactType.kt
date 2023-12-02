@@ -20,7 +20,6 @@ import com.android.build.api.artifact.ArtifactKind
 import com.android.build.api.artifact.Artifact
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileSystemLocation
-import org.gradle.api.file.RegularFile
 
 /**
  * List of internal [Artifact.Multiple] [Artifact]
@@ -48,4 +47,32 @@ sealed class InternalMultipleArtifactType<T: FileSystemLocation>(
     // Unlike other JNI libs artifacts, these directories end with the ABI name. The reason is that
     // separate tasks produce each ABI's outputs.
     object EXTERNAL_NATIVE_BUILD_LIBS: InternalMultipleArtifactType<Directory>(DIRECTORY)
+
+    // Serialized Lint Model used by the lint report task in the same module. There can be multiple
+    // such artifacts for a single module in the case of a KMP project with multiple jvm targets.
+    object LINT_REPORT_LINT_MODEL: InternalMultipleArtifactType<Directory>(DIRECTORY)
+
+    // Serialized Lint Model used by the lint vital report task in the same module. There can be
+    // multiple such artifacts for a single module in the case of a KMP project with multiple jvm
+    // targets.
+    object LINT_VITAL_REPORT_LINT_MODEL: InternalMultipleArtifactType<Directory>(DIRECTORY)
+
+    // Serialized Lint Model for a variant's unit test component. Similar to
+    // InternalArtifactType.UNIT_TEST_LINT_MODEL, but allows for multiple instances, to support the
+    // case of a KMP project with multiple jvm targets.
+    object UNIT_TEST_LINT_MODEL: InternalMultipleArtifactType<Directory>(DIRECTORY)
+
+    // Partial lint results. Similar to InternalArtifactType.LINT_PARTIAL_RESULTS, but allows for
+    // multiple instances, to support the case of a KMP project with multiple jvm targets.
+    object LINT_PARTIAL_RESULTS: InternalMultipleArtifactType<Directory>(DIRECTORY)
+
+    // Partial lint vital results. Similar to InternalArtifactType.LINT_VITAL_PARTIAL_RESULTS, but
+    // allows for multiple instances, to support the case of a KMP project with multiple jvm
+    // targets.
+    object LINT_VITAL_PARTIAL_RESULTS: InternalMultipleArtifactType<Directory>(DIRECTORY)
+
+    // Partial lint results for a variant's unit test component. Similar to
+    // InternalArtifactType.UNIT_TEST_LINT_PARTIAL_RESULTS, but allows for multiple instances, to
+    // support the case of a KMP project with multiple jvm targets.
+    object UNIT_TEST_LINT_PARTIAL_RESULTS: InternalMultipleArtifactType<Directory>(DIRECTORY)
 }

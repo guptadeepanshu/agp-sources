@@ -33,6 +33,7 @@ data class JavaArtifactImpl(
     override val ideSetupTaskNames: Set<String>,
     override val generatedSourceFolders: Collection<File>,
     override val modelSyncFiles: Collection<ModelSyncFile>,
+    override val generatedClassPaths: Map<String, File>
 ) : JavaArtifact, Serializable {
     companion object {
         @JvmStatic

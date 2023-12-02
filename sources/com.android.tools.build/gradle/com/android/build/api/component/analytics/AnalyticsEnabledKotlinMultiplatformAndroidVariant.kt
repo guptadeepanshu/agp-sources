@@ -20,8 +20,7 @@ import com.android.build.api.artifact.Artifacts
 import com.android.build.api.variant.AarMetadata
 import com.android.build.api.variant.AndroidTest
 import com.android.build.api.variant.Instrumentation
-import com.android.build.api.variant.Sources
-import com.android.build.api.variant.impl.KotlinMultiplatformAndroidVariant
+import com.android.build.api.variant.KotlinMultiplatformAndroidVariant
 import com.android.tools.build.gradle.internal.profile.VariantPropertiesMethodType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.artifacts.Configuration
@@ -36,14 +35,9 @@ open class AnalyticsEnabledKotlinMultiplatformAndroidVariant @Inject constructor
     private val objectFactory: ObjectFactory
 ): KotlinMultiplatformAndroidVariant {
 
-    override val namespace: Provider<String>
-        get() {
-            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-                VariantPropertiesMethodType.NAMESPACE_VALUE
-            return delegate.namespace
-        }
     override val name: String
         get() = delegate.name
+
     override val artifacts: Artifacts
         get() {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
@@ -54,16 +48,7 @@ open class AnalyticsEnabledKotlinMultiplatformAndroidVariant @Inject constructor
                 stats,
                 objectFactory)
         }
-    override val sources: Sources
-        get() {
-            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-                VariantPropertiesMethodType.COMPONENT_SOURCES_ACCESS_VALUE
-            return objectFactory.newInstance(
-                AnalyticsEnabledSources::class.java,
-                delegate.sources,
-                stats,
-                objectFactory)
-        }
+
     override val instrumentation: Instrumentation
         get() {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
@@ -82,19 +67,6 @@ open class AnalyticsEnabledKotlinMultiplatformAndroidVariant @Inject constructor
                 VariantPropertiesMethodType.COMPILE_CLASSPATH_VALUE
             return delegate.compileClasspath
         }
-    override val compileConfiguration: Configuration
-        get() {
-            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-                VariantPropertiesMethodType.COMPILE_CONFIGURATION_VALUE
-            return delegate.compileConfiguration
-        }
-
-    override val runtimeConfiguration: Configuration
-        get() {
-            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-                VariantPropertiesMethodType.RUNTIME_CONFIGURATION_VALUE
-            return delegate.runtimeConfiguration
-        }
 
     private val userVisibleUnitTest: AnalyticsEnabledUnitTest? by lazy {
         delegate.unitTest?.let {
@@ -109,19 +81,6 @@ open class AnalyticsEnabledKotlinMultiplatformAndroidVariant @Inject constructor
     override val unitTest: com.android.build.api.component.UnitTest?
         get() = userVisibleUnitTest
 
-    private val userVisibleAarMetadata: AarMetadata by lazy {
-        objectFactory.newInstance(
-            AnalyticsEnabledAarMetadata::class.java,
-            delegate.aarMetadata,
-            stats
-        )
-    }
-    override val aarMetadata: AarMetadata
-        get() {
-            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-                VariantPropertiesMethodType.VARIANT_AAR_METADATA_VALUE
-            return userVisibleAarMetadata
-        }
     private val userVisibleAndroidTest: AnalyticsEnabledAndroidTest? by lazy {
         delegate.androidTest?.let {
             objectFactory.newInstance(

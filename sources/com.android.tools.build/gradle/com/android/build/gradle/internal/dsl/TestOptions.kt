@@ -19,7 +19,12 @@ package com.android.build.gradle.internal.dsl
 import com.android.build.api.dsl.Device
 import com.android.build.api.dsl.DeviceGroup
 import com.android.build.gradle.internal.services.DslServices
+import com.android.builder.core.DefaultApiVersion
+import com.android.builder.core.apiVersionFromString
+import com.android.builder.errors.IssueReporter
+import com.android.builder.model.ApiVersion
 import com.android.builder.model.TestOptions.Execution
+import com.android.builder.model.v2.ide.ProjectType
 import com.android.utils.HelpfulEnumConverter
 import com.google.common.base.Preconditions
 import com.google.common.base.Verify
@@ -30,7 +35,9 @@ import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.tasks.testing.Test
 import javax.inject.Inject
 
-abstract class TestOptions @Inject constructor(dslServices: DslServices) :
+abstract class TestOptions @Inject constructor(
+    private val dslServices: DslServices
+) :
     com.android.build.api.dsl.TestOptions {
     private val executionConverter = HelpfulEnumConverter<Execution>(Execution::class.java)
 
@@ -162,4 +169,26 @@ abstract class TestOptions @Inject constructor(dslServices: DslServices) :
     fun failureRetention(action: Action<com.android.build.api.dsl.FailureRetention>) {
         action.execute(failureRetention)
     }
+
+    private var targetSdkApiVersion: ApiVersion? = null
+
+    override var targetSdk:Int?
+        get() = targetSdkApiVersion?.apiLevel
+        set(value) {
+            if(dslServices.projectType != ProjectType.LIBRARY){
+                dslServices.issueReporter.reportError(IssueReporter.Type.GENERIC,
+                    RuntimeException("targetSdk is set as $value in testOptions for non library module"))
+            }
+            targetSdkApiVersion = if (value == null) null
+            else DefaultApiVersion(value)
+        }
+    override var targetSdkPreview: String?
+        get() = targetSdkApiVersion?.codename
+        set(value) {
+            if(dslServices.projectType != ProjectType.LIBRARY){
+                dslServices.issueReporter.reportError(IssueReporter.Type.GENERIC,
+                     RuntimeException("targetSdkPreview is set as $value in testOptions for non library module"))
+            }
+            targetSdkApiVersion = apiVersionFromString(value)
+        }
 }

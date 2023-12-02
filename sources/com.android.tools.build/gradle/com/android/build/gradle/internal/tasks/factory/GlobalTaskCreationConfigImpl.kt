@@ -30,16 +30,21 @@ import com.android.build.api.dsl.Lint
 import com.android.build.api.dsl.Prefab
 import com.android.build.api.dsl.Splits
 import com.android.build.api.dsl.TestCoverage
-import com.android.build.api.dsl.TestOptions
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.attribution.BuildAnalyzerIssueReporter
 import com.android.build.gradle.internal.core.SettingsOptions
+import com.android.build.gradle.internal.core.dsl.features.AndroidTestOptionsDslInfo
+import com.android.build.gradle.internal.core.dsl.features.UnitTestOptionsDslInfo
+import com.android.build.gradle.internal.core.dsl.impl.features.AndroidTestOptionsDslInfoImpl
+import com.android.build.gradle.internal.core.dsl.impl.features.UnitTestOptionsDslInfoImpl
 import com.android.build.gradle.internal.dsl.CommonExtensionImpl
 import com.android.build.gradle.internal.dsl.LanguageSplitOptions
 import com.android.build.gradle.internal.instrumentation.ASM_API_VERSION_FOR_INSTRUMENTATION
 import com.android.build.gradle.internal.lint.getLocalCustomLintChecks
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
+import com.android.build.gradle.internal.publishing.AarOrJarTypeToConsume
+import com.android.build.gradle.internal.publishing.getAarOrJarTypeToConsume
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.BaseServices
 import com.android.build.gradle.internal.services.VersionedSdkLoaderService
@@ -99,7 +104,7 @@ class GlobalTaskCreationConfigImpl(
         Revision.parseRevision(extension.buildToolsVersion, Revision.Precision.MICRO)
     }
 
-    override val ndkVersion: String?
+    override val ndkVersion: String
         get() = extension.ndkVersion
 
     override val ndkPath: String?
@@ -172,8 +177,12 @@ class GlobalTaskCreationConfigImpl(
     override val testCoverage: TestCoverage
         get() = extension.testCoverage
 
-    override val testOptions: TestOptions
-        get() = extension.testOptions
+    override val androidTestOptions: AndroidTestOptionsDslInfo
+        get() = AndroidTestOptionsDslInfoImpl(extension)
+
+    override val unitTestOptions: UnitTestOptionsDslInfo
+        get() = UnitTestOptionsDslInfoImpl(extension)
+
 
     override val testServers: List<TestServer>
         get() = oldExtension.testServers
@@ -182,7 +191,7 @@ class GlobalTaskCreationConfigImpl(
         get() = extension.androidResources.namespaced
 
     override val testOptionExecutionEnum: com.android.builder.model.TestOptions.Execution? by lazy {
-        testOptions.execution.toExecutionEnum()
+        androidTestOptions.execution.toExecutionEnum()
     }
 
     override val prefabOrEmpty: Set<Prefab>
@@ -198,6 +207,9 @@ class GlobalTaskCreationConfigImpl(
             InternalArtifactType.INSTANT_APP_MANIFEST
         else
             InternalArtifactType.PACKAGED_MANIFESTS
+
+    override val publishConsumerProguardRules: Boolean
+        get() = true
 
     // Internal Objects
 
@@ -234,7 +246,7 @@ class GlobalTaskCreationConfigImpl(
     override val versionedNdkHandler: SdkComponentsBuildService.VersionedNdkHandler by lazy {
         getBuildService(services.buildServiceRegistry, SdkComponentsBuildService::class.java)
             .get()
-            .versionedNdkHandler(compileSdkHashString, ndkVersion, ndkPath)
+            .versionedNdkHandler(ndkVersion, ndkPath)
     }
 
     override val buildAnalyzerIssueReporter: BuildAnalyzerIssueReporter? =
@@ -247,4 +259,9 @@ class GlobalTaskCreationConfigImpl(
 
     override val targetDeployApiFromIDE: Int? =
         services.projectOptions.get(IntegerOption.IDE_TARGET_DEVICE_API)
+
+    override val taskNames: GlobalTaskNames = GlobalTaskNamesImpl
+
+    override val aarOrJarTypeToConsume: AarOrJarTypeToConsume
+        get() = getAarOrJarTypeToConsume(services.projectOptions, namespacedAndroidResources)
 }

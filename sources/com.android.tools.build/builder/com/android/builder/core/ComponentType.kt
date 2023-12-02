@@ -42,7 +42,7 @@ interface ComponentType {
     val isApk: Boolean
 
     /**
-     * Returns true is the variant is a base module. This is only true if it can have features.
+     * Returns true if the variant is a base module. This is only true if it can have features.
      * If the variant can never have feature (TEST modules for instance), then this is false.
      */
     val isBaseModule: Boolean
@@ -261,7 +261,7 @@ enum class ComponentTypeImpl(
         suffix = "",
         artifactName = AndroidProject.ARTIFACT_MAIN,
         artifactType = ArtifactMetaData.TYPE_ANDROID,
-        analyticsVariantType = GradleBuildVariant.VariantType.LIBRARY, //TODO(b/243387425): Support Analytics
+        analyticsVariantType = GradleBuildVariant.VariantType.KOTLIN_MULTIPLATFORM_ANDROID_LIBRARY,
     );
 
     override val isTestComponent: Boolean

@@ -38,6 +38,10 @@ public class AssetRepository {
         return null;
     }
 
+    /**
+     * @param mode one of ACCESS_UNKNOWN, ACCESS_STREAMING, ACCESS_RANDOM or ACCESS_BUFFER (int
+     *     values 0-3)
+     */
     @Nullable
     public InputStream openNonAsset(int cookie, @NonNull String path, int mode) throws IOException {
         return null;

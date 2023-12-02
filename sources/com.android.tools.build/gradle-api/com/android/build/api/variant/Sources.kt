@@ -29,7 +29,7 @@ interface Sources {
     val java: SourceDirectories.Flat?
 
     /**
-     * Access ot the Kotlin source folders.
+     * Access to the Kotlin source folders.
      */
     @get:Incubating
     val kotlin: SourceDirectories.Flat?
@@ -83,7 +83,7 @@ interface Sources {
     val renderscript: SourceDirectories.Flat?
 
     /**
-     * Access ot the Baseline profiles source folders.
+     * Access to the Baseline profiles source folders.
      */
     val baselineProfiles: SourceDirectories.Flat?
 

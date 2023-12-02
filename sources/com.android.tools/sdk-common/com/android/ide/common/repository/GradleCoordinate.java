@@ -20,6 +20,7 @@ import static com.android.ide.common.repository.KnownVersionStabilityKt.getStabi
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.ide.common.gradle.Component;
+import com.android.ide.common.gradle.RichVersion;
 import com.android.ide.common.gradle.Version;
 import com.android.ide.common.gradle.VersionRange;
 import com.google.common.base.Joiner;
@@ -407,6 +408,17 @@ public final class GradleCoordinate {
         return new GradleCoordinate(groupId, artifactId, revisions, type);
     }
 
+    /**
+     * Parse a String into a GradleCoordinate with empty groupId and artifactId, null type,
+     * and the revision denoted by the String.
+     *
+     * @param revision a String identifying a specific software revision
+     *
+     * @deprecated use {@link Version.Companion#parse(String)} if dealing with single versions
+     *             of software artifacts, or {@link RichVersion.Companion#parse(String)} when
+     *             dealing with user-provided Gradle dependency specifiers.
+     */
+    @Deprecated
     public static GradleCoordinate parseVersionOnly(@NonNull String revision) {
         return new GradleCoordinate(NONE, NONE, parseRevisionNumber(revision), null);
     }
@@ -570,10 +582,31 @@ public final class GradleCoordinate {
     }
 
     /**
+     * Returns the upper-bound version of this coordinate.  If this coordinate indicates a
+     * prefix range (by ending with a +), the upper-bound is the infimum of the next prefix;
+     * otherwise, the upper-bound is the version itself.
+     * <p>
+     * Note that using this on a user-supplied coordinate is almost certainly a mistake, as the
+     * syntax for user-supplied coordinates is richer than single versions (see for a start the
+     * contortions here around {@link GradleCoordinate#acceptsGreaterRevisions()}, and the
+     * contradictions within this file about whether we support rich versions or not (mostly not
+     * but apparently we do support prefix matching).  Compromise for now by returning a
+     * {@link Version} representing the latest possible matching version.
+     */
+    @NonNull
+    public Version getUpperBoundVersion() {
+        if (acceptsGreaterRevisions()) {
+            return Version.Companion.prefixInfimum(getPrefix()).nextPrefix();
+        }
+        return Version.Companion.parse(getRevision());
+    }
+
+    /**
      * Returns the version of this coordinate
      *
      * @return the version
-     * @deprecated prefer {@link GradleCoordinate#getLowerBoundVersion()} if possible
+     * @deprecated prefer {@link GradleCoordinate#getLowerBoundVersion()} if possible. See the
+     *     deprecation note on {@link GradleVersion} for alternatives.
      */
     @Deprecated
     @Nullable
@@ -639,7 +672,11 @@ public final class GradleCoordinate {
     /**
      * Returns true if this fully-specified coordinate matches the given (optionally including +)
      * coordinate.
+     *
+     * @deprecated compare entities using specialized classes and operators from the {@link
+     *     com.android.ide.common.gradle} package.
      */
+    @Deprecated
     public boolean matches(@NonNull GradleCoordinate pattern) {
         if (!isSameArtifact(pattern)) {
             return false;

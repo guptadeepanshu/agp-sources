@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.ide.v2
 
+import com.android.builder.model.v2.ide.ApiVersion
 import com.android.builder.model.v2.ide.LintOptions
 import java.io.File
 import java.io.Serializable
@@ -56,6 +57,7 @@ data class LintOptionsImpl(
     override val checkReleaseBuilds: Boolean,
     override val checkDependencies: Boolean,
     override val baseline: File?,
+    override val targetSdk: ApiVersion?,
 ) : LintOptions, Serializable {
     companion object {
         @JvmStatic

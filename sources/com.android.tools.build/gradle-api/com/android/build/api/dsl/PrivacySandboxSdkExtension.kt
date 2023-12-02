@@ -80,6 +80,9 @@ interface PrivacySandboxSdkExtension {
     var buildToolsVersion: String
 
     @get:Incubating
+    val experimentalProperties: MutableMap<String, Any>
+
+    @get:Incubating
     @set:Incubating
     var minSdk: Int?
 

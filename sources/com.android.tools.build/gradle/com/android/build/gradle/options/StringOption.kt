@@ -120,6 +120,10 @@ enum class StringOption(
     // Lint: Allow customization of the heap size of the process started to run lint
     LINT_HEAP_SIZE("android.experimental.lint.heapSize", ApiStage.Experimental),
 
+    // Lint: Allow customization of the amount of memory earmarked for each lint task (when lint
+    // runs in process)
+    LINT_RESERVED_MEMORY_PER_TASK("android.experimental.lint.reservedMemoryPerTask", ApiStage.Experimental),
+
     // Lint: Allow override of the version. Note that lint versions are generally 23 higher than
     // the version of Android Gradle Plugin. So AGP 7.0.0-beta02 defaults to using lint
     // 30.0.0-beta02

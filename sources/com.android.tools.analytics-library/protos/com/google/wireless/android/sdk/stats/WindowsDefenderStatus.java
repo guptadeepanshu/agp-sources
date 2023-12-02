@@ -127,17 +127,44 @@ private static final long serialVersionUID = 0L;
      */
     SCANNING_DISABLED(1),
     /**
-     * <code>ALL_EXCLUDED = 2;</code>
+     * <pre>
+     * Deprecated, excluded paths information not available anymore
+     * </pre>
+     *
+     * <code>ALL_EXCLUDED = 2 [deprecated = true];</code>
      */
+    @java.lang.Deprecated
     ALL_EXCLUDED(2),
     /**
-     * <code>SOME_EXCLUDED = 3;</code>
+     * <pre>
+     * Deprecated, excluded paths information not available anymore
+     * </pre>
+     *
+     * <code>SOME_EXCLUDED = 3 [deprecated = true];</code>
      */
+    @java.lang.Deprecated
     SOME_EXCLUDED(3),
     /**
-     * <code>NONE_EXCLUDED = 4;</code>
+     * <pre>
+     * Deprecated, excluded paths information not available anymore
+     * </pre>
+     *
+     * <code>NONE_EXCLUDED = 4 [deprecated = true];</code>
      */
+    @java.lang.Deprecated
     NONE_EXCLUDED(4),
+    /**
+     * <code>CHECK_IGNORED = 5;</code>
+     */
+    CHECK_IGNORED(5),
+    /**
+     * <code>ENABLED_AUTO = 6;</code>
+     */
+    ENABLED_AUTO(6),
+    /**
+     * <code>ENABLED_MANUAL = 7;</code>
+     */
+    ENABLED_MANUAL(7),
     ;
 
     /**
@@ -149,17 +176,41 @@ private static final long serialVersionUID = 0L;
      */
     public static final int SCANNING_DISABLED_VALUE = 1;
     /**
-     * <code>ALL_EXCLUDED = 2;</code>
+     * <pre>
+     * Deprecated, excluded paths information not available anymore
+     * </pre>
+     *
+     * <code>ALL_EXCLUDED = 2 [deprecated = true];</code>
      */
-    public static final int ALL_EXCLUDED_VALUE = 2;
+    @java.lang.Deprecated public static final int ALL_EXCLUDED_VALUE = 2;
     /**
-     * <code>SOME_EXCLUDED = 3;</code>
+     * <pre>
+     * Deprecated, excluded paths information not available anymore
+     * </pre>
+     *
+     * <code>SOME_EXCLUDED = 3 [deprecated = true];</code>
      */
-    public static final int SOME_EXCLUDED_VALUE = 3;
+    @java.lang.Deprecated public static final int SOME_EXCLUDED_VALUE = 3;
     /**
-     * <code>NONE_EXCLUDED = 4;</code>
+     * <pre>
+     * Deprecated, excluded paths information not available anymore
+     * </pre>
+     *
+     * <code>NONE_EXCLUDED = 4 [deprecated = true];</code>
      */
-    public static final int NONE_EXCLUDED_VALUE = 4;
+    @java.lang.Deprecated public static final int NONE_EXCLUDED_VALUE = 4;
+    /**
+     * <code>CHECK_IGNORED = 5;</code>
+     */
+    public static final int CHECK_IGNORED_VALUE = 5;
+    /**
+     * <code>ENABLED_AUTO = 6;</code>
+     */
+    public static final int ENABLED_AUTO_VALUE = 6;
+    /**
+     * <code>ENABLED_MANUAL = 7;</code>
+     */
+    public static final int ENABLED_MANUAL_VALUE = 7;
 
 
     public final int getNumber() {
@@ -187,6 +238,9 @@ private static final long serialVersionUID = 0L;
         case 2: return ALL_EXCLUDED;
         case 3: return SOME_EXCLUDED;
         case 4: return NONE_EXCLUDED;
+        case 5: return CHECK_IGNORED;
+        case 6: return ENABLED_AUTO;
+        case 7: return ENABLED_MANUAL;
         default: return null;
       }
     }

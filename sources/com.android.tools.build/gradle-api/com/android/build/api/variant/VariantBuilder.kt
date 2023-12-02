@@ -91,7 +91,7 @@ interface VariantBuilder: ComponentBuilder {
      */
     @Deprecated(
         "Will be removed in AGP 9.0.",
-        replaceWith=ReplaceWith("(VariantBuilder.Subtype).enableUnitTest where available")
+        replaceWith=ReplaceWith("HasUnitTestBuilder.enableUnitTest")
     )
     var unitTestEnabled: Boolean
 
@@ -101,7 +101,7 @@ interface VariantBuilder: ComponentBuilder {
      */
     @Deprecated(
         "Will be removed in AGP 9.0.",
-        replaceWith=ReplaceWith("(VariantBuilder.Subtype).enableUnitTest where available")
+        replaceWith=ReplaceWith("HasUnitTestBuilder.enableUnitTest")
     )
     var enableUnitTest: Boolean
 

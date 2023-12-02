@@ -47,6 +47,16 @@ interface OptimizationCreationConfig {
      */
     val ignoreAllLibraryKeepRules: Boolean
 
+    /**
+     * Returns the external dependencies to ignore in baseline profiles.
+     */
+    val ignoreFromInBaselineProfile: Provider<Set<String>>
+
+    /**
+     * Returns whether to ignore all external dependencies in baseline profiles.
+     */
+    val ignoreFromAllExternalDependenciesInBaselineProfile: Boolean
+
     val minifiedEnabled: Boolean
     val resourcesShrink: Boolean
 

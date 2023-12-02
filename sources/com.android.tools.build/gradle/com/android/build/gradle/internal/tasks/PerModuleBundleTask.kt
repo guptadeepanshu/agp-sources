@@ -21,10 +21,8 @@ import com.android.SdkConstants.DOT_DEX
 import com.android.SdkConstants.FD_ASSETS
 import com.android.SdkConstants.FD_DEX
 import com.android.build.api.artifact.SingleArtifact
-import com.android.build.api.artifact.SingleArtifact.MERGED_NATIVE_LIBS
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
-import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig
 import com.android.build.gradle.internal.dependency.AndroidAttributes
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType
@@ -47,7 +45,6 @@ import com.android.builder.packaging.JarCreator
 import com.android.builder.packaging.JarFlinger
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
@@ -138,6 +135,11 @@ abstract class PerModuleBundleTask: NonIncrementalTask() {
     @get:PathSensitive(PathSensitivity.NAME_ONLY)
     abstract val privacySandboxSdkRuntimeConfigFile: RegularFileProperty
 
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
+    @get:Optional
+    abstract val versionControlInfoMetadata: RegularFileProperty
+
     public override fun doTaskAction() {
         val outputPath =
                 (outputFile.orNull?.asFile ?: File(outputDir.get().asFile, fileName.get())).toPath()
@@ -192,6 +194,12 @@ abstract class PerModuleBundleTask: NonIncrementalTask() {
                 appMetadata.orNull?.asFile?.let { metadataFile -> setOf(metadataFile) }
                     ?: setOf(),
                 Relocator("root/META-INF/com/android/build/gradle"),
+                JarCreator.EXCLUDE_CLASSES)
+            addHybridFolder(
+                jarCreator, versionControlInfoMetadata.orNull?.asFile?.let {
+                    metadataFile -> setOf(metadataFile)
+                } ?: setOf(),
+                Relocator("root/META-INF/"),
                 JarCreator.EXCLUDE_CLASSES)
 
             addHybridFolder(jarCreator, nativeLibsFiles.files, fileFilter = abiFilter)
@@ -354,7 +362,7 @@ abstract class PerModuleBundleTask: NonIncrementalTask() {
             task.javaResJar.setDisallowChanges(
                 artifacts.get(InternalArtifactType.MERGED_JAVA_RES)
             )
-            task.nativeLibsFiles.from(getNativeLibsFiles(creationConfig))
+            task.nativeLibsFiles.from(creationConfig.artifacts.get(STRIPPED_NATIVE_LIBS))
             task.featureJavaResFiles.from(
                 creationConfig.variantDependencies.getArtifactFileCollection(
                     AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
@@ -386,6 +394,10 @@ abstract class PerModuleBundleTask: NonIncrementalTask() {
                 artifacts.setTaskInputToFinalProduct(
                     InternalArtifactType.APP_METADATA,
                     task.appMetadata
+                )
+                artifacts.setTaskInputToFinalProduct(
+                    InternalArtifactType.VERSION_CONTROL_INFO_FILE,
+                    task.versionControlInfoMetadata
                 )
             }
 
@@ -448,14 +460,3 @@ private class ResRelocator : JarCreator.Relocator {
     }
 }
 
-/**
- * Returns a file collection containing all of the native libraries to be packaged.
- */
-fun getNativeLibsFiles(creationConfig: ComponentCreationConfig): FileCollection {
-    val nativeLibs = creationConfig.services.fileCollection()
-    if (creationConfig.componentType.isForTesting) {
-        return nativeLibs.from(creationConfig.artifacts.get(MERGED_NATIVE_LIBS))
-    }
-    nativeLibs.from(creationConfig.artifacts.get(STRIPPED_NATIVE_LIBS))
-    return nativeLibs
-}

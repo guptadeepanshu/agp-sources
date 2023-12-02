@@ -24,7 +24,6 @@ import com.google.wireless.android.sdk.stats.GradleBuildProject
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
-import org.gradle.api.services.BuildServiceParameters
 import org.gradle.build.event.BuildEventsListenerRegistry
 
 /**
@@ -62,13 +61,13 @@ abstract class NoOpAnalyticsConfiguratorService : AnalyticsConfiguratorService()
      * interchangeable.
      */
     class RegistrationAction(project: Project)
-        : ServiceRegistrationAction<NoOpAnalyticsConfiguratorService, BuildServiceParameters.None>(
+        : ServiceRegistrationAction<NoOpAnalyticsConfiguratorService, Params>(
         project,
         NoOpAnalyticsConfiguratorService::class.java,
         name = getBuildServiceName(AnalyticsConfiguratorService::class.java)
     ) {
 
-        override fun configure(parameters: BuildServiceParameters.None) {
+        override fun configure(parameters: Params) {
             // do nothing
         }
     }

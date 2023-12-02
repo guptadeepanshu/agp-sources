@@ -318,6 +318,14 @@ private fun <TaskT: Task, FileTypeT: FileSystemLocation, ArtifactTypeT> toTransf
     type: ArtifactTypeT)
         where ArtifactTypeT : Single<FileTypeT>,
               ArtifactTypeT : Artifact.Transformable {
+    if (type is Artifact.ContainsMany) {
+        throw IllegalArgumentException(
+            "${type.name()} is a `com.android.build.api.artifact.ContainsMany` artifact.\n" +
+                    "you cannot transform ContainsMany artifacts" +
+                    " using the `toTransform` method,\nyou must instead use the" +
+                    " `OutOperationRequest.toTransformMany` method."
+        )
+    }
     val artifactContainer = artifacts.getArtifactContainer(type)
     val currentProvider =  artifactContainer.transform(taskProvider, taskProvider.flatMap { into(it) })
     taskProvider.configure { it ->

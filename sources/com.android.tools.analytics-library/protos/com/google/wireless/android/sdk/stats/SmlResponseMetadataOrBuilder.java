@@ -25,4 +25,33 @@ public interface SmlResponseMetadataOrBuilder extends
    * @return The rpcGlobalId.
    */
   long getRpcGlobalId();
+
+  /**
+   * <pre>
+   * AIDA server-side experiment ids.
+   * </pre>
+   *
+   * <code>repeated int32 server_experiment_ids = 2;</code>
+   * @return A list containing the serverExperimentIds.
+   */
+  java.util.List<java.lang.Integer> getServerExperimentIdsList();
+  /**
+   * <pre>
+   * AIDA server-side experiment ids.
+   * </pre>
+   *
+   * <code>repeated int32 server_experiment_ids = 2;</code>
+   * @return The count of serverExperimentIds.
+   */
+  int getServerExperimentIdsCount();
+  /**
+   * <pre>
+   * AIDA server-side experiment ids.
+   * </pre>
+   *
+   * <code>repeated int32 server_experiment_ids = 2;</code>
+   * @param index The index of the element to return.
+   * @return The serverExperimentIds at the given index.
+   */
+  int getServerExperimentIds(int index);
 }

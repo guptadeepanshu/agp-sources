@@ -25,6 +25,9 @@ import com.android.build.gradle.internal.coverage.JacocoConfigurations
 import com.android.build.gradle.internal.coverage.JacocoReportTask
 import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.dsl.ManagedVirtualDevice
+import com.android.build.gradle.internal.lint.AndroidLintAnalysisTask
+import com.android.build.gradle.internal.lint.LintModelWriterTask
+import com.android.build.gradle.internal.plugins.LINT_PLUGIN_ID
 import com.android.build.gradle.internal.profile.AnalyticsConfiguratorService
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.services.getBuildService
@@ -37,8 +40,10 @@ import com.android.build.gradle.internal.tasks.JacocoTask
 import com.android.build.gradle.internal.tasks.ManagedDeviceCleanTask
 import com.android.build.gradle.internal.tasks.ManagedDeviceInstrumentationTestSetupTask
 import com.android.build.gradle.internal.tasks.ManagedDeviceSetupTask
+import com.android.build.gradle.internal.tasks.PreviewScreenshotTestTask
 import com.android.build.gradle.internal.tasks.SigningConfigVersionsWriterTask
 import com.android.build.gradle.internal.tasks.SigningConfigWriterTask
+import com.android.build.gradle.internal.tasks.StripDebugSymbolsTask
 import com.android.build.gradle.internal.tasks.TestPreBuildTask
 import com.android.build.gradle.internal.tasks.TestServerTask
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
@@ -47,8 +52,9 @@ import com.android.build.gradle.internal.tasks.featuresplit.getFeatureName
 import com.android.build.gradle.internal.test.AbstractTestDataImpl
 import com.android.build.gradle.internal.test.BundleTestDataImpl
 import com.android.build.gradle.internal.test.TestDataImpl
-import com.android.build.gradle.internal.testing.utp.shouldEnableUtp
 import com.android.build.gradle.options.BooleanOption
+import com.android.build.gradle.options.BooleanOption.LINT_ANALYSIS_PER_COMPONENT
+import com.android.builder.core.BuilderConstants
 import com.android.builder.core.BuilderConstants.FD_MANAGED_DEVICE_SETUP_RESULTS
 import com.android.utils.FileUtils
 import com.google.common.collect.ImmutableSet
@@ -58,6 +64,8 @@ import org.gradle.api.execution.TaskExecutionGraph
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.TaskProvider
+import java.io.File
+import java.util.Locale
 import java.util.concurrent.Callable
 
 class AndroidTestTaskManager(
@@ -90,8 +98,9 @@ class AndroidTestTaskManager(
                                 + "for all flavors on connected devices.")
             }
         }
-        taskFactory.configure(
-            CONNECTED_CHECK) { check: Task -> check.dependsOn(connectedAndroidTestTask.name) }
+        taskFactory.configure(globalConfig.taskNames.connectedCheck) {
+            it.dependsOn(connectedAndroidTestTask.name)
+        }
         val deviceAndroidTestTask: TaskProvider<out Task>
         // if more than one provider tasks, either because of several flavors, or because of
         // more than one providers, then create an aggregate report tasks for all of them.
@@ -111,8 +120,9 @@ class AndroidTestTaskManager(
                                 + "using all Device Providers.")
             }
         }
-        taskFactory.configure(
-            DEVICE_CHECK) { check: Task -> check.dependsOn(deviceAndroidTestTask.name) }
+        taskFactory.configure(globalConfig.taskNames.deviceCheck) {
+            it.dependsOn(deviceAndroidTestTask.name)
+        }
 
         // If gradle is launched with --continue, we want to run all tests and generate an
         // aggregate report (to help with the fact that we may have several build variants, or
@@ -194,6 +204,7 @@ class AndroidTestTaskManager(
         createValidateSigningTask(androidTestProperties)
         taskFactory.register(SigningConfigWriterTask.CreationAction(androidTestProperties))
         taskFactory.register(SigningConfigVersionsWriterTask.CreationAction(androidTestProperties))
+        taskFactory.register(StripDebugSymbolsTask.CreationAction(androidTestProperties))
         createPackagingTask(androidTestProperties)
         taskFactory.configure(
             ASSEMBLE_ANDROID_TEST
@@ -203,6 +214,33 @@ class AndroidTestTaskManager(
                     .taskContainer
                     .assembleTask
                     .name)
+        }
+
+        // Create lint tasks for a KMP component only if the lint standalone plugin is applied (to
+        // avoid Android-specific behavior)
+        val isKmpPerComponentLintAnalysis =
+            androidTestProperties is KmpComponentCreationConfig
+                    && project.plugins.hasPlugin(LINT_PLUGIN_ID)
+        val isNonKmpPerComponentLintAnalysis =
+            androidTestProperties !is KmpComponentCreationConfig
+                    && androidTestProperties.services.projectOptions.get(LINT_ANALYSIS_PER_COMPONENT)
+        val isPerComponentLintAnalysis =
+            isKmpPerComponentLintAnalysis || isNonKmpPerComponentLintAnalysis
+        if (isPerComponentLintAnalysis && globalConfig.lintOptions.ignoreTestSources.not()) {
+            taskFactory.register(
+                AndroidLintAnalysisTask.PerComponentCreationAction(
+                    androidTestProperties,
+                    fatalOnly = false
+                )
+            )
+            taskFactory.register(
+                LintModelWriterTask.PerComponentCreationAction(
+                    androidTestProperties,
+                    useModuleDependencyLintModels = false,
+                    fatalOnly = false,
+                    isMainModelForLocalReportTask = false
+                )
+            )
         }
 
         createConnectedTestForVariant(androidTestProperties)
@@ -247,7 +285,7 @@ class AndroidTestTaskManager(
         }
         configureTestData(androidTestProperties, testData)
         val connectedCheckSerials: Provider<List<String>> =
-            taskFactory.named(CONNECTED_CHECK).flatMap { test ->
+            taskFactory.named(globalConfig.taskNames.connectedCheck).flatMap { test ->
                 (test as DeviceSerialTestTask).serialValues
             }
         val connectedTask = taskFactory.register(
@@ -301,9 +339,8 @@ class AndroidTestTaskManager(
                 )
             )
             serverTask.dependsOn<Task>(androidTestProperties.taskContainer.assembleTask)
-            taskFactory.configure(
-                DEVICE_CHECK) { deviceAndroidTest: Task ->
-                deviceAndroidTest.dependsOn(serverTask)
+            taskFactory.configure(globalConfig.taskNames.deviceCheck) {
+                it.dependsOn(serverTask)
             }
         }
 
@@ -312,15 +349,15 @@ class AndroidTestTaskManager(
             testData,
             androidTestProperties.mainVariant.name
         )
+        createScreenshotTestTask(
+            androidTestProperties,
+            testData,
+            androidTestProperties.mainVariant.name
+        )
     }
 
     private fun createTestDevicesTasks() {
-        if (!shouldEnableUtp(
-                globalConfig.services.projectOptions,
-                globalConfig.testOptions,
-            ) ||
-            globalConfig.testOptions.devices.isEmpty()
-        ) {
+        if (globalConfig.androidTestOptions.managedDevices.devices.isEmpty()) {
             return
         }
 
@@ -331,7 +368,7 @@ class AndroidTestTaskManager(
                 globalConfig,
                 managedDevices.filterIsInstance<ManagedVirtualDevice>()))
         val allDevices = taskFactory.register(
-            ALL_DEVICES_CHECK
+            globalConfig.taskNames.allDevicesCheck
         ) { allDevicesCheckTask: Task ->
             allDevicesCheckTask.description =
                 "Runs all device checks on all managed devices defined in the TestOptions dsl."
@@ -407,7 +444,7 @@ class AndroidTestTaskManager(
 
         // Adding this task to help the IDE find the mockable JAR.
         taskFactory.register(
-            CREATE_MOCKABLE_JAR_TASK_NAME
+            globalConfig.taskNames.createMockableJar
         ) { task: Task ->
             task.dependsOn(globalConfig.mockableJarArtifact)
         }
@@ -443,5 +480,54 @@ class AndroidTestTaskManager(
         }
 
         super.createVariantPreBuildTask(creationConfig)
+    }
+
+    private fun createScreenshotTestTask(
+            creationConfig: AndroidTestCreationConfig,
+            testData: AbstractTestDataImpl,
+            variantName: String,
+            ) {
+        if (!creationConfig.services.projectOptions.get(BooleanOption.ENABLE_SCREENSHOT_TEST)) {
+            return
+        }
+
+        val flavor: String? = testData.flavorName.orNull
+        val buildTarget: String = if (flavor == null) {
+            variantName
+        } else {
+            // build target is the variant with the flavor name stripped from the front.
+            variantName.substring(flavor.length).lowercase(Locale.US)
+        }
+        val resultsRootDir = if (globalConfig.androidTestOptions.resultsDir.isNullOrEmpty()) {
+            creationConfig.paths.outputDir(BuilderConstants.FD_ANDROID_RESULTS)
+                    .get().asFile
+        } else {
+            File(requireNotNull(globalConfig.androidTestOptions.resultsDir))
+        }
+        val flavorDir = if (flavor.isNullOrEmpty()) "" else "${BuilderConstants.FD_FLAVORS}/$flavor"
+        val resultsDir =
+                File(resultsRootDir, "${BuilderConstants.SCREENSHOT}/$buildTarget/$flavorDir")
+
+        val ideExtractionDir =
+                creationConfig.paths.intermediatesDir(
+                        "${BuilderConstants.SCREENSHOT}/$buildTarget/$flavorDir").get().asFile
+
+        val lintModelDir =
+                creationConfig.paths.getIncrementalDir(
+                        "${BuilderConstants.LINT}Analyze${variantName.replaceFirstChar { it.uppercase() }}")
+        val lintCacheDir =
+                creationConfig.paths.intermediatesDir(
+                        "${BuilderConstants.LINT}-cache").get().asFile
+
+        val previewScreenshotTestTask = taskFactory.register(
+                PreviewScreenshotTestTask.CreationAction(
+                        creationConfig,
+                        resultsDir,
+                        ideExtractionDir,
+                        lintModelDir,
+                        lintCacheDir,
+                ))
+
+        previewScreenshotTestTask.dependsOn("lint")
     }
 }

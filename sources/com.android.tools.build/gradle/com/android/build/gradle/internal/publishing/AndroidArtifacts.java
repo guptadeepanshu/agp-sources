@@ -21,6 +21,8 @@ import static com.android.build.gradle.internal.publishing.AndroidArtifacts.Publ
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.RUNTIME_ELEMENTS;
 
 import com.android.annotations.NonNull;
+import com.android.annotations.Nullable;
+import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig;
 import org.gradle.api.artifacts.type.ArtifactTypeDefinition;
 import org.gradle.api.attributes.Attribute;
 
@@ -90,10 +92,20 @@ public class AndroidArtifacts {
             "android-base-module-lint-variant-dependencies-model";
     private static final String TYPE_LINT_VITAL_LINT_MODEL =
             "android-lint-vital-lint-variant-dependencies-model";
+    private static final String TYPE_UNIT_TEST_LINT_MODEL = "android-unit-test-lint-model";
+    private static final String TYPE_ANDROID_TEST_LINT_MODEL =
+            "android-instrumentation-test-lint-model";
+    private static final String TYPE_TEST_FIXTURES_LINT_MODEL = "android-test-fixtures-lint-model";
     private static final String TYPE_LINT_PARTIAL_RESULTS =
             "android-lint-variant-dependencies-partial-results";
     private static final String TYPE_LINT_VITAL_PARTIAL_RESULTS =
             "android-lint-vital-variant-dependencies-partial-results";
+    private static final String TYPE_UNIT_TEST_LINT_PARTIAL_RESULTS =
+            "android-unit-test-lint-partial-results";
+    private static final String TYPE_ANDROID_TEST_LINT_PARTIAL_RESULTS =
+            "android-instrumentation-test-lint-partial-results";
+    private static final String TYPE_TEST_FIXTURES_LINT_PARTIAL_RESULTS =
+            "android-test-fixtures-lint-partial-results";
     private static final String TYPE_LOCAL_AAR_FOR_LINT = "android-lint-local-aar";
     private static final String TYPE_LOCAL_EXPLODED_AAR_FOR_LINT = "android-lint-exploded-aar";
     private static final String TYPE_LINT_MODEL_METADATA = "android-lint-model-metadata";
@@ -191,6 +203,7 @@ public class AndroidArtifacts {
     private static final String TYPE_JAVA_DOC_JAR = "android-java-doc-jar";
 
     private static final String TYPE_SUPPORTED_LOCALE_LIST = "supported-locale-list";
+    private static final String TYPE_R_CLASS_JAR = "r-class-jar";
 
     public enum ConsumedConfigType {
         COMPILE_CLASSPATH("compileClasspath", API_ELEMENTS, true),
@@ -316,8 +329,7 @@ public class AndroidArtifacts {
          * Original (unprocessed) jar.
          *
          * <p>JAR vs. {@link #PROCESSED_JAR}: Jars usually need to be processed (e.g., jetified,
-         * namespaced) before they can be used. Therefore, consumers should generally use {@link
-         * #PROCESSED_JAR}.
+         * namespaced) before they can be used.
          *
          * <p>In a few cases, consumers may want to use unprocessed jars (be sure to document the
          * reason in those cases). Common reasons are:
@@ -326,6 +338,9 @@ public class AndroidArtifacts {
          *   <li>Correctness: Some tasks want to work with unprocessed jars.
          *   <li>Performance: Some jars don't need to be processed (e.g., android.jar, lint.jar).
          * </ul>
+         *
+         * Only use when specifically the unprocessed artifact is needed, otherwise use {@link
+         * GlobalTaskCreationConfig#getAarOrJarTypeToConsume() }
          */
         JAR(TYPE_JAR),
 
@@ -335,9 +350,12 @@ public class AndroidArtifacts {
         JACOCO_ASM_INSTRUMENTED_JARS(TYPE_JACOCO_ASM_INSTRUMENTED_JARS),
 
         /**
-         * Processed jar.
+         * A processed jar.
          *
          * <p>See {@link #JAR} for context on processed/unprocessed artifacts.
+         *
+         * <p>Don't use directly, use {@link GlobalTaskCreationConfig#getAarOrJarTypeToConsume() }
+         * instead.
          */
         PROCESSED_JAR(TYPE_PROCESSED_JAR),
 
@@ -416,22 +434,44 @@ public class AndroidArtifacts {
         AAPT_PROGUARD_RULES(TYPE_AAPT_PROGUARD_RULES),
 
         LINT(TYPE_LINT_JAR),
-        LINT_MODEL(AndroidArtifacts.TYPE_LINT_MODEL),
+        LINT_MODEL(AndroidArtifacts.TYPE_LINT_MODEL, ArtifactCategory.VERIFICATION),
         // The lint model published by the base module for consumption by dynamic features.
-        BASE_MODULE_LINT_MODEL(AndroidArtifacts.TYPE_BASE_MODULE_LINT_MODEL),
+        BASE_MODULE_LINT_MODEL(
+                AndroidArtifacts.TYPE_BASE_MODULE_LINT_MODEL, ArtifactCategory.VERIFICATION),
         // The lint model with partial results set to the location of LINT_VITAL_PARTIAL_RESULTS.
-        LINT_VITAL_LINT_MODEL(AndroidArtifacts.TYPE_LINT_VITAL_LINT_MODEL),
+        LINT_VITAL_LINT_MODEL(
+                AndroidArtifacts.TYPE_LINT_VITAL_LINT_MODEL, ArtifactCategory.VERIFICATION),
+        // The unit test lint model
+        UNIT_TEST_LINT_MODEL(TYPE_UNIT_TEST_LINT_MODEL, ArtifactCategory.VERIFICATION),
+        // The android test lint model
+        ANDROID_TEST_LINT_MODEL(TYPE_ANDROID_TEST_LINT_MODEL, ArtifactCategory.VERIFICATION),
+        // The test fixtures lint model
+        TEST_FIXTURES_LINT_MODEL(TYPE_TEST_FIXTURES_LINT_MODEL, ArtifactCategory.VERIFICATION),
         // The partial results produced by running lint with --analyze-only
-        LINT_PARTIAL_RESULTS(AndroidArtifacts.TYPE_LINT_PARTIAL_RESULTS),
+        LINT_PARTIAL_RESULTS(
+                AndroidArtifacts.TYPE_LINT_PARTIAL_RESULTS, ArtifactCategory.VERIFICATION),
         // The partial results produced by running lint with --analyze-only and --fatalOnly
-        LINT_VITAL_PARTIAL_RESULTS(TYPE_LINT_VITAL_PARTIAL_RESULTS),
+        LINT_VITAL_PARTIAL_RESULTS(TYPE_LINT_VITAL_PARTIAL_RESULTS, ArtifactCategory.VERIFICATION),
+        // The partial results produced by running lint with --analyze-only on the unit test
+        // component
+        UNIT_TEST_LINT_PARTIAL_RESULTS(
+                TYPE_UNIT_TEST_LINT_PARTIAL_RESULTS, ArtifactCategory.VERIFICATION),
+        // The partial results produced by running lint with --analyze-only on the android test
+        // component
+        ANDROID_TEST_LINT_PARTIAL_RESULTS(
+                TYPE_ANDROID_TEST_LINT_PARTIAL_RESULTS, ArtifactCategory.VERIFICATION),
+        // The partial results produced by running lint with --analyze-only on the test fixtures
+        // component
+        TEST_FIXTURES_LINT_PARTIAL_RESULTS(
+                TYPE_TEST_FIXTURES_LINT_PARTIAL_RESULTS, ArtifactCategory.VERIFICATION),
         // An AAR built from a library project for lint to consume.
         LOCAL_AAR_FOR_LINT(TYPE_LOCAL_AAR_FOR_LINT),
         // Exploded AARs from library projects for lint to consume when not run with check
         // dependencies.
         LOCAL_EXPLODED_AAR_FOR_LINT(TYPE_LOCAL_EXPLODED_AAR_FOR_LINT),
         // The lint model metadata file, containing maven groupId e.g.
-        LINT_MODEL_METADATA(AndroidArtifacts.TYPE_LINT_MODEL_METADATA),
+        LINT_MODEL_METADATA(
+                AndroidArtifacts.TYPE_LINT_MODEL_METADATA, ArtifactCategory.VERIFICATION),
 
         APK_MAPPING(TYPE_MAPPING),
         APK_METADATA(TYPE_METADATA),
@@ -508,20 +548,23 @@ public class AndroidArtifacts {
          * Original (unprocessed) aar.
          *
          * <p>See {@link #JAR} for context on processed/unprocessed artifacts.
+         *
+         * <p>Only use when specifically the unprocessed artifact is needed, otherwise use {@link
+         * GlobalTaskCreationConfig#getAarOrJarTypeToConsume() }
          */
         AAR(TYPE_AAR),
 
         /**
-         * Processed aar.
+         * A processed aar.
          *
          * <p>See {@link #JAR} for context on processed/unprocessed artifacts.
+         *
+         * <p>Don't use directly, use {@link GlobalTaskCreationConfig#getAarOrJarTypeToConsume() }
+         * instead.
          */
         PROCESSED_AAR(TYPE_PROCESSED_AAR),
 
-        /**
-         * Directory containing the extracted contents of a <em>processed</em> aar ({@link
-         * #PROCESSED_AAR}).
-         */
+        /** Directory containing the extracted contents of a possibly processed AAR */
         EXPLODED_AAR(TYPE_EXPLODED_AAR),
 
         /**
@@ -563,17 +606,30 @@ public class AndroidArtifacts {
 
         // The file describing the supported locales in the module
         SUPPORTED_LOCALE_LIST(TYPE_SUPPORTED_LOCALE_LIST),
-        ;
+
+        // The compilation only R class jar which is already part of the compile jar
+        R_CLASS_JAR(TYPE_R_CLASS_JAR);
 
         @NonNull private final String type;
+        @Nullable private final ArtifactCategory category;
 
         ArtifactType(@NonNull String type) {
+            this(type, null);
+        }
+
+        ArtifactType(@NonNull String type, @Nullable ArtifactCategory category) {
             this.type = type;
+            this.category = category;
         }
 
         @NonNull
         public String getType() {
             return type;
+        }
+
+        @Nullable
+        public ArtifactCategory getCategory() {
+            return category;
         }
     }
 

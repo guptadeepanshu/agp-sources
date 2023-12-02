@@ -199,4 +199,10 @@ abstract class AnalyticsEnabledVariant (
                 VariantPropertiesMethodType.COMPONENTS_VALUE
             return delegate.components
         }
+
+    override fun missingDimensionStrategy(dimension: String, vararg requestedValues: String) {
+        stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+            VariantPropertiesMethodType.MISSING_DIMENSION_STRATEGY_VALUE
+        delegate.missingDimensionStrategy(dimension, *requestedValues)
+    }
 }

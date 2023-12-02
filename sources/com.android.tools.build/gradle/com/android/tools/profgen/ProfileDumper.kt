@@ -19,19 +19,36 @@ package com.android.tools.profgen
 import java.io.File
 
 fun dumpProfile(
-    os: Appendable,
-    profile: ArtProfile,
-    apk: Apk,
-    obf: ObfuscationMap,
-    strict: Boolean = true,
+        os: Appendable,
+        profile: ArtProfile,
+        apk: Apk,
+        obf: ObfuscationMap,
+        strict: Boolean = true,
 ) {
     for ((dexFile, dexFileData) in profile.profileData) {
         val file = apk.dexes.find { it.name == extractName(dexFile.name) }
-          ?: if (strict) {
-              throw IllegalStateException("Cannot find Dex File ${dexFile.name}")
-          } else {
-              continue
-          }
+                ?: if (strict) {
+                    throw IllegalStateException("Cannot find Dex File ${dexFile.name}")
+                } else {
+                    continue
+                }
+
+        if (strict && !dexFile.compatibleWith(file)) {
+            val message = """
+                Profile header not compatible with the Dex header.
+                -----------------------------------------------------------------------------------
+                APK: ${apk.name}
+                Dex: ${dexFile.name}
+                -----------------------------------------------------------------------------------
+                Dex Checksum: ${dexFile.dexChecksum}              | ${file.dexChecksum}
+                Method ids  : ${dexFile.header.methodIds.size}    | ${file.header.methodIds.size}
+                Type ids    : ${dexFile.header.typeIds.size}      | ${file.header.typeIds.size}
+                -----------------------------------------------------------------------------------
+            """.trimIndent()
+            throw IllegalStateException(message)
+        }
+
+        // Even if the checksums don't match we can try and dump as much information as possible.
 
         for ((key, method) in dexFileData.methods) {
             // Method data is not guaranteed to exist given they might be stored as
@@ -61,6 +78,16 @@ fun dumpProfile(
     }
 }
 
+private fun DexFile.compatibleWith(other: DexFile): Boolean {
+    val checkSumsMatch = dexChecksum == other.dexChecksum
+    // We don't really care about offsets in profile headers.
+    // They are only meaningful in dex file headers.
+    val methodIdsMatch = header.methodIds.size == other.header.methodIds.size
+    // Type Ids might not always be present
+    val typeIdsMatch = header.typeIds.size == other.header.typeIds.size || header.typeIds.size <= 0
+    return checkSumsMatch && methodIdsMatch && typeIdsMatch
+}
+
 fun dumpProfile(
         file: File,
         profile: ArtProfile,
@@ -68,7 +95,10 @@ fun dumpProfile(
         obf: ObfuscationMap,
         strict: Boolean = true
 ) {
-    dumpProfile(file.outputStream().bufferedWriter(), profile, apk, obf, strict = strict)
+    val writer = file.outputStream().bufferedWriter()
+    writer.use {
+        dumpProfile(writer, profile, apk, obf, strict = strict)
+    }
 }
 
 /**
@@ -82,6 +112,10 @@ private fun extractName(profileKey: String): String {
     var index = profileKey.indexOf("!")
     if (index < 0) {
         index = profileKey.indexOf(":")
+    }
+    if (index < 0 && profileKey.endsWith(".apk")) {
+        // `base.apk` is equivalent to `base.apk!classes.dex`
+        return "classes.dex"
     }
     return profileKey.substring(index + 1)
 }

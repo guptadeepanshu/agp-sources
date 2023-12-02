@@ -136,7 +136,10 @@ fun tryParseColor(value: String): BinaryPrimitive? {
     }
     else -> return null
   }
-  return if (error) BinaryPrimitive(ResValue()) else BinaryPrimitive(ResValue(dataType, data))
+  return if (error)
+      throw Exception("Unable to parse hex color '$value'.")
+  else
+      BinaryPrimitive(ResValue(dataType, data))
 }
 
 data class ReferenceInfo(val reference: Reference, val createNew: Boolean = false)

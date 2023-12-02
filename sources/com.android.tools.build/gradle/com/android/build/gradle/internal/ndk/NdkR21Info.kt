@@ -22,12 +22,12 @@ import java.io.File
 /**
  * NdkInfo for r21.
  */
-class NdkR21Info(root: File) : NdkR19Info(root) {
-    override fun getStripExecutable(abi: Abi) = rootDirectory.resolve(
+open class NdkR21Info(root: File) : NdkR19Info(root) {
+    override fun getStripExecutable(abi: String) = rootDirectory.resolve(
         "toolchains/llvm/prebuilt/$hostTag/bin/llvm-strip"
     )
 
-    override fun getObjcopyExecutable(abi: Abi) = rootDirectory.resolve(
+    override fun getObjcopyExecutable(abi: String) = rootDirectory.resolve(
         "toolchains/llvm/prebuilt/$hostTag/bin/llvm-objcopy"
     )
 }

@@ -16,14 +16,12 @@
 
 package com.android.tools.profgen
 
-import java.io.File
-import java.io.InputStream
-import java.io.InputStreamReader
-import java.io.PrintWriter
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
+import java.io.File
+import java.io.InputStreamReader
 
 internal const val HOT = 'H'
 internal const val STARTUP = 'S'
@@ -83,7 +81,7 @@ class HumanReadableProfile internal constructor(
         return fuzzyMatch(type)
     }
 
-    internal fun fuzzyMatch(type: String): Int {
+    private fun fuzzyMatch(type: String): Int {
         val fuzzy = fuzzyTypes.firstOrNull(type) {
             it.target.matches(type)
         }
@@ -99,7 +97,7 @@ class HumanReadableProfile internal constructor(
 
         for (classFileResource in classFileResources) {
             expandWildcards(
-                    classFileResource, classFileResource.getBytes(), newExactMethods, newExactTypes)
+                classFileResource, classFileResource.getBytes(), newExactMethods, newExactTypes)
         }
 
         return HumanReadableProfile(

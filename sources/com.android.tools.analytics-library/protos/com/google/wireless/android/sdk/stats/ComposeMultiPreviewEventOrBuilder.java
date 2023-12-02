@@ -60,4 +60,23 @@ public interface ComposeMultiPreviewEventOrBuilder extends
    */
   com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.ComposeMultiPreviewNodeInfoOrBuilder getMultiPreviewNodesOrBuilder(
       int index);
+
+  /**
+   * <pre>
+   * True if Compose Preview Lite Mode is enabled when logging the event.
+   * </pre>
+   *
+   * <code>optional bool is_compose_preview_lite_mode = 2;</code>
+   * @return Whether the isComposePreviewLiteMode field is set.
+   */
+  boolean hasIsComposePreviewLiteMode();
+  /**
+   * <pre>
+   * True if Compose Preview Lite Mode is enabled when logging the event.
+   * </pre>
+   *
+   * <code>optional bool is_compose_preview_lite_mode = 2;</code>
+   * @return The isComposePreviewLiteMode.
+   */
+  boolean getIsComposePreviewLiteMode();
 }

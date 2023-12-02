@@ -27,6 +27,7 @@ import com.android.build.gradle.internal.cxx.logging.logStructured
 import com.android.build.gradle.internal.cxx.model.CxxAbiModel
 import com.android.build.gradle.internal.cxx.model.logsFolder
 import com.android.utils.cxx.os.bat
+import com.android.utils.cxx.os.quoteExecutablePath
 import com.android.utils.cxx.os.quoteCommandLineArgument
 import com.android.build.gradle.internal.cxx.timing.time
 import com.android.build.gradle.internal.process.GradleProcessExecutor
@@ -97,6 +98,7 @@ fun CxxAbiModel.executeProcess(
         commandFile = logsFolder.resolve("${processType.logFilePrefix}_command$suffix$bat"),
         stdout = logsFolder.resolve("${processType.logFilePrefix}_stdout$suffix.txt"),
         stderr = logsFolder.resolve("${processType.logFilePrefix}_stderr$suffix.txt"),
+        stacktrace = logsFolder.resolve("${processType.logFilePrefix}_stacktrace$suffix.txt"),
         logStdout = processStdout == null,
         logStderr = processStderr == null,
         verbose =  options.contains(VERBOSE) || options.contains(processType.outputOptions))
@@ -185,6 +187,7 @@ data class ExecuteProcessCommand(
     val commandFile : File = File("command$bat"),
     val stdout : File = File("stdout.txt"),
     val stderr : File = File("stderr.txt"),
+    val stacktrace : File = File("stacktrace.txt"),
     val logStdout : Boolean = true,
     val logStderr : Boolean = true,
     val verbose : Boolean = false,
@@ -233,16 +236,17 @@ fun ExecuteProcessCommand.execute(ops: ExecOperations) {
         // Delete prior STDOUT and STDERR
         stdout.delete()
         stderr.delete()
+        stacktrace.delete()
 
         // Execute the command file that was written
         val process = if (useScript) {
             ProcessInfoBuilder()
-                .setExecutable(commandFile)
+                .setExecutable(quoteExecutablePath(commandFile.absolutePath))
                 .addEnvironments(environment)
                 .createProcess()
         } else {
             ProcessInfoBuilder()
-                .setExecutable(executable)
+                .setExecutable(quoteExecutablePath(executable.absolutePath))
                 .addArgs(args)
                 .addEnvironments(environment)
                 .createProcess()
@@ -258,20 +262,31 @@ fun ExecuteProcessCommand.execute(ops: ExecOperations) {
                     logPrefix = "",
                     logStderr = logStderr,
                     logStdout = logStdout,
-                    logFullStdout = verbose))
+                    logFullStdout = verbose
+                )
+            )
 
         // Log the result
         logResult(result.exitValue)
+
+        infoln("Received process result: ${result.exitValue}")
 
         // Check result and maybe throw
         result
             .rethrowFailure()
             .assertNormalExitValue()
-    } catch (e: ProcessException) {
-        // Some processes, notably ninja.exe calling clang.exe, put relevant errors in STDOUT.
-        // We'd like to make sure they end up in STDERR too, so we attach them in the exception
-        // message.
-        throw ProcessException(processErrorMessage, e)
+    } catch (e: Throwable) {
+        // write the stack trace to the stacktrace.txt file
+        try {
+            stacktrace.writeText("$e\n${e.stackTraceToString()}")
+        } catch(e: Throwable) { /* throw the original exception instead */ }
+
+        if (e is ProcessException) {
+            // Some processes, notably ninja.exe calling clang.exe, put relevant errors in STDOUT.
+            // We'd like to make sure they end up in STDERR too, so we attach them in the exception
+            // message.
+            throw ProcessException(processErrorMessage, e)
+        } else throw(e)
     }
 }
 

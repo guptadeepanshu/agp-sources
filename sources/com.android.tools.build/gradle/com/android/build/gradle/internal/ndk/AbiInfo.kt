@@ -23,17 +23,39 @@ import com.google.gson.annotations.SerializedName
 
 /** Information about an ABI.  */
 data class AbiInfo(
-    val abi: Abi = Abi.X86,
-    @SerializedName("bitness")
-    val bitness: Int = 64,
-    @SerializedName("deprecated")
-    val isDeprecated: Boolean = false,
-    @SerializedName("default")
-    val isDefault: Boolean = true) {
+    val name: String,
+    val bitness: Int,
+    val isDefault: Boolean,
+    val isDeprecated: Boolean,
+    val architecture: String,
+    val triple: String,
+    val llvmTriple: String) {
     init {
         if (bitness != 32 && bitness != 64) {
-            errorln(CxxDiagnosticCode.ABI_IS_INVALID, "ABI ${abi.tag} had an invalid value: $bitness")
+            errorln(CxxDiagnosticCode.ABI_IS_INVALID, "ABI $name had an invalid value: $bitness")
         }
     }
 }
+
+/**
+ * ABI information as read directly from meta/abis.json.
+ * Fields that are allowed to be missing in any version of the NDK are nullable.
+ * There may also be extra fields compared to [AbiInfo]. These are fields from meta/abis.json
+ * that we haven't had a need for in AGP yet.
+ */
+data class NullableAbiInfo(
+    @SerializedName("bitness")
+    val bitness: Int?,
+    @SerializedName("default")
+    val isDefault: Boolean?,
+    @SerializedName("deprecated")
+    val isDeprecated: Boolean?,
+    @SerializedName("proc")
+    val processor: String?,
+    @SerializedName("arch")
+    val architecture: String?,
+    @SerializedName("triple")
+    val triple: String?,
+    @SerializedName("llvm_triple")
+    val llvmTriple: String?)
 

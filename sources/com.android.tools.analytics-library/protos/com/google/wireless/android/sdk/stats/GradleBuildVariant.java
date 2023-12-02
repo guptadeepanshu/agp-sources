@@ -507,6 +507,14 @@ private static final long serialVersionUID = 0L;
      * <code>PRIVACY_SANDBOX_SDK = 11;</code>
      */
     PRIVACY_SANDBOX_SDK(11),
+    /**
+     * <pre>
+     * Main variant of the kotlin multiplatform android library plugin
+     * </pre>
+     *
+     * <code>KOTLIN_MULTIPLATFORM_ANDROID_LIBRARY = 12;</code>
+     */
+    KOTLIN_MULTIPLATFORM_ANDROID_LIBRARY(12),
     ;
 
     /**
@@ -606,6 +614,14 @@ private static final long serialVersionUID = 0L;
      * <code>PRIVACY_SANDBOX_SDK = 11;</code>
      */
     public static final int PRIVACY_SANDBOX_SDK_VALUE = 11;
+    /**
+     * <pre>
+     * Main variant of the kotlin multiplatform android library plugin
+     * </pre>
+     *
+     * <code>KOTLIN_MULTIPLATFORM_ANDROID_LIBRARY = 12;</code>
+     */
+    public static final int KOTLIN_MULTIPLATFORM_ANDROID_LIBRARY_VALUE = 12;
 
 
     public final int getNumber() {
@@ -640,6 +656,7 @@ private static final long serialVersionUID = 0L;
         case 9: return JAVA_LIBRARY;
         case 10: return TEST_FIXTURES;
         case 11: return PRIVACY_SANDBOX_SDK;
+        case 12: return KOTLIN_MULTIPLATFORM_ANDROID_LIBRARY;
         default: return null;
       }
     }

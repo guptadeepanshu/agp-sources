@@ -21,6 +21,7 @@ private static final long serialVersionUID = 0L;
   }
   private CpuCaptureMetadata() {
     captureStatus_ = 0;
+    cpuProfilerEntryPoint_ = 0;
   }
 
   @java.lang.Override
@@ -112,6 +113,18 @@ private static final long serialVersionUID = 0L;
           case 72: {
             bitField0_ |= 0x00000100;
             hasComposeTracingNodes_ = input.readBool();
+            break;
+          }
+          case 80: {
+            int rawValue = input.readEnum();
+              @SuppressWarnings("deprecation")
+            com.google.wireless.android.sdk.stats.CpuCaptureMetadata.CpuProfilerEntryPoint value = com.google.wireless.android.sdk.stats.CpuCaptureMetadata.CpuProfilerEntryPoint.valueOf(rawValue);
+            if (value == null) {
+              unknownFields.mergeVarintField(10, rawValue);
+            } else {
+              bitField0_ |= 0x00000200;
+              cpuProfilerEntryPoint_ = rawValue;
+            }
             break;
           }
           default: {
@@ -722,6 +735,205 @@ private static final long serialVersionUID = 0L;
     // @@protoc_insertion_point(enum_scope:android_studio.CpuCaptureMetadata.CaptureStatus)
   }
 
+  /**
+   * Protobuf enum {@code android_studio.CpuCaptureMetadata.CpuProfilerEntryPoint}
+   */
+  public enum CpuProfilerEntryPoint
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <pre>
+     * The entry point was not specified.
+     * </pre>
+     *
+     * <code>UNKNOWN = 0;</code>
+     */
+    UNKNOWN(0),
+    /**
+     * <pre>
+     * User enters the CpuProfilerStage by clicking the CpuMonitor.
+     * </pre>
+     *
+     * <code>CPU_MONITOR = 1;</code>
+     */
+    CPU_MONITOR(1),
+    /**
+     * <pre>
+     * User enters the CpuProfilerStage by performing a startup trace.
+     * </pre>
+     *
+     * <code>STARTUP_PROFILING = 2;</code>
+     */
+    STARTUP_PROFILING(2),
+    /**
+     * <pre>
+     * User enters the CpuProfilerStage via the Energy Profiler deprecation
+     * panel hyperlink.
+     * </pre>
+     *
+     * <code>ENERGY_DEPRECATION_LINK = 3;</code>
+     */
+    ENERGY_DEPRECATION_LINK(3),
+    /**
+     * <pre>
+     * User selects an ongoing session performing a capture.
+     * </pre>
+     *
+     * <code>ONGOING_SESSION_SELECTION = 4;</code>
+     */
+    ONGOING_SESSION_SELECTION(4),
+    /**
+     * <pre>
+     * User navigates back to parent stage or the child stage fails to load.
+     * </pre>
+     *
+     * <code>CHILD_STAGE_BACK_BTN_OR_FAILURE = 5;</code>
+     */
+    CHILD_STAGE_BACK_BTN_OR_FAILURE(5),
+    /**
+     * <pre>
+     * User enters the CpuProfilerStage via an Energy Task.
+     * </pre>
+     *
+     * <code>ENERGY_TASK = 6;</code>
+     */
+    ENERGY_TASK(6),
+    ;
+
+    /**
+     * <pre>
+     * The entry point was not specified.
+     * </pre>
+     *
+     * <code>UNKNOWN = 0;</code>
+     */
+    public static final int UNKNOWN_VALUE = 0;
+    /**
+     * <pre>
+     * User enters the CpuProfilerStage by clicking the CpuMonitor.
+     * </pre>
+     *
+     * <code>CPU_MONITOR = 1;</code>
+     */
+    public static final int CPU_MONITOR_VALUE = 1;
+    /**
+     * <pre>
+     * User enters the CpuProfilerStage by performing a startup trace.
+     * </pre>
+     *
+     * <code>STARTUP_PROFILING = 2;</code>
+     */
+    public static final int STARTUP_PROFILING_VALUE = 2;
+    /**
+     * <pre>
+     * User enters the CpuProfilerStage via the Energy Profiler deprecation
+     * panel hyperlink.
+     * </pre>
+     *
+     * <code>ENERGY_DEPRECATION_LINK = 3;</code>
+     */
+    public static final int ENERGY_DEPRECATION_LINK_VALUE = 3;
+    /**
+     * <pre>
+     * User selects an ongoing session performing a capture.
+     * </pre>
+     *
+     * <code>ONGOING_SESSION_SELECTION = 4;</code>
+     */
+    public static final int ONGOING_SESSION_SELECTION_VALUE = 4;
+    /**
+     * <pre>
+     * User navigates back to parent stage or the child stage fails to load.
+     * </pre>
+     *
+     * <code>CHILD_STAGE_BACK_BTN_OR_FAILURE = 5;</code>
+     */
+    public static final int CHILD_STAGE_BACK_BTN_OR_FAILURE_VALUE = 5;
+    /**
+     * <pre>
+     * User enters the CpuProfilerStage via an Energy Task.
+     * </pre>
+     *
+     * <code>ENERGY_TASK = 6;</code>
+     */
+    public static final int ENERGY_TASK_VALUE = 6;
+
+
+    public final int getNumber() {
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static CpuProfilerEntryPoint valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static CpuProfilerEntryPoint forNumber(int value) {
+      switch (value) {
+        case 0: return UNKNOWN;
+        case 1: return CPU_MONITOR;
+        case 2: return STARTUP_PROFILING;
+        case 3: return ENERGY_DEPRECATION_LINK;
+        case 4: return ONGOING_SESSION_SELECTION;
+        case 5: return CHILD_STAGE_BACK_BTN_OR_FAILURE;
+        case 6: return ENERGY_TASK;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<CpuProfilerEntryPoint>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        CpuProfilerEntryPoint> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<CpuProfilerEntryPoint>() {
+            public CpuProfilerEntryPoint findValueByNumber(int number) {
+              return CpuProfilerEntryPoint.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.CpuCaptureMetadata.getDescriptor().getEnumTypes().get(1);
+    }
+
+    private static final CpuProfilerEntryPoint[] VALUES = values();
+
+    public static CpuProfilerEntryPoint valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private CpuProfilerEntryPoint(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:android_studio.CpuCaptureMetadata.CpuProfilerEntryPoint)
+  }
+
   private int bitField0_;
   public static final int CAPTURE_STATUS_FIELD_NUMBER = 1;
   private int captureStatus_;
@@ -987,6 +1199,33 @@ private static final long serialVersionUID = 0L;
     return hasComposeTracingNodes_;
   }
 
+  public static final int CPU_PROFILER_ENTRY_POINT_FIELD_NUMBER = 10;
+  private int cpuProfilerEntryPoint_;
+  /**
+   * <pre>
+   * The entry point to the cpu profiling stage (cpu profiler)
+   * </pre>
+   *
+   * <code>optional .android_studio.CpuCaptureMetadata.CpuProfilerEntryPoint cpu_profiler_entry_point = 10;</code>
+   * @return Whether the cpuProfilerEntryPoint field is set.
+   */
+  @java.lang.Override public boolean hasCpuProfilerEntryPoint() {
+    return ((bitField0_ & 0x00000200) != 0);
+  }
+  /**
+   * <pre>
+   * The entry point to the cpu profiling stage (cpu profiler)
+   * </pre>
+   *
+   * <code>optional .android_studio.CpuCaptureMetadata.CpuProfilerEntryPoint cpu_profiler_entry_point = 10;</code>
+   * @return The cpuProfilerEntryPoint.
+   */
+  @java.lang.Override public com.google.wireless.android.sdk.stats.CpuCaptureMetadata.CpuProfilerEntryPoint getCpuProfilerEntryPoint() {
+    @SuppressWarnings("deprecation")
+    com.google.wireless.android.sdk.stats.CpuCaptureMetadata.CpuProfilerEntryPoint result = com.google.wireless.android.sdk.stats.CpuCaptureMetadata.CpuProfilerEntryPoint.valueOf(cpuProfilerEntryPoint_);
+    return result == null ? com.google.wireless.android.sdk.stats.CpuCaptureMetadata.CpuProfilerEntryPoint.UNKNOWN : result;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -1027,6 +1266,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00000100) != 0)) {
       output.writeBool(9, hasComposeTracingNodes_);
+    }
+    if (((bitField0_ & 0x00000200) != 0)) {
+      output.writeEnum(10, cpuProfilerEntryPoint_);
     }
     unknownFields.writeTo(output);
   }
@@ -1072,6 +1314,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000100) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeBoolSize(9, hasComposeTracingNodes_);
+    }
+    if (((bitField0_ & 0x00000200) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(10, cpuProfilerEntryPoint_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -1132,6 +1378,10 @@ private static final long serialVersionUID = 0L;
       if (getHasComposeTracingNodes()
           != other.getHasComposeTracingNodes()) return false;
     }
+    if (hasCpuProfilerEntryPoint() != other.hasCpuProfilerEntryPoint()) return false;
+    if (hasCpuProfilerEntryPoint()) {
+      if (cpuProfilerEntryPoint_ != other.cpuProfilerEntryPoint_) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -1182,6 +1432,10 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + HAS_COMPOSE_TRACING_NODES_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getHasComposeTracingNodes());
+    }
+    if (hasCpuProfilerEntryPoint()) {
+      hash = (37 * hash) + CPU_PROFILER_ENTRY_POINT_FIELD_NUMBER;
+      hash = (53 * hash) + cpuProfilerEntryPoint_;
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -1343,6 +1597,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000080);
       hasComposeTracingNodes_ = false;
       bitField0_ = (bitField0_ & ~0x00000100);
+      cpuProfilerEntryPoint_ = 0;
+      bitField0_ = (bitField0_ & ~0x00000200);
       return this;
     }
 
@@ -1411,6 +1667,10 @@ private static final long serialVersionUID = 0L;
         result.hasComposeTracingNodes_ = hasComposeTracingNodes_;
         to_bitField0_ |= 0x00000100;
       }
+      if (((from_bitField0_ & 0x00000200) != 0)) {
+        to_bitField0_ |= 0x00000200;
+      }
+      result.cpuProfilerEntryPoint_ = cpuProfilerEntryPoint_;
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -1486,6 +1746,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasHasComposeTracingNodes()) {
         setHasComposeTracingNodes(other.getHasComposeTracingNodes());
+      }
+      if (other.hasCpuProfilerEntryPoint()) {
+        setCpuProfilerEntryPoint(other.getCpuProfilerEntryPoint());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -2133,6 +2396,65 @@ private static final long serialVersionUID = 0L;
     public Builder clearHasComposeTracingNodes() {
       bitField0_ = (bitField0_ & ~0x00000100);
       hasComposeTracingNodes_ = false;
+      onChanged();
+      return this;
+    }
+
+    private int cpuProfilerEntryPoint_ = 0;
+    /**
+     * <pre>
+     * The entry point to the cpu profiling stage (cpu profiler)
+     * </pre>
+     *
+     * <code>optional .android_studio.CpuCaptureMetadata.CpuProfilerEntryPoint cpu_profiler_entry_point = 10;</code>
+     * @return Whether the cpuProfilerEntryPoint field is set.
+     */
+    @java.lang.Override public boolean hasCpuProfilerEntryPoint() {
+      return ((bitField0_ & 0x00000200) != 0);
+    }
+    /**
+     * <pre>
+     * The entry point to the cpu profiling stage (cpu profiler)
+     * </pre>
+     *
+     * <code>optional .android_studio.CpuCaptureMetadata.CpuProfilerEntryPoint cpu_profiler_entry_point = 10;</code>
+     * @return The cpuProfilerEntryPoint.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.CpuCaptureMetadata.CpuProfilerEntryPoint getCpuProfilerEntryPoint() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.CpuCaptureMetadata.CpuProfilerEntryPoint result = com.google.wireless.android.sdk.stats.CpuCaptureMetadata.CpuProfilerEntryPoint.valueOf(cpuProfilerEntryPoint_);
+      return result == null ? com.google.wireless.android.sdk.stats.CpuCaptureMetadata.CpuProfilerEntryPoint.UNKNOWN : result;
+    }
+    /**
+     * <pre>
+     * The entry point to the cpu profiling stage (cpu profiler)
+     * </pre>
+     *
+     * <code>optional .android_studio.CpuCaptureMetadata.CpuProfilerEntryPoint cpu_profiler_entry_point = 10;</code>
+     * @param value The cpuProfilerEntryPoint to set.
+     * @return This builder for chaining.
+     */
+    public Builder setCpuProfilerEntryPoint(com.google.wireless.android.sdk.stats.CpuCaptureMetadata.CpuProfilerEntryPoint value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00000200;
+      cpuProfilerEntryPoint_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * The entry point to the cpu profiling stage (cpu profiler)
+     * </pre>
+     *
+     * <code>optional .android_studio.CpuCaptureMetadata.CpuProfilerEntryPoint cpu_profiler_entry_point = 10;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearCpuProfilerEntryPoint() {
+      bitField0_ = (bitField0_ & ~0x00000200);
+      cpuProfilerEntryPoint_ = 0;
       onChanged();
       return this;
     }

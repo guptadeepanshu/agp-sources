@@ -28,7 +28,7 @@ import com.android.build.gradle.internal.component.LibraryCreationConfig
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig
 import com.android.build.gradle.internal.dependency.ConfigurationVariantMapping
-import com.android.build.gradle.internal.dsl.ModuleBooleanPropertyKeys
+import com.android.build.gradle.internal.dsl.ModulePropertyKey
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType
 import com.android.build.gradle.internal.publishing.ComponentPublishingInfo
 import com.android.build.gradle.internal.publishing.PublishedConfigSpec
@@ -271,9 +271,9 @@ class LibraryTaskManager(
         val experimentalProperties = libraryVariant.experimentalProperties
         experimentalProperties.finalizeValue()
         if (!libraryVariant.debuggable &&
-                (ModuleBooleanPropertyKeys.VERIFY_AAR_CLASSES.getValueAsOptionalBoolean(
-                        experimentalProperties.get()) ?:
-                globalConfig.services.projectOptions[BooleanOption.VERIFY_AAR_CLASSES])) {
+                (ModulePropertyKey.OptionalBoolean.VERIFY_AAR_CLASSES
+                        .getValue(experimentalProperties.get())
+                        ?: globalConfig.services.projectOptions[BooleanOption.VERIFY_AAR_CLASSES])) {
             createVerifyLibraryClassesTask(libraryVariant)
         }
 

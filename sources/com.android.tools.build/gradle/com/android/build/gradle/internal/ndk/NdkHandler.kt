@@ -67,12 +67,12 @@ sealed class NdkInstallStatus {
  * Handles NDK related information.
  */
 open class NdkHandler(
-    private val ndkLocator: NdkLocator,
-    private val compileSdkVersion: String
+    private val ndkLocator: NdkLocator
 ) {
     private var ndkInstallStatus: NdkInstallStatus? = null
 
     private fun getNdkInfo(ndk: NdkLocatorRecord) = when {
+        ndk.revision.major >= 25 -> NdkR25Info(ndk.ndk)
         ndk.revision.major >= 21 -> NdkR21Info(ndk.ndk)
         ndk.revision.major >= 19 -> NdkR19Info(ndk.ndk)
         ndk.revision.major >= 18 -> NdkR18Info(ndk.ndk)
@@ -87,7 +87,7 @@ open class NdkHandler(
         val ndkInfo = getNdkInfo(ndk)
         val error = ndkInfo.validate()
         if (error != null) return Invalid(error)
-        return Valid(NdkPlatform(ndk.ndk, ndkInfo, ndk.revision, compileSdkVersion))
+        return Valid(NdkPlatform(ndk.ndk, ndkInfo, ndk.revision))
     }
 
     fun getNdkPlatform(downloadOkay: Boolean) : NdkInstallStatus {

@@ -38,6 +38,7 @@ import org.xml.sax.SAXException;
 public class ResourceShrinkerCli {
 
     private static final String INPUT_ARG = "--input";
+    private static final String DEX_INPUT_ARG = "--dex_input";
     private static final String OUTPUT_ARG = "--output";
     private static final String RES_ARG = "--raw_resources";
     private static final String HELP_ARG = "--help";
@@ -49,6 +50,7 @@ public class ResourceShrinkerCli {
 
     private static class Options {
         private String input;
+        private final List<String> dex_inputs = new ArrayList<>();
         private String output;
         private String usageLog;
         private final List<String> rawResources = new ArrayList<>();
@@ -80,6 +82,13 @@ public class ResourceShrinkerCli {
                                 "More than one output not supported");
                     }
                     options.output = args[i];
+                } else if (arg.startsWith(DEX_INPUT_ARG)) {
+                    i++;
+                    if (i == args.length) {
+                        throw new ResourceShrinkingFailedException(
+                                "No argument given for dex_input");
+                    }
+                    options.dex_inputs.add(args[i]);
                 } else if (arg.startsWith(PRINT_USAGE_LOG)) {
                     i++;
                     if (i == args.length) {
@@ -129,36 +138,42 @@ public class ResourceShrinkerCli {
     }
 
     public static void main(String[] args) {
+        run(args);
+    }
+
+    protected static ResourceShrinkerImpl run(String[] args) {
         try {
             Options options = Options.parseOptions(args);
             if (options.isHelp()) {
                 printUsage();
-                return;
+                return null;
             }
             validateOptions(options);
-            runResourceShrinking(options);
-            System.out.println("Shrunken apk stored in:\n" + options.getOutput());
+            ResourceShrinkerImpl resourceShrinker = runResourceShrinking(options);
+            return resourceShrinker;
         } catch (IOException | ParserConfigurationException | SAXException e) {
             throw new ResourceShrinkingFailedException(
                     "Failed running resource shrinking: " + e.getMessage(), e);
         }
     }
 
-    private static void runResourceShrinking(Options options)
+    private static ResourceShrinkerImpl runResourceShrinking(Options options)
             throws IOException, ParserConfigurationException, SAXException {
         validateInput(options.getInput());
+        List<ResourceUsageRecorder> resourceUsageRecorders = new ArrayList<>();
+        for (String dexInput : options.dex_inputs) {
+            validateFileExists(dexInput);
+            resourceUsageRecorders.add(
+                    new DexUsageRecorder(
+                            FileUtils.createZipFilesystem(Paths.get(dexInput)).getPath("")));
+        }
         Path protoApk = Paths.get(options.getInput());
         Path protoApkOut = Paths.get(options.getOutput());
         FileSystem fileSystemProto = FileUtils.createZipFilesystem(protoApk);
-
-        List<ResourceUsageRecorder> resourceUsageRecorders = new ArrayList<>();
         resourceUsageRecorders.add(new DexUsageRecorder(fileSystemProto.getPath("")));
         resourceUsageRecorders.add(
                 new ProtoAndroidManifestUsageRecorder(
                         fileSystemProto.getPath(ANDROID_MANIFEST_XML)));
-        for (String rawResource : options.getRawResources()) {
-            resourceUsageRecorders.add(new ToolsAttributeUsageRecorder(Paths.get(rawResource)));
-        }
         // If the apk contains a raw folder, find keep rules in there
         if (new ZipFile(options.getInput())
                 .stream().anyMatch(zipEntry -> zipEntry.getName().startsWith("res/raw"))) {
@@ -170,7 +185,7 @@ public class ResourceShrinkerCli {
         ProtoResourcesGraphBuilder res =
                 new ProtoResourcesGraphBuilder(
                         fileSystemProto.getPath(RES_FOLDER), fileSystemProto.getPath(RESOURCES_PB));
-        ResourceShrinker resourceShrinker =
+        ResourceShrinkerImpl resourceShrinker =
                 new ResourceShrinkerImpl(
                         List.of(gatherer),
                         null,
@@ -182,8 +197,10 @@ public class ResourceShrinkerCli {
                         false, // TODO(b/245721267): Add support for bundles
                         true);
         resourceShrinker.analyze();
+
         resourceShrinker.rewriteResourcesInApkFormat(
                 protoApk.toFile(), protoApkOut.toFile(), LinkedResourcesFormat.PROTO);
+        return resourceShrinker;
     }
 
     private static void validateInput(String input) throws IOException {
@@ -228,7 +245,11 @@ public class ResourceShrinkerCli {
         PrintStream out = System.err;
         out.println("Usage:");
         out.println("  resourceshrinker ");
-        out.println("    --input <input-file>");
+        out.println("    --input <input-file>, container with manifest, resources table and res");
+        out.println("      folder. May contain dex.");
+        out.println("    --dex_input <input-file> Container with dex files (only dex will be ");
+        out.println("       handled if this contains other files. Several --dex_input arguments");
+        out.println("       are supported");
         out.println("    --output <output-file>");
         out.println("    --raw_resource <xml-file or res directory>");
         out.println("      optional, more than one raw_resoures argument might be given");

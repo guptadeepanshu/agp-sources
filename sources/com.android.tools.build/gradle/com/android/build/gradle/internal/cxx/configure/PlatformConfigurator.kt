@@ -16,15 +16,16 @@
 
 package com.android.build.gradle.internal.cxx.configure
 
-import com.android.build.gradle.internal.core.Abi
 import com.android.build.gradle.internal.cxx.logging.errorln
 import com.android.build.gradle.internal.cxx.logging.infoln
 import com.android.build.gradle.internal.cxx.logging.warnln
+import com.android.build.gradle.internal.ndk.AbiInfo
 import com.android.sdklib.AndroidVersion
 import com.android.utils.FileUtils
 import com.android.utils.cxx.CxxDiagnosticCode.NDK_CORRUPTED
 import com.android.utils.cxx.CxxDiagnosticCode.ABI_IS_INVALID
 import com.android.utils.cxx.CxxDiagnosticCode.NDK_DOES_NOT_SUPPORT_API_LEVEL
+import org.jetbrains.annotations.VisibleForTesting
 import java.io.File
 import java.io.FileFilter
 import java.io.FileReader
@@ -54,6 +55,7 @@ class PlatformConfigurator(private val ndkRoot: File) {
         "O-MR1" to 27,
         "P" to 28
     )
+
 
     /**
      * <pre>
@@ -92,17 +94,41 @@ class PlatformConfigurator(private val ndkRoot: File) {
      *
      * </pre>
      */
+    fun findSuitablePlatformVersion(
+        abiName: String,
+        abiInfos: List<AbiInfo>,
+        androidVersion: AndroidVersion? ): Int {
+        val ndkMetaPlatformsFile = NdkMetaPlatforms.jsonFile(ndkRoot)
+        val ndkMetaPlatforms = if (ndkMetaPlatformsFile.isFile) {
+            FileReader(ndkMetaPlatformsFile).use { reader ->
+                NdkMetaPlatforms.fromReader(reader)
+            }
+        } else {
+            null
+        }
+
+        return findSuitablePlatformVersionLogged(
+            abiName,
+            abiInfos,
+            androidVersion,
+            ndkMetaPlatforms
+        )
+    }
+
+    @VisibleForTesting
     fun findSuitablePlatformVersionLogged(
         abiName: String,
+        allAbis: List<AbiInfo>,
         androidVersionOrNull: AndroidVersion?,
         ndkMetaPlatforms: NdkMetaPlatforms?
     ): Int {
 
-        val abi = Abi.getByName(abiName) ?: run {
+        val abi = allAbis.singleOrNull { it.name == abiName } ?: run {
             errorln(ABI_IS_INVALID, "Specified abi='$abiName' is not recognized.")
             // Fall back so that processing can continue after the error
             return sensibleDefaultPlatformApiVersionForErrorCase
         }
+
 
         // This is a fallback/legacy case for supporting pre-r17 NDKs which don't have
         // platforms.json. As of the time this code is written there is no policy for deprecating
@@ -122,7 +148,7 @@ class PlatformConfigurator(private val ndkRoot: File) {
             }
 
             val minSdkVersion = computeMinSdkVersion(
-                abiName,
+                abi,
                 androidVersionOrNull,
                 platformNameAliases
             )
@@ -134,12 +160,10 @@ class PlatformConfigurator(private val ndkRoot: File) {
             )
         }
 
-        /**
-         * Algorithm used when meta/platforms.json exists (likely r17+). See "b" comments at the
-         * top of this class.
-         */
+        // Algorithm use d when meta/platforms.json exists (likely r17+). See "b" comments at the
+        // top of this class.
         val minSdkVersion = computeMinSdkVersion(
-            abiName,
+            abi,
             androidVersionOrNull,
             ndkMetaPlatforms.aliases
         )
@@ -157,7 +181,7 @@ class PlatformConfigurator(private val ndkRoot: File) {
      * the decisions were made and what problems were seen.
      */
     private fun computeMinSdkVersion(
-        abiName: String,
+        abi: AbiInfo,
         androidVersionOrNull: AndroidVersion?,
         platformNameAliases: Map<String, Int>): Int {
 
@@ -195,7 +219,7 @@ class PlatformConfigurator(private val ndkRoot: File) {
             minSdkVersionIsDefault && minSdkVersionFromCodeName == null -> {
                 infoln(
                     "Neither codeName nor minSdkVersion specified. Using minimum platform " +
-                            "version for '$abiName'."
+                            "version for '${abi.name}'."
                 )
                 0
             }
@@ -243,7 +267,7 @@ class PlatformConfigurator(private val ndkRoot: File) {
      * appropriate platform. See the "c" steps in the comment at the top of this class.
      */
     private fun findPlatformConfiguratorLegacy(
-        abi: Abi,
+        abi: AbiInfo,
         minSdkVersion: Int,
         displayVersion: AndroidVersion?,
         platformDir: File
@@ -329,28 +353,9 @@ class PlatformConfigurator(private val ndkRoot: File) {
         }
     }
 
-    fun findSuitablePlatformVersion(
-        abiName: String,
-        androidVersion: AndroidVersion? ): Int {
-        val ndkMetaPlatformsFile = NdkMetaPlatforms.jsonFile(ndkRoot)
-        val ndkMetaPlatforms = if (ndkMetaPlatformsFile.isFile) {
-            FileReader(ndkMetaPlatformsFile).use { reader ->
-                NdkMetaPlatforms.fromReader(reader)
-            }
-        } else {
-            null
-        }
-
-        return findSuitablePlatformVersionLogged(
-            abiName,
-            androidVersion,
-            ndkMetaPlatforms
-        )
-    }
-
     private fun getLinkerSysrootPath(
         ndkRoot: File,
-        abi: Abi,
+        abi: AbiInfo,
         platformVersion: String
     ): String {
         return FileUtils.join(

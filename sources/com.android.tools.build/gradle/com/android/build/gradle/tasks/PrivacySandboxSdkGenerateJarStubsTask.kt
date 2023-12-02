@@ -16,6 +16,9 @@
 
 package com.android.build.gradle.tasks
 
+import com.android.build.api.variant.Variant
+import com.android.build.gradle.internal.component.VariantCreationConfig
+import com.android.build.gradle.internal.dsl.ModulePropertyKey
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInternalArtifactType
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
@@ -123,16 +126,21 @@ abstract class PrivacySandboxSdkGenerateJarStubsTask : DefaultTask() {
         }
 
         override fun configure(task: PrivacySandboxSdkGenerateJarStubsTask) {
-            val apiPackagerCoordinates = creationConfig.services.projectOptions
-                    .get(StringOption.ANDROID_PRIVACY_SANDBOX_SDK_API_PACKAGER)?.split(",")
-                    ?: listOf(PLAY_SDK_API_PACKAGER_ARTIFACT)
+            val experimentalProperties = creationConfig.experimentalProperties
+            experimentalProperties.finalizeValue()
+            val apiPackagerDependencies =
+                    ModulePropertyKey.Dependencies.ANDROID_PRIVACY_SANDBOX_SDK_API_PACKAGER
+                            .getValue(experimentalProperties.get())
+                            ?: (creationConfig.services.projectOptions
+                                    .get(StringOption.ANDROID_PRIVACY_SANDBOX_SDK_API_PACKAGER)
+                                    ?.split(",")
+                                    ?: listOf(PLAY_SDK_API_PACKAGER_ARTIFACT)).map {
+                                creationConfig.services.dependencies.create(it)
+                            }
             val apiPackager = creationConfig.services.configurations.detachedConfiguration()
             apiPackager.isCanBeConsumed = false
             apiPackager.isCanBeResolved = true
-            val apiPackagerDeps = apiPackagerCoordinates.map {
-                creationConfig.services.dependencies.create(it)
-            }
-            apiPackager.dependencies.addAll(apiPackagerDeps)
+            apiPackager.dependencies.addAll(apiPackagerDependencies)
 
             task.apiPackager.setFrom(apiPackager.files)
             task.mergedClasses.fromDisallowChanges(
@@ -165,7 +173,7 @@ abstract class PrivacySandboxSdkGenerateJarStubsTask : DefaultTask() {
         /** Name of jar file containing api description that is packaged in an ASAR file. */
         const val privacySandboxSdkStubJarFilename: String = "sdk-interface-descriptors.jar"
 
-        private const val PLAY_SDK_API_PACKAGER_ARTIFACT = "androidx.privacysandbox.tools:tools-apipackager:1.0.0-alpha02"
+        private const val PLAY_SDK_API_PACKAGER_ARTIFACT = "androidx.privacysandbox.tools:tools-apipackager:1.0.0-alpha03"
     }
 }
 

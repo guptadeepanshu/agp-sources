@@ -55,13 +55,23 @@ private static final long serialVersionUID = 0L;
             break;
           }
           case 16: {
-            bitField0_ |= 0x00000002;
+            bitField0_ |= 0x00000008;
             completionEnabled_ = input.readBool();
             break;
           }
           case 24: {
-            bitField0_ |= 0x00000004;
+            bitField0_ |= 0x00000010;
             transformEnabled_ = input.readBool();
+            break;
+          }
+          case 32: {
+            bitField0_ |= 0x00000002;
+            botOnboardingStarted_ = input.readBool();
+            break;
+          }
+          case 40: {
+            bitField0_ |= 0x00000004;
+            botOnboardingCompleted_ = input.readBool();
             break;
           }
           default: {
@@ -124,6 +134,60 @@ private static final long serialVersionUID = 0L;
     return smlAvailable_;
   }
 
+  public static final int BOT_ONBOARDING_STARTED_FIELD_NUMBER = 4;
+  private boolean botOnboardingStarted_;
+  /**
+   * <pre>
+   * Whether this user has started Studio Bot onboarding.
+   * </pre>
+   *
+   * <code>optional bool bot_onboarding_started = 4;</code>
+   * @return Whether the botOnboardingStarted field is set.
+   */
+  @java.lang.Override
+  public boolean hasBotOnboardingStarted() {
+    return ((bitField0_ & 0x00000002) != 0);
+  }
+  /**
+   * <pre>
+   * Whether this user has started Studio Bot onboarding.
+   * </pre>
+   *
+   * <code>optional bool bot_onboarding_started = 4;</code>
+   * @return The botOnboardingStarted.
+   */
+  @java.lang.Override
+  public boolean getBotOnboardingStarted() {
+    return botOnboardingStarted_;
+  }
+
+  public static final int BOT_ONBOARDING_COMPLETED_FIELD_NUMBER = 5;
+  private boolean botOnboardingCompleted_;
+  /**
+   * <pre>
+   * Whether this user has completed Studio Bot onboarding.
+   * </pre>
+   *
+   * <code>optional bool bot_onboarding_completed = 5;</code>
+   * @return Whether the botOnboardingCompleted field is set.
+   */
+  @java.lang.Override
+  public boolean hasBotOnboardingCompleted() {
+    return ((bitField0_ & 0x00000004) != 0);
+  }
+  /**
+   * <pre>
+   * Whether this user has completed Studio Bot onboarding.
+   * </pre>
+   *
+   * <code>optional bool bot_onboarding_completed = 5;</code>
+   * @return The botOnboardingCompleted.
+   */
+  @java.lang.Override
+  public boolean getBotOnboardingCompleted() {
+    return botOnboardingCompleted_;
+  }
+
   public static final int COMPLETION_ENABLED_FIELD_NUMBER = 2;
   private boolean completionEnabled_;
   /**
@@ -136,7 +200,7 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public boolean hasCompletionEnabled() {
-    return ((bitField0_ & 0x00000002) != 0);
+    return ((bitField0_ & 0x00000008) != 0);
   }
   /**
    * <pre>
@@ -163,7 +227,7 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public boolean hasTransformEnabled() {
-    return ((bitField0_ & 0x00000004) != 0);
+    return ((bitField0_ & 0x00000010) != 0);
   }
   /**
    * <pre>
@@ -195,11 +259,17 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000001) != 0)) {
       output.writeBool(1, smlAvailable_);
     }
-    if (((bitField0_ & 0x00000002) != 0)) {
+    if (((bitField0_ & 0x00000008) != 0)) {
       output.writeBool(2, completionEnabled_);
     }
-    if (((bitField0_ & 0x00000004) != 0)) {
+    if (((bitField0_ & 0x00000010) != 0)) {
       output.writeBool(3, transformEnabled_);
+    }
+    if (((bitField0_ & 0x00000002) != 0)) {
+      output.writeBool(4, botOnboardingStarted_);
+    }
+    if (((bitField0_ & 0x00000004) != 0)) {
+      output.writeBool(5, botOnboardingCompleted_);
     }
     unknownFields.writeTo(output);
   }
@@ -214,13 +284,21 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeBoolSize(1, smlAvailable_);
     }
-    if (((bitField0_ & 0x00000002) != 0)) {
+    if (((bitField0_ & 0x00000008) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeBoolSize(2, completionEnabled_);
     }
-    if (((bitField0_ & 0x00000004) != 0)) {
+    if (((bitField0_ & 0x00000010) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeBoolSize(3, transformEnabled_);
+    }
+    if (((bitField0_ & 0x00000002) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(4, botOnboardingStarted_);
+    }
+    if (((bitField0_ & 0x00000004) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(5, botOnboardingCompleted_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -241,6 +319,16 @@ private static final long serialVersionUID = 0L;
     if (hasSmlAvailable()) {
       if (getSmlAvailable()
           != other.getSmlAvailable()) return false;
+    }
+    if (hasBotOnboardingStarted() != other.hasBotOnboardingStarted()) return false;
+    if (hasBotOnboardingStarted()) {
+      if (getBotOnboardingStarted()
+          != other.getBotOnboardingStarted()) return false;
+    }
+    if (hasBotOnboardingCompleted() != other.hasBotOnboardingCompleted()) return false;
+    if (hasBotOnboardingCompleted()) {
+      if (getBotOnboardingCompleted()
+          != other.getBotOnboardingCompleted()) return false;
     }
     if (hasCompletionEnabled() != other.hasCompletionEnabled()) return false;
     if (hasCompletionEnabled()) {
@@ -267,6 +355,16 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + SML_AVAILABLE_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getSmlAvailable());
+    }
+    if (hasBotOnboardingStarted()) {
+      hash = (37 * hash) + BOT_ONBOARDING_STARTED_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getBotOnboardingStarted());
+    }
+    if (hasBotOnboardingCompleted()) {
+      hash = (37 * hash) + BOT_ONBOARDING_COMPLETED_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getBotOnboardingCompleted());
     }
     if (hasCompletionEnabled()) {
       hash = (37 * hash) + COMPLETION_ENABLED_FIELD_NUMBER;
@@ -413,10 +511,14 @@ private static final long serialVersionUID = 0L;
       super.clear();
       smlAvailable_ = false;
       bitField0_ = (bitField0_ & ~0x00000001);
-      completionEnabled_ = false;
+      botOnboardingStarted_ = false;
       bitField0_ = (bitField0_ & ~0x00000002);
-      transformEnabled_ = false;
+      botOnboardingCompleted_ = false;
       bitField0_ = (bitField0_ & ~0x00000004);
+      completionEnabled_ = false;
+      bitField0_ = (bitField0_ & ~0x00000008);
+      transformEnabled_ = false;
+      bitField0_ = (bitField0_ & ~0x00000010);
       return this;
     }
 
@@ -450,12 +552,20 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000001;
       }
       if (((from_bitField0_ & 0x00000002) != 0)) {
-        result.completionEnabled_ = completionEnabled_;
+        result.botOnboardingStarted_ = botOnboardingStarted_;
         to_bitField0_ |= 0x00000002;
       }
       if (((from_bitField0_ & 0x00000004) != 0)) {
-        result.transformEnabled_ = transformEnabled_;
+        result.botOnboardingCompleted_ = botOnboardingCompleted_;
         to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.completionEnabled_ = completionEnabled_;
+        to_bitField0_ |= 0x00000008;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.transformEnabled_ = transformEnabled_;
+        to_bitField0_ |= 0x00000010;
       }
       result.bitField0_ = to_bitField0_;
       onBuilt();
@@ -508,6 +618,12 @@ private static final long serialVersionUID = 0L;
       if (other == com.google.wireless.android.sdk.stats.SmlConfigurationEvent.getDefaultInstance()) return this;
       if (other.hasSmlAvailable()) {
         setSmlAvailable(other.getSmlAvailable());
+      }
+      if (other.hasBotOnboardingStarted()) {
+        setBotOnboardingStarted(other.getBotOnboardingStarted());
+      }
+      if (other.hasBotOnboardingCompleted()) {
+        setBotOnboardingCompleted(other.getBotOnboardingCompleted());
       }
       if (other.hasCompletionEnabled()) {
         setCompletionEnabled(other.getCompletionEnabled());
@@ -600,6 +716,116 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
+    private boolean botOnboardingStarted_ ;
+    /**
+     * <pre>
+     * Whether this user has started Studio Bot onboarding.
+     * </pre>
+     *
+     * <code>optional bool bot_onboarding_started = 4;</code>
+     * @return Whether the botOnboardingStarted field is set.
+     */
+    @java.lang.Override
+    public boolean hasBotOnboardingStarted() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <pre>
+     * Whether this user has started Studio Bot onboarding.
+     * </pre>
+     *
+     * <code>optional bool bot_onboarding_started = 4;</code>
+     * @return The botOnboardingStarted.
+     */
+    @java.lang.Override
+    public boolean getBotOnboardingStarted() {
+      return botOnboardingStarted_;
+    }
+    /**
+     * <pre>
+     * Whether this user has started Studio Bot onboarding.
+     * </pre>
+     *
+     * <code>optional bool bot_onboarding_started = 4;</code>
+     * @param value The botOnboardingStarted to set.
+     * @return This builder for chaining.
+     */
+    public Builder setBotOnboardingStarted(boolean value) {
+      bitField0_ |= 0x00000002;
+      botOnboardingStarted_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Whether this user has started Studio Bot onboarding.
+     * </pre>
+     *
+     * <code>optional bool bot_onboarding_started = 4;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearBotOnboardingStarted() {
+      bitField0_ = (bitField0_ & ~0x00000002);
+      botOnboardingStarted_ = false;
+      onChanged();
+      return this;
+    }
+
+    private boolean botOnboardingCompleted_ ;
+    /**
+     * <pre>
+     * Whether this user has completed Studio Bot onboarding.
+     * </pre>
+     *
+     * <code>optional bool bot_onboarding_completed = 5;</code>
+     * @return Whether the botOnboardingCompleted field is set.
+     */
+    @java.lang.Override
+    public boolean hasBotOnboardingCompleted() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <pre>
+     * Whether this user has completed Studio Bot onboarding.
+     * </pre>
+     *
+     * <code>optional bool bot_onboarding_completed = 5;</code>
+     * @return The botOnboardingCompleted.
+     */
+    @java.lang.Override
+    public boolean getBotOnboardingCompleted() {
+      return botOnboardingCompleted_;
+    }
+    /**
+     * <pre>
+     * Whether this user has completed Studio Bot onboarding.
+     * </pre>
+     *
+     * <code>optional bool bot_onboarding_completed = 5;</code>
+     * @param value The botOnboardingCompleted to set.
+     * @return This builder for chaining.
+     */
+    public Builder setBotOnboardingCompleted(boolean value) {
+      bitField0_ |= 0x00000004;
+      botOnboardingCompleted_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Whether this user has completed Studio Bot onboarding.
+     * </pre>
+     *
+     * <code>optional bool bot_onboarding_completed = 5;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearBotOnboardingCompleted() {
+      bitField0_ = (bitField0_ & ~0x00000004);
+      botOnboardingCompleted_ = false;
+      onChanged();
+      return this;
+    }
+
     private boolean completionEnabled_ ;
     /**
      * <pre>
@@ -611,7 +837,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public boolean hasCompletionEnabled() {
-      return ((bitField0_ & 0x00000002) != 0);
+      return ((bitField0_ & 0x00000008) != 0);
     }
     /**
      * <pre>
@@ -635,7 +861,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setCompletionEnabled(boolean value) {
-      bitField0_ |= 0x00000002;
+      bitField0_ |= 0x00000008;
       completionEnabled_ = value;
       onChanged();
       return this;
@@ -649,7 +875,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearCompletionEnabled() {
-      bitField0_ = (bitField0_ & ~0x00000002);
+      bitField0_ = (bitField0_ & ~0x00000008);
       completionEnabled_ = false;
       onChanged();
       return this;
@@ -666,7 +892,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public boolean hasTransformEnabled() {
-      return ((bitField0_ & 0x00000004) != 0);
+      return ((bitField0_ & 0x00000010) != 0);
     }
     /**
      * <pre>
@@ -690,7 +916,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTransformEnabled(boolean value) {
-      bitField0_ |= 0x00000004;
+      bitField0_ |= 0x00000010;
       transformEnabled_ = value;
       onChanged();
       return this;
@@ -704,7 +930,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearTransformEnabled() {
-      bitField0_ = (bitField0_ & ~0x00000004);
+      bitField0_ = (bitField0_ & ~0x00000010);
       transformEnabled_ = false;
       onChanged();
       return this;

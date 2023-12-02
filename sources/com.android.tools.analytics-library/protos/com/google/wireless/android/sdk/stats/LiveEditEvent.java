@@ -281,6 +281,22 @@ private static final long serialVersionUID = 0L;
      * <code>PENDING_ERROR_IN_ANOTHER_FILE_AUTO_MODE = 23;</code>
      */
     PENDING_ERROR_IN_ANOTHER_FILE_AUTO_MODE(23),
+    /**
+     * <code>UNSUPPORTED_BUILD_LIBRARY_DESUGAR = 24;</code>
+     */
+    UNSUPPORTED_BUILD_LIBRARY_DESUGAR(24),
+    /**
+     * <code>BAD_MIN_API = 25;</code>
+     */
+    BAD_MIN_API(25),
+    /**
+     * <code>UNSUPPORTED_COMPOSE_RUNTIME_VERSION = 26;</code>
+     */
+    UNSUPPORTED_COMPOSE_RUNTIME_VERSION(26),
+    /**
+     * <code>UNKNOWN_LIVE_UPDATE_DEPLOYER_ERROR = 27;</code>
+     */
+    UNKNOWN_LIVE_UPDATE_DEPLOYER_ERROR(27),
     ;
 
     /**
@@ -430,6 +446,22 @@ private static final long serialVersionUID = 0L;
      * <code>PENDING_ERROR_IN_ANOTHER_FILE_AUTO_MODE = 23;</code>
      */
     public static final int PENDING_ERROR_IN_ANOTHER_FILE_AUTO_MODE_VALUE = 23;
+    /**
+     * <code>UNSUPPORTED_BUILD_LIBRARY_DESUGAR = 24;</code>
+     */
+    public static final int UNSUPPORTED_BUILD_LIBRARY_DESUGAR_VALUE = 24;
+    /**
+     * <code>BAD_MIN_API = 25;</code>
+     */
+    public static final int BAD_MIN_API_VALUE = 25;
+    /**
+     * <code>UNSUPPORTED_COMPOSE_RUNTIME_VERSION = 26;</code>
+     */
+    public static final int UNSUPPORTED_COMPOSE_RUNTIME_VERSION_VALUE = 26;
+    /**
+     * <code>UNKNOWN_LIVE_UPDATE_DEPLOYER_ERROR = 27;</code>
+     */
+    public static final int UNKNOWN_LIVE_UPDATE_DEPLOYER_ERROR_VALUE = 27;
 
 
     public final int getNumber() {
@@ -476,6 +508,10 @@ private static final long serialVersionUID = 0L;
         case 21: return INTERNAL_ERROR;
         case 22: return KNOWN_ISSUE;
         case 23: return PENDING_ERROR_IN_ANOTHER_FILE_AUTO_MODE;
+        case 24: return UNSUPPORTED_BUILD_LIBRARY_DESUGAR;
+        case 25: return BAD_MIN_API;
+        case 26: return UNSUPPORTED_COMPOSE_RUNTIME_VERSION;
+        case 27: return UNKNOWN_LIVE_UPDATE_DEPLOYER_ERROR;
         default: return null;
       }
     }
@@ -544,12 +580,20 @@ private static final long serialVersionUID = 0L;
     AUTO(1),
     /**
      * <pre>
-     * The LiveEdit push was triggered by the user.
+     * The LiveEdit push was triggered by the user on hot key.
      * </pre>
      *
      * <code>MANUAL = 2;</code>
      */
     MANUAL(2),
+    /**
+     * <pre>
+     * The LiveEdit push was triggered by the user on save.
+     * </pre>
+     *
+     * <code>ON_SAVE = 3;</code>
+     */
+    ON_SAVE(3),
     ;
 
     /**
@@ -566,12 +610,20 @@ private static final long serialVersionUID = 0L;
     public static final int AUTO_VALUE = 1;
     /**
      * <pre>
-     * The LiveEdit push was triggered by the user.
+     * The LiveEdit push was triggered by the user on hot key.
      * </pre>
      *
      * <code>MANUAL = 2;</code>
      */
     public static final int MANUAL_VALUE = 2;
+    /**
+     * <pre>
+     * The LiveEdit push was triggered by the user on save.
+     * </pre>
+     *
+     * <code>ON_SAVE = 3;</code>
+     */
+    public static final int ON_SAVE_VALUE = 3;
 
 
     public final int getNumber() {
@@ -597,6 +649,7 @@ private static final long serialVersionUID = 0L;
         case 0: return UNKNOWN_MODE;
         case 1: return AUTO;
         case 2: return MANUAL;
+        case 3: return ON_SAVE;
         default: return null;
       }
     }

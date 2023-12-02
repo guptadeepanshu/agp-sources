@@ -20,6 +20,7 @@ import com.android.annotations.Nullable;
 import com.android.io.NonClosingInputStream;
 import com.android.io.NonClosingInputStream.CloseBehavior;
 import com.android.utils.XmlUtils;
+import com.android.xml.sax.AttributeUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -198,6 +199,7 @@ public class DeviceSchema {
     public static final String NODE_HINGE_SUB_TYPE = "sub-type";
     public static final String NODE_HINGE_TYPE = "type";
     public static final String NODE_HINGE_FOLD_AT_POSTURE = "fold-at-posture";
+    public static final String NODE_CHANGE_ORIENTATION_ON_FOLD = "change-orientation-on-fold";
     public static final String NODE_HINGE_POSTURE_LIST = "posture-list";
     public static final String NODE_HINGE_ANGLES_POSTURE_DEFINITIONS =
             "hinge-angles-posture-definitions";
@@ -504,21 +506,26 @@ public class DeviceSchema {
                 mDefaultSeen = false;
             } else if (NODE_STATE.equals(localName)) {
                 // Check if the state is set to be a default state
-                String val = attributes.getValue(ATTR_DEFAULT);
-                if (val != null && ("1".equals(val) || Boolean.parseBoolean(val))) {
-                    /*
-                     * If it is and we already have a default state for this
-                     * device, then the device configuration is invalid.
-                     * Otherwise, set that we've seen a default state for this
-                     * device and continue
-                     */
+                AttributeUtils.getBoolean(attributes, ATTR_DEFAULT)
+                        .ifPresent(
+                                val -> {
+                                    /*
+                                     * If it is and we already have a default state for this
+                                     * device, then the device configuration is invalid.
+                                     * Otherwise, set that we've seen a default state for this
+                                     * device and continue
+                                     */
 
-                    if (mDefaultSeen) {
-                        validationError("More than one default state for device " + mDeviceName);
-                    } else {
-                        mDefaultSeen = true;
-                    }
-                }
+                                    if (val) {
+                                        if (mDefaultSeen) {
+                                            validationError(
+                                                    "More than one default state for device "
+                                                            + mDeviceName);
+                                        } else {
+                                            mDefaultSeen = true;
+                                        }
+                                    }
+                                });
             }
             mStringAccumulator.setLength(0);
         }

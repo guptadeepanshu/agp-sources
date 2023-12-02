@@ -15,12 +15,11 @@
  */
 package com.android.ide.common.gradle
 
-import com.android.ide.common.repository.GradleVersionRange
 import com.google.common.annotations.Beta
+import java.io.Serializable
 import java.lang.IllegalArgumentException
 import java.math.BigInteger
 import java.math.BigInteger.ONE
-import java.math.BigInteger.ZERO
 import java.util.Locale
 import java.util.Objects
 import kotlin.math.max
@@ -36,22 +35,31 @@ import kotlin.math.max
  * Think of [Version] as representing a single point on the version line.
  */
 @Beta
-class Version: Comparable<Version> {
+class Version: Comparable<Version>, Serializable {
     // TODO:
     // - restartable parser (for re-use in parsing version ranges etc.)
     // - base version extraction (for conflict resolution)
     private val parts: List<Part>
     private val separators: List<Separator>
     /**
-     * this is only non-private in order to provide error-checking in [GradleVersionRange]
+     * this is only non-private in order to provide error-checking in legacy class
      * constructors; it should not be generally used.  If true, this represents the infimum of
      * the set of versions with the specified parts as a prefix ("infimum" because there is no
      * finite representation of such a version).
      */
     val isPrefixInfimum: Boolean
 
+    // Used for serialization by the IDE.
+    private constructor() : this(
+        parts = listOf(DEV("dev")),
+        separators = listOf(Separator.EMPTY),
+        isPrefixInfimum = true,
+    )
+
     private constructor(parts: List<Part>, separators: List<Separator>, isPrefixInfimum: Boolean) {
         if (parts.size != separators.size) throw IllegalArgumentException()
+        if (parts.isEmpty()) throw IllegalArgumentException()
+        if (separators.last() != Separator.EMPTY) throw IllegalArgumentException()
         this.parts = parts
         this.separators = separators
         this.isPrefixInfimum = isPrefixInfimum
@@ -66,6 +74,36 @@ class Version: Comparable<Version> {
     // This is a reasonably well-defined concept.
     val isPreview
         get() = parts.any { it !is Numeric }
+    // This is as well-defined as isPreview.
+    val previewInfimum
+        get() = parts.indexOfFirst { it !is Numeric }.takeIf { it > -1 }?.let {
+            when (it) {
+                0 -> prefixInfimum("dev")
+                else -> Version(
+                    parts.subList(0, it), separators.subList(0, it-1) + Separator.EMPTY, true
+                )
+            }
+        }
+    // This is also as well-defined as isPreview.
+    val previewSupremum
+        get() = parts.indexOfFirst { it !is Numeric }.takeIf { it > -1 }?.let {
+                when (it) {
+                    0 -> parse("0")
+                    else -> Version(
+                        parts.subList(0, it), separators.subList(0, it-1) + Separator.EMPTY, false
+                    )
+                }
+            }
+    // This is moderately well-defined as a contributor to UI elements, though probably not for any
+    // automated computation.  This returns the least non-numeric part (in Gradle comparison
+    // terms), if any, of the version, with the intuition that this corresponds to the degree of
+    // previewness that a user may need to be alerted to.  For the common case of exactly zero or
+    // one non-numeric component, it does what you should expect; the possible ambiguities arise
+    // when there are two or more non-numeric part, and this choice -- the minimum -- is
+    // somewhat arbitrary; one could defend the first or the last non-numeric part as reasonable
+    // return values.
+    val previewString
+        get() = parts.filter { it !is Numeric }.minOrNull()?.toString()
     // This is not very well-defined:
     // - why is SNAPSHOT special, compared with all the other Special components?
     // - we check only check the last part because this is what the GradleVersion class did
@@ -92,7 +130,7 @@ class Version: Comparable<Version> {
     fun nextPrefix(prefixSize: Int): Version {
         if (parts.size < prefixSize) {
             return Version(
-                parts + List(prefixSize - parts.size) { Numeric("0", ZERO) },
+                parts + List(prefixSize - parts.size) { Numeric("0") },
                 separators.let {
                     it.dropLast(1) + List(prefixSize - parts.size) { Separator.DOT } + it.last()
                 },
@@ -179,7 +217,7 @@ class Version: Comparable<Version> {
             object NUMERIC: ParseState {
                 override fun createPart(sb: StringBuffer): Part {
                     val string = sb.toString()
-                    return Numeric(string, BigInteger(string))
+                    return Numeric(string)
                 }
             }
             object NONNUMERIC: ParseState {
@@ -270,7 +308,7 @@ enum class Separator(val char: Char?) {
     override fun toString() = char?.let { "$it" } ?: ""
 }
 
-sealed class Part(protected val string: String) : Comparable<Part> {
+sealed class Part(protected val string: String) : Comparable<Part>, Serializable {
     abstract fun next(): Part
     override fun toString() = string
 }
@@ -296,7 +334,8 @@ class NonNumeric(string: String) : Part(string) {
     override fun hashCode() = Objects.hash(this.string)
 }
 
-sealed class Special(string: String, val ordinal: Int) : Part(string) {
+sealed class Special(string: String) : Part(string) {
+    abstract val ordinal: Int
     override fun compareTo(other: Part) = when (other) {
         is Special -> this.ordinal.compareTo(other.ordinal)
         is Numeric -> -1
@@ -309,27 +348,58 @@ sealed class Special(string: String, val ordinal: Int) : Part(string) {
     override fun hashCode() = Objects.hash(this.ordinal)
 }
 
-class RC(string: String): Special(string, 0) {
+class RC(string: String): Special(string) {
+    override val ordinal = 0
     override fun next() = SNAPSHOT("snapshot")
 }
-class SNAPSHOT(string: String): Special(string, 1) {
+class SNAPSHOT(string: String): Special(string) {
+    override val ordinal = 1
     override fun next() = FINAL("final")
 }
-class FINAL(string: String): Special(string, 2) {
+class FINAL(string: String): Special(string) {
+    override val ordinal = 2
     override fun next() = GA("ga")
 }
-class GA(string: String): Special(string, 3) {
+class GA(string: String): Special(string) {
+    override val ordinal = 3
     override fun next() = RELEASE("release")
 }
-class RELEASE(string: String): Special(string, 4) {
+class RELEASE(string: String): Special(string) {
+    override val ordinal = 4
     override fun next() = SP("sp")
 }
-class SP(string: String): Special(string, 5) {
-    override fun next() = Numeric("0", ZERO)
+class SP(string: String): Special(string) {
+    override val ordinal = 5
+    override fun next() = Numeric("0")
 }
 
-class Numeric(string: String, val number: BigInteger) : Part(string) {
-    override fun next() = Numeric("${number + ONE}", number + ONE)
+class Numeric(string: String) : Part(string) {
+    // At first glance, this might look like it should be
+    //   val number by lazy { BigInteger(string) }
+    // and at second glance, it might look like it should be
+    //   val number = BigInteger(string)
+    // and at third glance, it might look like things would be
+    // simpler if the numeric representation were primary, or at
+    // least passed at construction time, so that there is no
+    // need to construct the next Numeric by printing
+    // number + ONE to string, and then later parsing that
+    // string.
+    //
+    // However, we want this class to be Serializable using
+    // multiple different mechanisms, including some mechanisms
+    // that serialize small BigInteger values as Int, but fail to
+    // do the reverse conversion when initializing.  Therefore, we
+    // have to hide the BigIntegers from the serialization
+    // mechanism (by marking it as transient), which means we cannot
+    // initialize it directly.
+    @Transient
+    private var _number: BigInteger? = null
+    val number: BigInteger
+        get() = when(val n = _number) {
+            null -> BigInteger(string).also { _number = it }
+            else -> n
+        }
+    override fun next() = Numeric("${number + ONE}")
     override fun compareTo(other: Part) = when (other) {
         is Numeric -> this.number.compareTo(other.number)
         is DEV, is NonNumeric, is Special -> 1

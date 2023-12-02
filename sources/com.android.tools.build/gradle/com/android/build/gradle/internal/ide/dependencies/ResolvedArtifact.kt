@@ -54,29 +54,27 @@ data class ResolvedArtifact internal constructor(
     val publishedLintJar: File?,
     val dependencyType: DependencyType,
     val isWrappedModule: Boolean,
-    val buildMapping: ImmutableMap<String, String>,
 )  {
 
     constructor(
         mainArtifactResult: ResolvedArtifactResult,
+        artifactFile: File?,
         extractedFolder: File?,
         publishedLintJar: File?,
         dependencyType: DependencyType,
         isWrappedModule: Boolean,
-        buildMapping: ImmutableMap<String, String>,
     ) :
             this(
                 mainArtifactResult.id.componentIdentifier,
                 mainArtifactResult.variant,
                 mainArtifactResult.getVariantName(),
-                mainArtifactResult.file,
+                artifactFile,
                 mainArtifactResult.hasProjectTestFixturesCapability() ||
                         mainArtifactResult.hasLibraryTestFixturesCapability(),
                 extractedFolder,
                 publishedLintJar,
                 dependencyType,
                 isWrappedModule,
-                buildMapping,
             )
 
     enum class DependencyType constructor(val extension: String) {
@@ -159,7 +157,7 @@ data class ResolvedArtifact internal constructor(
         is ProjectComponentIdentifier -> {
 
             StringBuilder(100)
-                .append(componentIdentifier.getBuildId(buildMapping))
+                .append(componentIdentifier.build.buildPath)
                 .append("@@")
                 .append(componentIdentifier.projectPath)
                 .also { sb ->

@@ -33,7 +33,7 @@ import java.io.File
  * @param variantDslFilters filters set on the variant specific source directory in the DSL, may be null if
  * the is no variant specific source directory.
  */
-class FlatSourceDirectoriesImpl(
+open class FlatSourceDirectoriesImpl(
     _name: String,
     private val variantServices: VariantServices,
     variantDslFilters: PatternFilterable?
@@ -56,6 +56,25 @@ class FlatSourceDirectoriesImpl(
     //
     // Internal APIs.
     //
+    /**
+     * Note: This doesn't preserve task dependencies of internal `directoryEntry` objects as the
+     * provider watched is the one from the outer scope only. Do not use unless necessary.
+     *
+     * https://youtrack.jetbrains.com/issue/KT-59503
+     */
+    @Deprecated("This is only to support kotlin multiplatform")
+    internal fun addSources(sources: Provider<out Collection<DirectoryEntry>>) {
+        variantSources.addAll(sources)
+        directories.addAll(sources.map { directoryEntries ->
+            directoryEntries.flatMap { directoryEntry ->
+                directoryEntry.asFiles(
+                    variantServices.provider {
+                        variantServices.projectInfo.projectDirectory
+                    }
+                ).get()
+            }
+        })
+    }
 
     override fun addSource(directoryEntry: DirectoryEntry) {
         variantSources.add(directoryEntry)

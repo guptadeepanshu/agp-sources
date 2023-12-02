@@ -48,6 +48,12 @@ val bat get() = os.bat
 fun quoteCommandLineArgument(argument: String) = os.quoteCommandLineArgument(argument)
 
 /**
+ * Quote [executable] that will be executed as a process. In particular, Windows needs paths
+ * with special characters like '(', ')', and ' ' quoted.
+ */
+fun quoteExecutablePath(executable: String) = os.quoteExecutablePath(executable)
+
+/**
  * Given a name like 'executable' find the full path by searching on PATH. On Windows, look
  * for .exe, .bat, and .cmd. Return null if not found.
  */
@@ -99,6 +105,12 @@ interface OsBehavior {
     fun quoteCommandLineArgument(argument: String) : String
 
     /**
+     * Quote [executable] that will be executed as a process. In particular, Windows needs paths
+     * with special characters like '(', ')', and ' ' quoted.
+     */
+    fun quoteExecutablePath(executable: String) : String
+
+    /**
      * Given a name like 'executable' find the full path by searching on PATH. On Windows, look
      * for .exe, .bat, and .cmd. Return null if not found.
      */
@@ -130,7 +142,7 @@ fun createOsBehavior(
             val escaped = argument.replace("%", "%%")
             return if (listOf(
                     ",", ";", "=", " ", "\u0008", "|", "&",
-                    "*", "\"", "<", ">", "^",
+                    "*", "\"", "<", ">", "^", "(", ")",
                     // Colon (:) is a special case. A normal windows.bat script will accept this as
                     // a single parameter. However, if that script then invokes PowerShell.exe with
                     // %* args passed at the command-line then the argument will be split on the
@@ -140,6 +152,18 @@ fun createOsBehavior(
                     .replace("\\", "\\\\")
                     .replace("\"", "\"\"")}\""
             } else escaped
+        }
+
+        override fun quoteExecutablePath(executable: String) : String {
+            // This list was determined experimentally. I couldn't find definitive documentation
+            // with this complete list.
+            // The ' ' (space) character actually works fine with Gradle Process executor but it
+            // definitely requires quoting in other contexts so its included here.
+            return if (listOf(
+                    '&', '(', ')', '{', '}', '^', '=',
+                    ';', '!', '\'', '+', ',', '[', ']',
+                    ' ').any { executable.contains(it) }) "\"$executable\""
+                else executable
         }
 
         override fun which(executable: File): File? {
@@ -183,8 +207,12 @@ fun createOsBehavior(
                     .replace("\"", "\\\"")
                     .replace("$", "\\$")
                     .replace("`", "\\`")
+                    .replace("(", "\\(")
+                    .replace(")", "\\)")
             }
         }
+
+        override fun quoteExecutablePath(executable: String) = executable
 
         override fun which(executable: File): File? {
             if (executable.isFile) return executable

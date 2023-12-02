@@ -681,4 +681,31 @@ public interface AndroidProfilerEventOrBuilder extends
    * <code>optional .android_studio.ResolveComposeTracingCodeLocationMetadata resolve_compose_tracing_code_location_metadata = 26;</code>
    */
   com.google.wireless.android.sdk.stats.ResolveComposeTracingCodeLocationMetadataOrBuilder getResolveComposeTracingCodeLocationMetadataOrBuilder();
+
+  /**
+   * <pre>
+   * Set if |type| is |POWER_PROFILER_DATA_CAPTURED|
+   * </pre>
+   *
+   * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27;</code>
+   * @return Whether the powerProfilerCaptureMetadata field is set.
+   */
+  boolean hasPowerProfilerCaptureMetadata();
+  /**
+   * <pre>
+   * Set if |type| is |POWER_PROFILER_DATA_CAPTURED|
+   * </pre>
+   *
+   * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27;</code>
+   * @return The powerProfilerCaptureMetadata.
+   */
+  com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata getPowerProfilerCaptureMetadata();
+  /**
+   * <pre>
+   * Set if |type| is |POWER_PROFILER_DATA_CAPTURED|
+   * </pre>
+   *
+   * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27;</code>
+   */
+  com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadataOrBuilder getPowerProfilerCaptureMetadataOrBuilder();
 }

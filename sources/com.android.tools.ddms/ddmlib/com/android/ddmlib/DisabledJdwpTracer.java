@@ -24,7 +24,10 @@ class DisabledJdwpTracer implements DDMLibJdwpTracer {
     public void onEvent(@NotNull String event) {}
 
     @Override
-    public void onPacket(@NotNull ByteBuffer packet) {}
+    public void onUpstreamPacket(@NotNull ByteBuffer packet) {}
+
+    @Override
+    public void onDownstreamPacket(@NotNull ByteBuffer packet) {}
 
     @Override
     public void close() {}

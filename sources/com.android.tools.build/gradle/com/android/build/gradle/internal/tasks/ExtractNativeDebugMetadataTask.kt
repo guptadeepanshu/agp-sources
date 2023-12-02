@@ -207,7 +207,7 @@ abstract class ExtractNativeDebugMetadataWorkAction :
         abstract val inputDir: DirectoryProperty
         abstract val strippedNativeLibs: DirectoryProperty
         abstract val outputDir: DirectoryProperty
-        abstract val objcopyExecutableMap: MapProperty<Abi, File>
+        abstract val objcopyExecutableMap: MapProperty<String, File>
         abstract val debugSymbolLevel: Property<DebugSymbolLevel>
         abstract val maxWorkerCount: Property<Int>
     }
@@ -262,7 +262,7 @@ abstract class ExtractNativeDebugMetadataWorkAction :
                         "NativeDebugMetadataMode.NONE not supported in ${this.javaClass.name}"
                     )
             }
-            val objcopyExecutable = parameters.objcopyExecutableMap.get()[Abi.getByName(inputFile.parentFile.name)]
+            val objcopyExecutable = parameters.objcopyExecutableMap.get()[inputFile.parentFile.name]
             if (objcopyExecutable == null) {
                 logger.warning(
                     "Unable to extract native debug metadata from ${inputFile.absolutePath} " +

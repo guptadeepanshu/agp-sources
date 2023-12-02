@@ -16,8 +16,6 @@
 
 package com.android.build.gradle.internal.lint
 
-import com.android.build.gradle.internal.ide.dependencies.BuildMapping
-import com.android.build.gradle.internal.ide.dependencies.getBuildId
 import com.android.build.gradle.internal.ide.dependencies.getVariantName
 import com.android.build.gradle.internal.ide.dependencies.hasProjectTestFixturesCapability
 import org.gradle.api.artifacts.ArtifactCollection
@@ -40,13 +38,13 @@ internal data class ProjectKey(val buildId: String, val projectPath: String, val
     }
 }
 
-internal fun asProjectKey(buildMapping: BuildMapping, artifact: ResolvedArtifactResult): ProjectKey {
+internal fun asProjectKey(artifact: ResolvedArtifactResult): ProjectKey {
     val id = artifact.id.componentIdentifier as ProjectComponentIdentifier
-    return ProjectKey(id.getBuildId(buildMapping)!!, id.projectPath, artifact.getVariantName())
+    return ProjectKey(id.build.buildPath, id.projectPath, artifact.getVariantName())
 }
 
-internal fun ArtifactCollection.asProjectKeyedMap(buildMapping: BuildMapping): Map<ProjectKey, File> {
-    return artifacts.asSequence().map { artifact -> asProjectKey(buildMapping, artifact) to artifact.file}.toMap()
+internal fun ArtifactCollection.asProjectKeyedMap(): Map<ProjectKey, File> {
+    return artifacts.asSequence().map { artifact -> asProjectKey(artifact) to artifact.file}.toMap()
 }
 
 /**
@@ -77,17 +75,17 @@ internal data class ProjectSourceSetKey(
     }
 }
 
-internal fun asProjectSourceSetKey(buildMapping: BuildMapping, artifact: ResolvedArtifactResult): ProjectSourceSetKey {
+internal fun asProjectSourceSetKey(artifact: ResolvedArtifactResult): ProjectSourceSetKey {
     val id = artifact.id.componentIdentifier as ProjectComponentIdentifier
     return ProjectSourceSetKey(
-        id.getBuildId(buildMapping)!!,
+        id.build.buildPath,
         id.projectPath,
         artifact.getVariantName(),
         artifact.hasProjectTestFixturesCapability()
     )
 }
 
-internal fun ArtifactCollection.asProjectSourceSetKeyedMap(buildMapping: BuildMapping): Map<ProjectSourceSetKey, File> {
-    return artifacts.asSequence().map { artifact -> asProjectSourceSetKey(buildMapping, artifact) to artifact.file}.toMap()
+internal fun ArtifactCollection.asProjectSourceSetKeyedMap(): Map<ProjectSourceSetKey, File> {
+    return artifacts.asSequence().map { artifact -> asProjectSourceSetKey(artifact) to artifact.file}.toMap()
 }
 

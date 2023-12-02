@@ -22,6 +22,7 @@ import static com.android.SdkConstants.XML_NAMESPACE_URI;
 import com.android.aapt.Resources;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.xml.AttrNameSplitter;
 import gnu.trove.TIntArrayList;
 import java.io.IOException;
 import java.io.InputStream;
@@ -181,7 +182,7 @@ public class ProtoXmlPullParser implements XmlPullParser {
         if (element == null) {
             return null;
         }
-        return getNameWithoutPrefix(element.getName());
+        return AttrNameSplitter.findLocalName(element.getName());
     }
 
     @Override
@@ -221,7 +222,7 @@ public class ProtoXmlPullParser implements XmlPullParser {
     @Override
     @NonNull
     public String getAttributeName(int index) {
-        return getNameWithoutPrefix(getAttribute(index).getName());
+        return AttrNameSplitter.findLocalName(getAttribute(index).getName());
     }
 
     @Override
@@ -585,11 +586,5 @@ public class ProtoXmlPullParser implements XmlPullParser {
     private static String getPrefix(@NonNull String fullName) {
         int pos = fullName.indexOf(':');
         return pos >= 0 ? fullName.substring(0, pos) : null;
-    }
-
-    @NonNull
-    private static String getNameWithoutPrefix(@NonNull String fullName) {
-        int pos = fullName.indexOf(':');
-        return pos >= 0 ? fullName.substring(pos + 1) : fullName;
     }
 }

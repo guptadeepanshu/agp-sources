@@ -17,8 +17,8 @@
 package com.android.build.gradle.internal.cxx.logging
 
 import com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION
-import com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.ERROR
 import com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.BUG
+import com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.ERROR
 import com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.INFO
 import com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.LIFECYCLE
 import com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.WARN
@@ -28,6 +28,7 @@ import com.android.build.gradle.internal.profile.AnalyticsService
 import com.android.builder.errors.IssueReporter
 import com.android.builder.errors.IssueReporter.Type.EXTERNAL_NATIVE_BUILD_CONFIGURATION
 import com.google.protobuf.GeneratedMessageV3
+import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.logging.Logging
 import java.io.File
 
@@ -39,14 +40,15 @@ class IssueReporterLoggingEnvironment private constructor(
     private val issueReporter: IssueReporter,
     rootBuildGradleFolder: File,
     private val cxxFolder: File?,
-    private val internals: CxxDiagnosticCodesTrackingInternals?
+    allowStructuredLogging: Boolean,
+    private val metrics: GradleBuildVariant.Builder?
 ) : PassThroughRecordingLoggingEnvironment() {
     private val structuredLogEncoder : CxxStructuredLogEncoder?
     init {
         // Structured log is only written if user has manually created a folder
         // for it to go into.
         val structuredLogFolder = getCxxStructuredLogFolder(rootBuildGradleFolder)
-        structuredLogEncoder = if (structuredLogFolder.isDirectory) {
+        structuredLogEncoder = if (allowStructuredLogging && structuredLogFolder.isDirectory) {
             val log = structuredLogFolder.resolve(
                 "log_${System.currentTimeMillis()}_${Thread.currentThread().id}.bin")
             CxxStructuredLogEncoder(log)
@@ -55,30 +57,26 @@ class IssueReporterLoggingEnvironment private constructor(
         }
     }
 
-    private class CxxDiagnosticCodesTrackingInternals(
-        val analyticsService: AnalyticsService,
-        val variant: CxxVariantModel,
-        val cxxDiagnosticCodes: MutableList<Int>
-    )
-
     constructor(
         issueReporter: IssueReporter,
         rootBuildGradleFolder: File,
-        cxxFolder: File?
-        ) : this(issueReporter, rootBuildGradleFolder, cxxFolder, null)
+        cxxFolder: File?,
+        allowStructuredLogging: Boolean
+        ) : this(issueReporter, rootBuildGradleFolder, cxxFolder, allowStructuredLogging, null)
 
     constructor(
         issueReporter: IssueReporter,
         analyticsService: AnalyticsService,
-        variant: CxxVariantModel
+        variant: CxxVariantModel,
+        allowStructuredLogging: Boolean = true
     ) : this(
         issueReporter,
         variant.module.project.rootBuildGradleFolder,
         variant.module.cxxFolder,
-        CxxDiagnosticCodesTrackingInternals(
-            analyticsService,
-            variant,
-            mutableListOf()
+        allowStructuredLogging,
+        analyticsService.getVariantBuilder(
+            variant.module.gradleModulePathName,
+            variant.variantName
         )
     )
 
@@ -102,7 +100,7 @@ class IssueReporterLoggingEnvironment private constructor(
             INFO -> logger.info(message.text())
             LIFECYCLE -> logger.lifecycle(message.text())
             WARN -> {
-                internals?.cxxDiagnosticCodes?.add(message.diagnosticCode)
+                metrics?.addCxxDiagnosticCodes(message.diagnosticCode)
                 issueReporter.reportWarning(
                     EXTERNAL_NATIVE_BUILD_CONFIGURATION,
                     message.text()
@@ -110,7 +108,7 @@ class IssueReporterLoggingEnvironment private constructor(
                 logger.warn(message.text())
             }
             ERROR -> {
-                internals?.cxxDiagnosticCodes?.add(message.diagnosticCode)
+                metrics?.addCxxDiagnosticCodes(message.diagnosticCode)
                 issueReporter.reportError(
                     EXTERNAL_NATIVE_BUILD_CONFIGURATION,
                     message.text()
@@ -118,7 +116,7 @@ class IssueReporterLoggingEnvironment private constructor(
                 logger.error(message.text())
             }
             BUG -> {
-                internals?.cxxDiagnosticCodes?.add(message.diagnosticCode)
+                metrics?.addCxxDiagnosticCodes(message.diagnosticCode)
                 val sb = StringBuilder(message.text() + " ")
                 sb.append("Please refer to bug https://issuetracker.google.com/${message.diagnosticCode} for more information. \n")
                 if (cxxFolder != null) {
@@ -144,15 +142,6 @@ class IssueReporterLoggingEnvironment private constructor(
                 infoln("Closing '${structuredLogEncoder.file}'")
                 structuredLogEncoder.close()
             }
-            if (internals != null) {
-                val variant = internals.variant
-                val builder = internals.analyticsService.getVariantBuilder(
-                    variant.module.gradleModulePathName,
-                    variant.variantName
-                ) ?: return
-                builder.addAllCxxDiagnosticCodes(internals.cxxDiagnosticCodes)
-            }
-
         } finally {
             super.close()
         }

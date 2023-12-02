@@ -16,6 +16,7 @@
 package com.android.build.api.variant.impl
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
+import com.android.build.api.attributes.ProductFlavorAttr
 import com.android.build.api.component.impl.ComponentImpl
 import com.android.build.api.component.impl.UnitTestImpl
 import com.android.build.api.component.impl.features.BuildConfigCreationConfigImpl
@@ -34,6 +35,8 @@ import com.android.build.api.variant.ExternalNativeBuild
 import com.android.build.api.variant.Packaging
 import com.android.build.api.variant.ResValue
 import com.android.build.api.variant.Variant
+import com.android.build.gradle.internal.DependencyConfigurator
+import com.android.build.gradle.internal.VariantManager
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.component.features.BuildConfigCreationConfig
@@ -57,6 +60,7 @@ import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
 import com.android.utils.appendCapitalized
 import com.android.utils.capitalizeAndAppend
+import com.google.common.collect.ImmutableMap
 import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
@@ -273,4 +277,25 @@ abstract class VariantImpl<DslInfoT: VariantDslInfo>(
             // for lint checks.
             global.compileOptions.isCoreLibraryDesugaringEnabled
         }
+
+    override fun missingDimensionStrategy(dimension: String, vararg requestedValues: String) {
+        val attributeKey = ProductFlavorAttr.of(dimension)
+        val attributeValue: ProductFlavorAttr = services.named(
+            ProductFlavorAttr::class.java, name
+        )
+
+        variantDependencies.compileClasspath.attributes.attribute(attributeKey, attributeValue)
+        variantDependencies.runtimeClasspath.attributes.attribute(attributeKey, attributeValue)
+        variantDependencies
+            .annotationProcessorConfiguration
+            ?.attributes
+            ?.attribute(attributeKey, attributeValue)
+
+        // then add the fallbacks which contain the actual requested value
+        DependencyConfigurator.addFlavorStrategy(
+            services.dependencies.attributesSchema,
+            dimension,
+            ImmutableMap.of(name, requestedValues.toList())
+        )
+    }
 }

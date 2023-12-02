@@ -18,10 +18,8 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
 import com.android.build.gradle.internal.dependency.GenericTransformParameters
-import com.android.build.gradle.internal.privaysandboxsdk.tagAllElementsAsRequiredByPrivacySandboxSdk
-import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType
+
 import com.android.build.gradle.internal.signing.SigningConfigData
-import com.android.build.gradle.tasks.PrivacySandboxSdkGenerateJarStubsTask
 import com.android.bundle.SdkMetadataOuterClass
 import com.android.ide.common.signing.KeystoreHelper
 import com.android.tools.build.bundletool.model.RuntimeEnabledSdkVersionEncoder
@@ -33,12 +31,10 @@ import org.gradle.api.artifacts.transform.TransformOutputs
 import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
-import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import java.io.InputStream
-import java.nio.file.Files
 import java.util.zip.ZipFile
 
 @CacheableTransform

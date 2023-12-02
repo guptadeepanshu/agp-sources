@@ -16,11 +16,9 @@
 
 package com.android.build.gradle.internal.ndk
 
-import com.android.build.gradle.internal.core.Abi
 import com.android.repository.Revision
 import com.android.sdklib.AndroidTargetHash
 import com.android.sdklib.AndroidVersion
-import org.gradle.api.logging.Logging
 import java.io.File
 import java.lang.RuntimeException
 
@@ -39,32 +37,20 @@ import java.lang.RuntimeException
 data class NdkPlatform(
     val ndkDirectory: File,
     val ndkInfo: NdkInfo,
-    val revision: Revision,
-    private val compileSdkVersion: String) {
-
-    /**
-     * Whether or not the NDK + compileSdkVersion supports 64 bit ABIs.
-     */
-    private val supports64Bits: Boolean by lazy {
-        // TODO: Why does this API care about compileSdkVersion anyway? Should this just be a check
-        // against whether the given NDK has 64-bit support?
-        val androidVersion = AndroidTargetHash.getVersionFromHash(compileSdkVersion)
-            ?: throw RuntimeException("Unable to parse compileSdkVersion: $compileSdkVersion")
-        androidVersion >= AndroidVersion.SUPPORTS_64_BIT
-    }
+    val revision: Revision) {
 
     /**
      * List of ABIs supported by this NDK + compileSdkVersion.
      */
-    val supportedAbis : List<Abi> by lazy {
-        (if (supports64Bits) ndkInfo.supportedAbis else ndkInfo.supported32BitsAbis).toList()
+    val supportedAbis : List<String> by lazy {
+        ndkInfo.supportedAbis.toList()
     }
 
     /**
      * List of default ABIs for this NDK + compileSdkVersion.
      * Default means this is the list to be used when the user specifies no ABIs.
      */
-    val defaultAbis : List<Abi> by lazy {
-        (if (supports64Bits) ndkInfo.defaultAbis else ndkInfo.default32BitsAbis).toList()
+    val defaultAbis : List<String> by lazy {
+        ndkInfo.defaultAbis.toList()
     }
 }

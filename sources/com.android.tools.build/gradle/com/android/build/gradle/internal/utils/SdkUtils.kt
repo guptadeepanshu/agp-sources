@@ -16,6 +16,8 @@
 
 package com.android.build.gradle.internal.utils
 
+import com.android.build.api.variant.impl.AndroidVersionImpl
+import com.android.builder.core.DefaultApiVersion
 import com.android.sdklib.AndroidVersion
 import java.util.regex.Pattern
 
@@ -67,6 +69,13 @@ fun parseTargetHash(targetHash : String): CompileData  {
 fun validatePreviewTargetValue(value: String): String? =
     if (AndroidVersion.PREVIEW_PATTERN.matcher(value).matches()) {
         value
+    } else null
+
+internal fun createTargetSdkVersion(targetSdk: Int?, targetSdkPreview: String?) =
+    if (targetSdk != null || targetSdkPreview != null) {
+        val apiVersion =
+            targetSdk?.let { DefaultApiVersion(it) } ?: DefaultApiVersion(targetSdkPreview!!)
+        apiVersion.run { AndroidVersionImpl(apiLevel, codename) }
     } else null
 
 private val API_PATTERN: Pattern = Pattern.compile("^android-([0-9]+)(-ext(\\d+))?$")

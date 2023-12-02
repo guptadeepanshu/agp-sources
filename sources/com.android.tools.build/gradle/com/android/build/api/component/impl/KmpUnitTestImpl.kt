@@ -17,7 +17,10 @@
 package com.android.build.api.component.impl
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
+import com.android.build.api.component.impl.features.AndroidResourcesCreationConfigImpl
+import com.android.build.api.component.impl.features.AssetsCreationConfigImpl
 import com.android.build.api.component.impl.features.ManifestPlaceholdersCreationConfigImpl
+import com.android.build.api.dsl.KotlinMultiplatformAndroidCompilation
 import com.android.build.api.instrumentation.AsmClassVisitorFactory
 import com.android.build.api.instrumentation.FramesComputationMode
 import com.android.build.api.instrumentation.InstrumentationParameters
@@ -25,9 +28,10 @@ import com.android.build.api.instrumentation.InstrumentationScope
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.UnitTest
 import com.android.build.api.variant.impl.KmpVariantImpl
-import com.android.build.api.variant.impl.KotlinMultiplatformAndroidCompilation
 import com.android.build.gradle.internal.component.UnitTestCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
+import com.android.build.gradle.internal.component.features.AndroidResourcesCreationConfig
+import com.android.build.gradle.internal.component.features.AssetsCreationConfig
 import com.android.build.gradle.internal.component.features.ManifestPlaceholdersCreationConfig
 import com.android.build.gradle.internal.core.dsl.impl.DEFAULT_TEST_RUNNER
 import com.android.build.gradle.internal.core.dsl.impl.KmpUnitTestDslInfoImpl
@@ -79,7 +83,7 @@ open class KmpUnitTestImpl @Inject constructor(
     override val testedApplicationId: Provider<String>
         get() = mainVariant.applicationId
     override val targetSdkVersion: AndroidVersion
-        get() = minSdk
+        get() = global.unitTestOptions.targetSdkVersion ?: minSdk
 
     override val manifestPlaceholdersCreationConfig: ManifestPlaceholdersCreationConfig by lazy(LazyThreadSafetyMode.NONE) {
         ManifestPlaceholdersCreationConfigImpl(
@@ -91,6 +95,32 @@ open class KmpUnitTestImpl @Inject constructor(
 
     override val manifestPlaceholders: MapProperty<String, String>
         get() = manifestPlaceholdersCreationConfig.placeholders
+
+    override val androidResourcesCreationConfig: AndroidResourcesCreationConfig? by lazy {
+        if (global.unitTestOptions.isIncludeAndroidResources) {
+            AndroidResourcesCreationConfigImpl(
+                this,
+                dslInfo,
+                dslInfo.androidResourcesDsl!!,
+                internalServices
+            )
+        } else {
+            null
+        }
+    }
+
+    override val assetsCreationConfig: AssetsCreationConfig? by lazy {
+        if (global.unitTestOptions.isIncludeAndroidResources) {
+            AssetsCreationConfigImpl(
+                dslInfo.androidResourcesDsl!!,
+                internalServices,
+            ) {
+                androidResourcesCreationConfig
+            }
+        } else {
+            null
+        }
+    }
 
     override val isUnitTestCoverageEnabled: Boolean
         get() = dslInfo.isUnitTestCoverageEnabled

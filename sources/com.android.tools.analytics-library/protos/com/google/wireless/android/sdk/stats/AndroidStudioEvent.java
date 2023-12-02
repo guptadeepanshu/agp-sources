@@ -2219,6 +2219,123 @@ private static final long serialVersionUID = 0L;
             bitField5_ |= 0x00000010;
             break;
           }
+          case 1378: {
+            com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.Builder subBuilder = null;
+            if (((bitField5_ & 0x00000020) != 0)) {
+              subBuilder = deviceScreenshotEvent_.toBuilder();
+            }
+            deviceScreenshotEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(deviceScreenshotEvent_);
+              deviceScreenshotEvent_ = subBuilder.buildPartial();
+            }
+            bitField5_ |= 0x00000020;
+            break;
+          }
+          case 1386: {
+            com.google.wireless.android.sdk.stats.EditorNotification.Builder subBuilder = null;
+            if (((bitField5_ & 0x00000040) != 0)) {
+              subBuilder = editorNotification_.toBuilder();
+            }
+            editorNotification_ = input.readMessage(com.google.wireless.android.sdk.stats.EditorNotification.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(editorNotification_);
+              editorNotification_ = subBuilder.buildPartial();
+            }
+            bitField5_ |= 0x00000040;
+            break;
+          }
+          case 1394: {
+            com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEvent.Builder subBuilder = null;
+            if (((bitField5_ & 0x00000080) != 0)) {
+              subBuilder = composePreviewLiteModeEvent_.toBuilder();
+            }
+            composePreviewLiteModeEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEvent.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(composePreviewLiteModeEvent_);
+              composePreviewLiteModeEvent_ = subBuilder.buildPartial();
+            }
+            bitField5_ |= 0x00000080;
+            break;
+          }
+          case 1402: {
+            com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStats.Builder subBuilder = null;
+            if (((bitField5_ & 0x00000100) != 0)) {
+              subBuilder = upgradeAndroidStudioDialog_.toBuilder();
+            }
+            upgradeAndroidStudioDialog_ = input.readMessage(com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStats.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(upgradeAndroidStudioDialog_);
+              upgradeAndroidStudioDialog_ = subBuilder.buildPartial();
+            }
+            bitField5_ |= 0x00000100;
+            break;
+          }
+          case 1410: {
+            com.google.wireless.android.sdk.stats.DebuggerEvent.Builder subBuilder = null;
+            if (((bitField5_ & 0x00000200) != 0)) {
+              subBuilder = debuggerEvent_.toBuilder();
+            }
+            debuggerEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.DebuggerEvent.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(debuggerEvent_);
+              debuggerEvent_ = subBuilder.buildPartial();
+            }
+            bitField5_ |= 0x00000200;
+            break;
+          }
+          case 1418: {
+            com.google.wireless.android.sdk.stats.SoongSyncStats.Builder subBuilder = null;
+            if (((bitField5_ & 0x00000400) != 0)) {
+              subBuilder = soongSyncStats_.toBuilder();
+            }
+            soongSyncStats_ = input.readMessage(com.google.wireless.android.sdk.stats.SoongSyncStats.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(soongSyncStats_);
+              soongSyncStats_ = subBuilder.buildPartial();
+            }
+            bitField5_ |= 0x00000400;
+            break;
+          }
+          case 1426: {
+            com.google.wireless.android.sdk.stats.IntelliJNewUISwitch.Builder subBuilder = null;
+            if (((bitField5_ & 0x00000800) != 0)) {
+              subBuilder = intellijNewUiSwitch_.toBuilder();
+            }
+            intellijNewUiSwitch_ = input.readMessage(com.google.wireless.android.sdk.stats.IntelliJNewUISwitch.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(intellijNewUiSwitch_);
+              intellijNewUiSwitch_ = subBuilder.buildPartial();
+            }
+            bitField5_ |= 0x00000800;
+            break;
+          }
+          case 1434: {
+            com.google.wireless.android.sdk.stats.EssentialsModeEvent.Builder subBuilder = null;
+            if (((bitField5_ & 0x00001000) != 0)) {
+              subBuilder = essentialsModeEvent_.toBuilder();
+            }
+            essentialsModeEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.EssentialsModeEvent.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(essentialsModeEvent_);
+              essentialsModeEvent_ = subBuilder.buildPartial();
+            }
+            bitField5_ |= 0x00001000;
+            break;
+          }
+          case 1442: {
+            com.google.wireless.android.sdk.stats.LintTooltipLinkEvent.Builder subBuilder = null;
+            if (((bitField5_ & 0x00002000) != 0)) {
+              subBuilder = lintTooltipLinkEvent_.toBuilder();
+            }
+            lintTooltipLinkEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.LintTooltipLinkEvent.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(lintTooltipLinkEvent_);
+              lintTooltipLinkEvent_ = subBuilder.buildPartial();
+            }
+            bitField5_ |= 0x00002000;
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -5013,6 +5130,94 @@ private static final long serialVersionUID = 0L;
      * <code>KOTLIN_SUPPORT_DECLINED_EVENT = 285;</code>
      */
     KOTLIN_SUPPORT_DECLINED_EVENT(285),
+    /**
+     * <pre>
+     * Event raised when user accepted to migrate Gradle JDK to local.properties
+     * </pre>
+     *
+     * <code>GRADLE_JDK_MIGRATE_TO_LOCAL_PROPERTIES_DIALOG_ACCEPTED = 286;</code>
+     */
+    GRADLE_JDK_MIGRATE_TO_LOCAL_PROPERTIES_DIALOG_ACCEPTED(286),
+    /**
+     * <pre>
+     * Event raised when user declined to migrate Gradle JDK to local.properties
+     * </pre>
+     *
+     * <code>GRADLE_JDK_MIGRATE_TO_LOCAL_PROPERTIES_DIALOG_CANCELED = 287;</code>
+     */
+    GRADLE_JDK_MIGRATE_TO_LOCAL_PROPERTIES_DIALOG_CANCELED(287),
+    /**
+     * <pre>
+     * Event related to screenshots taken of running devices
+     * </pre>
+     *
+     * <code>DEVICE_SCREENSHOT_EVENT = 288;</code>
+     */
+    DEVICE_SCREENSHOT_EVENT(288),
+    /**
+     * <pre>
+     * Event related to a notification being displayed to the user
+     * </pre>
+     *
+     * <code>EDITOR_NOTIFICATION = 289;</code>
+     */
+    EDITOR_NOTIFICATION(289),
+    /**
+     * <pre>
+     * Event related to Compose Preview Lite Mode
+     * </pre>
+     *
+     * <code>COMPOSE_PREVIEW_LITE_MODE = 290;</code>
+     */
+    COMPOSE_PREVIEW_LITE_MODE(290),
+    /**
+     * <pre>
+     * Upgrade Android Studio dialog event
+     * </pre>
+     *
+     * <code>UPGRADE_ANDROID_STUDIO_DIALOG = 291;</code>
+     */
+    UPGRADE_ANDROID_STUDIO_DIALOG(291),
+    /**
+     * <pre>
+     * Event related to the Debugger tool window
+     * </pre>
+     *
+     * <code>DEBUGGER_EVENT = 292;</code>
+     */
+    DEBUGGER_EVENT(292),
+    /**
+     * <pre>
+     * Soong sync event
+     * </pre>
+     *
+     * <code>SOONG_SYNC_EVENT = 293;</code>
+     */
+    SOONG_SYNC_EVENT(293),
+    /**
+     * <pre>
+     * Event related to the user toggling the new UI state
+     * </pre>
+     *
+     * <code>INTELLIJ_NEW_UI_SWITCH = 294;</code>
+     */
+    INTELLIJ_NEW_UI_SWITCH(294),
+    /**
+     * <pre>
+     * Event related to essentials mode state changes
+     * </pre>
+     *
+     * <code>ESSENTIALS_MODE_EVENT = 295;</code>
+     */
+    ESSENTIALS_MODE_EVENT(295),
+    /**
+     * <pre>
+     * Event for links clicked in Lint tooltips.
+     * </pre>
+     *
+     * <code>LINT_TOOLTIP_LINK_EVENT = 296;</code>
+     */
+    LINT_TOOLTIP_LINK_EVENT(296),
     ;
 
     /**
@@ -7129,6 +7334,94 @@ private static final long serialVersionUID = 0L;
      * <code>KOTLIN_SUPPORT_DECLINED_EVENT = 285;</code>
      */
     public static final int KOTLIN_SUPPORT_DECLINED_EVENT_VALUE = 285;
+    /**
+     * <pre>
+     * Event raised when user accepted to migrate Gradle JDK to local.properties
+     * </pre>
+     *
+     * <code>GRADLE_JDK_MIGRATE_TO_LOCAL_PROPERTIES_DIALOG_ACCEPTED = 286;</code>
+     */
+    public static final int GRADLE_JDK_MIGRATE_TO_LOCAL_PROPERTIES_DIALOG_ACCEPTED_VALUE = 286;
+    /**
+     * <pre>
+     * Event raised when user declined to migrate Gradle JDK to local.properties
+     * </pre>
+     *
+     * <code>GRADLE_JDK_MIGRATE_TO_LOCAL_PROPERTIES_DIALOG_CANCELED = 287;</code>
+     */
+    public static final int GRADLE_JDK_MIGRATE_TO_LOCAL_PROPERTIES_DIALOG_CANCELED_VALUE = 287;
+    /**
+     * <pre>
+     * Event related to screenshots taken of running devices
+     * </pre>
+     *
+     * <code>DEVICE_SCREENSHOT_EVENT = 288;</code>
+     */
+    public static final int DEVICE_SCREENSHOT_EVENT_VALUE = 288;
+    /**
+     * <pre>
+     * Event related to a notification being displayed to the user
+     * </pre>
+     *
+     * <code>EDITOR_NOTIFICATION = 289;</code>
+     */
+    public static final int EDITOR_NOTIFICATION_VALUE = 289;
+    /**
+     * <pre>
+     * Event related to Compose Preview Lite Mode
+     * </pre>
+     *
+     * <code>COMPOSE_PREVIEW_LITE_MODE = 290;</code>
+     */
+    public static final int COMPOSE_PREVIEW_LITE_MODE_VALUE = 290;
+    /**
+     * <pre>
+     * Upgrade Android Studio dialog event
+     * </pre>
+     *
+     * <code>UPGRADE_ANDROID_STUDIO_DIALOG = 291;</code>
+     */
+    public static final int UPGRADE_ANDROID_STUDIO_DIALOG_VALUE = 291;
+    /**
+     * <pre>
+     * Event related to the Debugger tool window
+     * </pre>
+     *
+     * <code>DEBUGGER_EVENT = 292;</code>
+     */
+    public static final int DEBUGGER_EVENT_VALUE = 292;
+    /**
+     * <pre>
+     * Soong sync event
+     * </pre>
+     *
+     * <code>SOONG_SYNC_EVENT = 293;</code>
+     */
+    public static final int SOONG_SYNC_EVENT_VALUE = 293;
+    /**
+     * <pre>
+     * Event related to the user toggling the new UI state
+     * </pre>
+     *
+     * <code>INTELLIJ_NEW_UI_SWITCH = 294;</code>
+     */
+    public static final int INTELLIJ_NEW_UI_SWITCH_VALUE = 294;
+    /**
+     * <pre>
+     * Event related to essentials mode state changes
+     * </pre>
+     *
+     * <code>ESSENTIALS_MODE_EVENT = 295;</code>
+     */
+    public static final int ESSENTIALS_MODE_EVENT_VALUE = 295;
+    /**
+     * <pre>
+     * Event for links clicked in Lint tooltips.
+     * </pre>
+     *
+     * <code>LINT_TOOLTIP_LINK_EVENT = 296;</code>
+     */
+    public static final int LINT_TOOLTIP_LINK_EVENT_VALUE = 296;
 
 
     public final int getNumber() {
@@ -7432,6 +7725,17 @@ private static final long serialVersionUID = 0L;
         case 283: return SML_CHATBOT_EVENT;
         case 284: return SML_CONFIGURATION_EVENT;
         case 285: return KOTLIN_SUPPORT_DECLINED_EVENT;
+        case 286: return GRADLE_JDK_MIGRATE_TO_LOCAL_PROPERTIES_DIALOG_ACCEPTED;
+        case 287: return GRADLE_JDK_MIGRATE_TO_LOCAL_PROPERTIES_DIALOG_CANCELED;
+        case 288: return DEVICE_SCREENSHOT_EVENT;
+        case 289: return EDITOR_NOTIFICATION;
+        case 290: return COMPOSE_PREVIEW_LITE_MODE;
+        case 291: return UPGRADE_ANDROID_STUDIO_DIALOG;
+        case 292: return DEBUGGER_EVENT;
+        case 293: return SOONG_SYNC_EVENT;
+        case 294: return INTELLIJ_NEW_UI_SWITCH;
+        case 295: return ESSENTIALS_MODE_EVENT;
+        case 296: return LINT_TOOLTIP_LINK_EVENT;
         default: return null;
       }
     }
@@ -9053,6 +9357,10 @@ private static final long serialVersionUID = 0L;
      */
     INTERNET_CONNECTION_ERROR(24),
     /**
+     * <pre>
+     * Failure when Studio does not support too old AGP.
+     * </pre>
+     *
      * <code>OLD_ANDROID_PLUGIN = 25;</code>
      */
     OLD_ANDROID_PLUGIN(25),
@@ -9096,6 +9404,38 @@ private static final long serialVersionUID = 0L;
      * <code>GRADLE_JVM_NOT_COMPATIBLE_WITH_AGP = 35;</code>
      */
     GRADLE_JVM_NOT_COMPATIBLE_WITH_AGP(35),
+    /**
+     * <pre>
+     * Failure because older Studio does not support newer AGP.
+     * </pre>
+     *
+     * <code>ANDROID_PLUGIN_TOO_NEW = 36;</code>
+     */
+    ANDROID_PLUGIN_TOO_NEW(36),
+    /**
+     * <pre>
+     * Failure because Studio and AGP preview versions differ.
+     * </pre>
+     *
+     * <code>ANDROID_PLUGIN_VERSION_INCOMPATIBLE = 37;</code>
+     */
+    ANDROID_PLUGIN_VERSION_INCOMPATIBLE(37),
+    /**
+     * <pre>
+     * Failure because of multiple AGP versions detected in projects.
+     * </pre>
+     *
+     * <code>MULTIPLE_ANDROID_PLUGIN_VERSIONS = 38;</code>
+     */
+    MULTIPLE_ANDROID_PLUGIN_VERSIONS(38),
+    /**
+     * <code>ANDROID_SYNC_NO_VALID_NATIVE_ABI_FOUND = 39;</code>
+     */
+    ANDROID_SYNC_NO_VALID_NATIVE_ABI_FOUND(39),
+    /**
+     * <code>ANDROID_SYNC_NO_VARIANTS_FOUND = 40;</code>
+     */
+    ANDROID_SYNC_NO_VARIANTS_FOUND(40),
     ;
 
     /**
@@ -9199,6 +9539,10 @@ private static final long serialVersionUID = 0L;
      */
     public static final int INTERNET_CONNECTION_ERROR_VALUE = 24;
     /**
+     * <pre>
+     * Failure when Studio does not support too old AGP.
+     * </pre>
+     *
      * <code>OLD_ANDROID_PLUGIN = 25;</code>
      */
     public static final int OLD_ANDROID_PLUGIN_VALUE = 25;
@@ -9242,6 +9586,38 @@ private static final long serialVersionUID = 0L;
      * <code>GRADLE_JVM_NOT_COMPATIBLE_WITH_AGP = 35;</code>
      */
     public static final int GRADLE_JVM_NOT_COMPATIBLE_WITH_AGP_VALUE = 35;
+    /**
+     * <pre>
+     * Failure because older Studio does not support newer AGP.
+     * </pre>
+     *
+     * <code>ANDROID_PLUGIN_TOO_NEW = 36;</code>
+     */
+    public static final int ANDROID_PLUGIN_TOO_NEW_VALUE = 36;
+    /**
+     * <pre>
+     * Failure because Studio and AGP preview versions differ.
+     * </pre>
+     *
+     * <code>ANDROID_PLUGIN_VERSION_INCOMPATIBLE = 37;</code>
+     */
+    public static final int ANDROID_PLUGIN_VERSION_INCOMPATIBLE_VALUE = 37;
+    /**
+     * <pre>
+     * Failure because of multiple AGP versions detected in projects.
+     * </pre>
+     *
+     * <code>MULTIPLE_ANDROID_PLUGIN_VERSIONS = 38;</code>
+     */
+    public static final int MULTIPLE_ANDROID_PLUGIN_VERSIONS_VALUE = 38;
+    /**
+     * <code>ANDROID_SYNC_NO_VALID_NATIVE_ABI_FOUND = 39;</code>
+     */
+    public static final int ANDROID_SYNC_NO_VALID_NATIVE_ABI_FOUND_VALUE = 39;
+    /**
+     * <code>ANDROID_SYNC_NO_VARIANTS_FOUND = 40;</code>
+     */
+    public static final int ANDROID_SYNC_NO_VARIANTS_FOUND_VALUE = 40;
 
 
     public final int getNumber() {
@@ -9300,6 +9676,11 @@ private static final long serialVersionUID = 0L;
         case 33: return GRADLE_DISTRIBUTION_INSTALL_ERROR;
         case 34: return DISTRIBUTIONSHA256SUM_FOUND_IN_WRAPPER;
         case 35: return GRADLE_JVM_NOT_COMPATIBLE_WITH_AGP;
+        case 36: return ANDROID_PLUGIN_TOO_NEW;
+        case 37: return ANDROID_PLUGIN_VERSION_INCOMPATIBLE;
+        case 38: return MULTIPLE_ANDROID_PLUGIN_VERSIONS;
+        case 39: return ANDROID_SYNC_NO_VALID_NATIVE_ABI_FOUND;
+        case 40: return ANDROID_SYNC_NO_VARIANTS_FOUND;
         default: return null;
       }
     }
@@ -10765,6 +11146,14 @@ private static final long serialVersionUID = 0L;
      * <code>REMOVE_JCENTER_HYPERLINK = 49;</code>
      */
     REMOVE_JCENTER_HYPERLINK(49),
+    /**
+     * <code>OPEN_UPGRADE_ASSISTANT_HYPERLINK = 50;</code>
+     */
+    OPEN_UPGRADE_ASSISTANT_HYPERLINK(50),
+    /**
+     * <code>SUPPRESS_UNSUPPORTED_SDK_HYPERLINK = 51;</code>
+     */
+    SUPPRESS_UNSUPPORTED_SDK_HYPERLINK(51),
     ;
 
     /**
@@ -10967,6 +11356,14 @@ private static final long serialVersionUID = 0L;
      * <code>REMOVE_JCENTER_HYPERLINK = 49;</code>
      */
     public static final int REMOVE_JCENTER_HYPERLINK_VALUE = 49;
+    /**
+     * <code>OPEN_UPGRADE_ASSISTANT_HYPERLINK = 50;</code>
+     */
+    public static final int OPEN_UPGRADE_ASSISTANT_HYPERLINK_VALUE = 50;
+    /**
+     * <code>SUPPRESS_UNSUPPORTED_SDK_HYPERLINK = 51;</code>
+     */
+    public static final int SUPPRESS_UNSUPPORTED_SDK_HYPERLINK_VALUE = 51;
 
 
     public final int getNumber() {
@@ -11039,6 +11436,8 @@ private static final long serialVersionUID = 0L;
         case 47: return CONFIRM_DISTRIBUTIONSHA256SUM_FROM_WRAPPER_HYPERLINK;
         case 48: return ENABLE_ANDROIDX_HYPERLINK;
         case 49: return REMOVE_JCENTER_HYPERLINK;
+        case 50: return OPEN_UPGRADE_ASSISTANT_HYPERLINK;
+        case 51: return SUPPRESS_UNSUPPORTED_SDK_HYPERLINK;
         default: return null;
       }
     }
@@ -22827,6 +23226,348 @@ private static final long serialVersionUID = 0L;
     return kotlinSupportDeclined_ == null ? com.google.wireless.android.sdk.stats.KotlinSupportDeclined.getDefaultInstance() : kotlinSupportDeclined_;
   }
 
+  public static final int DEVICE_SCREENSHOT_EVENT_FIELD_NUMBER = 172;
+  private com.google.wireless.android.sdk.stats.DeviceScreenshotEvent deviceScreenshotEvent_;
+  /**
+   * <pre>
+   * set when kind = DEVICE_SCREENSHOT_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.DeviceScreenshotEvent device_screenshot_event = 172;</code>
+   * @return Whether the deviceScreenshotEvent field is set.
+   */
+  @java.lang.Override
+  public boolean hasDeviceScreenshotEvent() {
+    return ((bitField5_ & 0x00000020) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = DEVICE_SCREENSHOT_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.DeviceScreenshotEvent device_screenshot_event = 172;</code>
+   * @return The deviceScreenshotEvent.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.DeviceScreenshotEvent getDeviceScreenshotEvent() {
+    return deviceScreenshotEvent_ == null ? com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.getDefaultInstance() : deviceScreenshotEvent_;
+  }
+  /**
+   * <pre>
+   * set when kind = DEVICE_SCREENSHOT_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.DeviceScreenshotEvent device_screenshot_event = 172;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.DeviceScreenshotEventOrBuilder getDeviceScreenshotEventOrBuilder() {
+    return deviceScreenshotEvent_ == null ? com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.getDefaultInstance() : deviceScreenshotEvent_;
+  }
+
+  public static final int EDITOR_NOTIFICATION_FIELD_NUMBER = 173;
+  private com.google.wireless.android.sdk.stats.EditorNotification editorNotification_;
+  /**
+   * <pre>
+   * set when kind = EDITOR_NOTIFICATION
+   * </pre>
+   *
+   * <code>optional .android_studio.EditorNotification editor_notification = 173;</code>
+   * @return Whether the editorNotification field is set.
+   */
+  @java.lang.Override
+  public boolean hasEditorNotification() {
+    return ((bitField5_ & 0x00000040) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = EDITOR_NOTIFICATION
+   * </pre>
+   *
+   * <code>optional .android_studio.EditorNotification editor_notification = 173;</code>
+   * @return The editorNotification.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.EditorNotification getEditorNotification() {
+    return editorNotification_ == null ? com.google.wireless.android.sdk.stats.EditorNotification.getDefaultInstance() : editorNotification_;
+  }
+  /**
+   * <pre>
+   * set when kind = EDITOR_NOTIFICATION
+   * </pre>
+   *
+   * <code>optional .android_studio.EditorNotification editor_notification = 173;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.EditorNotificationOrBuilder getEditorNotificationOrBuilder() {
+    return editorNotification_ == null ? com.google.wireless.android.sdk.stats.EditorNotification.getDefaultInstance() : editorNotification_;
+  }
+
+  public static final int COMPOSE_PREVIEW_LITE_MODE_EVENT_FIELD_NUMBER = 174;
+  private com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEvent composePreviewLiteModeEvent_;
+  /**
+   * <pre>
+   * set when kind = COMPOSE_PREVIEW_LITE_MODE
+   * </pre>
+   *
+   * <code>optional .android_studio.ComposePreviewLiteModeEvent compose_preview_lite_mode_event = 174;</code>
+   * @return Whether the composePreviewLiteModeEvent field is set.
+   */
+  @java.lang.Override
+  public boolean hasComposePreviewLiteModeEvent() {
+    return ((bitField5_ & 0x00000080) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = COMPOSE_PREVIEW_LITE_MODE
+   * </pre>
+   *
+   * <code>optional .android_studio.ComposePreviewLiteModeEvent compose_preview_lite_mode_event = 174;</code>
+   * @return The composePreviewLiteModeEvent.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEvent getComposePreviewLiteModeEvent() {
+    return composePreviewLiteModeEvent_ == null ? com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEvent.getDefaultInstance() : composePreviewLiteModeEvent_;
+  }
+  /**
+   * <pre>
+   * set when kind = COMPOSE_PREVIEW_LITE_MODE
+   * </pre>
+   *
+   * <code>optional .android_studio.ComposePreviewLiteModeEvent compose_preview_lite_mode_event = 174;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEventOrBuilder getComposePreviewLiteModeEventOrBuilder() {
+    return composePreviewLiteModeEvent_ == null ? com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEvent.getDefaultInstance() : composePreviewLiteModeEvent_;
+  }
+
+  public static final int UPGRADE_ANDROID_STUDIO_DIALOG_FIELD_NUMBER = 175;
+  private com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStats upgradeAndroidStudioDialog_;
+  /**
+   * <pre>
+   * set when kind = UPGRADE_ANDROID_STUDIO_DIALOG
+   * </pre>
+   *
+   * <code>optional .android_studio.UpgradeAndroidStudioDialogStats upgrade_android_studio_dialog = 175;</code>
+   * @return Whether the upgradeAndroidStudioDialog field is set.
+   */
+  @java.lang.Override
+  public boolean hasUpgradeAndroidStudioDialog() {
+    return ((bitField5_ & 0x00000100) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = UPGRADE_ANDROID_STUDIO_DIALOG
+   * </pre>
+   *
+   * <code>optional .android_studio.UpgradeAndroidStudioDialogStats upgrade_android_studio_dialog = 175;</code>
+   * @return The upgradeAndroidStudioDialog.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStats getUpgradeAndroidStudioDialog() {
+    return upgradeAndroidStudioDialog_ == null ? com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStats.getDefaultInstance() : upgradeAndroidStudioDialog_;
+  }
+  /**
+   * <pre>
+   * set when kind = UPGRADE_ANDROID_STUDIO_DIALOG
+   * </pre>
+   *
+   * <code>optional .android_studio.UpgradeAndroidStudioDialogStats upgrade_android_studio_dialog = 175;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStatsOrBuilder getUpgradeAndroidStudioDialogOrBuilder() {
+    return upgradeAndroidStudioDialog_ == null ? com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStats.getDefaultInstance() : upgradeAndroidStudioDialog_;
+  }
+
+  public static final int DEBUGGER_EVENT_FIELD_NUMBER = 176;
+  private com.google.wireless.android.sdk.stats.DebuggerEvent debuggerEvent_;
+  /**
+   * <pre>
+   * set when kind = DEBUGGER_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.DebuggerEvent debugger_event = 176;</code>
+   * @return Whether the debuggerEvent field is set.
+   */
+  @java.lang.Override
+  public boolean hasDebuggerEvent() {
+    return ((bitField5_ & 0x00000200) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = DEBUGGER_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.DebuggerEvent debugger_event = 176;</code>
+   * @return The debuggerEvent.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.DebuggerEvent getDebuggerEvent() {
+    return debuggerEvent_ == null ? com.google.wireless.android.sdk.stats.DebuggerEvent.getDefaultInstance() : debuggerEvent_;
+  }
+  /**
+   * <pre>
+   * set when kind = DEBUGGER_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.DebuggerEvent debugger_event = 176;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.DebuggerEventOrBuilder getDebuggerEventOrBuilder() {
+    return debuggerEvent_ == null ? com.google.wireless.android.sdk.stats.DebuggerEvent.getDefaultInstance() : debuggerEvent_;
+  }
+
+  public static final int SOONG_SYNC_STATS_FIELD_NUMBER = 177;
+  private com.google.wireless.android.sdk.stats.SoongSyncStats soongSyncStats_;
+  /**
+   * <pre>
+   * set when kind = SOONG_SYNC_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SoongSyncStats soong_sync_stats = 177;</code>
+   * @return Whether the soongSyncStats field is set.
+   */
+  @java.lang.Override
+  public boolean hasSoongSyncStats() {
+    return ((bitField5_ & 0x00000400) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = SOONG_SYNC_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SoongSyncStats soong_sync_stats = 177;</code>
+   * @return The soongSyncStats.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.SoongSyncStats getSoongSyncStats() {
+    return soongSyncStats_ == null ? com.google.wireless.android.sdk.stats.SoongSyncStats.getDefaultInstance() : soongSyncStats_;
+  }
+  /**
+   * <pre>
+   * set when kind = SOONG_SYNC_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SoongSyncStats soong_sync_stats = 177;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.SoongSyncStatsOrBuilder getSoongSyncStatsOrBuilder() {
+    return soongSyncStats_ == null ? com.google.wireless.android.sdk.stats.SoongSyncStats.getDefaultInstance() : soongSyncStats_;
+  }
+
+  public static final int INTELLIJ_NEW_UI_SWITCH_FIELD_NUMBER = 178;
+  private com.google.wireless.android.sdk.stats.IntelliJNewUISwitch intellijNewUiSwitch_;
+  /**
+   * <pre>
+   * set when kind = INTELLIJ_NEW_UI_SWITCH
+   * </pre>
+   *
+   * <code>optional .android_studio.IntelliJNewUISwitch intellij_new_ui_switch = 178;</code>
+   * @return Whether the intellijNewUiSwitch field is set.
+   */
+  @java.lang.Override
+  public boolean hasIntellijNewUiSwitch() {
+    return ((bitField5_ & 0x00000800) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = INTELLIJ_NEW_UI_SWITCH
+   * </pre>
+   *
+   * <code>optional .android_studio.IntelliJNewUISwitch intellij_new_ui_switch = 178;</code>
+   * @return The intellijNewUiSwitch.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.IntelliJNewUISwitch getIntellijNewUiSwitch() {
+    return intellijNewUiSwitch_ == null ? com.google.wireless.android.sdk.stats.IntelliJNewUISwitch.getDefaultInstance() : intellijNewUiSwitch_;
+  }
+  /**
+   * <pre>
+   * set when kind = INTELLIJ_NEW_UI_SWITCH
+   * </pre>
+   *
+   * <code>optional .android_studio.IntelliJNewUISwitch intellij_new_ui_switch = 178;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.IntelliJNewUISwitchOrBuilder getIntellijNewUiSwitchOrBuilder() {
+    return intellijNewUiSwitch_ == null ? com.google.wireless.android.sdk.stats.IntelliJNewUISwitch.getDefaultInstance() : intellijNewUiSwitch_;
+  }
+
+  public static final int ESSENTIALS_MODE_EVENT_FIELD_NUMBER = 179;
+  private com.google.wireless.android.sdk.stats.EssentialsModeEvent essentialsModeEvent_;
+  /**
+   * <pre>
+   * set when kind = ESSENTIALS_MODE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.EssentialsModeEvent essentials_mode_event = 179;</code>
+   * @return Whether the essentialsModeEvent field is set.
+   */
+  @java.lang.Override
+  public boolean hasEssentialsModeEvent() {
+    return ((bitField5_ & 0x00001000) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = ESSENTIALS_MODE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.EssentialsModeEvent essentials_mode_event = 179;</code>
+   * @return The essentialsModeEvent.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.EssentialsModeEvent getEssentialsModeEvent() {
+    return essentialsModeEvent_ == null ? com.google.wireless.android.sdk.stats.EssentialsModeEvent.getDefaultInstance() : essentialsModeEvent_;
+  }
+  /**
+   * <pre>
+   * set when kind = ESSENTIALS_MODE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.EssentialsModeEvent essentials_mode_event = 179;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.EssentialsModeEventOrBuilder getEssentialsModeEventOrBuilder() {
+    return essentialsModeEvent_ == null ? com.google.wireless.android.sdk.stats.EssentialsModeEvent.getDefaultInstance() : essentialsModeEvent_;
+  }
+
+  public static final int LINT_TOOLTIP_LINK_EVENT_FIELD_NUMBER = 180;
+  private com.google.wireless.android.sdk.stats.LintTooltipLinkEvent lintTooltipLinkEvent_;
+  /**
+   * <pre>
+   * set when kind = LINT_TOOLTIP_LINK_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.LintTooltipLinkEvent lint_tooltip_link_event = 180;</code>
+   * @return Whether the lintTooltipLinkEvent field is set.
+   */
+  @java.lang.Override
+  public boolean hasLintTooltipLinkEvent() {
+    return ((bitField5_ & 0x00002000) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = LINT_TOOLTIP_LINK_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.LintTooltipLinkEvent lint_tooltip_link_event = 180;</code>
+   * @return The lintTooltipLinkEvent.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.LintTooltipLinkEvent getLintTooltipLinkEvent() {
+    return lintTooltipLinkEvent_ == null ? com.google.wireless.android.sdk.stats.LintTooltipLinkEvent.getDefaultInstance() : lintTooltipLinkEvent_;
+  }
+  /**
+   * <pre>
+   * set when kind = LINT_TOOLTIP_LINK_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.LintTooltipLinkEvent lint_tooltip_link_event = 180;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.LintTooltipLinkEventOrBuilder getLintTooltipLinkEventOrBuilder() {
+    return lintTooltipLinkEvent_ == null ? com.google.wireless.android.sdk.stats.LintTooltipLinkEvent.getDefaultInstance() : lintTooltipLinkEvent_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -23353,6 +24094,33 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField5_ & 0x00000010) != 0)) {
       output.writeMessage(171, getKotlinSupportDeclined());
+    }
+    if (((bitField5_ & 0x00000020) != 0)) {
+      output.writeMessage(172, getDeviceScreenshotEvent());
+    }
+    if (((bitField5_ & 0x00000040) != 0)) {
+      output.writeMessage(173, getEditorNotification());
+    }
+    if (((bitField5_ & 0x00000080) != 0)) {
+      output.writeMessage(174, getComposePreviewLiteModeEvent());
+    }
+    if (((bitField5_ & 0x00000100) != 0)) {
+      output.writeMessage(175, getUpgradeAndroidStudioDialog());
+    }
+    if (((bitField5_ & 0x00000200) != 0)) {
+      output.writeMessage(176, getDebuggerEvent());
+    }
+    if (((bitField5_ & 0x00000400) != 0)) {
+      output.writeMessage(177, getSoongSyncStats());
+    }
+    if (((bitField5_ & 0x00000800) != 0)) {
+      output.writeMessage(178, getIntellijNewUiSwitch());
+    }
+    if (((bitField5_ & 0x00001000) != 0)) {
+      output.writeMessage(179, getEssentialsModeEvent());
+    }
+    if (((bitField5_ & 0x00002000) != 0)) {
+      output.writeMessage(180, getLintTooltipLinkEvent());
     }
     unknownFields.writeTo(output);
   }
@@ -24052,6 +24820,42 @@ private static final long serialVersionUID = 0L;
     if (((bitField5_ & 0x00000010) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(171, getKotlinSupportDeclined());
+    }
+    if (((bitField5_ & 0x00000020) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(172, getDeviceScreenshotEvent());
+    }
+    if (((bitField5_ & 0x00000040) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(173, getEditorNotification());
+    }
+    if (((bitField5_ & 0x00000080) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(174, getComposePreviewLiteModeEvent());
+    }
+    if (((bitField5_ & 0x00000100) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(175, getUpgradeAndroidStudioDialog());
+    }
+    if (((bitField5_ & 0x00000200) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(176, getDebuggerEvent());
+    }
+    if (((bitField5_ & 0x00000400) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(177, getSoongSyncStats());
+    }
+    if (((bitField5_ & 0x00000800) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(178, getIntellijNewUiSwitch());
+    }
+    if (((bitField5_ & 0x00001000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(179, getEssentialsModeEvent());
+    }
+    if (((bitField5_ & 0x00002000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(180, getLintTooltipLinkEvent());
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -24894,6 +25698,51 @@ private static final long serialVersionUID = 0L;
       if (!getKotlinSupportDeclined()
           .equals(other.getKotlinSupportDeclined())) return false;
     }
+    if (hasDeviceScreenshotEvent() != other.hasDeviceScreenshotEvent()) return false;
+    if (hasDeviceScreenshotEvent()) {
+      if (!getDeviceScreenshotEvent()
+          .equals(other.getDeviceScreenshotEvent())) return false;
+    }
+    if (hasEditorNotification() != other.hasEditorNotification()) return false;
+    if (hasEditorNotification()) {
+      if (!getEditorNotification()
+          .equals(other.getEditorNotification())) return false;
+    }
+    if (hasComposePreviewLiteModeEvent() != other.hasComposePreviewLiteModeEvent()) return false;
+    if (hasComposePreviewLiteModeEvent()) {
+      if (!getComposePreviewLiteModeEvent()
+          .equals(other.getComposePreviewLiteModeEvent())) return false;
+    }
+    if (hasUpgradeAndroidStudioDialog() != other.hasUpgradeAndroidStudioDialog()) return false;
+    if (hasUpgradeAndroidStudioDialog()) {
+      if (!getUpgradeAndroidStudioDialog()
+          .equals(other.getUpgradeAndroidStudioDialog())) return false;
+    }
+    if (hasDebuggerEvent() != other.hasDebuggerEvent()) return false;
+    if (hasDebuggerEvent()) {
+      if (!getDebuggerEvent()
+          .equals(other.getDebuggerEvent())) return false;
+    }
+    if (hasSoongSyncStats() != other.hasSoongSyncStats()) return false;
+    if (hasSoongSyncStats()) {
+      if (!getSoongSyncStats()
+          .equals(other.getSoongSyncStats())) return false;
+    }
+    if (hasIntellijNewUiSwitch() != other.hasIntellijNewUiSwitch()) return false;
+    if (hasIntellijNewUiSwitch()) {
+      if (!getIntellijNewUiSwitch()
+          .equals(other.getIntellijNewUiSwitch())) return false;
+    }
+    if (hasEssentialsModeEvent() != other.hasEssentialsModeEvent()) return false;
+    if (hasEssentialsModeEvent()) {
+      if (!getEssentialsModeEvent()
+          .equals(other.getEssentialsModeEvent())) return false;
+    }
+    if (hasLintTooltipLinkEvent() != other.hasLintTooltipLinkEvent()) return false;
+    if (hasLintTooltipLinkEvent()) {
+      if (!getLintTooltipLinkEvent()
+          .equals(other.getLintTooltipLinkEvent())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -25591,6 +26440,42 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + KOTLIN_SUPPORT_DECLINED_FIELD_NUMBER;
       hash = (53 * hash) + getKotlinSupportDeclined().hashCode();
     }
+    if (hasDeviceScreenshotEvent()) {
+      hash = (37 * hash) + DEVICE_SCREENSHOT_EVENT_FIELD_NUMBER;
+      hash = (53 * hash) + getDeviceScreenshotEvent().hashCode();
+    }
+    if (hasEditorNotification()) {
+      hash = (37 * hash) + EDITOR_NOTIFICATION_FIELD_NUMBER;
+      hash = (53 * hash) + getEditorNotification().hashCode();
+    }
+    if (hasComposePreviewLiteModeEvent()) {
+      hash = (37 * hash) + COMPOSE_PREVIEW_LITE_MODE_EVENT_FIELD_NUMBER;
+      hash = (53 * hash) + getComposePreviewLiteModeEvent().hashCode();
+    }
+    if (hasUpgradeAndroidStudioDialog()) {
+      hash = (37 * hash) + UPGRADE_ANDROID_STUDIO_DIALOG_FIELD_NUMBER;
+      hash = (53 * hash) + getUpgradeAndroidStudioDialog().hashCode();
+    }
+    if (hasDebuggerEvent()) {
+      hash = (37 * hash) + DEBUGGER_EVENT_FIELD_NUMBER;
+      hash = (53 * hash) + getDebuggerEvent().hashCode();
+    }
+    if (hasSoongSyncStats()) {
+      hash = (37 * hash) + SOONG_SYNC_STATS_FIELD_NUMBER;
+      hash = (53 * hash) + getSoongSyncStats().hashCode();
+    }
+    if (hasIntellijNewUiSwitch()) {
+      hash = (37 * hash) + INTELLIJ_NEW_UI_SWITCH_FIELD_NUMBER;
+      hash = (53 * hash) + getIntellijNewUiSwitch().hashCode();
+    }
+    if (hasEssentialsModeEvent()) {
+      hash = (37 * hash) + ESSENTIALS_MODE_EVENT_FIELD_NUMBER;
+      hash = (53 * hash) + getEssentialsModeEvent().hashCode();
+    }
+    if (hasLintTooltipLinkEvent()) {
+      hash = (37 * hash) + LINT_TOOLTIP_LINK_EVENT_FIELD_NUMBER;
+      hash = (53 * hash) + getLintTooltipLinkEvent().hashCode();
+    }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -25867,6 +26752,15 @@ private static final long serialVersionUID = 0L;
         getSmlChatBotEventFieldBuilder();
         getSmlConfigurationEventFieldBuilder();
         getKotlinSupportDeclinedFieldBuilder();
+        getDeviceScreenshotEventFieldBuilder();
+        getEditorNotificationFieldBuilder();
+        getComposePreviewLiteModeEventFieldBuilder();
+        getUpgradeAndroidStudioDialogFieldBuilder();
+        getDebuggerEventFieldBuilder();
+        getSoongSyncStatsFieldBuilder();
+        getIntellijNewUiSwitchFieldBuilder();
+        getEssentialsModeEventFieldBuilder();
+        getLintTooltipLinkEventFieldBuilder();
       }
     }
     @java.lang.Override
@@ -26806,6 +27700,60 @@ private static final long serialVersionUID = 0L;
         kotlinSupportDeclinedBuilder_.clear();
       }
       bitField5_ = (bitField5_ & ~0x00000400);
+      if (deviceScreenshotEventBuilder_ == null) {
+        deviceScreenshotEvent_ = null;
+      } else {
+        deviceScreenshotEventBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x00000800);
+      if (editorNotificationBuilder_ == null) {
+        editorNotification_ = null;
+      } else {
+        editorNotificationBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x00001000);
+      if (composePreviewLiteModeEventBuilder_ == null) {
+        composePreviewLiteModeEvent_ = null;
+      } else {
+        composePreviewLiteModeEventBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x00002000);
+      if (upgradeAndroidStudioDialogBuilder_ == null) {
+        upgradeAndroidStudioDialog_ = null;
+      } else {
+        upgradeAndroidStudioDialogBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x00004000);
+      if (debuggerEventBuilder_ == null) {
+        debuggerEvent_ = null;
+      } else {
+        debuggerEventBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x00008000);
+      if (soongSyncStatsBuilder_ == null) {
+        soongSyncStats_ = null;
+      } else {
+        soongSyncStatsBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x00010000);
+      if (intellijNewUiSwitchBuilder_ == null) {
+        intellijNewUiSwitch_ = null;
+      } else {
+        intellijNewUiSwitchBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x00020000);
+      if (essentialsModeEventBuilder_ == null) {
+        essentialsModeEvent_ = null;
+      } else {
+        essentialsModeEventBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x00040000);
+      if (lintTooltipLinkEventBuilder_ == null) {
+        lintTooltipLinkEvent_ = null;
+      } else {
+        lintTooltipLinkEventBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x00080000);
       return this;
     }
 
@@ -28126,6 +29074,78 @@ private static final long serialVersionUID = 0L;
         }
         to_bitField5_ |= 0x00000010;
       }
+      if (((from_bitField5_ & 0x00000800) != 0)) {
+        if (deviceScreenshotEventBuilder_ == null) {
+          result.deviceScreenshotEvent_ = deviceScreenshotEvent_;
+        } else {
+          result.deviceScreenshotEvent_ = deviceScreenshotEventBuilder_.build();
+        }
+        to_bitField5_ |= 0x00000020;
+      }
+      if (((from_bitField5_ & 0x00001000) != 0)) {
+        if (editorNotificationBuilder_ == null) {
+          result.editorNotification_ = editorNotification_;
+        } else {
+          result.editorNotification_ = editorNotificationBuilder_.build();
+        }
+        to_bitField5_ |= 0x00000040;
+      }
+      if (((from_bitField5_ & 0x00002000) != 0)) {
+        if (composePreviewLiteModeEventBuilder_ == null) {
+          result.composePreviewLiteModeEvent_ = composePreviewLiteModeEvent_;
+        } else {
+          result.composePreviewLiteModeEvent_ = composePreviewLiteModeEventBuilder_.build();
+        }
+        to_bitField5_ |= 0x00000080;
+      }
+      if (((from_bitField5_ & 0x00004000) != 0)) {
+        if (upgradeAndroidStudioDialogBuilder_ == null) {
+          result.upgradeAndroidStudioDialog_ = upgradeAndroidStudioDialog_;
+        } else {
+          result.upgradeAndroidStudioDialog_ = upgradeAndroidStudioDialogBuilder_.build();
+        }
+        to_bitField5_ |= 0x00000100;
+      }
+      if (((from_bitField5_ & 0x00008000) != 0)) {
+        if (debuggerEventBuilder_ == null) {
+          result.debuggerEvent_ = debuggerEvent_;
+        } else {
+          result.debuggerEvent_ = debuggerEventBuilder_.build();
+        }
+        to_bitField5_ |= 0x00000200;
+      }
+      if (((from_bitField5_ & 0x00010000) != 0)) {
+        if (soongSyncStatsBuilder_ == null) {
+          result.soongSyncStats_ = soongSyncStats_;
+        } else {
+          result.soongSyncStats_ = soongSyncStatsBuilder_.build();
+        }
+        to_bitField5_ |= 0x00000400;
+      }
+      if (((from_bitField5_ & 0x00020000) != 0)) {
+        if (intellijNewUiSwitchBuilder_ == null) {
+          result.intellijNewUiSwitch_ = intellijNewUiSwitch_;
+        } else {
+          result.intellijNewUiSwitch_ = intellijNewUiSwitchBuilder_.build();
+        }
+        to_bitField5_ |= 0x00000800;
+      }
+      if (((from_bitField5_ & 0x00040000) != 0)) {
+        if (essentialsModeEventBuilder_ == null) {
+          result.essentialsModeEvent_ = essentialsModeEvent_;
+        } else {
+          result.essentialsModeEvent_ = essentialsModeEventBuilder_.build();
+        }
+        to_bitField5_ |= 0x00001000;
+      }
+      if (((from_bitField5_ & 0x00080000) != 0)) {
+        if (lintTooltipLinkEventBuilder_ == null) {
+          result.lintTooltipLinkEvent_ = lintTooltipLinkEvent_;
+        } else {
+          result.lintTooltipLinkEvent_ = lintTooltipLinkEventBuilder_.build();
+        }
+        to_bitField5_ |= 0x00002000;
+      }
       result.bitField0_ = to_bitField0_;
       result.bitField1_ = to_bitField1_;
       result.bitField2_ = to_bitField2_;
@@ -28796,6 +29816,33 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasKotlinSupportDeclined()) {
         mergeKotlinSupportDeclined(other.getKotlinSupportDeclined());
+      }
+      if (other.hasDeviceScreenshotEvent()) {
+        mergeDeviceScreenshotEvent(other.getDeviceScreenshotEvent());
+      }
+      if (other.hasEditorNotification()) {
+        mergeEditorNotification(other.getEditorNotification());
+      }
+      if (other.hasComposePreviewLiteModeEvent()) {
+        mergeComposePreviewLiteModeEvent(other.getComposePreviewLiteModeEvent());
+      }
+      if (other.hasUpgradeAndroidStudioDialog()) {
+        mergeUpgradeAndroidStudioDialog(other.getUpgradeAndroidStudioDialog());
+      }
+      if (other.hasDebuggerEvent()) {
+        mergeDebuggerEvent(other.getDebuggerEvent());
+      }
+      if (other.hasSoongSyncStats()) {
+        mergeSoongSyncStats(other.getSoongSyncStats());
+      }
+      if (other.hasIntellijNewUiSwitch()) {
+        mergeIntellijNewUiSwitch(other.getIntellijNewUiSwitch());
+      }
+      if (other.hasEssentialsModeEvent()) {
+        mergeEssentialsModeEvent(other.getEssentialsModeEvent());
+      }
+      if (other.hasLintTooltipLinkEvent()) {
+        mergeLintTooltipLinkEvent(other.getLintTooltipLinkEvent());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -54787,6 +55834,1410 @@ private static final long serialVersionUID = 0L;
         kotlinSupportDeclined_ = null;
       }
       return kotlinSupportDeclinedBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.DeviceScreenshotEvent deviceScreenshotEvent_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.DeviceScreenshotEvent, com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.Builder, com.google.wireless.android.sdk.stats.DeviceScreenshotEventOrBuilder> deviceScreenshotEventBuilder_;
+    /**
+     * <pre>
+     * set when kind = DEVICE_SCREENSHOT_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.DeviceScreenshotEvent device_screenshot_event = 172;</code>
+     * @return Whether the deviceScreenshotEvent field is set.
+     */
+    public boolean hasDeviceScreenshotEvent() {
+      return ((bitField5_ & 0x00000800) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = DEVICE_SCREENSHOT_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.DeviceScreenshotEvent device_screenshot_event = 172;</code>
+     * @return The deviceScreenshotEvent.
+     */
+    public com.google.wireless.android.sdk.stats.DeviceScreenshotEvent getDeviceScreenshotEvent() {
+      if (deviceScreenshotEventBuilder_ == null) {
+        return deviceScreenshotEvent_ == null ? com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.getDefaultInstance() : deviceScreenshotEvent_;
+      } else {
+        return deviceScreenshotEventBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = DEVICE_SCREENSHOT_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.DeviceScreenshotEvent device_screenshot_event = 172;</code>
+     */
+    public Builder setDeviceScreenshotEvent(com.google.wireless.android.sdk.stats.DeviceScreenshotEvent value) {
+      if (deviceScreenshotEventBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        deviceScreenshotEvent_ = value;
+        onChanged();
+      } else {
+        deviceScreenshotEventBuilder_.setMessage(value);
+      }
+      bitField5_ |= 0x00000800;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = DEVICE_SCREENSHOT_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.DeviceScreenshotEvent device_screenshot_event = 172;</code>
+     */
+    public Builder setDeviceScreenshotEvent(
+        com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.Builder builderForValue) {
+      if (deviceScreenshotEventBuilder_ == null) {
+        deviceScreenshotEvent_ = builderForValue.build();
+        onChanged();
+      } else {
+        deviceScreenshotEventBuilder_.setMessage(builderForValue.build());
+      }
+      bitField5_ |= 0x00000800;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = DEVICE_SCREENSHOT_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.DeviceScreenshotEvent device_screenshot_event = 172;</code>
+     */
+    public Builder mergeDeviceScreenshotEvent(com.google.wireless.android.sdk.stats.DeviceScreenshotEvent value) {
+      if (deviceScreenshotEventBuilder_ == null) {
+        if (((bitField5_ & 0x00000800) != 0) &&
+            deviceScreenshotEvent_ != null &&
+            deviceScreenshotEvent_ != com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.getDefaultInstance()) {
+          deviceScreenshotEvent_ =
+            com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.newBuilder(deviceScreenshotEvent_).mergeFrom(value).buildPartial();
+        } else {
+          deviceScreenshotEvent_ = value;
+        }
+        onChanged();
+      } else {
+        deviceScreenshotEventBuilder_.mergeFrom(value);
+      }
+      bitField5_ |= 0x00000800;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = DEVICE_SCREENSHOT_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.DeviceScreenshotEvent device_screenshot_event = 172;</code>
+     */
+    public Builder clearDeviceScreenshotEvent() {
+      if (deviceScreenshotEventBuilder_ == null) {
+        deviceScreenshotEvent_ = null;
+        onChanged();
+      } else {
+        deviceScreenshotEventBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x00000800);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = DEVICE_SCREENSHOT_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.DeviceScreenshotEvent device_screenshot_event = 172;</code>
+     */
+    public com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.Builder getDeviceScreenshotEventBuilder() {
+      bitField5_ |= 0x00000800;
+      onChanged();
+      return getDeviceScreenshotEventFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = DEVICE_SCREENSHOT_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.DeviceScreenshotEvent device_screenshot_event = 172;</code>
+     */
+    public com.google.wireless.android.sdk.stats.DeviceScreenshotEventOrBuilder getDeviceScreenshotEventOrBuilder() {
+      if (deviceScreenshotEventBuilder_ != null) {
+        return deviceScreenshotEventBuilder_.getMessageOrBuilder();
+      } else {
+        return deviceScreenshotEvent_ == null ?
+            com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.getDefaultInstance() : deviceScreenshotEvent_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = DEVICE_SCREENSHOT_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.DeviceScreenshotEvent device_screenshot_event = 172;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.DeviceScreenshotEvent, com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.Builder, com.google.wireless.android.sdk.stats.DeviceScreenshotEventOrBuilder> 
+        getDeviceScreenshotEventFieldBuilder() {
+      if (deviceScreenshotEventBuilder_ == null) {
+        deviceScreenshotEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.DeviceScreenshotEvent, com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.Builder, com.google.wireless.android.sdk.stats.DeviceScreenshotEventOrBuilder>(
+                getDeviceScreenshotEvent(),
+                getParentForChildren(),
+                isClean());
+        deviceScreenshotEvent_ = null;
+      }
+      return deviceScreenshotEventBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.EditorNotification editorNotification_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.EditorNotification, com.google.wireless.android.sdk.stats.EditorNotification.Builder, com.google.wireless.android.sdk.stats.EditorNotificationOrBuilder> editorNotificationBuilder_;
+    /**
+     * <pre>
+     * set when kind = EDITOR_NOTIFICATION
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorNotification editor_notification = 173;</code>
+     * @return Whether the editorNotification field is set.
+     */
+    public boolean hasEditorNotification() {
+      return ((bitField5_ & 0x00001000) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = EDITOR_NOTIFICATION
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorNotification editor_notification = 173;</code>
+     * @return The editorNotification.
+     */
+    public com.google.wireless.android.sdk.stats.EditorNotification getEditorNotification() {
+      if (editorNotificationBuilder_ == null) {
+        return editorNotification_ == null ? com.google.wireless.android.sdk.stats.EditorNotification.getDefaultInstance() : editorNotification_;
+      } else {
+        return editorNotificationBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = EDITOR_NOTIFICATION
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorNotification editor_notification = 173;</code>
+     */
+    public Builder setEditorNotification(com.google.wireless.android.sdk.stats.EditorNotification value) {
+      if (editorNotificationBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        editorNotification_ = value;
+        onChanged();
+      } else {
+        editorNotificationBuilder_.setMessage(value);
+      }
+      bitField5_ |= 0x00001000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = EDITOR_NOTIFICATION
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorNotification editor_notification = 173;</code>
+     */
+    public Builder setEditorNotification(
+        com.google.wireless.android.sdk.stats.EditorNotification.Builder builderForValue) {
+      if (editorNotificationBuilder_ == null) {
+        editorNotification_ = builderForValue.build();
+        onChanged();
+      } else {
+        editorNotificationBuilder_.setMessage(builderForValue.build());
+      }
+      bitField5_ |= 0x00001000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = EDITOR_NOTIFICATION
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorNotification editor_notification = 173;</code>
+     */
+    public Builder mergeEditorNotification(com.google.wireless.android.sdk.stats.EditorNotification value) {
+      if (editorNotificationBuilder_ == null) {
+        if (((bitField5_ & 0x00001000) != 0) &&
+            editorNotification_ != null &&
+            editorNotification_ != com.google.wireless.android.sdk.stats.EditorNotification.getDefaultInstance()) {
+          editorNotification_ =
+            com.google.wireless.android.sdk.stats.EditorNotification.newBuilder(editorNotification_).mergeFrom(value).buildPartial();
+        } else {
+          editorNotification_ = value;
+        }
+        onChanged();
+      } else {
+        editorNotificationBuilder_.mergeFrom(value);
+      }
+      bitField5_ |= 0x00001000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = EDITOR_NOTIFICATION
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorNotification editor_notification = 173;</code>
+     */
+    public Builder clearEditorNotification() {
+      if (editorNotificationBuilder_ == null) {
+        editorNotification_ = null;
+        onChanged();
+      } else {
+        editorNotificationBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x00001000);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = EDITOR_NOTIFICATION
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorNotification editor_notification = 173;</code>
+     */
+    public com.google.wireless.android.sdk.stats.EditorNotification.Builder getEditorNotificationBuilder() {
+      bitField5_ |= 0x00001000;
+      onChanged();
+      return getEditorNotificationFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = EDITOR_NOTIFICATION
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorNotification editor_notification = 173;</code>
+     */
+    public com.google.wireless.android.sdk.stats.EditorNotificationOrBuilder getEditorNotificationOrBuilder() {
+      if (editorNotificationBuilder_ != null) {
+        return editorNotificationBuilder_.getMessageOrBuilder();
+      } else {
+        return editorNotification_ == null ?
+            com.google.wireless.android.sdk.stats.EditorNotification.getDefaultInstance() : editorNotification_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = EDITOR_NOTIFICATION
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorNotification editor_notification = 173;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.EditorNotification, com.google.wireless.android.sdk.stats.EditorNotification.Builder, com.google.wireless.android.sdk.stats.EditorNotificationOrBuilder> 
+        getEditorNotificationFieldBuilder() {
+      if (editorNotificationBuilder_ == null) {
+        editorNotificationBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.EditorNotification, com.google.wireless.android.sdk.stats.EditorNotification.Builder, com.google.wireless.android.sdk.stats.EditorNotificationOrBuilder>(
+                getEditorNotification(),
+                getParentForChildren(),
+                isClean());
+        editorNotification_ = null;
+      }
+      return editorNotificationBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEvent composePreviewLiteModeEvent_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEvent, com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEvent.Builder, com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEventOrBuilder> composePreviewLiteModeEventBuilder_;
+    /**
+     * <pre>
+     * set when kind = COMPOSE_PREVIEW_LITE_MODE
+     * </pre>
+     *
+     * <code>optional .android_studio.ComposePreviewLiteModeEvent compose_preview_lite_mode_event = 174;</code>
+     * @return Whether the composePreviewLiteModeEvent field is set.
+     */
+    public boolean hasComposePreviewLiteModeEvent() {
+      return ((bitField5_ & 0x00002000) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = COMPOSE_PREVIEW_LITE_MODE
+     * </pre>
+     *
+     * <code>optional .android_studio.ComposePreviewLiteModeEvent compose_preview_lite_mode_event = 174;</code>
+     * @return The composePreviewLiteModeEvent.
+     */
+    public com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEvent getComposePreviewLiteModeEvent() {
+      if (composePreviewLiteModeEventBuilder_ == null) {
+        return composePreviewLiteModeEvent_ == null ? com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEvent.getDefaultInstance() : composePreviewLiteModeEvent_;
+      } else {
+        return composePreviewLiteModeEventBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = COMPOSE_PREVIEW_LITE_MODE
+     * </pre>
+     *
+     * <code>optional .android_studio.ComposePreviewLiteModeEvent compose_preview_lite_mode_event = 174;</code>
+     */
+    public Builder setComposePreviewLiteModeEvent(com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEvent value) {
+      if (composePreviewLiteModeEventBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        composePreviewLiteModeEvent_ = value;
+        onChanged();
+      } else {
+        composePreviewLiteModeEventBuilder_.setMessage(value);
+      }
+      bitField5_ |= 0x00002000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = COMPOSE_PREVIEW_LITE_MODE
+     * </pre>
+     *
+     * <code>optional .android_studio.ComposePreviewLiteModeEvent compose_preview_lite_mode_event = 174;</code>
+     */
+    public Builder setComposePreviewLiteModeEvent(
+        com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEvent.Builder builderForValue) {
+      if (composePreviewLiteModeEventBuilder_ == null) {
+        composePreviewLiteModeEvent_ = builderForValue.build();
+        onChanged();
+      } else {
+        composePreviewLiteModeEventBuilder_.setMessage(builderForValue.build());
+      }
+      bitField5_ |= 0x00002000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = COMPOSE_PREVIEW_LITE_MODE
+     * </pre>
+     *
+     * <code>optional .android_studio.ComposePreviewLiteModeEvent compose_preview_lite_mode_event = 174;</code>
+     */
+    public Builder mergeComposePreviewLiteModeEvent(com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEvent value) {
+      if (composePreviewLiteModeEventBuilder_ == null) {
+        if (((bitField5_ & 0x00002000) != 0) &&
+            composePreviewLiteModeEvent_ != null &&
+            composePreviewLiteModeEvent_ != com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEvent.getDefaultInstance()) {
+          composePreviewLiteModeEvent_ =
+            com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEvent.newBuilder(composePreviewLiteModeEvent_).mergeFrom(value).buildPartial();
+        } else {
+          composePreviewLiteModeEvent_ = value;
+        }
+        onChanged();
+      } else {
+        composePreviewLiteModeEventBuilder_.mergeFrom(value);
+      }
+      bitField5_ |= 0x00002000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = COMPOSE_PREVIEW_LITE_MODE
+     * </pre>
+     *
+     * <code>optional .android_studio.ComposePreviewLiteModeEvent compose_preview_lite_mode_event = 174;</code>
+     */
+    public Builder clearComposePreviewLiteModeEvent() {
+      if (composePreviewLiteModeEventBuilder_ == null) {
+        composePreviewLiteModeEvent_ = null;
+        onChanged();
+      } else {
+        composePreviewLiteModeEventBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x00002000);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = COMPOSE_PREVIEW_LITE_MODE
+     * </pre>
+     *
+     * <code>optional .android_studio.ComposePreviewLiteModeEvent compose_preview_lite_mode_event = 174;</code>
+     */
+    public com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEvent.Builder getComposePreviewLiteModeEventBuilder() {
+      bitField5_ |= 0x00002000;
+      onChanged();
+      return getComposePreviewLiteModeEventFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = COMPOSE_PREVIEW_LITE_MODE
+     * </pre>
+     *
+     * <code>optional .android_studio.ComposePreviewLiteModeEvent compose_preview_lite_mode_event = 174;</code>
+     */
+    public com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEventOrBuilder getComposePreviewLiteModeEventOrBuilder() {
+      if (composePreviewLiteModeEventBuilder_ != null) {
+        return composePreviewLiteModeEventBuilder_.getMessageOrBuilder();
+      } else {
+        return composePreviewLiteModeEvent_ == null ?
+            com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEvent.getDefaultInstance() : composePreviewLiteModeEvent_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = COMPOSE_PREVIEW_LITE_MODE
+     * </pre>
+     *
+     * <code>optional .android_studio.ComposePreviewLiteModeEvent compose_preview_lite_mode_event = 174;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEvent, com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEvent.Builder, com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEventOrBuilder> 
+        getComposePreviewLiteModeEventFieldBuilder() {
+      if (composePreviewLiteModeEventBuilder_ == null) {
+        composePreviewLiteModeEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEvent, com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEvent.Builder, com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEventOrBuilder>(
+                getComposePreviewLiteModeEvent(),
+                getParentForChildren(),
+                isClean());
+        composePreviewLiteModeEvent_ = null;
+      }
+      return composePreviewLiteModeEventBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStats upgradeAndroidStudioDialog_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStats, com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStats.Builder, com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStatsOrBuilder> upgradeAndroidStudioDialogBuilder_;
+    /**
+     * <pre>
+     * set when kind = UPGRADE_ANDROID_STUDIO_DIALOG
+     * </pre>
+     *
+     * <code>optional .android_studio.UpgradeAndroidStudioDialogStats upgrade_android_studio_dialog = 175;</code>
+     * @return Whether the upgradeAndroidStudioDialog field is set.
+     */
+    public boolean hasUpgradeAndroidStudioDialog() {
+      return ((bitField5_ & 0x00004000) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = UPGRADE_ANDROID_STUDIO_DIALOG
+     * </pre>
+     *
+     * <code>optional .android_studio.UpgradeAndroidStudioDialogStats upgrade_android_studio_dialog = 175;</code>
+     * @return The upgradeAndroidStudioDialog.
+     */
+    public com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStats getUpgradeAndroidStudioDialog() {
+      if (upgradeAndroidStudioDialogBuilder_ == null) {
+        return upgradeAndroidStudioDialog_ == null ? com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStats.getDefaultInstance() : upgradeAndroidStudioDialog_;
+      } else {
+        return upgradeAndroidStudioDialogBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = UPGRADE_ANDROID_STUDIO_DIALOG
+     * </pre>
+     *
+     * <code>optional .android_studio.UpgradeAndroidStudioDialogStats upgrade_android_studio_dialog = 175;</code>
+     */
+    public Builder setUpgradeAndroidStudioDialog(com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStats value) {
+      if (upgradeAndroidStudioDialogBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        upgradeAndroidStudioDialog_ = value;
+        onChanged();
+      } else {
+        upgradeAndroidStudioDialogBuilder_.setMessage(value);
+      }
+      bitField5_ |= 0x00004000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = UPGRADE_ANDROID_STUDIO_DIALOG
+     * </pre>
+     *
+     * <code>optional .android_studio.UpgradeAndroidStudioDialogStats upgrade_android_studio_dialog = 175;</code>
+     */
+    public Builder setUpgradeAndroidStudioDialog(
+        com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStats.Builder builderForValue) {
+      if (upgradeAndroidStudioDialogBuilder_ == null) {
+        upgradeAndroidStudioDialog_ = builderForValue.build();
+        onChanged();
+      } else {
+        upgradeAndroidStudioDialogBuilder_.setMessage(builderForValue.build());
+      }
+      bitField5_ |= 0x00004000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = UPGRADE_ANDROID_STUDIO_DIALOG
+     * </pre>
+     *
+     * <code>optional .android_studio.UpgradeAndroidStudioDialogStats upgrade_android_studio_dialog = 175;</code>
+     */
+    public Builder mergeUpgradeAndroidStudioDialog(com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStats value) {
+      if (upgradeAndroidStudioDialogBuilder_ == null) {
+        if (((bitField5_ & 0x00004000) != 0) &&
+            upgradeAndroidStudioDialog_ != null &&
+            upgradeAndroidStudioDialog_ != com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStats.getDefaultInstance()) {
+          upgradeAndroidStudioDialog_ =
+            com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStats.newBuilder(upgradeAndroidStudioDialog_).mergeFrom(value).buildPartial();
+        } else {
+          upgradeAndroidStudioDialog_ = value;
+        }
+        onChanged();
+      } else {
+        upgradeAndroidStudioDialogBuilder_.mergeFrom(value);
+      }
+      bitField5_ |= 0x00004000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = UPGRADE_ANDROID_STUDIO_DIALOG
+     * </pre>
+     *
+     * <code>optional .android_studio.UpgradeAndroidStudioDialogStats upgrade_android_studio_dialog = 175;</code>
+     */
+    public Builder clearUpgradeAndroidStudioDialog() {
+      if (upgradeAndroidStudioDialogBuilder_ == null) {
+        upgradeAndroidStudioDialog_ = null;
+        onChanged();
+      } else {
+        upgradeAndroidStudioDialogBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x00004000);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = UPGRADE_ANDROID_STUDIO_DIALOG
+     * </pre>
+     *
+     * <code>optional .android_studio.UpgradeAndroidStudioDialogStats upgrade_android_studio_dialog = 175;</code>
+     */
+    public com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStats.Builder getUpgradeAndroidStudioDialogBuilder() {
+      bitField5_ |= 0x00004000;
+      onChanged();
+      return getUpgradeAndroidStudioDialogFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = UPGRADE_ANDROID_STUDIO_DIALOG
+     * </pre>
+     *
+     * <code>optional .android_studio.UpgradeAndroidStudioDialogStats upgrade_android_studio_dialog = 175;</code>
+     */
+    public com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStatsOrBuilder getUpgradeAndroidStudioDialogOrBuilder() {
+      if (upgradeAndroidStudioDialogBuilder_ != null) {
+        return upgradeAndroidStudioDialogBuilder_.getMessageOrBuilder();
+      } else {
+        return upgradeAndroidStudioDialog_ == null ?
+            com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStats.getDefaultInstance() : upgradeAndroidStudioDialog_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = UPGRADE_ANDROID_STUDIO_DIALOG
+     * </pre>
+     *
+     * <code>optional .android_studio.UpgradeAndroidStudioDialogStats upgrade_android_studio_dialog = 175;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStats, com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStats.Builder, com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStatsOrBuilder> 
+        getUpgradeAndroidStudioDialogFieldBuilder() {
+      if (upgradeAndroidStudioDialogBuilder_ == null) {
+        upgradeAndroidStudioDialogBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStats, com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStats.Builder, com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStatsOrBuilder>(
+                getUpgradeAndroidStudioDialog(),
+                getParentForChildren(),
+                isClean());
+        upgradeAndroidStudioDialog_ = null;
+      }
+      return upgradeAndroidStudioDialogBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.DebuggerEvent debuggerEvent_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.DebuggerEvent, com.google.wireless.android.sdk.stats.DebuggerEvent.Builder, com.google.wireless.android.sdk.stats.DebuggerEventOrBuilder> debuggerEventBuilder_;
+    /**
+     * <pre>
+     * set when kind = DEBUGGER_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.DebuggerEvent debugger_event = 176;</code>
+     * @return Whether the debuggerEvent field is set.
+     */
+    public boolean hasDebuggerEvent() {
+      return ((bitField5_ & 0x00008000) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = DEBUGGER_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.DebuggerEvent debugger_event = 176;</code>
+     * @return The debuggerEvent.
+     */
+    public com.google.wireless.android.sdk.stats.DebuggerEvent getDebuggerEvent() {
+      if (debuggerEventBuilder_ == null) {
+        return debuggerEvent_ == null ? com.google.wireless.android.sdk.stats.DebuggerEvent.getDefaultInstance() : debuggerEvent_;
+      } else {
+        return debuggerEventBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = DEBUGGER_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.DebuggerEvent debugger_event = 176;</code>
+     */
+    public Builder setDebuggerEvent(com.google.wireless.android.sdk.stats.DebuggerEvent value) {
+      if (debuggerEventBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        debuggerEvent_ = value;
+        onChanged();
+      } else {
+        debuggerEventBuilder_.setMessage(value);
+      }
+      bitField5_ |= 0x00008000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = DEBUGGER_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.DebuggerEvent debugger_event = 176;</code>
+     */
+    public Builder setDebuggerEvent(
+        com.google.wireless.android.sdk.stats.DebuggerEvent.Builder builderForValue) {
+      if (debuggerEventBuilder_ == null) {
+        debuggerEvent_ = builderForValue.build();
+        onChanged();
+      } else {
+        debuggerEventBuilder_.setMessage(builderForValue.build());
+      }
+      bitField5_ |= 0x00008000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = DEBUGGER_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.DebuggerEvent debugger_event = 176;</code>
+     */
+    public Builder mergeDebuggerEvent(com.google.wireless.android.sdk.stats.DebuggerEvent value) {
+      if (debuggerEventBuilder_ == null) {
+        if (((bitField5_ & 0x00008000) != 0) &&
+            debuggerEvent_ != null &&
+            debuggerEvent_ != com.google.wireless.android.sdk.stats.DebuggerEvent.getDefaultInstance()) {
+          debuggerEvent_ =
+            com.google.wireless.android.sdk.stats.DebuggerEvent.newBuilder(debuggerEvent_).mergeFrom(value).buildPartial();
+        } else {
+          debuggerEvent_ = value;
+        }
+        onChanged();
+      } else {
+        debuggerEventBuilder_.mergeFrom(value);
+      }
+      bitField5_ |= 0x00008000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = DEBUGGER_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.DebuggerEvent debugger_event = 176;</code>
+     */
+    public Builder clearDebuggerEvent() {
+      if (debuggerEventBuilder_ == null) {
+        debuggerEvent_ = null;
+        onChanged();
+      } else {
+        debuggerEventBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x00008000);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = DEBUGGER_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.DebuggerEvent debugger_event = 176;</code>
+     */
+    public com.google.wireless.android.sdk.stats.DebuggerEvent.Builder getDebuggerEventBuilder() {
+      bitField5_ |= 0x00008000;
+      onChanged();
+      return getDebuggerEventFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = DEBUGGER_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.DebuggerEvent debugger_event = 176;</code>
+     */
+    public com.google.wireless.android.sdk.stats.DebuggerEventOrBuilder getDebuggerEventOrBuilder() {
+      if (debuggerEventBuilder_ != null) {
+        return debuggerEventBuilder_.getMessageOrBuilder();
+      } else {
+        return debuggerEvent_ == null ?
+            com.google.wireless.android.sdk.stats.DebuggerEvent.getDefaultInstance() : debuggerEvent_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = DEBUGGER_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.DebuggerEvent debugger_event = 176;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.DebuggerEvent, com.google.wireless.android.sdk.stats.DebuggerEvent.Builder, com.google.wireless.android.sdk.stats.DebuggerEventOrBuilder> 
+        getDebuggerEventFieldBuilder() {
+      if (debuggerEventBuilder_ == null) {
+        debuggerEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.DebuggerEvent, com.google.wireless.android.sdk.stats.DebuggerEvent.Builder, com.google.wireless.android.sdk.stats.DebuggerEventOrBuilder>(
+                getDebuggerEvent(),
+                getParentForChildren(),
+                isClean());
+        debuggerEvent_ = null;
+      }
+      return debuggerEventBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.SoongSyncStats soongSyncStats_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.SoongSyncStats, com.google.wireless.android.sdk.stats.SoongSyncStats.Builder, com.google.wireless.android.sdk.stats.SoongSyncStatsOrBuilder> soongSyncStatsBuilder_;
+    /**
+     * <pre>
+     * set when kind = SOONG_SYNC_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.SoongSyncStats soong_sync_stats = 177;</code>
+     * @return Whether the soongSyncStats field is set.
+     */
+    public boolean hasSoongSyncStats() {
+      return ((bitField5_ & 0x00010000) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = SOONG_SYNC_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.SoongSyncStats soong_sync_stats = 177;</code>
+     * @return The soongSyncStats.
+     */
+    public com.google.wireless.android.sdk.stats.SoongSyncStats getSoongSyncStats() {
+      if (soongSyncStatsBuilder_ == null) {
+        return soongSyncStats_ == null ? com.google.wireless.android.sdk.stats.SoongSyncStats.getDefaultInstance() : soongSyncStats_;
+      } else {
+        return soongSyncStatsBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = SOONG_SYNC_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.SoongSyncStats soong_sync_stats = 177;</code>
+     */
+    public Builder setSoongSyncStats(com.google.wireless.android.sdk.stats.SoongSyncStats value) {
+      if (soongSyncStatsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        soongSyncStats_ = value;
+        onChanged();
+      } else {
+        soongSyncStatsBuilder_.setMessage(value);
+      }
+      bitField5_ |= 0x00010000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = SOONG_SYNC_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.SoongSyncStats soong_sync_stats = 177;</code>
+     */
+    public Builder setSoongSyncStats(
+        com.google.wireless.android.sdk.stats.SoongSyncStats.Builder builderForValue) {
+      if (soongSyncStatsBuilder_ == null) {
+        soongSyncStats_ = builderForValue.build();
+        onChanged();
+      } else {
+        soongSyncStatsBuilder_.setMessage(builderForValue.build());
+      }
+      bitField5_ |= 0x00010000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = SOONG_SYNC_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.SoongSyncStats soong_sync_stats = 177;</code>
+     */
+    public Builder mergeSoongSyncStats(com.google.wireless.android.sdk.stats.SoongSyncStats value) {
+      if (soongSyncStatsBuilder_ == null) {
+        if (((bitField5_ & 0x00010000) != 0) &&
+            soongSyncStats_ != null &&
+            soongSyncStats_ != com.google.wireless.android.sdk.stats.SoongSyncStats.getDefaultInstance()) {
+          soongSyncStats_ =
+            com.google.wireless.android.sdk.stats.SoongSyncStats.newBuilder(soongSyncStats_).mergeFrom(value).buildPartial();
+        } else {
+          soongSyncStats_ = value;
+        }
+        onChanged();
+      } else {
+        soongSyncStatsBuilder_.mergeFrom(value);
+      }
+      bitField5_ |= 0x00010000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = SOONG_SYNC_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.SoongSyncStats soong_sync_stats = 177;</code>
+     */
+    public Builder clearSoongSyncStats() {
+      if (soongSyncStatsBuilder_ == null) {
+        soongSyncStats_ = null;
+        onChanged();
+      } else {
+        soongSyncStatsBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x00010000);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = SOONG_SYNC_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.SoongSyncStats soong_sync_stats = 177;</code>
+     */
+    public com.google.wireless.android.sdk.stats.SoongSyncStats.Builder getSoongSyncStatsBuilder() {
+      bitField5_ |= 0x00010000;
+      onChanged();
+      return getSoongSyncStatsFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = SOONG_SYNC_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.SoongSyncStats soong_sync_stats = 177;</code>
+     */
+    public com.google.wireless.android.sdk.stats.SoongSyncStatsOrBuilder getSoongSyncStatsOrBuilder() {
+      if (soongSyncStatsBuilder_ != null) {
+        return soongSyncStatsBuilder_.getMessageOrBuilder();
+      } else {
+        return soongSyncStats_ == null ?
+            com.google.wireless.android.sdk.stats.SoongSyncStats.getDefaultInstance() : soongSyncStats_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = SOONG_SYNC_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.SoongSyncStats soong_sync_stats = 177;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.SoongSyncStats, com.google.wireless.android.sdk.stats.SoongSyncStats.Builder, com.google.wireless.android.sdk.stats.SoongSyncStatsOrBuilder> 
+        getSoongSyncStatsFieldBuilder() {
+      if (soongSyncStatsBuilder_ == null) {
+        soongSyncStatsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.SoongSyncStats, com.google.wireless.android.sdk.stats.SoongSyncStats.Builder, com.google.wireless.android.sdk.stats.SoongSyncStatsOrBuilder>(
+                getSoongSyncStats(),
+                getParentForChildren(),
+                isClean());
+        soongSyncStats_ = null;
+      }
+      return soongSyncStatsBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.IntelliJNewUISwitch intellijNewUiSwitch_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.IntelliJNewUISwitch, com.google.wireless.android.sdk.stats.IntelliJNewUISwitch.Builder, com.google.wireless.android.sdk.stats.IntelliJNewUISwitchOrBuilder> intellijNewUiSwitchBuilder_;
+    /**
+     * <pre>
+     * set when kind = INTELLIJ_NEW_UI_SWITCH
+     * </pre>
+     *
+     * <code>optional .android_studio.IntelliJNewUISwitch intellij_new_ui_switch = 178;</code>
+     * @return Whether the intellijNewUiSwitch field is set.
+     */
+    public boolean hasIntellijNewUiSwitch() {
+      return ((bitField5_ & 0x00020000) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = INTELLIJ_NEW_UI_SWITCH
+     * </pre>
+     *
+     * <code>optional .android_studio.IntelliJNewUISwitch intellij_new_ui_switch = 178;</code>
+     * @return The intellijNewUiSwitch.
+     */
+    public com.google.wireless.android.sdk.stats.IntelliJNewUISwitch getIntellijNewUiSwitch() {
+      if (intellijNewUiSwitchBuilder_ == null) {
+        return intellijNewUiSwitch_ == null ? com.google.wireless.android.sdk.stats.IntelliJNewUISwitch.getDefaultInstance() : intellijNewUiSwitch_;
+      } else {
+        return intellijNewUiSwitchBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = INTELLIJ_NEW_UI_SWITCH
+     * </pre>
+     *
+     * <code>optional .android_studio.IntelliJNewUISwitch intellij_new_ui_switch = 178;</code>
+     */
+    public Builder setIntellijNewUiSwitch(com.google.wireless.android.sdk.stats.IntelliJNewUISwitch value) {
+      if (intellijNewUiSwitchBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        intellijNewUiSwitch_ = value;
+        onChanged();
+      } else {
+        intellijNewUiSwitchBuilder_.setMessage(value);
+      }
+      bitField5_ |= 0x00020000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = INTELLIJ_NEW_UI_SWITCH
+     * </pre>
+     *
+     * <code>optional .android_studio.IntelliJNewUISwitch intellij_new_ui_switch = 178;</code>
+     */
+    public Builder setIntellijNewUiSwitch(
+        com.google.wireless.android.sdk.stats.IntelliJNewUISwitch.Builder builderForValue) {
+      if (intellijNewUiSwitchBuilder_ == null) {
+        intellijNewUiSwitch_ = builderForValue.build();
+        onChanged();
+      } else {
+        intellijNewUiSwitchBuilder_.setMessage(builderForValue.build());
+      }
+      bitField5_ |= 0x00020000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = INTELLIJ_NEW_UI_SWITCH
+     * </pre>
+     *
+     * <code>optional .android_studio.IntelliJNewUISwitch intellij_new_ui_switch = 178;</code>
+     */
+    public Builder mergeIntellijNewUiSwitch(com.google.wireless.android.sdk.stats.IntelliJNewUISwitch value) {
+      if (intellijNewUiSwitchBuilder_ == null) {
+        if (((bitField5_ & 0x00020000) != 0) &&
+            intellijNewUiSwitch_ != null &&
+            intellijNewUiSwitch_ != com.google.wireless.android.sdk.stats.IntelliJNewUISwitch.getDefaultInstance()) {
+          intellijNewUiSwitch_ =
+            com.google.wireless.android.sdk.stats.IntelliJNewUISwitch.newBuilder(intellijNewUiSwitch_).mergeFrom(value).buildPartial();
+        } else {
+          intellijNewUiSwitch_ = value;
+        }
+        onChanged();
+      } else {
+        intellijNewUiSwitchBuilder_.mergeFrom(value);
+      }
+      bitField5_ |= 0x00020000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = INTELLIJ_NEW_UI_SWITCH
+     * </pre>
+     *
+     * <code>optional .android_studio.IntelliJNewUISwitch intellij_new_ui_switch = 178;</code>
+     */
+    public Builder clearIntellijNewUiSwitch() {
+      if (intellijNewUiSwitchBuilder_ == null) {
+        intellijNewUiSwitch_ = null;
+        onChanged();
+      } else {
+        intellijNewUiSwitchBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x00020000);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = INTELLIJ_NEW_UI_SWITCH
+     * </pre>
+     *
+     * <code>optional .android_studio.IntelliJNewUISwitch intellij_new_ui_switch = 178;</code>
+     */
+    public com.google.wireless.android.sdk.stats.IntelliJNewUISwitch.Builder getIntellijNewUiSwitchBuilder() {
+      bitField5_ |= 0x00020000;
+      onChanged();
+      return getIntellijNewUiSwitchFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = INTELLIJ_NEW_UI_SWITCH
+     * </pre>
+     *
+     * <code>optional .android_studio.IntelliJNewUISwitch intellij_new_ui_switch = 178;</code>
+     */
+    public com.google.wireless.android.sdk.stats.IntelliJNewUISwitchOrBuilder getIntellijNewUiSwitchOrBuilder() {
+      if (intellijNewUiSwitchBuilder_ != null) {
+        return intellijNewUiSwitchBuilder_.getMessageOrBuilder();
+      } else {
+        return intellijNewUiSwitch_ == null ?
+            com.google.wireless.android.sdk.stats.IntelliJNewUISwitch.getDefaultInstance() : intellijNewUiSwitch_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = INTELLIJ_NEW_UI_SWITCH
+     * </pre>
+     *
+     * <code>optional .android_studio.IntelliJNewUISwitch intellij_new_ui_switch = 178;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.IntelliJNewUISwitch, com.google.wireless.android.sdk.stats.IntelliJNewUISwitch.Builder, com.google.wireless.android.sdk.stats.IntelliJNewUISwitchOrBuilder> 
+        getIntellijNewUiSwitchFieldBuilder() {
+      if (intellijNewUiSwitchBuilder_ == null) {
+        intellijNewUiSwitchBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.IntelliJNewUISwitch, com.google.wireless.android.sdk.stats.IntelliJNewUISwitch.Builder, com.google.wireless.android.sdk.stats.IntelliJNewUISwitchOrBuilder>(
+                getIntellijNewUiSwitch(),
+                getParentForChildren(),
+                isClean());
+        intellijNewUiSwitch_ = null;
+      }
+      return intellijNewUiSwitchBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.EssentialsModeEvent essentialsModeEvent_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.EssentialsModeEvent, com.google.wireless.android.sdk.stats.EssentialsModeEvent.Builder, com.google.wireless.android.sdk.stats.EssentialsModeEventOrBuilder> essentialsModeEventBuilder_;
+    /**
+     * <pre>
+     * set when kind = ESSENTIALS_MODE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.EssentialsModeEvent essentials_mode_event = 179;</code>
+     * @return Whether the essentialsModeEvent field is set.
+     */
+    public boolean hasEssentialsModeEvent() {
+      return ((bitField5_ & 0x00040000) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = ESSENTIALS_MODE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.EssentialsModeEvent essentials_mode_event = 179;</code>
+     * @return The essentialsModeEvent.
+     */
+    public com.google.wireless.android.sdk.stats.EssentialsModeEvent getEssentialsModeEvent() {
+      if (essentialsModeEventBuilder_ == null) {
+        return essentialsModeEvent_ == null ? com.google.wireless.android.sdk.stats.EssentialsModeEvent.getDefaultInstance() : essentialsModeEvent_;
+      } else {
+        return essentialsModeEventBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = ESSENTIALS_MODE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.EssentialsModeEvent essentials_mode_event = 179;</code>
+     */
+    public Builder setEssentialsModeEvent(com.google.wireless.android.sdk.stats.EssentialsModeEvent value) {
+      if (essentialsModeEventBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        essentialsModeEvent_ = value;
+        onChanged();
+      } else {
+        essentialsModeEventBuilder_.setMessage(value);
+      }
+      bitField5_ |= 0x00040000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = ESSENTIALS_MODE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.EssentialsModeEvent essentials_mode_event = 179;</code>
+     */
+    public Builder setEssentialsModeEvent(
+        com.google.wireless.android.sdk.stats.EssentialsModeEvent.Builder builderForValue) {
+      if (essentialsModeEventBuilder_ == null) {
+        essentialsModeEvent_ = builderForValue.build();
+        onChanged();
+      } else {
+        essentialsModeEventBuilder_.setMessage(builderForValue.build());
+      }
+      bitField5_ |= 0x00040000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = ESSENTIALS_MODE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.EssentialsModeEvent essentials_mode_event = 179;</code>
+     */
+    public Builder mergeEssentialsModeEvent(com.google.wireless.android.sdk.stats.EssentialsModeEvent value) {
+      if (essentialsModeEventBuilder_ == null) {
+        if (((bitField5_ & 0x00040000) != 0) &&
+            essentialsModeEvent_ != null &&
+            essentialsModeEvent_ != com.google.wireless.android.sdk.stats.EssentialsModeEvent.getDefaultInstance()) {
+          essentialsModeEvent_ =
+            com.google.wireless.android.sdk.stats.EssentialsModeEvent.newBuilder(essentialsModeEvent_).mergeFrom(value).buildPartial();
+        } else {
+          essentialsModeEvent_ = value;
+        }
+        onChanged();
+      } else {
+        essentialsModeEventBuilder_.mergeFrom(value);
+      }
+      bitField5_ |= 0x00040000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = ESSENTIALS_MODE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.EssentialsModeEvent essentials_mode_event = 179;</code>
+     */
+    public Builder clearEssentialsModeEvent() {
+      if (essentialsModeEventBuilder_ == null) {
+        essentialsModeEvent_ = null;
+        onChanged();
+      } else {
+        essentialsModeEventBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x00040000);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = ESSENTIALS_MODE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.EssentialsModeEvent essentials_mode_event = 179;</code>
+     */
+    public com.google.wireless.android.sdk.stats.EssentialsModeEvent.Builder getEssentialsModeEventBuilder() {
+      bitField5_ |= 0x00040000;
+      onChanged();
+      return getEssentialsModeEventFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = ESSENTIALS_MODE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.EssentialsModeEvent essentials_mode_event = 179;</code>
+     */
+    public com.google.wireless.android.sdk.stats.EssentialsModeEventOrBuilder getEssentialsModeEventOrBuilder() {
+      if (essentialsModeEventBuilder_ != null) {
+        return essentialsModeEventBuilder_.getMessageOrBuilder();
+      } else {
+        return essentialsModeEvent_ == null ?
+            com.google.wireless.android.sdk.stats.EssentialsModeEvent.getDefaultInstance() : essentialsModeEvent_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = ESSENTIALS_MODE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.EssentialsModeEvent essentials_mode_event = 179;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.EssentialsModeEvent, com.google.wireless.android.sdk.stats.EssentialsModeEvent.Builder, com.google.wireless.android.sdk.stats.EssentialsModeEventOrBuilder> 
+        getEssentialsModeEventFieldBuilder() {
+      if (essentialsModeEventBuilder_ == null) {
+        essentialsModeEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.EssentialsModeEvent, com.google.wireless.android.sdk.stats.EssentialsModeEvent.Builder, com.google.wireless.android.sdk.stats.EssentialsModeEventOrBuilder>(
+                getEssentialsModeEvent(),
+                getParentForChildren(),
+                isClean());
+        essentialsModeEvent_ = null;
+      }
+      return essentialsModeEventBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.LintTooltipLinkEvent lintTooltipLinkEvent_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.LintTooltipLinkEvent, com.google.wireless.android.sdk.stats.LintTooltipLinkEvent.Builder, com.google.wireless.android.sdk.stats.LintTooltipLinkEventOrBuilder> lintTooltipLinkEventBuilder_;
+    /**
+     * <pre>
+     * set when kind = LINT_TOOLTIP_LINK_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.LintTooltipLinkEvent lint_tooltip_link_event = 180;</code>
+     * @return Whether the lintTooltipLinkEvent field is set.
+     */
+    public boolean hasLintTooltipLinkEvent() {
+      return ((bitField5_ & 0x00080000) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = LINT_TOOLTIP_LINK_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.LintTooltipLinkEvent lint_tooltip_link_event = 180;</code>
+     * @return The lintTooltipLinkEvent.
+     */
+    public com.google.wireless.android.sdk.stats.LintTooltipLinkEvent getLintTooltipLinkEvent() {
+      if (lintTooltipLinkEventBuilder_ == null) {
+        return lintTooltipLinkEvent_ == null ? com.google.wireless.android.sdk.stats.LintTooltipLinkEvent.getDefaultInstance() : lintTooltipLinkEvent_;
+      } else {
+        return lintTooltipLinkEventBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = LINT_TOOLTIP_LINK_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.LintTooltipLinkEvent lint_tooltip_link_event = 180;</code>
+     */
+    public Builder setLintTooltipLinkEvent(com.google.wireless.android.sdk.stats.LintTooltipLinkEvent value) {
+      if (lintTooltipLinkEventBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        lintTooltipLinkEvent_ = value;
+        onChanged();
+      } else {
+        lintTooltipLinkEventBuilder_.setMessage(value);
+      }
+      bitField5_ |= 0x00080000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = LINT_TOOLTIP_LINK_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.LintTooltipLinkEvent lint_tooltip_link_event = 180;</code>
+     */
+    public Builder setLintTooltipLinkEvent(
+        com.google.wireless.android.sdk.stats.LintTooltipLinkEvent.Builder builderForValue) {
+      if (lintTooltipLinkEventBuilder_ == null) {
+        lintTooltipLinkEvent_ = builderForValue.build();
+        onChanged();
+      } else {
+        lintTooltipLinkEventBuilder_.setMessage(builderForValue.build());
+      }
+      bitField5_ |= 0x00080000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = LINT_TOOLTIP_LINK_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.LintTooltipLinkEvent lint_tooltip_link_event = 180;</code>
+     */
+    public Builder mergeLintTooltipLinkEvent(com.google.wireless.android.sdk.stats.LintTooltipLinkEvent value) {
+      if (lintTooltipLinkEventBuilder_ == null) {
+        if (((bitField5_ & 0x00080000) != 0) &&
+            lintTooltipLinkEvent_ != null &&
+            lintTooltipLinkEvent_ != com.google.wireless.android.sdk.stats.LintTooltipLinkEvent.getDefaultInstance()) {
+          lintTooltipLinkEvent_ =
+            com.google.wireless.android.sdk.stats.LintTooltipLinkEvent.newBuilder(lintTooltipLinkEvent_).mergeFrom(value).buildPartial();
+        } else {
+          lintTooltipLinkEvent_ = value;
+        }
+        onChanged();
+      } else {
+        lintTooltipLinkEventBuilder_.mergeFrom(value);
+      }
+      bitField5_ |= 0x00080000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = LINT_TOOLTIP_LINK_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.LintTooltipLinkEvent lint_tooltip_link_event = 180;</code>
+     */
+    public Builder clearLintTooltipLinkEvent() {
+      if (lintTooltipLinkEventBuilder_ == null) {
+        lintTooltipLinkEvent_ = null;
+        onChanged();
+      } else {
+        lintTooltipLinkEventBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x00080000);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = LINT_TOOLTIP_LINK_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.LintTooltipLinkEvent lint_tooltip_link_event = 180;</code>
+     */
+    public com.google.wireless.android.sdk.stats.LintTooltipLinkEvent.Builder getLintTooltipLinkEventBuilder() {
+      bitField5_ |= 0x00080000;
+      onChanged();
+      return getLintTooltipLinkEventFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = LINT_TOOLTIP_LINK_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.LintTooltipLinkEvent lint_tooltip_link_event = 180;</code>
+     */
+    public com.google.wireless.android.sdk.stats.LintTooltipLinkEventOrBuilder getLintTooltipLinkEventOrBuilder() {
+      if (lintTooltipLinkEventBuilder_ != null) {
+        return lintTooltipLinkEventBuilder_.getMessageOrBuilder();
+      } else {
+        return lintTooltipLinkEvent_ == null ?
+            com.google.wireless.android.sdk.stats.LintTooltipLinkEvent.getDefaultInstance() : lintTooltipLinkEvent_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = LINT_TOOLTIP_LINK_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.LintTooltipLinkEvent lint_tooltip_link_event = 180;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.LintTooltipLinkEvent, com.google.wireless.android.sdk.stats.LintTooltipLinkEvent.Builder, com.google.wireless.android.sdk.stats.LintTooltipLinkEventOrBuilder> 
+        getLintTooltipLinkEventFieldBuilder() {
+      if (lintTooltipLinkEventBuilder_ == null) {
+        lintTooltipLinkEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.LintTooltipLinkEvent, com.google.wireless.android.sdk.stats.LintTooltipLinkEvent.Builder, com.google.wireless.android.sdk.stats.LintTooltipLinkEventOrBuilder>(
+                getLintTooltipLinkEvent(),
+                getParentForChildren(),
+                isClean());
+        lintTooltipLinkEvent_ = null;
+      }
+      return lintTooltipLinkEventBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

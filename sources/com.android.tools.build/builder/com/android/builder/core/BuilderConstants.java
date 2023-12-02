@@ -46,6 +46,7 @@ public class BuilderConstants {
     public static final String CONNECTED = "connected";
     public static final String DEVICE = "device";
     public static final String MANAGED_DEVICE = "managedDevice";
+    public static final String SCREENSHOT = "screenshot";
     public static final String FD_MANAGED_DEVICE_SETUP_RESULTS = "managedDeviceSetupResults";
 
     public static final String FD_ANDROID_TESTS = "androidTests";

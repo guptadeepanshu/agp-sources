@@ -84,4 +84,13 @@ internal fun AddTransparencyCommand.Builder.setSignerConfig(signingConfig: Signi
     return this
 }
 
+internal fun createSigningConfig(signingConfig: SigningConfigData): SigningConfiguration? {
+    return SigningConfiguration.extractFromKeystore(
+            signingConfig.storeFile?.toPath(),
+            signingConfig.keyAlias,
+            toPassword(signingConfig.storePassword),
+            toPassword(signingConfig.keyPassword)
+    )
+}
+
 

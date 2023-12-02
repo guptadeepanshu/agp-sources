@@ -57,6 +57,13 @@ open class AnalyticsEnabledAndroidTest @Inject constructor(
             return delegate.instrumentationRunner
         }
 
+    override val instrumentationRunnerArguments: MapProperty<String, String>
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.INSTRUMENTATION_RUNNER_ARGUMENTS_VALUE
+            return delegate.instrumentationRunnerArguments
+        }
+
     override val handleProfiling: Property<Boolean>
         get() {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =

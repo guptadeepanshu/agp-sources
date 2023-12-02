@@ -25,10 +25,10 @@ import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
 
 fun extractProfileAsDm(
-    apkFile: File,
-    profileSerializer: ArtProfileSerializer,
-    metadataSerializer: ArtProfileSerializer,
-    outputStream: OutputStream
+        apkFile: File,
+        profileSerializer: ArtProfileSerializer,
+        metadataSerializer: ArtProfileSerializer,
+        outputStream: OutputStream
 ) {
     ZipFile(apkFile).use { zipFile ->
         val profEntry = zipFile.entries()
@@ -50,15 +50,13 @@ fun extractProfileAsDm(
         check(prof != null) {
             "Unable to read profile from apk ${apkFile.absolutePath}"
         }
-
-        val profmVersion = profmInputStream.readProfileVersion()
-        check(profmVersion != null) {
+        val profmSerializer = profmInputStream.readProfileVersion()
+        check(profmSerializer != null) {
             "Unable to read profile metadata from apk ${apkFile.absolutePath}"
         }
-        val metadata = ArtProfile(profmVersion.read(profmInputStream)).also {
-            prof.addMetadata(it, profmVersion.metadataVersion!!)
-        }
-        outputStream.writeDm(prof, metadata, profileSerializer, metadataSerializer)
+        val metadata = ArtProfile(profmSerializer.read(profmInputStream))
+        val merged = prof.addMetadata(metadata, profmSerializer.metadataVersion!!)
+        outputStream.writeDm(merged, metadata, profileSerializer, metadataSerializer)
     }
 }
 
@@ -70,7 +68,7 @@ private fun ZipOutputStream.put(name: String, block: (OutputStream) -> Unit) {
     closeEntry()
 }
 
-private fun OutputStream.writeDm(
+internal fun OutputStream.writeDm(
         prof: ArtProfile,
         profm: ArtProfile?,
         profileVersion: ArtProfileSerializer,

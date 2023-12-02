@@ -22,7 +22,6 @@ import com.android.build.api.variant.impl.toSharedAndroidVersion
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.component.features.NativeBuildCreationConfig
-import com.android.build.gradle.internal.cxx.caching.CachingEnvironment
 import com.android.build.gradle.internal.cxx.configure.CXX_DEFAULT_CONFIGURATION_SUBFOLDER
 import com.android.build.gradle.internal.cxx.configure.NativeBuildSystemVariantConfig
 import com.android.build.gradle.internal.cxx.configure.NativeLocationsBuildService
@@ -213,9 +212,8 @@ fun tryCreateConfigurationParameters(
      * in Android Studio
      */
     val ndkHandler = globalConfig.versionedNdkHandler
-    val ndkInstall = CachingEnvironment(cxxCacheFolder).use {
-        ndkHandler.getNdkPlatform(downloadOkay = true)
-    }
+    val ndkInstall = ndkHandler.getNdkPlatform(downloadOkay = true);
+
     if (!ndkInstall.isConfigured) {
         infoln("Not creating C/C++ model because NDK could not be configured.")
         return null
@@ -395,7 +393,8 @@ fun createCxxMetadataGenerator(
         )
         CMAKE -> {
             val cmake = abi.variant.module.cmake
-            if (cmake == null) {
+            val cmakePath = cmake?.cmakeExe?.path
+            if (cmakePath == null || cmakePath == "") {
                 errorln(CMAKE_IS_MISSING, "No valid CMake executable was found.")
                 CxxNopMetadataGenerator(variantBuilder)
             } else {

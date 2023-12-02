@@ -22,6 +22,7 @@ import com.android.annotations.Nullable;
 import com.android.ddmlib.Log.LogLevel;
 import com.android.ddmlib.clientmanager.ClientManager;
 import com.android.ddmlib.internal.ClientImpl;
+import com.android.ddmlib.internal.DefaultJdwpProcessorFactory;
 import com.android.ddmlib.internal.DeviceMonitor;
 import com.android.ddmlib.internal.MonitorThread;
 import com.android.ddmlib.internal.jdwp.chunkhandler.HandleARTT;
@@ -137,6 +138,8 @@ public class AndroidDebugBridge {
             Sets.newCopyOnWriteArraySet();
 
     private static JdwpTracerFactory sJdwpTracerFactory = new DefaultJdwpTracerFactory();
+
+    private static JdwpProcessorFactory sJdwpProcessorFactory = new DefaultJdwpProcessorFactory();
 
     /**
      * Classes which implement this interface provide a method that deals with {@link
@@ -1706,5 +1709,14 @@ public class AndroidDebugBridge {
     @NonNull
     public static DDMLibJdwpTracer newJdwpTracer() {
         return sJdwpTracerFactory.newJwpTracer();
+    }
+
+    public static void setJdwpProcessorFactory(@NonNull JdwpProcessorFactory factory) {
+        sJdwpProcessorFactory = factory;
+    }
+
+    @NonNull
+    public static JdwpProcessor newProcessor() {
+        return sJdwpProcessorFactory.newProcessor();
     }
 }

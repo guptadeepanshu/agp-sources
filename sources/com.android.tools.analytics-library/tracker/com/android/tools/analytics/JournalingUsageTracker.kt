@@ -33,6 +33,9 @@ import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
 
 /**
  * a UsageTracker that uses a spool to journal the logs tracked. This tracker can be used in both
@@ -65,6 +68,9 @@ class JournalingUsageTracker
     private val spoolLocation: Path
 ) : UsageTrackerWriter() {
 
+    // lock for blocking flush calls. To avoid deadlocks, the order of
+    // locking is: flushLock (if needed), gate.
+    private val flushLock = ReentrantLock()
     private val gate = Any()
     private var lock: FileLock? = null
     private var channel: FileChannel? = null
@@ -75,14 +81,9 @@ class JournalingUsageTracker
 
     @Volatile
     private var state = State.Open
+    private val flushScheduled = AtomicBoolean(false)
     private val pendingEvents: Queue<ClientAnalytics.LogEvent.Builder> =
         ConcurrentLinkedQueue<ClientAnalytics.LogEvent.Builder>()
-    private val quietFlushRunnable = Runnable {
-        try {
-            flush()
-        } catch (ignored: IOException) {
-        }
-    }
 
     private enum class State {
         Open,
@@ -179,7 +180,7 @@ class JournalingUsageTracker
             return
         }
         pendingEvents.add(logEvent)
-        scheduler.submit(quietFlushRunnable)
+        scheduleFlush()
     }
 
     /**
@@ -188,6 +189,49 @@ class JournalingUsageTracker
      * @throws IOException on failure, and the UsageTracker will be closed in those cases.
      */
     override fun flush() {
+        flushLock.withLock {
+            flushImpl()
+        }
+        // If there are new events to handle, schedule a new flush event
+        if (pendingEvents.isNotEmpty()) {
+            scheduleFlush()
+        }
+    }
+
+    /**
+    Schedules a flush if one is not running and not scheduled yet.
+     */
+    private fun scheduleFlush() {
+        if (!flushLock.isLocked && flushScheduled.compareAndSet(false, true)) {
+            scheduler.submit {
+                try {
+                    tryFlush()
+                } finally {
+                    flushScheduled.set(false)
+                }
+            }
+        }
+    }
+
+    /**
+    Triggers flush if one is not currently running.
+     */
+    private fun tryFlush() {
+        if (!flushLock.tryLock())
+            return
+
+        try {
+            flushImpl()
+        } finally {
+            flushLock.unlock()
+        }
+        // If there are new events to handle, schedule a new flush event
+        if (pendingEvents.isNotEmpty()) {
+            scheduleFlush()
+        }
+    }
+
+    private fun flushImpl() {
         while (true) {
             synchronized(gate) {
                 val logEvent = pendingEvents.poll() ?: return

@@ -305,6 +305,11 @@ public interface IDevice extends IShellEnabledDevice {
     boolean supportsFeature(@NonNull HardwareFeature feature);
 
     /**
+     * Returns a map of running services (key is service name) to [ServiceInfo] (value).
+     */
+    Map<String, ServiceInfo> services();
+
+    /**
      * Returns a mount point.
      *
      * @param name the name of the mount point to return

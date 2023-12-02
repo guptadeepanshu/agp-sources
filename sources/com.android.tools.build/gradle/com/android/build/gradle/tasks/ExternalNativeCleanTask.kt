@@ -24,6 +24,7 @@ import com.android.build.gradle.internal.cxx.logging.IssueReporterLoggingEnviron
 import com.android.build.gradle.internal.cxx.logging.infoln
 import com.android.build.gradle.internal.cxx.model.CxxAbiModel
 import com.android.build.gradle.internal.cxx.model.jsonFile
+import com.android.build.gradle.internal.cxx.model.name
 import com.android.build.gradle.internal.cxx.process.ExecuteProcessType
 import com.android.build.gradle.internal.cxx.process.createExecuteProcessCommand
 import com.android.build.gradle.internal.cxx.process.executeProcess
@@ -88,7 +89,7 @@ abstract class ExternalNativeCleanTask @Inject constructor(private val ops: Exec
                 }
             }
             val configValueList = getNativeBuildMiniConfigs(existingJsonAbis,null)
-            val abiNameToAbi = allAbis.associateBy { it.abi.tag }
+            val abiNameToAbi = allAbis.associateBy { it.name }
             val batch = configValueList
                 .filter { config -> config.libraries.values.isNotEmpty() }
                 .map { config ->

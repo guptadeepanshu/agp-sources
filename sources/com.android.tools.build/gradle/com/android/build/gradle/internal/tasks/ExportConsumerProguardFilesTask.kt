@@ -24,13 +24,14 @@ import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.build.gradle.internal.utils.getFilteredConfigurationFiles
-import com.android.build.gradle.internal.utils.immutableMapBuilder
-import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.builder.errors.EvalIssueException
 import com.android.build.gradle.internal.tasks.factory.features.OptimizationTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.features.OptimizationTaskCreationActionImpl
+import com.android.build.gradle.internal.utils.LibraryArtifactType
+import com.android.build.gradle.internal.utils.getFilteredFiles
+import com.android.build.gradle.internal.utils.immutableMapBuilder
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
+import com.android.builder.errors.EvalIssueException
 import com.android.utils.FileUtils
 import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.file.ConfigurableFileCollection
@@ -107,12 +108,13 @@ abstract class ExportConsumerProguardFilesTask : NonIncrementalTask() {
         }
 
         val filteredProguardFiles = if (isDynamicFeature) {
-            getFilteredConfigurationFiles(
-                    ignoredKeepRules.get(),
-                    ignoreAllKeepRules.get(),
-                    libraryKeepRules,
-                    inputFiles,
-                    LoggerWrapper.getLogger(ExportConsumerProguardFilesTask::class.java)
+            getFilteredFiles(
+                ignoredKeepRules.get(),
+                ignoreAllKeepRules.get(),
+                libraryKeepRules,
+                inputFiles,
+                LoggerWrapper.getLogger(ExportConsumerProguardFilesTask::class.java),
+                LibraryArtifactType.KEEP_RULES
             )
         } else {
             inputFiles

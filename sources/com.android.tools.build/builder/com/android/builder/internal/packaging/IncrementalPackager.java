@@ -94,6 +94,9 @@ public class IncrementalPackager implements Closeable {
     public static final String APP_METADATA_FILE_NAME = "app-metadata.properties";
     public static final String APP_METADATA_ENTRY_PATH =
             "META-INF/com/android/build/gradle/" + APP_METADATA_FILE_NAME;
+    public static final String VERSION_CONTROL_INFO_FILE_NAME = "version-control-info.textproto";
+    public static final String VERSION_CONTROL_INFO_ENTRY_PATH =
+            "META-INF/" + VERSION_CONTROL_INFO_FILE_NAME;
 
     /**
      * {@link ApkCreator}, which is {@code null} until it's initialized via getApkCreator(). Use
@@ -168,6 +171,8 @@ public class IncrementalPackager implements Closeable {
 
     @NonNull private final List<SerializableChange> mChangedArtProfileMetadata;
 
+    @NonNull private final List<SerializableChange> mChangedVersionControlInfo;
+
     /**
      * Creates a new instance.
      *
@@ -209,7 +214,8 @@ public class IncrementalPackager implements Closeable {
             @NonNull Map<RelativeFile, FileStatus> changedNativeLibs,
             @NonNull List<SerializableChange> changedAppMetadata,
             @NonNull List<SerializableChange> changedArtProfile,
-            @NonNull List<SerializableChange> changedArtProfileMetadata)
+            @NonNull List<SerializableChange> changedArtProfileMetadata,
+            @NonNull List<SerializableChange> changedVersionControlInfo)
             throws IOException {
         if (!intermediateDir.isDirectory()) {
             throw new IllegalArgumentException(
@@ -234,6 +240,7 @@ public class IncrementalPackager implements Closeable {
         mAbiPredicate = new NativeLibraryAbiPredicate(acceptedAbis, jniDebugMode);
         mChangedArtProfile = changedArtProfile;
         mChangedArtProfileMetadata = changedArtProfileMetadata;
+        mChangedVersionControlInfo = changedVersionControlInfo;
     }
 
     /**
@@ -262,6 +269,7 @@ public class IncrementalPackager implements Closeable {
         packagedFileUpdates.addAll(getAppMetadataUpdates(mChangedAppMetadata));
         packagedFileUpdates.addAll(getArtProfileUpdates(mChangedArtProfile));
         packagedFileUpdates.addAll(getArtProfileMetadataUpdates(mChangedArtProfileMetadata));
+        packagedFileUpdates.addAll(getVersionControlInfoUpdates(mChangedVersionControlInfo));
 
         // First delete all REMOVED (and maybe CHANGED) files, then add all NEW or CHANGED files.
         deleteFiles(packagedFileUpdates);
@@ -359,6 +367,19 @@ public class IncrementalPackager implements Closeable {
                                         SdkConstants.FN_BINART_ART_PROFILE_FOLDER_IN_APK
                                                 + "/"
                                                 + SdkConstants.FN_BINARY_ART_PROFILE_METADATA,
+                                        change.getFileStatus()))
+                .collect(Collectors.toList());
+    }
+
+    private static List<PackagedFileUpdate> getVersionControlInfoUpdates(
+            @NonNull Collection<SerializableChange> changes) {
+        return changes.stream()
+                .map(
+                        change ->
+                                new PackagedFileUpdate(
+                                        new RelativeFile(
+                                                change.getFile().getParentFile(), change.getFile()),
+                                        VERSION_CONTROL_INFO_ENTRY_PATH,
                                         change.getFileStatus()))
                 .collect(Collectors.toList());
     }

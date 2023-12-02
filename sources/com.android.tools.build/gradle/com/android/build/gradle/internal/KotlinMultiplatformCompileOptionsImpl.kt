@@ -16,8 +16,8 @@
 
 package com.android.build.gradle.internal
 
-import com.android.build.api.variant.impl.KotlinMultiplatformAndroidCompilation
-import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidExtension
+import com.android.build.api.dsl.KotlinMultiplatformAndroidCompilation
+import com.android.build.api.dsl.KotlinMultiplatformAndroidExtension
 import org.gradle.api.JavaVersion
 
 /**

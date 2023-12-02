@@ -229,8 +229,7 @@ public final class FolderConfiguration implements Comparable<FolderConfiguration
             // TODO: Perform case normalization later (on a per qualifier basis)
             seg = seg.toLowerCase(Locale.US); // no-op if string is already in lower case
 
-            while (qualifierIndex < INDEX_LOCALE &&
-                    !DEFAULT_QUALIFIERS[qualifierIndex].checkAndSet(seg, config)) {
+            while (qualifierIndex < INDEX_LOCALE && !checkQualifier(config, qualifierIndex, seg)) {
                 qualifierIndex++;
             }
 
@@ -295,8 +294,8 @@ public final class FolderConfiguration implements Comparable<FolderConfiguration
 
             seg = seg.toLowerCase(Locale.US); // no-op if string is already in lower case
 
-            while (qualifierIndex < qualifierCount &&
-                    !DEFAULT_QUALIFIERS[qualifierIndex].checkAndSet(seg, config)) {
+            while (qualifierIndex < qualifierCount
+                    && !checkQualifier(config, qualifierIndex, seg)) {
                 qualifierIndex++;
             }
 
@@ -477,33 +476,12 @@ public final class FolderConfiguration implements Comparable<FolderConfiguration
 
     /**
      * Sets the config from the qualifiers of a given <var>config</var>.
-     * <p>This is equivalent to <code>set(config, false)</code>
      * @param config the configuration to set
-     *
-     * @see #set(FolderConfiguration, boolean)
      */
     public void set(@Nullable FolderConfiguration config) {
-        set(config, false /*nonFakeValuesOnly*/);
-    }
-
-    /**
-     * Sets the config from the qualifiers of a given <var>config</var>.
-     *
-     * @param config the configuration to set
-     * @param nonFakeValuesOnly if set to true this ignore qualifiers for which the
-     * current value is a fake value.
-     *
-     * @see ResourceQualifier#hasFakeValue()
-     */
-    public void set(@Nullable FolderConfiguration config, boolean nonFakeValuesOnly) {
         if (config != null) {
-            for (int i = 0; i < INDEX_COUNT; i++) {
-                ResourceQualifier q = config.mQualifiers[i];
-                if (!nonFakeValuesOnly || q == null || !q.hasFakeValue()) {
-                    mQualifiers[i] = q;
-                    mQualifierString = null;
-                }
-            }
+            System.arraycopy(config.mQualifiers, 0, mQualifiers, 0, INDEX_COUNT);
+            mQualifierString = null;
         }
     }
 

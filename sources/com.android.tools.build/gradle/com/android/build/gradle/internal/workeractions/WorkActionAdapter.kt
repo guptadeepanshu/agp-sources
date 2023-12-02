@@ -32,7 +32,6 @@ interface WorkActionAdapter<WorkItemParametersT>
     : WorkAction<WorkItemParametersT>, Serializable
         where WorkItemParametersT : DecoratedWorkParameters {
 
-    @JvmDefault
     override fun execute() {
         parameters.analyticsService.get()
             .workerStarted(parameters.taskPath.get(), parameters.workerKey.get())

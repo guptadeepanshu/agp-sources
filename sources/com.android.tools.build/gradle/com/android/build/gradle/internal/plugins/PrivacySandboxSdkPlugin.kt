@@ -99,20 +99,20 @@ class PrivacySandboxSdkPlugin @Inject constructor(
         withProject("variantScope") { project ->
             PrivacySandboxSdkVariantScopeImpl(
                     project,
-                    TaskCreationServicesImpl(projectServices),
                     dslServices,
-                    { extension },
-            ) {
-                BootClasspathConfigImpl(
-                    project,
                     projectServices,
-                    versionedSdkLoaderService,
-                    libraryRequests = listOf(),
-                    isJava8Compatible = { true },
-                    returnDefaultValuesForMockableJar = { false },
-                    forUnitTest = false
-                )
-            }
+                    { extension },
+                    {
+                        BootClasspathConfigImpl(
+                                project,
+                                projectServices,
+                                versionedSdkLoaderService,
+                                libraryRequests = listOf(),
+                                isJava8Compatible = { true },
+                                returnDefaultValuesForMockableJar = { false },
+                                forUnitTest = false
+                        )
+                    })
         }
     }
 
@@ -141,8 +141,8 @@ class PrivacySandboxSdkPlugin @Inject constructor(
         super.basePluginApply(project)
         if (!projectServices.projectOptions[BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT]) {
             throw GradleException(
-                    "Privacy Sandbox SDKs are not supported in Android Gradle plugin 8.1.x.\n" +
-                    "To build privacy sandbox SDKs, please use Android Gradle plugin 8.2.0-alpha01 or later."
+                    "Privacy Sandbox SDKs are not supported in Android Gradle plugin 8.2.x.\n" +
+                    "To build privacy sandbox SDKs, please use Android Gradle plugin 8.3.0-alpha01 or later."
             )
         }
 

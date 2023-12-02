@@ -36,6 +36,7 @@ import com.android.resources.ScreenSize;
 import com.android.resources.TouchScreen;
 import com.android.resources.UiMode;
 import com.android.utils.XmlUtils;
+import com.android.xml.sax.AttributeUtils;
 import com.google.common.base.Splitter;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
@@ -96,7 +97,11 @@ public class DeviceParser {
                 mSoftware = null;
                 mState = null;
                 mCamera = null;
+
                 mBuilder = new Device.Builder();
+
+                AttributeUtils.getBoolean(attributes, "deprecated")
+                        .ifPresent(mBuilder::setDeprecated);
             } else if (DeviceSchema.NODE_META.equals(localName)) {
                 mMeta = new Meta();
             } else if (DeviceSchema.NODE_HARDWARE.equals(localName)) {
@@ -105,13 +110,14 @@ public class DeviceParser {
                 mSoftware = new Software();
             } else if (DeviceSchema.NODE_STATE.equals(localName)) {
                 mState = new State();
+
+                AttributeUtils.getBoolean(attributes, DeviceSchema.ATTR_DEFAULT)
+                        .ifPresent(mState::setDefaultState);
+
+                mState.setName(attributes.getValue(DeviceSchema.ATTR_NAME).trim());
+
                 // mState can embed a Hardware instance
                 mHardware = mHardware.deepCopy();
-                String defaultState = attributes.getValue(DeviceSchema.ATTR_DEFAULT);
-                if ("true".equals(defaultState) || "1".equals(defaultState)) {
-                    mState.setDefaultState(true);
-                }
-                mState.setName(attributes.getValue(DeviceSchema.ATTR_NAME).trim());
             } else if (DeviceSchema.NODE_CAMERA.equals(localName)) {
                 mCamera = new Camera();
             } else if (DeviceSchema.NODE_RAM.equals(localName)
@@ -220,6 +226,8 @@ public class DeviceParser {
                 mHardware.getHinge().setDefaults(getInteger(mStringAccumulator));
             } else if (DeviceSchema.NODE_HINGE_AREAS.equals(localName)) {
                 mHardware.getHinge().setAreas(getString(mStringAccumulator));
+            } else if (DeviceSchema.NODE_CHANGE_ORIENTATION_ON_FOLD.equals(localName)) {
+                mHardware.getHinge().setChangeOrientationOnFold(getBool(mStringAccumulator));
             } else if (DeviceSchema.NODE_HINGE_FOLD_AT_POSTURE.equals(localName)) {
                 mHardware.getHinge().setFoldAtPosture(getInteger(mStringAccumulator));
             } else if (DeviceSchema.NODE_HINGE_POSTURE_LIST.equals(localName)) {

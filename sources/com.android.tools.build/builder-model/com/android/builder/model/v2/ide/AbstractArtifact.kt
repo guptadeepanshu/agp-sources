@@ -63,4 +63,10 @@ interface AbstractArtifact {
      * @since 7.1
      */
     val modelSyncFiles: Collection<ModelSyncFile>
+
+    /**
+     * Generated class paths to include in the model. The name of the library to add is mapped to
+     * the generated class file.
+     */
+    val generatedClassPaths: Map<String, File>
 }

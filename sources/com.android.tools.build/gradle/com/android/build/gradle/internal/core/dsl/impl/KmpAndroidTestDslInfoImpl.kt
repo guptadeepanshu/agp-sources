@@ -17,6 +17,7 @@
 package com.android.build.gradle.internal.core.dsl.impl
 
 import com.android.build.api.component.impl.ComponentIdentityImpl
+import com.android.build.api.dsl.KotlinMultiplatformAndroidExtension
 import com.android.build.api.variant.ResValue
 import com.android.build.gradle.internal.core.dsl.AndroidTestComponentDslInfo
 import com.android.build.gradle.internal.core.dsl.KmpComponentDslInfo
@@ -29,10 +30,10 @@ import com.android.build.gradle.internal.core.dsl.features.OptimizationDslInfo
 import com.android.build.gradle.internal.core.dsl.features.RenderscriptDslInfo
 import com.android.build.gradle.internal.core.dsl.features.ShadersDslInfo
 import com.android.build.gradle.internal.dsl.AaptOptions
-import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidExtension
 import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidExtensionImpl
 import com.android.build.gradle.internal.dsl.SigningConfig
 import com.android.build.gradle.internal.manifest.ManifestDataProvider
+import com.android.build.gradle.internal.plugins.KotlinMultiplatformAndroidPlugin.Companion.getNamePrefixedWithAndroidTarget
 import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.builder.core.ComponentTypeImpl
@@ -50,13 +51,18 @@ class KmpAndroidTestDslInfoImpl(
     private val dataProvider: ManifestDataProvider,
     override val mainVariantDslInfo: KmpVariantDslInfo,
     signingConfigOverride: SigningConfig?,
-    dslServices: DslServices
+    dslServices: DslServices,
+    withJava: Boolean,
 ): KmpComponentDslInfoImpl(
-    extension, services
+    extension, services, withJava
 ), AndroidTestComponentDslInfo, KmpComponentDslInfo {
 
+    private val testOnDeviceConfig = (extension as KotlinMultiplatformAndroidExtensionImpl).androidTestOnDeviceOptions!!
+
     override val componentType = ComponentTypeImpl.ANDROID_TEST
-    override val componentIdentity = ComponentIdentityImpl("kotlinAndroidInstrumentedTest")
+    override val componentIdentity = ComponentIdentityImpl(
+        (extension as KotlinMultiplatformAndroidExtensionImpl).androidTestOnDeviceBuilder!!.compilationName.getNamePrefixedWithAndroidTarget()
+    )
 
     override val namespace: Provider<String> by lazy {
         extension.testNamespace?.let { services.provider { it } }
@@ -66,11 +72,9 @@ class KmpAndroidTestDslInfoImpl(
             }
     }
 
-    val targetSdkVersion
-        get() = (extension as KotlinMultiplatformAndroidExtensionImpl).testTargetSdkVersion
-
     override val isDebuggable: Boolean
         get() = true
+
     override val signingConfig: SigningConfig by lazy {
         val dslSigningConfig =
             (extension as KotlinMultiplatformAndroidExtensionImpl).signingConfig
@@ -108,18 +112,21 @@ class KmpAndroidTestDslInfoImpl(
     }
     override val optimizationDslInfo: OptimizationDslInfo
         get() = mainVariantDslInfo.optimizationDslInfo
+
     override val dexingDslInfo = object: DexingDslInfo {
-        override val isMultiDexEnabled = extension.isTestMultiDexEnabled
-        override val multiDexKeepProguard: File? = extension.testMultiDexKeepProguard
+        override val isMultiDexEnabled =
+            testOnDeviceConfig.multidex.enable.takeIf { testOnDeviceConfig.multidex.enableSet }
+        override val multiDexKeepProguard: File? =
+            testOnDeviceConfig.multidex.mainDexKeepRules.files.getOrNull(0)
         override val multiDexKeepFile: File? = null
     }
 
     override val isAndroidTestCoverageEnabled: Boolean
-        get() = extension.enableInstrumentedTestCoverage
+        get() = testOnDeviceConfig.enableCoverage
 
     override fun getInstrumentationRunner(dexingType: DexingType): Provider<String> {
         // first check whether the DSL has the info
-        return extension.testInstrumentationRunner?.let {
+        return testOnDeviceConfig.instrumentationRunner?.let {
             services.provider { it }
         } // else return the value from the Manifest
             ?: dataProvider.manifestData.map {
@@ -133,11 +140,11 @@ class KmpAndroidTestDslInfoImpl(
     }
 
     override val instrumentationRunnerArguments: Map<String, String>
-        get() = extension.testInstrumentationRunnerArguments
+        get() = testOnDeviceConfig.instrumentationRunnerArguments
     override val handleProfiling: Provider<Boolean>
         get() =
             // first check whether the DSL has the info
-            extension.testHandleProfiling?.let {
+            testOnDeviceConfig.handleProfiling?.let {
                 services.provider { it }
             } // else return the value from the Manifest
                 ?: dataProvider.manifestData.map { it.handleProfiling ?: DEFAULT_HANDLE_PROFILING }
@@ -145,7 +152,7 @@ class KmpAndroidTestDslInfoImpl(
     override val functionalTest: Provider<Boolean>
         get() =
             // first check whether the DSL has the info
-            extension.testFunctionalTest?.let {
+            testOnDeviceConfig.functionalTest?.let {
                 services.provider { it }
             } // else return the value from the Manifest
                 ?: dataProvider.manifestData.map { it.functionalTest ?: DEFAULT_FUNCTIONAL_TEST }

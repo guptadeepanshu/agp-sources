@@ -16,9 +16,12 @@
 
 package com.android.build.gradle.internal.dsl
 
-import com.android.build.api.dsl.ApkSigningConfig
-import com.android.build.api.variant.AndroidVersion
-import com.android.build.api.variant.impl.KotlinMultiplatformAndroidVariant
+import com.android.build.api.dsl.HasConfigurableValue
+import com.android.build.api.dsl.KotlinMultiplatformAndroidCompilationBuilder
+import com.android.build.api.dsl.KotlinMultiplatformAndroidExtension
+import com.android.build.api.dsl.KotlinMultiplatformAndroidTestOnDevice
+import com.android.build.api.dsl.KotlinMultiplatformAndroidTestOnJvm
+import com.android.build.api.variant.impl.KmpAndroidCompilationType
 import com.android.build.api.variant.impl.MutableAndroidVersion
 import com.android.build.gradle.internal.coverage.JacocoOptions
 import com.android.build.gradle.internal.dsl.decorator.annotation.WithLazyInitialization
@@ -30,11 +33,11 @@ import com.android.builder.core.BuilderConstants
 import com.android.builder.core.LibraryRequest
 import com.android.builder.core.ToolsRevisionUtils
 import com.android.builder.signing.DefaultSigningConfig
-import org.gradle.api.Action
 import javax.inject.Inject
 
-abstract class KotlinMultiplatformAndroidExtensionImpl @Inject @WithLazyInitialization("lazyInit") constructor(
-    private val dslServices: DslServices
+internal abstract class KotlinMultiplatformAndroidExtensionImpl @Inject @WithLazyInitialization("lazyInit") constructor(
+    private val dslServices: DslServices,
+    private val compilationEnabledCallback: (KotlinMultiplatformAndroidCompilationBuilder) -> Unit,
 ): KotlinMultiplatformAndroidExtension, Lockable {
 
     fun lazyInit() {
@@ -47,9 +50,6 @@ abstract class KotlinMultiplatformAndroidExtensionImpl @Inject @WithLazyInitiali
         ).copyToSigningConfig(signingConfig)
     }
 
-    override val testOptions: TestOptions =
-        dslServices.newInstance(TestOptions::class.java, dslServices)
-
     abstract val libraryRequests: MutableList<LibraryRequest>
 
     override fun useLibrary(name: String) {
@@ -60,18 +60,9 @@ abstract class KotlinMultiplatformAndroidExtensionImpl @Inject @WithLazyInitiali
         libraryRequests.add(LibraryRequest(name, required))
     }
 
-    override val installation = dslServices.newDecoratedInstance(
-        AdbOptions::class.java,
-        dslServices
-    )
-
     var signingConfig = dslServices.newDecoratedInstance(
         SigningConfig::class.java, BuilderConstants.DEBUG, dslServices
     )
-
-    override fun testSigningConfig(action: ApkSigningConfig.() -> Unit) {
-        action.invoke(signingConfig)
-    }
 
     internal val minSdkVersion: MutableAndroidVersion
         get() = mutableMinSdk?.sanitize()?.let { MutableAndroidVersion(it.apiLevel, it.codename) }
@@ -101,57 +92,74 @@ abstract class KotlinMultiplatformAndroidExtensionImpl @Inject @WithLazyInitiali
             min.api = null
         }
 
-    internal val testTargetSdkVersion: AndroidVersion?
-        get() = mutableTargetSdk?.sanitize()
-
-    private var mutableTargetSdk: MutableAndroidVersion? = null
-
-    override var testTargetSdk: Int?
-        get() = mutableTargetSdk?.api
-        set(value) {
-            val target =
-                mutableTargetSdk ?: MutableAndroidVersion(null, null).also {
-                    mutableTargetSdk = it
-                }
-            target.codename = null
-            target.api = value
-        }
-
-    override var testTargetSdkPreview: String?
-        get() = mutableTargetSdk?.codename
-        set(value) {
-            val target =
-                mutableTargetSdk ?: MutableAndroidVersion(null, null).also {
-                    mutableTargetSdk = it
-                }
-            target.codename = value
-            target.api = null
-        }
-
     override val testCoverage = dslServices.newInstance(JacocoOptions::class.java)
 
-    private val variantOperations = mutableListOf<Action<KotlinMultiplatformAndroidVariant>>()
-    private var actionsExecuted = false
+    internal var androidTestOnJvmOptions: KotlinMultiplatformAndroidTestOnJvmImpl? = null
+    internal var androidTestOnDeviceOptions: KotlinMultiplatformAndroidTestOnDeviceImpl? = null
+    internal var androidTestOnJvmBuilder: KotlinMultiplatformAndroidCompilationBuilderImpl? = null
+    internal var androidTestOnDeviceBuilder: KotlinMultiplatformAndroidCompilationBuilderImpl? = null
 
-    override fun onVariant(callback: KotlinMultiplatformAndroidVariant.() -> Unit) {
-        if (actionsExecuted) {
-            throw RuntimeException(
-                """
-                It is too late to add actions as the callbacks already executed.
-                Did you try to call beforeVariants or onVariants from the old variant API
-                'applicationVariants' for instance ? you should always call beforeVariants or
-                onVariants directly from the androidComponents DSL block.
-                """
+    private fun withTestBuilder(
+        compilationType: KmpAndroidCompilationType,
+        previousConfiguration: KotlinMultiplatformAndroidCompilationBuilder?,
+    ): KotlinMultiplatformAndroidCompilationBuilderImpl {
+        previousConfiguration?.let {
+            val type = when (compilationType) {
+                KmpAndroidCompilationType.MAIN -> "main"
+                KmpAndroidCompilationType.TEST_ON_JVM -> "jvm"
+                KmpAndroidCompilationType.TEST_ON_DEVICE -> "device"
+            }
+
+            throw IllegalStateException(
+                "Android tests on $type has already been enabled, and a corresponding compilation " +
+                        "(`${it.compilationName}`) has already been created. You can create only " +
+                        "one component of type android tests on $type. Alternatively, you can " +
+                        "specify a dependency from the default sourceSet " +
+                        "(`${it.defaultSourceSetName}`) to another sourceSet and it will be " +
+                        "included in the compilation."
             )
         }
 
-        variantOperations.add(callback)
+        return KotlinMultiplatformAndroidCompilationBuilderImpl(compilationType)
     }
 
-    fun executeVariantOperations(variant: KotlinMultiplatformAndroidVariant) {
-        actionsExecuted = true
-        variantOperations.forEach {
-            it.execute(variant)
-        }
+    override fun withAndroidTestOnJvm(action: KotlinMultiplatformAndroidTestOnJvm.() -> Unit) {
+        withAndroidTestOnJvmBuilder {  }.configure(action)
+    }
+
+    override fun withAndroidTestOnJvmBuilder(
+        action: KotlinMultiplatformAndroidCompilationBuilder.() -> Unit
+    ): HasConfigurableValue<KotlinMultiplatformAndroidTestOnJvm> {
+        androidTestOnJvmBuilder = withTestBuilder(
+            KmpAndroidCompilationType.TEST_ON_JVM,
+            androidTestOnJvmBuilder
+        )
+        androidTestOnJvmOptions = dslServices.newDecoratedInstance(
+            KotlinMultiplatformAndroidTestOnJvmImpl::class.java, dslServices
+        )
+
+        androidTestOnJvmBuilder!!.action()
+        compilationEnabledCallback(androidTestOnJvmBuilder!!)
+        return HasConfigurableValueImpl(androidTestOnJvmOptions!!)
+    }
+
+    override fun withAndroidTestOnDevice(action: KotlinMultiplatformAndroidTestOnDevice.() -> Unit) {
+        withAndroidTestOnDeviceBuilder {  }.configure(action)
+    }
+
+    override fun withAndroidTestOnDeviceBuilder(
+        action: KotlinMultiplatformAndroidCompilationBuilder.() -> Unit
+    ): HasConfigurableValue<KotlinMultiplatformAndroidTestOnDevice> {
+        androidTestOnDeviceBuilder = withTestBuilder(
+            KmpAndroidCompilationType.TEST_ON_DEVICE,
+            androidTestOnDeviceBuilder
+        )
+        androidTestOnDeviceOptions = dslServices.newDecoratedInstance(
+            KotlinMultiplatformAndroidTestOnDeviceImpl::class.java, dslServices
+        )
+
+        androidTestOnDeviceBuilder!!.action()
+        compilationEnabledCallback(androidTestOnDeviceBuilder!!)
+        return HasConfigurableValueImpl(androidTestOnDeviceOptions!!)
     }
 }

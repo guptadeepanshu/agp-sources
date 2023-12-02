@@ -41,7 +41,6 @@ open class SdkComponentsImpl @Inject constructor(
     override val ndkDirectory: Provider<Directory> by lazy {
         dslServices.sdkComponents.flatMap {
             it.versionedNdkHandler(
-                compileSdkVersion = compileSdkVersion.get(),
                 ndkVersion = ndkVersion.get(),
                 ndkPath = ndkPath.get()
             ).ndkDirectoryProvider

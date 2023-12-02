@@ -105,6 +105,21 @@ class VersionRange(private val range: Range<Version>) {
         else -> "VersionRange(range=$range)"
     }
 
+    /** Is true if the range contains exactly one (non-prefixInfimum) version. */
+    val isSingleton get() = isSingletonRange()
+    /** If the range contains exactly one (non-prefixInfimum) version, return it. */
+    val singletonVersion get() = if (isSingletonRange()) lowerEndpoint() else null
+
+    @Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
+    internal fun withoutUpperBound(): VersionRange = when {
+        !hasUpperBound() -> this
+        !hasLowerBound() -> VersionRange(Range.all())
+        else -> when (lowerBoundType()) {
+            BoundType.CLOSED -> VersionRange(Range.atLeast(lowerEndpoint()))
+            BoundType.OPEN -> VersionRange(Range.greaterThan(lowerEndpoint()))
+        }
+    }
+
     private fun isPrefixRange() =
         hasLowerBound() && hasUpperBound() && let {
             val lower = lowerEndpoint()

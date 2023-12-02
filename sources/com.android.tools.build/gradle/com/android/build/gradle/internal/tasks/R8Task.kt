@@ -25,7 +25,7 @@ import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.core.ToolExecutionOptions
-import com.android.build.gradle.internal.dsl.ModuleBooleanPropertyKeys
+import com.android.build.gradle.internal.dsl.ModulePropertyKey
 import com.android.build.gradle.internal.errors.MessageReceiverImpl
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
@@ -34,8 +34,9 @@ import com.android.build.gradle.internal.scope.InternalMultipleArtifactType
 import com.android.build.gradle.internal.scope.Java8LangSupport
 import com.android.build.gradle.internal.services.R8ParallelBuildService
 import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.internal.utils.LibraryArtifactType
 import com.android.build.gradle.internal.utils.getDesugarLibConfig
-import com.android.build.gradle.internal.utils.getFilteredConfigurationFiles
+import com.android.build.gradle.internal.utils.getFilteredFiles
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.SyncOptions
@@ -329,12 +330,12 @@ abstract class R8Task @Inject constructor(
             if (creationConfig is VariantCreationConfig) {
                 task.artProfileRewriting.set(
                     creationConfig.experimentalProperties.map {
-                        ModuleBooleanPropertyKeys.ART_PROFILE_R8_REWRITING.getValueAsBoolean(it)
+                        ModulePropertyKey.BooleanWithDefault.ART_PROFILE_R8_REWRITING.getValue(it)
                     }
                 )
                 task.enableDexStartupOptimization.set(
                     creationConfig.experimentalProperties.map {
-                        ModuleBooleanPropertyKeys.R8_DEX_STARTUP_OPTIMIZATION.getValueAsBoolean(it)
+                        ModulePropertyKey.BooleanWithDefault.R8_DEX_STARTUP_OPTIMIZATION.getValue(it)
                     }
                 )
             } else {
@@ -533,7 +534,7 @@ abstract class R8Task @Inject constructor(
             if (sources.isNullOrEmpty()) {
                 throw RuntimeException("""
                     Dex optimization based on startup profile has been turned on with flag
-                    ${ModuleBooleanPropertyKeys.R8_DEX_STARTUP_OPTIMIZATION.keyValue} but there are no source folders.
+                    ${ModulePropertyKey.BooleanWithDefault.R8_DEX_STARTUP_OPTIMIZATION.key} but there are no source folders.
                     This should not happen, please file a bug.
                 """.trimIndent())
             }
@@ -543,7 +544,7 @@ abstract class R8Task @Inject constructor(
                 ?: throw RuntimeException(
             """
                 Dex optimization based on startup profile has been turned on with flag
-                ${ModuleBooleanPropertyKeys.R8_DEX_STARTUP_OPTIMIZATION.keyValue} but there are no input
+                ${ModulePropertyKey.BooleanWithDefault.R8_DEX_STARTUP_OPTIMIZATION.key} but there are no input
                 baseline profile found in the baselineProfiles sources.
                 You should add ${sources.first().asFile.absolutePath} for instance.
             """.trimIndent()
@@ -573,12 +574,13 @@ abstract class R8Task @Inject constructor(
             it.mainDexListOutput.set(mainDexListOutput.orNull?.asFile)
             it.proguardConfigurationFiles.from(
                 reconcileDefaultProguardFile(
-                    getFilteredConfigurationFiles(
+                    getFilteredFiles(
                         ignoredLibraryKeepRules.get(),
                         ignoreAllLibraryKeepRules.get(),
                         libraryKeepRules,
                         finalListOfConfigurationFiles,
-                        LoggerWrapper.getLogger(R8Task::class.java)),
+                        LoggerWrapper.getLogger(R8Task::class.java),
+                        LibraryArtifactType.KEEP_RULES),
                     extractedDefaultProguardFile))
             it.inputProguardMapping.set(
                 if (testedMappingFile.isEmpty) {

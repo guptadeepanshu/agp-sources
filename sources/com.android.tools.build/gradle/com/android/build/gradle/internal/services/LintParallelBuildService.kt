@@ -19,6 +19,7 @@ package com.android.build.gradle.internal.services
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.ProjectOptions
 import com.android.build.gradle.options.StringOption.LINT_HEAP_SIZE
+import com.android.build.gradle.options.StringOption.LINT_RESERVED_MEMORY_PER_TASK
 import com.sun.management.OperatingSystemMXBean
 import org.gradle.api.logging.Logging
 import org.gradle.api.services.BuildService
@@ -39,7 +40,7 @@ abstract class LintParallelBuildService : BuildService<BuildServiceParameters.No
             totalPhysicalMemory: Long?
         ): Int? {
             return if (projectOptions.get(BooleanOption.RUN_LINT_IN_PROCESS)) {
-                calculateMaxParallelUsagesInProcess(maxRuntimeMemory)
+                calculateMaxParallelUsagesInProcess(projectOptions, maxRuntimeMemory)
             } else {
                 calculateMaxParallelUsagesOutOfProcess(
                     projectOptions,
@@ -49,9 +50,15 @@ abstract class LintParallelBuildService : BuildService<BuildServiceParameters.No
             }
         }
 
-        private fun calculateMaxParallelUsagesInProcess(maxRuntimeMemory: Long): Int {
-            // We assume lint will use less than 1 gigabyte per analysis task.
-            val memoryPerLintTask = 1024 * 1024 * 1024
+        private fun calculateMaxParallelUsagesInProcess(
+            projectOptions: ProjectOptions,
+            maxRuntimeMemory: Long
+        ): Int {
+            // We reserve 512 megabytes per lint task, unless the user specifies a different value.
+            val memoryPerLintTask: Long =
+                projectOptions.get(LINT_RESERVED_MEMORY_PER_TASK)?.let {
+                    parseMemorySize(it, LINT_RESERVED_MEMORY_PER_TASK.propertyName)
+                } ?: (512 * 1024 * 1024)
             // Multiply maxRuntimeMemory by 0.75 to save memory for other things too
             val maxLintMemory = (maxRuntimeMemory * 0.75).toLong()
             return Math.floorDiv(maxLintMemory, memoryPerLintTask).coerceAtLeast(1).toInt()
@@ -65,8 +72,9 @@ abstract class LintParallelBuildService : BuildService<BuildServiceParameters.No
             val maxParallelUsage =
                 Math.floorDiv(
                     totalPhysicalMemory,
-                    parseLintHeapSize(
-                        calculateLintHeapSize(projectOptions.get(LINT_HEAP_SIZE), maxRuntimeMemory)
+                    parseMemorySize(
+                        calculateLintHeapSize(projectOptions.get(LINT_HEAP_SIZE), maxRuntimeMemory),
+                        LINT_HEAP_SIZE.propertyName
                     )
                 )
             // Leave space for at least the gradle daemon and the kotlin daemon
@@ -79,8 +87,12 @@ abstract class LintParallelBuildService : BuildService<BuildServiceParameters.No
             maxRuntimeMemory: Long
         ): String = userSpecifiedLintHeapSize ?: "${maxRuntimeMemory / 1024 / 1024}m"
 
-        private fun parseLintHeapSize(lintHeapSize: String): Long {
-            val value = lintHeapSize.lowercase(Locale.US)
+        /**
+         * Parses a memory size (e.g., max heap) string (e.g., "512m" or "2g"), and returns the
+         * corresponding number of bytes as a Long.
+         */
+        private fun parseMemorySize(memorySize: String, propertyName: String): Long {
+            val value = memorySize.lowercase(Locale.US)
             val longOrNull = when {
                 value.toLongOrNull() != null -> value.toLongOrNull()
                 value.endsWith("k") -> {
@@ -99,9 +111,7 @@ abstract class LintParallelBuildService : BuildService<BuildServiceParameters.No
                 }
             }
             return longOrNull
-                ?: throw RuntimeException(
-                    "Failed to parse ${LINT_HEAP_SIZE.propertyName} \"$lintHeapSize\"."
-                )
+                ?: throw RuntimeException("Failed to parse $propertyName \"$memorySize\".")
         }
     }
 }

@@ -125,7 +125,11 @@ class PathVariables {
   }
 
   /** Reverses the path string computed by [toPathString] */
-  fun fromPathString(path: String, relativeTo: File? = null): File {
+  fun fromPathString(
+    path: String,
+    relativeTo: File? = null,
+    allowMissingPathVariable: Boolean = false
+  ): File {
     if (path.startsWith("$")) {
       val hasBraces = path.length > 1 && path[1] == '{'
       for (i in 1 until path.length) {
@@ -134,14 +138,22 @@ class PathVariables {
           val varName = path.substring(1, i)
           val dir =
             pathVariables.firstOrNull { it.name == varName }?.dir
-              ?: error("Path variable \$$varName referenced in $path not provided to serialization")
+              ?: if (allowMissingPathVariable) {
+                File("\$$varName")
+              } else {
+                error("Path variable \$$varName referenced in $path not provided to serialization")
+              }
           val relativeStart = if (c == '/' || c == '\\') i + 1 else i
           return File(dir, path.substring(relativeStart))
         }
       }
       val name = path.substring(1)
       return pathVariables.firstOrNull { it.name == name }?.dir
-        ?: error("Path variable \$$name referenced in $path not provided to serialization")
+        ?: if (allowMissingPathVariable) {
+          File("\$$name")
+        } else {
+          error("Path variable \$$name referenced in $path not provided to serialization")
+        }
     }
 
     val file = File(path)
@@ -225,29 +237,12 @@ class PathVariables {
      * variables are listed last, and other than that, alphabetical order.
      */
     private val PATH_COMPARATOR: Comparator<PathVariable> =
-      object : Comparator<PathVariable> {
-        override fun compare(v1: PathVariable, v2: PathVariable): Int {
-          val p1 = v1.dir.path
-          val p2 = v2.dir.path
-
-          val c1 = if (v1.name.endsWith(CANONICALIZED)) 1 else 0
-          val c2 = if (v2.name.endsWith(CANONICALIZED)) 1 else 0
-
-          if (c1 != c2) {
-            return c1 - c2
-          }
-          if (p2.length != p1.length) {
-            return p2.length - p1.length
-          }
-
-          val delta = p1.compareTo(p2)
-          if (delta != 0) {
-            return delta
-          }
-
-          return v1.name.compareTo(v2.name)
-        }
-      }
+      compareBy(
+        { it.name.endsWith(CANONICALIZED) },
+        { -it.dir.path.length },
+        { it.dir.path },
+        { it.name }
+      )
 
     /**
      * Parses a path variable descriptor and returns a corresponding [PathVariables] object. The

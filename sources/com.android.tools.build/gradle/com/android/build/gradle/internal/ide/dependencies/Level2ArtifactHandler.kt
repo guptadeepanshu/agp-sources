@@ -65,7 +65,7 @@ class Level2ArtifactHandler(
         buildId: String,
         variantName: String?,
         isTestFixtures: Boolean,
-        aarFile: File,
+        aarFile: File?,
         lintJar: File?,
         isProvided: Boolean,
         coordinatesSupplier: () -> MavenCoordinates,

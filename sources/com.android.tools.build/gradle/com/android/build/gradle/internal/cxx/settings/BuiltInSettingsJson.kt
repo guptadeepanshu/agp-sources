@@ -31,6 +31,7 @@ import com.android.build.gradle.internal.cxx.model.buildIsPrefabCapable
 import com.android.build.gradle.internal.cxx.model.buildSystemTag
 import com.android.build.gradle.internal.cxx.model.determineUsedStlFromArguments
 import com.android.build.gradle.internal.cxx.model.intermediatesParentDirSuffix
+import com.android.build.gradle.internal.cxx.model.name
 import com.android.build.gradle.internal.cxx.settings.Environment.GRADLE
 import com.android.build.gradle.internal.cxx.settings.Environment.MICROSOFT_BUILT_IN
 import com.android.build.gradle.internal.cxx.settings.Environment.NDK
@@ -136,7 +137,7 @@ fun CxxAbiModel.getNdkMetaSettingsJson() : Settings {
             lookup(NDK_CMAKE_TOOLCHAIN))
     // Per-ABI environments
     for(abiValue in Abi.values()) {
-        val abiInfo = variant.module.ndkMetaAbiList.singleOrNull { it.abi == abiValue } ?: continue
+        val abiInfo = variant.module.ndkMetaAbiList.singleOrNull { it.name == abiValue.name } ?: continue
         environments[Environment.NDK_ABI.environment.replace(NDK_ABI.ref, abiValue.tag)] = NameTable(
                 NDK_ABI_BITNESS to abiInfo.bitness.toString(),
                 NDK_ABI_IS_64_BITS to cmakeBoolean(abiInfo.bitness == 64),
@@ -234,7 +235,7 @@ fun CxxAbiModel.getSettingsFromCommandLine(arguments: List<CommandLineArgument>)
     val stl =  variant.module.determineUsedStlFromArguments(arguments)
 
     val stlLibraryFile =
-            variant.module.stlSharedObjectMap[stl]?.get(abi)?.toString() ?: ""
+            variant.module.stlSharedObjectMap[stl]?.get(name)?.toString() ?: ""
 
     nameTable.addAll(
         NDK_VARIANT_STL_TYPE to stl.argumentName,

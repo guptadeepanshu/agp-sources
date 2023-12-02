@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.core
 
+import com.android.build.gradle.internal.dsl.BaselineProfileImpl
 import com.android.build.gradle.internal.dsl.KeepRulesImpl
 import com.android.build.gradle.internal.dsl.OptimizationImpl
 
@@ -27,14 +28,26 @@ class MergedOptimization : MergedOptions<OptimizationImpl> {
     var ignoreAllLibraryKeepRules: Boolean = false
         private set
 
+    var ignoreFromInBaselineProfile: MutableSet<String> = mutableSetOf()
+        private set
+
+    var ignoreFromAllExternalDependenciesInBaselineProfile: Boolean = false
+        private set
+
     override fun reset() {
         ignoredLibraryKeepRules = mutableSetOf()
         ignoreAllLibraryKeepRules = false
+        ignoreFromInBaselineProfile = mutableSetOf()
+        ignoreFromAllExternalDependenciesInBaselineProfile = false
     }
 
     override fun append(option: OptimizationImpl) {
         ignoredLibraryKeepRules.addAll((option.keepRules as KeepRulesImpl).dependencies)
         ignoreAllLibraryKeepRules = ignoreAllLibraryKeepRules ||
                 (option.keepRules as KeepRulesImpl).ignoreAllDependencies
+        ignoreFromInBaselineProfile.addAll((option.baselineProfile as BaselineProfileImpl).ignoreFrom)
+        ignoreFromAllExternalDependenciesInBaselineProfile =
+            ignoreFromAllExternalDependenciesInBaselineProfile ||
+                    (option.baselineProfile as BaselineProfileImpl).ignoreFromAllExternalDependencies
     }
 }

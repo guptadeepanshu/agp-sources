@@ -144,4 +144,77 @@ public interface EmulatorGrpcOrBuilder extends
    * <code>optional .android_studio.PercentileEstimator duration = 6;</code>
    */
   com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getDurationOrBuilder();
+
+  /**
+   * <pre>
+   * Number of messages received
+   * </pre>
+   *
+   * <code>optional .android_studio.PercentileEstimator rcv = 7;</code>
+   * @return Whether the rcv field is set.
+   */
+  boolean hasRcv();
+  /**
+   * <pre>
+   * Number of messages received
+   * </pre>
+   *
+   * <code>optional .android_studio.PercentileEstimator rcv = 7;</code>
+   * @return The rcv.
+   */
+  com.google.wireless.android.sdk.stats.PercentileEstimator getRcv();
+  /**
+   * <pre>
+   * Number of messages received
+   * </pre>
+   *
+   * <code>optional .android_studio.PercentileEstimator rcv = 7;</code>
+   */
+  com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getRcvOrBuilder();
+
+  /**
+   * <pre>
+   * Number of messages send
+   * </pre>
+   *
+   * <code>optional .android_studio.PercentileEstimator snd = 8;</code>
+   * @return Whether the snd field is set.
+   */
+  boolean hasSnd();
+  /**
+   * <pre>
+   * Number of messages send
+   * </pre>
+   *
+   * <code>optional .android_studio.PercentileEstimator snd = 8;</code>
+   * @return The snd.
+   */
+  com.google.wireless.android.sdk.stats.PercentileEstimator getSnd();
+  /**
+   * <pre>
+   * Number of messages send
+   * </pre>
+   *
+   * <code>optional .android_studio.PercentileEstimator snd = 8;</code>
+   */
+  com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getSndOrBuilder();
+
+  /**
+   * <pre>
+   * Type of connection
+   * </pre>
+   *
+   * <code>optional .android_studio.EmulatorGrpc.GrpcConnection type = 9;</code>
+   * @return Whether the type field is set.
+   */
+  boolean hasType();
+  /**
+   * <pre>
+   * Type of connection
+   * </pre>
+   *
+   * <code>optional .android_studio.EmulatorGrpc.GrpcConnection type = 9;</code>
+   * @return The type.
+   */
+  com.google.wireless.android.sdk.stats.EmulatorGrpc.GrpcConnection getType();
 }

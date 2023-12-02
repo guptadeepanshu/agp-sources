@@ -72,7 +72,7 @@ public final class DdmPreferences {
 
     /** Enable / Disable the JdwpProxy feature. */
     private static boolean sJdwpProxyEnabled =
-            getPropertyOrDefault("DDMLIB_JDWP_PROXY_ENABLED", true, Boolean::parseBoolean);
+            getPropertyOrDefault("DDMLIB_JDWP_PROXY_ENABLED", false, Boolean::parseBoolean);
     /** Port used by JdwpProxy feature */
     private static int sJdwpProxyPort =
             getPropertyOrDefault("DDMLIB_JDWP_PROXY_PORT", 8599, Integer::parseInt);

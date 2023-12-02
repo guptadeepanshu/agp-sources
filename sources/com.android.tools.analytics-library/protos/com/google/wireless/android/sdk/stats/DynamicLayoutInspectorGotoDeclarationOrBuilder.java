@@ -49,7 +49,8 @@ public interface DynamicLayoutInspectorGotoDeclarationOrBuilder extends
 
   /**
    * <pre>
-   * Number of times a double click was used to "Goto Declaration"
+   * Number of times double click was used to "Goto Declaration"
+   * from component tree
    * </pre>
    *
    * <code>optional uint32 double_clicks = 3;</code>
@@ -58,11 +59,33 @@ public interface DynamicLayoutInspectorGotoDeclarationOrBuilder extends
   boolean hasDoubleClicks();
   /**
    * <pre>
-   * Number of times a double click was used to "Goto Declaration"
+   * Number of times double click was used to "Goto Declaration"
+   * from component tree
    * </pre>
    *
    * <code>optional uint32 double_clicks = 3;</code>
    * @return The doubleClicks.
    */
   int getDoubleClicks();
+
+  /**
+   * <pre>
+   * Number of times double click was used to "Goto Declaration"
+   * from device render
+   * </pre>
+   *
+   * <code>optional uint32 double_clicks_from_render = 4;</code>
+   * @return Whether the doubleClicksFromRender field is set.
+   */
+  boolean hasDoubleClicksFromRender();
+  /**
+   * <pre>
+   * Number of times double click was used to "Goto Declaration"
+   * from device render
+   * </pre>
+   *
+   * <code>optional uint32 double_clicks_from_render = 4;</code>
+   * @return The doubleClicksFromRender.
+   */
+  int getDoubleClicksFromRender();
 }

@@ -58,7 +58,7 @@ data class CxxVariantModel(
     /**
      * The list of valid ABIs for this variant
      */
-    val validAbiList : List<Abi>,
+    val validAbiList : List<String>,
 
     /**
      * The list of build targets.

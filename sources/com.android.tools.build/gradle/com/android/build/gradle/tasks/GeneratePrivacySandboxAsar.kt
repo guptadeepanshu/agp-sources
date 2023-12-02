@@ -16,11 +16,11 @@
 
 package com.android.build.gradle.tasks
 
+import com.android.build.gradle.internal.dsl.ModulePropertyKey.OptionalString
 import com.android.build.gradle.internal.packaging.getDefaultDebugKeystoreSigningConfig
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInternalArtifactType
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
-import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.AndroidLocationsBuildService
 import com.android.build.gradle.internal.services.getBuildService
@@ -30,18 +30,11 @@ import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.configureVariantProperties
 import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.builder.internal.packaging.IncrementalPackager
-import com.android.bundle.Config
-import com.android.bundle.SdkBundleConfigProto
-import com.android.bundle.SdkModulesConfigOuterClass
-import com.android.bundle.SdkModulesConfigOuterClass.SdkModulesConfig
+import com.android.builder.signing.DefaultSigningConfig
 import com.android.ide.common.signing.KeystoreHelper
 import com.android.tools.build.bundletool.commands.BuildSdkAsarCommand
-import com.android.tools.build.bundletool.commands.BuildSdkBundleCommand
 import com.android.tools.build.bundletool.model.version.BundleToolVersion
-import com.google.common.collect.ImmutableList
 import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
@@ -52,7 +45,7 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.work.DisableCachingByDefault
-import java.util.Objects
+import java.io.File
 
 /**
  * Task to invoke the bundle tool command to create the final ASB bundle for privacy sandbox sdk
@@ -152,15 +145,39 @@ abstract class GeneratePrivacySandboxAsar : NonIncrementalTask() {
             task.bundleToolVersion.setDisallowChanges(
                     BundleToolVersion.getCurrentVersion().toString()
             )
-            val defaultDebugSigningConfig = getBuildService(
-                    creationConfig.services.buildServiceRegistry,
-                    AndroidLocationsBuildService::class.java
-            ).map {
-                it.getDefaultDebugKeystoreSigningConfig()
+            val experimentalProps = creationConfig.experimentalProperties
+            experimentalProps.finalizeValue()
+            val signingConfigProvider = if (
+                    OptionalString.ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_NAME.getValue(
+                            experimentalProps.get()) != null &&
+                    OptionalString.ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_STORE_FILE.getValue(
+                            experimentalProps.get()) != null) {
+                val localDeploymentSigningConfig = SigningConfigData(
+                        OptionalString.ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_NAME.getValue(
+                                experimentalProps.get())!!,
+                        OptionalString.ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_STORE_TYPE.getValue(
+                                experimentalProps.get()),
+                        File(OptionalString.ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_STORE_FILE.getValue(
+                                experimentalProps.get())!!),
+                        OptionalString.ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_STORE_PASSWORD.getValue(
+                                experimentalProps.get()) ?: DefaultSigningConfig.DEFAULT_PASSWORD,
+                        OptionalString.ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_KEY_ALIAS.getValue(
+                                experimentalProps.get()),
+                        OptionalString.ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_KEY_PASSOWRD.getValue(
+                                experimentalProps.get()) ?: DefaultSigningConfig.DEFAULT_ALIAS
+                )
+                creationConfig.services.provider { localDeploymentSigningConfig }
+            } else {
+                getBuildService(
+                        creationConfig.services.buildServiceRegistry,
+                        AndroidLocationsBuildService::class.java
+                ).map {
+                    it.getDefaultDebugKeystoreSigningConfig()
+                }
             }
             task.signingConfigDataProvider.setDisallowChanges(
                     SigningConfigDataProvider(
-                            signingConfigData = defaultDebugSigningConfig,
+                            signingConfigData = signingConfigProvider as Provider<SigningConfigData?>,
                             signingConfigFileCollection = null,
                             signingConfigValidationResultDir = creationConfig.artifacts.get(
                                     InternalArtifactType.VALIDATE_SIGNING_CONFIG)

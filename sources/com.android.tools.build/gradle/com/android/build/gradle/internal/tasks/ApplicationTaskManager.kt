@@ -16,10 +16,8 @@
 
 package com.android.build.gradle.internal.tasks
 
-import com.android.build.api.artifact.MultipleArtifact
 import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.artifact.SingleArtifact
-import com.android.build.api.component.impl.isTestApk
 import com.android.build.api.variant.ApplicationVariantBuilder
 import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.BaseExtension
@@ -48,8 +46,8 @@ import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.tasks.BuildPrivacySandboxSdkApks
 import com.android.build.gradle.tasks.ExtractSupportedLocalesTask
 import com.android.build.gradle.tasks.GenerateLocaleConfigTask
-import com.android.build.gradle.tasks.sync.ApplicationVariantModelTask
 import com.android.build.gradle.tasks.sync.AppIdListTask
+import com.android.build.gradle.tasks.sync.ApplicationVariantModelTask
 import com.android.builder.core.ComponentType
 import com.android.builder.errors.IssueReporter
 import com.android.builder.internal.aapt.AaptUtils
@@ -150,9 +148,14 @@ class ApplicationTaskManager(
             )
         }
 
+        taskFactory.register(AsarsToCompatSplitsTask.CreationAction(variant))
         createDynamicBundleTask(variantInfo)
 
         handleMicroApp(variant)
+
+        if (variant.services.projectOptions[BooleanOption.ENABLE_VCS_INFO]) {
+            taskFactory.register(ExtractVersionControlInfoTask.CreationAction(variant))
+        }
 
         val publishInfo = variant.publishInfo!!
 
@@ -343,6 +346,7 @@ class ApplicationTaskManager(
             taskFactory.register(BundleToApkTask.CreationAction(variant))
             taskFactory.register(BundleToStandaloneApkTask.CreationAction(variant))
             taskFactory.register(ExtractApksTask.CreationAction(variant))
+            taskFactory.register(ExtractPrivacySandboxCompatApks.CreationAction(variant))
             taskFactory.register(
                 ListingFileRedirectTask.CreationAction(
                     variant,

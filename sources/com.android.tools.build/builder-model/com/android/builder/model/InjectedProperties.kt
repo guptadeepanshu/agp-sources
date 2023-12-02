@@ -90,6 +90,7 @@ const val PROPERTY_APK_LOCATION = "android.injected.apk.location"
 const val PROPERTY_DEPLOY_AS_INSTANT_APP = "android.injected.deploy.instant-app"
 const val PROPERTY_APK_SELECT_CONFIG = "android.inject.apkselect.config"
 const val PROPERTY_EXTRACT_INSTANT_APK = "android.inject.bundle.extractinstant"
+const val PROPERTY_SUPPORTS_PRIVACY_SANDBOX = "android.inject.supports-privacy-sandbox"
 
 /**
  * Comma separated list of on-demand dynamic modules or instant app modules names that are

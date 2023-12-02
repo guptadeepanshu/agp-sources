@@ -86,6 +86,7 @@ public final class AndroidVersion implements Comparable<AndroidVersion>, Seriali
         public static final int S = 31;
         public static final int S_V2 = 32;
         public static final int TIRAMISU = 33;
+        public static final int UPSIDE_DOWN_CAKE = 34;
     }
 
     /**
@@ -94,7 +95,8 @@ public final class AndroidVersion implements Comparable<AndroidVersion>, Seriali
      * minimum SDK extension version number supported by that release.
      */
     public enum ApiBaseExtension {
-        TIRAMISU(33, 3);
+        TIRAMISU(33, 3),
+        UPSIDE_DOWN_CAKE(34, 7);
 
         private final int myApi;
 

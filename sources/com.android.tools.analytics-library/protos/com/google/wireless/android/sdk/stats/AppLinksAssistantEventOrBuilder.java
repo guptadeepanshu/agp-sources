@@ -255,4 +255,45 @@ public interface AppLinksAssistantEventOrBuilder extends
    */
   com.google.protobuf.ByteString
       getRawProjectIdBytes();
+
+  /**
+   * <code>optional .android_studio.AppLinksAssistantEvent.ValidationSummary validation_summary = 11;</code>
+   * @return Whether the validationSummary field is set.
+   */
+  boolean hasValidationSummary();
+  /**
+   * <code>optional .android_studio.AppLinksAssistantEvent.ValidationSummary validation_summary = 11;</code>
+   * @return The validationSummary.
+   */
+  com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary getValidationSummary();
+  /**
+   * <code>optional .android_studio.AppLinksAssistantEvent.ValidationSummary validation_summary = 11;</code>
+   */
+  com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummaryOrBuilder getValidationSummaryOrBuilder();
+
+  /**
+   * <code>optional .android_studio.AppLinksAssistantEvent.IntentFilterFix intent_filter_fix = 12;</code>
+   * @return Whether the intentFilterFix field is set.
+   */
+  boolean hasIntentFilterFix();
+  /**
+   * <code>optional .android_studio.AppLinksAssistantEvent.IntentFilterFix intent_filter_fix = 12;</code>
+   * @return The intentFilterFix.
+   */
+  com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix getIntentFilterFix();
+  /**
+   * <code>optional .android_studio.AppLinksAssistantEvent.IntentFilterFix intent_filter_fix = 12;</code>
+   */
+  com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFixOrBuilder getIntentFilterFixOrBuilder();
+
+  /**
+   * <code>optional .android_studio.AppLinksAssistantEvent.LinkFilterOption link_filter_option = 13;</code>
+   * @return Whether the linkFilterOption field is set.
+   */
+  boolean hasLinkFilterOption();
+  /**
+   * <code>optional .android_studio.AppLinksAssistantEvent.LinkFilterOption link_filter_option = 13;</code>
+   * @return The linkFilterOption.
+   */
+  com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinkFilterOption getLinkFilterOption();
 }

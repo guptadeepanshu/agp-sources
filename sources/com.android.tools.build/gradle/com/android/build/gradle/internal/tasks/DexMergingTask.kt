@@ -20,7 +20,6 @@ import com.android.SdkConstants
 import com.android.build.api.artifact.MultipleArtifact
 import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.artifact.impl.InternalScopedArtifacts
-import com.android.build.api.transform.QualifiedContent
 import com.android.build.api.transform.TransformException
 import com.android.build.api.variant.impl.getFeatureLevel
 import com.android.build.gradle.internal.LoggerWrapper
@@ -394,8 +393,14 @@ abstract class DexMergingTask : NewIncrementalTask() {
                                     LibraryElements::class.java,
                                     LibraryElements.CLASSES
                                 )
-                            check(attributes.libraryElementsAttribute == null)
-                            val updatedAttributes = attributes.copy(classesLibraryElements)
+                            check(!attributes.namedAttributes.containsKey(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE))
+                            val updatedAttributes = AndroidAttributes(
+                                stringAttributes = attributes.stringAttributes,
+                                namedAttributes = attributes.namedAttributes + Pair(
+                                    LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE,
+                                    classesLibraryElements
+                                ),
+                            )
                             creationConfig.variantDependencies.getArtifactFileCollection(
                                 AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                                 AndroidArtifacts.ArtifactScope.PROJECT,

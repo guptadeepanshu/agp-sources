@@ -50,4 +50,23 @@ public interface TypingLatencyStatsOrBuilder extends
    */
   com.google.wireless.android.sdk.stats.TypingLatencyStats.LatencyRecordOrBuilder getLatencyRecordsOrBuilder(
       int index);
+
+  /**
+   * <pre>
+   * Whether the IDE was in Essential Highlighting or not
+   * </pre>
+   *
+   * <code>optional bool essential_highlighting = 2;</code>
+   * @return Whether the essentialHighlighting field is set.
+   */
+  boolean hasEssentialHighlighting();
+  /**
+   * <pre>
+   * Whether the IDE was in Essential Highlighting or not
+   * </pre>
+   *
+   * <code>optional bool essential_highlighting = 2;</code>
+   * @return The essentialHighlighting.
+   */
+  boolean getEssentialHighlighting();
 }

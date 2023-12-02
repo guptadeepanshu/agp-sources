@@ -48,7 +48,7 @@ import com.android.build.gradle.internal.core.dsl.MultiVariantComponentDslInfo;
 import com.android.build.gradle.internal.core.dsl.PublishableComponentDslInfo;
 import com.android.build.gradle.internal.core.dsl.VariantDslInfo;
 import com.android.build.gradle.internal.dsl.AbstractPublishing;
-import com.android.build.gradle.internal.dsl.ModuleBooleanPropertyKeys;
+import com.android.build.gradle.internal.dsl.ModulePropertyKey;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts;
 import com.android.build.gradle.internal.publishing.ComponentPublishingInfo;
 import com.android.build.gradle.internal.publishing.PublishedConfigSpec;
@@ -279,6 +279,8 @@ public class VariantDependenciesBuilder {
         compileAttributes.attribute(Usage.USAGE_ATTRIBUTE, apiUsage);
         compileAttributes.attribute(TARGET_JVM_ENVIRONMENT_ATTRIBUTE, jvmEnvironment);
         compileAttributes.attribute(AgpVersionAttr.ATTRIBUTE, agpVersion);
+        compileAttributes.attribute(
+                CATEGORY_ATTRIBUTE, factory.named(Category.class, Category.LIBRARY));
 
         Configuration annotationProcessor =
                 configurations.maybeCreate(variantName + "AnnotationProcessorClasspath");
@@ -317,6 +319,8 @@ public class VariantDependenciesBuilder {
         runtimeAttributes.attribute(Usage.USAGE_ATTRIBUTE, runtimeUsage);
         runtimeAttributes.attribute(TARGET_JVM_ENVIRONMENT_ATTRIBUTE, jvmEnvironment);
         runtimeAttributes.attribute(AgpVersionAttr.ATTRIBUTE, agpVersion);
+        runtimeAttributes.attribute(
+                CATEGORY_ATTRIBUTE, factory.named(Category.class, Category.LIBRARY));
 
         boolean isLibraryConstraintApplied =
                 maybeAddDependencyConstraints(
@@ -666,7 +670,7 @@ public class VariantDependenciesBuilder {
         }
 
         boolean isSelfInstrumenting =
-                ModuleBooleanPropertyKeys.SELF_INSTRUMENTING.getValueAsBoolean(
+                ModulePropertyKey.BooleanWithDefault.SELF_INSTRUMENTING.getValue(
                         experimentalProperties);
         return new VariantDependencies(
                 variantName,

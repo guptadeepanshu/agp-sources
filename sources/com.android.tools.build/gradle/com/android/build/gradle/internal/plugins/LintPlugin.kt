@@ -21,7 +21,6 @@ import com.android.build.api.dsl.Lint
 import com.android.build.api.extension.impl.DslLifecycleComponentsOperationsRegistrar
 import com.android.build.gradle.LintLifecycleExtensionImpl
 import com.android.build.gradle.internal.SdkComponentsBuildService
-import com.android.build.gradle.internal.dependency.AndroidAttributes
 import com.android.build.gradle.internal.dependency.ModelArtifactCompatibilityRule
 import com.android.build.gradle.internal.dsl.LintImpl
 import com.android.build.gradle.internal.dsl.LintOptions
@@ -33,21 +32,25 @@ import com.android.build.gradle.internal.ide.dependencies.MavenCoordinatesCacheB
 import com.android.build.gradle.internal.ide.v2.GlobalSyncService
 import com.android.build.gradle.internal.lint.AndroidLintAnalysisTask
 import com.android.build.gradle.internal.lint.AndroidLintCopyReportTask
+import com.android.build.gradle.internal.lint.AndroidLintGlobalTask
 import com.android.build.gradle.internal.lint.AndroidLintTask
 import com.android.build.gradle.internal.lint.AndroidLintTextOutputTask
+import com.android.build.gradle.internal.lint.KotlinMultiplatformExtensionWrapper
 import com.android.build.gradle.internal.lint.LintFixBuildService
 import com.android.build.gradle.internal.lint.LintFromMaven
 import com.android.build.gradle.internal.lint.LintMode
 import com.android.build.gradle.internal.lint.LintModelWriterTask
 import com.android.build.gradle.internal.lint.LintTaskManager
 import com.android.build.gradle.internal.lint.getLocalCustomLintChecks
-import com.android.build.gradle.internal.plugins.BasePlugin
 import com.android.build.gradle.internal.profile.AnalyticsConfiguratorService
 import com.android.build.gradle.internal.profile.AnalyticsService
 import com.android.build.gradle.internal.profile.AnalyticsUtil
 import com.android.build.gradle.internal.profile.NoOpAnalyticsService
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
-import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.publishing.getAttributes
+import com.android.build.gradle.internal.scope.InternalMultipleArtifactType
+import com.android.build.gradle.internal.scope.InternalMultipleArtifactType.LINT_REPORT_LINT_MODEL
+import com.android.build.gradle.internal.scope.InternalMultipleArtifactType.LINT_VITAL_REPORT_LINT_MODEL
 import com.android.build.gradle.internal.scope.ProjectInfo
 import com.android.build.gradle.internal.scope.publishArtifactToConfiguration
 import com.android.build.gradle.internal.services.AndroidLocationsBuildService
@@ -59,25 +62,34 @@ import com.android.build.gradle.internal.services.StringCachingBuildService
 import com.android.build.gradle.internal.tasks.LintModelMetadataTask
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.TaskCreationServicesImpl
+import com.android.build.gradle.internal.tasks.factory.dependsOn
+import com.android.build.gradle.options.BooleanOption.LINT_ANALYSIS_PER_COMPONENT
 import com.android.build.gradle.options.Option
 import com.android.build.gradle.options.ProjectOptionService
 import com.android.build.gradle.options.ProjectOptions
 import com.android.build.gradle.options.SyncOptions
+import com.android.tools.lint.model.LintModelArtifactType
+import com.android.utils.usLocaleCapitalize
 import com.google.wireless.android.sdk.stats.GradleBuildProject
 import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.Task
 import org.gradle.api.attributes.Category
 import org.gradle.api.component.AdhocComponentWithVariants
 import org.gradle.api.component.ConfigurationVariantDetails
 import org.gradle.api.component.SoftwareComponent
 import org.gradle.api.file.FileCollection
+import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.SourceSet
 import org.gradle.build.event.BuildEventsListenerRegistry
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import javax.inject.Inject
+
+const val LINT_PLUGIN_ID = "com.android.lint"
 
 /**
  * Plugin for running lint **without** the Android Gradle plugin, such as in a pure Kotlin
@@ -99,7 +111,8 @@ abstract class LintPlugin : Plugin<Project> {
 
         dslServices = DslServicesImpl(
             projectServices,
-            project.providers.provider { null }
+            project.providers.provider { null },
+            null
         )
 
         val dslOperationsRegistrar = createExtension(project, dslServices)
@@ -129,41 +142,105 @@ abstract class LintPlugin : Plugin<Project> {
         val taskCreationServices: TaskCreationServices = TaskCreationServicesImpl(projectServices)
         // Create the 'lint' task before afterEvaluate to avoid breaking existing build scripts that
         // expect it to be present during evaluation
-        val lintTask = project.tasks.register("lint", AndroidLintTextOutputTask::class.java)
-        project.tasks.named(JavaBasePlugin.CHECK_TASK_NAME).configure { t: Task -> t.dependsOn(lintTask) }
+        val lintTask =
+            project.tasks.register("lint", AndroidLintGlobalTask::class.java) {
+                it.group = JavaBasePlugin.VERIFICATION_GROUP
+                it.description = "Runs lint for project `${project.name}`"
+            }
+        project.tasks.named(JavaBasePlugin.CHECK_TASK_NAME).dependsOn(lintTask)
+        val lintFixTask =
+            project.tasks.register("lintFix", AndroidLintGlobalTask::class.java) {
+                it.group = JavaBasePlugin.VERIFICATION_GROUP
+                it.description =
+                    "Generates the lint report for project `${project.name}` and applies any safe suggestions to the source code."
+            }
+        val updateLintBaselineTask =
+            project.tasks.register("updateLintBaseline", AndroidLintGlobalTask::class.java) {
+                it.group = JavaBasePlugin.VERIFICATION_GROUP
+                it.description = "Updates the lint baseline for project `${project.name}`."
+            }
+        val lintVitalTask =
+            project.tasks.register("lintVital", AndroidLintGlobalTask::class.java) {
+                it.group = JavaBasePlugin.VERIFICATION_GROUP
+                it.description =
+                    "Generates the lint report for just the fatal issues for project `${project.name}`"
+            }
 
         // Avoid reading the lintOptions DSL and build directory before the build author can customize them
         project.afterEvaluate {
             dslOperationsRegistrar.executeDslFinalizationBlocks()
 
-            lintTask.configure { task ->
-                task.configureForStandalone(taskCreationServices, artifacts, lintOptions!!)
+            // kotlinExtensionWrapper will be null if the KotlinMultiplatformExtension is not on the
+            // runtime classpath.
+            val kotlinExtensionWrapper = try {
+                // This will throw an (ignored) ClassNotFoundException if
+                // KotlinMultiplatformExtension is not on the runtime classpath.
+                Class.forName("org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension")
+                val kotlinExtension =
+                    project.extensions.findByName("kotlin") as? KotlinMultiplatformExtension
+                kotlinExtension?.let { KotlinMultiplatformExtensionWrapper(it) }
+            } catch (ignored: ClassNotFoundException) {
+                null
             }
-            val updateLintBaselineTask =
-                project.tasks.register("updateLintBaseline", AndroidLintTask::class.java) { task ->
-                    task.description = "Updates the lint baseline for project `${project.name}`."
+            val lintTextOutputTask =
+                project.tasks.register("lintJvm", AndroidLintTextOutputTask::class.java) { task ->
+                    task.configureForStandalone(taskCreationServices, artifacts, lintOptions!!)
+                }
+            lintTask.dependsOn(lintTextOutputTask)
+            val isPerComponentLintAnalysis =
+                kotlinExtensionWrapper != null
+                        || taskCreationServices.projectOptions.get(LINT_ANALYSIS_PER_COMPONENT)
+            val updateLintBaselineJvmTask =
+                project.tasks.register("updateLintBaselineJvm", AndroidLintTask::class.java) { task ->
+                    task.description = "Updates the JVM lint baseline for project `${project.name}`."
                     task.configureForStandalone(
                         taskCreationServices,
                         javaExtension,
                         customLintChecks,
                         lintOptions!!,
-                        artifacts.get(InternalArtifactType.LINT_PARTIAL_RESULTS),
-                        artifacts.getOutputPath(InternalArtifactType.LINT_MODEL),
+                        artifacts.getAll(InternalMultipleArtifactType.LINT_PARTIAL_RESULTS),
+                        artifacts.getAll(LINT_REPORT_LINT_MODEL),
+                        if (isPerComponentLintAnalysis && lintOptions!!.ignoreTestSources.not()) {
+                            artifacts.getAll(
+                                InternalMultipleArtifactType.UNIT_TEST_LINT_PARTIAL_RESULTS
+                            )
+                        } else {
+                            null
+                        },
+                        if (isPerComponentLintAnalysis && lintOptions!!.ignoreTestSources.not()) {
+                            artifacts.getAll(InternalMultipleArtifactType.UNIT_TEST_LINT_MODEL)
+                        } else {
+                            null
+                        },
                         LintMode.UPDATE_BASELINE
                     )
                 }
-            project.tasks.register("lintReport", AndroidLintTask::class.java) { task ->
-                task.description = "Generates the lint report for project `${project.name}`"
+            updateLintBaselineTask.dependsOn(updateLintBaselineJvmTask)
+
+            project.tasks.register("lintReportJvm", AndroidLintTask::class.java) { task ->
+                task.description = "Generates the JVM lint report for project `${project.name}`"
                 task.configureForStandalone(
                     taskCreationServices,
                     javaExtension,
                     customLintChecks,
                     lintOptions!!,
-                    artifacts.get(InternalArtifactType.LINT_PARTIAL_RESULTS),
-                    artifacts.getOutputPath(InternalArtifactType.LINT_MODEL),
+                    artifacts.getAll(InternalMultipleArtifactType.LINT_PARTIAL_RESULTS),
+                    artifacts.getAll(LINT_REPORT_LINT_MODEL),
+                    if (isPerComponentLintAnalysis && lintOptions!!.ignoreTestSources.not()) {
+                        artifacts.getAll(
+                            InternalMultipleArtifactType.UNIT_TEST_LINT_PARTIAL_RESULTS
+                        )
+                    } else {
+                        null
+                    },
+                    if (isPerComponentLintAnalysis && lintOptions!!.ignoreTestSources.not()) {
+                        artifacts.getAll(InternalMultipleArtifactType.UNIT_TEST_LINT_MODEL)
+                    } else {
+                        null
+                    },
                     LintMode.REPORTING
                 )
-                task.mustRunAfter(updateLintBaselineTask)
+                task.mustRunAfter(updateLintBaselineJvmTask)
             }.also {
                 AndroidLintTask.VariantCreationAction.registerLintIntermediateArtifacts(
                     it,
@@ -177,24 +254,28 @@ abstract class LintPlugin : Plugin<Project> {
                 )
             }
 
-            project.tasks.register("lintVital", AndroidLintTextOutputTask::class.java) { task ->
-                task.configureForStandalone(
-                    taskCreationServices,
-                    artifacts,
-                    lintOptions!!,
-                    fatalOnly = true
-                )
-            }
-            project.tasks.register("lintVitalReport", AndroidLintTask::class.java) { task ->
+            val lintVitalJvmTask =
+                project.tasks.register("lintVitalJvm", AndroidLintTextOutputTask::class.java) { task ->
+                    task.configureForStandalone(
+                        taskCreationServices,
+                        artifacts,
+                        lintOptions!!,
+                        fatalOnly = true
+                    )
+                }
+            lintVitalTask.dependsOn(lintVitalJvmTask)
+            project.tasks.register("lintVitalReportJvm", AndroidLintTask::class.java) { task ->
                 task.description =
-                    "Generates the lint report for just the fatal issues for project  `${project.name}`"
+                    "Generates the JVM lint report for just the fatal issues for project `${project.name}`"
                 task.configureForStandalone(
                     taskCreationServices,
                     javaExtension,
                     customLintChecks,
                     lintOptions!!,
-                    artifacts.get(InternalArtifactType.LINT_VITAL_PARTIAL_RESULTS),
-                    artifacts.getOutputPath(InternalArtifactType.LINT_MODEL),
+                    artifacts.getAll(InternalMultipleArtifactType.LINT_VITAL_PARTIAL_RESULTS),
+                    artifacts.getAll(LINT_VITAL_REPORT_LINT_MODEL),
+                    unitTestPartialResults = null,
+                    unitTestLintModel = null,
                     LintMode.REPORTING,
                     fatalOnly = true
                 )
@@ -207,121 +288,481 @@ abstract class LintPlugin : Plugin<Project> {
                 )
             }
 
-            project.tasks.register("lintFix", AndroidLintTask::class.java) { task ->
-                task.description = "Generates the lint report for project `${project.name}` and applies any safe suggestions to the source code."
-                task.configureForStandalone(
-                    taskCreationServices,
-                    javaExtension,
-                    customLintChecks,
-                    lintOptions!!,
-                    artifacts.get(InternalArtifactType.LINT_PARTIAL_RESULTS),
-                    artifacts.getOutputPath(InternalArtifactType.LINT_MODEL),
-                    LintMode.REPORTING,
-                    autoFix = true
-                )
-                task.mustRunAfter(updateLintBaselineTask)
-            }
-
-            val lintAnalysisTask = project.tasks.register("lintAnalyze", AndroidLintAnalysisTask::class.java) { task ->
-                task.description = "Runs lint analysis for project `${project.name}`"
-                task.configureForStandalone(
-                    taskCreationServices,
-                    javaExtension,
-                    customLintChecks,
-                    lintOptions!!
-                )
-            }
-            AndroidLintAnalysisTask.registerOutputArtifacts(
-                lintAnalysisTask,
-                InternalArtifactType.LINT_PARTIAL_RESULTS,
-                artifacts
-            )
-            val lintVitalAnalysisTask = project.tasks.register("lintVitalAnalyze", AndroidLintAnalysisTask::class.java) { task ->
-                task.description =
-                    "Runs lint analysis on just the fatal issues for project `${project.name}`"
-                task.configureForStandalone(
-                    taskCreationServices,
-                    javaExtension,
-                    customLintChecks,
-                    lintOptions!!,
-                    fatalOnly = true
-                )
-            }
-            AndroidLintAnalysisTask.registerOutputArtifacts(
-                lintVitalAnalysisTask,
-                InternalArtifactType.LINT_VITAL_PARTIAL_RESULTS,
-                artifacts
-            )
-            val lintModelWriterTask = project.tasks.register("generateLintModel", LintModelWriterTask::class.java) { task ->
-                task.configureForStandalone(
-                    taskCreationServices,
-                    javaExtension,
-                    lintOptions!!,
-                    artifacts.getOutputPath(
-                        InternalArtifactType.LINT_PARTIAL_RESULTS,
-                        AndroidLintAnalysisTask.PARTIAL_RESULTS_DIR_NAME
+            val lintFixJvmTask =
+                project.tasks.register("lintFixJvm", AndroidLintTask::class.java) { task ->
+                    task.description =
+                        "Generates the JVM lint report for project `${project.name}` and applies any safe suggestions to the source code."
+                    task.configureForStandalone(
+                        taskCreationServices,
+                        javaExtension,
+                        customLintChecks,
+                        lintOptions!!,
+                        artifacts.getAll(InternalMultipleArtifactType.LINT_PARTIAL_RESULTS),
+                        artifacts.getAll(LINT_REPORT_LINT_MODEL),
+                        if (isPerComponentLintAnalysis && lintOptions!!.ignoreTestSources.not()) {
+                            artifacts.getAll(
+                                InternalMultipleArtifactType.UNIT_TEST_LINT_PARTIAL_RESULTS
+                            )
+                        } else {
+                            null
+                        },
+                        if (isPerComponentLintAnalysis && lintOptions!!.ignoreTestSources.not()) {
+                            artifacts.getAll(InternalMultipleArtifactType.UNIT_TEST_LINT_MODEL)
+                        } else {
+                            null
+                        },
+                        LintMode.REPORTING,
+                        autoFix = true
                     )
+                    task.mustRunAfter(updateLintBaselineJvmTask)
+                }
+            lintFixTask.dependsOn(lintFixJvmTask)
+
+            val jvmTargetNames: List<String> =
+                kotlinExtensionWrapper?.kotlinExtension
+                    ?.targets
+                    ?.filter {
+                        it.platformType == KotlinPlatformType.jvm
+                                && it.name != KotlinMultiplatformAndroidPlugin.ANDROID_TARGET_NAME
+                    }
+                    ?.map { it.name }
+                    ?: listOf("jvm")
+
+            if (isPerComponentLintAnalysis) {
+                for (jvmTargetName in jvmTargetNames) {
+                    val lintAnalysisMainTask =
+                        project.tasks.register(
+                            "lintAnalyze${jvmTargetName.usLocaleCapitalize()}Main",
+                            AndroidLintAnalysisTask::class.java
+                        ) { task ->
+                            task.description =
+                                "Runs JVM lint analysis for main component of project `${project.name}`"
+                            task.configureForStandalone(
+                                taskCreationServices,
+                                javaExtension,
+                                kotlinExtensionWrapper,
+                                customLintChecks,
+                                lintOptions!!,
+                                LintModelArtifactType.MAIN,
+                                fatalOnly = false,
+                                jvmTargetName
+                            )
+                        }
+                    AndroidLintAnalysisTask.registerOutputArtifacts(
+                        lintAnalysisMainTask,
+                        InternalMultipleArtifactType.LINT_PARTIAL_RESULTS,
+                        artifacts
+                    )
+                    publishLintArtifact(
+                        project,
+                        lintAnalysisMainTask.flatMap { it.partialResultsDirectory },
+                        AndroidArtifacts.ArtifactType.LINT_PARTIAL_RESULTS,
+                        javaExtension,
+                        kotlinExtensionWrapper,
+                        jvmTargetName
+                    )
+                    if (lintOptions!!.ignoreTestSources.not()) {
+                        val lintAnalysisTestTask =
+                            project.tasks.register(
+                                "lintAnalyze${jvmTargetName.usLocaleCapitalize()}Test",
+                                AndroidLintAnalysisTask::class.java
+                            ) { task ->
+                                task.description =
+                                    "Runs JVM lint analysis for test component of project `${project.name}`"
+                                task.configureForStandalone(
+                                    taskCreationServices,
+                                    javaExtension,
+                                    kotlinExtensionWrapper,
+                                    customLintChecks,
+                                    lintOptions!!,
+                                    LintModelArtifactType.UNIT_TEST,
+                                    fatalOnly = false,
+                                    jvmTargetName
+                                )
+                            }
+                        AndroidLintAnalysisTask.registerOutputArtifacts(
+                            lintAnalysisTestTask,
+                            InternalMultipleArtifactType.UNIT_TEST_LINT_PARTIAL_RESULTS,
+                            artifacts
+                        )
+                        publishLintArtifact(
+                            project,
+                            lintAnalysisTestTask.flatMap { it.partialResultsDirectory },
+                            AndroidArtifacts.ArtifactType.UNIT_TEST_LINT_PARTIAL_RESULTS,
+                            javaExtension,
+                            kotlinExtensionWrapper,
+                            jvmTargetName
+                        )
+                    }
+                    val lintVitalAnalysisMainTask =
+                        project.tasks.register(
+                            "lintVitalAnalyze${jvmTargetName.usLocaleCapitalize()}Main",
+                            AndroidLintAnalysisTask::class.java
+                        ) { task ->
+                            task.description =
+                                "Runs JVM lint analysis on just the fatal issues for main component of project `${project.name}`"
+                            task.configureForStandalone(
+                                taskCreationServices,
+                                javaExtension,
+                                kotlinExtensionWrapper,
+                                customLintChecks,
+                                lintOptions!!,
+                                LintModelArtifactType.MAIN,
+                                fatalOnly = true,
+                                jvmTargetName
+                            )
+                        }
+                    AndroidLintAnalysisTask.registerOutputArtifacts(
+                        lintVitalAnalysisMainTask,
+                        InternalMultipleArtifactType.LINT_VITAL_PARTIAL_RESULTS,
+                        artifacts
+                    )
+                    publishLintArtifact(
+                        project,
+                        lintVitalAnalysisMainTask.flatMap { it.partialResultsDirectory },
+                        AndroidArtifacts.ArtifactType.LINT_VITAL_PARTIAL_RESULTS,
+                        javaExtension,
+                        kotlinExtensionWrapper,
+                        jvmTargetName
+                    )
+                }
+            } else {
+                val lintAnalysisTask =
+                    project.tasks.register(
+                        "lintAnalyzeJvm",
+                        AndroidLintAnalysisTask::class.java
+                    ) { task ->
+                        task.description = "Runs JVM lint analysis for project `${project.name}`"
+                        task.configureForStandalone(
+                            taskCreationServices,
+                            javaExtension,
+                            kotlinExtensionWrapper = null,
+                            customLintChecks,
+                            lintOptions!!,
+                            lintModelArtifactType = null,
+                            fatalOnly = false,
+                            jvmTargetName = null
+                        )
+                    }
+                AndroidLintAnalysisTask.registerOutputArtifacts(
+                    lintAnalysisTask,
+                    InternalMultipleArtifactType.LINT_PARTIAL_RESULTS,
+                    artifacts
+                )
+                publishLintArtifact(
+                    project,
+                    lintAnalysisTask.flatMap { it.partialResultsDirectory },
+                    AndroidArtifacts.ArtifactType.LINT_PARTIAL_RESULTS,
+                    javaExtension,
+                    kotlinExtensionWrapper = null,
+                    jvmTargetName = null
+                )
+                val lintVitalAnalysisTask =
+                    project.tasks.register(
+                        "lintVitalAnalyzeJvm",
+                        AndroidLintAnalysisTask::class.java
+                    ) { task ->
+                        task.description =
+                            "Runs JVM lint analysis on just the fatal issues for project `${project.name}`"
+                        task.configureForStandalone(
+                            taskCreationServices,
+                            javaExtension,
+                            kotlinExtensionWrapper = null,
+                            customLintChecks,
+                            lintOptions!!,
+                            lintModelArtifactType = null,
+                            fatalOnly = true,
+                            jvmTargetName = null
+                        )
+                    }
+                AndroidLintAnalysisTask.registerOutputArtifacts(
+                    lintVitalAnalysisTask,
+                    InternalMultipleArtifactType.LINT_VITAL_PARTIAL_RESULTS,
+                    artifacts
+                )
+                publishLintArtifact(
+                    project,
+                    lintVitalAnalysisTask.flatMap { it.partialResultsDirectory },
+                    AndroidArtifacts.ArtifactType.LINT_VITAL_PARTIAL_RESULTS,
+                    javaExtension,
+                    kotlinExtensionWrapper = null,
+                    jvmTargetName = null
                 )
             }
-            LintModelWriterTask.BaseCreationAction.registerOutputArtifacts(lintModelWriterTask, artifacts)
+            if (isPerComponentLintAnalysis) {
+                for (jvmTargetName in jvmTargetNames) {
+                    val lintModelWriterMainTask =
+                        project.tasks.register(
+                            "generate${jvmTargetName.usLocaleCapitalize()}MainLintModel",
+                            LintModelWriterTask::class.java
+                        ) { task ->
+                            task.configureForStandalone(
+                                taskCreationServices,
+                                javaExtension,
+                                kotlinExtensionWrapper,
+                                lintOptions!!,
+                                artifacts.getOutputPath(
+                                    InternalMultipleArtifactType.LINT_PARTIAL_RESULTS,
+                                    "lintAnalyze${jvmTargetName.usLocaleCapitalize()}Main"
+                                ),
+                                LintModelArtifactType.MAIN,
+                                fatalOnly = false,
+                                jvmTargetName
+                            )
+                        }
+                    LintModelWriterTask.registerOutputArtifacts(
+                        lintModelWriterMainTask,
+                        LINT_REPORT_LINT_MODEL,
+                        artifacts
+                    )
+                    publishLintArtifact(
+                        project,
+                        lintModelWriterMainTask.flatMap { it.outputDirectory },
+                        AndroidArtifacts.ArtifactType.LINT_MODEL,
+                        javaExtension,
+                        kotlinExtensionWrapper,
+                        jvmTargetName
+                    )
+                    if (lintOptions!!.ignoreTestSources.not()) {
+                        val lintModelWriterTestTask =
+                            project.tasks.register(
+                                "generate${jvmTargetName.usLocaleCapitalize()}TestLintModel",
+                                LintModelWriterTask::class.java
+                            ) { task ->
+                                task.configureForStandalone(
+                                    taskCreationServices,
+                                    javaExtension,
+                                    kotlinExtensionWrapper,
+                                    lintOptions!!,
+                                    artifacts.getOutputPath(
+                                        InternalMultipleArtifactType.UNIT_TEST_LINT_PARTIAL_RESULTS,
+                                        "lintAnalyze${jvmTargetName.usLocaleCapitalize()}Test"
+                                    ),
+                                    LintModelArtifactType.UNIT_TEST,
+                                    fatalOnly = false,
+                                    jvmTargetName
+                                )
+                            }
+                        LintModelWriterTask.registerOutputArtifacts(
+                            lintModelWriterTestTask,
+                            InternalMultipleArtifactType.UNIT_TEST_LINT_MODEL,
+                            artifacts
+                        )
+                        publishLintArtifact(
+                            project,
+                            lintModelWriterTestTask.flatMap { it.outputDirectory },
+                            AndroidArtifacts.ArtifactType.UNIT_TEST_LINT_MODEL,
+                            javaExtension,
+                            kotlinExtensionWrapper,
+                            jvmTargetName
+                        )
+                    }
+                    val lintVitalModelWriterMainTask =
+                        project.tasks.register(
+                            "generateLintVital${jvmTargetName.usLocaleCapitalize()}MainLintModel",
+                            LintModelWriterTask::class.java
+                        ) { task ->
+                            task.configureForStandalone(
+                                taskCreationServices,
+                                javaExtension,
+                                kotlinExtensionWrapper,
+                                lintOptions!!,
+                                artifacts.getOutputPath(
+                                    InternalMultipleArtifactType.LINT_VITAL_PARTIAL_RESULTS,
+                                    "lintVitalAnalyze${jvmTargetName.usLocaleCapitalize()}Main"
+                                ),
+                                LintModelArtifactType.MAIN,
+                                fatalOnly = true,
+                                jvmTargetName
+                            )
+                        }
+                    LintModelWriterTask.registerOutputArtifacts(
+                        lintVitalModelWriterMainTask,
+                        LINT_VITAL_REPORT_LINT_MODEL,
+                        artifacts
+                    )
+                    publishLintArtifact(
+                        project,
+                        lintVitalModelWriterMainTask.flatMap { it.outputDirectory },
+                        AndroidArtifacts.ArtifactType.LINT_VITAL_LINT_MODEL,
+                        javaExtension,
+                        kotlinExtensionWrapper,
+                        jvmTargetName
+                    )
+                }
+            } else {
+                val lintModelWriterTask =
+                    project.tasks.register(
+                        "generateJvmLintModel",
+                        LintModelWriterTask::class.java
+                    ) { task ->
+                        task.configureForStandalone(
+                            taskCreationServices,
+                            javaExtension,
+                            kotlinExtensionWrapper = null,
+                            lintOptions!!,
+                            artifacts.getOutputPath(
+                                InternalMultipleArtifactType.LINT_PARTIAL_RESULTS,
+                                "lintAnalyzeJvm"
+                            ),
+                            lintModelArtifactType = null,
+                            fatalOnly = false,
+                            jvmTargetName = null
+                        )
+                    }
+                LintModelWriterTask.registerOutputArtifacts(
+                    lintModelWriterTask,
+                    LINT_REPORT_LINT_MODEL,
+                    artifacts
+                )
+                publishLintArtifact(
+                    project,
+                    lintModelWriterTask.flatMap { it.outputDirectory },
+                    AndroidArtifacts.ArtifactType.LINT_MODEL,
+                    javaExtension,
+                    kotlinExtensionWrapper = null,
+                    jvmTargetName = null
+                )
+                val lintVitalModelWriterTask =
+                    project.tasks.register(
+                        "generateLintVitalJvmLintModel",
+                        LintModelWriterTask::class.java
+                    ) { task ->
+                        task.configureForStandalone(
+                            taskCreationServices,
+                            javaExtension,
+                            kotlinExtensionWrapper = null,
+                            lintOptions!!,
+                            artifacts.getOutputPath(
+                                InternalMultipleArtifactType.LINT_VITAL_PARTIAL_RESULTS,
+                                "lintVitalAnalyzeJvm"
+                            ),
+                            lintModelArtifactType = null,
+                            fatalOnly = true,
+                            jvmTargetName = null
+                        )
+                    }
+                LintModelWriterTask.registerOutputArtifacts(
+                    lintVitalModelWriterTask,
+                    LINT_VITAL_REPORT_LINT_MODEL,
+                    artifacts
+                )
+                publishLintArtifact(
+                    project,
+                    lintVitalModelWriterTask.flatMap { it.outputDirectory },
+                    AndroidArtifacts.ArtifactType.LINT_VITAL_LINT_MODEL,
+                    javaExtension,
+                    kotlinExtensionWrapper = null,
+                    jvmTargetName = null
+                )
+            }
             val lintModelMetadataWriterTask =
                 project.tasks
-                    .register("writeLintModelMetadata", LintModelMetadataTask::class.java) { task ->
+                    .register(
+                        "writeJvmLintModelMetadata",
+                        LintModelMetadataTask::class.java
+                    ) { task ->
                         task.configureForStandalone(project)
                     }
             LintModelMetadataTask.registerOutputArtifacts(lintModelMetadataWriterTask, artifacts)
+            if (isPerComponentLintAnalysis) {
+                for (jvmTargetName in jvmTargetNames) {
+                    publishLintArtifact(
+                        project,
+                        lintModelMetadataWriterTask.flatMap { it.outputFile },
+                        AndroidArtifacts.ArtifactType.LINT_MODEL_METADATA,
+                        javaExtension,
+                        kotlinExtensionWrapper,
+                        jvmTargetName
+                    )
+                }
+            } else {
+                publishLintArtifact(
+                    project,
+                    lintModelMetadataWriterTask.flatMap { it.outputFile },
+                    AndroidArtifacts.ArtifactType.LINT_MODEL_METADATA,
+                    javaExtension,
+                    kotlinExtensionWrapper = null,
+                    jvmTargetName = null
+                )
+            }
             if (LintTaskManager.needsCopyReportTask(lintOptions!!)) {
                 val copyLintReportsTask =
                     project.tasks.register(
-                        "copyAndroidLintReports",
+                        "copyJvmLintReports",
                         AndroidLintCopyReportTask::class.java
                     ) { task ->
                         task.configureForStandalone(artifacts, lintOptions!!)
                     }
-                lintTask.configure { it.finalizedBy(copyLintReportsTask) }
+                lintTextOutputTask.configure { it.finalizedBy(copyLintReportsTask) }
             }
-        }
 
-        javaExtension.sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME) { mainSourceSet ->
-            listOf(
-                mainSourceSet.runtimeElementsConfigurationName,
-                mainSourceSet.apiElementsConfigurationName
-            ).forEach { configurationName ->
-                project.configurations.getByName(configurationName) { configuration ->
-                    val androidLintCategory =
-                        projectServices.objectFactory.named(Category::class.java, "android-lint")
-                    publishArtifactToConfiguration(
-                        configuration,
-                        artifacts.get(InternalArtifactType.LINT_MODEL),
-                        AndroidArtifacts.ArtifactType.LINT_MODEL,
-                        AndroidAttributes(category = androidLintCategory)
-                    )
-                    publishArtifactToConfiguration(
-                        configuration,
-                        artifacts.get(InternalArtifactType.LINT_PARTIAL_RESULTS),
-                        AndroidArtifacts.ArtifactType.LINT_PARTIAL_RESULTS,
-                        AndroidAttributes(category = androidLintCategory)
-                    )
-                    publishArtifactToConfiguration(
-                        configuration,
-                        artifacts.get(InternalArtifactType.LINT_MODEL_METADATA),
-                        AndroidArtifacts.ArtifactType.LINT_MODEL_METADATA,
-                        AndroidAttributes(category = androidLintCategory)
-                    )
-                    // We don't want to publish the lint models or partial results to repositories.
-                    // Remove them.
-                    project.components.all { component: SoftwareComponent ->
-                        if (component.name == "java" && component is AdhocComponentWithVariants) {
-                            component.withVariantsFromConfiguration(configuration) { variant: ConfigurationVariantDetails ->
-                                val category =
-                                    variant.configurationVariant.attributes.getAttribute(Category.CATEGORY_ATTRIBUTE)
-                                if (category == androidLintCategory) {
-                                    variant.skip()
+            // We don't want to publish the lint models or partial results to repositories.
+            // Remove them.
+            if (kotlinExtensionWrapper == null) {
+                javaExtension.sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME) { mainSourceSet ->
+                    listOf(
+                        mainSourceSet.runtimeElementsConfigurationName,
+                        mainSourceSet.apiElementsConfigurationName
+                    ).forEach { configurationName ->
+                        project.configurations.getByName(configurationName) { configuration ->
+                            project.components.all { component: SoftwareComponent ->
+                                if (component.name == "java" && component is AdhocComponentWithVariants) {
+                                    component.withVariantsFromConfiguration(configuration) { variant: ConfigurationVariantDetails ->
+                                        val category =
+                                            variant.configurationVariant.attributes.getAttribute(
+                                                Category.CATEGORY_ATTRIBUTE
+                                            )
+                                        if (category?.name == Category.VERIFICATION) {
+                                            variant.skip()
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 }
+            }
+        }
+    }
+
+    private fun publishLintArtifact(
+        project: Project,
+        provider: Provider<FileSystemLocation>,
+        artifactType: AndroidArtifacts.ArtifactType,
+        javaExtension: JavaPluginExtension,
+        kotlinExtensionWrapper: KotlinMultiplatformExtensionWrapper?,
+        jvmTargetName: String?
+    ) {
+        val configurationNames: List<String> = if (kotlinExtensionWrapper == null) {
+            val mainSourceSet = javaExtension.sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME)
+            listOf(
+                mainSourceSet.runtimeElementsConfigurationName,
+                mainSourceSet.apiElementsConfigurationName
+            )
+        } else {
+            val jvmTarget =
+                jvmTargetName?.let { kotlinExtensionWrapper.kotlinExtension.targets.findByName(it) }
+            val jvmMainCompilation = jvmTarget?.compilations?.findByName("main")
+            if (jvmMainCompilation != null) {
+                listOf(
+                    jvmTarget.apiElementsConfigurationName,
+                    jvmTarget.runtimeElementsConfigurationName
+                )
+            } else {
+                emptyList()
+            }
+        }
+        configurationNames.forEach { configurationName ->
+            project.configurations.getByName(configurationName) { configuration ->
+                publishArtifactToConfiguration(
+                    configuration,
+                    provider,
+                    artifactType,
+                    artifactType.getAttributes { type, name ->
+                        projectServices.objectFactory.named(type, name)
+                    }
+                )
             }
         }
     }

@@ -7838,6 +7838,25 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3;</code>
      */
     com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEventOrBuilder getFilterOrBuilder();
+
+    /**
+     * <pre>
+     * The buffer size.
+     * </pre>
+     *
+     * <code>optional int32 buffer_size = 4;</code>
+     * @return Whether the bufferSize field is set.
+     */
+    boolean hasBufferSize();
+    /**
+     * <pre>
+     * The buffer size.
+     * </pre>
+     *
+     * <code>optional int32 buffer_size = 4;</code>
+     * @return The bufferSize.
+     */
+    int getBufferSize();
   }
   /**
    * <pre>
@@ -7918,6 +7937,11 @@ private static final long serialVersionUID = 0L;
                 filter_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00000004;
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              bufferSize_ = input.readInt32();
               break;
             }
             default: {
@@ -8056,6 +8080,33 @@ private static final long serialVersionUID = 0L;
       return filter_ == null ? com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.getDefaultInstance() : filter_;
     }
 
+    public static final int BUFFER_SIZE_FIELD_NUMBER = 4;
+    private int bufferSize_;
+    /**
+     * <pre>
+     * The buffer size.
+     * </pre>
+     *
+     * <code>optional int32 buffer_size = 4;</code>
+     * @return Whether the bufferSize field is set.
+     */
+    @java.lang.Override
+    public boolean hasBufferSize() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <pre>
+     * The buffer size.
+     * </pre>
+     *
+     * <code>optional int32 buffer_size = 4;</code>
+     * @return The bufferSize.
+     */
+    @java.lang.Override
+    public int getBufferSize() {
+      return bufferSize_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -8079,6 +8130,9 @@ private static final long serialVersionUID = 0L;
       if (((bitField0_ & 0x00000004) != 0)) {
         output.writeMessage(3, getFilter());
       }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        output.writeInt32(4, bufferSize_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -8099,6 +8153,10 @@ private static final long serialVersionUID = 0L;
       if (((bitField0_ & 0x00000004) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(3, getFilter());
+      }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(4, bufferSize_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -8130,6 +8188,11 @@ private static final long serialVersionUID = 0L;
         if (!getFilter()
             .equals(other.getFilter())) return false;
       }
+      if (hasBufferSize() != other.hasBufferSize()) return false;
+      if (hasBufferSize()) {
+        if (getBufferSize()
+            != other.getBufferSize()) return false;
+      }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -8153,6 +8216,10 @@ private static final long serialVersionUID = 0L;
       if (hasFilter()) {
         hash = (37 * hash) + FILTER_FIELD_NUMBER;
         hash = (53 * hash) + getFilter().hashCode();
+      }
+      if (hasBufferSize()) {
+        hash = (37 * hash) + BUFFER_SIZE_FIELD_NUMBER;
+        hash = (53 * hash) + getBufferSize();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -8307,6 +8374,8 @@ private static final long serialVersionUID = 0L;
           filterBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000004);
+        bufferSize_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -8354,6 +8423,10 @@ private static final long serialVersionUID = 0L;
             result.filter_ = filterBuilder_.build();
           }
           to_bitField0_ |= 0x00000004;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.bufferSize_ = bufferSize_;
+          to_bitField0_ |= 0x00000008;
         }
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -8412,6 +8485,9 @@ private static final long serialVersionUID = 0L;
         }
         if (other.hasFilter()) {
           mergeFilter(other.getFilter());
+        }
+        if (other.hasBufferSize()) {
+          setBufferSize(other.getBufferSize());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -8808,6 +8884,61 @@ private static final long serialVersionUID = 0L;
           filter_ = null;
         }
         return filterBuilder_;
+      }
+
+      private int bufferSize_ ;
+      /**
+       * <pre>
+       * The buffer size.
+       * </pre>
+       *
+       * <code>optional int32 buffer_size = 4;</code>
+       * @return Whether the bufferSize field is set.
+       */
+      @java.lang.Override
+      public boolean hasBufferSize() {
+        return ((bitField0_ & 0x00000008) != 0);
+      }
+      /**
+       * <pre>
+       * The buffer size.
+       * </pre>
+       *
+       * <code>optional int32 buffer_size = 4;</code>
+       * @return The bufferSize.
+       */
+      @java.lang.Override
+      public int getBufferSize() {
+        return bufferSize_;
+      }
+      /**
+       * <pre>
+       * The buffer size.
+       * </pre>
+       *
+       * <code>optional int32 buffer_size = 4;</code>
+       * @param value The bufferSize to set.
+       * @return This builder for chaining.
+       */
+      public Builder setBufferSize(int value) {
+        bitField0_ |= 0x00000008;
+        bufferSize_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The buffer size.
+       * </pre>
+       *
+       * <code>optional int32 buffer_size = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearBufferSize() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        bufferSize_ = 0;
+        onChanged();
+        return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(

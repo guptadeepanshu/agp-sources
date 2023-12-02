@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.options
 
+import com.android.build.gradle.options.Version.VERSION_8_2
 import com.android.builder.model.AndroidProject
 import com.android.build.gradle.options.Version.VERSION_BEFORE_4_0
 import com.android.builder.model.PROPERTY_BUILD_API
@@ -24,7 +25,7 @@ enum class IntegerOption(
     override val propertyName: String,
     stage: ApiStage
 ) : Option<Int> {
-    ANDROID_TEST_SHARD_COUNT("android.androidTest.numShards", ApiStage.Experimental),
+    ANDROID_TEST_SHARD_COUNT("android.androidTest.numShards", ApiStage.Removed(VERSION_8_2, "Cross device sharding is no longer supported.")),
     ANDROID_SDK_CHANNEL("android.sdk.channel", ApiStage.Experimental),
 
     /**

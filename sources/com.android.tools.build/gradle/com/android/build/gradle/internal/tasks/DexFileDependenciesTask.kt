@@ -33,7 +33,6 @@ import com.android.builder.dexing.ClassFileInputs
 import com.android.builder.dexing.DexArchiveBuilder
 import com.android.builder.dexing.DexParameters
 import com.android.builder.dexing.r8.ClassFileProviderFactory
-import com.android.build.gradle.options.BooleanOption
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.sdklib.AndroidVersion
 import com.google.common.io.Closer
@@ -228,7 +227,7 @@ abstract class DexFileDependenciesTask: NonIncrementalTask() {
                     creationConfig.variantDependencies.getArtifactFileCollection(
                         AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                         AndroidArtifacts.ArtifactScope.REPOSITORY_MODULE,
-                        AndroidArtifacts.ArtifactType.PROCESSED_JAR
+                        creationConfig.global.aarOrJarTypeToConsume.jar
                     )
                 )
                 task.bootClasspath.from(creationConfig.global.bootClasspath)

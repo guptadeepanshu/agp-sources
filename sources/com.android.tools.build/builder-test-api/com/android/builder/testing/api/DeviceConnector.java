@@ -178,4 +178,13 @@ public abstract class DeviceConnector implements IShellEnabledDevice {
 
     @NonNull
     public abstract DeviceConfig getDeviceConfig() throws DeviceException;
+
+    /**
+     * Indicates if the device supports Privacy Sandbox.
+     *
+     * @return true if the device natively supports Privacy Sandbox and false if not supported.
+     */
+    public boolean getSupportsPrivacySandbox() {
+        return false;
+    }
 }

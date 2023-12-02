@@ -27,6 +27,7 @@ import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.utils.toImmutableList
 import com.android.build.gradle.internal.utils.toImmutableMap
+import com.android.builder.core.DefaultApiVersion
 import com.android.builder.model.TestOptions
 import com.android.builder.model.v2.dsl.ClassField
 import com.android.builder.model.v2.ide.AaptOptions.Namespacing.DISABLED
@@ -203,7 +204,8 @@ internal fun DefaultAndroidSourceSet.convert(
         resourcesDirectories = resourcesDirectories,
         aidlDirectories = if (features.aidl) aidlDirectories else null,
         renderscriptDirectories = if (features.renderScript) renderscriptDirectories else null,
-        baselineProfileDirectories = (baselineProfiles as DefaultAndroidSourceDirectorySet).srcDirs,
+        baselineProfileDirectories = (baselineProfiles as DefaultAndroidSourceDirectorySet).srcDirs
+            + variantSourcesForModel(mixin?.baselineProfiles),
         resDirectories = if (features.androidResources) resDirectories else null,
         assetsDirectories = assetsDirectories + variantSourcesForModel(mixin?.assets),
         jniLibsDirectories = jniLibsDirectories + variantSourcesForModel(mixin?.jniLibs),
@@ -278,6 +280,8 @@ internal fun Lint.convert() = LintOptionsImpl(
     checkGeneratedSources = checkGeneratedSources,
     checkDependencies = checkDependencies,
     baseline = baseline,
+    targetSdk = targetSdk?.let { DefaultApiVersion(it).convert() }
+        ?: targetSdkPreview?.let { DefaultApiVersion(it).convert() }
 )
 
 internal fun CompileOptions.convert(): JavaCompileOptions {

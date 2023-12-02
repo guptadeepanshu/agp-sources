@@ -31,6 +31,7 @@ import com.google.common.io.ByteStreams
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.dsl.DependencyHandler
+import org.gradle.api.artifacts.result.ResolvedComponentResult
 import org.gradle.api.artifacts.transform.CacheableTransform
 import org.gradle.api.artifacts.transform.InputArtifact
 import org.gradle.api.artifacts.transform.TransformAction
@@ -78,6 +79,15 @@ val ATTR_ENABLE_CORE_LIBRARY_DESUGARING: Attribute<String> =
 fun getDesugarLibJarFromMaven(services: TaskCreationServices): FileCollection {
     val configuration = getDesugarLibConfiguration(services)
     return getArtifactCollection(configuration)
+}
+
+/**
+ * Returns the dependency graph resolved for [getDesugarLibConfiguration] which contains
+ * the metadata(group/name/version) of desugar lib.
+ */
+fun getDesugarLibDependencyGraph(services: TaskCreationServices): Provider<ResolvedComponentResult> {
+    val configuration = getDesugarLibConfiguration(services)
+    return configuration.incoming.resolutionResult.rootComponent
 }
 
 /**
@@ -159,14 +169,12 @@ fun getDesugaredMethods(
 
     val desugaredMethodsFiles = services.fileCollection()
 
-    val coreLibDesugarConfig =
-        services.configurations.findByName(CONFIG_NAME_CORE_LIBRARY_DESUGARING)!!
     if (coreLibDesugar && global.compileSdkHashString != null) {
         val minSdk = minSdkVersion.getFeatureLevel()
         val compileSdk = AndroidTargetHash.getPlatformVersion(global.compileSdkHashString)!!.featureLevel
         registerDesugarLibLintTransform(services, minSdk, compileSdk)
         desugaredMethodsFiles.from(
-            getDesugarLibLintFromTransform(coreLibDesugarConfig, minSdk, compileSdk)
+            getDesugarLibLintFromTransform(getDesugarLibConfiguration(services), minSdk, compileSdk)
         )
     }
 

@@ -41,6 +41,7 @@ import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
 import com.android.build.gradle.internal.api.ReadOnlyObjectProvider
 import com.android.build.gradle.internal.api.VariantFilter
 import com.android.build.gradle.internal.component.ApkCreationConfig
+import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.LibraryCreationConfig
 import com.android.build.gradle.internal.component.NestedComponentCreationConfig
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
@@ -108,7 +109,6 @@ import java.util.function.BooleanSupplier
 import java.util.stream.Collectors
 
 /** Class to create, manage variants.  */
-@Suppress("UnstableApiUsage")
 class VariantManager<
         CommonExtensionT: CommonExtension<*, *, *, *, *>,
         VariantBuilderT : VariantBuilder,
@@ -723,7 +723,7 @@ class VariantManager<
                     dslExtension.buildFeatures,
                     dslExtension.dataBinding,
                     dslServices.projectOptions,
-                    globalTaskCreationConfig.testOptions.unitTests.isIncludeAndroidResources
+                    globalTaskCreationConfig.unitTestOptions.isIncludeAndroidResources
                 ),
                 variantDslInfo as UnitTestComponentDslInfo,
                 variantDependencies,
@@ -987,35 +987,9 @@ class VariantManager<
     }
 
     fun finalizeAllVariants() {
-        variants.forEach { variant ->
-            variant.variant.artifacts.finalizeAndLock()
-            ArtifactMetadataProcessor.wireAllFinalizedBy(variant.variant)
-        }
-        testComponents.forEach { testComponent ->
-            testComponent.artifacts.finalizeAndLock()
-        }
-        testFixturesComponents.forEach { testFixturesComponent ->
-            testFixturesComponent.artifacts.finalizeAndLock()
-        }
-    }
-
-    companion object {
-
-        /**
-         * Returns a modified name.
-         *
-         *
-         * This name is used to request a missing dimension. It is the same name as the flavor that
-         * sets up the request, which means it's not going to be matched, and instead it'll go to a
-         * custom fallbacks provided by the flavor.
-         *
-         *
-         * We are just modifying the name to avoid collision in case the same name exists in
-         * different dimensions
-         */
-        fun getModifiedName(name: String): String {
-            return "____$name"
-        }
+        finalizeAllComponents(
+            variants.map { it.variant } + testComponents + testFixturesComponents
+        )
     }
 
     init {
@@ -1028,5 +1002,14 @@ class VariantManager<
             forUnitTesting = project.providers.gradleProperty("_agp_internal_test_mode_").isPresent
         )
         taskCreationServices = TaskCreationServicesImpl(projectServices)
+    }
+
+    companion object {
+        fun finalizeAllComponents(components: List<ComponentCreationConfig>) {
+            components.forEach { component ->
+                component.artifacts.finalizeAndLock()
+                ArtifactMetadataProcessor.wireAllFinalizedBy(component)
+            }
+        }
     }
 }

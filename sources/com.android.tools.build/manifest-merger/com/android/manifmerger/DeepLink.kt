@@ -18,9 +18,6 @@ package com.android.manifmerger
 
 import com.android.ide.common.blame.SourceFilePosition
 import com.google.common.collect.ImmutableList
-import java.lang.Exception
-import java.lang.IllegalArgumentException
-import java.lang.StringBuilder
 import java.net.URI
 import java.net.URISyntaxException
 import java.util.regex.Pattern
@@ -44,6 +41,7 @@ data class DeepLink(
         val port: Int,
         val path: String,
         val query: String?,
+        val fragment: String?,
         val sourceFilePosition: SourceFilePosition,
         val isAutoVerify: Boolean,
         val action: String = "android.intent.action.VIEW",
@@ -69,6 +67,7 @@ data class DeepLink(
                     deepLinkUri.port,
                     deepLinkUri.path,
                     deepLinkUri.query,
+                    deepLinkUri.fragment,
                     sourceFilePosition,
                     isAutoVerify,
                     mimeType = mimeType)
@@ -79,6 +78,7 @@ data class DeepLink(
                     deepLinkUri.port,
                     deepLinkUri.path,
                     deepLinkUri.query,
+                    deepLinkUri.fragment,
                     sourceFilePosition,
                     isAutoVerify,
                     action,
@@ -102,11 +102,13 @@ data class DeepLink(
      * @property path the uri's path
      */
     data class DeepLinkUri(
-            val schemes: List<String>,
-            val host: String?,
-            val port: Int,
-            val path: String,
-            val query: String?) {
+        val schemes: List<String>,
+        val host: String?,
+        val port: Int,
+        val path: String,
+        val query: String?,
+        val fragment: String?
+    ) {
 
         companion object {
 
@@ -240,7 +242,16 @@ data class DeepLink(
                         ?.replace(wildcardEncoder, WILDCARD)
                         ?.replace(hostWildcardEncoder, HOST_WILDCARD)
 
-                return DeepLinkUri(schemes, host, compliantUri.port, path, query)
+                val fragment =
+                    compliantUri.fragment
+                        ?.replace(dollarSignEncoder, DOLLAR_SIGN)
+                        ?.replace(openBracketEncoder, OPEN_BRACKET)
+                        ?.replace(closeBracketEncoder, CLOSE_BRACKET)
+                        ?.replace(PATH_WILDCARD, WILDCARD)
+                        ?.replace(wildcardEncoder, WILDCARD)
+                        ?.replace(hostWildcardEncoder, HOST_WILDCARD)
+
+                return DeepLinkUri(schemes, host, compliantUri.port, path, query, fragment)
             }
 
             /**

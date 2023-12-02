@@ -27,6 +27,7 @@ import com.android.build.gradle.internal.cxx.model.compileCommandsJsonBinFile
 import com.android.build.gradle.internal.cxx.model.compileCommandsJsonFile
 import com.android.build.gradle.internal.cxx.model.createNinjaCommand
 import com.android.build.gradle.internal.cxx.model.jsonFile
+import com.android.build.gradle.internal.cxx.model.name
 import com.android.build.gradle.internal.cxx.model.ninjaBuildFile
 import com.android.build.gradle.internal.cxx.model.ninjaBuildLocationFile
 import com.android.build.gradle.internal.cxx.model.symbolFolderIndexFile
@@ -63,11 +64,11 @@ internal class NinjaMetadataGenerator(
     }
     override fun executeProcess(ops: ExecOperations, abi: CxxAbiModel) {
 
-        if (!abi.configurationArguments.any { it.contains(abi.abi.tag) } ) {
+        if (!abi.configurationArguments.any { it.contains(abi.name) } ) {
             errorln(NINJA_CONFIGURE_INVALID_ARGUMENTS,
                 "android.${variant}.externalNativeBuild.ninja.arguments must be " +
                         "specified and at least one argument must reference ${NDK_ABI.ref} " +
-                        "[${abi.abi.tag}] " +
+                        "[${abi.name}] " +
                         "args:[${abi.configurationArguments.joinToString(", ")}]")
             return
         }
@@ -113,7 +114,7 @@ internal class NinjaMetadataGenerator(
         // Build expected metadata
         val config = adaptNinjaToCxxBuild(
             ninjaBuildFile = abi.ninjaBuildFile,
-            abi = abi.abi.tag,
+            abi = abi.name,
             cxxBuildFolder = abi.ninjaBuildFile.parentFile,
             createNinjaCommand = abi::createNinjaCommand,
             compileCommandsJsonBin = abi.compileCommandsJsonBinFile

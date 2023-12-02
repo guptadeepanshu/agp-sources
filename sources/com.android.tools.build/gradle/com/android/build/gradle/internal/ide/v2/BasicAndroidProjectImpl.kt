@@ -29,7 +29,6 @@ import java.io.Serializable
  */
 data class BasicAndroidProjectImpl(
     override val path: String,
-    override val buildName: String,
     override val projectType: ProjectType,
     override val mainSourceSet: SourceSetContainer?,
     override val buildTypeSourceSets: Collection<SourceSetContainer>,
@@ -38,6 +37,11 @@ data class BasicAndroidProjectImpl(
     override val bootClasspath: Collection<File>,
     override val buildFolder: File,
 ) : BasicAndroidProject, Serializable {
+
+    // Not used by the IDE (since H Canaries); kept only because of binary compatibility.
+    @Deprecated("Since AGP 8.2 this is not set; the IDE uses the Gradle build file system path for dependency resolution.")
+    override val buildName: String = "n/a"
+
     companion object {
         @JvmStatic
         private val serialVersionUID: Long = 1L

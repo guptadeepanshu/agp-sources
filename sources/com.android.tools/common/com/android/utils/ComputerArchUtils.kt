@@ -78,7 +78,9 @@ abstract class Environment {
 
 private fun ensureInitialized() {
     if (!Environment.initialized) {
-        error("Computer Architecture Environment not initialized properly.")
+        // TODO(b/283002867): log info to let test environments know that the environment was
+        // not initialized.
+        Environment.initialize()
     }
 }
 
@@ -94,7 +96,7 @@ val osArchitecture: CpuArchitecture
         val jvmArchitecture = jvmArchitecture
 
         val os = Environment.instance.getSystemProperty(Environment.SystemProperty.OS_NAME)
-            ?.toLowerCase(Locale.US) ?: return jvmArchitecture
+            ?.lowercase(Locale.US) ?: return jvmArchitecture
 
         // When running the JVM in x86, then that means either we are running a 32 bit environment
         // under a 64 bit OS or a 32 bit environment on a 32 bit OS. This can't happen on mac, as

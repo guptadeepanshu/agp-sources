@@ -116,6 +116,10 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
     @get:Internal
     abstract val sourceSetMaps: ConfigurableFileCollection
 
+    @get:InputFile
+    @get:PathSensitive(PathSensitivity.NONE)
+    abstract val stableIdsFile: RegularFileProperty
+
     private var compiledDependenciesResources: ArtifactCollection? = null
 
     override fun doTaskAction() {
@@ -156,12 +160,13 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
                     checkNotNull(getInputResourcesDir().orNull?.asFile)
                 ).build(),
             resourceConfigs = ImmutableSet.copyOf(resConfig),
+            consumeStableIdsFile = stableIdsFile.get().asFile,
             // We only want to exclude res sources for release builds and when the flag is turned on
             // This will result in smaller release bundles
             excludeSources = excludeResSourcesForReleaseBundles.get() && debuggable.get().not(),
             mergeBlameDirectory = mergeBlameLogFolder.get().asFile,
             manifestMergeBlameFile = manifestMergeBlameFile.orNull?.asFile,
-            identifiedSourceSetMap = identifiedSourceSetMap
+            identifiedSourceSetMap = identifiedSourceSetMap,
         )
         if (logger.isInfoEnabled) {
             logger.info("Aapt output file {}", outputFile.absolutePath)
@@ -247,6 +252,11 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
             creationConfig.artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.MERGED_RES,
                 task.getInputResourcesDir()
+            )
+
+            creationConfig.artifacts.setTaskInputToFinalProduct(
+                InternalArtifactType.STABLE_RESOURCE_IDS_FILE,
+                task.stableIdsFile
             )
 
             task.featureResourcePackages = creationConfig.variantDependencies.getArtifactFileCollection(

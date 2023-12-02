@@ -18,12 +18,12 @@
 
 package com.android.build.gradle.internal.ide.dependencies
 
+import com.android.build.api.attributes.AgpVersionAttr
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.ide.DependencyFailureHandler
 import com.android.build.gradle.internal.ide.dependencies.ArtifactCollectionsInputs.RuntimeType
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
-import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableMultimap
 import com.google.common.collect.Sets
 import org.gradle.api.artifacts.ArtifactCollection
@@ -33,14 +33,12 @@ import org.gradle.api.artifacts.result.ResolvedArtifactResult
 import org.gradle.api.artifacts.result.ResolvedVariantResult
 import org.gradle.api.capabilities.Capability
 import org.gradle.api.file.FileCollection
+import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.Optional
-import org.gradle.api.tasks.PathSensitive
-import org.gradle.api.tasks.PathSensitivity
 import java.io.File
 
 /**
@@ -51,10 +49,10 @@ interface ArtifactCollectionsInputs {
 
     @get:Input
     val projectPath: String
+    @get:Internal
+    val projectBuildPath: Provider<String>
     @get:Input
     val variantName: String
-    @get:Internal
-    val buildMapping: ImmutableMap<String, String>
     @get:Nested
     val compileClasspath: ArtifactCollections
     @get:Nested
@@ -85,20 +83,19 @@ class ArtifactCollectionsInputsImpl constructor(
     override val projectPath: String,
     override val variantName: String,
     @get:Input val runtimeType: RuntimeType,
-    override val buildMapping: ImmutableMap<String, String>
 ): ArtifactCollectionsInputs {
 
     constructor(
         componentImpl: ComponentCreationConfig,
         runtimeType: RuntimeType,
-        buildMapping: ImmutableMap<String, String>
     ) : this(
         componentImpl.variantDependencies,
         componentImpl.services.projectInfo.path,
         componentImpl.name,
         runtimeType,
-        buildMapping
     )
+
+    override val projectBuildPath: Provider<String> = getBuildPath(variantDependencies)
 
     override val compileClasspath: ArtifactCollections = ArtifactCollections(
         variantDependencies,
@@ -155,7 +152,6 @@ class ArtifactCollectionsInputsImpl constructor(
         return getAllArtifacts(
             collections,
             dependencyFailureHandler,
-            buildMapping,
             projectPath,
             variantName
         )
@@ -239,23 +235,11 @@ class ArtifactCollections(
         get() = all.artifactFiles
 
     @get:Internal
-    val manifests: ArtifactCollection = variantDependencies.getArtifactCollectionForToolingModel(
-        consumedConfigType,
-        AndroidArtifacts.ArtifactScope.ALL,
-        AndroidArtifacts.ArtifactType.MANIFEST
-    )
-
-    @get:Internal
     val lintJar: ArtifactCollection = variantDependencies.getArtifactCollectionForToolingModel(
         consumedConfigType,
         AndroidArtifacts.ArtifactScope.ALL,
         AndroidArtifacts.ArtifactType.LINT
     )
-
-    @get:InputFiles
-    @get:PathSensitive(PathSensitivity.RELATIVE)
-    val manifestsFileCollection: FileCollection
-        get() = manifests.artifactFiles
 
     // We still need to understand wrapped jars and aars. The former is difficult (TBD), but
     // the latter can be done by querying for EXPLODED_AAR. If a sub-project is in this list,
@@ -298,15 +282,6 @@ class ArtifactCollections(
     @get:Classpath
     val projectJarsFileCollection: FileCollection
         get() = projectJars.artifactFiles
-
-    @get:Internal
-    val allCollections: Collection<ArtifactCollection>
-        get() = listOf(
-            all,
-            manifests,
-            explodedAars,
-            projectJars
-        )
 }
 
 /**
@@ -316,19 +291,16 @@ class ArtifactCollections(
  * @param componentImpl the variant to get the artifacts from
  * @param consumedConfigType the type of the dependency to resolve (compile vs runtime)
  * @param dependencyFailureHandler handler for dependency resolution errors
- * @param buildMapping a build mapping from build name to root dir.
  */
 fun getAllArtifacts(
     componentImpl: ComponentCreationConfig,
     consumedConfigType: AndroidArtifacts.ConsumedConfigType,
     dependencyFailureHandler: DependencyFailureHandler?,
-    buildMapping: ImmutableMap<String, String>
 ): Set<ResolvedArtifact> {
     val collections = ArtifactCollections(componentImpl, consumedConfigType)
     return getAllArtifacts(
         collections,
         dependencyFailureHandler,
-        buildMapping,
         componentImpl.services.projectInfo.path,
         componentImpl.name,
     )
@@ -337,7 +309,6 @@ fun getAllArtifacts(
 private fun getAllArtifacts(
     collections: ArtifactCollections,
     dependencyFailureHandler: DependencyFailureHandler?,
-    buildMapping: ImmutableMap<String, String>,
     projectPath: String,
     variantName: String,
 ): Set<ResolvedArtifact> {
@@ -349,10 +320,6 @@ private fun getAllArtifacts(
     // All artifacts: see comment on collections.all
     val incomingArtifacts = collections.all
 
-    // Then we can query for MANIFEST that will give us only the Android project so that we
-    // can detect JAVA vs ANDROID.
-    val manifests = collections.manifests.asMap { it }
-
     val explodedAars = collections.explodedAars.asMap { it.file }
 
     val lintJars = collections.lintJar.asMap { it.file }
@@ -362,7 +329,9 @@ private fun getAllArtifacts(
     val projectList = collections.projectJars
 
     /** See [ArtifactCollections.projectJars]. */
-    val projectJars = projectList.asMultiMap()
+    val projectJarsMap: ImmutableMultimap<VariantKey, ResolvedArtifactResult> by lazy(LazyThreadSafetyMode.NONE) {
+        projectList.asMultiMap()
+    }
 
     // collect dependency resolution failures
     if (dependencyFailureHandler != null) {
@@ -382,8 +351,6 @@ private fun getAllArtifacts(
     val aarWrappedAsProjects =
         explodedAars.keys.filter { it.owner is ProjectComponentIdentifier }
 
-    // build a list of android dependencies based on them publishing a MANIFEST element
-
     // build the final list, using the main list augmented with data from the previous lists.
     val resolvedArtifactResults = incomingArtifacts.artifacts
 
@@ -394,20 +361,23 @@ private fun getAllArtifacts(
     for (resolvedComponentResult in resolvedArtifactResults) {
         val variantKey = resolvedComponentResult.variant.toKey()
 
-        // check if this is a wrapped module
-        val isAarWrappedAsProject = aarWrappedAsProjects.contains(variantKey)
-
-        // check if this is an android external module. In this case, we want to use the exploded
-        // aar as the artifact we depend on rather than just the JAR, so we swap out the
-        // ResolvedArtifactResult.
-        val dependencyType: ResolvedArtifact.DependencyType
-
-        val extractedAar: File? = explodedAars[variantKey] ?: asarJars[variantKey]
-
-        val manifest = manifests[variantKey]
-
-        val mainArtifacts: Collection<ResolvedArtifactResult>
-        val publishedLintJar: File?
+        fun addArtifact(
+                dependencyType: ResolvedArtifact.DependencyType,
+                mainArtifact: ResolvedArtifactResult,
+                publishedLintJar: File? = null,
+                artifactFile: File? = mainArtifact.file) {
+            artifacts.add(
+                ResolvedArtifact(
+                        mainArtifact,
+                        artifactFile,
+                        explodedAars[variantKey] ?: asarJars[variantKey],
+                        publishedLintJar,
+                        dependencyType,
+                        // check if this is a wrapped module
+                        aarWrappedAsProjects.contains(variantKey),
+                )
+            )
+        }
 
         val artifactType =
             resolvedComponentResult.variant.attributes.getAttribute(AndroidArtifacts.ARTIFACT_TYPE)
@@ -415,63 +385,73 @@ private fun getAllArtifacts(
             AndroidArtifacts.ArtifactType.AAR.type -> {
                 // This only happens for external dependencies - local android libraries do not
                 // publish the AAR between projects.
-                dependencyType = ResolvedArtifact.DependencyType.ANDROID
-                mainArtifacts = listOf(resolvedComponentResult)
-                publishedLintJar = lintJars[variantKey]
+                // In this case, we want to use the exploded AAR as the artifact we depend on rather
+                // than just the JAR
+                addArtifact(
+                    dependencyType = ResolvedArtifact.DependencyType.ANDROID,
+                    mainArtifact = resolvedComponentResult,
+                    publishedLintJar = lintJars[variantKey]
+                )
+
             }
             AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_ARCHIVE.type -> {
                 // When the dependency is ASAR, the resolved artifact needs to be the jar inside it
                 // extractedAar will be pointing to that location of that jar
-                dependencyType = ResolvedArtifact.DependencyType.ANDROID_SANDBOX_SDK
-                mainArtifacts = listOf(resolvedComponentResult)
-                publishedLintJar = null
+                addArtifact(
+                    dependencyType = ResolvedArtifact.DependencyType.ANDROID_SANDBOX_SDK,
+                    mainArtifact = resolvedComponentResult
+                )
             }
             AndroidArtifacts.ArtifactType.JAR.type ->
-                if (manifest != null) {
-                    dependencyType = ResolvedArtifact.DependencyType.ANDROID
-                    // this will be a sub-project dependency anyway, so it's ok to point the main
-                    // artifact to the manifest, it won't be used later.
-                    mainArtifacts = listOf(manifest)
-                    publishedLintJar = lintJars[variantKey]
+                if (resolvedComponentResult.isAndroidProjectLibrary()) {
+                    // When a project dependency is an Android one, the artifact file doesn't matter
+                    // We can safely set it to null. The variant attributes will be used to compute
+                    // the key to the library model objects, so they are passed further down.
+                    addArtifact(
+                        dependencyType = ResolvedArtifact.DependencyType.ANDROID,
+                        mainArtifact = resolvedComponentResult,
+                        publishedLintJar = lintJars[variantKey],
+                        artifactFile = null
+                    )
                 } else {
-                    dependencyType = ResolvedArtifact.DependencyType.JAVA
-                    val projectJar = projectJars[variantKey]
-                    mainArtifacts = projectJar.ifEmpty {
+                    // When a local android project publishes a simple jar, we want to explicitly
+                    // not handle it, because:
+                    // IDE doesn't handle explicit JARs coming from local Android projects
+                    // AND the project dependency will be handled when handling the original JAR
+                    //
+                    // The check here iterates over all the jars this particular project publishes
+                    // and skips this dependency completely if any of them is android.
+                    if (projectJarsMap[variantKey].any {it.isAndroidProjectLibrary()}) {
+                        continue
+                    }
+                    val projectJars = projectJarsMap[variantKey]
+                    // If there are no project jars default to the resolved artifact
+                    projectJars.ifEmpty {
                         // Note use this component directly to handle classified artifacts
                         // This is tested by AppWithClassifierDepTest.
                         listOf<ResolvedArtifactResult>(resolvedComponentResult)
+                    }.forEach {
+                        addArtifact(
+                                dependencyType = ResolvedArtifact.DependencyType.JAVA,
+                                mainArtifact = it
+                        )
                     }
-                    publishedLintJar = null
                 }
-
             else -> throw IllegalStateException("Internal error: Artifact type $artifactType not expected, only jar or aar are handled.")
-        }
-
-        check(mainArtifacts.isNotEmpty()) {
-            """Internal Error: No artifact found for artifactType '$variantKey'
-            | context: $projectPath $variantName
-            | manifests = $manifests
-            | explodedAars = $explodedAars
-            | projectJars = $projectJars
-        """.trimMargin()
-        }
-
-        for (mainArtifact in mainArtifacts) {
-            artifacts.add(
-                ResolvedArtifact(
-                    mainArtifact,
-                    extractedAar,
-                    publishedLintJar,
-                    dependencyType,
-                    isAarWrappedAsProject,
-                    buildMapping,
-                )
-            )
         }
     }
 
     return artifacts
 }
+
+/**
+ * Checks whether a local project library is and Android one.
+ *
+ * [AgpVersionAttr] is only present for android libraries.
+ */
+private fun ResolvedArtifactResult.isAndroidProjectLibrary() =
+    variant.attributes.getAttribute(AgpVersionAttr.ATTRIBUTE) != null
+
 
 /**
  * This is a multi map to handle when there are multiple jars with the same component id.

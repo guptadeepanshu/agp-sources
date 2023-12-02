@@ -54,8 +54,8 @@ public final class AndroidLibraryImpl extends LibraryImpl implements AndroidLibr
 
     @Nullable
     private final String variant;
-    @NonNull private final File bundle;
-    @NonNull private final File folder;
+    @Nullable private final File bundle;
+    @Nullable private final File folder;
     @NonNull
     private final List<AndroidLibrary> androidLibraries;
     @NonNull
@@ -70,8 +70,8 @@ public final class AndroidLibraryImpl extends LibraryImpl implements AndroidLibr
             @NonNull MavenCoordinates coordinates,
             @Nullable String buildId,
             @Nullable String projectPath,
-            @NonNull File bundle,
-            @NonNull File extractedFolder,
+            @Nullable File bundle,
+            @Nullable File extractedFolder,
             @Nullable String variant,
             boolean isProvided,
             boolean isSkipped,
@@ -99,13 +99,13 @@ public final class AndroidLibraryImpl extends LibraryImpl implements AndroidLibr
     @NonNull
     @Override
     public File getBundle() {
-        return bundle;
+        return java.util.Objects.requireNonNull(bundle);
     }
 
     @NonNull
     @Override
     public File getFolder() {
-        return folder;
+        return java.util.Objects.requireNonNull(folder);
     }
 
     @NonNull

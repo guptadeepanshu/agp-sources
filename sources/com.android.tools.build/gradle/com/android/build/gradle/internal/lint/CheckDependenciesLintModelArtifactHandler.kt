@@ -18,7 +18,6 @@ package com.android.build.gradle.internal.lint
 
 import com.android.SdkConstants
 import com.android.build.gradle.internal.ide.dependencies.ArtifactHandler
-import com.android.build.gradle.internal.ide.dependencies.BuildMapping
 import com.android.builder.model.MavenCoordinates
 import com.android.tools.lint.model.DefaultLintModelAndroidLibrary
 import com.android.tools.lint.model.DefaultLintModelJavaLibrary
@@ -50,7 +49,6 @@ internal class CheckDependenciesLintModelArtifactHandler(
     projectCompileLintModels: ArtifactCollection,
     compileProjectJars: ArtifactCollection,
     runtimeProjectJars: ArtifactCollection,
-    buildMapping: BuildMapping,
     private val warnIfProjectTreatedAsExternalDependency: Boolean
 ) : ArtifactHandler<LintModelLibrary>(
     dependencyCaches.localJarCache,
@@ -58,10 +56,10 @@ internal class CheckDependenciesLintModelArtifactHandler(
 ) {
 
     private val projectDependencyLintModels =
-        projectCompileLintModels.asProjectKeyedMap(buildMapping).keys +
-                projectRuntimeLintModels.asProjectKeyedMap(buildMapping).keys
-    private val compileProjectJars = compileProjectJars.asProjectSourceSetKeyedMap(buildMapping)
-    private val runtimeProjectJars = runtimeProjectJars.asProjectSourceSetKeyedMap(buildMapping)
+        projectCompileLintModels.asProjectKeyedMap().keys +
+                projectRuntimeLintModels.asProjectKeyedMap().keys
+    private val compileProjectJars = compileProjectJars.asProjectSourceSetKeyedMap()
+    private val runtimeProjectJars = runtimeProjectJars.asProjectSourceSetKeyedMap()
 
     override fun handleAndroidLibrary(
         aarFile: File,
@@ -91,7 +89,8 @@ internal class CheckDependenciesLintModelArtifactHandler(
             externalAnnotations = File(folder, SdkConstants.FN_ANNOTATIONS_ZIP),
             proguardRules = File(folder, SdkConstants.FN_PROGUARD_TXT),
             provided = isProvided,
-            resolvedCoordinates = coordinatesSupplier().toMavenName()
+            resolvedCoordinates = coordinatesSupplier().toMavenName(),
+            partialResultsDir = null
         )
 
     override fun handleAndroidModule(
@@ -99,7 +98,7 @@ internal class CheckDependenciesLintModelArtifactHandler(
         buildId: String,
         variantName: String?,
         isTestFixtures: Boolean,
-        aarFile: File,
+        aarFile: File?,
         lintJar: File?,
         isProvided: Boolean,
         coordinatesSupplier: () -> MavenCoordinates,
@@ -122,7 +121,8 @@ internal class CheckDependenciesLintModelArtifactHandler(
             identifier = identitySupplier(),
             jarFiles = listOf(jarFile),
             resolvedCoordinates = coordinatesSupplier().toMavenName(),
-            provided = isProvided
+            provided = isProvided,
+            partialResultsDir = null
         )
 
     override fun handleJavaModule(
@@ -158,7 +158,8 @@ internal class CheckDependenciesLintModelArtifactHandler(
                 identifier = identitySupplier(),
                 jarFiles = listOf(jar),
                 resolvedCoordinates = LintModelMavenName.NONE,
-                provided = false
+                provided = false,
+                partialResultsDir = null
             )
         }
     }

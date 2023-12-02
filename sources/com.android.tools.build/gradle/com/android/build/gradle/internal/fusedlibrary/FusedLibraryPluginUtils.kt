@@ -20,17 +20,21 @@ import com.android.build.api.artifact.Artifact
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.gradle.internal.DependencyConfigurator
 import com.android.build.gradle.internal.SdkComponentsBuildService
+import com.android.build.gradle.internal.publishing.getAarOrJarTypeToConsume
 import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.services.DslServicesImpl
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.TaskFactoryImpl
+import com.android.builder.model.v2.ide.ProjectType
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Provider
 
-fun createTasks(
+const val NAMESPACED_ANDROID_RESOURCES_FOR_PRIVACY_SANDBOX_ENABLED = false
+
+internal fun createTasks(
         project: Project,
         artifacts: ArtifactsImpl,
         artifactForPublication: Artifact.Single<RegularFile>,
@@ -50,18 +54,22 @@ fun createTasks(
     }
 }
 
-fun configureTransforms(project: Project, projectServices: ProjectServices) {
-    DependencyConfigurator(project, projectServices)
-            .configureGeneralTransforms(namespacedAndroidResources = false)
+internal fun configureTransforms(project: Project, projectServices: ProjectServices) {
+    DependencyConfigurator(project, projectServices).configureGeneralTransforms(
+            NAMESPACED_ANDROID_RESOURCES_FOR_PRIVACY_SANDBOX_ENABLED,
+            getAarOrJarTypeToConsume(
+                    projectServices.projectOptions,
+                    NAMESPACED_ANDROID_RESOURCES_FOR_PRIVACY_SANDBOX_ENABLED)
+    )
 }
 
-fun getDslServices(project: Project, projectServices: ProjectServices): DslServices {
+internal fun getDslServices(project: Project, projectServices: ProjectServices): DslServices {
     val sdkComponentsBuildService: Provider<SdkComponentsBuildService> =
             SdkComponentsBuildService.RegistrationAction(
                     project,
                     projectServices.projectOptions
             ).execute()
 
-    return DslServicesImpl(projectServices, sdkComponentsBuildService)
+    return DslServicesImpl(projectServices, sdkComponentsBuildService, ProjectType.FUSED_LIBRARIES)
 }
 

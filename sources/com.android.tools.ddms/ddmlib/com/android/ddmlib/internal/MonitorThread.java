@@ -21,7 +21,6 @@ import com.android.ddmlib.IDevice;
 import com.android.ddmlib.Log;
 import com.android.ddmlib.Log.LogLevel;
 import com.android.ddmlib.internal.jdwp.chunkhandler.ChunkHandler;
-import com.android.ddmlib.internal.jdwp.chunkhandler.JdwpPacket;
 import com.android.ddmlib.jdwp.JdwpExtension;
 import java.io.IOException;
 import java.nio.BufferOverflowException;
@@ -233,20 +232,7 @@ public final class MonitorThread extends Thread {
             }
 
             client.read();
-
-            /*
-             * See if we have a full packet in the buffer. It's possible we have
-             * more than one packet, so we have to loop.
-             */
-            JdwpPacket packet = client.getJdwpPacket();
-            while (packet != null) {
-                packet.log("Client: received jdwp packet");
-                client.incoming(packet, client.getDebugger());
-
-                packet.consume();
-                // find next
-                packet = client.getJdwpPacket();
-            }
+            client.consumeReadBuffer();
         } catch (CancelledKeyException e) {
             // key was canceled probably due to a disconnected client before we could
             // read stuff coming from the client, so we drop it.

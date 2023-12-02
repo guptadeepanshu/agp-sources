@@ -22,6 +22,7 @@ import com.android.build.gradle.internal.cxx.json.AndroidBuildGradleJsons.getNat
 import com.android.build.gradle.internal.cxx.logging.errorln
 import com.android.build.gradle.internal.cxx.logging.infoln
 import com.android.build.gradle.internal.cxx.logging.lifecycleln
+import com.android.build.gradle.internal.cxx.model.name
 import com.android.build.gradle.internal.cxx.model.toJsonString
 import org.gradle.process.ExecOperations
 import java.io.File
@@ -47,7 +48,7 @@ class CxxRepublishBuilder(val model: CxxConfigurationModel) : CxxBuilder {
                     infoln("Not republishing $baseOutputLibrary because it wasn't an executable type")
                     continue
                 }
-                val abi = abis.single { it.abi.tag == library.abi }
+                val abi = abis.single { it.name == library.abi }
 
                 if (!baseOutputLibrary.canonicalPath.startsWith(abi.soFolder.canonicalPath)) {
                     infoln("Not republishing $baseOutputLibrary because it wasn't under ${abi.soFolder}")

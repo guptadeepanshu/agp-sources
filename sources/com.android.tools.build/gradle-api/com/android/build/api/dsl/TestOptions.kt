@@ -162,4 +162,18 @@ interface TestOptions {
     @Deprecated("Renamed to emulatorSnapshots", replaceWith = ReplaceWith("emulatorSnapshots"))
     @Incubating
     fun failureRetention(action: FailureRetention.() -> Unit)
+
+    /**
+     * Specifies value that overrides target sdk version number for tests in libraries.
+     * Default value is set to minSdk.
+     * Important: Setting this value will cause an error for application and other module types.
+     */
+    var targetSdk: Int?
+
+    /**
+     * Specifies value that overrides target sdk preview number for tests in libraries.
+     * Default value is empty.
+     * Important: Setting this value will cause an error for application and other module types.
+     */
+    var targetSdkPreview: String?
 }

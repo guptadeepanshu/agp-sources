@@ -22,10 +22,10 @@ import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.Optional
-import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import java.io.File
+import java.io.Serializable
 
 /*************************************************************************************
  * This model represents the information needed to generate a Prefab package directory
@@ -43,7 +43,11 @@ data class PrefabPublication(
     val gradlePath : String,
     @get:Nested
     val packageInfo : PrefabPackagePublication
-)
+) : Serializable {
+    companion object {
+        private const val serialVersionUID: Long = 1
+    }
+}
 
 data class PrefabPackagePublication(
     @get:Input
@@ -57,7 +61,7 @@ data class PrefabPackagePublication(
     val packageDependencies : List<String>,
     @get:Nested
     val modules : List<PrefabModulePublication>
-)
+) : Serializable
 
 data class PrefabModulePublication(
     @get:Input
@@ -74,7 +78,7 @@ data class PrefabModulePublication(
     val moduleLibraryName : String?,
     @get:Nested
     val abis : List<PrefabAbiPublication>
-)
+) : Serializable
 
 data class PrefabAbiPublication(
     @get:Input
@@ -92,4 +96,4 @@ data class PrefabAbiPublication(
     @get:InputFile
     @get:PathSensitive(PathSensitivity.ABSOLUTE)
     val abiAndroidGradleBuildJsonFile : File
-)
+) : Serializable

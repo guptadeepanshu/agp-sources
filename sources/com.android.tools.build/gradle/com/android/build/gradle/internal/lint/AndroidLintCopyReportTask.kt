@@ -101,7 +101,7 @@ abstract class AndroidLintCopyReportTask : UnsafeOutputsTask("The lintOptions DS
     }
 
     class CreationAction(variant: ComponentCreationConfig) : VariantTaskCreationAction<AndroidLintCopyReportTask, ComponentCreationConfig>(variant) {
-        override val name: String = computeTaskName("copy", "AndroidLintReports")
+        override val name: String = computeTaskName("copy", "LintReports")
         override val type: Class<AndroidLintCopyReportTask> get() = AndroidLintCopyReportTask::class.java
         override fun configure(task: AndroidLintCopyReportTask) {
             super.configure(task)

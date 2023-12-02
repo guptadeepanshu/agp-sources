@@ -17,11 +17,13 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants.AAR_FORMAT_VERSION_PROPERTY
 import com.android.SdkConstants.AAR_METADATA_VERSION_PROPERTY
+import com.android.SdkConstants.CORE_LIBRARY_DESUGARING_ENABLED_PROPERTY
 import com.android.SdkConstants.FORCE_COMPILE_SDK_PREVIEW_PROPERTY
 import com.android.SdkConstants.MIN_ANDROID_GRADLE_PLUGIN_VERSION_PROPERTY
 import com.android.SdkConstants.MIN_COMPILE_SDK_EXTENSION_PROPERTY
 import com.android.SdkConstants.MIN_COMPILE_SDK_PROPERTY
 import com.android.Version
+import com.android.build.gradle.internal.component.AndroidTestCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
@@ -97,6 +99,9 @@ abstract class CheckAarMetadataTask : NonIncrementalTask() {
     @get:Input
     abstract val compileSdkVersion: Property<String>
 
+    @get:Input
+    abstract val coreLibraryDesugaringEnabled: Property<Boolean>
+
     // platformSdkExtension is the actual extension level of the platform, if specified within the
     // SDK directory. This value is used if the extension level is not specified in the
     // compileSdkVersion hash string.
@@ -138,6 +143,7 @@ abstract class CheckAarMetadataTask : NonIncrementalTask() {
             it.aarFormatVersion.set(aarFormatVersion)
             it.aarMetadataVersion.set(aarMetadataVersion)
             it.compileSdkVersion.set(compileSdkVersion)
+            it.coreLibraryDesugaringEnabled.set(coreLibraryDesugaringEnabled)
             it.platformSdkExtension.set(platformSdkExtension)
             it.platformSdkApiLevel.set(platformSdkApiLevel)
             it.agpVersion.set(agpVersion)
@@ -180,6 +186,13 @@ abstract class CheckAarMetadataTask : NonIncrementalTask() {
             task.aarMetadataVersion.setDisallowChanges(AarMetadataTask.AAR_METADATA_VERSION)
             task.compileSdkVersion.setDisallowChanges(creationConfig.global.compileSdkHashString)
             task.agpVersion.setDisallowChanges(Version.ANDROID_GRADLE_PLUGIN_VERSION)
+            val coreLibraryDesugaringEnabled =
+                if (creationConfig is AndroidTestCreationConfig) {
+                    creationConfig.dexingCreationConfig.isCoreLibraryDesugaringEnabled
+                } else {
+                    creationConfig.global.compileOptions.isCoreLibraryDesugaringEnabled
+                }
+            task.coreLibraryDesugaringEnabled.setDisallowChanges(coreLibraryDesugaringEnabled)
             task.maxRecommendedStableCompileSdkVersionForThisAgp.setDisallowChanges(
                 ToolsRevisionUtils.MAX_RECOMMENDED_COMPILE_SDK_VERSION.apiLevel
             )
@@ -485,6 +498,24 @@ abstract class CheckAarMetadataWorkAction: WorkAction<CheckAarMetadataWorkParame
                 }
             }
         }
+
+        val coreLibraryDesugaringEnabled = aarMetadataReader.coreLibraryDesugaringEnabled
+
+        if (coreLibraryDesugaringEnabled != null) {
+            if (coreLibraryDesugaringEnabled.toBoolean()
+                && !parameters.coreLibraryDesugaringEnabled.get())
+            {
+                errorMessages.add(
+                    """
+                        Dependency '$displayName' requires core library desugaring to be enabled
+                        for ${parameters.projectPath.get()}.
+
+                        See https://developer.android.com/studio/write/java8-support.html for more
+                        details.
+                    """.trimIndent()
+                )
+            }
+        }
     }
 
     /**
@@ -514,6 +545,7 @@ abstract class CheckAarMetadataWorkParameters: WorkParameters {
     abstract val aarFormatVersion: Property<String>
     abstract val aarMetadataVersion: Property<String>
     abstract val compileSdkVersion: Property<String>
+    abstract val coreLibraryDesugaringEnabled: Property<Boolean>
     abstract val platformSdkExtension: Property<Int>
     abstract val platformSdkApiLevel: Property<Int>
     abstract val agpVersion: Property<String>
@@ -530,6 +562,7 @@ data class AarMetadataReader(val inputStream: InputStream) {
     val minAgpVersion: String?
     val forceCompileSdkPreview: String?
     val minCompileSdkExtension: String?
+    val coreLibraryDesugaringEnabled: String?
 
     constructor(file: File) : this(file.inputStream())
 
@@ -542,6 +575,7 @@ data class AarMetadataReader(val inputStream: InputStream) {
         minAgpVersion = properties.getProperty(MIN_ANDROID_GRADLE_PLUGIN_VERSION_PROPERTY)
         forceCompileSdkPreview = properties.getProperty(FORCE_COMPILE_SDK_PREVIEW_PROPERTY)
         minCompileSdkExtension = properties.getProperty(MIN_COMPILE_SDK_EXTENSION_PROPERTY)
+        coreLibraryDesugaringEnabled = properties.getProperty(CORE_LIBRARY_DESUGARING_ENABLED_PROPERTY)
     }
 }
 

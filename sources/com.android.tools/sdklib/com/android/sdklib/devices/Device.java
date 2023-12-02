@@ -245,6 +245,19 @@ public final class Device {
             return null;
         }
 
+        // Some foldable devices have different orientations when folded vs unfolded.
+        // Screen size usually refers to the unfolded screen size, while
+        // orientation refers to the folded orientation.
+        Hinge hinge = getDefaultHardware().getHinge();
+
+        if (hinge != null && hinge.getChangeOrientationOnFold()) {
+            if (orientation == ScreenOrientation.PORTRAIT) {
+                orientation = ScreenOrientation.LANDSCAPE;
+            } else if (orientation == ScreenOrientation.LANDSCAPE) {
+                orientation = ScreenOrientation.PORTRAIT;
+            }
+        }
+
         // compute width and height to take orientation into account.
         int x = screen.getXDimension();
         int y = screen.getYDimension();
@@ -331,6 +344,7 @@ public final class Device {
         private State mDefaultState;
         private String mTagId;
         private final Map<String, String> mBootProps = new TreeMap<String, String>();
+        private boolean mDeprecated;
 
         public Builder() { }
 
@@ -347,6 +361,7 @@ public final class Device {
                 mState.add(s.deepCopy());
             }
             mMeta = d.getMeta();
+            mDeprecated = d.mIsDeprecated;
         }
 
         public void setName(@NonNull String name) {
@@ -424,6 +439,10 @@ public final class Device {
             mMeta = meta;
         }
 
+        void setDeprecated(boolean deprecated) {
+            mDeprecated = deprecated;
+        }
+
         public Device build() {
             if (mName == null) {
                 throw generateBuildException("Device missing name");
@@ -491,6 +510,7 @@ public final class Device {
         mDefaultState = b.mDefaultState;
         mTagId = b.mTagId;
         mBootProps = Collections.unmodifiableMap(b.mBootProps);
+        mIsDeprecated = b.mDeprecated;
     }
 
     @Override

@@ -26,6 +26,7 @@ private static final long serialVersionUID = 0L;
     eventState_ = 1;
     appLinkPathType_ = 1;
     rawProjectId_ = "";
+    linkFilterOption_ = 0;
   }
 
   @java.lang.Override
@@ -133,6 +134,44 @@ private static final long serialVersionUID = 0L;
             rawProjectId_ = bs;
             break;
           }
+          case 90: {
+            com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary.Builder subBuilder = null;
+            if (((bitField0_ & 0x00000400) != 0)) {
+              subBuilder = validationSummary_.toBuilder();
+            }
+            validationSummary_ = input.readMessage(com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(validationSummary_);
+              validationSummary_ = subBuilder.buildPartial();
+            }
+            bitField0_ |= 0x00000400;
+            break;
+          }
+          case 98: {
+            com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix.Builder subBuilder = null;
+            if (((bitField0_ & 0x00000800) != 0)) {
+              subBuilder = intentFilterFix_.toBuilder();
+            }
+            intentFilterFix_ = input.readMessage(com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(intentFilterFix_);
+              intentFilterFix_ = subBuilder.buildPartial();
+            }
+            bitField0_ |= 0x00000800;
+            break;
+          }
+          case 104: {
+            int rawValue = input.readEnum();
+              @SuppressWarnings("deprecation")
+            com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinkFilterOption value = com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinkFilterOption.valueOf(rawValue);
+            if (value == null) {
+              unknownFields.mergeVarintField(13, rawValue);
+            } else {
+              bitField0_ |= 0x00001000;
+              linkFilterOption_ = rawValue;
+            }
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -175,6 +214,10 @@ private static final long serialVersionUID = 0L;
   public enum EventSource
       implements com.google.protobuf.ProtocolMessageEnum {
     /**
+     * <pre>
+     * Will be deprecated and replaced by NEW_LINK_CREATION_SIDE_PANEL.
+     * </pre>
+     *
      * <code>ASSISTANT_SIDE_PANEL = 1;</code>
      */
     ASSISTANT_SIDE_PANEL(1),
@@ -278,9 +321,97 @@ private static final long serialVersionUID = 0L;
      * <code>APP_LINKS_TEST_PANEL_RUN_TEST_BUTTON = 19;</code>
      */
     APP_LINKS_TEST_PANEL_RUN_TEST_BUTTON(19),
+    /**
+     * <pre>
+     * The new link creation panel.
+     * </pre>
+     *
+     * <code>NEW_LINK_CREATION_SIDE_PANEL = 20;</code>
+     */
+    NEW_LINK_CREATION_SIDE_PANEL(20),
+    /**
+     * <pre>
+     * The main page of the new App Links Assistant.
+     * </pre>
+     *
+     * <code>OVERVIEW_TABLE = 22;</code>
+     */
+    OVERVIEW_TABLE(22),
+    /**
+     * <code>OVERVIEW_TABLE_FIX_ALL_APP_CHECKS_BUTTON = 23;</code>
+     */
+    OVERVIEW_TABLE_FIX_ALL_APP_CHECKS_BUTTON(23),
+    /**
+     * <code>OVERVIEW_TABLE_FIX_ALL_WEB_CHECKS_BUTTON = 24;</code>
+     */
+    OVERVIEW_TABLE_FIX_ALL_WEB_CHECKS_BUTTON(24),
+    /**
+     * <code>OVERVIEW_TABLE_SEARCH_BOX = 25;</code>
+     */
+    OVERVIEW_TABLE_SEARCH_BOX(25),
+    /**
+     * <code>OVERVIEW_TABLE_FILTERS = 26;</code>
+     */
+    OVERVIEW_TABLE_FILTERS(26),
+    /**
+     * <pre>
+     * App link details page of new App Links Assistant.
+     * </pre>
+     *
+     * <code>DETAILS = 27;</code>
+     */
+    DETAILS(27),
+    /**
+     * <code>DETAILS_FIX_ONE_LINK_APP_CHECKS_BUTTON = 28;</code>
+     */
+    DETAILS_FIX_ONE_LINK_APP_CHECKS_BUTTON(28),
+    /**
+     * <code>DETAILS_FIX_ONE_LINK_WEB_CHECKS_BUTTON = 29;</code>
+     */
+    DETAILS_FIX_ONE_LINK_WEB_CHECKS_BUTTON(29),
+    /**
+     * <code>DETAILS_RUN_CHECKS_BUTTON = 30;</code>
+     */
+    DETAILS_RUN_CHECKS_BUTTON(30),
+    /**
+     * <pre>
+     * Manual fix guidance page of new App Links Assistant.
+     * </pre>
+     *
+     * <code>MANUAL_FIX = 31;</code>
+     */
+    MANUAL_FIX(31),
+    /**
+     * <code>MANUAL_FIX_ROW = 32;</code>
+     */
+    MANUAL_FIX_ROW(32),
+    /**
+     * <pre>
+     * Fix web checks page of new App Links Assistant.
+     * </pre>
+     *
+     * <code>FIX_WEB_CHECKS_CREATE_JSON_BUTTON = 33;</code>
+     */
+    FIX_WEB_CHECKS_CREATE_JSON_BUTTON(33),
+    /**
+     * <code>FIX_WEB_CHECKS_SAVE_JSON_BUTTON = 34;</code>
+     */
+    FIX_WEB_CHECKS_SAVE_JSON_BUTTON(34),
+    /**
+     * <pre>
+     * Event sources that are not tied to any particular UI.
+     * </pre>
+     *
+     * <code>VALIDATION = 35;</code>
+     */
+    VALIDATION(35),
     ;
 
     /**
+     * <pre>
+     * Will be deprecated and replaced by NEW_LINK_CREATION_SIDE_PANEL.
+     * </pre>
+     *
      * <code>ASSISTANT_SIDE_PANEL = 1;</code>
      */
     public static final int ASSISTANT_SIDE_PANEL_VALUE = 1;
@@ -384,6 +515,90 @@ private static final long serialVersionUID = 0L;
      * <code>APP_LINKS_TEST_PANEL_RUN_TEST_BUTTON = 19;</code>
      */
     public static final int APP_LINKS_TEST_PANEL_RUN_TEST_BUTTON_VALUE = 19;
+    /**
+     * <pre>
+     * The new link creation panel.
+     * </pre>
+     *
+     * <code>NEW_LINK_CREATION_SIDE_PANEL = 20;</code>
+     */
+    public static final int NEW_LINK_CREATION_SIDE_PANEL_VALUE = 20;
+    /**
+     * <pre>
+     * The main page of the new App Links Assistant.
+     * </pre>
+     *
+     * <code>OVERVIEW_TABLE = 22;</code>
+     */
+    public static final int OVERVIEW_TABLE_VALUE = 22;
+    /**
+     * <code>OVERVIEW_TABLE_FIX_ALL_APP_CHECKS_BUTTON = 23;</code>
+     */
+    public static final int OVERVIEW_TABLE_FIX_ALL_APP_CHECKS_BUTTON_VALUE = 23;
+    /**
+     * <code>OVERVIEW_TABLE_FIX_ALL_WEB_CHECKS_BUTTON = 24;</code>
+     */
+    public static final int OVERVIEW_TABLE_FIX_ALL_WEB_CHECKS_BUTTON_VALUE = 24;
+    /**
+     * <code>OVERVIEW_TABLE_SEARCH_BOX = 25;</code>
+     */
+    public static final int OVERVIEW_TABLE_SEARCH_BOX_VALUE = 25;
+    /**
+     * <code>OVERVIEW_TABLE_FILTERS = 26;</code>
+     */
+    public static final int OVERVIEW_TABLE_FILTERS_VALUE = 26;
+    /**
+     * <pre>
+     * App link details page of new App Links Assistant.
+     * </pre>
+     *
+     * <code>DETAILS = 27;</code>
+     */
+    public static final int DETAILS_VALUE = 27;
+    /**
+     * <code>DETAILS_FIX_ONE_LINK_APP_CHECKS_BUTTON = 28;</code>
+     */
+    public static final int DETAILS_FIX_ONE_LINK_APP_CHECKS_BUTTON_VALUE = 28;
+    /**
+     * <code>DETAILS_FIX_ONE_LINK_WEB_CHECKS_BUTTON = 29;</code>
+     */
+    public static final int DETAILS_FIX_ONE_LINK_WEB_CHECKS_BUTTON_VALUE = 29;
+    /**
+     * <code>DETAILS_RUN_CHECKS_BUTTON = 30;</code>
+     */
+    public static final int DETAILS_RUN_CHECKS_BUTTON_VALUE = 30;
+    /**
+     * <pre>
+     * Manual fix guidance page of new App Links Assistant.
+     * </pre>
+     *
+     * <code>MANUAL_FIX = 31;</code>
+     */
+    public static final int MANUAL_FIX_VALUE = 31;
+    /**
+     * <code>MANUAL_FIX_ROW = 32;</code>
+     */
+    public static final int MANUAL_FIX_ROW_VALUE = 32;
+    /**
+     * <pre>
+     * Fix web checks page of new App Links Assistant.
+     * </pre>
+     *
+     * <code>FIX_WEB_CHECKS_CREATE_JSON_BUTTON = 33;</code>
+     */
+    public static final int FIX_WEB_CHECKS_CREATE_JSON_BUTTON_VALUE = 33;
+    /**
+     * <code>FIX_WEB_CHECKS_SAVE_JSON_BUTTON = 34;</code>
+     */
+    public static final int FIX_WEB_CHECKS_SAVE_JSON_BUTTON_VALUE = 34;
+    /**
+     * <pre>
+     * Event sources that are not tied to any particular UI.
+     * </pre>
+     *
+     * <code>VALIDATION = 35;</code>
+     */
+    public static final int VALIDATION_VALUE = 35;
 
 
     public final int getNumber() {
@@ -428,6 +643,21 @@ private static final long serialVersionUID = 0L;
         case 17: return APP_LINKS_TEST_PANEL;
         case 18: return APP_LINKS_TEST_PANEL_MODULE_SELECTION;
         case 19: return APP_LINKS_TEST_PANEL_RUN_TEST_BUTTON;
+        case 20: return NEW_LINK_CREATION_SIDE_PANEL;
+        case 22: return OVERVIEW_TABLE;
+        case 23: return OVERVIEW_TABLE_FIX_ALL_APP_CHECKS_BUTTON;
+        case 24: return OVERVIEW_TABLE_FIX_ALL_WEB_CHECKS_BUTTON;
+        case 25: return OVERVIEW_TABLE_SEARCH_BOX;
+        case 26: return OVERVIEW_TABLE_FILTERS;
+        case 27: return DETAILS;
+        case 28: return DETAILS_FIX_ONE_LINK_APP_CHECKS_BUTTON;
+        case 29: return DETAILS_FIX_ONE_LINK_WEB_CHECKS_BUTTON;
+        case 30: return DETAILS_RUN_CHECKS_BUTTON;
+        case 31: return MANUAL_FIX;
+        case 32: return MANUAL_FIX_ROW;
+        case 33: return FIX_WEB_CHECKS_CREATE_JSON_BUTTON;
+        case 34: return FIX_WEB_CHECKS_SAVE_JSON_BUTTON;
+        case 35: return VALIDATION;
         default: return null;
       }
     }
@@ -766,6 +996,2668 @@ private static final long serialVersionUID = 0L;
     }
 
     // @@protoc_insertion_point(enum_scope:android_studio.AppLinksAssistantEvent.PathType)
+  }
+
+  /**
+   * Protobuf enum {@code android_studio.AppLinksAssistantEvent.LinkFilterOption}
+   */
+  public enum LinkFilterOption
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <pre>
+     * We don't expect this to actually be used.
+     * </pre>
+     *
+     * <code>UNKNOWN = 0;</code>
+     */
+    UNKNOWN(0),
+    /**
+     * <code>NONE = 1;</code>
+     */
+    NONE(1),
+    /**
+     * <code>MANIFEST_ISSUES = 2;</code>
+     */
+    MANIFEST_ISSUES(2),
+    /**
+     * <code>JSON_ISSUES = 3;</code>
+     */
+    JSON_ISSUES(3),
+    ;
+
+    /**
+     * <pre>
+     * We don't expect this to actually be used.
+     * </pre>
+     *
+     * <code>UNKNOWN = 0;</code>
+     */
+    public static final int UNKNOWN_VALUE = 0;
+    /**
+     * <code>NONE = 1;</code>
+     */
+    public static final int NONE_VALUE = 1;
+    /**
+     * <code>MANIFEST_ISSUES = 2;</code>
+     */
+    public static final int MANIFEST_ISSUES_VALUE = 2;
+    /**
+     * <code>JSON_ISSUES = 3;</code>
+     */
+    public static final int JSON_ISSUES_VALUE = 3;
+
+
+    public final int getNumber() {
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static LinkFilterOption valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static LinkFilterOption forNumber(int value) {
+      switch (value) {
+        case 0: return UNKNOWN;
+        case 1: return NONE;
+        case 2: return MANIFEST_ISSUES;
+        case 3: return JSON_ISSUES;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<LinkFilterOption>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        LinkFilterOption> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<LinkFilterOption>() {
+            public LinkFilterOption findValueByNumber(int number) {
+              return LinkFilterOption.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.getDescriptor().getEnumTypes().get(3);
+    }
+
+    private static final LinkFilterOption[] VALUES = values();
+
+    public static LinkFilterOption valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private LinkFilterOption(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:android_studio.AppLinksAssistantEvent.LinkFilterOption)
+  }
+
+  public interface ValidationSummaryOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:android_studio.AppLinksAssistantEvent.ValidationSummary)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * Stats of custom scheme links
+     * </pre>
+     *
+     * <code>optional int64 total_cs_links = 1;</code>
+     * @return Whether the totalCsLinks field is set.
+     */
+    boolean hasTotalCsLinks();
+    /**
+     * <pre>
+     * Stats of custom scheme links
+     * </pre>
+     *
+     * <code>optional int64 total_cs_links = 1;</code>
+     * @return The totalCsLinks.
+     */
+    long getTotalCsLinks();
+
+    /**
+     * <pre>
+     * cs_links_app_check_failed = total_cs_links - total_valid_cs_links
+     * </pre>
+     *
+     * <code>optional int64 total_valid_cs_links = 2;</code>
+     * @return Whether the totalValidCsLinks field is set.
+     */
+    boolean hasTotalValidCsLinks();
+    /**
+     * <pre>
+     * cs_links_app_check_failed = total_cs_links - total_valid_cs_links
+     * </pre>
+     *
+     * <code>optional int64 total_valid_cs_links = 2;</code>
+     * @return The totalValidCsLinks.
+     */
+    long getTotalValidCsLinks();
+
+    /**
+     * <pre>
+     * Stats of app links
+     * </pre>
+     *
+     * <code>optional int64 total_app_links = 3;</code>
+     * @return Whether the totalAppLinks field is set.
+     */
+    boolean hasTotalAppLinks();
+    /**
+     * <pre>
+     * Stats of app links
+     * </pre>
+     *
+     * <code>optional int64 total_app_links = 3;</code>
+     * @return The totalAppLinks.
+     */
+    long getTotalAppLinks();
+
+    /**
+     * <code>optional int64 total_valid_app_links = 4;</code>
+     * @return Whether the totalValidAppLinks field is set.
+     */
+    boolean hasTotalValidAppLinks();
+    /**
+     * <code>optional int64 total_valid_app_links = 4;</code>
+     * @return The totalValidAppLinks.
+     */
+    long getTotalValidAppLinks();
+
+    /**
+     * <pre>
+     * Number of links with app checks issues
+     * </pre>
+     *
+     * <code>optional int64 app_links_app_check_failed = 5;</code>
+     * @return Whether the appLinksAppCheckFailed field is set.
+     */
+    boolean hasAppLinksAppCheckFailed();
+    /**
+     * <pre>
+     * Number of links with app checks issues
+     * </pre>
+     *
+     * <code>optional int64 app_links_app_check_failed = 5;</code>
+     * @return The appLinksAppCheckFailed.
+     */
+    long getAppLinksAppCheckFailed();
+
+    /**
+     * <pre>
+     * Number of links with web checks issues
+     * </pre>
+     *
+     * <code>optional int64 app_links_web_check_failed = 6;</code>
+     * @return Whether the appLinksWebCheckFailed field is set.
+     */
+    boolean hasAppLinksWebCheckFailed();
+    /**
+     * <pre>
+     * Number of links with web checks issues
+     * </pre>
+     *
+     * <code>optional int64 app_links_web_check_failed = 6;</code>
+     * @return The appLinksWebCheckFailed.
+     */
+    long getAppLinksWebCheckFailed();
+
+    /**
+     * <pre>
+     * Number of links with Google Ads policy notifications
+     * </pre>
+     *
+     * <code>optional int64 app_links_google_ads_policy_failed = 7;</code>
+     * @return Whether the appLinksGoogleAdsPolicyFailed field is set.
+     */
+    boolean hasAppLinksGoogleAdsPolicyFailed();
+    /**
+     * <pre>
+     * Number of links with Google Ads policy notifications
+     * </pre>
+     *
+     * <code>optional int64 app_links_google_ads_policy_failed = 7;</code>
+     * @return The appLinksGoogleAdsPolicyFailed.
+     */
+    long getAppLinksGoogleAdsPolicyFailed();
+
+    /**
+     * <pre>
+     * Stats of domains
+     * </pre>
+     *
+     * <code>optional int64 total_domains = 8;</code>
+     * @return Whether the totalDomains field is set.
+     */
+    boolean hasTotalDomains();
+    /**
+     * <pre>
+     * Stats of domains
+     * </pre>
+     *
+     * <code>optional int64 total_domains = 8;</code>
+     * @return The totalDomains.
+     */
+    long getTotalDomains();
+
+    /**
+     * <pre>
+     * Number of domains with issues
+     * </pre>
+     *
+     * <code>optional int64 domains_web_check_failed = 9;</code>
+     * @return Whether the domainsWebCheckFailed field is set.
+     */
+    boolean hasDomainsWebCheckFailed();
+    /**
+     * <pre>
+     * Number of domains with issues
+     * </pre>
+     *
+     * <code>optional int64 domains_web_check_failed = 9;</code>
+     * @return The domainsWebCheckFailed.
+     */
+    long getDomainsWebCheckFailed();
+
+    /**
+     * <pre>
+     * Time taken to perform validation
+     * </pre>
+     *
+     * <code>optional uint64 validation_runtime_millis = 10;</code>
+     * @return Whether the validationRuntimeMillis field is set.
+     */
+    boolean hasValidationRuntimeMillis();
+    /**
+     * <pre>
+     * Time taken to perform validation
+     * </pre>
+     *
+     * <code>optional uint64 validation_runtime_millis = 10;</code>
+     * @return The validationRuntimeMillis.
+     */
+    long getValidationRuntimeMillis();
+  }
+  /**
+   * <pre>
+   * Message to be sent when validation is run.
+   * </pre>
+   *
+   * Protobuf type {@code android_studio.AppLinksAssistantEvent.ValidationSummary}
+   */
+  public static final class ValidationSummary extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:android_studio.AppLinksAssistantEvent.ValidationSummary)
+      ValidationSummaryOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use ValidationSummary.newBuilder() to construct.
+    private ValidationSummary(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private ValidationSummary() {
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new ValidationSummary();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ValidationSummary(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              bitField0_ |= 0x00000001;
+              totalCsLinks_ = input.readInt64();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              totalValidCsLinks_ = input.readInt64();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              totalAppLinks_ = input.readInt64();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              totalValidAppLinks_ = input.readInt64();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              appLinksAppCheckFailed_ = input.readInt64();
+              break;
+            }
+            case 48: {
+              bitField0_ |= 0x00000020;
+              appLinksWebCheckFailed_ = input.readInt64();
+              break;
+            }
+            case 56: {
+              bitField0_ |= 0x00000040;
+              appLinksGoogleAdsPolicyFailed_ = input.readInt64();
+              break;
+            }
+            case 64: {
+              bitField0_ |= 0x00000080;
+              totalDomains_ = input.readInt64();
+              break;
+            }
+            case 72: {
+              bitField0_ |= 0x00000100;
+              domainsWebCheckFailed_ = input.readInt64();
+              break;
+            }
+            case 80: {
+              bitField0_ |= 0x00000200;
+              validationRuntimeMillis_ = input.readUInt64();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppLinksAssistantEvent_ValidationSummary_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppLinksAssistantEvent_ValidationSummary_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary.class, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int TOTAL_CS_LINKS_FIELD_NUMBER = 1;
+    private long totalCsLinks_;
+    /**
+     * <pre>
+     * Stats of custom scheme links
+     * </pre>
+     *
+     * <code>optional int64 total_cs_links = 1;</code>
+     * @return Whether the totalCsLinks field is set.
+     */
+    @java.lang.Override
+    public boolean hasTotalCsLinks() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <pre>
+     * Stats of custom scheme links
+     * </pre>
+     *
+     * <code>optional int64 total_cs_links = 1;</code>
+     * @return The totalCsLinks.
+     */
+    @java.lang.Override
+    public long getTotalCsLinks() {
+      return totalCsLinks_;
+    }
+
+    public static final int TOTAL_VALID_CS_LINKS_FIELD_NUMBER = 2;
+    private long totalValidCsLinks_;
+    /**
+     * <pre>
+     * cs_links_app_check_failed = total_cs_links - total_valid_cs_links
+     * </pre>
+     *
+     * <code>optional int64 total_valid_cs_links = 2;</code>
+     * @return Whether the totalValidCsLinks field is set.
+     */
+    @java.lang.Override
+    public boolean hasTotalValidCsLinks() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <pre>
+     * cs_links_app_check_failed = total_cs_links - total_valid_cs_links
+     * </pre>
+     *
+     * <code>optional int64 total_valid_cs_links = 2;</code>
+     * @return The totalValidCsLinks.
+     */
+    @java.lang.Override
+    public long getTotalValidCsLinks() {
+      return totalValidCsLinks_;
+    }
+
+    public static final int TOTAL_APP_LINKS_FIELD_NUMBER = 3;
+    private long totalAppLinks_;
+    /**
+     * <pre>
+     * Stats of app links
+     * </pre>
+     *
+     * <code>optional int64 total_app_links = 3;</code>
+     * @return Whether the totalAppLinks field is set.
+     */
+    @java.lang.Override
+    public boolean hasTotalAppLinks() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <pre>
+     * Stats of app links
+     * </pre>
+     *
+     * <code>optional int64 total_app_links = 3;</code>
+     * @return The totalAppLinks.
+     */
+    @java.lang.Override
+    public long getTotalAppLinks() {
+      return totalAppLinks_;
+    }
+
+    public static final int TOTAL_VALID_APP_LINKS_FIELD_NUMBER = 4;
+    private long totalValidAppLinks_;
+    /**
+     * <code>optional int64 total_valid_app_links = 4;</code>
+     * @return Whether the totalValidAppLinks field is set.
+     */
+    @java.lang.Override
+    public boolean hasTotalValidAppLinks() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <code>optional int64 total_valid_app_links = 4;</code>
+     * @return The totalValidAppLinks.
+     */
+    @java.lang.Override
+    public long getTotalValidAppLinks() {
+      return totalValidAppLinks_;
+    }
+
+    public static final int APP_LINKS_APP_CHECK_FAILED_FIELD_NUMBER = 5;
+    private long appLinksAppCheckFailed_;
+    /**
+     * <pre>
+     * Number of links with app checks issues
+     * </pre>
+     *
+     * <code>optional int64 app_links_app_check_failed = 5;</code>
+     * @return Whether the appLinksAppCheckFailed field is set.
+     */
+    @java.lang.Override
+    public boolean hasAppLinksAppCheckFailed() {
+      return ((bitField0_ & 0x00000010) != 0);
+    }
+    /**
+     * <pre>
+     * Number of links with app checks issues
+     * </pre>
+     *
+     * <code>optional int64 app_links_app_check_failed = 5;</code>
+     * @return The appLinksAppCheckFailed.
+     */
+    @java.lang.Override
+    public long getAppLinksAppCheckFailed() {
+      return appLinksAppCheckFailed_;
+    }
+
+    public static final int APP_LINKS_WEB_CHECK_FAILED_FIELD_NUMBER = 6;
+    private long appLinksWebCheckFailed_;
+    /**
+     * <pre>
+     * Number of links with web checks issues
+     * </pre>
+     *
+     * <code>optional int64 app_links_web_check_failed = 6;</code>
+     * @return Whether the appLinksWebCheckFailed field is set.
+     */
+    @java.lang.Override
+    public boolean hasAppLinksWebCheckFailed() {
+      return ((bitField0_ & 0x00000020) != 0);
+    }
+    /**
+     * <pre>
+     * Number of links with web checks issues
+     * </pre>
+     *
+     * <code>optional int64 app_links_web_check_failed = 6;</code>
+     * @return The appLinksWebCheckFailed.
+     */
+    @java.lang.Override
+    public long getAppLinksWebCheckFailed() {
+      return appLinksWebCheckFailed_;
+    }
+
+    public static final int APP_LINKS_GOOGLE_ADS_POLICY_FAILED_FIELD_NUMBER = 7;
+    private long appLinksGoogleAdsPolicyFailed_;
+    /**
+     * <pre>
+     * Number of links with Google Ads policy notifications
+     * </pre>
+     *
+     * <code>optional int64 app_links_google_ads_policy_failed = 7;</code>
+     * @return Whether the appLinksGoogleAdsPolicyFailed field is set.
+     */
+    @java.lang.Override
+    public boolean hasAppLinksGoogleAdsPolicyFailed() {
+      return ((bitField0_ & 0x00000040) != 0);
+    }
+    /**
+     * <pre>
+     * Number of links with Google Ads policy notifications
+     * </pre>
+     *
+     * <code>optional int64 app_links_google_ads_policy_failed = 7;</code>
+     * @return The appLinksGoogleAdsPolicyFailed.
+     */
+    @java.lang.Override
+    public long getAppLinksGoogleAdsPolicyFailed() {
+      return appLinksGoogleAdsPolicyFailed_;
+    }
+
+    public static final int TOTAL_DOMAINS_FIELD_NUMBER = 8;
+    private long totalDomains_;
+    /**
+     * <pre>
+     * Stats of domains
+     * </pre>
+     *
+     * <code>optional int64 total_domains = 8;</code>
+     * @return Whether the totalDomains field is set.
+     */
+    @java.lang.Override
+    public boolean hasTotalDomains() {
+      return ((bitField0_ & 0x00000080) != 0);
+    }
+    /**
+     * <pre>
+     * Stats of domains
+     * </pre>
+     *
+     * <code>optional int64 total_domains = 8;</code>
+     * @return The totalDomains.
+     */
+    @java.lang.Override
+    public long getTotalDomains() {
+      return totalDomains_;
+    }
+
+    public static final int DOMAINS_WEB_CHECK_FAILED_FIELD_NUMBER = 9;
+    private long domainsWebCheckFailed_;
+    /**
+     * <pre>
+     * Number of domains with issues
+     * </pre>
+     *
+     * <code>optional int64 domains_web_check_failed = 9;</code>
+     * @return Whether the domainsWebCheckFailed field is set.
+     */
+    @java.lang.Override
+    public boolean hasDomainsWebCheckFailed() {
+      return ((bitField0_ & 0x00000100) != 0);
+    }
+    /**
+     * <pre>
+     * Number of domains with issues
+     * </pre>
+     *
+     * <code>optional int64 domains_web_check_failed = 9;</code>
+     * @return The domainsWebCheckFailed.
+     */
+    @java.lang.Override
+    public long getDomainsWebCheckFailed() {
+      return domainsWebCheckFailed_;
+    }
+
+    public static final int VALIDATION_RUNTIME_MILLIS_FIELD_NUMBER = 10;
+    private long validationRuntimeMillis_;
+    /**
+     * <pre>
+     * Time taken to perform validation
+     * </pre>
+     *
+     * <code>optional uint64 validation_runtime_millis = 10;</code>
+     * @return Whether the validationRuntimeMillis field is set.
+     */
+    @java.lang.Override
+    public boolean hasValidationRuntimeMillis() {
+      return ((bitField0_ & 0x00000200) != 0);
+    }
+    /**
+     * <pre>
+     * Time taken to perform validation
+     * </pre>
+     *
+     * <code>optional uint64 validation_runtime_millis = 10;</code>
+     * @return The validationRuntimeMillis.
+     */
+    @java.lang.Override
+    public long getValidationRuntimeMillis() {
+      return validationRuntimeMillis_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        output.writeInt64(1, totalCsLinks_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        output.writeInt64(2, totalValidCsLinks_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        output.writeInt64(3, totalAppLinks_);
+      }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        output.writeInt64(4, totalValidAppLinks_);
+      }
+      if (((bitField0_ & 0x00000010) != 0)) {
+        output.writeInt64(5, appLinksAppCheckFailed_);
+      }
+      if (((bitField0_ & 0x00000020) != 0)) {
+        output.writeInt64(6, appLinksWebCheckFailed_);
+      }
+      if (((bitField0_ & 0x00000040) != 0)) {
+        output.writeInt64(7, appLinksGoogleAdsPolicyFailed_);
+      }
+      if (((bitField0_ & 0x00000080) != 0)) {
+        output.writeInt64(8, totalDomains_);
+      }
+      if (((bitField0_ & 0x00000100) != 0)) {
+        output.writeInt64(9, domainsWebCheckFailed_);
+      }
+      if (((bitField0_ & 0x00000200) != 0)) {
+        output.writeUInt64(10, validationRuntimeMillis_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(1, totalCsLinks_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(2, totalValidCsLinks_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(3, totalAppLinks_);
+      }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(4, totalValidAppLinks_);
+      }
+      if (((bitField0_ & 0x00000010) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(5, appLinksAppCheckFailed_);
+      }
+      if (((bitField0_ & 0x00000020) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(6, appLinksWebCheckFailed_);
+      }
+      if (((bitField0_ & 0x00000040) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(7, appLinksGoogleAdsPolicyFailed_);
+      }
+      if (((bitField0_ & 0x00000080) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(8, totalDomains_);
+      }
+      if (((bitField0_ & 0x00000100) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(9, domainsWebCheckFailed_);
+      }
+      if (((bitField0_ & 0x00000200) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(10, validationRuntimeMillis_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary)) {
+        return super.equals(obj);
+      }
+      com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary other = (com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary) obj;
+
+      if (hasTotalCsLinks() != other.hasTotalCsLinks()) return false;
+      if (hasTotalCsLinks()) {
+        if (getTotalCsLinks()
+            != other.getTotalCsLinks()) return false;
+      }
+      if (hasTotalValidCsLinks() != other.hasTotalValidCsLinks()) return false;
+      if (hasTotalValidCsLinks()) {
+        if (getTotalValidCsLinks()
+            != other.getTotalValidCsLinks()) return false;
+      }
+      if (hasTotalAppLinks() != other.hasTotalAppLinks()) return false;
+      if (hasTotalAppLinks()) {
+        if (getTotalAppLinks()
+            != other.getTotalAppLinks()) return false;
+      }
+      if (hasTotalValidAppLinks() != other.hasTotalValidAppLinks()) return false;
+      if (hasTotalValidAppLinks()) {
+        if (getTotalValidAppLinks()
+            != other.getTotalValidAppLinks()) return false;
+      }
+      if (hasAppLinksAppCheckFailed() != other.hasAppLinksAppCheckFailed()) return false;
+      if (hasAppLinksAppCheckFailed()) {
+        if (getAppLinksAppCheckFailed()
+            != other.getAppLinksAppCheckFailed()) return false;
+      }
+      if (hasAppLinksWebCheckFailed() != other.hasAppLinksWebCheckFailed()) return false;
+      if (hasAppLinksWebCheckFailed()) {
+        if (getAppLinksWebCheckFailed()
+            != other.getAppLinksWebCheckFailed()) return false;
+      }
+      if (hasAppLinksGoogleAdsPolicyFailed() != other.hasAppLinksGoogleAdsPolicyFailed()) return false;
+      if (hasAppLinksGoogleAdsPolicyFailed()) {
+        if (getAppLinksGoogleAdsPolicyFailed()
+            != other.getAppLinksGoogleAdsPolicyFailed()) return false;
+      }
+      if (hasTotalDomains() != other.hasTotalDomains()) return false;
+      if (hasTotalDomains()) {
+        if (getTotalDomains()
+            != other.getTotalDomains()) return false;
+      }
+      if (hasDomainsWebCheckFailed() != other.hasDomainsWebCheckFailed()) return false;
+      if (hasDomainsWebCheckFailed()) {
+        if (getDomainsWebCheckFailed()
+            != other.getDomainsWebCheckFailed()) return false;
+      }
+      if (hasValidationRuntimeMillis() != other.hasValidationRuntimeMillis()) return false;
+      if (hasValidationRuntimeMillis()) {
+        if (getValidationRuntimeMillis()
+            != other.getValidationRuntimeMillis()) return false;
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasTotalCsLinks()) {
+        hash = (37 * hash) + TOTAL_CS_LINKS_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getTotalCsLinks());
+      }
+      if (hasTotalValidCsLinks()) {
+        hash = (37 * hash) + TOTAL_VALID_CS_LINKS_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getTotalValidCsLinks());
+      }
+      if (hasTotalAppLinks()) {
+        hash = (37 * hash) + TOTAL_APP_LINKS_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getTotalAppLinks());
+      }
+      if (hasTotalValidAppLinks()) {
+        hash = (37 * hash) + TOTAL_VALID_APP_LINKS_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getTotalValidAppLinks());
+      }
+      if (hasAppLinksAppCheckFailed()) {
+        hash = (37 * hash) + APP_LINKS_APP_CHECK_FAILED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getAppLinksAppCheckFailed());
+      }
+      if (hasAppLinksWebCheckFailed()) {
+        hash = (37 * hash) + APP_LINKS_WEB_CHECK_FAILED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getAppLinksWebCheckFailed());
+      }
+      if (hasAppLinksGoogleAdsPolicyFailed()) {
+        hash = (37 * hash) + APP_LINKS_GOOGLE_ADS_POLICY_FAILED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getAppLinksGoogleAdsPolicyFailed());
+      }
+      if (hasTotalDomains()) {
+        hash = (37 * hash) + TOTAL_DOMAINS_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getTotalDomains());
+      }
+      if (hasDomainsWebCheckFailed()) {
+        hash = (37 * hash) + DOMAINS_WEB_CHECK_FAILED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getDomainsWebCheckFailed());
+      }
+      if (hasValidationRuntimeMillis()) {
+        hash = (37 * hash) + VALIDATION_RUNTIME_MILLIS_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getValidationRuntimeMillis());
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * Message to be sent when validation is run.
+     * </pre>
+     *
+     * Protobuf type {@code android_studio.AppLinksAssistantEvent.ValidationSummary}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:android_studio.AppLinksAssistantEvent.ValidationSummary)
+        com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummaryOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppLinksAssistantEvent_ValidationSummary_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppLinksAssistantEvent_ValidationSummary_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary.class, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary.Builder.class);
+      }
+
+      // Construct using com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        totalCsLinks_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        totalValidCsLinks_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        totalAppLinks_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        totalValidAppLinks_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        appLinksAppCheckFailed_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        appLinksWebCheckFailed_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        appLinksGoogleAdsPolicyFailed_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000040);
+        totalDomains_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000080);
+        domainsWebCheckFailed_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000100);
+        validationRuntimeMillis_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000200);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppLinksAssistantEvent_ValidationSummary_descriptor;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary getDefaultInstanceForType() {
+        return com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary build() {
+        com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary buildPartial() {
+        com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary result = new com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.totalCsLinks_ = totalCsLinks_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.totalValidCsLinks_ = totalValidCsLinks_;
+          to_bitField0_ |= 0x00000002;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.totalAppLinks_ = totalAppLinks_;
+          to_bitField0_ |= 0x00000004;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.totalValidAppLinks_ = totalValidAppLinks_;
+          to_bitField0_ |= 0x00000008;
+        }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.appLinksAppCheckFailed_ = appLinksAppCheckFailed_;
+          to_bitField0_ |= 0x00000010;
+        }
+        if (((from_bitField0_ & 0x00000020) != 0)) {
+          result.appLinksWebCheckFailed_ = appLinksWebCheckFailed_;
+          to_bitField0_ |= 0x00000020;
+        }
+        if (((from_bitField0_ & 0x00000040) != 0)) {
+          result.appLinksGoogleAdsPolicyFailed_ = appLinksGoogleAdsPolicyFailed_;
+          to_bitField0_ |= 0x00000040;
+        }
+        if (((from_bitField0_ & 0x00000080) != 0)) {
+          result.totalDomains_ = totalDomains_;
+          to_bitField0_ |= 0x00000080;
+        }
+        if (((from_bitField0_ & 0x00000100) != 0)) {
+          result.domainsWebCheckFailed_ = domainsWebCheckFailed_;
+          to_bitField0_ |= 0x00000100;
+        }
+        if (((from_bitField0_ & 0x00000200) != 0)) {
+          result.validationRuntimeMillis_ = validationRuntimeMillis_;
+          to_bitField0_ |= 0x00000200;
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary) {
+          return mergeFrom((com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary other) {
+        if (other == com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary.getDefaultInstance()) return this;
+        if (other.hasTotalCsLinks()) {
+          setTotalCsLinks(other.getTotalCsLinks());
+        }
+        if (other.hasTotalValidCsLinks()) {
+          setTotalValidCsLinks(other.getTotalValidCsLinks());
+        }
+        if (other.hasTotalAppLinks()) {
+          setTotalAppLinks(other.getTotalAppLinks());
+        }
+        if (other.hasTotalValidAppLinks()) {
+          setTotalValidAppLinks(other.getTotalValidAppLinks());
+        }
+        if (other.hasAppLinksAppCheckFailed()) {
+          setAppLinksAppCheckFailed(other.getAppLinksAppCheckFailed());
+        }
+        if (other.hasAppLinksWebCheckFailed()) {
+          setAppLinksWebCheckFailed(other.getAppLinksWebCheckFailed());
+        }
+        if (other.hasAppLinksGoogleAdsPolicyFailed()) {
+          setAppLinksGoogleAdsPolicyFailed(other.getAppLinksGoogleAdsPolicyFailed());
+        }
+        if (other.hasTotalDomains()) {
+          setTotalDomains(other.getTotalDomains());
+        }
+        if (other.hasDomainsWebCheckFailed()) {
+          setDomainsWebCheckFailed(other.getDomainsWebCheckFailed());
+        }
+        if (other.hasValidationRuntimeMillis()) {
+          setValidationRuntimeMillis(other.getValidationRuntimeMillis());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long totalCsLinks_ ;
+      /**
+       * <pre>
+       * Stats of custom scheme links
+       * </pre>
+       *
+       * <code>optional int64 total_cs_links = 1;</code>
+       * @return Whether the totalCsLinks field is set.
+       */
+      @java.lang.Override
+      public boolean hasTotalCsLinks() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <pre>
+       * Stats of custom scheme links
+       * </pre>
+       *
+       * <code>optional int64 total_cs_links = 1;</code>
+       * @return The totalCsLinks.
+       */
+      @java.lang.Override
+      public long getTotalCsLinks() {
+        return totalCsLinks_;
+      }
+      /**
+       * <pre>
+       * Stats of custom scheme links
+       * </pre>
+       *
+       * <code>optional int64 total_cs_links = 1;</code>
+       * @param value The totalCsLinks to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTotalCsLinks(long value) {
+        bitField0_ |= 0x00000001;
+        totalCsLinks_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Stats of custom scheme links
+       * </pre>
+       *
+       * <code>optional int64 total_cs_links = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTotalCsLinks() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        totalCsLinks_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long totalValidCsLinks_ ;
+      /**
+       * <pre>
+       * cs_links_app_check_failed = total_cs_links - total_valid_cs_links
+       * </pre>
+       *
+       * <code>optional int64 total_valid_cs_links = 2;</code>
+       * @return Whether the totalValidCsLinks field is set.
+       */
+      @java.lang.Override
+      public boolean hasTotalValidCsLinks() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <pre>
+       * cs_links_app_check_failed = total_cs_links - total_valid_cs_links
+       * </pre>
+       *
+       * <code>optional int64 total_valid_cs_links = 2;</code>
+       * @return The totalValidCsLinks.
+       */
+      @java.lang.Override
+      public long getTotalValidCsLinks() {
+        return totalValidCsLinks_;
+      }
+      /**
+       * <pre>
+       * cs_links_app_check_failed = total_cs_links - total_valid_cs_links
+       * </pre>
+       *
+       * <code>optional int64 total_valid_cs_links = 2;</code>
+       * @param value The totalValidCsLinks to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTotalValidCsLinks(long value) {
+        bitField0_ |= 0x00000002;
+        totalValidCsLinks_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * cs_links_app_check_failed = total_cs_links - total_valid_cs_links
+       * </pre>
+       *
+       * <code>optional int64 total_valid_cs_links = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTotalValidCsLinks() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        totalValidCsLinks_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long totalAppLinks_ ;
+      /**
+       * <pre>
+       * Stats of app links
+       * </pre>
+       *
+       * <code>optional int64 total_app_links = 3;</code>
+       * @return Whether the totalAppLinks field is set.
+       */
+      @java.lang.Override
+      public boolean hasTotalAppLinks() {
+        return ((bitField0_ & 0x00000004) != 0);
+      }
+      /**
+       * <pre>
+       * Stats of app links
+       * </pre>
+       *
+       * <code>optional int64 total_app_links = 3;</code>
+       * @return The totalAppLinks.
+       */
+      @java.lang.Override
+      public long getTotalAppLinks() {
+        return totalAppLinks_;
+      }
+      /**
+       * <pre>
+       * Stats of app links
+       * </pre>
+       *
+       * <code>optional int64 total_app_links = 3;</code>
+       * @param value The totalAppLinks to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTotalAppLinks(long value) {
+        bitField0_ |= 0x00000004;
+        totalAppLinks_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Stats of app links
+       * </pre>
+       *
+       * <code>optional int64 total_app_links = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTotalAppLinks() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        totalAppLinks_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long totalValidAppLinks_ ;
+      /**
+       * <code>optional int64 total_valid_app_links = 4;</code>
+       * @return Whether the totalValidAppLinks field is set.
+       */
+      @java.lang.Override
+      public boolean hasTotalValidAppLinks() {
+        return ((bitField0_ & 0x00000008) != 0);
+      }
+      /**
+       * <code>optional int64 total_valid_app_links = 4;</code>
+       * @return The totalValidAppLinks.
+       */
+      @java.lang.Override
+      public long getTotalValidAppLinks() {
+        return totalValidAppLinks_;
+      }
+      /**
+       * <code>optional int64 total_valid_app_links = 4;</code>
+       * @param value The totalValidAppLinks to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTotalValidAppLinks(long value) {
+        bitField0_ |= 0x00000008;
+        totalValidAppLinks_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int64 total_valid_app_links = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTotalValidAppLinks() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        totalValidAppLinks_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long appLinksAppCheckFailed_ ;
+      /**
+       * <pre>
+       * Number of links with app checks issues
+       * </pre>
+       *
+       * <code>optional int64 app_links_app_check_failed = 5;</code>
+       * @return Whether the appLinksAppCheckFailed field is set.
+       */
+      @java.lang.Override
+      public boolean hasAppLinksAppCheckFailed() {
+        return ((bitField0_ & 0x00000010) != 0);
+      }
+      /**
+       * <pre>
+       * Number of links with app checks issues
+       * </pre>
+       *
+       * <code>optional int64 app_links_app_check_failed = 5;</code>
+       * @return The appLinksAppCheckFailed.
+       */
+      @java.lang.Override
+      public long getAppLinksAppCheckFailed() {
+        return appLinksAppCheckFailed_;
+      }
+      /**
+       * <pre>
+       * Number of links with app checks issues
+       * </pre>
+       *
+       * <code>optional int64 app_links_app_check_failed = 5;</code>
+       * @param value The appLinksAppCheckFailed to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAppLinksAppCheckFailed(long value) {
+        bitField0_ |= 0x00000010;
+        appLinksAppCheckFailed_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Number of links with app checks issues
+       * </pre>
+       *
+       * <code>optional int64 app_links_app_check_failed = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAppLinksAppCheckFailed() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        appLinksAppCheckFailed_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long appLinksWebCheckFailed_ ;
+      /**
+       * <pre>
+       * Number of links with web checks issues
+       * </pre>
+       *
+       * <code>optional int64 app_links_web_check_failed = 6;</code>
+       * @return Whether the appLinksWebCheckFailed field is set.
+       */
+      @java.lang.Override
+      public boolean hasAppLinksWebCheckFailed() {
+        return ((bitField0_ & 0x00000020) != 0);
+      }
+      /**
+       * <pre>
+       * Number of links with web checks issues
+       * </pre>
+       *
+       * <code>optional int64 app_links_web_check_failed = 6;</code>
+       * @return The appLinksWebCheckFailed.
+       */
+      @java.lang.Override
+      public long getAppLinksWebCheckFailed() {
+        return appLinksWebCheckFailed_;
+      }
+      /**
+       * <pre>
+       * Number of links with web checks issues
+       * </pre>
+       *
+       * <code>optional int64 app_links_web_check_failed = 6;</code>
+       * @param value The appLinksWebCheckFailed to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAppLinksWebCheckFailed(long value) {
+        bitField0_ |= 0x00000020;
+        appLinksWebCheckFailed_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Number of links with web checks issues
+       * </pre>
+       *
+       * <code>optional int64 app_links_web_check_failed = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAppLinksWebCheckFailed() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        appLinksWebCheckFailed_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long appLinksGoogleAdsPolicyFailed_ ;
+      /**
+       * <pre>
+       * Number of links with Google Ads policy notifications
+       * </pre>
+       *
+       * <code>optional int64 app_links_google_ads_policy_failed = 7;</code>
+       * @return Whether the appLinksGoogleAdsPolicyFailed field is set.
+       */
+      @java.lang.Override
+      public boolean hasAppLinksGoogleAdsPolicyFailed() {
+        return ((bitField0_ & 0x00000040) != 0);
+      }
+      /**
+       * <pre>
+       * Number of links with Google Ads policy notifications
+       * </pre>
+       *
+       * <code>optional int64 app_links_google_ads_policy_failed = 7;</code>
+       * @return The appLinksGoogleAdsPolicyFailed.
+       */
+      @java.lang.Override
+      public long getAppLinksGoogleAdsPolicyFailed() {
+        return appLinksGoogleAdsPolicyFailed_;
+      }
+      /**
+       * <pre>
+       * Number of links with Google Ads policy notifications
+       * </pre>
+       *
+       * <code>optional int64 app_links_google_ads_policy_failed = 7;</code>
+       * @param value The appLinksGoogleAdsPolicyFailed to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAppLinksGoogleAdsPolicyFailed(long value) {
+        bitField0_ |= 0x00000040;
+        appLinksGoogleAdsPolicyFailed_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Number of links with Google Ads policy notifications
+       * </pre>
+       *
+       * <code>optional int64 app_links_google_ads_policy_failed = 7;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAppLinksGoogleAdsPolicyFailed() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        appLinksGoogleAdsPolicyFailed_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long totalDomains_ ;
+      /**
+       * <pre>
+       * Stats of domains
+       * </pre>
+       *
+       * <code>optional int64 total_domains = 8;</code>
+       * @return Whether the totalDomains field is set.
+       */
+      @java.lang.Override
+      public boolean hasTotalDomains() {
+        return ((bitField0_ & 0x00000080) != 0);
+      }
+      /**
+       * <pre>
+       * Stats of domains
+       * </pre>
+       *
+       * <code>optional int64 total_domains = 8;</code>
+       * @return The totalDomains.
+       */
+      @java.lang.Override
+      public long getTotalDomains() {
+        return totalDomains_;
+      }
+      /**
+       * <pre>
+       * Stats of domains
+       * </pre>
+       *
+       * <code>optional int64 total_domains = 8;</code>
+       * @param value The totalDomains to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTotalDomains(long value) {
+        bitField0_ |= 0x00000080;
+        totalDomains_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Stats of domains
+       * </pre>
+       *
+       * <code>optional int64 total_domains = 8;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTotalDomains() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        totalDomains_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long domainsWebCheckFailed_ ;
+      /**
+       * <pre>
+       * Number of domains with issues
+       * </pre>
+       *
+       * <code>optional int64 domains_web_check_failed = 9;</code>
+       * @return Whether the domainsWebCheckFailed field is set.
+       */
+      @java.lang.Override
+      public boolean hasDomainsWebCheckFailed() {
+        return ((bitField0_ & 0x00000100) != 0);
+      }
+      /**
+       * <pre>
+       * Number of domains with issues
+       * </pre>
+       *
+       * <code>optional int64 domains_web_check_failed = 9;</code>
+       * @return The domainsWebCheckFailed.
+       */
+      @java.lang.Override
+      public long getDomainsWebCheckFailed() {
+        return domainsWebCheckFailed_;
+      }
+      /**
+       * <pre>
+       * Number of domains with issues
+       * </pre>
+       *
+       * <code>optional int64 domains_web_check_failed = 9;</code>
+       * @param value The domainsWebCheckFailed to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDomainsWebCheckFailed(long value) {
+        bitField0_ |= 0x00000100;
+        domainsWebCheckFailed_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Number of domains with issues
+       * </pre>
+       *
+       * <code>optional int64 domains_web_check_failed = 9;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDomainsWebCheckFailed() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        domainsWebCheckFailed_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long validationRuntimeMillis_ ;
+      /**
+       * <pre>
+       * Time taken to perform validation
+       * </pre>
+       *
+       * <code>optional uint64 validation_runtime_millis = 10;</code>
+       * @return Whether the validationRuntimeMillis field is set.
+       */
+      @java.lang.Override
+      public boolean hasValidationRuntimeMillis() {
+        return ((bitField0_ & 0x00000200) != 0);
+      }
+      /**
+       * <pre>
+       * Time taken to perform validation
+       * </pre>
+       *
+       * <code>optional uint64 validation_runtime_millis = 10;</code>
+       * @return The validationRuntimeMillis.
+       */
+      @java.lang.Override
+      public long getValidationRuntimeMillis() {
+        return validationRuntimeMillis_;
+      }
+      /**
+       * <pre>
+       * Time taken to perform validation
+       * </pre>
+       *
+       * <code>optional uint64 validation_runtime_millis = 10;</code>
+       * @param value The validationRuntimeMillis to set.
+       * @return This builder for chaining.
+       */
+      public Builder setValidationRuntimeMillis(long value) {
+        bitField0_ |= 0x00000200;
+        validationRuntimeMillis_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Time taken to perform validation
+       * </pre>
+       *
+       * <code>optional uint64 validation_runtime_millis = 10;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearValidationRuntimeMillis() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        validationRuntimeMillis_ = 0L;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:android_studio.AppLinksAssistantEvent.ValidationSummary)
+    }
+
+    // @@protoc_insertion_point(class_scope:android_studio.AppLinksAssistantEvent.ValidationSummary)
+    private static final com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary();
+    }
+
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<ValidationSummary>
+        PARSER = new com.google.protobuf.AbstractParser<ValidationSummary>() {
+      @java.lang.Override
+      public ValidationSummary parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ValidationSummary(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<ValidationSummary> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ValidationSummary> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface IntentFilterFixOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:android_studio.AppLinksAssistantEvent.IntentFilterFix)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * Total number of links that we are trying to fix in this operation
+     * </pre>
+     *
+     * <code>optional int64 total_links = 1;</code>
+     * @return Whether the totalLinks field is set.
+     */
+    boolean hasTotalLinks();
+    /**
+     * <pre>
+     * Total number of links that we are trying to fix in this operation
+     * </pre>
+     *
+     * <code>optional int64 total_links = 1;</code>
+     * @return The totalLinks.
+     */
+    long getTotalLinks();
+
+    /**
+     * <pre>
+     * Initial number of invalid links
+     * </pre>
+     *
+     * <code>optional int64 num_broken_links_before = 2;</code>
+     * @return Whether the numBrokenLinksBefore field is set.
+     */
+    boolean hasNumBrokenLinksBefore();
+    /**
+     * <pre>
+     * Initial number of invalid links
+     * </pre>
+     *
+     * <code>optional int64 num_broken_links_before = 2;</code>
+     * @return The numBrokenLinksBefore.
+     */
+    long getNumBrokenLinksBefore();
+
+    /**
+     * <pre>
+     * Number of invalid links after fixing (i.e. links that need manual fixes)
+     * </pre>
+     *
+     * <code>optional int64 num_broken_links_after = 3;</code>
+     * @return Whether the numBrokenLinksAfter field is set.
+     */
+    boolean hasNumBrokenLinksAfter();
+    /**
+     * <pre>
+     * Number of invalid links after fixing (i.e. links that need manual fixes)
+     * </pre>
+     *
+     * <code>optional int64 num_broken_links_after = 3;</code>
+     * @return The numBrokenLinksAfter.
+     */
+    long getNumBrokenLinksAfter();
+  }
+  /**
+   * Protobuf type {@code android_studio.AppLinksAssistantEvent.IntentFilterFix}
+   */
+  public static final class IntentFilterFix extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:android_studio.AppLinksAssistantEvent.IntentFilterFix)
+      IntentFilterFixOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use IntentFilterFix.newBuilder() to construct.
+    private IntentFilterFix(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private IntentFilterFix() {
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new IntentFilterFix();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private IntentFilterFix(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              bitField0_ |= 0x00000001;
+              totalLinks_ = input.readInt64();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              numBrokenLinksBefore_ = input.readInt64();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              numBrokenLinksAfter_ = input.readInt64();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppLinksAssistantEvent_IntentFilterFix_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppLinksAssistantEvent_IntentFilterFix_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix.class, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int TOTAL_LINKS_FIELD_NUMBER = 1;
+    private long totalLinks_;
+    /**
+     * <pre>
+     * Total number of links that we are trying to fix in this operation
+     * </pre>
+     *
+     * <code>optional int64 total_links = 1;</code>
+     * @return Whether the totalLinks field is set.
+     */
+    @java.lang.Override
+    public boolean hasTotalLinks() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <pre>
+     * Total number of links that we are trying to fix in this operation
+     * </pre>
+     *
+     * <code>optional int64 total_links = 1;</code>
+     * @return The totalLinks.
+     */
+    @java.lang.Override
+    public long getTotalLinks() {
+      return totalLinks_;
+    }
+
+    public static final int NUM_BROKEN_LINKS_BEFORE_FIELD_NUMBER = 2;
+    private long numBrokenLinksBefore_;
+    /**
+     * <pre>
+     * Initial number of invalid links
+     * </pre>
+     *
+     * <code>optional int64 num_broken_links_before = 2;</code>
+     * @return Whether the numBrokenLinksBefore field is set.
+     */
+    @java.lang.Override
+    public boolean hasNumBrokenLinksBefore() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <pre>
+     * Initial number of invalid links
+     * </pre>
+     *
+     * <code>optional int64 num_broken_links_before = 2;</code>
+     * @return The numBrokenLinksBefore.
+     */
+    @java.lang.Override
+    public long getNumBrokenLinksBefore() {
+      return numBrokenLinksBefore_;
+    }
+
+    public static final int NUM_BROKEN_LINKS_AFTER_FIELD_NUMBER = 3;
+    private long numBrokenLinksAfter_;
+    /**
+     * <pre>
+     * Number of invalid links after fixing (i.e. links that need manual fixes)
+     * </pre>
+     *
+     * <code>optional int64 num_broken_links_after = 3;</code>
+     * @return Whether the numBrokenLinksAfter field is set.
+     */
+    @java.lang.Override
+    public boolean hasNumBrokenLinksAfter() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <pre>
+     * Number of invalid links after fixing (i.e. links that need manual fixes)
+     * </pre>
+     *
+     * <code>optional int64 num_broken_links_after = 3;</code>
+     * @return The numBrokenLinksAfter.
+     */
+    @java.lang.Override
+    public long getNumBrokenLinksAfter() {
+      return numBrokenLinksAfter_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        output.writeInt64(1, totalLinks_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        output.writeInt64(2, numBrokenLinksBefore_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        output.writeInt64(3, numBrokenLinksAfter_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(1, totalLinks_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(2, numBrokenLinksBefore_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(3, numBrokenLinksAfter_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix)) {
+        return super.equals(obj);
+      }
+      com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix other = (com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix) obj;
+
+      if (hasTotalLinks() != other.hasTotalLinks()) return false;
+      if (hasTotalLinks()) {
+        if (getTotalLinks()
+            != other.getTotalLinks()) return false;
+      }
+      if (hasNumBrokenLinksBefore() != other.hasNumBrokenLinksBefore()) return false;
+      if (hasNumBrokenLinksBefore()) {
+        if (getNumBrokenLinksBefore()
+            != other.getNumBrokenLinksBefore()) return false;
+      }
+      if (hasNumBrokenLinksAfter() != other.hasNumBrokenLinksAfter()) return false;
+      if (hasNumBrokenLinksAfter()) {
+        if (getNumBrokenLinksAfter()
+            != other.getNumBrokenLinksAfter()) return false;
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasTotalLinks()) {
+        hash = (37 * hash) + TOTAL_LINKS_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getTotalLinks());
+      }
+      if (hasNumBrokenLinksBefore()) {
+        hash = (37 * hash) + NUM_BROKEN_LINKS_BEFORE_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getNumBrokenLinksBefore());
+      }
+      if (hasNumBrokenLinksAfter()) {
+        hash = (37 * hash) + NUM_BROKEN_LINKS_AFTER_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getNumBrokenLinksAfter());
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code android_studio.AppLinksAssistantEvent.IntentFilterFix}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:android_studio.AppLinksAssistantEvent.IntentFilterFix)
+        com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFixOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppLinksAssistantEvent_IntentFilterFix_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppLinksAssistantEvent_IntentFilterFix_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix.class, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix.Builder.class);
+      }
+
+      // Construct using com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        totalLinks_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        numBrokenLinksBefore_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        numBrokenLinksAfter_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppLinksAssistantEvent_IntentFilterFix_descriptor;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix getDefaultInstanceForType() {
+        return com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix build() {
+        com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix buildPartial() {
+        com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix result = new com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.totalLinks_ = totalLinks_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.numBrokenLinksBefore_ = numBrokenLinksBefore_;
+          to_bitField0_ |= 0x00000002;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.numBrokenLinksAfter_ = numBrokenLinksAfter_;
+          to_bitField0_ |= 0x00000004;
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix) {
+          return mergeFrom((com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix other) {
+        if (other == com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix.getDefaultInstance()) return this;
+        if (other.hasTotalLinks()) {
+          setTotalLinks(other.getTotalLinks());
+        }
+        if (other.hasNumBrokenLinksBefore()) {
+          setNumBrokenLinksBefore(other.getNumBrokenLinksBefore());
+        }
+        if (other.hasNumBrokenLinksAfter()) {
+          setNumBrokenLinksAfter(other.getNumBrokenLinksAfter());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long totalLinks_ ;
+      /**
+       * <pre>
+       * Total number of links that we are trying to fix in this operation
+       * </pre>
+       *
+       * <code>optional int64 total_links = 1;</code>
+       * @return Whether the totalLinks field is set.
+       */
+      @java.lang.Override
+      public boolean hasTotalLinks() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <pre>
+       * Total number of links that we are trying to fix in this operation
+       * </pre>
+       *
+       * <code>optional int64 total_links = 1;</code>
+       * @return The totalLinks.
+       */
+      @java.lang.Override
+      public long getTotalLinks() {
+        return totalLinks_;
+      }
+      /**
+       * <pre>
+       * Total number of links that we are trying to fix in this operation
+       * </pre>
+       *
+       * <code>optional int64 total_links = 1;</code>
+       * @param value The totalLinks to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTotalLinks(long value) {
+        bitField0_ |= 0x00000001;
+        totalLinks_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Total number of links that we are trying to fix in this operation
+       * </pre>
+       *
+       * <code>optional int64 total_links = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTotalLinks() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        totalLinks_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long numBrokenLinksBefore_ ;
+      /**
+       * <pre>
+       * Initial number of invalid links
+       * </pre>
+       *
+       * <code>optional int64 num_broken_links_before = 2;</code>
+       * @return Whether the numBrokenLinksBefore field is set.
+       */
+      @java.lang.Override
+      public boolean hasNumBrokenLinksBefore() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <pre>
+       * Initial number of invalid links
+       * </pre>
+       *
+       * <code>optional int64 num_broken_links_before = 2;</code>
+       * @return The numBrokenLinksBefore.
+       */
+      @java.lang.Override
+      public long getNumBrokenLinksBefore() {
+        return numBrokenLinksBefore_;
+      }
+      /**
+       * <pre>
+       * Initial number of invalid links
+       * </pre>
+       *
+       * <code>optional int64 num_broken_links_before = 2;</code>
+       * @param value The numBrokenLinksBefore to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNumBrokenLinksBefore(long value) {
+        bitField0_ |= 0x00000002;
+        numBrokenLinksBefore_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Initial number of invalid links
+       * </pre>
+       *
+       * <code>optional int64 num_broken_links_before = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearNumBrokenLinksBefore() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        numBrokenLinksBefore_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long numBrokenLinksAfter_ ;
+      /**
+       * <pre>
+       * Number of invalid links after fixing (i.e. links that need manual fixes)
+       * </pre>
+       *
+       * <code>optional int64 num_broken_links_after = 3;</code>
+       * @return Whether the numBrokenLinksAfter field is set.
+       */
+      @java.lang.Override
+      public boolean hasNumBrokenLinksAfter() {
+        return ((bitField0_ & 0x00000004) != 0);
+      }
+      /**
+       * <pre>
+       * Number of invalid links after fixing (i.e. links that need manual fixes)
+       * </pre>
+       *
+       * <code>optional int64 num_broken_links_after = 3;</code>
+       * @return The numBrokenLinksAfter.
+       */
+      @java.lang.Override
+      public long getNumBrokenLinksAfter() {
+        return numBrokenLinksAfter_;
+      }
+      /**
+       * <pre>
+       * Number of invalid links after fixing (i.e. links that need manual fixes)
+       * </pre>
+       *
+       * <code>optional int64 num_broken_links_after = 3;</code>
+       * @param value The numBrokenLinksAfter to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNumBrokenLinksAfter(long value) {
+        bitField0_ |= 0x00000004;
+        numBrokenLinksAfter_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Number of invalid links after fixing (i.e. links that need manual fixes)
+       * </pre>
+       *
+       * <code>optional int64 num_broken_links_after = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearNumBrokenLinksAfter() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        numBrokenLinksAfter_ = 0L;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:android_studio.AppLinksAssistantEvent.IntentFilterFix)
+    }
+
+    // @@protoc_insertion_point(class_scope:android_studio.AppLinksAssistantEvent.IntentFilterFix)
+    private static final com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix();
+    }
+
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<IntentFilterFix>
+        PARSER = new com.google.protobuf.AbstractParser<IntentFilterFix>() {
+      @java.lang.Override
+      public IntentFilterFix parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new IntentFilterFix(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<IntentFilterFix> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<IntentFilterFix> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
   }
 
   private int bitField0_;
@@ -1167,6 +4059,77 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int VALIDATION_SUMMARY_FIELD_NUMBER = 11;
+  private com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary validationSummary_;
+  /**
+   * <code>optional .android_studio.AppLinksAssistantEvent.ValidationSummary validation_summary = 11;</code>
+   * @return Whether the validationSummary field is set.
+   */
+  @java.lang.Override
+  public boolean hasValidationSummary() {
+    return ((bitField0_ & 0x00000400) != 0);
+  }
+  /**
+   * <code>optional .android_studio.AppLinksAssistantEvent.ValidationSummary validation_summary = 11;</code>
+   * @return The validationSummary.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary getValidationSummary() {
+    return validationSummary_ == null ? com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary.getDefaultInstance() : validationSummary_;
+  }
+  /**
+   * <code>optional .android_studio.AppLinksAssistantEvent.ValidationSummary validation_summary = 11;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummaryOrBuilder getValidationSummaryOrBuilder() {
+    return validationSummary_ == null ? com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary.getDefaultInstance() : validationSummary_;
+  }
+
+  public static final int INTENT_FILTER_FIX_FIELD_NUMBER = 12;
+  private com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix intentFilterFix_;
+  /**
+   * <code>optional .android_studio.AppLinksAssistantEvent.IntentFilterFix intent_filter_fix = 12;</code>
+   * @return Whether the intentFilterFix field is set.
+   */
+  @java.lang.Override
+  public boolean hasIntentFilterFix() {
+    return ((bitField0_ & 0x00000800) != 0);
+  }
+  /**
+   * <code>optional .android_studio.AppLinksAssistantEvent.IntentFilterFix intent_filter_fix = 12;</code>
+   * @return The intentFilterFix.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix getIntentFilterFix() {
+    return intentFilterFix_ == null ? com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix.getDefaultInstance() : intentFilterFix_;
+  }
+  /**
+   * <code>optional .android_studio.AppLinksAssistantEvent.IntentFilterFix intent_filter_fix = 12;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFixOrBuilder getIntentFilterFixOrBuilder() {
+    return intentFilterFix_ == null ? com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix.getDefaultInstance() : intentFilterFix_;
+  }
+
+  public static final int LINK_FILTER_OPTION_FIELD_NUMBER = 13;
+  private int linkFilterOption_;
+  /**
+   * <code>optional .android_studio.AppLinksAssistantEvent.LinkFilterOption link_filter_option = 13;</code>
+   * @return Whether the linkFilterOption field is set.
+   */
+  @java.lang.Override public boolean hasLinkFilterOption() {
+    return ((bitField0_ & 0x00001000) != 0);
+  }
+  /**
+   * <code>optional .android_studio.AppLinksAssistantEvent.LinkFilterOption link_filter_option = 13;</code>
+   * @return The linkFilterOption.
+   */
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinkFilterOption getLinkFilterOption() {
+    @SuppressWarnings("deprecation")
+    com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinkFilterOption result = com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinkFilterOption.valueOf(linkFilterOption_);
+    return result == null ? com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinkFilterOption.UNKNOWN : result;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -1210,6 +4173,15 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00000200) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 10, rawProjectId_);
+    }
+    if (((bitField0_ & 0x00000400) != 0)) {
+      output.writeMessage(11, getValidationSummary());
+    }
+    if (((bitField0_ & 0x00000800) != 0)) {
+      output.writeMessage(12, getIntentFilterFix());
+    }
+    if (((bitField0_ & 0x00001000) != 0)) {
+      output.writeEnum(13, linkFilterOption_);
     }
     unknownFields.writeTo(output);
   }
@@ -1256,6 +4228,18 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00000200) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, rawProjectId_);
+    }
+    if (((bitField0_ & 0x00000400) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(11, getValidationSummary());
+    }
+    if (((bitField0_ & 0x00000800) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(12, getIntentFilterFix());
+    }
+    if (((bitField0_ & 0x00001000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(13, linkFilterOption_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -1319,6 +4303,20 @@ private static final long serialVersionUID = 0L;
       if (!getRawProjectId()
           .equals(other.getRawProjectId())) return false;
     }
+    if (hasValidationSummary() != other.hasValidationSummary()) return false;
+    if (hasValidationSummary()) {
+      if (!getValidationSummary()
+          .equals(other.getValidationSummary())) return false;
+    }
+    if (hasIntentFilterFix() != other.hasIntentFilterFix()) return false;
+    if (hasIntentFilterFix()) {
+      if (!getIntentFilterFix()
+          .equals(other.getIntentFilterFix())) return false;
+    }
+    if (hasLinkFilterOption() != other.hasLinkFilterOption()) return false;
+    if (hasLinkFilterOption()) {
+      if (linkFilterOption_ != other.linkFilterOption_) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -1373,6 +4371,18 @@ private static final long serialVersionUID = 0L;
     if (hasRawProjectId()) {
       hash = (37 * hash) + RAW_PROJECT_ID_FIELD_NUMBER;
       hash = (53 * hash) + getRawProjectId().hashCode();
+    }
+    if (hasValidationSummary()) {
+      hash = (37 * hash) + VALIDATION_SUMMARY_FIELD_NUMBER;
+      hash = (53 * hash) + getValidationSummary().hashCode();
+    }
+    if (hasIntentFilterFix()) {
+      hash = (37 * hash) + INTENT_FILTER_FIX_FIELD_NUMBER;
+      hash = (53 * hash) + getIntentFilterFix().hashCode();
+    }
+    if (hasLinkFilterOption()) {
+      hash = (37 * hash) + LINK_FILTER_OPTION_FIELD_NUMBER;
+      hash = (53 * hash) + linkFilterOption_;
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -1506,6 +4516,8 @@ private static final long serialVersionUID = 0L;
     private void maybeForceBuilderInitialization() {
       if (com.google.protobuf.GeneratedMessageV3
               .alwaysUseFieldBuilders) {
+        getValidationSummaryFieldBuilder();
+        getIntentFilterFixFieldBuilder();
       }
     }
     @java.lang.Override
@@ -1531,6 +4543,20 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000100);
       rawProjectId_ = "";
       bitField0_ = (bitField0_ & ~0x00000200);
+      if (validationSummaryBuilder_ == null) {
+        validationSummary_ = null;
+      } else {
+        validationSummaryBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000400);
+      if (intentFilterFixBuilder_ == null) {
+        intentFilterFix_ = null;
+      } else {
+        intentFilterFixBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000800);
+      linkFilterOption_ = 0;
+      bitField0_ = (bitField0_ & ~0x00001000);
       return this;
     }
 
@@ -1599,6 +4625,26 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000200;
       }
       result.rawProjectId_ = rawProjectId_;
+      if (((from_bitField0_ & 0x00000400) != 0)) {
+        if (validationSummaryBuilder_ == null) {
+          result.validationSummary_ = validationSummary_;
+        } else {
+          result.validationSummary_ = validationSummaryBuilder_.build();
+        }
+        to_bitField0_ |= 0x00000400;
+      }
+      if (((from_bitField0_ & 0x00000800) != 0)) {
+        if (intentFilterFixBuilder_ == null) {
+          result.intentFilterFix_ = intentFilterFix_;
+        } else {
+          result.intentFilterFix_ = intentFilterFixBuilder_.build();
+        }
+        to_bitField0_ |= 0x00000800;
+      }
+      if (((from_bitField0_ & 0x00001000) != 0)) {
+        to_bitField0_ |= 0x00001000;
+      }
+      result.linkFilterOption_ = linkFilterOption_;
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -1683,6 +4729,15 @@ private static final long serialVersionUID = 0L;
         bitField0_ |= 0x00000200;
         rawProjectId_ = other.rawProjectId_;
         onChanged();
+      }
+      if (other.hasValidationSummary()) {
+        mergeValidationSummary(other.getValidationSummary());
+      }
+      if (other.hasIntentFilterFix()) {
+        mergeIntentFilterFix(other.getIntentFilterFix());
+      }
+      if (other.hasLinkFilterOption()) {
+        setLinkFilterOption(other.getLinkFilterOption());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -2489,6 +5544,289 @@ private static final long serialVersionUID = 0L;
   }
   bitField0_ |= 0x00000200;
       rawProjectId_ = value;
+      onChanged();
+      return this;
+    }
+
+    private com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary validationSummary_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary.Builder, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummaryOrBuilder> validationSummaryBuilder_;
+    /**
+     * <code>optional .android_studio.AppLinksAssistantEvent.ValidationSummary validation_summary = 11;</code>
+     * @return Whether the validationSummary field is set.
+     */
+    public boolean hasValidationSummary() {
+      return ((bitField0_ & 0x00000400) != 0);
+    }
+    /**
+     * <code>optional .android_studio.AppLinksAssistantEvent.ValidationSummary validation_summary = 11;</code>
+     * @return The validationSummary.
+     */
+    public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary getValidationSummary() {
+      if (validationSummaryBuilder_ == null) {
+        return validationSummary_ == null ? com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary.getDefaultInstance() : validationSummary_;
+      } else {
+        return validationSummaryBuilder_.getMessage();
+      }
+    }
+    /**
+     * <code>optional .android_studio.AppLinksAssistantEvent.ValidationSummary validation_summary = 11;</code>
+     */
+    public Builder setValidationSummary(com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary value) {
+      if (validationSummaryBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        validationSummary_ = value;
+        onChanged();
+      } else {
+        validationSummaryBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00000400;
+      return this;
+    }
+    /**
+     * <code>optional .android_studio.AppLinksAssistantEvent.ValidationSummary validation_summary = 11;</code>
+     */
+    public Builder setValidationSummary(
+        com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary.Builder builderForValue) {
+      if (validationSummaryBuilder_ == null) {
+        validationSummary_ = builderForValue.build();
+        onChanged();
+      } else {
+        validationSummaryBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00000400;
+      return this;
+    }
+    /**
+     * <code>optional .android_studio.AppLinksAssistantEvent.ValidationSummary validation_summary = 11;</code>
+     */
+    public Builder mergeValidationSummary(com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary value) {
+      if (validationSummaryBuilder_ == null) {
+        if (((bitField0_ & 0x00000400) != 0) &&
+            validationSummary_ != null &&
+            validationSummary_ != com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary.getDefaultInstance()) {
+          validationSummary_ =
+            com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary.newBuilder(validationSummary_).mergeFrom(value).buildPartial();
+        } else {
+          validationSummary_ = value;
+        }
+        onChanged();
+      } else {
+        validationSummaryBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00000400;
+      return this;
+    }
+    /**
+     * <code>optional .android_studio.AppLinksAssistantEvent.ValidationSummary validation_summary = 11;</code>
+     */
+    public Builder clearValidationSummary() {
+      if (validationSummaryBuilder_ == null) {
+        validationSummary_ = null;
+        onChanged();
+      } else {
+        validationSummaryBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000400);
+      return this;
+    }
+    /**
+     * <code>optional .android_studio.AppLinksAssistantEvent.ValidationSummary validation_summary = 11;</code>
+     */
+    public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary.Builder getValidationSummaryBuilder() {
+      bitField0_ |= 0x00000400;
+      onChanged();
+      return getValidationSummaryFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>optional .android_studio.AppLinksAssistantEvent.ValidationSummary validation_summary = 11;</code>
+     */
+    public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummaryOrBuilder getValidationSummaryOrBuilder() {
+      if (validationSummaryBuilder_ != null) {
+        return validationSummaryBuilder_.getMessageOrBuilder();
+      } else {
+        return validationSummary_ == null ?
+            com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary.getDefaultInstance() : validationSummary_;
+      }
+    }
+    /**
+     * <code>optional .android_studio.AppLinksAssistantEvent.ValidationSummary validation_summary = 11;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary.Builder, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummaryOrBuilder> 
+        getValidationSummaryFieldBuilder() {
+      if (validationSummaryBuilder_ == null) {
+        validationSummaryBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary.Builder, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummaryOrBuilder>(
+                getValidationSummary(),
+                getParentForChildren(),
+                isClean());
+        validationSummary_ = null;
+      }
+      return validationSummaryBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix intentFilterFix_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix.Builder, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFixOrBuilder> intentFilterFixBuilder_;
+    /**
+     * <code>optional .android_studio.AppLinksAssistantEvent.IntentFilterFix intent_filter_fix = 12;</code>
+     * @return Whether the intentFilterFix field is set.
+     */
+    public boolean hasIntentFilterFix() {
+      return ((bitField0_ & 0x00000800) != 0);
+    }
+    /**
+     * <code>optional .android_studio.AppLinksAssistantEvent.IntentFilterFix intent_filter_fix = 12;</code>
+     * @return The intentFilterFix.
+     */
+    public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix getIntentFilterFix() {
+      if (intentFilterFixBuilder_ == null) {
+        return intentFilterFix_ == null ? com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix.getDefaultInstance() : intentFilterFix_;
+      } else {
+        return intentFilterFixBuilder_.getMessage();
+      }
+    }
+    /**
+     * <code>optional .android_studio.AppLinksAssistantEvent.IntentFilterFix intent_filter_fix = 12;</code>
+     */
+    public Builder setIntentFilterFix(com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix value) {
+      if (intentFilterFixBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        intentFilterFix_ = value;
+        onChanged();
+      } else {
+        intentFilterFixBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00000800;
+      return this;
+    }
+    /**
+     * <code>optional .android_studio.AppLinksAssistantEvent.IntentFilterFix intent_filter_fix = 12;</code>
+     */
+    public Builder setIntentFilterFix(
+        com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix.Builder builderForValue) {
+      if (intentFilterFixBuilder_ == null) {
+        intentFilterFix_ = builderForValue.build();
+        onChanged();
+      } else {
+        intentFilterFixBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00000800;
+      return this;
+    }
+    /**
+     * <code>optional .android_studio.AppLinksAssistantEvent.IntentFilterFix intent_filter_fix = 12;</code>
+     */
+    public Builder mergeIntentFilterFix(com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix value) {
+      if (intentFilterFixBuilder_ == null) {
+        if (((bitField0_ & 0x00000800) != 0) &&
+            intentFilterFix_ != null &&
+            intentFilterFix_ != com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix.getDefaultInstance()) {
+          intentFilterFix_ =
+            com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix.newBuilder(intentFilterFix_).mergeFrom(value).buildPartial();
+        } else {
+          intentFilterFix_ = value;
+        }
+        onChanged();
+      } else {
+        intentFilterFixBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00000800;
+      return this;
+    }
+    /**
+     * <code>optional .android_studio.AppLinksAssistantEvent.IntentFilterFix intent_filter_fix = 12;</code>
+     */
+    public Builder clearIntentFilterFix() {
+      if (intentFilterFixBuilder_ == null) {
+        intentFilterFix_ = null;
+        onChanged();
+      } else {
+        intentFilterFixBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000800);
+      return this;
+    }
+    /**
+     * <code>optional .android_studio.AppLinksAssistantEvent.IntentFilterFix intent_filter_fix = 12;</code>
+     */
+    public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix.Builder getIntentFilterFixBuilder() {
+      bitField0_ |= 0x00000800;
+      onChanged();
+      return getIntentFilterFixFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>optional .android_studio.AppLinksAssistantEvent.IntentFilterFix intent_filter_fix = 12;</code>
+     */
+    public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFixOrBuilder getIntentFilterFixOrBuilder() {
+      if (intentFilterFixBuilder_ != null) {
+        return intentFilterFixBuilder_.getMessageOrBuilder();
+      } else {
+        return intentFilterFix_ == null ?
+            com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix.getDefaultInstance() : intentFilterFix_;
+      }
+    }
+    /**
+     * <code>optional .android_studio.AppLinksAssistantEvent.IntentFilterFix intent_filter_fix = 12;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix.Builder, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFixOrBuilder> 
+        getIntentFilterFixFieldBuilder() {
+      if (intentFilterFixBuilder_ == null) {
+        intentFilterFixBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix.Builder, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFixOrBuilder>(
+                getIntentFilterFix(),
+                getParentForChildren(),
+                isClean());
+        intentFilterFix_ = null;
+      }
+      return intentFilterFixBuilder_;
+    }
+
+    private int linkFilterOption_ = 0;
+    /**
+     * <code>optional .android_studio.AppLinksAssistantEvent.LinkFilterOption link_filter_option = 13;</code>
+     * @return Whether the linkFilterOption field is set.
+     */
+    @java.lang.Override public boolean hasLinkFilterOption() {
+      return ((bitField0_ & 0x00001000) != 0);
+    }
+    /**
+     * <code>optional .android_studio.AppLinksAssistantEvent.LinkFilterOption link_filter_option = 13;</code>
+     * @return The linkFilterOption.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinkFilterOption getLinkFilterOption() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinkFilterOption result = com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinkFilterOption.valueOf(linkFilterOption_);
+      return result == null ? com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinkFilterOption.UNKNOWN : result;
+    }
+    /**
+     * <code>optional .android_studio.AppLinksAssistantEvent.LinkFilterOption link_filter_option = 13;</code>
+     * @param value The linkFilterOption to set.
+     * @return This builder for chaining.
+     */
+    public Builder setLinkFilterOption(com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinkFilterOption value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00001000;
+      linkFilterOption_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional .android_studio.AppLinksAssistantEvent.LinkFilterOption link_filter_option = 13;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearLinkFilterOption() {
+      bitField0_ = (bitField0_ & ~0x00001000);
+      linkFilterOption_ = 0;
       onChanged();
       return this;
     }

@@ -86,7 +86,10 @@ interface AndroidGradlePluginProjectFlags {
         /** Whether AndroidX libraries should be used instead of legacy support libraries. */
         USE_ANDROID_X(false),
 
-        ;
+        /**
+         * Whether VCS metadata file is generated in APK/Bundle for this project.
+         */
+        ENABLE_VCS_INFO(false);
 
         /**
          * Returns the value of this flag for the given gradle project flags.

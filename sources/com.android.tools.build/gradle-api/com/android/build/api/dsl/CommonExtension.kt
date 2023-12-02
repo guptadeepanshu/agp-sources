@@ -649,6 +649,7 @@ interface CommonExtension<
      * ```
      *
      * If this field is specified then android.ndkPath may not be specified.
+     * If this field is not specified, a default value will be provided depending on the AGP version
      *
      * The required format of the version is <code>major.minor.build</code>. It's not legal to
      * specify less precision.
@@ -666,7 +667,7 @@ interface CommonExtension<
      *
      * This can be set on all Gradle projects with [com.android.build.api.dsl.SettingsExtension.ndkVersion]
      */
-    var ndkVersion: String?
+    var ndkVersion: String
 
     /**
      * Requires the specified path to NDK be used.
@@ -680,7 +681,8 @@ interface CommonExtension<
      * }
      * ```
      *
-     * If this field is specified then android.ndkVersion may not be specified.
+     * If this field is specified, then the version it refers to need to match the one specified
+     * in ndkVersion. If ndkVersion is not specified, ndkPath need to match the default ndkVersion
      *
      * For additional information about NDK installation see
      * [Install and configure the NDK](https://developer.android.com/studio/projects/install-ndk).

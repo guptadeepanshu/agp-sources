@@ -115,8 +115,8 @@ public class VdIcon implements Icon, Comparable<VdIcon> {
             mHeight = height;
         }
         else {
-            mWidth = (int)mVdTree.getPortWidth();
-            mHeight = (int)mVdTree.getPortHeight();
+            mWidth = (int) mVdTree.getBaseWidth();
+            mHeight = (int) mVdTree.getBaseHeight();
         }
         mBackground = null;
     }

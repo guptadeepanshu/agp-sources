@@ -25,13 +25,15 @@ import com.android.build.api.component.impl.KmpUnitTestImpl
 import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.internal.AndroidTestTaskManager
 import com.android.build.gradle.internal.TaskManager
+import com.android.build.gradle.internal.UnitTestTaskManager
 import com.android.build.gradle.internal.component.ComponentCreationConfig
+import com.android.build.gradle.internal.component.KmpComponentCreationConfig
 import com.android.build.gradle.internal.component.KmpCreationConfig
-import com.android.build.gradle.internal.coverage.JacocoConfigurations
-import com.android.build.gradle.internal.coverage.JacocoReportTask
+import com.android.build.gradle.internal.lint.LintTaskManager
+import com.android.build.gradle.internal.plugins.LINT_PLUGIN_ID
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.res.GenerateEmptyResourceFilesTask
-import com.android.build.gradle.internal.res.GenerateLibraryRFileTask
+import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.R8ParallelBuildService
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.tasks.factory.TaskConfigAction
@@ -40,13 +42,12 @@ import com.android.build.gradle.internal.tasks.factory.registerTask
 import com.android.build.gradle.options.IntegerOption
 import com.android.build.gradle.tasks.BundleAar
 import com.android.build.gradle.tasks.ProcessLibraryManifest
-import com.android.build.gradle.tasks.ProcessTestManifest
 import com.android.build.gradle.tasks.ZipMergingTask
-import com.android.build.gradle.tasks.factory.AndroidUnitTest
+import com.android.builder.core.ComponentTypeImpl
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.tasks.TaskProvider
-import org.gradle.testing.jacoco.plugins.JacocoPlugin
+import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile
 
 class KmpTaskManager(
     project: Project,
@@ -60,6 +61,8 @@ class KmpTaskManager(
         InternalScopedArtifacts.InternalScope.LOCAL_DEPS,
     )
 
+    private val lintTaskManager = LintTaskManager(globalConfig, taskFactory, project)
+
     var hasCreatedTasks = false
 
     fun createTasks(
@@ -69,9 +72,22 @@ class KmpTaskManager(
         androidTest: KmpAndroidTestImpl?,
     ) {
         createMainVariantTasks(project, variant)
-        unitTest?.let { createUnitTestTasks(project, unitTest) }
+        unitTest?.let {
+            createUnitTestTasks(project, unitTest)
+        }
         androidTest?.let {
             createAndroidTestTasks(project, androidTest)
+        }
+
+        taskFactory.register(PrepareLintJarForPublish.CreationAction(globalConfig))
+        variant.artifacts
+            .copy(
+                InternalArtifactType.LINT_PUBLISH_JAR,
+                globalConfig.globalArtifacts
+            )
+
+        taskFactory.register(globalConfig.taskNames.compileLintChecks) { task: Task ->
+            task.dependsOn(globalConfig.localCustomLintChecks)
         }
 
         variant.publishBuildArtifacts()
@@ -84,6 +100,8 @@ class KmpTaskManager(
         variant: KmpCreationConfig
     ) {
         createAnchorTasks(project, variant)
+
+        maybeCreateJavacTask(variant)
 
         project.tasks.registerTask(
             BundleLibraryClassesJar.KotlinMultiplatformCreationAction(
@@ -140,9 +158,12 @@ class KmpTaskManager(
             )
         }
 
-        project.tasks.registerTask(MergeGeneratedProguardFilesCreationAction(variant))
-        project.tasks.registerTask(MergeConsumerProguardFilesTask.CreationAction(variant))
-        project.tasks.registerTask(ExportConsumerProguardFilesTask.CreationAction(variant))
+        // Publishing consumer proguard rules is an opt-in feature for KMP
+        if (globalConfig.publishConsumerProguardRules) {
+            project.tasks.registerTask(MergeGeneratedProguardFilesCreationAction(variant))
+            project.tasks.registerTask(MergeConsumerProguardFilesTask.CreationAction(variant))
+            project.tasks.registerTask(ExportConsumerProguardFilesTask.CreationAction(variant))
+        }
 
         // No jacoco transformation for kmp variants, however, we need to publish the classes
         // pre transformation as the artifact is used in the jacoco report task.
@@ -191,6 +212,18 @@ class KmpTaskManager(
             )
         )
 
+        // Create lint tasks here only if the lint standalone plugin is applied (to avoid
+        // Android-specific behavior)
+        if (project.plugins.hasPlugin(LINT_PLUGIN_ID)) {
+            lintTaskManager.createLintTasks(
+                ComponentTypeImpl.KMP_ANDROID,
+                variant.name,
+                listOf(variant),
+                testComponentPropertiesList = emptyList(),
+                isPerComponent = true
+            )
+        }
+
         project.tasks.registerTask(BundleAar.KotlinMultiplatformLocalLintCreationAction(variant))
 
         project.tasks.registerTask(BundleAar.KotlinMultiplatformCreationAction(variant))
@@ -211,30 +244,13 @@ class KmpTaskManager(
         project: Project,
         component: KmpUnitTestImpl
     ) {
-        createAnchorTasks(project, component)
+        createAnchorTasks(project, component, false)
 
-        project.tasks.registerTask(ProcessTestManifest.CreationAction(component))
-        project.tasks.registerTask(
-            GenerateLibraryRFileTask.TestRuntimeStubRClassCreationAction(
-                component
-            )
-        )
-        project.tasks.registerTask(ProcessJavaResTask.CreationAction(component))
+        maybeCreateJavacTask(component)
 
-        if (component.isUnitTestCoverageEnabled) {
-            project.pluginManager.apply(JacocoPlugin::class.java)
-        }
-        project.tasks.registerTask(AndroidUnitTest.CreationAction(component))
-        if (component.isUnitTestCoverageEnabled) {
-            val ant = JacocoConfigurations.getJacocoAntTaskConfiguration(
-                project, JacocoTask.getJacocoVersion(component)
-            )
-            project.plugins.withType(JacocoPlugin::class.java) {
-                // Jacoco plugin is applied and test coverage enabled, generate coverage report.
-                project.tasks.registerTask(
-                    JacocoReportTask.CreateActionUnitTest(component, ant)
-                )
-            }
+        with(UnitTestTaskManager(project, globalConfig)) {
+            createTopLevelTasks()
+            createTasks(component)
         }
     }
 
@@ -244,12 +260,11 @@ class KmpTaskManager(
     ) {
         createAnchorTasks(project, component, false)
 
-        AndroidTestTaskManager(
-            project = project,
-            globalConfig = component.global,
-        ).also {
-            it.createTopLevelTasks()
-            it.createTasks(component)
+        maybeCreateJavacTask(component)
+
+        with(AndroidTestTaskManager(project, globalConfig)) {
+            createTopLevelTasks()
+            createTasks(component)
         }
     }
 
@@ -279,6 +294,24 @@ class KmpTaskManager(
         if (createPreBuildTask) {
             project.tasks.registerTask(PreBuildCreationAction(component))
             createDependencyStreams(component)
+        }
+    }
+
+    private fun maybeCreateJavacTask(
+        component: KmpComponentCreationConfig
+    ) {
+        if (!component.withJava) {
+            return
+        }
+        val javacTask = createJavacTask(component)
+        component.androidKotlinCompilation.compileTaskProvider.configure { kotlincTask ->
+            component.sources.java {
+                (kotlincTask as AbstractKotlinCompile<*>).source(it.getAsFileTrees())
+            }
+        }
+
+        javacTask.configure { javaCompile ->
+            javaCompile.classpath += component.androidKotlinCompilation.output.classesDirs
         }
     }
 }

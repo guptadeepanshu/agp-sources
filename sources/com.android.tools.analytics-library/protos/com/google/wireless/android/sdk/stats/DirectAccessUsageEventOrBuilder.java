@@ -214,4 +214,31 @@ public interface DirectAccessUsageEventOrBuilder extends
    * @return The failureReason.
    */
   com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.FailureReason getFailureReason();
+
+  /**
+   * <pre>
+   * Set when type = DISCONNECT_DEVICE
+   * </pre>
+   *
+   * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9;</code>
+   * @return Whether the disconnectDeviceDetails field is set.
+   */
+  boolean hasDisconnectDeviceDetails();
+  /**
+   * <pre>
+   * Set when type = DISCONNECT_DEVICE
+   * </pre>
+   *
+   * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9;</code>
+   * @return The disconnectDeviceDetails.
+   */
+  com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DisconnectDeviceDetails getDisconnectDeviceDetails();
+  /**
+   * <pre>
+   * Set when type = DISCONNECT_DEVICE
+   * </pre>
+   *
+   * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9;</code>
+   */
+  com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DisconnectDeviceDetailsOrBuilder getDisconnectDeviceDetailsOrBuilder();
 }

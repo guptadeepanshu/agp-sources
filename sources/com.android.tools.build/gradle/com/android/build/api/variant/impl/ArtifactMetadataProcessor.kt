@@ -37,34 +37,25 @@ class ArtifactMetadataProcessor {
             InternalArtifactType.APK_FROM_BUNDLE_IDE_REDIRECT_FILE
         )
 
-        fun wireAllFinalizedBy(variant: ComponentCreationConfig) {
-            val allComponents = mutableListOf(variant)
-            if (variant is HasAndroidTest) {
-                variant.androidTest?.let { allComponents.add(it) }
-            }
-            if (variant is HasTestFixtures) {
-                variant.testFixtures?.let { allComponents.add(it) }
-            }
+        fun wireAllFinalizedBy(component: ComponentCreationConfig) {
             internalTypesFinalizingArtifacts.forEach { kClass ->
-                allComponents.forEach { component ->
-                    handleFinalizedByForType(component, kClass)
-                }
+                handleFinalizedByForType(component, kClass)
             }
         }
 
         private fun handleFinalizedByForType(
-            variant: ComponentCreationConfig,
+            component: ComponentCreationConfig,
             artifact: InternalArtifactType<*>
         ) {
             artifact.finalizingArtifact.forEach { artifactFinalizedBy ->
                 val artifactContainer = when (artifactFinalizedBy) {
-                    is Artifact.Single -> variant.artifacts.getArtifactContainer(artifactFinalizedBy)
-                    is Artifact.Multiple -> variant.artifacts.getArtifactContainer(artifactFinalizedBy)
+                    is Artifact.Single -> component.artifacts.getArtifactContainer(artifactFinalizedBy)
+                    is Artifact.Multiple -> component.artifacts.getArtifactContainer(artifactFinalizedBy)
                     else -> throw RuntimeException("Unhandled artifact type : $artifactFinalizedBy")
                 }
                 artifactContainer.getTaskProviders().forEach { taskProvider ->
                     taskProvider.configure {
-                        it.finalizedBy(variant.artifacts.get(artifact))
+                        it.finalizedBy(component.artifacts.get(artifact))
                     }
                 }
             }

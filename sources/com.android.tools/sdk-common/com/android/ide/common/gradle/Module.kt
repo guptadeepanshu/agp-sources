@@ -15,10 +15,12 @@
  */
 package com.android.ide.common.gradle
 
+import java.io.Serializable
+
 data class Module(
     val group: String,
     val name: String,
-) {
+): Serializable {
     override fun toString() = when(val id = toIdentifier()) {
         is String -> id
         else -> "Module(group=$group, name=$name)"

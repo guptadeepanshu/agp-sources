@@ -27,6 +27,8 @@ import com.android.ddmlib.DdmPreferences;
 import com.android.ddmlib.DebugViewDumpHandler;
 import com.android.ddmlib.IDevice;
 import com.android.ddmlib.JdwpHandshake;
+import com.android.ddmlib.JdwpProcessor;
+import com.android.ddmlib.JdwpTrafficResponse;
 import com.android.ddmlib.Log;
 import com.android.ddmlib.ThreadInfo;
 import com.android.ddmlib.internal.jdwp.chunkhandler.HandleExit;
@@ -107,6 +109,8 @@ public class ClientImpl extends JdwpPipe implements Client {
     // no-op.
     private final DDMLibJdwpTracer jdwpTracer;
 
+    private final JdwpProcessor scache;
+
     /**
      * Create an object for a new client connection.
      *
@@ -129,6 +133,7 @@ public class ClientImpl extends JdwpPipe implements Client {
         mHeapSegmentUpdateEnabled = DdmPreferences.getInitialHeapUpdate();
 
         jdwpTracer = AndroidDebugBridge.newJdwpTracer();
+        scache = AndroidDebugBridge.newProcessor();
     }
 
     /** Returns a string representation of the {@link ClientImpl} object. */
@@ -582,7 +587,32 @@ public class ClientImpl extends JdwpPipe implements Client {
      * JdwpPacket's ByteBuffer.
      */
     @Override
-    protected void send(@NonNull JdwpPacket packet) throws IOException {
+    protected void send(@NonNull JdwpPacket p) throws IOException {
+        JdwpTrafficResponse resp =
+                scache.onUpstreamPacket(ByteBuffer.wrap(p.getPayload().array(), 0, p.getLength()));
+
+        for (ByteBuffer b : resp.getEdict().getToUpstream()) {
+            b.position(b.limit());
+            writeToSocket(JdwpPacket.findPacket(b.duplicate()));
+        }
+
+        for (ByteBuffer b : resp.getEdict().getToDownstream()) {
+            b.position(b.limit());
+            incoming(JdwpPacket.findPacket(b.duplicate()), getDebugger());
+        }
+
+        for (ByteBuffer b : resp.getJournal().getToUpstream()) {
+            b.rewind();
+            jdwpTracer.onUpstreamPacket(b);
+        }
+
+        for (ByteBuffer b : resp.getJournal().getToDownstream()) {
+            b.rewind();
+            jdwpTracer.onDownstreamPacket(b);
+        }
+    }
+
+    protected void writeToSocket(@NonNull JdwpPacket p) throws IOException {
         // Fix to avoid a race condition on mChan. This should be better synchronized
         // but just capturing the channel here, avoids a NPE.
         SocketChannel chan = mChan;
@@ -592,18 +622,11 @@ public class ClientImpl extends JdwpPipe implements Client {
             return;
         }
 
-        jdwpTracer.onPacket(ByteBuffer.wrap(packet.getPayload().array(), 0, packet.getLength()));
-
-        packet.log("Client: sending jdwp packet to Android Device");
-        // Synchronizing on this variable is still useful as we do not want more than one
-        // thread writing at the same time to the same channel, and the only change that
-        // can happen to this channel is to be closed and mChan become null.
-        //noinspection SynchronizationOnLocalVariableOrMethodParameter
         synchronized (chan) {
             try {
-                packet.write(chan);
+                p.write(chan);
             } catch (IOException ioe) {
-                removeReplyInterceptor(packet.getId());
+                removeReplyInterceptor(p.getId());
                 throw ioe;
             }
         }
@@ -650,6 +673,39 @@ public class ClientImpl extends JdwpPipe implements Client {
         }
     }
 
+    // Consume incoming packets from the debuggee and forward them to the debugger
+    void consumeReadBuffer() throws IOException {
+        JdwpPacket packet = getJdwpPacket();
+        while (packet != null) {
+
+            ByteBuffer buffer = ByteBuffer.wrap(packet.getPayload().array(), 0, packet.getLength());
+            JdwpTrafficResponse resp = scache.onDownstreamPacket(buffer);
+
+            for (ByteBuffer b : resp.getEdict().getToUpstream()) {
+                b.position(b.limit());
+                writeToSocket(JdwpPacket.findPacket(b));
+            }
+
+            for (ByteBuffer b : resp.getEdict().getToDownstream()) {
+                b.position(b.limit());
+                incoming(JdwpPacket.findPacket(b), getDebugger());
+            }
+
+            for (ByteBuffer b : resp.getJournal().getToUpstream()) {
+                b.rewind();
+                jdwpTracer.onUpstreamPacket(b);
+            }
+
+            for (ByteBuffer b : resp.getJournal().getToDownstream()) {
+                b.rewind();
+                jdwpTracer.onDownstreamPacket(b);
+            }
+
+            packet.consume();
+            // find next
+            packet = getJdwpPacket();
+        }
+    }
     /**
      * Return information for the first full JDWP packet in the buffer.
      *
@@ -724,12 +780,7 @@ public class ClientImpl extends JdwpPipe implements Client {
             if (mReadBuffer.position() != 0) {
                 if (Log.Config.LOGV) Log.v("ddms", "Checking " + mReadBuffer.position() + " bytes");
             }
-            JdwpPacket packet = JdwpPacket.findPacket(mReadBuffer);
-            if (packet != null) {
-                jdwpTracer.onPacket(
-                        ByteBuffer.wrap(packet.getPayload().array(), 0, packet.getLength()));
-            }
-            return packet;
+            return JdwpPacket.findPacket(mReadBuffer);
         } else {
             /*
              * Not expecting data when in this state.

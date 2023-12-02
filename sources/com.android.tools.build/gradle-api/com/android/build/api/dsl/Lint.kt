@@ -57,19 +57,19 @@ import java.io.File
  *          textReport = true
  *          // location to write the output; can be a file or 'stdout' or 'stderr'
  *          //textOutput 'stdout'
- *          textOutput file("$reportsDir/lint-results.txt")
+ *          textOutput file("$buildDir/reports/lint-results.txt")
  *          // if true, generate an XML report for use by for example Jenkins
  *          xmlReport true
  *          // file to write report to (if not specified, defaults to lint-results.xml)
- *          xmlOutput file("$reportsDir/lint-report.xml")
+ *          xmlOutput file("$buildDir/reports/lint-report.xml")
  *          // if true, generate an HTML report (with issue explanations, sourcecode, etc)
  *          htmlReport true
  *          // optional path to HTML report (default will be lint-results.html in the builddir)
- *          htmlOutput file("$reportsDir/lint-report.html")
+ *          htmlOutput file("$buildDir/reports/lint-report.html")
  *          // if true, generate a SARIF report (OASIS Static Analysis Results Interchange Format)
  *          sarifReport true
  *          // optional path to SARIF report (default will be lint-results.sarif in the builddir)
- *          sarifOutput file("$reportsDir/lint-report.html")
+ *          sarifOutput file("$buildDir/reports/lint-report.html")
  *          // Set the severity of the given issues to fatal (which means they will be
  *          // checked during release builds (even if the lint target is not included)
  *          fatal 'NewApi', 'InlineApi'
@@ -97,6 +97,9 @@ import java.io.File
  *          // Whether lint should check all dependencies too as part of its analysis.
  *          // Default is false.
  *          checkDependencies true
+ *          // targetSdk version used when generating a lint report for a library.
+ *          // Must be equal or higher than main target SDK. Must be set for libraries only.
+ *          targetSdk 33
  *     }
  * }
  * ```
@@ -282,4 +285,16 @@ interface Lint {
 
     /** Issues that have severity overridden to 'fatal' */
     val fatal: MutableSet<String>
+
+    /**
+     * The target sdk version used when generating a lint report for a library.
+     * Must be equal or higher than main target SDK. Must be set for libraries only.
+     */
+    var targetSdk: Int?
+
+    /**
+     * The target sdk preview version used when generating a lint report for a library.
+     * Must be set for libraries only.
+     */
+    var targetSdkPreview: String?
 }

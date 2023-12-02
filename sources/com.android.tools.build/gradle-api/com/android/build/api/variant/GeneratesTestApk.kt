@@ -16,6 +16,7 @@
 
 package com.android.build.api.variant
 
+import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 
 interface GeneratesTestApk: GeneratesApk {
@@ -24,6 +25,11 @@ interface GeneratesTestApk: GeneratesApk {
      * The instrumentationRunner to use to run the tests.
      */
     val instrumentationRunner: Property<String>
+
+    /**
+     * The instrumentationRunnerArguments to use to run the tests.
+     */
+    val instrumentationRunnerArguments: MapProperty<String, String>
 
     /**
      * The handleProfiling value to use to run the tests.

@@ -17,16 +17,24 @@
 package com.android.build.gradle.internal.dsl
 
 import com.android.build.api.dsl.Lint
+import com.android.build.api.variant.AndroidVersion
+import com.android.build.api.variant.impl.AndroidVersionImpl
 import com.android.build.gradle.internal.dsl.decorator.annotation.WithLazyInitialization
 import com.android.build.gradle.internal.services.DslServices
+import com.android.builder.core.DefaultApiVersion
+import com.android.builder.core.apiVersionFromString
+import com.android.builder.errors.IssueReporter
+import com.android.builder.model.ApiVersion
+import com.android.builder.model.v2.ide.ProjectType
 import com.android.tools.lint.model.LintModelSeverity
 import java.io.File
 import java.util.Collections
 import javax.inject.Inject
 
 abstract class LintImpl
-@Inject @WithLazyInitialization("lazyInit") constructor(private val dslServices: DslServices) :
-    Lint {
+@Inject @WithLazyInitialization("lazyInit") constructor(
+    private val dslServices: DslServices
+) : Lint {
 
     @Suppress("unused") // the call is injected by DslDecorator
     protected fun lazyInit() {
@@ -286,4 +294,17 @@ abstract class LintImpl
             fatal.addAll(it)
         }
     }
+
+    private var targetSdkApiVersion: ApiVersion? = null
+
+    override var targetSdk:Int?
+        get() = targetSdkApiVersion?.apiLevel
+        set(value) {
+            targetSdkApiVersion = if (value == null) null else DefaultApiVersion(value)
+        }
+    override var targetSdkPreview: String?
+        get() = targetSdkApiVersion?.codename
+        set(value) {
+            targetSdkApiVersion = apiVersionFromString(value)
+        }
 }

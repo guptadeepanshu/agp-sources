@@ -18,6 +18,7 @@ package com.android.build.gradle.tasks
 
 import com.android.build.api.component.impl.AnnotationProcessorImpl
 import com.android.build.gradle.internal.component.ComponentCreationConfig
+import com.android.build.gradle.internal.component.KmpComponentCreationConfig
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ARTIFACT_TYPE
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope
@@ -49,12 +50,13 @@ import org.gradle.api.tasks.TaskProvider
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.JAVA, secondaryTaskCategories = [TaskCategory.COMPILATION])
 abstract class JavaPreCompileTask : NonIncrementalTask() {
 
-    private lateinit var annotationProcessorArtifacts: ArtifactCollection
+    private var annotationProcessorArtifacts: ArtifactCollection? = null
     private var kspProcessorArtifacts: ArtifactCollection? = null
 
+    @get:Optional
     @get:Classpath
-    val annotationProcessorArtifactFiles: FileCollection
-        get() = annotationProcessorArtifacts.artifactFiles
+    val annotationProcessorArtifactFiles: FileCollection?
+        get() = annotationProcessorArtifacts?.artifactFiles
 
     @get:Optional
     @get:Classpath
@@ -69,7 +71,7 @@ abstract class JavaPreCompileTask : NonIncrementalTask() {
 
     public override fun doTaskAction() {
         val annotationProcessorArtifacts =
-            annotationProcessorArtifacts.artifacts.map { SerializableArtifact(it) } +
+            (annotationProcessorArtifacts?.artifacts?.map { SerializableArtifact(it) } ?: emptyList()) +
                     (kspProcessorArtifacts?.artifacts?.map { SerializableArtifact(it) }
                         ?: emptyList())
 
@@ -143,12 +145,16 @@ abstract class JavaPreCompileTask : NonIncrementalTask() {
                     }
                     .artifacts
             } else {
-                task.annotationProcessorArtifacts = creationConfig.variantDependencies
-                    .getArtifactCollection(
-                        ConsumedConfigType.ANNOTATION_PROCESSOR,
-                        ArtifactScope.ALL,
-                        ArtifactType.JAR
-                    )
+                task.annotationProcessorArtifacts = if (creationConfig is KmpComponentCreationConfig) {
+                    null
+                } else {
+                    creationConfig.variantDependencies
+                        .getArtifactCollection(
+                            ConsumedConfigType.ANNOTATION_PROCESSOR,
+                            ArtifactScope.ALL,
+                            ArtifactType.JAR
+                        )
+                }
             }
 
             task.kspProcessorArtifacts = kspClasspath?.incoming

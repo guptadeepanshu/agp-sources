@@ -16,11 +16,11 @@
 
 package com.android.build.api.component.impl
 
-import com.android.build.api.attributes.ProductFlavorAttr
 import com.android.build.api.dsl.BuildType
 import com.android.build.api.dsl.ProductFlavor
 import com.android.build.api.variant.AnnotationProcessor
 import com.android.build.api.variant.BuildConfigField
+import com.android.build.api.variant.Variant
 import com.android.build.api.variant.VariantOutputConfiguration
 import com.android.build.api.variant.impl.TaskProviderBasedDirectoryEntryImpl
 import com.android.build.api.variant.impl.VariantOutputConfigurationImpl
@@ -30,8 +30,6 @@ import com.android.build.api.variant.impl.baseName
 import com.android.build.api.variant.impl.fullName
 import com.android.build.gradle.api.AnnotationProcessorOptions
 import com.android.build.gradle.api.JavaCompileOptions
-import com.android.build.gradle.internal.DependencyConfigurator
-import com.android.build.gradle.internal.VariantManager
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig
@@ -55,7 +53,6 @@ import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.options.BooleanOption
 import com.android.builder.errors.IssueReporter
-import com.google.common.collect.ImmutableMap
 import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.FileCollection
@@ -189,9 +186,7 @@ class OldVariantApiLegacySupportImpl(
                 versionCodeProperty = versionCodeProperty,
                 versionNameProperty = versionNameProperty,
                 outputFileName = (component as? LibraryCreationConfig)?.aarOutputFileName
-            ),
-            component.paths.targetFilterConfigurations
-        )
+            ), component.paths.targetFilterConfigurations)
     }
 
     private fun getVariantOutputs(
@@ -336,28 +331,9 @@ class OldVariantApiLegacySupportImpl(
         dimension: String,
         alternatedValues: List<String>
     ) {
-
-        // First, setup the requested value, which isn't the actual requested value, but
-        // the variant name, modified
-        val requestedValue = VariantManager.getModifiedName(component.name)
-        val attributeKey = ProductFlavorAttr.of(dimension)
-        val attributeValue: ProductFlavorAttr = component.services.named(
-            ProductFlavorAttr::class.java, requestedValue
-        )
-
-        component.variantDependencies.compileClasspath.attributes.attribute(attributeKey, attributeValue)
-        component.variantDependencies.runtimeClasspath.attributes.attribute(attributeKey, attributeValue)
-        component.variantDependencies
-            .annotationProcessorConfiguration!!
-            .attributes
-            .attribute(attributeKey, attributeValue)
-
-        // then add the fallbacks which contain the actual requested value
-        DependencyConfigurator.addFlavorStrategy(
-            component.services.dependencies.attributesSchema,
-            dimension,
-            ImmutableMap.of(requestedValue, alternatedValues)
-        )
+        if (component is Variant) {
+            component.missingDimensionStrategy(dimension, *alternatedValues.toTypedArray())
+        }
     }
 
 

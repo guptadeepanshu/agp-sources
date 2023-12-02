@@ -36,9 +36,9 @@ open class NdkR19Info(val root: File) : DefaultNdkInfo(root) {
         Stl.SYSTEM
     )
 
-    override fun getToolchainAbi(abi: Abi): Abi {
-        return if (abi == Abi.MIPS) {
-            Abi.MIPS64
+    override fun getToolchainAbi(abi: String): String {
+        return if (abi == Abi.MIPS.tag) {
+            Abi.MIPS64.tag
         } else abi
     }
 
@@ -50,7 +50,7 @@ open class NdkR19Info(val root: File) : DefaultNdkInfo(root) {
         else -> error("$buildSystem")
     }
 
-    override fun getStlSharedObjectFile(stl: Stl, abi: Abi): File {
+    override fun getStlSharedObjectFile(stl: Stl, abi: String): File {
         checkArgument(
             stl == Stl.LIBCXX_SHARED,
             "Only c++_shared is valid for packaging as of NDK r19"
@@ -59,10 +59,10 @@ open class NdkR19Info(val root: File) : DefaultNdkInfo(root) {
 
         // https://android.googlesource.com/platform/ndk/+/master/docs/BuildSystemMaintainers.md#architectures
         val sysrootTriple = when (abi) {
-            Abi.ARM64_V8A -> "aarch64-linux-android"
-            Abi.ARMEABI_V7A -> "arm-linux-androideabi"
-            Abi.X86 -> "i686-linux-android"
-            Abi.X86_64 -> "x86_64-linux-android"
+            Abi.ARM64_V8A.tag -> "aarch64-linux-android"
+            Abi.ARMEABI_V7A.tag -> "arm-linux-androideabi"
+            Abi.X86.tag -> "i686-linux-android"
+            Abi.X86_64.tag -> "x86_64-linux-android"
             else -> throw RuntimeException("Unsupported ABI for NDK r19+: $abi")
         }
 
@@ -74,13 +74,19 @@ open class NdkR19Info(val root: File) : DefaultNdkInfo(root) {
         return file
     }
 
-    override fun getStripExecutable(abi: Abi) = rootDirectory.resolve(
-        "toolchains/llvm/prebuilt/$hostTag/bin/${getToolchainAbi(abi).gccExecutablePrefix}-strip"
-    )
+    override fun getStripExecutable(abi: String) : File {
+        val triple = abiInfoList.single { info -> info.name == abi }.triple
+        return rootDirectory.resolve(
+            "toolchains/llvm/prebuilt/$hostTag/bin/$triple-strip"
+        )
+    }
 
-    override fun getObjcopyExecutable(abi: Abi) = rootDirectory.resolve(
-        "toolchains/llvm/prebuilt/$hostTag/bin/${getToolchainAbi(abi).gccExecutablePrefix}-objcopy"
-    )
+    override fun getObjcopyExecutable(abi: String) : File {
+        val triple = abiInfoList.single { info -> info.name == abi }.triple
+        return rootDirectory.resolve(
+            "toolchains/llvm/prebuilt/$hostTag/bin/$triple-objcopy"
+        )
+    }
 
     override fun validate(): String? {
         // Intentionally not calling super's validate. NDK r19 does not require many of the paths

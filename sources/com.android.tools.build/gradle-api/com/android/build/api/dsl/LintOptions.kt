@@ -64,19 +64,19 @@ import java.io.File
  *          textReport true
  *          // location to write the output; can be a file or 'stdout' or 'stderr'
  *          //textOutput 'stdout'
- *          textOutput file("$reportsDir/lint-results.txt")
+ *          textOutput file("$buildDir/reports/lint-results.txt")
  *          // if true, generate an XML report for use by for example Jenkins
  *          xmlReport true
  *          // file to write report to (if not specified, defaults to lint-results.xml)
- *          xmlOutput file("$reportsDir/lint-report.xml")
+ *          xmlOutput file("$buildDir/reports/lint-report.xml")
  *          // if true, generate an HTML report (with issue explanations, sourcecode, etc)
  *          htmlReport true
  *          // optional path to HTML report (default will be lint-results.html in the builddir)
- *          htmlOutput file("$reportsDir/lint-report.html")
+ *          htmlOutput file("$buildDir/reports/lint-report.html")
  *          // if true, generate a SARIF report (OASIS Static Analysis Results Interchange Format)
  *          sarifReport true
  *          // optional path to SARIF report (default will be lint-results.sarif in the builddir)
- *          sarifOutput file("$reportsDir/lint-report.html")
+ *          sarifOutput file("$buildDir/reports/lint-report.html")
  *          // Set the severity of the given issues to fatal (which means they will be
  *          // checked during release builds (even if the lint target is not included)
  *          fatal 'NewApi', 'InlineApi'

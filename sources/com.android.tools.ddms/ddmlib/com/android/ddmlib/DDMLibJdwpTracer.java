@@ -21,7 +21,11 @@ import java.nio.ByteBuffer;
 public interface DDMLibJdwpTracer {
     default void onEvent(@NonNull String event) {}
 
-    default void onPacket(@NonNull ByteBuffer packet) {}
+    default void onUpstreamPacket(@NonNull ByteBuffer packet) {}
+
+    default void onDownstreamPacket(@NonNull ByteBuffer packet) {}
 
     default void close() {}
+
+    default void setName(String s) {}
 }

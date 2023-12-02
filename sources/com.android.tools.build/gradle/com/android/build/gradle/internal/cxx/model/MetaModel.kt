@@ -117,7 +117,7 @@ fun CxxAbiModel.lookup(field : ModelField) : String? {
         ModelField.CXX_ABI_MODEL_SO_FOLDER -> soFolder.toString()
         ModelField.CXX_ABI_MODEL_SO_REPUBLISH_FOLDER -> soRepublishFolder.toString()
         ModelField.CXX_ABI_MODEL_STL_LIBRARY_FILE -> stlLibraryFile?.toString()
-        ModelField.CXX_ABI_MODEL_TAG -> tag
+        ModelField.CXX_ABI_MODEL_TAG -> name
         ModelField.CXX_CMAKE_MODULE_MODEL_CMAKE_EXE -> variant.module.cmake?.cmakeExe?.toString()
         ModelField.CXX_MODULE_MODEL_CMAKE_GENERATOR -> variant.module.cmakeGenerator
         ModelField.CXX_MODULE_MODEL_CMAKE_SETTINGS_FILE -> variant.module.cmakeSettingsFile.toString()

@@ -51,6 +51,7 @@ class ManagedDeviceTestRunner(
     private val enableEmulatorDisplay: Boolean,
     private val utpLoggingLevel: Level = Level.WARNING,
     private val targetIsSplitApk: Boolean,
+    private val uninstallApksAfterTest: Boolean,
     private val configFactory: UtpConfigFactory = UtpConfigFactory(),
     private val runUtpTestSuiteAndWaitFunc: (
         List<UtpRunnerConfig>, String, String, File, ILogger
@@ -151,7 +152,8 @@ class ManagedDeviceTestRunner(
                                 showEmulatorKernelLogging,
                                 installApkTimeout,
                                 extractedSdkApks,
-                                shardConfig
+                                uninstallApksAfterTest,
+                                shardConfig,
                             )
                         }
                     runnerConfigs.add(

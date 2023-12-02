@@ -16,7 +16,6 @@
 
 package com.android.build.gradle.internal.cxx.model
 
-import com.android.build.gradle.internal.core.Abi
 import com.android.build.gradle.internal.cxx.cmake.cmakeBoolean
 import com.android.build.gradle.internal.cxx.settings.BuildSettingsConfiguration
 import com.android.build.gradle.internal.ndk.AbiInfo
@@ -31,11 +30,6 @@ import kotlin.math.max
  * Holds immutable ABI-level information for C/C++ build and sync, see README.md
  */
 data class CxxAbiModel(
-    /**
-     * The target ABI
-     */
-    val abi: Abi,
-
     /**
      * Metadata about the ABI
      */
@@ -120,7 +114,7 @@ data class CxxAbiModel(
      */
     val intermediatesParentFolder: File
 ) {
-    override fun toString() = "${abi.tag}:${variant.variantName}${variant.module.gradleModulePathName}"
+    override fun toString() = "$name:${variant.variantName}${variant.module.gradleModulePathName}"
 }
 
 /**
@@ -151,7 +145,7 @@ private val CxxAbiModel.modelMetadataFolder: File
  *   ex, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}/log
  */
 val CxxAbiModel.logsFolder: File
-    get() = join(intermediatesParentFolder, "logs", abi.tag)
+    get() = join(intermediatesParentFolder, "logs", name)
 
 
 /**
@@ -159,7 +153,7 @@ val CxxAbiModel.logsFolder: File
  *   ex, $moduleRootFolder/.cxx/tools/debug/x86
  */
 val CxxAbiModel.predictableRepublishFolder : File
-    get() = join(variant.predictableRepublishFolder, abi.tag)
+    get() = join(variant.predictableRepublishFolder, name)
 
 /**
  * Pull up the app's minSdkVersion to be within the bounds for the ABI and NDK.
@@ -168,7 +162,7 @@ val CxxAbiModel.minSdkVersion : Int get() {
     val ndkVersion = variant.module.ndkVersion.major
     val metaPlatforms = variant.module.ndkMetaPlatforms
     val minVersionForAbi = when {
-        abi.supports64Bits() -> AndroidVersion.SUPPORTS_64_BIT.apiLevel
+        bitness == 64 -> AndroidVersion.SUPPORTS_64_BIT.apiLevel
         else -> 1
     }
     val minVersionForNdk = when {
@@ -389,13 +383,14 @@ val CxxAbiModel.configurationHash
 /**
  * Lowercase string form of ABI name (like "x86").
  */
-val CxxAbiModel.tag
-    get() = abi.tag
+val CxxAbiModel.name
+    get() = info.name
+
 /**
  * The CPU architecture name
  */
-val CxxAbiModel.cpuArchitecture
-    get() = abi.architecture
+val CxxAbiModel.cpuArchitecture : String
+    get() = info.architecture
 
 /**
  * The name of the CPU architecture (like "arm") for use in
@@ -404,9 +399,9 @@ val CxxAbiModel.cpuArchitecture
  * "x86_64"
  */
 val CxxAbiModel.altCpuArchitecture
-    get() = when(abi) {
-        Abi.X86_64 -> "x64"
-        else -> abi.architecture
+    get() = when(name) {
+        "x86_64" -> "x64"
+        else -> cpuArchitecture
     }
 
 /**

@@ -18,6 +18,7 @@ package com.android.ddmlib;
 import com.android.annotations.NonNull;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Maps;
+import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 import java.util.Map;
@@ -171,21 +172,22 @@ public final class PropertyFetcher {
      */
     @NonNull
     public synchronized ListenableFuture<String> getProperty(@NonNull String name) {
-        SettableFuture<String> result;
-        if (mCacheState.equals(CacheState.FETCHING)) {
-            result = addPendingRequest(name);
+        if (!mProperties.isEmpty() && isImmutableProperty(name)) {
+            // cache is populated and this is a ro prop
+            return Futures.immediateFuture(mProperties.get(name));
+        } else if (mCacheState.equals(CacheState.FETCHING)) {
+            return addPendingRequest(name);
         } else if (mDevice.isOnline() && mCacheState.equals(CacheState.UNPOPULATED)
                 || !isImmutableProperty(name)) {
             // cache is empty, or this is a volatile prop that requires a query
-            result = addPendingRequest(name);
+            SettableFuture<String> result = addPendingRequest(name);
             mCacheState = CacheState.FETCHING;
             initiatePropertiesQuery();
+            return result;
         } else {
-            result = SettableFuture.create();
             // cache is populated and this is a ro prop
-            result.set(mProperties.get(name));
+            return Futures.immediateFuture(mProperties.get(name));
         }
-        return result;
     }
 
     private SettableFuture<String> addPendingRequest(String name) {

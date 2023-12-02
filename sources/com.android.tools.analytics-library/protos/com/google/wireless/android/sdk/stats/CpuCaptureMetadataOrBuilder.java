@@ -195,4 +195,23 @@ public interface CpuCaptureMetadataOrBuilder extends
    * @return The hasComposeTracingNodes.
    */
   boolean getHasComposeTracingNodes();
+
+  /**
+   * <pre>
+   * The entry point to the cpu profiling stage (cpu profiler)
+   * </pre>
+   *
+   * <code>optional .android_studio.CpuCaptureMetadata.CpuProfilerEntryPoint cpu_profiler_entry_point = 10;</code>
+   * @return Whether the cpuProfilerEntryPoint field is set.
+   */
+  boolean hasCpuProfilerEntryPoint();
+  /**
+   * <pre>
+   * The entry point to the cpu profiling stage (cpu profiler)
+   * </pre>
+   *
+   * <code>optional .android_studio.CpuCaptureMetadata.CpuProfilerEntryPoint cpu_profiler_entry_point = 10;</code>
+   * @return The cpuProfilerEntryPoint.
+   */
+  com.google.wireless.android.sdk.stats.CpuCaptureMetadata.CpuProfilerEntryPoint getCpuProfilerEntryPoint();
 }

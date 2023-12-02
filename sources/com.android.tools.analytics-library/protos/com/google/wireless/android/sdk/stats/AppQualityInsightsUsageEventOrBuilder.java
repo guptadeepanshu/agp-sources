@@ -341,4 +341,23 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * @return The modeTransitionDetails.
    */
   com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsModeTransitionDetails getModeTransitionDetails();
+
+  /**
+   * <pre>
+   * Required for all event types.
+   * </pre>
+   *
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsProductType product_type = 14;</code>
+   * @return Whether the productType field is set.
+   */
+  boolean hasProductType();
+  /**
+   * <pre>
+   * Required for all event types.
+   * </pre>
+   *
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsProductType product_type = 14;</code>
+   * @return The productType.
+   */
+  com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsProductType getProductType();
 }

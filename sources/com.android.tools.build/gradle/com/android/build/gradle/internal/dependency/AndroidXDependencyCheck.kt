@@ -16,11 +16,9 @@
 
 package com.android.build.gradle.internal.dependency
 
-import com.android.build.gradle.internal.dependency.AndroidXDependencySubstitution.COM_ANDROID_DATABINDING_BASELIBRARY
 import com.android.build.gradle.internal.utils.getModuleComponents
 import com.android.build.gradle.internal.utils.getPathToComponent
 import com.android.build.gradle.options.BooleanOption
-import com.android.build.gradle.options.Version
 import com.android.builder.errors.IssueReporter
 import com.android.builder.errors.IssueReporter.Type.ANDROID_X_PROPERTY_NOT_ENABLED
 import org.gradle.api.Action
@@ -44,9 +42,6 @@ object AndroidXDependencyCheck {
             private val configurationName: String,
             private val issueReporter: IssueReporter
     ) : Action<ResolvableDependencies> {
-
-        private val issueReported =
-                "${AndroidXDisabledJetifierDisabled::class.java.name}_issue_reported"
 
         override fun execute(resolvableDependencies: ResolvableDependencies) {
             // Report only once
@@ -83,57 +78,6 @@ object AndroidXDependencyCheck {
         }
     }
 
-    /**
-     * Check to run when `android.useAndroidX=true` and `android.enabledJetifier=false`.
-     *
-     * NOTE: The caller must invoke this check only under the above condition.
-     */
-    class AndroidXEnabledJetifierDisabled(
-            private val project: Project,
-            private val configurationName: String,
-            private val issueReporter: IssueReporter
-    ) : Action<ResolvableDependencies> {
-
-        private val issueReported =
-                "${AndroidXEnabledJetifierDisabled::class.java.name}_issue_reported"
-
-        override fun execute(resolvableDependencies: ResolvableDependencies) {
-            // Report only once
-            if (project.extensions.extraProperties.has(issueReported)) {
-                return
-            }
-
-            val result = resolvableDependencies.resolutionResult
-            val supportLibDependencies = result.getModuleComponents {
-                val componentId = "${it.group}:${it.module}:${it.version}"
-                AndroidXDependencySubstitution.isLegacySupportLibDependency(componentId)
-                        // com.android.databinding:baseLibrary is an exception (see bug 187448822)
-                        && !componentId.startsWith(COM_ANDROID_DATABINDING_BASELIBRARY)
-            }
-            if (supportLibDependencies.isNotEmpty()) {
-                project.extensions.extraProperties.set(issueReported, true)
-                val configurationDisplayPath =
-                    project.getConfigurationDisplayPath(configurationName)
-                val pathsToSupportLibDependencies = supportLibDependencies.map {
-                    result.getPathToComponent(it).getPathString(configurationDisplayPath)
-                }
-                val message =
-                    "Your project has set `${BooleanOption.USE_ANDROID_X.propertyName}=true`," +
-                            " but configuration `$configurationDisplayPath` still contains legacy support libraries," +
-                            " which may cause runtime issues.\n" +
-                            "This behavior will not be allowed in Android Gradle plugin ${Version.VERSION_8_0.versionString}.\n" +
-                            "Please use only AndroidX dependencies or set `${BooleanOption.ENABLE_JETIFIER.propertyName}=true` in the `gradle.properties` file to migrate your project to AndroidX (see https://developer.android.com/jetpack/androidx/migrate for more info).\n" +
-                            "The following legacy support libraries are detected:\n" +
-                            pathsToSupportLibDependencies.joinToString("\n")
-                issueReporter.reportWarning(
-                    ANDROID_X_PROPERTY_NOT_ENABLED,
-                    message,
-                    pathsToSupportLibDependencies.joinToString(",")
-                )
-            }
-        }
-    }
-
     private fun Project.getConfigurationDisplayPath(configurationName: String): String {
         return if (project.path == ":") {
             ":$configurationName"
@@ -142,3 +86,6 @@ object AndroidXDependencyCheck {
         }
     }
 }
+
+private val issueReported =
+    "${AndroidXDependencyCheck.AndroidXDisabledJetifierDisabled::class.java.name}_issue_reported"

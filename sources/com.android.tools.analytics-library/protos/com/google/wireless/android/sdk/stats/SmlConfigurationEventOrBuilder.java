@@ -28,6 +28,44 @@ public interface SmlConfigurationEventOrBuilder extends
 
   /**
    * <pre>
+   * Whether this user has started Studio Bot onboarding.
+   * </pre>
+   *
+   * <code>optional bool bot_onboarding_started = 4;</code>
+   * @return Whether the botOnboardingStarted field is set.
+   */
+  boolean hasBotOnboardingStarted();
+  /**
+   * <pre>
+   * Whether this user has started Studio Bot onboarding.
+   * </pre>
+   *
+   * <code>optional bool bot_onboarding_started = 4;</code>
+   * @return The botOnboardingStarted.
+   */
+  boolean getBotOnboardingStarted();
+
+  /**
+   * <pre>
+   * Whether this user has completed Studio Bot onboarding.
+   * </pre>
+   *
+   * <code>optional bool bot_onboarding_completed = 5;</code>
+   * @return Whether the botOnboardingCompleted field is set.
+   */
+  boolean hasBotOnboardingCompleted();
+  /**
+   * <pre>
+   * Whether this user has completed Studio Bot onboarding.
+   * </pre>
+   *
+   * <code>optional bool bot_onboarding_completed = 5;</code>
+   * @return The botOnboardingCompleted.
+   */
+  boolean getBotOnboardingCompleted();
+
+  /**
+   * <pre>
    * User has ML completion enabled.
    * </pre>
    *

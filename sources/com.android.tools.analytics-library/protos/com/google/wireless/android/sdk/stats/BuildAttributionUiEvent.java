@@ -413,6 +413,26 @@ private static final long serialVersionUID = 0L;
      * <code>TAB_OPENED_WITH_ACTION = 32;</code>
      */
     TAB_OPENED_WITH_ACTION(32),
+    /**
+     * <code>DEFENDER_WARNING_SUPPRESS_CLICKED = 33;</code>
+     */
+    DEFENDER_WARNING_SUPPRESS_CLICKED(33),
+    /**
+     * <code>DEFENDER_WARNING_AUTO_EXCLUDE_SUCCESS = 34;</code>
+     */
+    DEFENDER_WARNING_AUTO_EXCLUDE_SUCCESS(34),
+    /**
+     * <code>DEFENDER_WARNING_AUTO_EXCLUDE_FAILURE = 35;</code>
+     */
+    DEFENDER_WARNING_AUTO_EXCLUDE_FAILURE(35),
+    /**
+     * <code>DEFENDER_WARNING_SUPPRESS_GLOBALLY_CLICKED = 36;</code>
+     */
+    DEFENDER_WARNING_SUPPRESS_GLOBALLY_CLICKED(36),
+    /**
+     * <code>DEFENDER_WARNING_MANUAL_INSTRUCTIONS_CLICKED = 37;</code>
+     */
+    DEFENDER_WARNING_MANUAL_INSTRUCTIONS_CLICKED(37),
     ;
 
     /**
@@ -625,6 +645,26 @@ private static final long serialVersionUID = 0L;
      * <code>TAB_OPENED_WITH_ACTION = 32;</code>
      */
     public static final int TAB_OPENED_WITH_ACTION_VALUE = 32;
+    /**
+     * <code>DEFENDER_WARNING_SUPPRESS_CLICKED = 33;</code>
+     */
+    public static final int DEFENDER_WARNING_SUPPRESS_CLICKED_VALUE = 33;
+    /**
+     * <code>DEFENDER_WARNING_AUTO_EXCLUDE_SUCCESS = 34;</code>
+     */
+    public static final int DEFENDER_WARNING_AUTO_EXCLUDE_SUCCESS_VALUE = 34;
+    /**
+     * <code>DEFENDER_WARNING_AUTO_EXCLUDE_FAILURE = 35;</code>
+     */
+    public static final int DEFENDER_WARNING_AUTO_EXCLUDE_FAILURE_VALUE = 35;
+    /**
+     * <code>DEFENDER_WARNING_SUPPRESS_GLOBALLY_CLICKED = 36;</code>
+     */
+    public static final int DEFENDER_WARNING_SUPPRESS_GLOBALLY_CLICKED_VALUE = 36;
+    /**
+     * <code>DEFENDER_WARNING_MANUAL_INSTRUCTIONS_CLICKED = 37;</code>
+     */
+    public static final int DEFENDER_WARNING_MANUAL_INSTRUCTIONS_CLICKED_VALUE = 37;
 
 
     public final int getNumber() {
@@ -680,6 +720,11 @@ private static final long serialVersionUID = 0L;
         case 30: return TOOL_WINDOW_BALLOON_DONT_SHOW_AGAIN_LINK_CLICKED;
         case 31: return MIGRATE_NON_TRANSITIVE_R_CLASS_ACTION_CLICKED;
         case 32: return TAB_OPENED_WITH_ACTION;
+        case 33: return DEFENDER_WARNING_SUPPRESS_CLICKED;
+        case 34: return DEFENDER_WARNING_AUTO_EXCLUDE_SUCCESS;
+        case 35: return DEFENDER_WARNING_AUTO_EXCLUDE_FAILURE;
+        case 36: return DEFENDER_WARNING_SUPPRESS_GLOBALLY_CLICKED;
+        case 37: return DEFENDER_WARNING_MANUAL_INSTRUCTIONS_CLICKED;
         default: return null;
       }
     }
@@ -794,6 +839,10 @@ private static final long serialVersionUID = 0L;
      * <code>NON_TRANSITIVE_R_CLASS = 13;</code>
      */
     NON_TRANSITIVE_R_CLASS(13),
+    /**
+     * <code>WINDOWS_DEFENDER_INSTRUCTIONS = 14;</code>
+     */
+    WINDOWS_DEFENDER_INSTRUCTIONS(14),
     ;
 
     /**
@@ -852,6 +901,10 @@ private static final long serialVersionUID = 0L;
      * <code>NON_TRANSITIVE_R_CLASS = 13;</code>
      */
     public static final int NON_TRANSITIVE_R_CLASS_VALUE = 13;
+    /**
+     * <code>WINDOWS_DEFENDER_INSTRUCTIONS = 14;</code>
+     */
+    public static final int WINDOWS_DEFENDER_INSTRUCTIONS_VALUE = 14;
 
 
     public final int getNumber() {
@@ -888,6 +941,7 @@ private static final long serialVersionUID = 0L;
         case 11: return RENDERSCRIPT_MIGRATE;
         case 12: return AIDL_INFO;
         case 13: return NON_TRANSITIVE_R_CLASS;
+        case 14: return WINDOWS_DEFENDER_INSTRUCTIONS;
         default: return null;
       }
     }
@@ -1455,6 +1509,19 @@ private static final long serialVersionUID = 0L;
        * <code>TASK_CATEGORY_WARNING_ROOT = 33;</code>
        */
       TASK_CATEGORY_WARNING_ROOT(33),
+      /**
+       * <code>WINDOWS_DEFENDER_WARNING_PAGE = 34;</code>
+       */
+      WINDOWS_DEFENDER_WARNING_PAGE(34),
+      /**
+       * <pre>
+       * Not a page inside Build Analyzer but a place containing user actions
+       * so can be used to distinguish those from the value above.
+       * </pre>
+       *
+       * <code>WINDOWS_DEFENDER_NOTIFICATION = 35;</code>
+       */
+      WINDOWS_DEFENDER_NOTIFICATION(35),
       ;
 
       /**
@@ -1617,6 +1684,19 @@ private static final long serialVersionUID = 0L;
        * <code>TASK_CATEGORY_WARNING_ROOT = 33;</code>
        */
       public static final int TASK_CATEGORY_WARNING_ROOT_VALUE = 33;
+      /**
+       * <code>WINDOWS_DEFENDER_WARNING_PAGE = 34;</code>
+       */
+      public static final int WINDOWS_DEFENDER_WARNING_PAGE_VALUE = 34;
+      /**
+       * <pre>
+       * Not a page inside Build Analyzer but a place containing user actions
+       * so can be used to distinguish those from the value above.
+       * </pre>
+       *
+       * <code>WINDOWS_DEFENDER_NOTIFICATION = 35;</code>
+       */
+      public static final int WINDOWS_DEFENDER_NOTIFICATION_VALUE = 35;
 
 
       public final int getNumber() {
@@ -1673,6 +1753,8 @@ private static final long serialVersionUID = 0L;
           case 31: return TASK_CATEGORY_CRITICAL_PATH_TASKS_ROOT;
           case 32: return TASK_CATEGORY_CRITICAL_PATH_TASK_PAGE;
           case 33: return TASK_CATEGORY_WARNING_ROOT;
+          case 34: return WINDOWS_DEFENDER_WARNING_PAGE;
+          case 35: return WINDOWS_DEFENDER_NOTIFICATION;
           default: return null;
         }
       }

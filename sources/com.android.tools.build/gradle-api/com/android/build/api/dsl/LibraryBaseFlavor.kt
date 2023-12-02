@@ -31,7 +31,8 @@ interface LibraryBaseFlavor :
      *
      * See [uses-sdk element documentation](http://developer.android.com/guide/topics/manifest/uses-sdk-element.html).
      */
-    @Deprecated("Will be removed from library DSL in v9.0")
+    @Deprecated("Will be removed from library DSL in v9.0. "+
+            "Use testOptions.targetSdk or/and lint.targetSdk instead")
     var targetSdk: Int?
 
     @Deprecated("Replaced by targetSdk property")

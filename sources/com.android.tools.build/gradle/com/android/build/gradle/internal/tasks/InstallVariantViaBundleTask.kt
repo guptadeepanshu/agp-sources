@@ -28,8 +28,8 @@ import com.android.build.gradle.internal.testing.ConnectedDeviceProvider
 import com.android.build.gradle.options.BooleanOption
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.internal.InstallUtils
+import com.android.builder.testing.api.DeviceConfigProvider
 import com.android.builder.testing.api.DeviceConfigProviderImpl
-import com.android.builder.testing.api.DeviceConnector
 import com.android.builder.testing.api.DeviceProvider
 import com.android.sdklib.AndroidVersion
 import com.android.utils.FileUtils
@@ -37,7 +37,6 @@ import com.android.utils.ILogger
 import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.GradleException
 import org.gradle.api.file.ConfigurableFileCollection
-import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
@@ -64,7 +63,6 @@ abstract class InstallVariantViaBundleTask : NonIncrementalTask() {
 
     private var minSdkVersion = 0
     private var minSdkCodename: String? = null
-
     private var timeOutInMs = 0
 
     private var installOptions = mutableListOf<String>()
@@ -81,6 +79,11 @@ abstract class InstallVariantViaBundleTask : NonIncrementalTask() {
     @get:Optional
     abstract val privacySandboxSdkApksFiles: ConfigurableFileCollection
 
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:Optional
+    abstract val privacySandboxSdkApksFromSplits: ConfigurableFileCollection
+
     init {
         this.outputs.upToDateWhen { false }
     }
@@ -96,6 +99,7 @@ abstract class InstallVariantViaBundleTask : NonIncrementalTask() {
             it.minApiCodeName.set(minSdkCodename)
             it.minSdkVersion.set(minSdkVersion)
             it.privacySandboxSdkApksFiles.set(privacySandboxSdkApksFiles.files)
+            it.privacySandboxSdkApksFromSplits.set(privacySandboxSdkApksFromSplits.files)
         }
     }
 
@@ -108,6 +112,7 @@ abstract class InstallVariantViaBundleTask : NonIncrementalTask() {
         abstract val minApiCodeName: Property<String?>
         abstract val minSdkVersion: Property<Int>
         abstract val privacySandboxSdkApksFiles: ListProperty<File>
+        abstract val privacySandboxSdkApksFromSplits: ListProperty<File>
     }
 
     abstract class InstallRunnable : ProfileAwareWorkAction<Params>() {
@@ -130,17 +135,22 @@ abstract class InstallVariantViaBundleTask : NonIncrementalTask() {
                     }
 
                     val deviceConfigProvider = DeviceConfigProviderImpl(device)
-                    for (apk in parameters.privacySandboxSdkApksFiles.get()) {
-                        val apks = getPrivacySandboxSdkApkFiles(apk.toPath())
+                    if (device.supportsPrivacySandbox) {
+                        for (apk in parameters.privacySandboxSdkApksFiles.get()) {
+                            val apks = getPrivacySandboxSdkApkFiles(apk.toPath())
 
-                        logger.lifecycle(
-                            "Installing privacy sandbox SDK APKs '{}' on '{}' for {}:{}",
-                            FileUtils.getNamesAsCommaSeparatedList(apks),
-                            device.name,
-                            parameters.projectPath.get(),
-                            parameters.variantName.get()
-                        )
-                        device.installPackages(apks, parameters.installOptions.get(), parameters.timeOutInMs.get(), iLogger)
+                            logger.lifecycle(
+                                    "Installing privacy sandbox SDK APKs '{}' on '{}' for {}:{}",
+                                    FileUtils.getNamesAsCommaSeparatedList(apks),
+                                    device.name,
+                                    parameters.projectPath.get(),
+                                    parameters.variantName.get()
+                            )
+                            device.installPackages(apks,
+                                    parameters.installOptions.get(),
+                                    parameters.timeOutInMs.get(),
+                                    iLogger)
+                        }
                     }
 
                     logger.lifecycle(
@@ -150,7 +160,17 @@ abstract class InstallVariantViaBundleTask : NonIncrementalTask() {
                         parameters.variantName.get()
                     )
 
-                    val apkPaths = getApkFiles(device, deviceConfigProvider)
+                    val privacySandboxSdkApkFromSplits =
+                            if (!device.supportsPrivacySandbox) {
+                                parameters.privacySandboxSdkApksFromSplits.get()
+                                        .map { it.toPath() }
+                            } else {
+                                emptyList()
+                            }
+
+                    val apkBuiltArtifacts = privacySandboxSdkApkFromSplits +
+                            parameters.apkBundle.get().asFile.toPath()
+                    val apkPaths = getApkFiles(apkBuiltArtifacts, deviceConfigProvider)
 
                     if (apkPaths.isEmpty()) {
                         logger.lifecycle(
@@ -201,11 +221,9 @@ abstract class InstallVariantViaBundleTask : NonIncrementalTask() {
                 java.lang.System.getenv("ANDROID_SERIAL")
             )
 
-        @VisibleForTesting
-        protected open fun getApkFiles(device: DeviceConnector, deviceConfigProvider: DeviceConfigProviderImpl) : List<Path> {
-            return getApkFiles(
-                parameters.apkBundle.get().asFile.toPath(),
-                deviceConfigProvider)
+        protected open fun getApkFiles(apkBundles: Collection<Path>,
+                device: DeviceConfigProvider): List<Path> {
+            return getApkFiles(apkBundles, device)
         }
 
         @VisibleForTesting
@@ -255,8 +273,12 @@ abstract class InstallVariantViaBundleTask : NonIncrementalTask() {
                             AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_APKS
                         )
                 )
+                task.privacySandboxSdkApksFromSplits.setFrom(
+                        creationConfig.artifacts.get(InternalArtifactType.SDK_SPLITS_APKS)
+                )
             }
             task.privacySandboxSdkApksFiles.disallowChanges()
+            task.privacySandboxSdkApksFromSplits.disallowChanges()
         }
 
         override fun handleProvider(

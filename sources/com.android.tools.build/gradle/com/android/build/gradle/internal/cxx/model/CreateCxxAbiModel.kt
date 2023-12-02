@@ -17,15 +17,17 @@
 package com.android.build.gradle.internal.cxx.model
 
 import com.android.build.gradle.internal.SdkComponentsBuildService
-import com.android.build.gradle.internal.core.Abi
 import com.android.build.gradle.internal.cxx.gradle.generator.CxxConfigurationParameters
 import com.android.build.gradle.internal.cxx.hashing.toBase36
 import com.android.build.gradle.internal.cxx.hashing.update
+import com.android.build.gradle.internal.cxx.logging.errorln
 import com.android.build.gradle.internal.cxx.settings.SettingsConfiguration
 import com.android.build.gradle.internal.cxx.settings.createBuildSettingsFromFile
 import com.android.build.gradle.internal.ndk.Stl
 import com.android.build.gradle.tasks.NativeBuildSystem
 import com.android.utils.FileUtils.join
+import com.android.utils.cxx.CxxDiagnosticCode
+import com.android.utils.cxx.CxxDiagnosticCode.ABI_IS_UNSUPPORTED
 import java.io.File
 import java.security.MessageDigest
 
@@ -36,7 +38,7 @@ fun createCxxAbiModel(
     sdkComponents: SdkComponentsBuildService,
     configurationParameters: CxxConfigurationParameters,
     variant: CxxVariantModel,
-    abi: Abi
+    abiName: String
 ) : CxxAbiModel {
     // True configuration hash values need to be computed after macros are resolved.
     // This is a placeholder hash that is used until the real hash is known.
@@ -44,6 +46,12 @@ fun createCxxAbiModel(
     val digest = MessageDigest.getInstance("SHA-256")
     digest.update(configurationParameters.variantName)
     val configurationHash = digest.toBase36()
+    if (!variant.module.ndkMetaAbiList.map { it.name }.contains(abiName)) {
+        errorln(ABI_IS_UNSUPPORTED, "ABI $abiName was not recognized. Valid ABIs are: " +
+                "${variant.module.ndkMetaAbiList.sortedBy { it.name }.joinToString { it.name }}.")
+        error("Unsupported ABI $abiName")
+    }
+    val info = variant.module.ndkMetaAbiList.single { it.name == abiName }
     with(variant) {
         val variantSoFolder = join(
             module.intermediatesBaseFolder,
@@ -63,22 +71,20 @@ fun createCxxAbiModel(
         )
         return CxxAbiModel(
                 variant = this,
-                abi = abi,
-                info = module.ndkMetaAbiList.single { it.abi == abi },
-                cxxBuildFolder = join(variantCxxBuildFolder, abi.tag),
-                soFolder = join(variantSoFolder, abi.tag),
-                soRepublishFolder = join(variantSoFolder, abi.tag),
+                info = info,
+                cxxBuildFolder = join(variantCxxBuildFolder, info.name),
+                soFolder = join(variantSoFolder, info.name),
+                soRepublishFolder = join(variantSoFolder, info.name),
                 abiPlatformVersion =
                     sdkComponents
                             .versionedNdkHandler(
-                                compileSdkVersion = configurationParameters.compileSdkVersion,
                                 ndkVersion = configurationParameters.ndkVersion,
                                 ndkPath = configurationParameters.ndkPath
                             )
                             .ndkPlatform
                             .getOrThrow()
                             .ndkInfo
-                            .findSuitablePlatformVersion(abi.tag,
+                            .findSuitablePlatformVersion(info.name,
                                 configurationParameters.minSdkVersion),
                 cmake = when(module.buildSystem) {
                     NativeBuildSystem.CMAKE ->  CxxCmakeAbiModel(
@@ -90,14 +96,13 @@ fun createCxxAbiModel(
                 fullConfigurationHash = configurationHash,
                 fullConfigurationHashKey = "",
                 configurationArguments = listOf(),
-                isActiveAbi = validAbiList.contains(abi),
-                prefabFolder = join(variantCxxBuildFolder, "prefab", abi.tag),
+                isActiveAbi = validAbiList.contains(info.name),
+                prefabFolder = join(variantCxxBuildFolder, "prefab", info.name),
                 stlLibraryFile =
                     Stl.fromArgumentName(variant.stlType)
-                        ?.let { module.stlSharedObjectMap[it]?.get(abi)?.toString() }
+                        ?.let { module.stlSharedObjectMap[it]?.get(info.name)?.toString() }
                         ?.let { File(it) },
                 intermediatesParentFolder = variantIntermediatesFolder
         )
     }
 }
-

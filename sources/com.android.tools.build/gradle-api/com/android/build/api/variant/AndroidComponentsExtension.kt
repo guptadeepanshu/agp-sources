@@ -16,10 +16,7 @@
 
 package com.android.build.api.variant
 
-import com.android.build.api.AndroidPluginVersion
 import com.android.build.api.dsl.CommonExtension
-import com.android.build.api.dsl.SdkComponents
-import com.android.build.api.instrumentation.manageddevice.ManagedDeviceRegistry
 import org.gradle.api.Action
 import org.gradle.api.Incubating
 
@@ -37,36 +34,13 @@ interface AndroidComponentsExtension<
         DslExtensionT: CommonExtension<*, *, *, *, *>,
         VariantBuilderT: VariantBuilder,
         VariantT: Variant>
-    : DslLifecycle<DslExtensionT> {
+    : DslLifecycle<DslExtensionT>, AndroidComponents {
 
     /**
      * [Action] based version of [finalizeDsl] above.
      */
     @Deprecated("Replaced by finalizeDsl", replaceWith = ReplaceWith("finalizeDsl(callback)"))
     fun finalizeDSl(callback: Action<DslExtensionT>)
-
-    /**
-     * The version of the Android Gradle Plugin currently in use.
-     */
-    val pluginVersion: AndroidPluginVersion
-
-    /**
-     * Provides access to underlying Android SDK and build-tools components like adb.
-     *
-     * @return [SdkComponents] to access Android SDK used by Gradle.
-     */
-    val sdkComponents: SdkComponents
-
-    /**
-     * Provides access to Managed Device Registry to be able to register Custom Managed
-     * Device Types.
-     *
-     * @return [ManagedDeviceRegistry] to register Custom Managed Devices.
-     *
-     * @suppress Do not use from production code. This API is exposed for prototype.
-     */
-    @get:Incubating
-    val managedDeviceRegistry: ManagedDeviceRegistry
 
     /**
      * Creates a [VariantSelector] instance that can be configured
@@ -157,18 +131,53 @@ interface AndroidComponentsExtension<
      * https://docs.gradle.org/current/userguide/custom_plugins.html#sec:getting_input_from_the_build
      *
      * A lambda must be provided to create and configure the variant scoped object
-     * that will be stored with the Android Gradle Plugin [com.android.build.api.variant.Variant]
+     * that will be stored alongside the Android Gradle Plugin's [com.android.build.api.variant.Variant]
      * instance.
      *
      * Variant Scoped objects should use [org.gradle.api.provider.Property<T>] for its mutable
      * state to allow for late binding. (see [com.android.build.api.variant.Variant] for examples).
      *
+     * The [DslExtension.Builder] allow you to choose if you want to extend Project, BuiltType or
+     * ProductFlavor. You can extend just one or up to all of them.
+     *
+     * A BuildType extension of type BuildTypeDslExtension will allow users to have the following
+     * declarations in their build files:
+     * ```
+     * android {
+     *     buildTypes {
+     *         debug {
+     *             extensions.configure<BuildTypeDslExtension> {
+     *                 buildTypeSettingOne = "build_type_debug"
+     *             }
+     *         }
+     *     }
+     * }
+     * ```
+     *
+     * A Product flavor extension of type ProductFlavorDslExtension will allow users to specify the
+     * following declarations in their build files:
+     * ```
+     * android {
+     *     flavorDimensions += "version"
+     *     productFlavors {
+     *         create("demo")  {
+     *             dimension = "version"
+     *             extensions.configure<ProductFlavorDslExtension> {
+     *                 productFlavorSettingOne = "product_flavor_demo"
+     *                 productFlavorSettingTwo = 99
+     *             }
+     *         }
+     *     }
+     * }
+     * ```
+     *
      * @param dslExtension the DSL extension configuration.
      * @param configurator a lambda to create a variant scoped object. The lambda is
      * provided with the [VariantExtensionConfig] that can be used to retrieve the [VariantT]
      * instance as well as DSL extensions registered with [DslExtension]
-     * @return an sub type of [VariantExtension] instance that will be stored with the [VariantT]
+     * @return an instance of a sub type of [VariantExtension] that will be stored with the [VariantT]
      * instance and can be retrieved by [Variant.getExtension] API.
+     *
      */
     @Incubating
     fun registerExtension(

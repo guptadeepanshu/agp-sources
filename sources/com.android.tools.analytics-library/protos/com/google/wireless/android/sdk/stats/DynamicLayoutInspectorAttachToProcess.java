@@ -117,6 +117,11 @@ private static final long serialVersionUID = 0L;
             autoConnectEnabled_ = input.readBool();
             break;
           }
+          case 72: {
+            bitField0_ |= 0x00000100;
+            isEmbeddedLayoutInspector_ = input.readBool();
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -527,6 +532,33 @@ private static final long serialVersionUID = 0L;
     return autoConnectEnabled_;
   }
 
+  public static final int IS_EMBEDDED_LAYOUT_INSPECTOR_FIELD_NUMBER = 9;
+  private boolean isEmbeddedLayoutInspector_;
+  /**
+   * <pre>
+   * Was Layout Inspector embedded in the Running Devices Tool Window
+   * </pre>
+   *
+   * <code>optional bool is_embedded_layout_inspector = 9;</code>
+   * @return Whether the isEmbeddedLayoutInspector field is set.
+   */
+  @java.lang.Override
+  public boolean hasIsEmbeddedLayoutInspector() {
+    return ((bitField0_ & 0x00000100) != 0);
+  }
+  /**
+   * <pre>
+   * Was Layout Inspector embedded in the Running Devices Tool Window
+   * </pre>
+   *
+   * <code>optional bool is_embedded_layout_inspector = 9;</code>
+   * @return The isEmbeddedLayoutInspector.
+   */
+  @java.lang.Override
+  public boolean getIsEmbeddedLayoutInspector() {
+    return isEmbeddedLayoutInspector_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -564,6 +596,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00000080) != 0)) {
       output.writeBool(8, autoConnectEnabled_);
+    }
+    if (((bitField0_ & 0x00000100) != 0)) {
+      output.writeBool(9, isEmbeddedLayoutInspector_);
     }
     unknownFields.writeTo(output);
   }
@@ -605,6 +640,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000080) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeBoolSize(8, autoConnectEnabled_);
+    }
+    if (((bitField0_ & 0x00000100) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(9, isEmbeddedLayoutInspector_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -659,6 +698,11 @@ private static final long serialVersionUID = 0L;
       if (getAutoConnectEnabled()
           != other.getAutoConnectEnabled()) return false;
     }
+    if (hasIsEmbeddedLayoutInspector() != other.hasIsEmbeddedLayoutInspector()) return false;
+    if (hasIsEmbeddedLayoutInspector()) {
+      if (getIsEmbeddedLayoutInspector()
+          != other.getIsEmbeddedLayoutInspector()) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -706,6 +750,11 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + AUTO_CONNECT_ENABLED_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getAutoConnectEnabled());
+    }
+    if (hasIsEmbeddedLayoutInspector()) {
+      hash = (37 * hash) + IS_EMBEDDED_LAYOUT_INSPECTOR_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getIsEmbeddedLayoutInspector());
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -865,6 +914,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000040);
       autoConnectEnabled_ = false;
       bitField0_ = (bitField0_ & ~0x00000080);
+      isEmbeddedLayoutInspector_ = false;
+      bitField0_ = (bitField0_ & ~0x00000100);
       return this;
     }
 
@@ -928,6 +979,10 @@ private static final long serialVersionUID = 0L;
       if (((from_bitField0_ & 0x00000080) != 0)) {
         result.autoConnectEnabled_ = autoConnectEnabled_;
         to_bitField0_ |= 0x00000080;
+      }
+      if (((from_bitField0_ & 0x00000100) != 0)) {
+        result.isEmbeddedLayoutInspector_ = isEmbeddedLayoutInspector_;
+        to_bitField0_ |= 0x00000100;
       }
       result.bitField0_ = to_bitField0_;
       onBuilt();
@@ -1001,6 +1056,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasAutoConnectEnabled()) {
         setAutoConnectEnabled(other.getAutoConnectEnabled());
+      }
+      if (other.hasIsEmbeddedLayoutInspector()) {
+        setIsEmbeddedLayoutInspector(other.getIsEmbeddedLayoutInspector());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -1577,6 +1635,61 @@ private static final long serialVersionUID = 0L;
     public Builder clearAutoConnectEnabled() {
       bitField0_ = (bitField0_ & ~0x00000080);
       autoConnectEnabled_ = false;
+      onChanged();
+      return this;
+    }
+
+    private boolean isEmbeddedLayoutInspector_ ;
+    /**
+     * <pre>
+     * Was Layout Inspector embedded in the Running Devices Tool Window
+     * </pre>
+     *
+     * <code>optional bool is_embedded_layout_inspector = 9;</code>
+     * @return Whether the isEmbeddedLayoutInspector field is set.
+     */
+    @java.lang.Override
+    public boolean hasIsEmbeddedLayoutInspector() {
+      return ((bitField0_ & 0x00000100) != 0);
+    }
+    /**
+     * <pre>
+     * Was Layout Inspector embedded in the Running Devices Tool Window
+     * </pre>
+     *
+     * <code>optional bool is_embedded_layout_inspector = 9;</code>
+     * @return The isEmbeddedLayoutInspector.
+     */
+    @java.lang.Override
+    public boolean getIsEmbeddedLayoutInspector() {
+      return isEmbeddedLayoutInspector_;
+    }
+    /**
+     * <pre>
+     * Was Layout Inspector embedded in the Running Devices Tool Window
+     * </pre>
+     *
+     * <code>optional bool is_embedded_layout_inspector = 9;</code>
+     * @param value The isEmbeddedLayoutInspector to set.
+     * @return This builder for chaining.
+     */
+    public Builder setIsEmbeddedLayoutInspector(boolean value) {
+      bitField0_ |= 0x00000100;
+      isEmbeddedLayoutInspector_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Was Layout Inspector embedded in the Running Devices Tool Window
+     * </pre>
+     *
+     * <code>optional bool is_embedded_layout_inspector = 9;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearIsEmbeddedLayoutInspector() {
+      bitField0_ = (bitField0_ & ~0x00000100);
+      isEmbeddedLayoutInspector_ = false;
       onChanged();
       return this;
     }

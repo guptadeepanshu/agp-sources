@@ -16,7 +16,6 @@
 
 package com.android.build.gradle.internal.ndk
 
-import com.android.build.gradle.internal.core.Abi
 import com.android.build.gradle.tasks.NativeBuildSystem
 import com.android.sdklib.AndroidVersion
 import java.io.File
@@ -26,13 +25,13 @@ import java.io.File
  */
 interface NdkInfo {
 
-    val default32BitsAbis: Collection<Abi>
+    val default32BitsAbis: Collection<String>
 
-    val defaultAbis: Collection<Abi>
+    val defaultAbis: Collection<String>
 
-    val supported32BitsAbis: Collection<Abi>
+    val supported32BitsAbis: Collection<String>
 
-    val supportedAbis: Collection<Abi>
+    val supportedAbis: Collection<String>
 
     val supportedStls: Collection<Stl>
 
@@ -42,16 +41,16 @@ interface NdkInfo {
     ): Int
 
     /** Return the executable for removing debug symbols from a shared object.  */
-    fun getStripExecutable(abi: Abi): File
+    fun getStripExecutable(abi: String): File
 
     /** Return the executable for extracting debug metadata from a shared object.  */
-    fun getObjcopyExecutable(abi: Abi): File
+    fun getObjcopyExecutable(abi: String): File
 
     /** Returns the default STL for the given build system. */
     fun getDefaultStl(buildSystem: NativeBuildSystem): Stl
 
     /** Returns the STL shared object file matching the given STL/ABI pair. */
-    fun getStlSharedObjectFile(stl: Stl, abi: Abi): File
+    fun getStlSharedObjectFile(stl: Stl, abi: String): File
 
     /**
      * Returns a list of shared STL libraries to be included in the APK for the given configuration.
@@ -60,7 +59,7 @@ interface NdkInfo {
      *            CMake). If null, the default STL for the given NDK is used.
      * @param abis The collection of ABIs to return libraries for.
      */
-    fun getStlSharedObjectFiles(stl: Stl, abis: Collection<Abi>): Map<Abi, File> {
+    fun getStlSharedObjectFiles(stl: Stl, abis: Collection<String>): Map<String, File> {
         // Static STLs, system STLs, and non-STLs do not need to be packaged.
         if (!stl.requiresPackaging) {
             return emptyMap()

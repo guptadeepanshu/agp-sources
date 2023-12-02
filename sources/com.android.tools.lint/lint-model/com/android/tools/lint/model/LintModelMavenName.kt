@@ -57,7 +57,7 @@ interface LintModelMavenName : Comparable<LintModelMavenName> {
 
     val NONE = DefaultLintModelMavenName("", "")
 
-    @Suppress("SpellCheckingInspection") const val LOCAL_AARS = "__local_aars__"
+    const val NON_MAVEN = "__non_maven__"
   }
 }
 

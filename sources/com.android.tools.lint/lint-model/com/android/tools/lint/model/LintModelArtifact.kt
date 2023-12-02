@@ -21,6 +21,7 @@ import java.io.File
 interface LintModelArtifact {
   val dependencies: LintModelDependencies
   val classOutputs: List<File>
+  val type: LintModelArtifactType
 
   /**
    * Finds the library with the given [mavenName] (group id and artifact id) in any transitive
@@ -45,20 +46,29 @@ interface LintModelAndroidArtifact : LintModelArtifact {
 
 open class DefaultLintModelArtifact(
   override val dependencies: LintModelDependencies,
-  override val classOutputs: List<File>
+  override val classOutputs: List<File>,
+  override val type: LintModelArtifactType
 ) : LintModelArtifact
 
-class DefaultLintModelJavaArtifact(classFolders: List<File>, dependencies: LintModelDependencies) :
-  DefaultLintModelArtifact(dependencies = dependencies, classOutputs = classFolders),
-  LintModelJavaArtifact
+class DefaultLintModelJavaArtifact(
+  dependencies: LintModelDependencies,
+  classFolders: List<File>,
+  type: LintModelArtifactType
+) : DefaultLintModelArtifact(dependencies, classFolders, type), LintModelJavaArtifact
 
 class DefaultLintModelAndroidArtifact(
   override val applicationId: String,
   override val generatedResourceFolders: Collection<File>,
   override val generatedSourceFolders: Collection<File>,
   override val desugaredMethodsFiles: Collection<File>,
+  dependencies: LintModelDependencies,
   classOutputs: List<File>,
-  dependencies: LintModelDependencies
-) :
-  DefaultLintModelArtifact(dependencies = dependencies, classOutputs = classOutputs),
-  LintModelAndroidArtifact
+  type: LintModelArtifactType
+) : DefaultLintModelArtifact(dependencies, classOutputs, type), LintModelAndroidArtifact
+
+enum class LintModelArtifactType {
+  MAIN,
+  UNIT_TEST,
+  INSTRUMENTATION_TEST,
+  TEST_FIXTURES,
+}

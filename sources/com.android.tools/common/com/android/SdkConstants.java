@@ -16,6 +16,7 @@
 
 package com.android;
 
+import com.android.sdklib.AndroidVersion;
 import java.io.File;
 
 /**
@@ -67,8 +68,12 @@ public final class SdkConstants {
     /** Property in local.properties file that specifies the path of the Android SDK. */
     public static final String SDK_DIR_PROPERTY = "sdk.dir";
 
-    /** Property in local.properties file that specifies the path of the Gradle JDK. */
-    public static final String GRADLE_JDK_DIR_PROPERTY = "jdk.dir";
+    /**
+     * A maximum version of the Android SDK that this version of AGP and Android Studio IDE can
+     * safely recommend during its development cycle.
+     */
+    public static final AndroidVersion MAX_SUPPORTED_ANDROID_PLATFORM_VERSION =
+            new AndroidVersion(34);
 
     /** Property in local.properties file that specifies the path of the Android NDK. */
     public static final String NDK_DIR_PROPERTY = "ndk.dir";
@@ -93,6 +98,9 @@ public final class SdkConstants {
             "minAndroidGradlePluginVersion";
     public static final String FORCE_COMPILE_SDK_PREVIEW_PROPERTY = "forceCompileSdkPreview";
     public static final String MIN_COMPILE_SDK_EXTENSION_PROPERTY = "minCompileSdkExtension";
+    public static final String CORE_LIBRARY_DESUGARING_ENABLED_PROPERTY =
+            "coreLibraryDesugaringEnabled";
+    public static final String DESUGAR_JDK_LIB_PROPERTY = "desugarJdkLib";
 
     /** Properties in app-metadata.properties file */
     public static final String APP_METADATA_VERSION_PROPERTY = "appMetadataVersion";
@@ -148,10 +156,14 @@ public final class SdkConstants {
     public static final String FN_BUILD_GRADLE = "build.gradle";
     /** An SDK Project's build.gradle Kotlin script file */
     public static final String FN_BUILD_GRADLE_KTS = "build.gradle.kts";
+    /** An SDK Project's build.gradle.toml declarative file */
+    public static final String FN_DECLARATIVE_BUILD_GRADLE = "build.gradle.toml";
     /** An SDK Project's settings.gradle file */
     public static final String FN_SETTINGS_GRADLE = "settings.gradle";
     /** An SDK Project's settings.gradle Kotlin script file */
     public static final String FN_SETTINGS_GRADLE_KTS = "settings.gradle.kts";
+    /** An SDK Project's settings.gradle toml file */
+    public static final String FN_SETTINGS_GRADLE_TOML = "settings.gradle.toml";
     /** An SDK Project's gradle.properties file */
     public static final String FN_GRADLE_PROPERTIES = "gradle.properties";
     /** An SDK Project's libs.versions.toml file */
@@ -511,6 +523,7 @@ public final class SdkConstants {
     public static final String ABI_INTEL_ATOM64 = "x86_64";
     public static final String ABI_MIPS = "mips";
     public static final String ABI_MIPS64 = "mips64";
+    public static final String ABI_RISCV64 = "riscv64";
     /** Name of the CPU arch to support. */
     public static final String CPU_ARCH_ARM = "arm";
 
@@ -520,6 +533,8 @@ public final class SdkConstants {
     public static final String CPU_ARCH_MIPS = "mips";
     /** TODO double-check this is appropriate value for mips64 */
     public static final String CPU_ARCH_MIPS64 = "mips64";
+
+    public static final String CPU_ARCH_RISCV64 = "riscv64";
     /** Name of the CPU model to support. */
     public static final String CPU_MODEL_CORTEX_A8 = "cortex-a8";
 
@@ -778,6 +793,7 @@ public final class SdkConstants {
     public static final String CLASS_MANIFEST_PERMISSION =
             "android.Manifest$permission";
     public static final String CLASS_INTENT = "android.content.Intent";
+    public static final String CLASS_INTENT_FILTER = "android.content.IntentFilter";
     public static final String CLASS_CONTEXT = "android.content.Context";
     public static final String CLASS_CONFIGURATION = "android.content.res.Configuration";
     public static final String CLASS_RESOURCES = "android.content.res.Resources";
@@ -1120,6 +1136,7 @@ public final class SdkConstants {
     public static final String TAG_STAGING_PUBLIC_GROUP = "staging-public-group";
     public static final String TAG_STAGING_PUBLIC_GROUP_FINAL = "staging-public-group-final";
 
+    public static final String TAG_JAVA_SYMBOL = "java-symbol";
 
     // Tags: Adaptive icon
     public static final String TAG_ADAPTIVE_ICON = "adaptive-icon";
@@ -1300,6 +1317,10 @@ public final class SdkConstants {
     public static final String ATTR_TARGET_ACTIVITY = "targetActivity";
     public static final String ATTR_MIMETYPE = "mimeType";
     public static final String ATTR_LOCALE_CONFIG = "localeConfig";
+    public static final String ATTR_FOREGROUND_SERVICE_TYPE = "foregroundServiceType";
+    public static final String ATTR_TASK_AFFINITY = "taskAffinity";
+    public static final String ATTR_EXCLUDE_FROM_RECENTS = "excludeFromRecents";
+    public static final String ATTR_NO_HISTORY = "noHistory";
 
     // Attributes: Resources
     public static final String ATTR_ATTR = "attr";
@@ -2129,6 +2150,8 @@ public final class SdkConstants {
     public static final String EXT_GRADLE = "gradle";
     /** Extension of Kotlin gradle files, i.e. "gradle.kts" */
     public static final String EXT_GRADLE_KTS = "gradle.kts";
+    /** Extension of declarative gradle files, i.e. "gradle.toml" */
+    public static final String EXT_GRADLE_TOML = "gradle.toml";
     /** Extension of jar files, i.e. "jar" */
     public static final String EXT_JAR = "jar";
     /** Extension of ZIP files, i.e. "zip" */
@@ -2470,6 +2493,7 @@ public final class SdkConstants {
         public static final String RINGTONE_PREFERENCE = "RingtonePreference";
         public static final String SEEK_BAR_PREFERENCE = "SeekBarPreference";
         public static final String SWITCH_PREFERENCE = "SwitchPreference";
+        public static final String SWITCH_PREFERENCE_COMPAT = "SwitchPreferenceCompat";
         public static final String INTENT = "intent";
     }
 
@@ -2580,6 +2604,27 @@ public final class SdkConstants {
         public static final String VALUE_ITALIC = "italic";
     }
 
+    public static class InputType {
+        public static final String VALUE_NUMBER_PASSWORD = "numberPassword";
+        public static final String VALUE_TEXT_PASSWORD = "textPassword";
+        public static final String VALUE_TEXT_VISIBLE_PASSWORD = "textVisiblePassword";
+        public static final String VALUE_TEXT_WEB_PASSWORD = "textWebPassword";
+
+        public static final String REF_TYPE_NUMBER_VARIATION_PASSWORD =
+                "TYPE_NUMBER_VARIATION_PASSWORD";
+        public static final String REF_TYPE_TEXT_VARIATION_PASSWORD =
+                "TYPE_TEXT_VARIATION_PASSWORD";
+        public static final String REF_TYPE_TEXT_VARIATION_VISIBLE_PASSWORD =
+                "TYPE_TEXT_VARIATION_VISIBLE_PASSWORD";
+        public static final String REF_TYPE_TEXT_VARIATION_WEB_PASSWORD =
+                "TYPE_TEXT_VARIATION_WEB_PASSWORD";
+    }
+
+    public static final class Intent {
+        public static final String REF_FLAG_ACTIVITY_NEW_TASK = "FLAG_ACTIVITY_NEW_TASK";
+        public static final String REF_FLAG_ACTIVITY_CLEAR_TOP = "FLAG_ACTIVITY_CLEAR_TOP";
+    }
+
     public static final class ViewAttributes {
         public static final String MIN_HEIGHT = "minHeight";
     }
@@ -2637,6 +2682,12 @@ public final class SdkConstants {
 
     /** The androidx.leanback. package prefix */
     public static final String ANDROIDX_LEANBACK_PKG = "androidx.leanback.";
+
+    /** The androidx.compose.material. package prefix */
+    public static final String ANDROIDX_MATERIAL_PKG = "androidx.compose.material.";
+
+    /** The androidx.wear.compose.material. package prefix */
+    public static final String ANDROIDX_WEAR_MATERIAL_PKG = "androidx.wear.compose.material.";
 
     /** The androidx.coordinatorlayout. package prefix */
     public static final String ANDROIDX_COORDINATOR_LAYOUT_PKG = "androidx.coordinatorlayout.";
@@ -2760,6 +2811,9 @@ public final class SdkConstants {
     /** The fully qualified class name of a TextView view */
     public static final String FQCN_TEXT_VIEW = "android.widget.TextView";
 
+    /** The fully qualified class name of InputType */
+    public static final String FQCN_INPUT_TYPE = "android.text.InputType";
+
     /** The fully qualified class name of an ImageView view */
     public static final String FQCN_IMAGE_VIEW = "android.widget.ImageView";
 
@@ -2791,7 +2845,7 @@ public final class SdkConstants {
      * Studio product. It need not actually be the latest version of Gradle, but it will most likely
      * be fairly recent.
      */
-    public static final String GRADLE_LATEST_VERSION = "8.0";
+    public static final String GRADLE_LATEST_VERSION = "8.2";
 
     /**
      * The minimum released version of the Android Gradle Plugin that this version of Studio will
@@ -2832,7 +2886,7 @@ public final class SdkConstants {
     public static final String GRADLE_ANDROID_TEST_API_CONFIGURATION = "androidTestApi";
 
     public static final String GRADLE_ANDROID_TEST_UTIL_CONFIGURATION = "androidTestUtil";
-    public static final String CURRENT_BUILD_TOOLS_VERSION = "33.0.1";
+    public static final String CURRENT_BUILD_TOOLS_VERSION = "34.0.0";
     public static final String SUPPORT_LIB_GROUP_ID = "com.android.support";
     public static final String SUPPORT_LIB_ARTIFACT = "com.android.support:support-v4";
     public static final String DESIGN_LIB_ARTIFACT = "com.android.support:design";
@@ -2867,6 +2921,7 @@ public final class SdkConstants {
             "androidx.constraintlayout:constraintlayout";
     public static final String ANDROIDX_COORDINATOR_LAYOUT_LIB_ARTIFACT =
             "androidx.coordinatorlayout:coordinatorlayout";
+    public static final String ANDROIDX_CORE_SPLASHSCREEN = "androidx.core:core-splashscreen";
 
     public static final String TYPE_DEF_VALUE_ATTRIBUTE = "value";
     public static final String TYPE_DEF_FLAG_ATTRIBUTE = "flag";
@@ -2940,4 +2995,7 @@ public final class SdkConstants {
             META_INF + "/" + COM_ANDROID_TOOLS_FOLDER;
 
     public static final String FD_PREFAB_PACKAGE = "prefab";
+
+    /** Name used to identify a folder containing the exploded contents of an .aar file. */
+    public static final String EXPLODED_AAR = "exploded-aar";
 }

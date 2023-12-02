@@ -16,28 +16,107 @@
 
 package com.android.build.gradle.internal.dsl
 
-enum class ModulePropertyKeys(private val keyValue: String, private val defaultValue: Any) {
+import com.android.build.gradle.options.BooleanOption
+import com.android.build.gradle.options.StringOption
+import com.android.build.gradle.options.parseBoolean
+import org.gradle.api.artifacts.Dependency
 
-    /**
-     * If false - the test APK instruments the target project APK, and the classes are provided.
-     * If true - the test APK targets itself (e.g. for macro benchmarks)
-     */
-    SELF_INSTRUMENTING("android.experimental.self-instrumenting", false),
+sealed interface ModulePropertyKey<OutputT> {
 
-    /**
-     * If false -  R8 will not be provided with the merged art-profile
-     * If true - R8 will rewrite the art-profile
-     */
-    ART_PROFILE_R8_REWRITING("android.experimental.art-profile-r8-rewriting", false);
+    enum class Dependencies(override val key: String) : ModulePropertyKey<List<Dependency>?> {
+        /**
+         * A [Dependency] providing apigenerator artifact.
+         */
+        ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR(
+                StringOption.ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR.propertyName),
 
-    fun getValue(properties: Map<String, Any>): Any {
-        return properties[keyValue] ?: return defaultValue
+        /**
+         * [ArrayList<Dependency>] of required runtime dependencies of the artifact of the apigenerator.
+         */
+        ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR_GENERATED_RUNTIME_DEPENDENCIES(
+                StringOption.ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR_GENERATED_RUNTIME_DEPENDENCIES.propertyName),
+
+        /**
+         * A [Dependency] providing apipackager artifact.
+         */
+        ANDROID_PRIVACY_SANDBOX_SDK_API_PACKAGER(
+                StringOption.ANDROID_PRIVACY_SANDBOX_SDK_API_PACKAGER.propertyName)
+        ;
+
+        override fun getValue(properties: Map<String, Any>): List<Dependency>? {
+            return when(val value = properties[key]) {
+                null -> null
+                is Dependency -> listOf(value)
+                is List<*> -> value as List<Dependency>
+                else -> throw IllegalArgumentException("Unexpected type ${value::class.qualifiedName} for property $key")
+            }
+        }
     }
 
-    fun getValueAsBoolean(properties: Map<String, Any>): Boolean {
-        val value = properties[keyValue]
-        if (value is Boolean) return value
-        return if (value is String) value.toBoolean()
-        else defaultValue as Boolean
+    enum class OptionalBoolean(override val key: String) : ModulePropertyKey<Boolean?> {
+        VERIFY_AAR_CLASSES(BooleanOption.VERIFY_AAR_CLASSES.propertyName)
+        ;
+
+        override fun getValue(properties: Map<String, Any>): Boolean? {
+            return properties[key]?.let { parseBoolean(key, it) }
+        }
     }
+
+    enum class OptionalString(override val key: String) : ModulePropertyKey<String?> {
+        ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_NAME(
+                "android.privacy_sandbox.local_deployment_signing_name"
+        ),
+        ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_STORE_TYPE(
+                "android.privacy_sandbox.local_deployment_signing_store_type"
+        ),
+        ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_STORE_FILE(
+                "android.privacy_sandbox.local_deployment_signing_store_file"
+        ),
+        ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_STORE_PASSWORD(
+                "android.privacy_sandbox.local_deployment_signing_store_password"
+        ),
+        ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_KEY_ALIAS(
+                "android.privacy_sandbox.local_deployment_signing_key_alias"
+        ),
+        ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_KEY_PASSOWRD(
+                "android.privacy_sandbox.local_deployment_signing_key_password"
+        ),
+        ;
+
+        override fun getValue(properties: Map<String, Any>): String? {
+            return properties[key] as String?
+        }
+    }
+
+
+
+    enum class BooleanWithDefault(override val key: String, private val default: Boolean) : ModulePropertyKey<Boolean> {
+        /**
+         * If false - the test APK instruments the target project APK, and the classes are provided.
+         * If true - the test APK targets itself (e.g. for macro benchmarks)
+         */
+        SELF_INSTRUMENTING("android.experimental.self-instrumenting", false),
+
+        /**
+         * If false -  R8 will not be provided with the merged art-profile
+         * If true - R8 will rewrite the art-profile
+         */
+        ART_PROFILE_R8_REWRITING("android.experimental.art-profile-r8-rewriting", true),
+
+        /**
+         * If false - R8 will not attempt to optimize startup dex
+         * If true - R8 will optimize first dex for optimal startup performance.
+         */
+        R8_DEX_STARTUP_OPTIMIZATION("android.experimental.r8.dex-startup-optimization", false)
+        ;
+
+        override fun getValue(properties: Map<String, Any>): Boolean {
+            return properties[key]?.let { parseBoolean(key, it) } ?: default
+        }
+    }
+
+    fun getValue(properties: Map<String, Any>): OutputT
+
+    val key: String
 }
+

@@ -18,6 +18,7 @@ package com.android.build.gradle.internal.testing;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.builder.model.InjectedProperties;
 import com.android.builder.testing.api.DeviceConfig;
 import com.android.builder.testing.api.DeviceConnector;
 import com.android.builder.testing.api.DeviceException;
@@ -382,6 +383,11 @@ public class ConnectedDevice extends DeviceConnector {
         } catch (Exception e) {
             throw new DeviceException(e);
         }
+    }
+
+    @Override
+    public boolean getSupportsPrivacySandbox() {
+        return iDevice.services().containsKey("sdk_sandbox");
     }
 
     /**

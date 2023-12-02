@@ -54,6 +54,7 @@ import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.logging.Logger
+import org.gradle.api.logging.Logging
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.provider.ListProperty
@@ -212,8 +213,7 @@ abstract class ManagedDeviceTestTask: NonIncrementalTask(), AndroidTestTask {
     abstract class ManagedDeviceTestRunnable :
         ProfileAwareWorkAction<ManagedDeviceTestRunnableParameters>() {
 
-        @get:Inject
-        abstract val logger: Logger
+        val logger: Logger = Logging.getLogger("ManagedDeviceTestRunnable")
 
         override fun run() {
             val success = if (!parameters.testsFound.get()) {

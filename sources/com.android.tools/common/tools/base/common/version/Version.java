@@ -29,6 +29,7 @@ public final class Version {
     public static final String ANDROID_TOOLS_BASE_VERSION;
     public static final int BUILDER_MODEL_API_VERSION;
     public static final int BUILDER_NATIVE_MODEL_API_VERSION;
+    public static final String LAST_STABLE_ANDROID_GRADLE_PLUGIN_VERSION;
 
     static {
         Properties properties = new Properties();
@@ -44,6 +45,8 @@ public final class Version {
             throw new UncheckedIOException(e);
         }
         ANDROID_GRADLE_PLUGIN_VERSION = properties.getProperty("buildVersion");
+        LAST_STABLE_ANDROID_GRADLE_PLUGIN_VERSION =
+                properties.getProperty("lastStableBuildVersion");
         TOOLS_VERSION = properties.getProperty("cmdlineToolsVersion");
         ANDROID_TOOLS_BASE_VERSION = properties.getProperty("baseVersion");
         BUILDER_MODEL_API_VERSION = Integer.parseInt(properties.getProperty("apiVersion"));

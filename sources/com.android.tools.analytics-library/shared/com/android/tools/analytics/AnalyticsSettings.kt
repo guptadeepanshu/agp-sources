@@ -21,9 +21,7 @@ import com.android.utils.ILogger
 import com.google.common.annotations.VisibleForTesting
 import com.google.common.base.Charsets
 import com.google.common.io.Files
-import com.google.gson.JsonParseException
 import com.google.gson.TypeAdapter
-import com.google.gson.annotations.SerializedName
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
 import java.io.File
@@ -43,7 +41,9 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
+import java.util.Calendar
 import java.util.Date
+import java.util.GregorianCalendar
 import java.util.Locale
 import java.util.UUID
 import java.util.concurrent.ScheduledExecutorService
@@ -55,6 +55,8 @@ import java.util.logging.Logger
  * ~/.android/analytics.settings as a json file.
  */
 object AnalyticsSettings {
+    private const val DAYS_IN_LEAP_YEAR = 366
+    private const val DAYS_IN_NON_LEAP_YEAR = 365
 
     private val LOG = Logger.getLogger(AnalyticsSettings.javaClass.name)
 
@@ -126,6 +128,19 @@ object AnalyticsSettings {
         get() {
             return runIfAnalyticsSettingsUsable(false) {
                 instance?.debugDisablePublishing ?: false
+            }
+        }
+
+    @JvmStatic
+    var popSentimentQuestionFrequency: Int
+        get() {
+            return runIfAnalyticsSettingsUsable(daysInYear()) {
+                instance?.popSentimentQuestionFrequency ?: daysInYear()
+            }
+        }
+        set(value) {
+            runIfAnalyticsSettingsUsable(Unit) {
+                instance?.popSentimentQuestionFrequency = value
             }
         }
 
@@ -450,6 +465,12 @@ object AnalyticsSettings {
     internal fun isValid(settings: AnalyticsSettingsData): Boolean {
         return settings.userId != null && (settings.saltSkew == AnalyticsSettings.SALT_SKEW_NOT_INITIALIZED || settings.saltValue != null)
     }
+
+    fun daysInYear(): Int {
+        val calendar = Calendar.getInstance()
+        calendar.time = dateProvider.now();
+        return if (GregorianCalendar().isLeapYear(calendar[Calendar.YEAR])) DAYS_IN_LEAP_YEAR else DAYS_IN_NON_LEAP_YEAR
+    }
 }
 
 class AnalyticsSettingsData {
@@ -502,6 +523,7 @@ class AnalyticsSettingsData {
     var nextFeatureSurveyDate: Date? = null
     var nextFeatureSurveyDateMap: MutableMap<String, Date>? = null
     var lastOptinPromptVersion: String? = null
+    var popSentimentQuestionFrequency: Int = AnalyticsSettings.daysInYear()
 
     companion object {
 

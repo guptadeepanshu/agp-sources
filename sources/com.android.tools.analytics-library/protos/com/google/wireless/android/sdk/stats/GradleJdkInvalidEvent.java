@@ -178,20 +178,20 @@ private static final long serialVersionUID = 0L;
     INVALID_JDK_MISSING_FILES(8),
     /**
      * <pre>
-     * The jdk.dir isn't defined in the project local.properties
+     * The java.home isn't defined in the project .gradle/config.properties
      * </pre>
      *
-     * <code>UNDEFINED_LOCAL_PROPERTIES_JDK_DIR = 9;</code>
+     * <code>UNDEFINED_GRADLE_LOCAL_JAVA_HOME = 9;</code>
      */
-    UNDEFINED_LOCAL_PROPERTIES_JDK_DIR(9),
+    UNDEFINED_GRADLE_LOCAL_JAVA_HOME(9),
     /**
      * <pre>
-     * The jdk.dir defined in the project local.properties is invalid
+     * The java.home defined in the project .gradle/config.properties is invalid
      * </pre>
      *
-     * <code>INVALID_LOCAL_PROPERTIES_JDK_DIR = 10;</code>
+     * <code>INVALID_GRADLE_LOCAL_JAVA_HOME = 10;</code>
      */
-    INVALID_LOCAL_PROPERTIES_JDK_DIR(10),
+    INVALID_GRADLE_LOCAL_JAVA_HOME(10),
     /**
      * <pre>
      * The org.gradle.java.home isn't defined in the gradle.properties
@@ -266,14 +266,6 @@ private static final long serialVersionUID = 0L;
      * <code>INVALID_GRADLE_JVM_TABLE_ENTRY_JAVA_HOME = 19;</code>
      */
     INVALID_GRADLE_JVM_TABLE_ENTRY_JAVA_HOME(19),
-    /**
-     * <pre>
-     * Unsupported gradleJvm #GRADLE_LOCAL_JAVA_HOME macro to configure Gradle JDK
-     * </pre>
-     *
-     * <code>UNSUPPORTED_GRADLE_LOCAL_JAVA_HOME_MACRO = 20;</code>
-     */
-    UNSUPPORTED_GRADLE_LOCAL_JAVA_HOME_MACRO(20),
     ;
 
     /**
@@ -351,20 +343,20 @@ private static final long serialVersionUID = 0L;
     public static final int INVALID_JDK_MISSING_FILES_VALUE = 8;
     /**
      * <pre>
-     * The jdk.dir isn't defined in the project local.properties
+     * The java.home isn't defined in the project .gradle/config.properties
      * </pre>
      *
-     * <code>UNDEFINED_LOCAL_PROPERTIES_JDK_DIR = 9;</code>
+     * <code>UNDEFINED_GRADLE_LOCAL_JAVA_HOME = 9;</code>
      */
-    public static final int UNDEFINED_LOCAL_PROPERTIES_JDK_DIR_VALUE = 9;
+    public static final int UNDEFINED_GRADLE_LOCAL_JAVA_HOME_VALUE = 9;
     /**
      * <pre>
-     * The jdk.dir defined in the project local.properties is invalid
+     * The java.home defined in the project .gradle/config.properties is invalid
      * </pre>
      *
-     * <code>INVALID_LOCAL_PROPERTIES_JDK_DIR = 10;</code>
+     * <code>INVALID_GRADLE_LOCAL_JAVA_HOME = 10;</code>
      */
-    public static final int INVALID_LOCAL_PROPERTIES_JDK_DIR_VALUE = 10;
+    public static final int INVALID_GRADLE_LOCAL_JAVA_HOME_VALUE = 10;
     /**
      * <pre>
      * The org.gradle.java.home isn't defined in the gradle.properties
@@ -439,14 +431,6 @@ private static final long serialVersionUID = 0L;
      * <code>INVALID_GRADLE_JVM_TABLE_ENTRY_JAVA_HOME = 19;</code>
      */
     public static final int INVALID_GRADLE_JVM_TABLE_ENTRY_JAVA_HOME_VALUE = 19;
-    /**
-     * <pre>
-     * Unsupported gradleJvm #GRADLE_LOCAL_JAVA_HOME macro to configure Gradle JDK
-     * </pre>
-     *
-     * <code>UNSUPPORTED_GRADLE_LOCAL_JAVA_HOME_MACRO = 20;</code>
-     */
-    public static final int UNSUPPORTED_GRADLE_LOCAL_JAVA_HOME_MACRO_VALUE = 20;
 
 
     public final int getNumber() {
@@ -478,8 +462,8 @@ private static final long serialVersionUID = 0L;
         case 6: return INVALID_JDK_HOME_PATH_NOT_DEFINED;
         case 7: return INVALID_JDK_NO_JAVAC;
         case 8: return INVALID_JDK_MISSING_FILES;
-        case 9: return UNDEFINED_LOCAL_PROPERTIES_JDK_DIR;
-        case 10: return INVALID_LOCAL_PROPERTIES_JDK_DIR;
+        case 9: return UNDEFINED_GRADLE_LOCAL_JAVA_HOME;
+        case 10: return INVALID_GRADLE_LOCAL_JAVA_HOME;
         case 11: return UNDEFINED_GRADLE_PROPERTIES_JAVA_HOME;
         case 12: return INVALID_GRADLE_PROPERTIES_JAVA_HOME;
         case 13: return UNDEFINED_ENVIRONMENT_VARIABLE_JAVA_HOME;
@@ -489,7 +473,6 @@ private static final long serialVersionUID = 0L;
         case 17: return UNDEFINED_GRADLE_JVM_TABLE_ENTRY;
         case 18: return UNDEFINED_GRADLE_JVM_TABLE_ENTRY_JAVA_HOME;
         case 19: return INVALID_GRADLE_JVM_TABLE_ENTRY_JAVA_HOME;
-        case 20: return UNSUPPORTED_GRADLE_LOCAL_JAVA_HOME_MACRO;
         default: return null;
       }
     }

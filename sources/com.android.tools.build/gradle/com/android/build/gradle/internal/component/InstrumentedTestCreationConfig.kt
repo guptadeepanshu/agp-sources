@@ -29,10 +29,12 @@ interface InstrumentedTestCreationConfig: ApkCreationConfig, TestCreationConfig 
     override val instrumentationRunner: Provider<String>
 
     /**
-     * Returns the instrumentationRunner arguments to use to test this variant, or if the variant is
+     * Returns the instrumentation runner arguments to use to test this variant, or if the variant is
      * a test, the ones to use to test the tested variant
+     *
+     * @return the instrumentation runner arguments mapping
      */
-    val instrumentationRunnerArguments: Map<String, String>
+    val instrumentationRunnerArguments: Provider<Map<String, String>>
 
     /**
      * Returns handleProfiling value to use to test this variant, or if the variant is a test, the

@@ -16,15 +16,15 @@
 
 package com.android.build.gradle.options
 
-import com.android.build.gradle.internal.errors.DeprecationReporter
+import com.android.build.gradle.internal.errors.DeprecationReporter.DeprecationTarget.BUILD_CONFIG_GLOBAL_PROPERTY
+import com.android.build.gradle.internal.errors.DeprecationReporter.DeprecationTarget.VERSION_8_3
+import com.android.build.gradle.internal.errors.DeprecationReporter.DeprecationTarget.VERSION_9_0
 import com.android.build.gradle.options.Version.VERSION_3_5
 import com.android.build.gradle.options.Version.VERSION_3_6
 import com.android.build.gradle.options.Version.VERSION_4_0
 import com.android.build.gradle.options.Version.VERSION_4_1
 import com.android.build.gradle.options.Version.VERSION_4_2
 import com.android.build.gradle.options.Version.VERSION_7_0
-import com.android.build.gradle.internal.errors.DeprecationReporter.DeprecationTarget.VERSION_8_2
-import com.android.build.gradle.internal.errors.DeprecationReporter.DeprecationTarget.VERSION_9_0
 import com.android.build.gradle.options.Version.VERSION_7_2
 import com.android.build.gradle.options.Version.VERSION_7_3
 import com.android.build.gradle.options.Version.VERSION_8_1
@@ -70,7 +70,6 @@ enum class BooleanOption(
     ENABLE_STABLE_IDS(PROPERTY_BUILD_WITH_STABLE_IDS, false, ApiStage.Stable),
 
     // Features' default values
-    BUILD_FEATURE_BUILDCONFIG("android.defaults.buildfeatures.buildconfig", false, ApiStage.Stable),
     BUILD_FEATURE_DATABINDING("android.defaults.buildfeatures.databinding", false, ApiStage.Stable),
     BUILD_FEATURE_RESVALUES("android.defaults.buildfeatures.resvalues", true, ApiStage.Stable),
     BUILD_FEATURE_SHADERS("android.defaults.buildfeatures.shaders", true, ApiStage.Stable),
@@ -91,6 +90,16 @@ enum class BooleanOption(
 
     USE_NON_FINAL_RES_IDS("android.nonFinalResIds", true, ApiStage.Stable),
     NON_TRANSITIVE_R_CLASS("android.nonTransitiveRClass", true, ApiStage.Stable),
+
+    /**
+     * Setting this field to false indicates that in the current
+     * project, all the APKs installed during test will be uninstalled
+     * after test finishes. Setting it to true means that the AGP
+     * will leave the test APKs untouched after test.
+     *
+     * Default is false
+     */
+    ANDROID_TEST_LEAVE_APKS_INSTALLED_AFTER_RUN("android.injected.androidTest.leaveApksInstalledAfterRun", false, ApiStage.Stable),
 
     /* ------------------
      * SUPPORTED FEATURES
@@ -120,7 +129,6 @@ enum class BooleanOption(
     ENABLE_DEFAULT_DEBUG_SIGNING_CONFIG("android.experimental.useDefaultDebugSigningConfigForProfileableBuildtypes", false, ApiStage.Experimental),
     ENABLE_PROFILE_JSON("android.enableProfileJson", false, FeatureStage.Experimental),
     DISALLOW_DEPENDENCY_RESOLUTION_AT_CONFIGURATION("android.dependencyResolutionAtConfigurationTime.disallow", false, FeatureStage.Experimental),
-    ENABLE_TEST_SHARDING("android.androidTest.shardBetweenDevices", false, FeatureStage.Experimental),
     VERSION_CHECK_OVERRIDE_PROPERTY("android.overrideVersionCheck", false, FeatureStage.Experimental),
     OVERRIDE_PATH_CHECK_PROPERTY("android.overridePathCheck", false, FeatureStage.Experimental),
     DISABLE_RESOURCE_VALIDATION("android.disableResourceValidation", false, FeatureStage.Experimental),
@@ -135,6 +143,7 @@ enum class BooleanOption(
     DISABLE_MINSDKLIBRARY_CHECK("android.unsafe.disable.minSdkLibraryCheck", false, FeatureStage.Experimental),
     ENABLE_INSTRUMENTATION_TEST_DESUGARING("android.experimental.library.desugarAndroidTest", false, FeatureStage.Experimental),
     ENABLE_EMULATOR_CONTROL("android.experimental.androidTest.enableEmulatorControl", false, FeatureStage.Experimental),
+    ENABLE_SCREENSHOT_TEST("android.experimental.enableScreenshotTest", false, FeatureStage.Experimental),
     /**
      * When enabled, incompatible APKs installed on a testing device will be uninstalled automatically
      * during an instrumentation test run (e.g. When INSTALL_FAILED_UPDATE_INCOMPATIBLE error happens
@@ -226,16 +235,62 @@ enum class BooleanOption(
         FeatureStage.Experimental
     ),
 
+    FUSED_LIBRARY_SUPPORT("android.experimental.fusedLibrarySupport", false, FeatureStage.Experimental),
+    SUPPORT_PAST_STUDIO_VERSIONS("android.experimental.support.past.studio.versions", false, FeatureStage.Experimental),
+
+    /**
+     * Whether to do lint analysis per component (instead of analysing the main variant and the test
+     * components in the same lint invocation).
+     */
+    LINT_ANALYSIS_PER_COMPONENT(
+        "android.experimental.lint.analysisPerComponent",
+        false,
+        FeatureStage.Experimental
+    ),
+
+    /**
+     * Enables task to add version control info to APKs/Bundle
+     */
+    ENABLE_VCS_INFO("android.enableVcsInfo", false, FeatureStage.Experimental),
+
+    /**
+     * Whether to omit line numbers when writing lint baselines
+     */
+    LINT_BASELINE_OMIT_LINE_NUMBERS(
+        "android.lint.baselineOmitLineNumbers",
+        false,
+        FeatureStage.Experimental
+    ),
+
+    /**
+     * Whether to use K2 UAST when running lint
+     */
+    LINT_USE_K2_UAST(
+        "android.lint.useK2Uast",
+        false,
+        FeatureStage.Experimental
+    ),
+
     /* ------------------------
      * SOFTLY-ENFORCED FEATURES
      */
-    ENABLE_RESOURCE_OPTIMIZATIONS("android.enableResourceOptimizations", true, FeatureStage.SoftlyEnforced(VERSION_9_0)),
+    ENABLE_RESOURCE_OPTIMIZATIONS(
+        "android.enableResourceOptimizations",
+        true,
+        FeatureStage.SoftlyEnforced(VERSION_9_0)
+    ),
 
-    ANDROID_TEST_USES_UNIFIED_TEST_PLATFORM("android.experimental.androidTest.useUnifiedTestPlatform", true, FeatureStage.SoftlyEnforced(VERSION_9_0)),
+    ANDROID_TEST_USES_UNIFIED_TEST_PLATFORM(
+        "android.experimental.androidTest.useUnifiedTestPlatform",
+        true,
+        FeatureStage.SoftlyEnforced(VERSION_9_0)
+    ),
 
-    ENABLE_DEXING_ARTIFACT_TRANSFORM("android.enableDexingArtifactTransform", true, FeatureStage.SoftlyEnforced(VERSION_8_2)),
-    ENABLE_DEXING_DESUGARING_ARTIFACT_TRANSFORM("android.enableDexingArtifactTransform.desugaring", true, FeatureStage.SoftlyEnforced(VERSION_8_2)),
-    ENABLE_DEXING_ARTIFACT_TRANSFORM_FOR_EXTERNAL_LIBS("android.enableDexingArtifactTransformForExternalLibs", true, FeatureStage.SoftlyEnforced(VERSION_8_2)),
+    ENABLE_DEXING_ARTIFACT_TRANSFORM(
+        "android.enableDexingArtifactTransform",
+        true,
+        FeatureStage.SoftlyEnforced(VERSION_8_3)
+    ),
 
     /* -------------------
      * DEPRECATED FEATURES
@@ -252,6 +307,12 @@ enum class BooleanOption(
         false,
         ApiStage.Deprecated(VERSION_9_0)
     ),
+
+    BUILD_FEATURE_BUILDCONFIG(
+        "android.defaults.buildfeatures.buildconfig",
+        false,
+        ApiStage.Deprecated(BUILD_CONFIG_GLOBAL_PROPERTY))
+    ,
 
     /* -----------------
      * ENFORCED FEATURES
@@ -565,9 +626,24 @@ enum class BooleanOption(
     ),
 
     ENABLE_GLOBAL_SYNTHETICS(
-            "android.enableGlobalSyntheticsGeneration",
-            true,
-            FeatureStage.Enforced(Version.VERSION_8_1)
+        "android.enableGlobalSyntheticsGeneration",
+        true,
+        FeatureStage.Enforced(Version.VERSION_8_1)
+    ),
+
+    ENABLE_DEXING_DESUGARING_ARTIFACT_TRANSFORM(
+        "android.enableDexingArtifactTransform.desugaring",
+        true,
+        FeatureStage.Enforced(
+            Version.VERSION_8_2,
+            "If you want to disable dexing in artifact transforms, use ${ENABLE_DEXING_ARTIFACT_TRANSFORM.propertyName} instead."
+        )
+    ),
+
+    ENABLE_DEXING_ARTIFACT_TRANSFORM_FOR_EXTERNAL_LIBS(
+        "android.enableDexingArtifactTransformForExternalLibs",
+        true,
+        FeatureStage.Enforced(Version.VERSION_8_2)
     ),
 
     /* ----------------
@@ -668,13 +744,16 @@ enum class BooleanOption(
             FeatureStage.Removed(VERSION_7_0, "Desugar tool has been removed from AGP.")
     ),
 
+    @Suppress("unused")
+    ENABLE_TEST_SHARDING("android.androidTest.shardBetweenDevices", false, FeatureStage.Removed(Version.VERSION_8_2, "Cross device sharding is no longer supported.")),
+
     PRIVACY_SANDBOX_SDK_SUPPORT(
         "android.experimental.privacysandboxsdk.enable",
         false,
         FeatureStage.Removed(
             Version.VERSION_8_1,
-            "Privacy Sandbox SDKs are not supported in Android Gradle plugin 8.1.x.\n\n" +
-                    "To build or consume privacy sandbox SDKs, please use Android Gradle plugin 8.2.0-alpha01 or later.")),
+            "Privacy Sandbox SDKs are not supported in Android Gradle plugin 8.2.x.\n\n" +
+                    "To build or consume privacy sandbox SDKs, please use Android Gradle plugin 8.3.0-alpha01 or later.")),
 
     ; // end of enums
 

@@ -16,7 +16,6 @@
 
 package com.android.build.gradle.internal.testing.utp
 
-import com.android.annotations.NonNull
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.testing.BaseTestRunner
 import com.android.build.gradle.internal.testing.StaticTestData
@@ -48,6 +47,7 @@ class UtpTestRunner @JvmOverloads constructor(
         private val utpLoggingLevel: Level,
         private val installApkTimeout: Int?,
         private val targetIsSplitApk: Boolean,
+        private val uninstallApksAfterTest: Boolean,
         private val configFactory: UtpConfigFactory = UtpConfigFactory(),
         private val runUtpTestSuiteAndWaitFunc: (
             List<UtpRunnerConfig>, String, String, File, ILogger
@@ -108,7 +108,8 @@ class UtpTestRunner @JvmOverloads constructor(
                     resultListenerServerMetadata.clientPrivateKey,
                     resultListenerServerMetadata.serverCert,
                     installApkTimeout,
-                    privacySandboxSdkInstallBundle.extractedApkMap[deviceConnector]?: emptyList()
+                    privacySandboxSdkInstallBundle.extractedApkMap[deviceConnector]?: emptyList(),
+                    uninstallApksAfterTest,
                 )
             }
             UtpRunnerConfig(

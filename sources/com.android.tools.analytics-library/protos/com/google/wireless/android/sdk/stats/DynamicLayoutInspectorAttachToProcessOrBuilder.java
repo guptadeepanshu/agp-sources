@@ -166,4 +166,23 @@ public interface DynamicLayoutInspectorAttachToProcessOrBuilder extends
    * @return The autoConnectEnabled.
    */
   boolean getAutoConnectEnabled();
+
+  /**
+   * <pre>
+   * Was Layout Inspector embedded in the Running Devices Tool Window
+   * </pre>
+   *
+   * <code>optional bool is_embedded_layout_inspector = 9;</code>
+   * @return Whether the isEmbeddedLayoutInspector field is set.
+   */
+  boolean hasIsEmbeddedLayoutInspector();
+  /**
+   * <pre>
+   * Was Layout Inspector embedded in the Running Devices Tool Window
+   * </pre>
+   *
+   * <code>optional bool is_embedded_layout_inspector = 9;</code>
+   * @return The isEmbeddedLayoutInspector.
+   */
+  boolean getIsEmbeddedLayoutInspector();
 }

@@ -108,7 +108,8 @@ abstract class AssetPackBundlePlugin : Plugin<Project> {
 
         val dslServices = DslServicesImpl(
             projectServices,
-            sdkComponents = projectServices.providerFactory.provider { null }
+            sdkComponents = projectServices.providerFactory.provider { null },
+            null
         )
         val extension =
             dslServices.newDecoratedInstance(AssetPackBundleExtension::class.java, dslServices)

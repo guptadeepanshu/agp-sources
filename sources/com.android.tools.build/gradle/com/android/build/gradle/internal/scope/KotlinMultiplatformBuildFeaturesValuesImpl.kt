@@ -21,7 +21,9 @@ package com.android.build.gradle.internal.scope
  * whether a component supports a certain feature. For kmp, we support only compiling sources
  * so all feature values are overridden to false.
  */
-class KotlinMultiplatformBuildFeaturesValuesImpl: BuildFeatureValues {
+class KotlinMultiplatformBuildFeaturesValuesImpl(
+    override val androidResources: Boolean = false
+): BuildFeatureValues {
 
     override val aidl: Boolean = false
     override val buildConfig: Boolean = false
@@ -35,5 +37,4 @@ class KotlinMultiplatformBuildFeaturesValuesImpl: BuildFeatureValues {
     override val resValues: Boolean = false
     override val viewBinding: Boolean = false
     override val buildType: Boolean = false
-    override val androidResources: Boolean = false
 }

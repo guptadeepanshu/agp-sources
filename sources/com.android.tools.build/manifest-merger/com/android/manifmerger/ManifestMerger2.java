@@ -459,9 +459,9 @@ public class ManifestMerger2 {
             }
         }
 
-        if (!mOptionalFeatures.contains(Invoker.Feature.REMOVE_TOOLS_DECLARATIONS)) {
-            PostValidator.enforceToolsNamespaceDeclaration(finalMergedDocument);
-        }
+        // This will be removed again later when using Invoker.Feature.REMOVE_TOOLS_DECLARATIONS
+        // As long as it is not used by tools:requiredByPrivacySandboxSdk.
+        PostValidator.enforceToolsNamespaceDeclaration(finalMergedDocument);
 
         mProcessCancellationChecker.check();
 
@@ -1401,7 +1401,7 @@ public class ManifestMerger2 {
          * manifest is expected to be processed by aapt2 and shipped into an .asb file to the Play
          * Store.
          */
-        PRIVACY_SANDOX_LIBRARY(true, true);
+        PRIVACY_SANDBOX_LIBRARY(true, true);
 
         private final boolean isKeepToolsAttributeRequired;
         private final boolean isFullPlaceholderSubstitutionRequired;

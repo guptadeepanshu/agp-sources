@@ -27,11 +27,13 @@ import com.android.build.api.dsl.Lint
 import com.android.build.api.dsl.Prefab
 import com.android.build.api.dsl.Splits
 import com.android.build.api.dsl.TestCoverage
-import com.android.build.api.dsl.TestOptions
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.attribution.BuildAnalyzerIssueReporter
 import com.android.build.gradle.internal.core.SettingsOptions
+import com.android.build.gradle.internal.core.dsl.features.AndroidTestOptionsDslInfo
+import com.android.build.gradle.internal.core.dsl.features.UnitTestOptionsDslInfo
 import com.android.build.gradle.internal.dsl.LanguageSplitOptions
+import com.android.build.gradle.internal.publishing.AarOrJarTypeToConsume
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.BaseServices
 import com.android.build.gradle.internal.testing.ManagedDeviceRegistry
@@ -60,7 +62,7 @@ interface GlobalTaskCreationConfig: BootClasspathConfig {
 
     val compileSdkHashString: String
     val buildToolsRevision: Revision
-    val ndkVersion: String?
+    val ndkVersion: String
     val ndkPath: String?
 
     val productFlavorCount: Int
@@ -87,7 +89,8 @@ interface GlobalTaskCreationConfig: BootClasspathConfig {
     val resourcePrefix: String?
     val splits: Splits
     val testCoverage: TestCoverage
-    val testOptions: TestOptions
+    val androidTestOptions: AndroidTestOptionsDslInfo
+    val unitTestOptions: UnitTestOptionsDslInfo
     val testServers: List<TestServer>
 
     // processed access to some DSL values
@@ -103,6 +106,8 @@ interface GlobalTaskCreationConfig: BootClasspathConfig {
 
     val manifestArtifactType: InternalArtifactType<Directory>
 
+    val publishConsumerProguardRules: Boolean
+
     // Internal Objects
 
     val globalArtifacts: ArtifactsImpl
@@ -111,6 +116,8 @@ interface GlobalTaskCreationConfig: BootClasspathConfig {
     val createdBy: String
 
     val asmApiVersion: Int
+
+    val aarOrJarTypeToConsume: AarOrJarTypeToConsume
 
     /**
      * Queries the given configuration for platform attributes from the jar(s) in it.
@@ -147,4 +154,6 @@ interface GlobalTaskCreationConfig: BootClasspathConfig {
      * This has no relation with targetSdkVersion from build.gradle/manifest.
      */
     val targetDeployApiFromIDE: Int?
+
+    val taskNames: GlobalTaskNames
 }

@@ -17,19 +17,24 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants.AAR_FORMAT_VERSION_PROPERTY
 import com.android.SdkConstants.AAR_METADATA_VERSION_PROPERTY
+import com.android.SdkConstants.CORE_LIBRARY_DESUGARING_ENABLED_PROPERTY
 import com.android.SdkConstants.FORCE_COMPILE_SDK_PREVIEW_PROPERTY
 import com.android.SdkConstants.MIN_COMPILE_SDK_EXTENSION_PROPERTY
 import com.android.SdkConstants.MIN_COMPILE_SDK_PROPERTY
 import com.android.SdkConstants.MIN_ANDROID_GRADLE_PLUGIN_VERSION_PROPERTY
+import com.android.SdkConstants.DESUGAR_JDK_LIB_PROPERTY
 import com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION
 import com.android.build.gradle.internal.component.AarCreationConfig
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.utils.getDesugarLibDependencyGraph
 import com.android.build.gradle.internal.utils.parseTargetHash
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.ide.common.repository.AgpVersion
+import org.gradle.api.artifacts.component.ModuleComponentSelector
+import org.gradle.api.artifacts.result.ResolvedComponentResult
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
@@ -86,6 +91,13 @@ abstract class AarMetadataTask : NonIncrementalTask() {
     @get:Input
     abstract val minAgpVersion: Property<String>
 
+    @get:Input
+    abstract val coreLibraryDesugaringEnabled: Property<Boolean>
+
+    @get:Input
+    @get:Optional
+    abstract val desugarJdkLibDependencyGraph: Property<ResolvedComponentResult>
+
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(AarMetadataWorkAction::class.java) {
             it.initializeFromAndroidVariantTask(this)
@@ -96,6 +108,12 @@ abstract class AarMetadataTask : NonIncrementalTask() {
             it.minAgpVersion.set(minAgpVersion)
             it.forceCompileSdkPreview.set(forceCompileSdkPreview)
             it.minCompileSdkExtension.set(minCompileSdkExtension)
+            it.coreLibraryDesugaringEnabled.set(coreLibraryDesugaringEnabled)
+            desugarJdkLibDependencyGraph.orNull?.dependencies?.firstOrNull()?.requested?.let { id ->
+                if (id is ModuleComponentSelector) {
+                    it.desugarJdkLibId.set("${id.group}:${id.module}:${id.version}")
+                }
+            }
         }
     }
 
@@ -133,6 +151,14 @@ abstract class AarMetadataTask : NonIncrementalTask() {
             task.minCompileSdkExtension.setDisallowChanges(
                 creationConfig.aarMetadata.minCompileSdkExtension
             )
+            task.coreLibraryDesugaringEnabled.setDisallowChanges(
+                creationConfig.global.compileOptions.isCoreLibraryDesugaringEnabled
+            )
+            if (creationConfig.global.compileOptions.isCoreLibraryDesugaringEnabled) {
+                task.desugarJdkLibDependencyGraph.set(
+                    getDesugarLibDependencyGraph(creationConfig.services)
+                )
+            }
         }
     }
 
@@ -165,6 +191,7 @@ abstract class AarMetadataWorkAction: ProfileAwareWorkAction<AarMetadataWorkPara
                         "version than the version of AGP used for this build ($currentAgpVersion)."
             )
         }
+
         writeAarMetadataFile(
             parameters.output.get().asFile,
             parameters.aarFormatVersion.get(),
@@ -172,7 +199,9 @@ abstract class AarMetadataWorkAction: ProfileAwareWorkAction<AarMetadataWorkPara
             parameters.minCompileSdk.get(),
             parameters.minCompileSdkExtension.get(),
             parameters.minAgpVersion.get(),
-            parameters.forceCompileSdkPreview.orNull
+            parameters.forceCompileSdkPreview.orNull,
+            parameters.coreLibraryDesugaringEnabled.get(),
+            parameters.desugarJdkLibId.orNull
         )
     }
 }
@@ -186,6 +215,8 @@ abstract class AarMetadataWorkParameters: ProfileAwareWorkAction.Parameters() {
     abstract val minAgpVersion: Property<String>
     abstract val forceCompileSdkPreview: Property<String>
     abstract val minCompileSdkExtension: Property<Int>
+    abstract val coreLibraryDesugaringEnabled: Property<Boolean>
+    abstract val desugarJdkLibId: Property<String>
 }
 
 /** Writes an AAR metadata file with the given parameters */
@@ -196,7 +227,9 @@ fun writeAarMetadataFile(
     minCompileSdk: Int,
     minCompileSdkExtension: Int,
     minAgpVersion: String,
-    forceCompileSdkPreview: String? = null
+    forceCompileSdkPreview: String? = null,
+    coreLibraryDesugaringEnabled: Boolean = false,
+    desugarJdkLib: String? = null,
 ) {
     // We write the file manually instead of using the java.util.Properties API because (1) that API
     // doesn't guarantee the order of properties in the file and (2) that API writes an unnecessary
@@ -208,5 +241,9 @@ fun writeAarMetadataFile(
         writer.appendLine("$MIN_COMPILE_SDK_EXTENSION_PROPERTY=$minCompileSdkExtension")
         writer.appendLine("$MIN_ANDROID_GRADLE_PLUGIN_VERSION_PROPERTY=$minAgpVersion")
         forceCompileSdkPreview?.let { writer.appendLine("$FORCE_COMPILE_SDK_PREVIEW_PROPERTY=$it") }
+        writer.appendLine("$CORE_LIBRARY_DESUGARING_ENABLED_PROPERTY=$coreLibraryDesugaringEnabled")
+        desugarJdkLib?.let {
+            writer.appendLine("$DESUGAR_JDK_LIB_PROPERTY=$desugarJdkLib")
+        }
     }
 }

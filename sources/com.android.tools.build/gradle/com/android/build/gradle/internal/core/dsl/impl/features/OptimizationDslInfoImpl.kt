@@ -68,6 +68,11 @@ class OptimizationDslInfoImpl(
     override val ignoreAllLibraryKeepRules: Boolean
         get() = mergedOptimization.ignoreAllLibraryKeepRules
 
+    override val ignoreFromInBaselineProfile: Set<String>
+        get() = mergedOptimization.ignoreFromInBaselineProfile
+
+    override val ignoreFromAllExternalDependenciesInBaselineProfile: Boolean
+        get() = mergedOptimization.ignoreFromAllExternalDependenciesInBaselineProfile
 
     override fun getProguardFiles(into: ListProperty<RegularFile>) {
         val result: MutableList<File> = ArrayList(gatherProguardFiles(ProguardFileType.EXPLICIT))

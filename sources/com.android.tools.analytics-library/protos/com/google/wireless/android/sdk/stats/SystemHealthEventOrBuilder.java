@@ -98,4 +98,50 @@ public interface SystemHealthEventOrBuilder extends
    * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4;</code>
    */
   com.google.wireless.android.sdk.stats.SystemHealthEvent.MemoryOrBuilder getMemoryOrBuilder();
+
+  /**
+   * <pre>
+   * Exception details
+   * </pre>
+   *
+   * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+   * @return Whether the exception field is set.
+   */
+  boolean hasException();
+  /**
+   * <pre>
+   * Exception details
+   * </pre>
+   *
+   * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+   * @return The exception.
+   */
+  com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception getException();
+  /**
+   * <pre>
+   * Exception details
+   * </pre>
+   *
+   * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+   */
+  com.google.wireless.android.sdk.stats.SystemHealthEvent.ExceptionOrBuilder getExceptionOrBuilder();
+
+  /**
+   * <pre>
+   * Whether the IDE is in Essentials Mode
+   * </pre>
+   *
+   * <code>optional bool essentials_mode = 6;</code>
+   * @return Whether the essentialsMode field is set.
+   */
+  boolean hasEssentialsMode();
+  /**
+   * <pre>
+   * Whether the IDE is in Essentials Mode
+   * </pre>
+   *
+   * <code>optional bool essentials_mode = 6;</code>
+   * @return The essentialsMode.
+   */
+  boolean getEssentialsMode();
 }

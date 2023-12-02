@@ -21,13 +21,12 @@ import com.android.SdkConstants.NDK_SYMLINK_DIR
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.cxx.configure.NdkAbiFile
 import com.android.build.gradle.internal.cxx.configure.NdkMetaPlatforms
+import com.android.build.gradle.internal.cxx.configure.computeNdkSymLinkFolder
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import com.android.build.gradle.internal.cxx.configure.ndkMetaAbisFile
-import com.android.build.gradle.internal.cxx.configure.trySymlinkNdk
 import com.android.build.gradle.internal.cxx.gradle.generator.CxxConfigurationParameters
 import com.android.build.gradle.internal.cxx.settings.Macro
 import com.android.build.gradle.internal.cxx.settings.Macro.NDK_MODULE_CMAKE_EXECUTABLE
-import com.android.build.gradle.internal.cxx.timing.time
 import com.android.build.gradle.tasks.NativeBuildSystem.CMAKE
 import com.android.build.gradle.tasks.NativeBuildSystem.NINJA
 import com.android.utils.FileUtils.join
@@ -49,16 +48,15 @@ fun createCxxModuleModel(
         return File(path)
     }
     val ndk = sdkComponents.versionedNdkHandler(
-        compileSdkVersion = configurationParameters.compileSdkVersion,
         ndkVersion = configurationParameters.ndkVersion,
         ndkPath = configurationParameters.ndkPath
     ).ndkPlatform.getOrThrow()
-    val ndkFolder = trySymlinkNdk(
+    val ndkSymlinkFolder = computeNdkSymLinkFolder(
             ndk.ndkDirectory,
             cxxFolder,
             localPropertyFile(NDK_SYMLINK_DIR))
-
-    val ndkMetaPlatformsFile = NdkMetaPlatforms.jsonFile(ndkFolder)
+    val finalNdkFolder = ndkSymlinkFolder ?: ndk.ndkDirectory
+    val ndkMetaPlatformsFile = NdkMetaPlatforms.jsonFile(ndk.ndkDirectory)
     val ndkMetaPlatforms = if (ndkMetaPlatformsFile.isFile) {
         FileReader(ndkMetaPlatformsFile).use { reader ->
             NdkMetaPlatforms.fromReader(reader)
@@ -86,8 +84,8 @@ fun createCxxModuleModel(
     val intermediatesBaseFolder = configurationParameters.intermediatesFolder
     val intermediatesFolder = join(configurationParameters.intermediatesFolder, "cxx")
 
-    val project = time("create-project-model") { createCxxProjectModel(sdkComponents, configurationParameters) }
-    val ndkMetaAbiList = time("create-ndk-meta-abi-list") { NdkAbiFile(ndkMetaAbisFile(ndkFolder)).abiInfoList }
+    val project = createCxxProjectModel(sdkComponents, configurationParameters)
+    val ndkMetaAbiList = NdkAbiFile(ndkMetaAbisFile(ndk.ndkDirectory)).abiInfoList
     val cmake = if (configurationParameters.buildSystem == CMAKE) {
         CxxCmakeModuleModel(
             cmakeDirFromPropertiesFile = localPropertyFile(CMAKE_DIR_PROPERTY),
@@ -104,9 +102,11 @@ fun createCxxModuleModel(
         project = project,
         ndkMetaPlatforms = ndkMetaPlatforms,
         ndkMetaAbiList = ndkMetaAbiList,
-        cmakeToolchainFile = join(ndkFolder, "build", "cmake", "android.toolchain.cmake"),
+        cmakeToolchainFile = join(finalNdkFolder, "build", "cmake", "android.toolchain.cmake"),
         cmake = cmake,
-        ndkFolder = ndkFolder,
+        ndkFolder = finalNdkFolder,
+        ndkFolderBeforeSymLinking = ndk.ndkDirectory,
+        ndkFolderAfterSymLinking = ndkSymlinkFolder,
         ndkVersion = ndk.revision,
         ndkSupportedAbiList = ndk.supportedAbis,
         ndkDefaultAbiList = ndk.defaultAbis,

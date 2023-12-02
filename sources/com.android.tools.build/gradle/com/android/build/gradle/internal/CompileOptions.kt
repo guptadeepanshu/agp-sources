@@ -106,7 +106,7 @@ abstract class CompileOptions : CompileOptions {
 
     companion object {
 
-        private val DEFAULT_JAVA_VERSION = JavaVersion.VERSION_1_8
+        val DEFAULT_JAVA_VERSION = JavaVersion.VERSION_1_8
 
         private const val VERSION_PREFIX = "VERSION_"
 

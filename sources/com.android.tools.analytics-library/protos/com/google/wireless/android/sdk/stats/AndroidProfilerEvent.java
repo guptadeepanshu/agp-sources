@@ -383,6 +383,19 @@ private static final long serialVersionUID = 0L;
             bitField0_ |= 0x02000000;
             break;
           }
+          case 218: {
+            com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata.Builder subBuilder = null;
+            if (((bitField0_ & 0x04000000) != 0)) {
+              subBuilder = powerProfilerCaptureMetadata_.toBuilder();
+            }
+            powerProfilerCaptureMetadata_ = input.readMessage(com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(powerProfilerCaptureMetadata_);
+              powerProfilerCaptureMetadata_ = subBuilder.buildPartial();
+            }
+            bitField0_ |= 0x04000000;
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -1145,6 +1158,10 @@ private static final long serialVersionUID = 0L;
      */
     SELECT_ENERGY_EVENT(602),
     /**
+     * <code>POWER_PROFILER_DATA_CAPTURED = 603;</code>
+     */
+    POWER_PROFILER_DATA_CAPTURED(603),
+    /**
      * <code>SESSION_CREATED = 501;</code>
      */
     SESSION_CREATED(501),
@@ -1598,6 +1615,10 @@ private static final long serialVersionUID = 0L;
      */
     public static final int SELECT_ENERGY_EVENT_VALUE = 602;
     /**
+     * <code>POWER_PROFILER_DATA_CAPTURED = 603;</code>
+     */
+    public static final int POWER_PROFILER_DATA_CAPTURED_VALUE = 603;
+    /**
      * <code>SESSION_CREATED = 501;</code>
      */
     public static final int SESSION_CREATED_VALUE = 501;
@@ -1753,6 +1774,7 @@ private static final long serialVersionUID = 0L;
         case 410: return SELECT_CONNECTIONS_THREADS_VIEW;
         case 601: return SELECT_ENERGY_RANGE;
         case 602: return SELECT_ENERGY_EVENT;
+        case 603: return POWER_PROFILER_DATA_CAPTURED;
         case 501: return SESSION_CREATED;
         case 502: return SESSION_STOPPED;
         case 503: return SESSION_UI_EXPANDED;
@@ -4548,6 +4570,44 @@ private static final long serialVersionUID = 0L;
     return resolveComposeTracingCodeLocationMetadata_ == null ? com.google.wireless.android.sdk.stats.ResolveComposeTracingCodeLocationMetadata.getDefaultInstance() : resolveComposeTracingCodeLocationMetadata_;
   }
 
+  public static final int POWER_PROFILER_CAPTURE_METADATA_FIELD_NUMBER = 27;
+  private com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata powerProfilerCaptureMetadata_;
+  /**
+   * <pre>
+   * Set if |type| is |POWER_PROFILER_DATA_CAPTURED|
+   * </pre>
+   *
+   * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27;</code>
+   * @return Whether the powerProfilerCaptureMetadata field is set.
+   */
+  @java.lang.Override
+  public boolean hasPowerProfilerCaptureMetadata() {
+    return ((bitField0_ & 0x04000000) != 0);
+  }
+  /**
+   * <pre>
+   * Set if |type| is |POWER_PROFILER_DATA_CAPTURED|
+   * </pre>
+   *
+   * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27;</code>
+   * @return The powerProfilerCaptureMetadata.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata getPowerProfilerCaptureMetadata() {
+    return powerProfilerCaptureMetadata_ == null ? com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata.getDefaultInstance() : powerProfilerCaptureMetadata_;
+  }
+  /**
+   * <pre>
+   * Set if |type| is |POWER_PROFILER_DATA_CAPTURED|
+   * </pre>
+   *
+   * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadataOrBuilder getPowerProfilerCaptureMetadataOrBuilder() {
+    return powerProfilerCaptureMetadata_ == null ? com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata.getDefaultInstance() : powerProfilerCaptureMetadata_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -4639,6 +4699,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x02000000) != 0)) {
       output.writeMessage(26, getResolveComposeTracingCodeLocationMetadata());
+    }
+    if (((bitField0_ & 0x04000000) != 0)) {
+      output.writeMessage(27, getPowerProfilerCaptureMetadata());
     }
     unknownFields.writeTo(output);
   }
@@ -4752,6 +4815,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x02000000) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(26, getResolveComposeTracingCodeLocationMetadata());
+    }
+    if (((bitField0_ & 0x04000000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(27, getPowerProfilerCaptureMetadata());
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -4895,6 +4962,11 @@ private static final long serialVersionUID = 0L;
       if (!getResolveComposeTracingCodeLocationMetadata()
           .equals(other.getResolveComposeTracingCodeLocationMetadata())) return false;
     }
+    if (hasPowerProfilerCaptureMetadata() != other.hasPowerProfilerCaptureMetadata()) return false;
+    if (hasPowerProfilerCaptureMetadata()) {
+      if (!getPowerProfilerCaptureMetadata()
+          .equals(other.getPowerProfilerCaptureMetadata())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -5009,6 +5081,10 @@ private static final long serialVersionUID = 0L;
     if (hasResolveComposeTracingCodeLocationMetadata()) {
       hash = (37 * hash) + RESOLVE_COMPOSE_TRACING_CODE_LOCATION_METADATA_FIELD_NUMBER;
       hash = (53 * hash) + getResolveComposeTracingCodeLocationMetadata().hashCode();
+    }
+    if (hasPowerProfilerCaptureMetadata()) {
+      hash = (37 * hash) + POWER_PROFILER_CAPTURE_METADATA_FIELD_NUMBER;
+      hash = (53 * hash) + getPowerProfilerCaptureMetadata().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -5164,6 +5240,7 @@ private static final long serialVersionUID = 0L;
         getRunWithProfilingMetadataFieldBuilder();
         getPerfettoSdkHandshakeMetadataFieldBuilder();
         getResolveComposeTracingCodeLocationMetadataFieldBuilder();
+        getPowerProfilerCaptureMetadataFieldBuilder();
       }
     }
     @java.lang.Override
@@ -5309,6 +5386,12 @@ private static final long serialVersionUID = 0L;
         resolveComposeTracingCodeLocationMetadataBuilder_.clear();
       }
       bitField0_ = (bitField0_ & ~0x02000000);
+      if (powerProfilerCaptureMetadataBuilder_ == null) {
+        powerProfilerCaptureMetadata_ = null;
+      } else {
+        powerProfilerCaptureMetadataBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x04000000);
       return this;
     }
 
@@ -5529,6 +5612,14 @@ private static final long serialVersionUID = 0L;
         }
         to_bitField0_ |= 0x02000000;
       }
+      if (((from_bitField0_ & 0x04000000) != 0)) {
+        if (powerProfilerCaptureMetadataBuilder_ == null) {
+          result.powerProfilerCaptureMetadata_ = powerProfilerCaptureMetadata_;
+        } else {
+          result.powerProfilerCaptureMetadata_ = powerProfilerCaptureMetadataBuilder_.build();
+        }
+        to_bitField0_ |= 0x04000000;
+      }
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -5655,6 +5746,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasResolveComposeTracingCodeLocationMetadata()) {
         mergeResolveComposeTracingCodeLocationMetadata(other.getResolveComposeTracingCodeLocationMetadata());
+      }
+      if (other.hasPowerProfilerCaptureMetadata()) {
+        mergePowerProfilerCaptureMetadata(other.getPowerProfilerCaptureMetadata());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -9359,6 +9453,162 @@ private static final long serialVersionUID = 0L;
         resolveComposeTracingCodeLocationMetadata_ = null;
       }
       return resolveComposeTracingCodeLocationMetadataBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata powerProfilerCaptureMetadata_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata, com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata.Builder, com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadataOrBuilder> powerProfilerCaptureMetadataBuilder_;
+    /**
+     * <pre>
+     * Set if |type| is |POWER_PROFILER_DATA_CAPTURED|
+     * </pre>
+     *
+     * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27;</code>
+     * @return Whether the powerProfilerCaptureMetadata field is set.
+     */
+    public boolean hasPowerProfilerCaptureMetadata() {
+      return ((bitField0_ & 0x04000000) != 0);
+    }
+    /**
+     * <pre>
+     * Set if |type| is |POWER_PROFILER_DATA_CAPTURED|
+     * </pre>
+     *
+     * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27;</code>
+     * @return The powerProfilerCaptureMetadata.
+     */
+    public com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata getPowerProfilerCaptureMetadata() {
+      if (powerProfilerCaptureMetadataBuilder_ == null) {
+        return powerProfilerCaptureMetadata_ == null ? com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata.getDefaultInstance() : powerProfilerCaptureMetadata_;
+      } else {
+        return powerProfilerCaptureMetadataBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * Set if |type| is |POWER_PROFILER_DATA_CAPTURED|
+     * </pre>
+     *
+     * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27;</code>
+     */
+    public Builder setPowerProfilerCaptureMetadata(com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata value) {
+      if (powerProfilerCaptureMetadataBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        powerProfilerCaptureMetadata_ = value;
+        onChanged();
+      } else {
+        powerProfilerCaptureMetadataBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x04000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Set if |type| is |POWER_PROFILER_DATA_CAPTURED|
+     * </pre>
+     *
+     * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27;</code>
+     */
+    public Builder setPowerProfilerCaptureMetadata(
+        com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata.Builder builderForValue) {
+      if (powerProfilerCaptureMetadataBuilder_ == null) {
+        powerProfilerCaptureMetadata_ = builderForValue.build();
+        onChanged();
+      } else {
+        powerProfilerCaptureMetadataBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x04000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Set if |type| is |POWER_PROFILER_DATA_CAPTURED|
+     * </pre>
+     *
+     * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27;</code>
+     */
+    public Builder mergePowerProfilerCaptureMetadata(com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata value) {
+      if (powerProfilerCaptureMetadataBuilder_ == null) {
+        if (((bitField0_ & 0x04000000) != 0) &&
+            powerProfilerCaptureMetadata_ != null &&
+            powerProfilerCaptureMetadata_ != com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata.getDefaultInstance()) {
+          powerProfilerCaptureMetadata_ =
+            com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata.newBuilder(powerProfilerCaptureMetadata_).mergeFrom(value).buildPartial();
+        } else {
+          powerProfilerCaptureMetadata_ = value;
+        }
+        onChanged();
+      } else {
+        powerProfilerCaptureMetadataBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x04000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Set if |type| is |POWER_PROFILER_DATA_CAPTURED|
+     * </pre>
+     *
+     * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27;</code>
+     */
+    public Builder clearPowerProfilerCaptureMetadata() {
+      if (powerProfilerCaptureMetadataBuilder_ == null) {
+        powerProfilerCaptureMetadata_ = null;
+        onChanged();
+      } else {
+        powerProfilerCaptureMetadataBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x04000000);
+      return this;
+    }
+    /**
+     * <pre>
+     * Set if |type| is |POWER_PROFILER_DATA_CAPTURED|
+     * </pre>
+     *
+     * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27;</code>
+     */
+    public com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata.Builder getPowerProfilerCaptureMetadataBuilder() {
+      bitField0_ |= 0x04000000;
+      onChanged();
+      return getPowerProfilerCaptureMetadataFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Set if |type| is |POWER_PROFILER_DATA_CAPTURED|
+     * </pre>
+     *
+     * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27;</code>
+     */
+    public com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadataOrBuilder getPowerProfilerCaptureMetadataOrBuilder() {
+      if (powerProfilerCaptureMetadataBuilder_ != null) {
+        return powerProfilerCaptureMetadataBuilder_.getMessageOrBuilder();
+      } else {
+        return powerProfilerCaptureMetadata_ == null ?
+            com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata.getDefaultInstance() : powerProfilerCaptureMetadata_;
+      }
+    }
+    /**
+     * <pre>
+     * Set if |type| is |POWER_PROFILER_DATA_CAPTURED|
+     * </pre>
+     *
+     * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata, com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata.Builder, com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadataOrBuilder> 
+        getPowerProfilerCaptureMetadataFieldBuilder() {
+      if (powerProfilerCaptureMetadataBuilder_ == null) {
+        powerProfilerCaptureMetadataBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata, com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata.Builder, com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadataOrBuilder>(
+                getPowerProfilerCaptureMetadata(),
+                getParentForChildren(),
+                isClean());
+        powerProfilerCaptureMetadata_ = null;
+      }
+      return powerProfilerCaptureMetadataBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

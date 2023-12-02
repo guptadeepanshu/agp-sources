@@ -19,6 +19,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.ide.common.gradle.Version;
 import com.google.common.base.Objects;
 import com.google.common.base.Splitter;
 import com.google.common.base.Verify;
@@ -41,7 +42,13 @@ import org.jetbrains.annotations.NotNull;
  *
  * A version can also be a "previewType" (e.g. 1-alpha1, 1.0.0-rc2) or an unreleased version (or
  * "snapshot") (e.g. 1-SNAPSHOT, 1.0.0-alpha1-SNAPSHOT).
+ *
+ * @deprecated Use one of: {@link AgpVersion} if representing the version of the Android Gradle
+ *     Plugin; {@code org.gradle.util.GradleVersion} if representing the version of the Gradle
+ *     software; or {@link Version} for a generic Gradle version (or Maven version, which does not
+ *     have quite the same semantics but is sufficiently close in practice).
  */
+@Deprecated
 public class GradleVersion implements Comparable<GradleVersion> {
     private static final String PLUS = "+";
 
@@ -109,8 +116,10 @@ public class GradleVersion implements Comparable<GradleVersion> {
      *
      * @param value the version to parse.
      * @return the created {@code Version} object, or {@code null} if the given value does not
-     * conform with any of the supported version formats.
+     *     conform with any of the supported version formats.
+     * @deprecated see the deprecation notice on {@link GradleVersion}.
      */
+    @Deprecated
     @Nullable
     public static GradleVersion tryParse(@NonNull String value) {
         try {
@@ -126,9 +135,10 @@ public class GradleVersion implements Comparable<GradleVersion> {
      * @param value the version to parse.
      * @return the created {@code Version} object.
      * @throws IllegalArgumentException if the given value does not conform with any of the
-     *                                  supported version formats.
+     *     supported version formats.
+     * @deprecated see the deprecation notice on {@link GradleVersion}.
      */
-
+    @Deprecated
     @NonNull
     public static GradleVersion parse(@NonNull String value) {
         String version = value;
@@ -267,12 +277,16 @@ public class GradleVersion implements Comparable<GradleVersion> {
                 cause);
     }
 
+    /** @deprecated see the deprecation notice on {@link GradleVersion}. */
+    @Deprecated
     public GradleVersion(int major, int minor) {
         this((major + "." + minor), new VersionSegment(major),
                 new VersionSegment(minor), null,
                 Collections.emptyList(), 0, null, false, null);
     }
 
+    /** @deprecated see the deprecation notice on {@link GradleVersion}. */
+    @Deprecated
     public GradleVersion(int major, int minor, int micro) {
         this((major + "." + minor + "." + micro), new VersionSegment(major),
                 new VersionSegment(minor), new VersionSegment(micro),
@@ -300,24 +314,34 @@ public class GradleVersion implements Comparable<GradleVersion> {
         mQualifiers = qualifiers;
     }
 
+    /** @deprecated see the deprecation notice on {@link GradleVersion}. */
+    @Deprecated
     public int getMajor() {
         return valueOf(mMajorSegment);
     }
 
+    /** @deprecated see the deprecation notice on {@link GradleVersion}. */
+    @Deprecated
     @NonNull
     public VersionSegment getMajorSegment() {
         return mMajorSegment;
     }
 
+    /** @deprecated see the deprecation notice on {@link GradleVersion}. */
+    @Deprecated
     public int getMinor() {
         return valueOf(mMinorSegment);
     }
 
+    /** @deprecated see the deprecation notice on {@link GradleVersion}. */
+    @Deprecated
     @Nullable
     public VersionSegment getMinorSegment() {
         return mMinorSegment;
     }
 
+    /** @deprecated see the deprecation notice on {@link GradleVersion}. */
+    @Deprecated
     public int getMicro() {
         return valueOf(mMicroSegment);
     }
@@ -326,32 +350,46 @@ public class GradleVersion implements Comparable<GradleVersion> {
         return segment != null ? segment.getValue() : 0;
     }
 
+    /** @deprecated see the deprecation notice on {@link GradleVersion}. */
+    @Deprecated
     @Nullable
     public VersionSegment getMicroSegment() {
         return mMicroSegment;
     }
 
+    /** @deprecated see the deprecation notice on {@link GradleVersion}. */
+    @Deprecated
     public int getPreview() {
         return mPreview;
     }
 
+    /** @deprecated see the deprecation notice on {@link GradleVersion}. */
+    @Deprecated
     public boolean isPreview() {
         return mPreviewType != null || mSnapshot;
     }
 
+    /** @deprecated see the deprecation notice on {@link GradleVersion}. */
+    @Deprecated
     @Nullable
     public String getPreviewType() {
         return mPreviewType;
     }
 
+    /** @deprecated see the deprecation notice on {@link GradleVersion}. */
+    @Deprecated
     public boolean isSnapshot() {
         return mSnapshot;
     }
 
+    /** @deprecated see the deprecation notice on {@link GradleVersion}. */
+    @Deprecated
     public int compareTo(@NonNull String version) {
         return compareTo(parse(version));
     }
 
+    /** @deprecated see the deprecation notice on {@link GradleVersion}. */
+    @Deprecated
     @Override
     public int compareTo(@NonNull GradleVersion version) {
         return compareTo(version, false);
@@ -418,7 +456,10 @@ public class GradleVersion implements Comparable<GradleVersion> {
 
     /**
      * Is this {@linkplain GradleVersion} at least as high as the given major, minor, micro version?
+     *
+     * @deprecated see the deprecation notice on {@link GradleVersion}.
      */
+    @Deprecated
     public boolean isAtLeast(int major, int minor, int micro) {
         return isAtLeast(major, minor, micro, null, 0, false);
     }
@@ -435,11 +476,18 @@ public class GradleVersion implements Comparable<GradleVersion> {
     }
 
     /**
-     * Is this {@linkplain GradleVersion} at least as high as the given
-     * major, minor, micro version?
+     * Is this {@linkplain GradleVersion} at least as high as the given major, minor, micro version?
+     *
+     * @deprecated see the deprecation notice on {@link GradleVersion}.
      */
-    public boolean isAtLeast(int major, int minor, int micro,
-            @Nullable String previewType, int previewVersion, boolean isSnapshot) {
+    @Deprecated
+    public boolean isAtLeast(
+            int major,
+            int minor,
+            int micro,
+            @Nullable String previewType,
+            int previewVersion,
+            boolean isSnapshot) {
         int delta = getMajor() - major;
         if (delta != 0) {
             return delta >= 0;
@@ -497,9 +545,15 @@ public class GradleVersion implements Comparable<GradleVersion> {
         return mRawValue;
     }
 
-    /** Returns the max of the two versions */
+    /**
+     * Returns the max of the two versions.
+     *
+     * @deprecated see the deprecation notice on {@link GradleVersion}.
+     */
+    @Deprecated
     @Nullable
-    public static GradleVersion max(@Nullable GradleVersion version1, @Nullable GradleVersion version2) {
+    public static GradleVersion max(
+            @Nullable GradleVersion version1, @Nullable GradleVersion version2) {
         if (version2 == null) {
             return version1;
         } else if (version1 == null) {
@@ -511,6 +565,8 @@ public class GradleVersion implements Comparable<GradleVersion> {
         }
     }
 
+    /** @deprecated see the deprecation notice on {@link GradleVersion}. */
+    @Deprecated
     public static class VersionSegment {
         @NonNull
         private final String mText;

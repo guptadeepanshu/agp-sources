@@ -105,6 +105,20 @@ public final class FileListingService {
             ".*" + // toolbox ls (<=M) didn't have the filename in the "/sdcard/" case!
             "$"); //$NON-NLS-1$
 
+    /**
+     * Regexp pattern to parse the result from stat. Ex. drwxr-xr-x root root 2021-08-02
+     * 09:20:53.000000000 -0700 4096 /
+     */
+    public static final Pattern STAT_PATTERN =
+            Pattern.compile(
+                    "^([bcdlsp-][-r][-w][-xsS][-r][-w][-xsS][-r][-w][-xstST])\\s+"
+                            + "(\\S+)\\s+(\\S+)\\s+"
+                            + "(\\d{4}-\\d\\d-\\d\\d)\\s+"
+                            + "(\\d\\d:\\d\\d:\\d\\d\\.\\d+)\\s+(-?\\d+)\\s+"
+                            + "(\\d+)\\s+"
+                            + "(.*)"
+                            + "$");
+
     private IDevice mDevice;
     private FileEntry mRoot;
 

@@ -198,21 +198,11 @@ internal class ViolatingPluginDetector(
                 false
             }
         }
-        return violatingPlugins.mapNotNull { component ->
-            buildscriptClasspath.getPathToComponent(component)
-                .getPathString(projectDisplayName)
-                .takeIf {
-                    // Ignore Safe-args plugin 2.3.1 KGP dependency for now (bug 175379963), but
-                    // don't ignore Safe-args plugin 2.3.1 itself (bug 233119646).
-                    !it.contains(SAFE_ARGS_2_3_1) || it.endsWith(SAFE_ARGS_2_3_1)
-                }
+        return violatingPlugins.map {
+            buildscriptClasspath.getPathToComponent(it).getPathString(projectDisplayName)
         }
     }
 
-    companion object {
-        private const val SAFE_ARGS_2_3_1 =
-            "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.1"
-    }
 }
 
 /** Lists all module dependencies resolved for buildscript classpath. */

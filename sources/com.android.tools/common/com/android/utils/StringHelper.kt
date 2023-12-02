@@ -51,7 +51,7 @@ fun StringBuilder.appendCapitalized(word: String) : StringBuilder {
         c = word.codePointAt(0)
         val charCount = Character.charCount(c)
 
-        val upperString = word.substring(0, charCount).toUpperCase(Locale.US)
+        val upperString = word.substring(0, charCount).uppercase(Locale.US)
         append(upperString)
         append(word, charCount, word.length)
     } else {
@@ -62,7 +62,7 @@ fun StringBuilder.appendCapitalized(word: String) : StringBuilder {
         upperChar = if (result != -0x1) { //Character.ERROR (internal!)
             result.toChar()
         } else {
-            word.substring(0, 1).toUpperCase(Locale.US)[0]
+            word.substring(0, 1).uppercase(Locale.US)[0]
         }
 
         append(upperChar)
@@ -92,7 +92,7 @@ fun String.usLocaleCapitalize(): String {
 fun String.usLocaleDecapitalize(): String {
     if (this.isEmpty()) return this
     val sb = StringBuilder(length)
-    sb.append(this.substring(0, 1).toLowerCase(Locale.US))
+    sb.append(this.substring(0, 1).lowercase(Locale.US))
     sb.append(this.substring(1))
     return sb.toString()
 }

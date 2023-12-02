@@ -22,6 +22,7 @@ import com.android.bundle.Devices
 import com.android.tools.build.bundletool.commands.ExtractApksCommand
 import com.android.zipflinger.ZipArchive
 import com.google.common.collect.ImmutableSet
+import org.apache.commons.io.FileUtils
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.nameWithoutExtension
@@ -41,22 +42,31 @@ internal fun getApkFiles(
     device: DeviceConfigProvider,
     moduleName: String? = null
 ): List<Path> {
+    return getApkFiles(setOf(apkBundle), device, moduleName)
+}
+
+internal fun getApkFiles(
+        apkBundles: Collection<Path>,
+        device: DeviceConfigProvider,
+        moduleName: String? = null
+): List<Path> {
     // get the device info to create the APKs
     val tempFolder: Path = Files.createTempDirectory("apkSelect")
 
     val deviceSpec: Devices.DeviceSpec = getDeviceSpec(device)
 
-    val command = ExtractApksCommand
-        .builder()
-        .setApksArchivePath(apkBundle)
-        .setDeviceSpec(deviceSpec)
-        .setOutputDirectory(tempFolder)
-
-    moduleName?.let { command.setModules(ImmutableSet.of(it)) }
-
-    // create the APKs
-    return command.build().execute()
+    val apkPaths = apkBundles.flatMap { apkBundle ->
+        val command = ExtractApksCommand
+                .builder()
+                .setApksArchivePath(apkBundle)
+                .setDeviceSpec(deviceSpec)
+                .setOutputDirectory(tempFolder)
+        moduleName?.let { command.setModules(ImmutableSet.of(it)) }
+        command.build().execute()
+    }
+    return apkPaths
 }
+
 // This is required until there is a new version of bundletool capable of extracting it via the
 // method above.
 internal fun extractApkFilesBypassingBundleTool(apkBundle: Path): List<Path> {

@@ -38,7 +38,9 @@ import com.android.build.gradle.internal.tasks.AppPreBuildTask;
 import com.android.build.gradle.internal.tasks.ApplicationIdWriterTask;
 import com.android.build.gradle.internal.tasks.CheckManifest;
 import com.android.build.gradle.internal.tasks.CheckMultiApkLibrariesTask;
+import com.android.build.gradle.internal.tasks.ClassesClasspathUtils;
 import com.android.build.gradle.internal.tasks.CompressAssetsTask;
+import com.android.build.gradle.internal.tasks.ExpandArtProfileWildcardsTask;
 import com.android.build.gradle.internal.tasks.ExtractNativeDebugMetadataTask;
 import com.android.build.gradle.internal.tasks.ExtractProfilerNativeDependenciesTask;
 import com.android.build.gradle.internal.tasks.ModuleMetadataWriterTask;
@@ -153,6 +155,16 @@ public abstract class AbstractAppTaskManager<
 
         // Add a task to auto-generate classes for ML model files.
         createMlkitTask(creationConfig);
+
+        // Register this before compile tasks because ExpandArtProfileWildcardsTask must run before
+        // R8Task (which is registered in createCompileTask); the order matters here because both
+        // tasks use the variant transform API on the merged art profile in handleProvider
+        if (creationConfig.getOptimizationCreationConfig().getMinifiedEnabled()) {
+            ClassesClasspathUtils classpathUtils = getClassPathUtils(creationConfig);
+            taskFactory.register(
+                    new ExpandArtProfileWildcardsTask.CreationAction(
+                            creationConfig, classpathUtils));
+        }
 
         // Add a compile task
         createCompileTask(creationConfig);

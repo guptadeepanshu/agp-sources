@@ -99,7 +99,7 @@ abstract class AbstractTestDataImpl(
 
     override val instrumentationRunnerArguments: Map<String, String> by lazy {
         ImmutableMap.builder<String, String>()
-            .putAll(creationConfig.instrumentationRunnerArguments)
+            .putAll(creationConfig.instrumentationRunnerArguments.get())
             .putAll(extraInstrumentationTestRunnerArgs)
             .build()
     }

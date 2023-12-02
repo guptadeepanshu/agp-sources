@@ -48,6 +48,7 @@ import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
+import org.gradle.internal.component.local.model.OpaqueComponentArtifactIdentifier
 
 private val aarOrJarType = Action { container: AttributeContainer ->
     container.attribute(ARTIFACT_TYPE, AndroidArtifacts.ArtifactType.AAR_OR_JAR.type)
@@ -188,17 +189,26 @@ abstract class PackagedDependenciesWriterTask : NonIncrementalTask() {
                     AndroidArtifacts.ConsumedConfigType.PROVIDED_CLASSPATH,
                     AndroidArtifacts.ArtifactScope.PROJECT,
                     AndroidArtifacts.ArtifactType.PACKAGED_DEPENDENCIES)
+
+            // When there is a local file dependency, we need to store the absolute path to that
+            // file otherwise we can't do the exclusion correctly.
+            task.outputs.doNotCacheIf("Local file dependencies found") {
+                (it as PackagedDependenciesWriterTask).runtimeAarOrJarDeps.artifacts.any { artifact ->
+                    artifact.id.componentIdentifier is OpaqueComponentArtifactIdentifier
+                }
+            }
         }
     }
 }
 
 fun ResolvedArtifactResult.toIdString(): String {
     return id.componentIdentifier.toIdString(
-        variantProvider = { variant.attributes.getAttribute(VariantAttr.ATTRIBUTE)?.name },
-        capabilitiesProvider = { variant.capabilities.joinToString(";") {
+        variantProvider = { variant.attributes.getAttribute(VariantAttr.ATTRIBUTE)?.name }
+    ) {
+        variant.capabilities.joinToString(";") {
             it.convertToString()
-        } },
-    )
+        }
+    }
 }
 
 /**
@@ -226,6 +236,7 @@ private fun ComponentIdentifier.toIdString(
             }
         }
         is ModuleComponentIdentifier -> "$group:$module"
+        is OpaqueComponentArtifactIdentifier -> file.absolutePath
         else -> toString()
     }
 
@@ -236,7 +247,7 @@ private fun encodeCapabilitiesInId(
     id: String,
     capabilitiesProvider: () -> String
 ): String {
-    return "$id;${capabilitiesProvider.invoke()}"
+    return capabilitiesProvider.invoke().takeIf { it.isNotEmpty() }?.let { "$id;$it" } ?: id
 }
 
 fun removeVariantNameFromId(

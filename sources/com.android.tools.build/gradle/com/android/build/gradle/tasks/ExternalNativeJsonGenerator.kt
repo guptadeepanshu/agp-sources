@@ -22,6 +22,7 @@ import com.android.build.gradle.internal.cxx.configure.shouldConfigure
 import com.android.build.gradle.internal.cxx.configure.shouldConfigureReasonMessages
 import com.android.build.gradle.internal.cxx.configure.recordConfigurationFingerPrint
 import com.android.build.gradle.internal.cxx.configure.softConfigureOkay
+import com.android.build.gradle.internal.cxx.configure.trySymlinkNdk
 import com.android.build.gradle.internal.cxx.gradle.generator.CxxMetadataGenerator
 import com.android.build.gradle.internal.cxx.io.writeTextIfDifferent
 import com.android.build.gradle.internal.cxx.io.synchronizeFile
@@ -31,7 +32,6 @@ import com.android.build.gradle.internal.cxx.logging.PassThroughPrefixingLogging
 import com.android.build.gradle.internal.cxx.logging.ThreadLoggingEnvironment.Companion.requireExplicitLogger
 import com.android.build.gradle.internal.cxx.logging.errorln
 import com.android.build.gradle.internal.cxx.logging.infoln
-import com.android.build.gradle.internal.cxx.logging.lifecycleln
 import com.android.build.gradle.internal.cxx.logging.logStructured
 import com.android.build.gradle.internal.cxx.logging.toJsonString
 import com.android.build.gradle.internal.cxx.model.CxxAbiModel
@@ -49,6 +49,7 @@ import com.android.build.gradle.internal.cxx.model.metadataGenerationCommandFile
 import com.android.build.gradle.internal.cxx.model.metadataGenerationTimingFolder
 import com.android.build.gradle.internal.cxx.model.miniConfigFile
 import com.android.build.gradle.internal.cxx.model.modelOutputFile
+import com.android.build.gradle.internal.cxx.model.name
 import com.android.build.gradle.internal.cxx.model.ninjaBuildFile
 import com.android.build.gradle.internal.cxx.model.ninjaBuildLocationFile
 import com.android.build.gradle.internal.cxx.model.predictableRepublishFolder
@@ -93,6 +94,15 @@ abstract class ExternalNativeJsonGenerator internal constructor(
 ) : CxxMetadataGenerator {
     override fun configure(ops: ExecOperations, forceConfigure: Boolean) {
         requireExplicitLogger()
+        // Check whether NDK folder symlinking is required.
+        if (abi.variant.module.ndkFolderAfterSymLinking != null
+            && !abi.variant.module.ndkFolder.isDirectory) {
+            if (!trySymlinkNdk(
+                abi.variant.module.ndkFolderBeforeSymLinking,
+                abi.variant.module.ndkFolderAfterSymLinking
+            )) return
+        }
+        if (!abi.variant.module.ndkFolder.isDirectory) error("Expected NDK folder to exist")
         // These are lazily initialized values that can only be computed from a Gradle managed
         // thread. Compute now so that we don't in the worker threads that we'll be running as.
         abi.variant.prefabPackageConfigurationList
@@ -104,7 +114,7 @@ abstract class ExternalNativeJsonGenerator internal constructor(
             errorln(
                 METADATA_GENERATION_GRADLE_EXCEPTION,
                 "exception while building Json %s",
-                e.message!!
+                "${e.message} : ${e.stackTraceToString()}"
             )
         } catch (e: ProcessException) {
             errorln(
@@ -112,7 +122,7 @@ abstract class ExternalNativeJsonGenerator internal constructor(
                 "error when building with %s using %s: %s",
                 abi.variant.module.buildSystemTag,
                 abi.variant.module.makeFile,
-                e.message!!
+                "${e.message} : ${e.stackTraceToString()}"
             )
         }
     }
@@ -126,14 +136,14 @@ abstract class ExternalNativeJsonGenerator internal constructor(
     ) {
         PassThroughPrefixingLoggingEnvironment(
             abi.variant.module.makeFile,
-            abi.variant.variantName + "|" + abi.abi.tag
+            abi.variant.variantName + "|" + abi.name
         ).use { recorder ->
             TimingEnvironment(
                     abi.metadataGenerationTimingFolder,
                     "generate_cxx_metadata").use {
                 val variantStats =
                         NativeBuildConfigInfo.newBuilder()
-                variantStats.abi = AnalyticsUtil.getAbi(abi.abi.tag)
+                variantStats.abi = AnalyticsUtil.getAbi(abi.name)
                 variantStats.debuggable = abi.variant.isDebuggableEnabled
                 val startTime = System.currentTimeMillis()
                 variantStats.generationStartMs = startTime
@@ -141,7 +151,7 @@ abstract class ExternalNativeJsonGenerator internal constructor(
                     infoln(
                             "Start JSON generation. Platform version: %s min SDK version: %s",
                             abi.abiPlatformVersion,
-                            abi.abi.tag,
+                            abi.name,
                             abi.abiPlatformVersion
                     )
 

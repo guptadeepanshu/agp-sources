@@ -133,7 +133,7 @@ class Aapt2FromMaven(val aapt2Directory: FileCollection, val version: String) {
                         }
 
             val configuration = project.configurations.detachedConfiguration(
-                project.dependencies.module(
+                project.dependencies.create(
                     mapOf(
                         "group" to "com.android.tools.build",
                         "name" to "aapt2",

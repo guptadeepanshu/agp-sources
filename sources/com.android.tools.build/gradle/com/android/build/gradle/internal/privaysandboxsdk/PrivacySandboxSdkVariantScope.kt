@@ -22,11 +22,13 @@ import com.android.build.api.dsl.SigningConfig
 import com.android.build.gradle.internal.dsl.PrivacySandboxSdkBundleImpl
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryConfigurations
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryDependencies
+import com.android.build.gradle.internal.publishing.AarOrJarTypeToConsume
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.builder.model.ApiVersion
 import org.gradle.api.artifacts.component.ComponentIdentifier
 import org.gradle.api.file.ProjectLayout
 import org.gradle.api.file.RegularFile
+import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Provider
 import org.gradle.api.specs.Spec
 
@@ -44,4 +46,6 @@ interface PrivacySandboxSdkVariantScope {
     val bundle: PrivacySandboxSdkBundleImpl
     val services: TaskCreationServices
     val signingConfig: SigningConfig
+    val experimentalProperties: MapProperty<String, Any>
+    val aarOrJarTypeToConsume: AarOrJarTypeToConsume
 }

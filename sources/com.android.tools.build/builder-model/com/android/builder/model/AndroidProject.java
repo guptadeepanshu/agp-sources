@@ -65,6 +65,11 @@ public interface AndroidProject {
     // with the plugin, we could safely remove deprecated methods in the builder-model interfaces.
     String PROPERTY_ANDROID_SUPPORT_VERSION = "android.injected.studio.version";
 
+    // Studio injects this in order to allow 3P tooling to get the Studio version used to launch
+    // build/sync, see b/280831521.
+    // We don't use [PROPERTY_ANDROID_SUPPORT_VERSION] as it has additional meaning for older AGPs.
+    String PROPERTY_ANDROID_STUDIO_VERSION = "android.studio.version";
+
     // deprecated. Kept here so that newew Studio can still inject it for older plugin
     // but newer plugin don't do anything different based on this property.
     @SuppressWarnings("unused")

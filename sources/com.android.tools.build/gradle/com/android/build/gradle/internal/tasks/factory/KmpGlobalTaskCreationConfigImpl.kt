@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.tasks.factory
 
+import com.android.SdkConstants
 import com.android.Version
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.dsl.Bundle
@@ -26,17 +27,22 @@ import com.android.build.api.dsl.ExternalNativeBuild
 import com.android.build.api.dsl.Installation
 import com.android.build.api.dsl.Lint
 import com.android.build.api.dsl.Prefab
+import com.android.build.api.dsl.SettingsExtension
 import com.android.build.api.dsl.Splits
-import com.android.build.api.dsl.TestOptions
 import com.android.build.gradle.internal.KotlinMultiplatformCompileOptionsImpl
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.attribution.BuildAnalyzerIssueReporter
 import com.android.build.gradle.internal.core.SettingsOptions
+import com.android.build.gradle.internal.core.dsl.impl.features.KmpAndroidTestOptionsDslInfoImpl
+import com.android.build.gradle.internal.core.dsl.impl.features.KmpUnitTestOptionsDslInfoImpl
 import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidExtensionImpl
 import com.android.build.gradle.internal.dsl.LanguageSplitOptions
 import com.android.build.gradle.internal.instrumentation.ASM_API_VERSION_FOR_INSTRUMENTATION
+import com.android.build.gradle.internal.lint.getLocalCustomLintChecks
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
+import com.android.build.gradle.internal.publishing.AarOrJarTypeToConsume
+import com.android.build.gradle.internal.publishing.getAarOrJarTypeToConsume
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.BaseServices
 import com.android.build.gradle.internal.services.FakeDependencyJarBuildService
@@ -59,9 +65,10 @@ import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Provider
 
-class KmpGlobalTaskCreationConfigImpl(
+internal class KmpGlobalTaskCreationConfigImpl(
     project: Project,
     private val extension: KotlinMultiplatformAndroidExtensionImpl,
+    private val settingsExtension: SettingsExtension?,
     private val versionedSdkLoaderService: VersionedSdkLoaderService,
     bootClasspathConfig: BootClasspathConfigImpl,
     compileSdkVersionProvider: () -> String,
@@ -93,6 +100,9 @@ class KmpGlobalTaskCreationConfigImpl(
     override val namespacedAndroidResources: Boolean
         get() = false
 
+    override val aarOrJarTypeToConsume: AarOrJarTypeToConsume
+        get() = getAarOrJarTypeToConsume(services.projectOptions, namespacedAndroidResources)
+
     override val platformAttrs: FileCollection by lazy {
         val attributes =
             Action { container: AttributeContainer ->
@@ -108,8 +118,14 @@ class KmpGlobalTaskCreationConfigImpl(
             .artifactFiles
     }
 
-    override val testOptions: TestOptions
-        get() = extension.testOptions
+    override val androidTestOptions by lazy(LazyThreadSafetyMode.NONE) {
+        KmpAndroidTestOptionsDslInfoImpl(extension)
+    }
+
+    override val unitTestOptions by lazy(LazyThreadSafetyMode.NONE) {
+        KmpUnitTestOptionsDslInfoImpl(extension)
+    }
+
     override val libraryRequests: Collection<LibraryRequest>
         get() = extension.libraryRequests
 
@@ -128,12 +144,15 @@ class KmpGlobalTaskCreationConfigImpl(
         else
             InternalArtifactType.PACKAGED_MANIFESTS
 
+    override val publishConsumerProguardRules: Boolean
+        get() = extension.optimization.consumerKeepRules.publish
+
     override val testOptionExecutionEnum: com.android.builder.model.TestOptions.Execution? by lazy {
-        testOptions.execution.toExecutionEnum()
+        androidTestOptions.execution.toExecutionEnum()
     }
 
     override val installationOptions: Installation
-        get() = extension.installation
+        get() = extension.androidTestOnDeviceOptions!!.installation
 
     override val deviceProviders: List<DeviceProvider>
         get() = emptyList()
@@ -146,14 +165,25 @@ class KmpGlobalTaskCreationConfigImpl(
     override val productFlavorDimensionCount: Int
         get() = 0
 
-    override val managedDeviceRegistry = ManagedDeviceRegistry(testOptions)
+    override val managedDeviceRegistry = ManagedDeviceRegistry(androidTestOptions)
     override val lintChecks = createCustomLintChecksConfig(project)
+    override val lintPublish: Configuration = createCustomLintPublishConfig(project)
     override val fakeDependency = createFakeDependencyConfig(project)
 
     private fun createCustomLintChecksConfig(project: Project): Configuration {
-        val lintChecks = project.configurations.maybeCreate(VariantDependencies.CONFIG_NAME_LINTCHECKS)
+        val lintChecks = project.configurations
+            .maybeCreate(VariantDependencies.CONFIG_NAME_LINTCHECKS)
         lintChecks.isVisible = false
         lintChecks.description = "Configuration to apply external lint check jar"
+        lintChecks.isCanBeConsumed = false
+        return lintChecks
+    }
+
+    private fun createCustomLintPublishConfig(project: Project): Configuration {
+        val lintChecks = project.configurations
+            .maybeCreate(VariantDependencies.CONFIG_NAME_LINTPUBLISH)
+        lintChecks.isVisible = false
+        lintChecks.description = "Configuration to publish external lint check jar"
         lintChecks.isCanBeConsumed = false
         return lintChecks
     }
@@ -173,13 +203,21 @@ class KmpGlobalTaskCreationConfigImpl(
 
     override val testCoverage = extension.testCoverage
 
+    override val lintOptions: Lint = extension.lint
+
+    override val localCustomLintChecks: FileCollection by lazy(LazyThreadSafetyMode.NONE) {
+        getLocalCustomLintChecks(lintChecks)
+    }
+
+    override val taskNames: GlobalTaskNames = KmpAndroidGlobalTaskNamesImpl
+
     // Unsupported properties
     // TODO: Refactor the parent interface so that we don't have to override these values to avoid
     //  accidental calls.
-    override val ndkVersion: String?
-        get() = null
+    override val ndkVersion: String
+        get() = settingsExtension?.ndkVersion ?: SdkConstants.NDK_DEFAULT_VERSION
     override val ndkPath: String?
-        get() = null
+        get() = settingsExtension?.ndkPath
     override val aidlPackagedList: Collection<String>?
         get() = null
     override val compileOptionsIncremental: Boolean?
@@ -203,15 +241,9 @@ class KmpGlobalTaskCreationConfigImpl(
         get() = throw IllegalAccessException("Not supported for kmp")
     override val legacyLanguageSplitOptions: LanguageSplitOptions
         get() = throw IllegalAccessException("Not supported for kmp")
-    override val localCustomLintChecks: FileCollection
-        get() = throw IllegalAccessException("Not supported for kmp")
     override val versionedNdkHandler: SdkComponentsBuildService.VersionedNdkHandler
         get() = throw IllegalAccessException("Not supported for kmp")
-    override val lintPublish: Configuration
-        get() = throw IllegalAccessException("Not supported for kmp")
     override val externalNativeBuild: ExternalNativeBuild
-        get() = throw IllegalAccessException("Not supported for kmp")
-    override val lintOptions: Lint
         get() = throw IllegalAccessException("Not supported for kmp")
     override val bundleOptions: Bundle
         get() = throw IllegalAccessException("Not supported for kmp")

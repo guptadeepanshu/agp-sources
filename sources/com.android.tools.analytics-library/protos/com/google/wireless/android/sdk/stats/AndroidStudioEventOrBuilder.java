@@ -4807,4 +4807,247 @@ public interface AndroidStudioEventOrBuilder extends
    * <code>optional .android_studio.KotlinSupportDeclined kotlin_support_declined = 171;</code>
    */
   com.google.wireless.android.sdk.stats.KotlinSupportDeclinedOrBuilder getKotlinSupportDeclinedOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = DEVICE_SCREENSHOT_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.DeviceScreenshotEvent device_screenshot_event = 172;</code>
+   * @return Whether the deviceScreenshotEvent field is set.
+   */
+  boolean hasDeviceScreenshotEvent();
+  /**
+   * <pre>
+   * set when kind = DEVICE_SCREENSHOT_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.DeviceScreenshotEvent device_screenshot_event = 172;</code>
+   * @return The deviceScreenshotEvent.
+   */
+  com.google.wireless.android.sdk.stats.DeviceScreenshotEvent getDeviceScreenshotEvent();
+  /**
+   * <pre>
+   * set when kind = DEVICE_SCREENSHOT_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.DeviceScreenshotEvent device_screenshot_event = 172;</code>
+   */
+  com.google.wireless.android.sdk.stats.DeviceScreenshotEventOrBuilder getDeviceScreenshotEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = EDITOR_NOTIFICATION
+   * </pre>
+   *
+   * <code>optional .android_studio.EditorNotification editor_notification = 173;</code>
+   * @return Whether the editorNotification field is set.
+   */
+  boolean hasEditorNotification();
+  /**
+   * <pre>
+   * set when kind = EDITOR_NOTIFICATION
+   * </pre>
+   *
+   * <code>optional .android_studio.EditorNotification editor_notification = 173;</code>
+   * @return The editorNotification.
+   */
+  com.google.wireless.android.sdk.stats.EditorNotification getEditorNotification();
+  /**
+   * <pre>
+   * set when kind = EDITOR_NOTIFICATION
+   * </pre>
+   *
+   * <code>optional .android_studio.EditorNotification editor_notification = 173;</code>
+   */
+  com.google.wireless.android.sdk.stats.EditorNotificationOrBuilder getEditorNotificationOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = COMPOSE_PREVIEW_LITE_MODE
+   * </pre>
+   *
+   * <code>optional .android_studio.ComposePreviewLiteModeEvent compose_preview_lite_mode_event = 174;</code>
+   * @return Whether the composePreviewLiteModeEvent field is set.
+   */
+  boolean hasComposePreviewLiteModeEvent();
+  /**
+   * <pre>
+   * set when kind = COMPOSE_PREVIEW_LITE_MODE
+   * </pre>
+   *
+   * <code>optional .android_studio.ComposePreviewLiteModeEvent compose_preview_lite_mode_event = 174;</code>
+   * @return The composePreviewLiteModeEvent.
+   */
+  com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEvent getComposePreviewLiteModeEvent();
+  /**
+   * <pre>
+   * set when kind = COMPOSE_PREVIEW_LITE_MODE
+   * </pre>
+   *
+   * <code>optional .android_studio.ComposePreviewLiteModeEvent compose_preview_lite_mode_event = 174;</code>
+   */
+  com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEventOrBuilder getComposePreviewLiteModeEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = UPGRADE_ANDROID_STUDIO_DIALOG
+   * </pre>
+   *
+   * <code>optional .android_studio.UpgradeAndroidStudioDialogStats upgrade_android_studio_dialog = 175;</code>
+   * @return Whether the upgradeAndroidStudioDialog field is set.
+   */
+  boolean hasUpgradeAndroidStudioDialog();
+  /**
+   * <pre>
+   * set when kind = UPGRADE_ANDROID_STUDIO_DIALOG
+   * </pre>
+   *
+   * <code>optional .android_studio.UpgradeAndroidStudioDialogStats upgrade_android_studio_dialog = 175;</code>
+   * @return The upgradeAndroidStudioDialog.
+   */
+  com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStats getUpgradeAndroidStudioDialog();
+  /**
+   * <pre>
+   * set when kind = UPGRADE_ANDROID_STUDIO_DIALOG
+   * </pre>
+   *
+   * <code>optional .android_studio.UpgradeAndroidStudioDialogStats upgrade_android_studio_dialog = 175;</code>
+   */
+  com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStatsOrBuilder getUpgradeAndroidStudioDialogOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = DEBUGGER_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.DebuggerEvent debugger_event = 176;</code>
+   * @return Whether the debuggerEvent field is set.
+   */
+  boolean hasDebuggerEvent();
+  /**
+   * <pre>
+   * set when kind = DEBUGGER_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.DebuggerEvent debugger_event = 176;</code>
+   * @return The debuggerEvent.
+   */
+  com.google.wireless.android.sdk.stats.DebuggerEvent getDebuggerEvent();
+  /**
+   * <pre>
+   * set when kind = DEBUGGER_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.DebuggerEvent debugger_event = 176;</code>
+   */
+  com.google.wireless.android.sdk.stats.DebuggerEventOrBuilder getDebuggerEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = SOONG_SYNC_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SoongSyncStats soong_sync_stats = 177;</code>
+   * @return Whether the soongSyncStats field is set.
+   */
+  boolean hasSoongSyncStats();
+  /**
+   * <pre>
+   * set when kind = SOONG_SYNC_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SoongSyncStats soong_sync_stats = 177;</code>
+   * @return The soongSyncStats.
+   */
+  com.google.wireless.android.sdk.stats.SoongSyncStats getSoongSyncStats();
+  /**
+   * <pre>
+   * set when kind = SOONG_SYNC_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SoongSyncStats soong_sync_stats = 177;</code>
+   */
+  com.google.wireless.android.sdk.stats.SoongSyncStatsOrBuilder getSoongSyncStatsOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = INTELLIJ_NEW_UI_SWITCH
+   * </pre>
+   *
+   * <code>optional .android_studio.IntelliJNewUISwitch intellij_new_ui_switch = 178;</code>
+   * @return Whether the intellijNewUiSwitch field is set.
+   */
+  boolean hasIntellijNewUiSwitch();
+  /**
+   * <pre>
+   * set when kind = INTELLIJ_NEW_UI_SWITCH
+   * </pre>
+   *
+   * <code>optional .android_studio.IntelliJNewUISwitch intellij_new_ui_switch = 178;</code>
+   * @return The intellijNewUiSwitch.
+   */
+  com.google.wireless.android.sdk.stats.IntelliJNewUISwitch getIntellijNewUiSwitch();
+  /**
+   * <pre>
+   * set when kind = INTELLIJ_NEW_UI_SWITCH
+   * </pre>
+   *
+   * <code>optional .android_studio.IntelliJNewUISwitch intellij_new_ui_switch = 178;</code>
+   */
+  com.google.wireless.android.sdk.stats.IntelliJNewUISwitchOrBuilder getIntellijNewUiSwitchOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = ESSENTIALS_MODE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.EssentialsModeEvent essentials_mode_event = 179;</code>
+   * @return Whether the essentialsModeEvent field is set.
+   */
+  boolean hasEssentialsModeEvent();
+  /**
+   * <pre>
+   * set when kind = ESSENTIALS_MODE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.EssentialsModeEvent essentials_mode_event = 179;</code>
+   * @return The essentialsModeEvent.
+   */
+  com.google.wireless.android.sdk.stats.EssentialsModeEvent getEssentialsModeEvent();
+  /**
+   * <pre>
+   * set when kind = ESSENTIALS_MODE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.EssentialsModeEvent essentials_mode_event = 179;</code>
+   */
+  com.google.wireless.android.sdk.stats.EssentialsModeEventOrBuilder getEssentialsModeEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = LINT_TOOLTIP_LINK_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.LintTooltipLinkEvent lint_tooltip_link_event = 180;</code>
+   * @return Whether the lintTooltipLinkEvent field is set.
+   */
+  boolean hasLintTooltipLinkEvent();
+  /**
+   * <pre>
+   * set when kind = LINT_TOOLTIP_LINK_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.LintTooltipLinkEvent lint_tooltip_link_event = 180;</code>
+   * @return The lintTooltipLinkEvent.
+   */
+  com.google.wireless.android.sdk.stats.LintTooltipLinkEvent getLintTooltipLinkEvent();
+  /**
+   * <pre>
+   * set when kind = LINT_TOOLTIP_LINK_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.LintTooltipLinkEvent lint_tooltip_link_event = 180;</code>
+   */
+  com.google.wireless.android.sdk.stats.LintTooltipLinkEventOrBuilder getLintTooltipLinkEventOrBuilder();
 }

@@ -18,6 +18,7 @@ package com.android.repository.impl.manager;
 
 import static com.google.common.base.Predicates.in;
 import static com.google.common.collect.ImmutableSet.toImmutableSet;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.android.ProgressManagerAdapter;
 import com.android.annotations.NonNull;
@@ -41,10 +42,9 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
-import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -324,14 +324,16 @@ public final class LocalRepoLoaderImpl implements LocalRepoLoader {
         Repository repo;
         try {
             progress.logVerbose("Parsing " + packageXml);
-            repo =
-                    (Repository)
-                            SchemaModuleUtil.unmarshal(
-                                    CancellableFileIo.newInputStream(packageXml),
-                                    mRepoManager.getSchemaModules(),
-                                    false,
-                                    progress,
-                                    packageXml.getFileName().toString());
+            try (InputStream stream = CancellableFileIo.newInputStream(packageXml)) {
+                repo =
+                        (Repository)
+                                SchemaModuleUtil.unmarshal(
+                                        stream,
+                                        mRepoManager.getSchemaModules(),
+                                        false,
+                                        progress,
+                                        packageXml.getFileName().toString());
+            }
         } catch (IOException e) {
             // This shouldn't ever happen
             progress.logError(String.format("XML file %s doesn't exist", packageXml), e);
@@ -388,14 +390,9 @@ public final class LocalRepoLoaderImpl implements LocalRepoLoader {
             // If we haven't updated any package more recently than the file, check the file
             // contents as well before updating. Otherwise we'll always update the file.
             if (getLatestPackageUpdateTime() <= getLastModifiedTime(knownPackagesHashFile)) {
-                try (DataInputStream is =
-                        new DataInputStream(
-                                CancellableFileIo.newInputStream(knownPackagesHashFile))) {
-                    buf = new byte[(int) CancellableFileIo.size(knownPackagesHashFile)];
-                    is.readFully(buf);
-                }
-                catch (IOException e) {
-                    // nothing
+                try {
+                    buf = CancellableFileIo.readAllBytes(knownPackagesHashFile);
+                } catch (IOException ignore) {
                 }
             }
             byte[] localPackagesHash = getLocalPackagesHash();
@@ -427,19 +424,11 @@ public final class LocalRepoLoaderImpl implements LocalRepoLoader {
      */
     private void writeHashFile(@NonNull byte[] buf) {
         Path knownPackagesHashFile = getKnownPackagesHashFile(true);
-        if (knownPackagesHashFile == null) {
-            return;
-        }
-        try (OutputStream os =
-                new BufferedOutputStream(
-                        Files.newOutputStream(
-                                knownPackagesHashFile,
-                                StandardOpenOption.CREATE,
-                                StandardOpenOption.WRITE,
-                                StandardOpenOption.TRUNCATE_EXISTING))) {
-            os.write(buf);
-        } catch (IOException e) {
-            // nothing
+        if (knownPackagesHashFile != null) {
+            try {
+                Files.write(knownPackagesHashFile, buf);
+            } catch (IOException ignore) {
+            }
         }
     }
 
@@ -465,7 +454,7 @@ public final class LocalRepoLoaderImpl implements LocalRepoLoader {
         Set<Path> dirs = collectPackages();
         Hasher digester = Hashing.md5().newHasher();
         for (Path f : dirs) {
-            digester.putBytes(f.toAbsolutePath().toString().getBytes());
+            digester.putBytes(f.toAbsolutePath().toString().getBytes(UTF_8));
         }
         return digester.hash().asBytes();
     }

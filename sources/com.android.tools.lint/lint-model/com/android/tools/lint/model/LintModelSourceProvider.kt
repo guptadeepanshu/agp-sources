@@ -56,6 +56,6 @@ class DefaultLintModelSourceProvider(
   override fun isTestFixture(): Boolean = testFixture
 
   override fun toString(): String {
-    return manifestFiles.first().parentFile?.path ?: "?"
+    return manifestFiles.firstOrNull()?.parentFile?.path ?: "?"
   }
 }

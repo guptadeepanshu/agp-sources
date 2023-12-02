@@ -20,6 +20,7 @@ import com.android.SdkConstants
 import com.android.build.api.artifact.Artifact
 import com.android.build.api.artifact.ArtifactKind
 import com.android.build.api.artifact.SingleArtifact
+import com.android.builder.internal.packaging.IncrementalPackager.VERSION_CONTROL_INFO_FILE_NAME
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.file.RegularFile
@@ -360,6 +361,12 @@ InternalArtifactType<T : FileSystemLocation>(
     // Serialized Lint Model for a variant, with the partial results location set to
     // LINT_VITAL_PARTIAL_RESULTS.
     object LINT_VITAL_LINT_MODEL:  InternalArtifactType<Directory>(DIRECTORY)
+    // Serialized Lint Model for a variant's unit test component
+    object UNIT_TEST_LINT_MODEL: InternalArtifactType<Directory>(DIRECTORY)
+    // Serialized Lint Model for a variant's android test component
+    object ANDROID_TEST_LINT_MODEL: InternalArtifactType<Directory>(DIRECTORY)
+    // Serialized Lint Model for a variant's test fixtures component
+    object TEST_FIXTURES_LINT_MODEL: InternalArtifactType<Directory>(DIRECTORY)
     // Lint reports
     object LINT_TEXT_REPORT: InternalArtifactType<RegularFile>(FILE, Category.REPORTS)
     object LINT_HTML_REPORT: InternalArtifactType<RegularFile>(FILE, Category.REPORTS)
@@ -376,6 +383,12 @@ InternalArtifactType<T : FileSystemLocation>(
     // downstream.
     object LINT_PARTIAL_RESULTS: InternalArtifactType<Directory>(DIRECTORY)
     object LINT_VITAL_PARTIAL_RESULTS: InternalArtifactType<Directory>(DIRECTORY)
+    // Partial lint results for a variant's unit test component
+    object UNIT_TEST_LINT_PARTIAL_RESULTS: InternalArtifactType<Directory>(DIRECTORY)
+    // Partial lint results for a variant's android test component
+    object ANDROID_TEST_LINT_PARTIAL_RESULTS: InternalArtifactType<Directory>(DIRECTORY)
+    // Partial lint results for a variant's test fixtures component
+    object TEST_FIXTURES_LINT_PARTIAL_RESULTS: InternalArtifactType<Directory>(DIRECTORY)
     // File containing lint model metadata to be included in the LOCAL_AAR_FOR_LINT file
     object LINT_MODEL_METADATA: InternalArtifactType<RegularFile>(FILE), Replaceable
     // Local .aar file used when running lint from a downstream module
@@ -416,8 +429,12 @@ InternalArtifactType<T : FileSystemLocation>(
     }
     // APK Set archive with APKs generated from a bundle.
     object APKS_FROM_BUNDLE: InternalArtifactType<RegularFile>(FILE), Replaceable
+    // APKS file containing split APK files.
+    object SDK_SPLITS_APKS: InternalArtifactType<Directory>(DIRECTORY), Replaceable
     // output of ExtractApks applied to APKS_FROM_BUNDLE and a device config.
     object EXTRACTED_APKS: InternalArtifactType<Directory>(DIRECTORY), Replaceable, ContainsMany
+    // APK files extracted from SDK_SPLITS_APKS APKS for local Privacy Sandbox deployment.
+    object EXTRACTED_SDK_APKS: InternalArtifactType<Directory>(DIRECTORY), Replaceable, ContainsMany
     // The manifest meant to be consumed by the bundle.
     object BUNDLE_MANIFEST: InternalArtifactType<RegularFile>(FILE), Replaceable
 
@@ -511,6 +528,7 @@ InternalArtifactType<T : FileSystemLocation>(
     object APK_IDE_MODEL: InternalArtifactType<RegularFile>(FILE), Replaceable
     object BUNDLE_IDE_MODEL : InternalArtifactType<RegularFile>(FILE), Replaceable
     object APK_FROM_BUNDLE_IDE_MODEL : InternalArtifactType<RegularFile>(FILE)
+    object APK_FROM_SDKS_IDE_MODEL : InternalArtifactType<RegularFile>(FILE)
 
     // and the redirect file pointing to the one above, these artifacts are final and can not be
     // replaced as their value is transferred in the IDE model.
@@ -577,6 +595,11 @@ InternalArtifactType<T : FileSystemLocation>(
     object APP_ID_LIST_MODEL: InternalArtifactType<RegularFile>(
         FILE,
         fileName = "app_id_list.json"
+    )
+
+    object VERSION_CONTROL_INFO_FILE: InternalArtifactType<RegularFile>(
+        FILE,
+        fileName = VERSION_CONTROL_INFO_FILE_NAME
     )
 
     override fun getFileSystemLocationName(): String {

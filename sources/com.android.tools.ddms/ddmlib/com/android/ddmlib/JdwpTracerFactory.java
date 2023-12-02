@@ -15,6 +15,10 @@
  */
 package com.android.ddmlib;
 
+import com.android.annotations.NonNull;
+
 public interface JdwpTracerFactory {
+
+    @NonNull
     DDMLibJdwpTracer newJwpTracer();
 }

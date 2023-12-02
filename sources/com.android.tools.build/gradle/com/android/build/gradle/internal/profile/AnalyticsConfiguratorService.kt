@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.profile
 
+import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.services.ServiceRegistrationAction
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.builder.profile.Recorder
@@ -25,8 +26,8 @@ import com.google.wireless.android.sdk.stats.GradleBuildProject
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.Project
 import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
-import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.services.BuildService
 import org.gradle.api.services.BuildServiceParameters
 import org.gradle.build.event.BuildEventsListenerRegistry
@@ -39,7 +40,7 @@ import javax.inject.Inject
  * [AnalyticsConfiguratorService] is paired with [AnalyticsService] which means there will always be
  * one and only one [AnalyticsConfiguratorService] instance for each [AnalyticsService] instance.
  */
-abstract class AnalyticsConfiguratorService : BuildService<BuildServiceParameters.None> {
+abstract class AnalyticsConfiguratorService : BuildService<AnalyticsConfiguratorService.Params> {
 
     @get:Inject
     abstract val objectFactory: ObjectFactory
@@ -63,19 +64,38 @@ abstract class AnalyticsConfiguratorService : BuildService<BuildServiceParameter
     private var state = State.COLLECTING_DATA
 
     open fun getProjectBuilder(projectPath: String) : GradleBuildProject.Builder? {
-        if (state == State.ANALYTICS_SERVICE_CREATED) {
-            error("Accessing GradleBuildProject.Builder through AnalyticsConfiguratorService " +
-                    "is not allowed after AnalyticsService is created.")
+        if (state == State.ANALYTICS_SERVICE_CREATED && configureOnDemandDisabled()) {
+            //TODO Consider turn this into warnings. See b/286859043 for more details.
+            LoggerWrapper.getLogger(this::class.java).info(
+                "GradleBuildProject.Builder should not be accessed through " +
+                        "AnalyticsConfiguratorService after AnalyticsService is created." +
+                        " Analytics information of this build might be incomplete."
+            )
         }
         return resourcesManager.getProjectBuilder(projectPath)
     }
 
     open fun getVariantBuilder(projectPath: String, variantName: String) : GradleBuildVariant.Builder? {
-        if (state == State.ANALYTICS_SERVICE_CREATED) {
-            error("Accessing GradleBuildVariant.Builder through AnalyticsConfiguratorService " +
-                    "is not allowed after AnalyticsService is created.")
+        if (state == State.ANALYTICS_SERVICE_CREATED && configureOnDemandDisabled()) {
+            LoggerWrapper.getLogger(this::class.java).info(
+                "GradleBuildProject.Builder should not be accessed through " +
+                        "AnalyticsConfiguratorService after AnalyticsService is created." +
+                        " Analytics information of this build might be incomplete."
+            )
         }
         return resourcesManager.getVariantBuilder(projectPath, variantName)
+    }
+
+    /**
+     * When configure on demand is enabled, undeclared dependency resolution would cause projects
+     * to be configured during execution phase. In this case, we don't throw error for accessing
+     * [getVariantBuilder] during execution time.
+     *
+     * Side note: Undeclared dependency resolution at execution time would be deprecated by
+     * Gradle in 8.X.
+     */
+    private fun configureOnDemandDisabled(): Boolean {
+        return !parameters.configureOnDemand.get()
     }
 
     /**
@@ -134,11 +154,17 @@ abstract class AnalyticsConfiguratorService : BuildService<BuildServiceParameter
         state = State.ANALYTICS_SERVICE_CREATED
     }
 
+    interface Params: BuildServiceParameters {
+        val configureOnDemand: Property<Boolean>
+    }
+
     class RegistrationAction(project: Project)
-        : ServiceRegistrationAction<AnalyticsConfiguratorService, BuildServiceParameters.None>(
+        : ServiceRegistrationAction<AnalyticsConfiguratorService, Params>(
         project,
         AnalyticsConfiguratorService::class.java
     ) {
-        override fun configure(parameters: BuildServiceParameters.None) {}
+        override fun configure(parameters: Params) {
+            parameters.configureOnDemand.set(project.gradle.startParameter.isConfigureOnDemand)
+        }
     }
 }

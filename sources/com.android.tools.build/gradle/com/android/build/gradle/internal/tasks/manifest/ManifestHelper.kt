@@ -165,9 +165,10 @@ fun findOriginalManifestFilePosition(
     manifestMergeBlameContents: List<String>,
     mergedFilePosition: SourceFilePosition
 ): SourceFilePosition {
-    if (mergedFilePosition.file == SourceFile.UNKNOWN || mergedFilePosition.file.sourceFile?.absolutePath?.contains(
-            "merged_manifests"
-        ) == false
+    if (mergedFilePosition.file == SourceFile.UNKNOWN ||
+        mergedFilePosition.file.sourceFile?.absolutePath?.let {
+            it.contains("merged_manifests") || it.contains("packaged_manifests")
+        } == false
     ) {
         return mergedFilePosition
     }

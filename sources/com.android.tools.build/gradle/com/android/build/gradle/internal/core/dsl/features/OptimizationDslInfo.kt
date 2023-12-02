@@ -39,6 +39,16 @@ interface OptimizationDslInfo {
      */
     val ignoreAllLibraryKeepRules: Boolean
 
+    /**
+     * Returns the external dependencies to ignore in baseline profiles.
+     */
+    val ignoreFromInBaselineProfile: Set<String>
+
+    /**
+     * Returns whether to ignore all external dependencies in baseline profiles.
+     */
+    val ignoreFromAllExternalDependenciesInBaselineProfile: Boolean
+
     val postProcessingOptions: PostProcessingOptions
 
     fun getProguardFiles(into: ListProperty<RegularFile>)

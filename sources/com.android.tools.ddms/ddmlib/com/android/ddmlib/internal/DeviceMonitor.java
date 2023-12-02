@@ -40,6 +40,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -353,17 +354,16 @@ public final class DeviceMonitor implements ClientTracker {
             }
 
             String avdName = console.getAvdName();
-            String avdPath;
+            Path avdPath;
 
             try {
-                avdPath = console.getAvdPath();
+                avdPath = console.getAvdNioPath();
             } catch (CommandFailedException exception) {
                 Log.e("DeviceMonitor", exception);
                 avdPath = null;
             }
 
             console.close();
-
             avdData = new AvdData(avdName, avdPath);
         } finally {
             device.setAvdData(avdData);

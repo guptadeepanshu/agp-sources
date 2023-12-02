@@ -29,7 +29,7 @@ interface InternalScopedArtifacts: ScopedArtifacts {
     enum class InternalScope {
         // modules imported by this project
         SUB_PROJECTS,
-        // external libraries specified in the build.gradle dependencies.
+        // external library dependencies including local file dependencies (including transitive).
         EXTERNAL_LIBS,
         // local jar files present in the project.
         LOCAL_DEPS,

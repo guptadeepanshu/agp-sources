@@ -24,6 +24,7 @@ import com.android.build.gradle.internal.cxx.logging.errorln
 import com.android.build.gradle.internal.cxx.logging.infoln
 import com.android.build.gradle.internal.cxx.logging.lifecycleln
 import com.android.build.gradle.internal.cxx.model.CxxAbiModel
+import com.android.build.gradle.internal.cxx.model.name
 import com.android.build.gradle.internal.cxx.model.prefabClassPath
 import com.android.build.gradle.internal.cxx.model.refsFolder
 import com.android.build.gradle.internal.cxx.model.prefabPackageDirectoryList
@@ -88,7 +89,7 @@ fun createPrefabBuildSystemGlue(
    abi.createFolderLayout().use { layout ->
 
         val prefabPackages = getPrefabCliInputs(
-            abi.abi.tag,
+            abi.name,
             layout.cliStagedInput,
             abi.variant.prefabPackageDirectoryList
         )
@@ -99,7 +100,7 @@ fun createPrefabBuildSystemGlue(
             main = "com.google.prefab.cli.AppKt")
             .addArgs("--build-system", buildSystem)
             .addArgs("--platform", "android")
-            .addArgs("--abi", abi.abi.tag)
+            .addArgs("--abi", abi.name)
             .addArgs("--os-version", osVersion.toString())
             .addArgs("--stl", abi.variant.stlType)
             .addArgs("--ndk-version", abi.variant.module.ndkVersion.major.toString())
@@ -372,6 +373,8 @@ private val errorMatchers : List<Pair<Regex, ErrorMatchBehavior>> = run {
             "^Usage: prefab.*"
                     to informational,
             "Picked up _JAVA_OPTIONS: .*"
+                    to informational,
+            "Picked up JAVA_TOOL_OPTIONS: .*"
                     to informational,
             ".*" to ErrorMatchBehavior(Unrecognized)
         ).map { Regex(it.first) to it.second }

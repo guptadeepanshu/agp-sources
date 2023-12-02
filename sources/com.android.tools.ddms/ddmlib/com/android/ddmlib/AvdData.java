@@ -16,7 +16,9 @@
 package com.android.ddmlib;
 
 import com.android.annotations.Nullable;
-
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Objects;
 
 /**
@@ -27,27 +29,46 @@ public class AvdData {
     @Nullable
     private final String name;
 
-    @Nullable
-    private final String path;
+    @Nullable private final Path nioPath;
 
+    public AvdData(@Nullable String name, @Nullable Path nioPath) {
+        this.name = name;
+        this.nioPath = nioPath;
+    }
+
+    /** @deprecated Use {@link #AvdData(String, Path)} */
+    @Deprecated
     public AvdData(@Nullable String name, @Nullable String path) {
         this.name = name;
-        this.path = path;
+        nioPath = initNioPath(path);
+    }
+
+    @Nullable
+    private static Path initNioPath(@Nullable String path) {
+        if (path == null) {
+            return null;
+        }
+
+        try {
+            return Paths.get(path);
+        } catch (InvalidPathException exception) {
+            return null;
+        }
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, path);
+        return Objects.hash(name, nioPath);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof AvdData)) {
+    public boolean equals(@Nullable Object object) {
+        if (!(object instanceof AvdData)) {
             return false;
         }
-        AvdData other = (AvdData)obj;
-        return Objects.equals(name, other.name) &&
-               Objects.equals(path, other.path);
+
+        AvdData avd = (AvdData) object;
+        return Objects.equals(name, avd.name) && Objects.equals(nioPath, avd.nioPath);
     }
 
     /**
@@ -59,13 +80,30 @@ public class AvdData {
     }
 
     /**
-     * The path of the AVD or null if unavailable or this is a physical device.
-     *
-     * The path is the absolute path to the virtual device in the file system. The path is operating
-     * system dependent; it will have / name separators on Linux and \ separators on Windows.
+     * Returns the absolute path to the virtual device in the file system or null if the emulator
+     * console subcommand failed
      */
     @Nullable
+    public Path getNioPath() {
+        return nioPath;
+    }
+
+    /**
+     * The path of the AVD or null if unavailable or this is a physical device.
+     *
+     * <p>The path is the absolute path to the virtual device in the file system. The path is
+     * operating system dependent; it will have / name separators on Linux and \ separators on
+     * Windows.
+     *
+     * @deprecated Use {@link #getNioPath}
+     */
+    @Deprecated
+    @Nullable
     public String getPath() {
-        return path;
+        if (nioPath == null) {
+            return null;
+        }
+
+        return nioPath.toString();
     }
 }

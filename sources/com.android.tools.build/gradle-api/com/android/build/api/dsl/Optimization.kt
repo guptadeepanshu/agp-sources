@@ -30,4 +30,10 @@ interface Optimization {
      */
     @Incubating
     fun keepRules(action: KeepRules.() -> Unit)
+
+    /**
+     * Configure baseline profile properties
+     */
+    @Incubating
+    fun baselineProfile(action: BaselineProfile.() -> Unit)
 }

@@ -31,7 +31,7 @@ import com.android.build.gradle.internal.component.features.DexingCreationConfig
 import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.core.dsl.TestProjectVariantDslInfo
 import com.android.build.gradle.internal.dependency.VariantDependencies
-import com.android.build.gradle.internal.dsl.ModuleBooleanPropertyKeys
+import com.android.build.gradle.internal.dsl.ModulePropertyKey
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.MutableTaskContainer
@@ -40,8 +40,8 @@ import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
-import com.android.build.gradle.options.IntegerOption
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
+import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import javax.inject.Inject
@@ -89,7 +89,7 @@ open class TestVariantImpl @Inject constructor(
     //         tested application id from the APK metadata file for uninstalling.
     override val testedApplicationId: Provider<String> by lazy {
         experimentalProperties.flatMap {
-            if (ModuleBooleanPropertyKeys.SELF_INSTRUMENTING.getValueAsBoolean(it)) {
+            if (ModulePropertyKey.BooleanWithDefault.SELF_INSTRUMENTING.getValue(it)) {
                 applicationId
             } else {
                 calculateTestedApplicationId(variantDependencies)
@@ -137,7 +137,7 @@ open class TestVariantImpl @Inject constructor(
         )
     }
     override val targetSdk: AndroidVersion by lazy(LazyThreadSafetyMode.NONE) {
-        variantBuilder.targetSdkVersion
+        global.androidTestOptions.targetSdkVersion ?: variantBuilder.targetSdkVersion
     }
 
     override val targetSdkVersion: AndroidVersion
@@ -154,8 +154,13 @@ open class TestVariantImpl @Inject constructor(
     override val testOnlyApk: Boolean
         get() = true
 
-    override val instrumentationRunnerArguments: Map<String, String>
-        get() = dslInfo.instrumentationRunnerArguments
+    override val instrumentationRunnerArguments: MapProperty<String, String> by lazy(LazyThreadSafetyMode.NONE) {
+        internalServices.mapPropertyOf(
+            String::class.java,
+            String::class.java,
+            dslInfo.instrumentationRunnerArguments
+        )
+    }
 
     override val debuggable: Boolean
         get() = dslInfo.isDebuggable
