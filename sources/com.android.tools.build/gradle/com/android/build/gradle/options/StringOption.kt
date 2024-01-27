@@ -140,6 +140,10 @@ enum class StringOption(
     ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR_GENERATED_RUNTIME_DEPENDENCIES("android.privacySandboxSdk.apiGenerator.generatedRuntimeDependencies", ApiStage.Experimental),
 
     ANDROID_PRIVACY_SANDBOX_SDK_API_PACKAGER("android.privacySandboxSdk.apiPackager", ApiStage.Experimental),
+
+    // An override for the Jacoco version to be set per module
+    JACOCO_TOOL_VERSION("com.android.test.jacocoVersion", ApiStage.Experimental),
+
     /* ---------------
      * DEPRECATED APIs
      */

@@ -26,8 +26,12 @@ public class JacocoOptions implements com.android.build.api.dsl.JacocoOptions, T
     /** Default JaCoCo version. */
     public static final String DEFAULT_VERSION = "0.8.8";
 
+    private boolean versionSetByUser = false;
+
     @Inject
-    public JacocoOptions() {}
+    public JacocoOptions() {
+        versionSetByUser = false;
+    }
 
     @NonNull private String jacocoVersion = DEFAULT_VERSION;
 
@@ -39,6 +43,7 @@ public class JacocoOptions implements com.android.build.api.dsl.JacocoOptions, T
 
     @Override
     public void setVersion(@NonNull String version) {
+        versionSetByUser = true;
         this.jacocoVersion = version;
     }
 
@@ -48,8 +53,13 @@ public class JacocoOptions implements com.android.build.api.dsl.JacocoOptions, T
         return jacocoVersion;
     }
 
+    public boolean getVersionSetByUser() {
+        return versionSetByUser;
+    }
+
     @Override
     public void setJacocoVersion(@NotNull String jacocoVersion) {
+        versionSetByUser = true;
         this.jacocoVersion = jacocoVersion;
     }
 }

@@ -21,16 +21,17 @@ import com.android.build.api.artifact.impl.InternalScopedArtifacts
 import com.android.build.gradle.internal.component.KmpComponentCreationConfig
 import com.android.build.gradle.internal.component.UnitTestCreationConfig
 import com.android.build.gradle.internal.coverage.JacocoConfigurations
+import com.android.build.gradle.internal.coverage.JacocoOptions
 import com.android.build.gradle.internal.coverage.JacocoReportTask
 import com.android.build.gradle.internal.lint.AndroidLintAnalysisTask
 import com.android.build.gradle.internal.lint.LintModelWriterTask
 import com.android.build.gradle.internal.res.GenerateLibraryRFileTask
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.tasks.JacocoTask
 import com.android.build.gradle.internal.tasks.PackageForUnitTest
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.android.build.gradle.options.BooleanOption.LINT_ANALYSIS_PER_COMPONENT
+import com.android.build.gradle.options.StringOption
 import com.android.build.gradle.tasks.GenerateTestConfig
 import com.android.build.gradle.tasks.factory.AndroidUnitTest
 import com.google.common.collect.ImmutableSet
@@ -39,6 +40,7 @@ import org.gradle.api.Task
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.testing.jacoco.plugins.JacocoPlugin
+import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
 
 class UnitTestTaskManager(
     project: Project,
@@ -200,15 +202,17 @@ class UnitTestTaskManager(
         if (unitTestCreationConfig.isUnitTestCoverageEnabled) {
             project.pluginManager.apply(JacocoPlugin::class.java)
         }
-        val runTestsTask =
-            taskFactory.register(AndroidUnitTest.CreationAction(unitTestCreationConfig))
+        val runTestsTask = taskFactory.register(AndroidUnitTest.CreationAction(
+            unitTestCreationConfig,
+            getJacocoVersion(unitTestCreationConfig)
+        ))
         taskFactory.configure(globalConfig.taskNames.test) { test: Task ->
             test.dependsOn(runTestsTask)
         }
 
         if (unitTestCreationConfig.isUnitTestCoverageEnabled) {
             val ant = JacocoConfigurations.getJacocoAntTaskConfiguration(
-                project, JacocoTask.getJacocoVersion(unitTestCreationConfig)
+                project, getJacocoVersion(unitTestCreationConfig)
             )
             project.plugins.withType(JacocoPlugin::class.java) {
                 // Jacoco plugin is applied and test coverage enabled, ∴ generate coverage report.
@@ -217,6 +221,46 @@ class UnitTestTaskManager(
                 )
             }
         }
+    }
+
+    /**
+     * This version will be set for the Jacoco plugin extension in AndroidUnitTest,
+     * and the JacocoReportTask UnitTest Ant configuration.
+     *
+     * The priority of version that will be chosen is:
+     *     1. Gradle Property: [StringOption.JACOCO_TOOL_VERSION]
+     *     2. Android DSL: android.testCoverage.jacocoVersion
+     *     3. Jacoco DSL: jacoco.toolVersion
+     *     4. JacocoOptions.DEFAULT_VERSION
+     */
+    private fun getJacocoVersion(unitTestCreationConfig: UnitTestCreationConfig): String {
+        val jacocoVersionProjectOption =
+            unitTestCreationConfig.services.projectOptions[StringOption.JACOCO_TOOL_VERSION]
+        if (!jacocoVersionProjectOption.isNullOrEmpty()) {
+            return jacocoVersionProjectOption
+        }
+        if ((unitTestCreationConfig.global.testCoverage as JacocoOptions).versionSetByUser) {
+            return unitTestCreationConfig.global.testCoverage.jacocoVersion
+        }
+        val pluginExtension = project.extensions.findByType(JacocoPluginExtension::class.java)
+        if (pluginExtension != null) {
+            // When the plugin is applied, but the toolVersion is not set, Gradle automatically
+            // sets the version to 0.8.9, which is not supported in AGP currently (b/316929520).
+            // So we set the value to the AGP default version.
+            if (pluginExtension.toolVersion == "0.8.9") {
+                LoggerWrapper.getLogger(this.javaClass)
+                    .warning(
+                        "The Jacoco plugin extension version '0.8.9' is not currently "
+                                + "available in the Android Gradle Plugin. Setting the version "
+                                + "to "
+                                + JacocoOptions.DEFAULT_VERSION
+                    )
+                return JacocoOptions.DEFAULT_VERSION
+            } else {
+                return pluginExtension.toolVersion
+            }
+        }
+        return JacocoOptions.DEFAULT_VERSION
     }
 
     override val javaResMergingScopes = setOf(

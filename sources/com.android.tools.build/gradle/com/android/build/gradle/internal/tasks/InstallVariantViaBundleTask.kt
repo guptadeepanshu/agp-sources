@@ -223,7 +223,7 @@ abstract class InstallVariantViaBundleTask : NonIncrementalTask() {
 
         protected open fun getApkFiles(apkBundles: Collection<Path>,
                 device: DeviceConfigProvider): List<Path> {
-            return getApkFiles(apkBundles, device)
+            return getApkFiles(apkBundles, device, null)
         }
 
         @VisibleForTesting

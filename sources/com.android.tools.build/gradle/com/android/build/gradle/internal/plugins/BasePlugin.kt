@@ -749,7 +749,7 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
             .configurePrivacySandboxSdkConsumerTransforms()
                 .apply {
                     // Registering Jacoco transforms causes the jacoco configuration to be created.
-                    // Ensure there are is at least one variant with enableAndroidTestCoverage
+                    // Ensure there is at least one variant with enableAndroidTestCoverage
                     // enabled before registering the transforms.
                     if (variants.any { it.variant.isAndroidTestCoverageEnabled }) {
                         configureJacocoTransforms()
