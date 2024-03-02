@@ -19,7 +19,7 @@ package com.android.build.api.variant
 import org.gradle.api.Incubating
 
 /**
- * Variants that optionally have test fixtures.
+ * [Variant] that optionally have [TestFixtures] component.
  */
 @Incubating
 interface HasTestFixtures {

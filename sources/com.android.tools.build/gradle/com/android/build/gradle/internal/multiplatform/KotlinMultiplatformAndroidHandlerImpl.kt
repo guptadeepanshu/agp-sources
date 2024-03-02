@@ -36,18 +36,23 @@ import com.android.build.gradle.internal.utils.KOTLIN_MPP_PLUGIN_ID
 import com.android.build.gradle.internal.utils.getKotlinPluginVersionFromPlugin
 import com.android.ide.common.gradle.Version
 import org.gradle.api.Project
+import org.gradle.api.file.DuplicatesStrategy
+import org.gradle.api.model.ObjectFactory
 import org.gradle.api.plugins.ExtensionAware
 import org.jetbrains.kotlin.gradle.ExternalKotlinTargetApi
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
+import org.jetbrains.kotlin.gradle.plugin.mpp.external.DecoratedExternalKotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.mpp.external.ExternalKotlinTargetDescriptor
 import org.jetbrains.kotlin.gradle.plugin.mpp.external.createExternalKotlinTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.external.sourcesJarTask
 
 @OptIn(ExternalKotlinTargetApi::class)
 internal class KotlinMultiplatformAndroidHandlerImpl(
     private val project: Project,
-    private val dslServices: DslServices
+    private val dslServices: DslServices,
+    private val objectFactory: ObjectFactory
 ): KotlinMultiplatformAndroidHandler {
 
     private lateinit var kotlinExtension: KotlinMultiplatformExtension
@@ -67,6 +72,7 @@ internal class KotlinMultiplatformAndroidHandlerImpl(
         androidExtension = dslServices.newInstance(
             extensionImplClass,
             dslServices,
+            objectFactory,
             { compilationBuilder: KotlinMultiplatformAndroidCompilationBuilder ->
                 if (project.pluginManager.hasPlugin(KOTLIN_MPP_PLUGIN_ID)) {
                     createCompilation(
@@ -158,6 +164,19 @@ internal class KotlinMultiplatformAndroidHandlerImpl(
     override fun getAndroidTarget() = androidTarget
 
     override fun finalize(variant: KmpVariantImpl) {
+        if (variant.sources.java != null) {
+            androidTarget.sourcesJarTask(
+                variant.androidKotlinCompilation as DecoratedExternalKotlinCompilation
+            ).configure {
+                it.from(variant.sources.java!!.all) { spec ->
+                    spec.into(
+                        variant.androidKotlinCompilation.defaultSourceSet.name
+                    )
+                    spec.duplicatesStrategy = DuplicatesStrategy.WARN
+                }
+            }
+        }
+
         mainVariant = variant
 
         listOfNotNull(mainVariant, mainVariant.unitTest, mainVariant.androidTest).forEach {
@@ -227,6 +246,6 @@ internal class KotlinMultiplatformAndroidHandlerImpl(
     }
 
     companion object {
-        private val MINIMUM_SUPPORTED_KOTLIN_MULTIPLATFORM_VERSION = Version.parse("1.9.0-Beta")
+        private val MINIMUM_SUPPORTED_KOTLIN_MULTIPLATFORM_VERSION = Version.parse("1.9.20-Beta")
     }
 }

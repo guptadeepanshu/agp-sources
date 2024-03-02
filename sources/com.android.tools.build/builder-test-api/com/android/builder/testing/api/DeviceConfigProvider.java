@@ -53,4 +53,6 @@ public interface DeviceConfigProvider {
     default int getApiLevel() {
         return 1;
     }
+
+    default boolean getSupportsPrivacySandbox() { return false; }
 }

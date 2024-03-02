@@ -16,12 +16,13 @@
 
 package com.android.sdklib.internal.avd;
 
+import static com.android.resources.Density.ANYDPI;
+import static com.android.resources.Density.NODPI;
 
 import com.android.annotations.NonNull;
 import com.android.resources.Density;
 import com.android.resources.ScreenSize;
 import com.android.sdklib.devices.Storage;
-
 import java.util.Map;
 
 public class EmulatedProperties {
@@ -99,98 +100,100 @@ public class EmulatedProperties {
         // (Here I treat ANYDPI and NODPI as MEDIUM.)
 
         if (isWear) {
-            switch(screenDensity) {
-                default:
-                case LOW:
-                case ANYDPI:
-                case NODPI:
-                case MEDIUM:
-                case TV:        vmHeapSize =  32; break;
-                case HIGH:
-                case DPI_260:
-                case DPI_280:   vmHeapSize =  36; break;
-                case XHIGH:
-                case DPI_300:
-                case DPI_340:
-                case DPI_360:   vmHeapSize =  48; break;
-                case DPI_400:   vmHeapSize =  56; break;
-                case DPI_420:
-                case DPI_440:   vmHeapSize =  64; break;
-                case XXHIGH:    vmHeapSize =  88; break;
-                case DPI_560:   vmHeapSize = 112; break;
-                case XXXHIGH:   vmHeapSize = 154; break;
+            if (screenDensity == ANYDPI || screenDensity == NODPI) {
+                vmHeapSize = 32;
+            } else if (screenDensity.getDpiValue() <= 220) {
+                vmHeapSize = 32;
+            } else if (screenDensity.getDpiValue() <= 280) {
+                vmHeapSize = 36;
+            } else if (screenDensity.getDpiValue() <= 360) {
+                vmHeapSize = 48;
+            } else if (screenDensity.getDpiValue() <= 400) {
+                vmHeapSize = 56;
+            } else if (screenDensity.getDpiValue() <= 440) {
+                vmHeapSize = 64;
+            } else if (screenDensity.getDpiValue() <= 480) {
+                vmHeapSize = 88;
+            } else if (screenDensity.getDpiValue() <= 560) {
+                vmHeapSize = 112;
+            } else {
+                vmHeapSize = 156;
             }
         } else {
             switch(screenSize) {
                 default:
                 case SMALL:
                 case NORMAL:
-                    switch(screenDensity) {
-                        default:
-                        case LOW:
-                        case ANYDPI:
-                        case NODPI:
-                        case MEDIUM:    vmHeapSize =  32; break;
-                        case TV:
-                        case HIGH:
-                        case DPI_260:
-                        case DPI_280:   vmHeapSize =  48; break;
-                        case XHIGH:
-                        case DPI_300:
-                        case DPI_340:
-                        case DPI_360:   vmHeapSize =  80; break;
-                        case DPI_400:   vmHeapSize =  96; break;
-                        case DPI_420:
-                        case DPI_440:   vmHeapSize = 112; break;
-                        case XXHIGH:    vmHeapSize = 128; break;
-                        case DPI_560:   vmHeapSize = 192; break;
-                        case XXXHIGH:   vmHeapSize = 256; break;
+                    if (screenDensity == ANYDPI || screenDensity == NODPI) {
+                        vmHeapSize = 32;
+                    } else if (screenDensity.getDpiValue() <= 160) {
+                        vmHeapSize = 32;
+                    } else if (screenDensity.getDpiValue() <= 280) {
+                        vmHeapSize = 48;
+                    } else if (screenDensity.getDpiValue() <= 360) {
+                        vmHeapSize = 80;
+                    } else if (screenDensity.getDpiValue() <= 400) {
+                        vmHeapSize = 96;
+                    } else if (screenDensity.getDpiValue() <= 440) {
+                        vmHeapSize = 112;
+                    } else if (screenDensity.getDpiValue() <= 480) {
+                        vmHeapSize = 128;
+                    } else if (screenDensity.getDpiValue() <= 560) {
+                        vmHeapSize = 192;
+                    } else {
+                        vmHeapSize = 256;
                     }
                     break;
                 case LARGE:
-                    switch(screenDensity) {
-                        default:
-                        case LOW:       vmHeapSize =  32; break;
-                        case ANYDPI:
-                        case NODPI:
-                        case MEDIUM:    vmHeapSize =  48; break;
-                        case TV:
-                        case HIGH:      vmHeapSize =  80; break;
-                        case DPI_260:
-                        case DPI_280:   vmHeapSize =  96; break;
-                        case DPI_300:
-                        case XHIGH:     vmHeapSize = 128; break;
-                        case DPI_340:
-                        case DPI_360:   vmHeapSize = 160; break;
-                        case DPI_400:   vmHeapSize = 192; break;
-                        case DPI_420:
-                        case DPI_440:   vmHeapSize = 228; break;
-                        case XXHIGH:    vmHeapSize = 256; break;
-                        case DPI_560:   vmHeapSize = 384; break;
-                        case XXXHIGH:   vmHeapSize = 512; break;
+                    if (screenDensity == ANYDPI || screenDensity == NODPI) {
+                        vmHeapSize = 48;
+                    } else if (screenDensity.getDpiValue() <= 120) {
+                        vmHeapSize = 32;
+                    } else if (screenDensity.getDpiValue() <= 160) {
+                        vmHeapSize = 48;
+                    } else if (screenDensity.getDpiValue() <= 240) {
+                        vmHeapSize = 80;
+                    } else if (screenDensity.getDpiValue() <= 280) {
+                        vmHeapSize = 96;
+                    } else if (screenDensity.getDpiValue() <= 320) {
+                        vmHeapSize = 128;
+                    } else if (screenDensity.getDpiValue() <= 360) {
+                        vmHeapSize = 160;
+                    } else if (screenDensity.getDpiValue() <= 400) {
+                        vmHeapSize = 192;
+                    } else if (screenDensity.getDpiValue() <= 480) {
+                        vmHeapSize = 256;
+                    } else if (screenDensity.getDpiValue() <= 560) {
+                        vmHeapSize = 384;
+                    } else {
+                        vmHeapSize = 512;
                     }
                     break;
                 case XLARGE:
-                    switch(screenDensity) {
-                        default:
-                        case LOW:       vmHeapSize =  48; break;
-                        case ANYDPI:
-                        case NODPI:
-                        case MEDIUM:    vmHeapSize =  80; break;
-                        case TV:
-                        case HIGH:      vmHeapSize =  96; break;
-                        case DPI_260:
-                        case DPI_280:   vmHeapSize = 144; break;
-                        case DPI_300:
-                        case XHIGH:     vmHeapSize = 192; break;
-                        case DPI_340:
-                        case DPI_360:   vmHeapSize = 240; break;
-                        case DPI_400:   vmHeapSize = 288; break;
-                        case DPI_420:
-                        case DPI_440:   vmHeapSize = 336; break;
-                        case XXHIGH:    vmHeapSize = 384; break;
-                        case DPI_560:   vmHeapSize = 576; break;
-                        case XXXHIGH:   vmHeapSize = 768; break;
+                    if (screenDensity == ANYDPI || screenDensity == NODPI) {
+                        vmHeapSize = 80;
+                    } else if (screenDensity.getDpiValue() <= 120) {
+                        vmHeapSize = 48;
+                    } else if (screenDensity.getDpiValue() <= 160) {
+                        vmHeapSize = 80;
+                    } else if (screenDensity.getDpiValue() <= 240) {
+                        vmHeapSize = 96;
+                    } else if (screenDensity.getDpiValue() <= 280) {
+                        vmHeapSize = 144;
+                    } else if (screenDensity.getDpiValue() <= 320) {
+                        vmHeapSize = 192;
+                    } else if (screenDensity.getDpiValue() <= 360) {
+                        vmHeapSize = 240;
+                    } else if (screenDensity.getDpiValue() <= 400) {
+                        vmHeapSize = 288;
+                    } else if (screenDensity.getDpiValue() <= 440) {
+                        vmHeapSize = 336;
+                    } else if (screenDensity.getDpiValue() <= 480) {
+                        vmHeapSize = 384;
+                    } else if (screenDensity.getDpiValue() <= 560) {
+                        vmHeapSize = 576;
+                    } else {
+                        vmHeapSize = 768;
                     }
                     break;
             }

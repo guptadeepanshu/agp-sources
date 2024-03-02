@@ -50,7 +50,7 @@ internal class AndroidTestComponentDslInfoImpl(
     buildDirectory: DirectoryProperty,
     override val mainVariantDslInfo: TestedVariantDslInfo,
     private val signingConfigOverride: SigningConfig?,
-    extension: InternalTestedExtension<*, *, *, *, *>
+    extension: InternalTestedExtension<*, *, *, *, *, *>
 ) : ConsumableComponentDslInfoImpl(
     componentIdentity,
     componentType,
@@ -86,22 +86,13 @@ internal class AndroidTestComponentDslInfoImpl(
             ?: (buildTypeObj as? ApplicationBuildType)?.isDebuggable
             ?: false
 
-    override val signingConfig: SigningConfig? by lazy {
+    override val signingConfigResolver: SigningConfigResolver? by lazy {
         if (mainVariantDslInfo is DynamicFeatureVariantDslInfo) {
             null
         } else {
-            getSigningConfig(
-                buildTypeObj,
-                mergedFlavor,
-                signingConfigOverride,
-                extension,
-                services
-            )
+            SigningConfigResolver.create(buildTypeObj, mergedFlavor, signingConfigOverride, extension, services)
         }
     }
-
-    override val isSigningReady: Boolean
-        get() = signingConfig?.isSigningReady == true
 
     private val instrumentedTestDelegate by lazy {
         InstrumentedTestDslInfoImpl(

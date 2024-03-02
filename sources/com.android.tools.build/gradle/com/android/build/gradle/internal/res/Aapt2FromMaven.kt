@@ -32,9 +32,9 @@ import org.gradle.api.artifacts.transform.InputArtifact
 import org.gradle.api.artifacts.transform.TransformAction
 import org.gradle.api.artifacts.transform.TransformOutputs
 import org.gradle.api.artifacts.type.ArtifactTypeDefinition
+import org.gradle.api.artifacts.type.ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.FileSystemLocation
-import org.gradle.api.internal.artifacts.ArtifactAttributes
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Classpath
 import java.io.File
@@ -148,16 +148,16 @@ class Aapt2FromMaven(val aapt2Directory: FileCollection, val version: String) {
             project.dependencies.registerTransform(Aapt2Extractor::class.java) {
                 it.parameters.projectName.set(project.name)
                 it.from.attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
+                    ARTIFACT_TYPE_ATTRIBUTE,
                     ArtifactTypeDefinition.JAR_TYPE
                 )
-                it.to.attribute(ArtifactAttributes.ARTIFACT_FORMAT, TYPE_EXTRACTED_AAPT2_BINARY)
+                it.to.attribute(ARTIFACT_TYPE_ATTRIBUTE, TYPE_EXTRACTED_AAPT2_BINARY)
             }
 
             val aapt2Directory = configuration.incoming.artifactView { config ->
                 config.attributes {
                     it.attribute(
-                        ArtifactAttributes.ARTIFACT_FORMAT,
+                        ARTIFACT_TYPE_ATTRIBUTE,
                         TYPE_EXTRACTED_AAPT2_BINARY
                     )
                 }

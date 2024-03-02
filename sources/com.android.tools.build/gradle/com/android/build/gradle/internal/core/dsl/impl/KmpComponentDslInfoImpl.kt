@@ -19,10 +19,10 @@ package com.android.build.gradle.internal.core.dsl.impl
 import com.android.build.api.dsl.KotlinMultiplatformAndroidExtension
 import com.android.build.api.variant.impl.MutableAndroidVersion
 import com.android.build.gradle.internal.core.dsl.KmpComponentDslInfo
+import com.android.build.gradle.internal.core.dsl.features.PrivacySandboxDslInfo
 import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidExtensionImpl
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.builder.core.AbstractProductFlavor
-import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 
 abstract class KmpComponentDslInfoImpl(
@@ -49,6 +49,13 @@ abstract class KmpComponentDslInfoImpl(
             )
         }
 
-    override val buildTypeMatchingFallbacks: ListProperty<String>
-        get() = extension.dependencyVariantSelection.buildTypes
+    override val buildTypeMatchingFallbacks: List<String>
+        get() = extension.dependencyVariantSelection.buildTypes.get()
+
+    override val privacySandboxDsl: PrivacySandboxDslInfo
+        get() = object: PrivacySandboxDslInfo {
+            override val enable: Boolean
+                get() = false // TODO(b/312469467)
+        }
+
 }

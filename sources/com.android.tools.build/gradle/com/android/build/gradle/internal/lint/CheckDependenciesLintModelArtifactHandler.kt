@@ -21,8 +21,8 @@ import com.android.build.gradle.internal.ide.dependencies.ArtifactHandler
 import com.android.builder.model.MavenCoordinates
 import com.android.tools.lint.model.DefaultLintModelAndroidLibrary
 import com.android.tools.lint.model.DefaultLintModelJavaLibrary
-import com.android.tools.lint.model.DefaultLintModelMavenName
 import com.android.tools.lint.model.DefaultLintModelModuleLibrary
+import com.android.tools.lint.model.DefaultLintModelMavenName
 import com.android.tools.lint.model.LintModelLibrary
 import com.android.tools.lint.model.LintModelMavenName
 import com.android.utils.FileUtils
@@ -132,9 +132,16 @@ internal class CheckDependenciesLintModelArtifactHandler(
         isTestFixtures: Boolean,
         identitySupplier: () -> String
     ): LintModelLibrary {
-        val sourceSetKey = ProjectSourceSetKey(buildId, projectPath, variantName, isTestFixtures)
-        val mainKey = ProjectKey(buildId, projectPath, variantName)
-        val hasLintModel = (mainKey.buildId == thisProject.buildId && mainKey.projectPath == thisProject.projectPath) || projectDependencyLintModels.contains(mainKey)
+        val sourceSetKey = ProjectSourceSetKey(
+            (buildId + projectPath).replace("::", ":"), // TODO (b/298662354)
+            variantName,
+            isTestFixtures
+        )
+        val mainKey = ProjectKey(
+            (buildId + projectPath).replace("::", ":"), // TODO (b/298662354)
+            variantName
+        )
+        val hasLintModel = (mainKey.buildTreePath == thisProject.buildTreePath) || projectDependencyLintModels.contains(mainKey)
         if (hasLintModel) {
             return DefaultLintModelModuleLibrary(
                 identifier = identitySupplier(),
@@ -148,8 +155,8 @@ internal class CheckDependenciesLintModelArtifactHandler(
             if(warnIfProjectTreatedAsExternalDependency) {
                 Logging.getLogger(CheckDependenciesLintModelArtifactHandler::class.java)
                     .warn(
-                        "Warning: Lint will treat ${mainKey.projectPath} as an external dependency and not analyze it.\n" +
-                                " * Recommended Action: Apply the 'com.android.lint' plugin to java library project ${mainKey.projectPath}. to enable " +
+                        "Warning: Lint will treat ${mainKey.buildTreePath} as an external dependency and not analyze it.\n" +
+                                " * Recommended Action: Apply the 'com.android.lint' plugin to java library project ${mainKey.buildTreePath}. to enable " +
                                 "lint to analyze those sources.\n"
                     )
             }

@@ -266,7 +266,7 @@ abstract class ExtractApksTask : NonIncrementalTask() {
             }
             task.dynamicModulesToInstall.disallowChanges()
             task.setIncludeMetadata.setDisallowChanges(creationConfig.services.projectOptions[BooleanOption.ENABLE_LOCAL_TESTING])
-            task.enablePrivacySandboxSdkConsumption.setDisallowChanges(creationConfig.services.projectOptions[BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT])
+            task.enablePrivacySandboxSdkConsumption.setDisallowChanges(creationConfig.privacySandboxCreationConfig != null)
         }
     }
 }

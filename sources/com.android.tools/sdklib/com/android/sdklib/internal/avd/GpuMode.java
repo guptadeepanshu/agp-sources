@@ -39,12 +39,11 @@ public enum GpuMode {
             case AUTO:
                 return "Automatic";
             case HOST:
-                return "Hardware - GLES 2.0";
+                return "Hardware";
             case SWIFT:
-                return "Software - GLES 2.0";
             case OFF:
             default:
-                return "Software - GLES 1.1";
+                return "Software";
         }
     }
 

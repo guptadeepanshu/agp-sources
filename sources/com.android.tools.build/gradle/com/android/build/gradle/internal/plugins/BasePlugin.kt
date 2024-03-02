@@ -59,7 +59,6 @@ import com.android.build.gradle.internal.errors.DeprecationReporterImpl
 import com.android.build.gradle.internal.errors.IncompatibleProjectOptionsReporter
 import com.android.build.gradle.internal.getManagedDeviceAvdFolder
 import com.android.build.gradle.internal.getSdkDir
-import com.android.build.gradle.internal.ide.ModelBuilder
 import com.android.build.gradle.internal.ide.dependencies.LibraryDependencyCacheBuildService
 import com.android.build.gradle.internal.ide.dependencies.MavenCoordinatesCacheBuildService
 import com.android.build.gradle.internal.ide.v2.GlobalSyncService
@@ -129,12 +128,14 @@ abstract class BasePlugin<
                 DefaultConfigT: com.android.build.api.dsl.DefaultConfig,
                 ProductFlavorT: com.android.build.api.dsl.ProductFlavor,
                 AndroidResourcesT: com.android.build.api.dsl.AndroidResources,
+                InstallationT: com.android.build.api.dsl.Installation,
                 AndroidT: CommonExtension<
                         BuildFeaturesT,
                         BuildTypeT,
                         DefaultConfigT,
                         ProductFlavorT,
-                        AndroidResourcesT>,
+                        AndroidResourcesT,
+                        InstallationT>,
                 AndroidComponentsT:
                         AndroidComponentsExtension<
                                 in AndroidT,
@@ -159,12 +160,14 @@ abstract class BasePlugin<
             DefaultConfigT: com.android.build.api.dsl.DefaultConfig,
             ProductFlavorT: com.android.build.api.dsl.ProductFlavor,
             AndroidResourcesT: com.android.build.api.dsl.AndroidResources,
+            InstallationT: com.android.build.api.dsl.Installation,
             AndroidT: CommonExtension<
                     out BuildFeaturesT,
                     out BuildTypeT,
                     out DefaultConfigT,
                     out ProductFlavorT,
-                    out AndroidResourcesT>>(
+                    out AndroidResourcesT,
+                    out InstallationT>>(
         val oldExtension: BaseExtension,
         val newExtension: AndroidT,
         val bootClasspathConfig: BootClasspathConfigImpl,
@@ -201,7 +204,7 @@ abstract class BasePlugin<
     }
 
     val managedDeviceRegistry: ManagedDeviceRegistry by lazy(LazyThreadSafetyMode.NONE) {
-        ManagedDeviceRegistry(AndroidTestOptionsDslInfoImpl((newExtension as CommonExtensionImpl<*, *, *, *, *>)))
+        ManagedDeviceRegistry(AndroidTestOptionsDslInfoImpl((newExtension as CommonExtensionImpl<*, *, *, *, *, *>)))
     }
 
     private val globalConfig by lazy {
@@ -210,7 +213,7 @@ abstract class BasePlugin<
             GlobalTaskCreationConfigImpl(
                 project,
                 extension,
-                (newExtension as CommonExtensionImpl<*, *, *, *, *>),
+                (newExtension as CommonExtensionImpl<*, *, *, *, *, *>),
                 dslServices,
                 versionedSdkLoaderService,
                 bootClasspathConfig,
@@ -316,7 +319,7 @@ abstract class BasePlugin<
         buildOutputs: NamedDomainObjectContainer<com.android.build.gradle.api.BaseVariantOutput>,
         extraModelInfo: ExtraModelInfo,
         versionedSdkLoaderService: VersionedSdkLoaderService
-    ): ExtensionData<BuildFeaturesT, BuildTypeT, DefaultConfigT, ProductFlavorT, AndroidResourcesT, AndroidT>
+    ): ExtensionData<BuildFeaturesT, BuildTypeT, DefaultConfigT, ProductFlavorT, AndroidResourcesT, InstallationT, AndroidT>
 
     protected abstract fun createComponentExtension(
         dslServices: DslServices,
@@ -530,13 +533,12 @@ abstract class BasePlugin<
         project: Project,
         registry: ToolingModelBuilderRegistry,
         variantInputModel: VariantInputModel<DefaultConfig, BuildType, ProductFlavor, SigningConfig>,
-        extensionData: ExtensionData<BuildFeaturesT, BuildTypeT, DefaultConfigT, ProductFlavorT, AndroidResourcesT, AndroidT>,
+        extensionData: ExtensionData<BuildFeaturesT, BuildTypeT, DefaultConfigT, ProductFlavorT, AndroidResourcesT, InstallationT, AndroidT>,
         extraModelInfo: ExtraModelInfo,
         globalConfig: GlobalTaskCreationConfig
     ) {
         // Register a builder for the custom tooling model
         val variantModel: VariantModel = createVariantModel(globalConfig)
-        registerModelBuilder(project, registry, variantModel, extensionData.oldExtension, extraModelInfo)
         registry.register(
             com.android.build.gradle.internal.ide.v2.ModelBuilder(
                 project, variantModel, extensionData.newExtension
@@ -566,21 +568,6 @@ abstract class BasePlugin<
             getProjectType(),
             getProjectTypeV2(),
             globalConfig)
-    }
-
-    /** Registers a builder for the custom tooling model.  */
-    protected open fun registerModelBuilder(
-        project: Project,
-        registry: ToolingModelBuilderRegistry,
-        variantModel: VariantModel,
-        extension: BaseExtension,
-        extraModelInfo: ExtraModelInfo
-    ) {
-        registry.register(
-            ModelBuilder(
-                project, variantModel, extension, extraModelInfo
-            )
-        )
     }
 
     override fun createTasks(project: Project) {
@@ -624,7 +611,8 @@ abstract class BasePlugin<
 
         variantManager.variantApiOperationsRegistrar.executeDslFinalizationBlocks()
 
-        (globalConfig.compileOptions as CompileOptions).finalizeSourceAndTargetCompatibility(project)
+        (globalConfig.compileOptions as CompileOptions)
+            .finalizeSourceAndTargetCompatibility(project, globalConfig)
 
         if (extension.compileSdkVersion == null) {
             if (SyncOptions.getModelQueryMode(projectServices.projectOptions)
@@ -732,6 +720,8 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
             extension
         )
         taskManager.createTasks(variantFactory.componentType, createVariantModel(globalConfig))
+        val anyVariantSupportsSdkConsumption =
+                variants.any { it.variant.privacySandboxCreationConfig != null }
         DependencyConfigurator(
             project,
             projectServices
@@ -744,9 +734,8 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
                 variantManager.nestedComponents,
                 globalConfig
             )
-            .configureAttributeMatchingStrategies(variantInputModel)
+            .configureAttributeMatchingStrategies(variantInputModel, anyVariantSupportsSdkConsumption)
             .configureCalculateStackFramesTransforms(globalConfig)
-            .configurePrivacySandboxSdkConsumerTransforms()
                 .apply {
                     // Registering Jacoco transforms causes the jacoco configuration to be created.
                     // Ensure there is at least one variant with enableAndroidTestCoverage
@@ -755,12 +744,21 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
                         configureJacocoTransforms()
                     }
                 }
-                .configurePrivacySandboxSdkVariantTransforms(
-                        variants.map { it.variant },
-                        globalConfig.compileSdkHashString,
-                        globalConfig.buildToolsRevision,
-                        globalConfig
-                )
+                .apply {
+                    // Registering privacy sandbox transforms creates various detatched
+                    // configurations for tools it uses. Only register them if privacy sandbox
+                    // consumption is enabled.
+                    if (anyVariantSupportsSdkConsumption) {
+                        configurePrivacySandboxSdkConsumerTransforms()
+                        configurePrivacySandboxSdkVariantTransforms(
+                                variants.map { it.variant },
+                                globalConfig.compileSdkHashString,
+                                globalConfig.buildToolsRevision,
+                                globalConfig
+                        )
+                    }
+                }
+
 
         // Run the old Variant API, after the variants and tasks have been created.
         @Suppress("DEPRECATION")
@@ -798,7 +796,7 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
     private fun findHighestSdkInstalled(): String? {
         var highestSdk: String? = null
         val folder = withProject("findHighestSdkInstalled") { project ->
-            File(getSdkDir(project.rootDir, syncIssueReporter), "platforms")
+            File(getSdkDir(project.rootDir, syncIssueReporter, project.providers), "platforms")
         }
         val listOfFiles = folder.listFiles()
         if (listOfFiles != null) {

@@ -31,8 +31,8 @@ import org.gradle.api.provider.ValueSourceParameters
  * this class helps us create a file or directory during configuration time without causing
  * configuration cache miss.
  *
- * To create a file/directory during configuration time: create them in [obtain] function using the
- * path declared in [Params] instead of computing the path directly. The return value of [obtain]
+ * To create a file/directory during configuration time: create them in [obtain] function either
+ * using the path declared in [Params] or computing the path directly. The return value of [obtain]
  * function needs to be same between different runs unless you want to config cache to be invalided.
  * It can be a constant like [IGNORE_FILE_CREATION] if you don't need this function to return
  * anything(Note [Unit] won't work). It can also be a [File] or other types.

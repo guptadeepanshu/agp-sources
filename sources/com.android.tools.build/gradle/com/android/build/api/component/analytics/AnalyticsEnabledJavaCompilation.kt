@@ -29,7 +29,7 @@ open class AnalyticsEnabledJavaCompilation @Inject constructor(
     val objectFactory: ObjectFactory
 ) : JavaCompilation {
 
-    override val annotationProcessor: AnnotationProcessor by lazy {
+    override val annotationProcessor: AnnotationProcessor by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
         stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
             VariantPropertiesMethodType.ANNOTATION_PROCESSOR_VALUE
 

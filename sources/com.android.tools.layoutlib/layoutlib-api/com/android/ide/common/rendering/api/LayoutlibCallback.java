@@ -244,6 +244,11 @@ public abstract class LayoutlibCallback implements XmlParserFactory {
         return false;
     }
 
+    /** Returns true if a custom inflater should be used when available. */
+    public boolean shouldUseCustomInflater() {
+        return true;
+    }
+
     /** Logs an error message to the Studio error log. */
     public void error(@NonNull String message, @NonNull String... details) {}
 

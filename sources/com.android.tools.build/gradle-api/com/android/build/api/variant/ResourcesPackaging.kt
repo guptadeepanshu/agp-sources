@@ -18,13 +18,18 @@ package com.android.build.api.variant
 
 import org.gradle.api.provider.SetProperty
 
+/**
+ * Build-time properties for packaging Java resources inside a [Component].
+ *
+ * This is accessed via [Packaging.resources]
+ */
 interface ResourcesPackaging {
 
     /**
      * The set of excluded patterns. Java resources matching any of these patterns do not get
      * packaged in the APK.
      *
-     * Example usage: `packagingOptions.resources.excludes.add("**`/`*.exclude")`
+     * Example usage: `variant.packaging.resources.excludes.add("**`/`*.exclude")`
      */
     val excludes: SetProperty<String>
 
@@ -33,7 +38,7 @@ interface ResourcesPackaging {
      * resource APK entry path matching one of these patterns, only the first java resource found
      * with that path gets packaged in the APK.
      *
-     * Example usage: `packagingOptions.resources.pickFirsts.add("**`/`*.pickFirst")`
+     * Example usage: `variant.packaging.resources.pickFirsts.add("**`/`*.pickFirst")`
      */
     val pickFirsts: SetProperty<String>
 
@@ -42,7 +47,7 @@ interface ResourcesPackaging {
      * APK entry path matching one of these patterns, all java resources with that path are
      * concatenated and packaged as a single entry in the APK.
      *
-     * Example usage: `packagingOptions.resources.merges.add("**`/`*.merge")`
+     * Example usage: `variant.packaging.resources.merges.add("**`/`*.merge")`
      */
     val merges: SetProperty<String>
 }

@@ -50,6 +50,10 @@ class SyncIssueReporterImpl(
 
     private val messageReceiverImpl = MessageReceiverImpl(errorFormatMode, logger)
 
+    override fun isInStandardEvaluationMode(): Boolean {
+        return mode == EvaluationMode.STANDARD
+    }
+
     @get:Synchronized
     override val syncIssues: ImmutableList<SyncIssue>
         get() = ImmutableList.copyOf(_syncIssues.values)

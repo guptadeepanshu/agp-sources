@@ -26,89 +26,6 @@ private static final long serialVersionUID = 0L;
     return new EncodedNativeModelBuilderOutcome();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
-  private EncodedNativeModelBuilderOutcome(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 8: {
-            int rawValue = input.readEnum();
-
-            outcome_ = rawValue;
-            break;
-          }
-          case 16: {
-
-            gradlePath_ = input.readInt32();
-            break;
-          }
-          case 24: {
-
-            requestedAbis_ = input.readInt32();
-            break;
-          }
-          case 32: {
-
-            requestedVariants_ = input.readInt32();
-            break;
-          }
-          case 40: {
-
-            availableVariantAbis_ = input.readInt32();
-            break;
-          }
-          case 48: {
-
-            successfullyConfiguredVariantAbis_ = input.readInt32();
-            break;
-          }
-          case 56: {
-
-            failedConfigureVariantAbis_ = input.readInt32();
-            break;
-          }
-          case 64: {
-
-            failedConfigureMessages_ = input.readInt32();
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.android.build.gradle.internal.cxx.configure.CxxConfigure.internal_static_EncodedNativeModelBuilderOutcome_descriptor;
@@ -123,7 +40,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int OUTCOME_FIELD_NUMBER = 1;
-  private int outcome_;
+  private int outcome_ = 0;
   /**
    * <code>.NativeModelBuilderOutcome.Outcome outcome = 1;</code>
    * @return The enum numeric value on the wire for outcome.
@@ -136,13 +53,12 @@ private static final long serialVersionUID = 0L;
    * @return The outcome.
    */
   @java.lang.Override public com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome.Outcome getOutcome() {
-    @SuppressWarnings("deprecation")
-    com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome.Outcome result = com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome.Outcome.valueOf(outcome_);
+    com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome.Outcome result = com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome.Outcome.forNumber(outcome_);
     return result == null ? com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome.Outcome.UNRECOGNIZED : result;
   }
 
   public static final int GRADLE_PATH_FIELD_NUMBER = 2;
-  private int gradlePath_;
+  private int gradlePath_ = 0;
   /**
    * <code>int32 gradle_path = 2;</code>
    * @return The gradlePath.
@@ -153,7 +69,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int REQUESTED_ABIS_FIELD_NUMBER = 3;
-  private int requestedAbis_;
+  private int requestedAbis_ = 0;
   /**
    * <code>int32 requested_abis = 3;</code>
    * @return The requestedAbis.
@@ -164,7 +80,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int REQUESTED_VARIANTS_FIELD_NUMBER = 4;
-  private int requestedVariants_;
+  private int requestedVariants_ = 0;
   /**
    * <code>int32 requested_variants = 4;</code>
    * @return The requestedVariants.
@@ -175,7 +91,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int AVAILABLE_VARIANT_ABIS_FIELD_NUMBER = 5;
-  private int availableVariantAbis_;
+  private int availableVariantAbis_ = 0;
   /**
    * <code>int32 available_variant_abis = 5;</code>
    * @return The availableVariantAbis.
@@ -186,7 +102,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SUCCESSFULLY_CONFIGURED_VARIANT_ABIS_FIELD_NUMBER = 6;
-  private int successfullyConfiguredVariantAbis_;
+  private int successfullyConfiguredVariantAbis_ = 0;
   /**
    * <code>int32 successfully_configured_variant_abis = 6;</code>
    * @return The successfullyConfiguredVariantAbis.
@@ -197,7 +113,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FAILED_CONFIGURE_VARIANT_ABIS_FIELD_NUMBER = 7;
-  private int failedConfigureVariantAbis_;
+  private int failedConfigureVariantAbis_ = 0;
   /**
    * <code>int32 failed_configure_variant_abis = 7;</code>
    * @return The failedConfigureVariantAbis.
@@ -208,7 +124,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FAILED_CONFIGURE_MESSAGES_FIELD_NUMBER = 8;
-  private int failedConfigureMessages_;
+  private int failedConfigureMessages_ = 0;
   /**
    * <code>int32 failed_configure_messages = 8;</code>
    * @return The failedConfigureMessages.
@@ -256,7 +172,7 @@ private static final long serialVersionUID = 0L;
     if (failedConfigureMessages_ != 0) {
       output.writeInt32(8, failedConfigureMessages_);
     }
-    unknownFields.writeTo(output);
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -297,7 +213,7 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(8, failedConfigureMessages_);
     }
-    size += unknownFields.getSerializedSize();
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -327,7 +243,7 @@ private static final long serialVersionUID = 0L;
         != other.getFailedConfigureVariantAbis()) return false;
     if (getFailedConfigureMessages()
         != other.getFailedConfigureMessages()) return false;
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -354,7 +270,7 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getFailedConfigureVariantAbis();
     hash = (37 * hash) + FAILED_CONFIGURE_MESSAGES_FIELD_NUMBER;
     hash = (53 * hash) + getFailedConfigureMessages();
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -471,38 +387,26 @@ private static final long serialVersionUID = 0L;
 
     // Construct using com.android.build.gradle.internal.cxx.configure.EncodedNativeModelBuilderOutcome.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessageV3
-              .alwaysUseFieldBuilders) {
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       outcome_ = 0;
-
       gradlePath_ = 0;
-
       requestedAbis_ = 0;
-
       requestedVariants_ = 0;
-
       availableVariantAbis_ = 0;
-
       successfullyConfiguredVariantAbis_ = 0;
-
       failedConfigureVariantAbis_ = 0;
-
       failedConfigureMessages_ = 0;
-
       return this;
     }
 
@@ -529,50 +433,39 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.android.build.gradle.internal.cxx.configure.EncodedNativeModelBuilderOutcome buildPartial() {
       com.android.build.gradle.internal.cxx.configure.EncodedNativeModelBuilderOutcome result = new com.android.build.gradle.internal.cxx.configure.EncodedNativeModelBuilderOutcome(this);
-      result.outcome_ = outcome_;
-      result.gradlePath_ = gradlePath_;
-      result.requestedAbis_ = requestedAbis_;
-      result.requestedVariants_ = requestedVariants_;
-      result.availableVariantAbis_ = availableVariantAbis_;
-      result.successfullyConfiguredVariantAbis_ = successfullyConfiguredVariantAbis_;
-      result.failedConfigureVariantAbis_ = failedConfigureVariantAbis_;
-      result.failedConfigureMessages_ = failedConfigureMessages_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.android.build.gradle.internal.cxx.configure.EncodedNativeModelBuilderOutcome result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.outcome_ = outcome_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.gradlePath_ = gradlePath_;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.requestedAbis_ = requestedAbis_;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.requestedVariants_ = requestedVariants_;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.availableVariantAbis_ = availableVariantAbis_;
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.successfullyConfiguredVariantAbis_ = successfullyConfiguredVariantAbis_;
+      }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.failedConfigureVariantAbis_ = failedConfigureVariantAbis_;
+      }
+      if (((from_bitField0_ & 0x00000080) != 0)) {
+        result.failedConfigureMessages_ = failedConfigureMessages_;
+      }
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.android.build.gradle.internal.cxx.configure.EncodedNativeModelBuilderOutcome) {
@@ -609,7 +502,7 @@ private static final long serialVersionUID = 0L;
       if (other.getFailedConfigureMessages() != 0) {
         setFailedConfigureMessages(other.getFailedConfigureMessages());
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -624,19 +517,73 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.android.build.gradle.internal.cxx.configure.EncodedNativeModelBuilderOutcome parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              outcome_ = input.readEnum();
+              bitField0_ |= 0x00000001;
+              break;
+            } // case 8
+            case 16: {
+              gradlePath_ = input.readInt32();
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 16
+            case 24: {
+              requestedAbis_ = input.readInt32();
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 24
+            case 32: {
+              requestedVariants_ = input.readInt32();
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 32
+            case 40: {
+              availableVariantAbis_ = input.readInt32();
+              bitField0_ |= 0x00000010;
+              break;
+            } // case 40
+            case 48: {
+              successfullyConfiguredVariantAbis_ = input.readInt32();
+              bitField0_ |= 0x00000020;
+              break;
+            } // case 48
+            case 56: {
+              failedConfigureVariantAbis_ = input.readInt32();
+              bitField0_ |= 0x00000040;
+              break;
+            } // case 56
+            case 64: {
+              failedConfigureMessages_ = input.readInt32();
+              bitField0_ |= 0x00000080;
+              break;
+            } // case 64
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.android.build.gradle.internal.cxx.configure.EncodedNativeModelBuilderOutcome) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
+    private int bitField0_;
 
     private int outcome_ = 0;
     /**
@@ -652,8 +599,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setOutcomeValue(int value) {
-      
       outcome_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -663,8 +610,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome.Outcome getOutcome() {
-      @SuppressWarnings("deprecation")
-      com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome.Outcome result = com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome.Outcome.valueOf(outcome_);
+      com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome.Outcome result = com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome.Outcome.forNumber(outcome_);
       return result == null ? com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome.Outcome.UNRECOGNIZED : result;
     }
     /**
@@ -676,7 +622,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
         throw new NullPointerException();
       }
-      
+      bitField0_ |= 0x00000001;
       outcome_ = value.getNumber();
       onChanged();
       return this;
@@ -686,7 +632,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearOutcome() {
-      
+      bitField0_ = (bitField0_ & ~0x00000001);
       outcome_ = 0;
       onChanged();
       return this;
@@ -707,8 +653,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGradlePath(int value) {
-      
+
       gradlePath_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -717,7 +664,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearGradlePath() {
-      
+      bitField0_ = (bitField0_ & ~0x00000002);
       gradlePath_ = 0;
       onChanged();
       return this;
@@ -738,8 +685,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setRequestedAbis(int value) {
-      
+
       requestedAbis_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -748,7 +696,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearRequestedAbis() {
-      
+      bitField0_ = (bitField0_ & ~0x00000004);
       requestedAbis_ = 0;
       onChanged();
       return this;
@@ -769,8 +717,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setRequestedVariants(int value) {
-      
+
       requestedVariants_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -779,7 +728,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearRequestedVariants() {
-      
+      bitField0_ = (bitField0_ & ~0x00000008);
       requestedVariants_ = 0;
       onChanged();
       return this;
@@ -800,8 +749,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setAvailableVariantAbis(int value) {
-      
+
       availableVariantAbis_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -810,7 +760,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearAvailableVariantAbis() {
-      
+      bitField0_ = (bitField0_ & ~0x00000010);
       availableVariantAbis_ = 0;
       onChanged();
       return this;
@@ -831,8 +781,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setSuccessfullyConfiguredVariantAbis(int value) {
-      
+
       successfullyConfiguredVariantAbis_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -841,7 +792,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearSuccessfullyConfiguredVariantAbis() {
-      
+      bitField0_ = (bitField0_ & ~0x00000020);
       successfullyConfiguredVariantAbis_ = 0;
       onChanged();
       return this;
@@ -862,8 +813,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFailedConfigureVariantAbis(int value) {
-      
+
       failedConfigureVariantAbis_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -872,7 +824,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearFailedConfigureVariantAbis() {
-      
+      bitField0_ = (bitField0_ & ~0x00000040);
       failedConfigureVariantAbis_ = 0;
       onChanged();
       return this;
@@ -893,8 +845,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFailedConfigureMessages(int value) {
-      
+
       failedConfigureMessages_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -903,7 +856,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearFailedConfigureMessages() {
-      
+      bitField0_ = (bitField0_ & ~0x00000080);
       failedConfigureMessages_ = 0;
       onChanged();
       return this;
@@ -941,7 +894,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new EncodedNativeModelBuilderOutcome(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

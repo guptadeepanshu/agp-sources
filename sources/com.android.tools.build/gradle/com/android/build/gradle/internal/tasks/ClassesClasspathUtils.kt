@@ -16,7 +16,7 @@
 
 package com.android.build.gradle.internal.tasks
 
-import com.android.build.api.artifact.ScopedArtifact
+import com.android.build.api.artifact.impl.InternalScopedArtifact
 import com.android.build.api.artifact.impl.InternalScopedArtifacts
 import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.internal.component.ApkCreationConfig
@@ -28,7 +28,7 @@ import org.gradle.api.file.FileCollection
 class ClassesClasspathUtils(
     val creationConfig: ApkCreationConfig,
     val enableDexingArtifactTransform: Boolean,
-    val classesAlteredTroughVariantAPI: Boolean,
+    val classesAlteredThroughVariantAPI: Boolean,
 ) {
 
     val projectClasses: FileCollection
@@ -60,14 +60,14 @@ class ClassesClasspathUtils(
         //      then: Provide the project classes from the legacy transform API classes.
 
         projectClasses = creationConfig.artifacts.forScope(
-            if (classesAlteredTroughVariantAPI) ScopedArtifacts.Scope.ALL
+            if (classesAlteredThroughVariantAPI) ScopedArtifacts.Scope.ALL
             else ScopedArtifacts.Scope.PROJECT
-        ).getFinalArtifacts(ScopedArtifact.CLASSES)
+        ).getFinalArtifacts(InternalScopedArtifact.FINAL_TRANSFORMED_CLASSES)
 
         val desugaringClasspathScopes = mutableSetOf(
             InternalScopedArtifacts.InternalScope.COMPILE_ONLY
         )
-        if (classesAlteredTroughVariantAPI) {
+        if (classesAlteredThroughVariantAPI) {
             subProjectsClasses = creationConfig.services.fileCollection()
             externalLibraryClasses = creationConfig.services.fileCollection()
             mixedScopeClasses = creationConfig.services.fileCollection()
@@ -86,12 +86,12 @@ class ClassesClasspathUtils(
                 creationConfig
                     .artifacts
                     .forScope(InternalScopedArtifacts.InternalScope.SUB_PROJECTS)
-                    .getFinalArtifacts(ScopedArtifact.CLASSES)
+                    .getFinalArtifacts(InternalScopedArtifact.FINAL_TRANSFORMED_CLASSES)
             externalLibraryClasses =
                 creationConfig
                     .artifacts
                     .forScope(InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS)
-                    .getFinalArtifacts(ScopedArtifact.CLASSES)
+                    .getFinalArtifacts(InternalScopedArtifact.FINAL_TRANSFORMED_CLASSES)
 
             // mixed scoped classes are not possible any longer since each jar is individually
             // present in a single scope.
@@ -124,7 +124,8 @@ class ClassesClasspathUtils(
             } ?: creationConfig.services.fileCollection()
 
             creationConfig.services.fileCollection(
-                getArtifactFiles(desugaringClasspathScopes, ScopedArtifact.CLASSES),
+                getArtifactFiles(
+                    desugaringClasspathScopes, InternalScopedArtifact.FINAL_TRANSFORMED_CLASSES),
                 testedExternalLibs,
                 externalLibraryClasses
             ).minus(testedProject)
@@ -133,10 +134,14 @@ class ClassesClasspathUtils(
         }
 
         desugaringClasspathClasses =
-            getArtifactFiles(desugaringClasspathScopes, ScopedArtifact.CLASSES)
+            getArtifactFiles(
+                desugaringClasspathScopes, InternalScopedArtifact.FINAL_TRANSFORMED_CLASSES)
     }
 
-    private fun getArtifactFiles(inputScopes: Collection<InternalScopedArtifacts.InternalScope>, type: ScopedArtifact) =
+    private fun getArtifactFiles(
+        inputScopes: Collection<InternalScopedArtifacts.InternalScope>,
+        type: InternalScopedArtifact
+    ) =
         creationConfig.services.fileCollection().also {
             inputScopes.forEach { scope ->
                 it.from(

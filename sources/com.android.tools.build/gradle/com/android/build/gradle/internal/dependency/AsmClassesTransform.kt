@@ -30,11 +30,11 @@ import org.gradle.api.artifacts.transform.InputArtifact
 import org.gradle.api.artifacts.transform.InputArtifactDependencies
 import org.gradle.api.artifacts.transform.TransformAction
 import org.gradle.api.artifacts.transform.TransformOutputs
+import org.gradle.api.artifacts.type.ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE
 import org.gradle.api.attributes.Attribute
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.file.RegularFile
-import org.gradle.api.internal.artifacts.ArtifactAttributes.ARTIFACT_FORMAT
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
@@ -91,11 +91,11 @@ abstract class AsmClassesTransform : TransformAction<AsmClassesTransform.Paramet
                     }
 
                     spec.from.attribute(
-                        ARTIFACT_FORMAT,
+                        ARTIFACT_TYPE_ATTRIBUTE,
                         AndroidArtifacts.ArtifactType.CLASSES_JAR.type
                     )
                     spec.to.attribute(
-                        ARTIFACT_FORMAT,
+                        ARTIFACT_TYPE_ATTRIBUTE,
                         AndroidArtifacts.ArtifactType.ASM_INSTRUMENTED_JARS.type
                     )
 

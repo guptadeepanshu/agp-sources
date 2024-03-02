@@ -27,12 +27,12 @@ import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.internal.utils.fromDisallowChanges
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.internal.file.FileOperations
+import org.gradle.api.file.FileSystemOperations
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
@@ -55,7 +55,7 @@ import javax.inject.Inject
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.NATIVE)
 abstract class PrefabPackageTask : NonIncrementalTask() {
     @Inject
-    protected abstract fun getFileOperations(): FileOperations
+    protected abstract fun getFileOperations(): FileSystemOperations
 
     @get:Internal
     abstract val sdkComponents: Property<SdkComponentsBuildService>

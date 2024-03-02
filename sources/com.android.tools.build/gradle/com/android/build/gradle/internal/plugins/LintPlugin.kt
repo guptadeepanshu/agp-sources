@@ -128,7 +128,7 @@ abstract class LintPlugin : Plugin<Project> {
             customLintChecks,
             dslOperationsRegistrar,
         )
-        ModelArtifactCompatibilityRule.setUp(project.dependencies.attributesSchema)
+        ModelArtifactCompatibilityRule.setUp(project.dependencies.attributesSchema, false)
     }
 
     private fun registerTasks(
@@ -826,12 +826,14 @@ abstract class LintPlugin : Plugin<Project> {
             projectOptions,
             project.gradle.sharedServices,
             lintFromMaven,
+            null,
             maxWorkerCount = project.gradle.startParameter.maxWorkerCount,
             projectInfo = projectInfo,
             fileResolver = { o: Any -> project.file(o) },
             configurationContainer = project.configurations,
             dependencyHandler = project.dependencies,
-            extraProperties = project.extensions.extraProperties
+            extraProperties = project.extensions.extraProperties,
+            emptyTaskCreator = { name -> project.tasks.register(name) },
         )
         projectOptions
             .allOptions

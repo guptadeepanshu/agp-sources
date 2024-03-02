@@ -29,141 +29,6 @@ private static final long serialVersionUID = 0L;
     return new EncodedConfigureInvalidationState();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
-  private EncodedConfigureInvalidationState(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    int mutable_bitField0_ = 0;
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 8: {
-
-            forceConfigure_ = input.readBool();
-            break;
-          }
-          case 16: {
-
-            fingerPrintFile_ = input.readInt32();
-            break;
-          }
-          case 24: {
-
-            inputFiles_ = input.readInt32();
-            break;
-          }
-          case 32: {
-
-            requiredOutputFiles_ = input.readInt32();
-            break;
-          }
-          case 40: {
-
-            optionalOutputFiles_ = input.readInt32();
-            break;
-          }
-          case 48: {
-
-            hardConfigureFiles_ = input.readInt32();
-            break;
-          }
-          case 56: {
-
-            fingerPrintFileExisted_ = input.readBool();
-            break;
-          }
-          case 64: {
-
-            removedSinceFingerPrintsFiles_ = input.readInt32();
-            break;
-          }
-          case 72: {
-
-            addedSinceFingerPrintsFiles_ = input.readInt32();
-            break;
-          }
-          case 82: {
-            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-              changesToFingerPrintFiles_ = new java.util.ArrayList<com.android.build.gradle.internal.cxx.configure.EncodedChangedFile>();
-              mutable_bitField0_ |= 0x00000001;
-            }
-            changesToFingerPrintFiles_.add(
-                input.readMessage(com.android.build.gradle.internal.cxx.configure.EncodedChangedFile.parser(), extensionRegistry));
-            break;
-          }
-          case 88: {
-
-            unchangedFingerPrintFiles_ = input.readInt32();
-            break;
-          }
-          case 96: {
-            int rawValue = input.readEnum();
-
-            configureType_ = rawValue;
-            break;
-          }
-          case 106: {
-            if (!((mutable_bitField0_ & 0x00000002) != 0)) {
-              softConfigureReasons_ = new java.util.ArrayList<com.android.build.gradle.internal.cxx.configure.EncodedChangedFile>();
-              mutable_bitField0_ |= 0x00000002;
-            }
-            softConfigureReasons_.add(
-                input.readMessage(com.android.build.gradle.internal.cxx.configure.EncodedChangedFile.parser(), extensionRegistry));
-            break;
-          }
-          case 114: {
-            if (!((mutable_bitField0_ & 0x00000004) != 0)) {
-              hardConfigureReasons_ = new java.util.ArrayList<com.android.build.gradle.internal.cxx.configure.EncodedChangedFile>();
-              mutable_bitField0_ |= 0x00000004;
-            }
-            hardConfigureReasons_.add(
-                input.readMessage(com.android.build.gradle.internal.cxx.configure.EncodedChangedFile.parser(), extensionRegistry));
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      if (((mutable_bitField0_ & 0x00000001) != 0)) {
-        changesToFingerPrintFiles_ = java.util.Collections.unmodifiableList(changesToFingerPrintFiles_);
-      }
-      if (((mutable_bitField0_ & 0x00000002) != 0)) {
-        softConfigureReasons_ = java.util.Collections.unmodifiableList(softConfigureReasons_);
-      }
-      if (((mutable_bitField0_ & 0x00000004) != 0)) {
-        hardConfigureReasons_ = java.util.Collections.unmodifiableList(hardConfigureReasons_);
-      }
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.android.build.gradle.internal.cxx.configure.CxxConfigure.internal_static_EncodedConfigureInvalidationState_descriptor;
@@ -178,7 +43,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FORCE_CONFIGURE_FIELD_NUMBER = 1;
-  private boolean forceConfigure_;
+  private boolean forceConfigure_ = false;
   /**
    * <code>bool force_configure = 1;</code>
    * @return The forceConfigure.
@@ -189,7 +54,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FINGER_PRINT_FILE_FIELD_NUMBER = 2;
-  private int fingerPrintFile_;
+  private int fingerPrintFile_ = 0;
   /**
    * <code>int32 finger_print_file = 2;</code>
    * @return The fingerPrintFile.
@@ -200,7 +65,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int INPUT_FILES_FIELD_NUMBER = 3;
-  private int inputFiles_;
+  private int inputFiles_ = 0;
   /**
    * <code>int32 input_files = 3;</code>
    * @return The inputFiles.
@@ -211,7 +76,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int REQUIRED_OUTPUT_FILES_FIELD_NUMBER = 4;
-  private int requiredOutputFiles_;
+  private int requiredOutputFiles_ = 0;
   /**
    * <code>int32 required_output_files = 4;</code>
    * @return The requiredOutputFiles.
@@ -222,7 +87,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int OPTIONAL_OUTPUT_FILES_FIELD_NUMBER = 5;
-  private int optionalOutputFiles_;
+  private int optionalOutputFiles_ = 0;
   /**
    * <code>int32 optional_output_files = 5;</code>
    * @return The optionalOutputFiles.
@@ -233,7 +98,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int HARD_CONFIGURE_FILES_FIELD_NUMBER = 6;
-  private int hardConfigureFiles_;
+  private int hardConfigureFiles_ = 0;
   /**
    * <code>int32 hard_configure_files = 6;</code>
    * @return The hardConfigureFiles.
@@ -244,7 +109,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FINGER_PRINT_FILE_EXISTED_FIELD_NUMBER = 7;
-  private boolean fingerPrintFileExisted_;
+  private boolean fingerPrintFileExisted_ = false;
   /**
    * <code>bool finger_print_file_existed = 7;</code>
    * @return The fingerPrintFileExisted.
@@ -255,7 +120,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int REMOVED_SINCE_FINGER_PRINTS_FILES_FIELD_NUMBER = 8;
-  private int removedSinceFingerPrintsFiles_;
+  private int removedSinceFingerPrintsFiles_ = 0;
   /**
    * <code>int32 removed_since_finger_prints_files = 8;</code>
    * @return The removedSinceFingerPrintsFiles.
@@ -266,7 +131,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ADDED_SINCE_FINGER_PRINTS_FILES_FIELD_NUMBER = 9;
-  private int addedSinceFingerPrintsFiles_;
+  private int addedSinceFingerPrintsFiles_ = 0;
   /**
    * <code>int32 added_since_finger_prints_files = 9;</code>
    * @return The addedSinceFingerPrintsFiles.
@@ -277,6 +142,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CHANGES_TO_FINGER_PRINT_FILES_FIELD_NUMBER = 10;
+  @SuppressWarnings("serial")
   private java.util.List<com.android.build.gradle.internal.cxx.configure.EncodedChangedFile> changesToFingerPrintFiles_;
   /**
    * <code>repeated .EncodedChangedFile changes_to_finger_print_files = 10;</code>
@@ -317,7 +183,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int UNCHANGED_FINGER_PRINT_FILES_FIELD_NUMBER = 11;
-  private int unchangedFingerPrintFiles_;
+  private int unchangedFingerPrintFiles_ = 0;
   /**
    * <code>int32 unchanged_finger_print_files = 11;</code>
    * @return The unchangedFingerPrintFiles.
@@ -328,7 +194,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CONFIGURE_TYPE_FIELD_NUMBER = 12;
-  private int configureType_;
+  private int configureType_ = 0;
   /**
    * <code>.ConfigureType configure_type = 12;</code>
    * @return The enum numeric value on the wire for configureType.
@@ -341,12 +207,12 @@ private static final long serialVersionUID = 0L;
    * @return The configureType.
    */
   @java.lang.Override public com.android.build.gradle.internal.cxx.configure.ConfigureType getConfigureType() {
-    @SuppressWarnings("deprecation")
-    com.android.build.gradle.internal.cxx.configure.ConfigureType result = com.android.build.gradle.internal.cxx.configure.ConfigureType.valueOf(configureType_);
+    com.android.build.gradle.internal.cxx.configure.ConfigureType result = com.android.build.gradle.internal.cxx.configure.ConfigureType.forNumber(configureType_);
     return result == null ? com.android.build.gradle.internal.cxx.configure.ConfigureType.UNRECOGNIZED : result;
   }
 
   public static final int SOFT_CONFIGURE_REASONS_FIELD_NUMBER = 13;
+  @SuppressWarnings("serial")
   private java.util.List<com.android.build.gradle.internal.cxx.configure.EncodedChangedFile> softConfigureReasons_;
   /**
    * <code>repeated .EncodedChangedFile soft_configure_reasons = 13;</code>
@@ -387,6 +253,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int HARD_CONFIGURE_REASONS_FIELD_NUMBER = 14;
+  @SuppressWarnings("serial")
   private java.util.List<com.android.build.gradle.internal.cxx.configure.EncodedChangedFile> hardConfigureReasons_;
   /**
    * <code>repeated .EncodedChangedFile hard_configure_reasons = 14;</code>
@@ -482,7 +349,7 @@ private static final long serialVersionUID = 0L;
     for (int i = 0; i < hardConfigureReasons_.size(); i++) {
       output.writeMessage(14, hardConfigureReasons_.get(i));
     }
-    unknownFields.writeTo(output);
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -547,7 +414,7 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(14, hardConfigureReasons_.get(i));
     }
-    size += unknownFields.getSerializedSize();
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -589,7 +456,7 @@ private static final long serialVersionUID = 0L;
         .equals(other.getSoftConfigureReasonsList())) return false;
     if (!getHardConfigureReasonsList()
         .equals(other.getHardConfigureReasonsList())) return false;
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -636,7 +503,7 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + HARD_CONFIGURE_REASONS_FIELD_NUMBER;
       hash = (53 * hash) + getHardConfigureReasonsList().hashCode();
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -753,65 +620,50 @@ private static final long serialVersionUID = 0L;
 
     // Construct using com.android.build.gradle.internal.cxx.configure.EncodedConfigureInvalidationState.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessageV3
-              .alwaysUseFieldBuilders) {
-        getChangesToFingerPrintFilesFieldBuilder();
-        getSoftConfigureReasonsFieldBuilder();
-        getHardConfigureReasonsFieldBuilder();
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       forceConfigure_ = false;
-
       fingerPrintFile_ = 0;
-
       inputFiles_ = 0;
-
       requiredOutputFiles_ = 0;
-
       optionalOutputFiles_ = 0;
-
       hardConfigureFiles_ = 0;
-
       fingerPrintFileExisted_ = false;
-
       removedSinceFingerPrintsFiles_ = 0;
-
       addedSinceFingerPrintsFiles_ = 0;
-
       if (changesToFingerPrintFilesBuilder_ == null) {
         changesToFingerPrintFiles_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000001);
       } else {
+        changesToFingerPrintFiles_ = null;
         changesToFingerPrintFilesBuilder_.clear();
       }
+      bitField0_ = (bitField0_ & ~0x00000200);
       unchangedFingerPrintFiles_ = 0;
-
       configureType_ = 0;
-
       if (softConfigureReasonsBuilder_ == null) {
         softConfigureReasons_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000002);
       } else {
+        softConfigureReasons_ = null;
         softConfigureReasonsBuilder_.clear();
       }
+      bitField0_ = (bitField0_ & ~0x00001000);
       if (hardConfigureReasonsBuilder_ == null) {
         hardConfigureReasons_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000004);
       } else {
+        hardConfigureReasons_ = null;
         hardConfigureReasonsBuilder_.clear();
       }
+      bitField0_ = (bitField0_ & ~0x00002000);
       return this;
     }
 
@@ -838,81 +690,79 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.android.build.gradle.internal.cxx.configure.EncodedConfigureInvalidationState buildPartial() {
       com.android.build.gradle.internal.cxx.configure.EncodedConfigureInvalidationState result = new com.android.build.gradle.internal.cxx.configure.EncodedConfigureInvalidationState(this);
-      int from_bitField0_ = bitField0_;
-      result.forceConfigure_ = forceConfigure_;
-      result.fingerPrintFile_ = fingerPrintFile_;
-      result.inputFiles_ = inputFiles_;
-      result.requiredOutputFiles_ = requiredOutputFiles_;
-      result.optionalOutputFiles_ = optionalOutputFiles_;
-      result.hardConfigureFiles_ = hardConfigureFiles_;
-      result.fingerPrintFileExisted_ = fingerPrintFileExisted_;
-      result.removedSinceFingerPrintsFiles_ = removedSinceFingerPrintsFiles_;
-      result.addedSinceFingerPrintsFiles_ = addedSinceFingerPrintsFiles_;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.android.build.gradle.internal.cxx.configure.EncodedConfigureInvalidationState result) {
       if (changesToFingerPrintFilesBuilder_ == null) {
-        if (((bitField0_ & 0x00000001) != 0)) {
+        if (((bitField0_ & 0x00000200) != 0)) {
           changesToFingerPrintFiles_ = java.util.Collections.unmodifiableList(changesToFingerPrintFiles_);
-          bitField0_ = (bitField0_ & ~0x00000001);
+          bitField0_ = (bitField0_ & ~0x00000200);
         }
         result.changesToFingerPrintFiles_ = changesToFingerPrintFiles_;
       } else {
         result.changesToFingerPrintFiles_ = changesToFingerPrintFilesBuilder_.build();
       }
-      result.unchangedFingerPrintFiles_ = unchangedFingerPrintFiles_;
-      result.configureType_ = configureType_;
       if (softConfigureReasonsBuilder_ == null) {
-        if (((bitField0_ & 0x00000002) != 0)) {
+        if (((bitField0_ & 0x00001000) != 0)) {
           softConfigureReasons_ = java.util.Collections.unmodifiableList(softConfigureReasons_);
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ = (bitField0_ & ~0x00001000);
         }
         result.softConfigureReasons_ = softConfigureReasons_;
       } else {
         result.softConfigureReasons_ = softConfigureReasonsBuilder_.build();
       }
       if (hardConfigureReasonsBuilder_ == null) {
-        if (((bitField0_ & 0x00000004) != 0)) {
+        if (((bitField0_ & 0x00002000) != 0)) {
           hardConfigureReasons_ = java.util.Collections.unmodifiableList(hardConfigureReasons_);
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ = (bitField0_ & ~0x00002000);
         }
         result.hardConfigureReasons_ = hardConfigureReasons_;
       } else {
         result.hardConfigureReasons_ = hardConfigureReasonsBuilder_.build();
       }
-      onBuilt();
-      return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.android.build.gradle.internal.cxx.configure.EncodedConfigureInvalidationState result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.forceConfigure_ = forceConfigure_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.fingerPrintFile_ = fingerPrintFile_;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.inputFiles_ = inputFiles_;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.requiredOutputFiles_ = requiredOutputFiles_;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.optionalOutputFiles_ = optionalOutputFiles_;
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.hardConfigureFiles_ = hardConfigureFiles_;
+      }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.fingerPrintFileExisted_ = fingerPrintFileExisted_;
+      }
+      if (((from_bitField0_ & 0x00000080) != 0)) {
+        result.removedSinceFingerPrintsFiles_ = removedSinceFingerPrintsFiles_;
+      }
+      if (((from_bitField0_ & 0x00000100) != 0)) {
+        result.addedSinceFingerPrintsFiles_ = addedSinceFingerPrintsFiles_;
+      }
+      if (((from_bitField0_ & 0x00000400) != 0)) {
+        result.unchangedFingerPrintFiles_ = unchangedFingerPrintFiles_;
+      }
+      if (((from_bitField0_ & 0x00000800) != 0)) {
+        result.configureType_ = configureType_;
+      }
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.android.build.gradle.internal.cxx.configure.EncodedConfigureInvalidationState) {
@@ -956,7 +806,7 @@ private static final long serialVersionUID = 0L;
         if (!other.changesToFingerPrintFiles_.isEmpty()) {
           if (changesToFingerPrintFiles_.isEmpty()) {
             changesToFingerPrintFiles_ = other.changesToFingerPrintFiles_;
-            bitField0_ = (bitField0_ & ~0x00000001);
+            bitField0_ = (bitField0_ & ~0x00000200);
           } else {
             ensureChangesToFingerPrintFilesIsMutable();
             changesToFingerPrintFiles_.addAll(other.changesToFingerPrintFiles_);
@@ -969,7 +819,7 @@ private static final long serialVersionUID = 0L;
             changesToFingerPrintFilesBuilder_.dispose();
             changesToFingerPrintFilesBuilder_ = null;
             changesToFingerPrintFiles_ = other.changesToFingerPrintFiles_;
-            bitField0_ = (bitField0_ & ~0x00000001);
+            bitField0_ = (bitField0_ & ~0x00000200);
             changesToFingerPrintFilesBuilder_ = 
               com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                  getChangesToFingerPrintFilesFieldBuilder() : null;
@@ -988,7 +838,7 @@ private static final long serialVersionUID = 0L;
         if (!other.softConfigureReasons_.isEmpty()) {
           if (softConfigureReasons_.isEmpty()) {
             softConfigureReasons_ = other.softConfigureReasons_;
-            bitField0_ = (bitField0_ & ~0x00000002);
+            bitField0_ = (bitField0_ & ~0x00001000);
           } else {
             ensureSoftConfigureReasonsIsMutable();
             softConfigureReasons_.addAll(other.softConfigureReasons_);
@@ -1001,7 +851,7 @@ private static final long serialVersionUID = 0L;
             softConfigureReasonsBuilder_.dispose();
             softConfigureReasonsBuilder_ = null;
             softConfigureReasons_ = other.softConfigureReasons_;
-            bitField0_ = (bitField0_ & ~0x00000002);
+            bitField0_ = (bitField0_ & ~0x00001000);
             softConfigureReasonsBuilder_ = 
               com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                  getSoftConfigureReasonsFieldBuilder() : null;
@@ -1014,7 +864,7 @@ private static final long serialVersionUID = 0L;
         if (!other.hardConfigureReasons_.isEmpty()) {
           if (hardConfigureReasons_.isEmpty()) {
             hardConfigureReasons_ = other.hardConfigureReasons_;
-            bitField0_ = (bitField0_ & ~0x00000004);
+            bitField0_ = (bitField0_ & ~0x00002000);
           } else {
             ensureHardConfigureReasonsIsMutable();
             hardConfigureReasons_.addAll(other.hardConfigureReasons_);
@@ -1027,7 +877,7 @@ private static final long serialVersionUID = 0L;
             hardConfigureReasonsBuilder_.dispose();
             hardConfigureReasonsBuilder_ = null;
             hardConfigureReasons_ = other.hardConfigureReasons_;
-            bitField0_ = (bitField0_ & ~0x00000004);
+            bitField0_ = (bitField0_ & ~0x00002000);
             hardConfigureReasonsBuilder_ = 
               com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                  getHardConfigureReasonsFieldBuilder() : null;
@@ -1036,7 +886,7 @@ private static final long serialVersionUID = 0L;
           }
         }
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -1051,17 +901,124 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.android.build.gradle.internal.cxx.configure.EncodedConfigureInvalidationState parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              forceConfigure_ = input.readBool();
+              bitField0_ |= 0x00000001;
+              break;
+            } // case 8
+            case 16: {
+              fingerPrintFile_ = input.readInt32();
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 16
+            case 24: {
+              inputFiles_ = input.readInt32();
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 24
+            case 32: {
+              requiredOutputFiles_ = input.readInt32();
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 32
+            case 40: {
+              optionalOutputFiles_ = input.readInt32();
+              bitField0_ |= 0x00000010;
+              break;
+            } // case 40
+            case 48: {
+              hardConfigureFiles_ = input.readInt32();
+              bitField0_ |= 0x00000020;
+              break;
+            } // case 48
+            case 56: {
+              fingerPrintFileExisted_ = input.readBool();
+              bitField0_ |= 0x00000040;
+              break;
+            } // case 56
+            case 64: {
+              removedSinceFingerPrintsFiles_ = input.readInt32();
+              bitField0_ |= 0x00000080;
+              break;
+            } // case 64
+            case 72: {
+              addedSinceFingerPrintsFiles_ = input.readInt32();
+              bitField0_ |= 0x00000100;
+              break;
+            } // case 72
+            case 82: {
+              com.android.build.gradle.internal.cxx.configure.EncodedChangedFile m =
+                  input.readMessage(
+                      com.android.build.gradle.internal.cxx.configure.EncodedChangedFile.parser(),
+                      extensionRegistry);
+              if (changesToFingerPrintFilesBuilder_ == null) {
+                ensureChangesToFingerPrintFilesIsMutable();
+                changesToFingerPrintFiles_.add(m);
+              } else {
+                changesToFingerPrintFilesBuilder_.addMessage(m);
+              }
+              break;
+            } // case 82
+            case 88: {
+              unchangedFingerPrintFiles_ = input.readInt32();
+              bitField0_ |= 0x00000400;
+              break;
+            } // case 88
+            case 96: {
+              configureType_ = input.readEnum();
+              bitField0_ |= 0x00000800;
+              break;
+            } // case 96
+            case 106: {
+              com.android.build.gradle.internal.cxx.configure.EncodedChangedFile m =
+                  input.readMessage(
+                      com.android.build.gradle.internal.cxx.configure.EncodedChangedFile.parser(),
+                      extensionRegistry);
+              if (softConfigureReasonsBuilder_ == null) {
+                ensureSoftConfigureReasonsIsMutable();
+                softConfigureReasons_.add(m);
+              } else {
+                softConfigureReasonsBuilder_.addMessage(m);
+              }
+              break;
+            } // case 106
+            case 114: {
+              com.android.build.gradle.internal.cxx.configure.EncodedChangedFile m =
+                  input.readMessage(
+                      com.android.build.gradle.internal.cxx.configure.EncodedChangedFile.parser(),
+                      extensionRegistry);
+              if (hardConfigureReasonsBuilder_ == null) {
+                ensureHardConfigureReasonsIsMutable();
+                hardConfigureReasons_.add(m);
+              } else {
+                hardConfigureReasonsBuilder_.addMessage(m);
+              }
+              break;
+            } // case 114
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.android.build.gradle.internal.cxx.configure.EncodedConfigureInvalidationState) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
     private int bitField0_;
@@ -1081,8 +1038,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setForceConfigure(boolean value) {
-      
+
       forceConfigure_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1091,7 +1049,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearForceConfigure() {
-      
+      bitField0_ = (bitField0_ & ~0x00000001);
       forceConfigure_ = false;
       onChanged();
       return this;
@@ -1112,8 +1070,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFingerPrintFile(int value) {
-      
+
       fingerPrintFile_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1122,7 +1081,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearFingerPrintFile() {
-      
+      bitField0_ = (bitField0_ & ~0x00000002);
       fingerPrintFile_ = 0;
       onChanged();
       return this;
@@ -1143,8 +1102,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setInputFiles(int value) {
-      
+
       inputFiles_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1153,7 +1113,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearInputFiles() {
-      
+      bitField0_ = (bitField0_ & ~0x00000004);
       inputFiles_ = 0;
       onChanged();
       return this;
@@ -1174,8 +1134,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setRequiredOutputFiles(int value) {
-      
+
       requiredOutputFiles_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1184,7 +1145,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearRequiredOutputFiles() {
-      
+      bitField0_ = (bitField0_ & ~0x00000008);
       requiredOutputFiles_ = 0;
       onChanged();
       return this;
@@ -1205,8 +1166,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setOptionalOutputFiles(int value) {
-      
+
       optionalOutputFiles_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1215,7 +1177,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearOptionalOutputFiles() {
-      
+      bitField0_ = (bitField0_ & ~0x00000010);
       optionalOutputFiles_ = 0;
       onChanged();
       return this;
@@ -1236,8 +1198,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setHardConfigureFiles(int value) {
-      
+
       hardConfigureFiles_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1246,7 +1209,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearHardConfigureFiles() {
-      
+      bitField0_ = (bitField0_ & ~0x00000020);
       hardConfigureFiles_ = 0;
       onChanged();
       return this;
@@ -1267,8 +1230,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFingerPrintFileExisted(boolean value) {
-      
+
       fingerPrintFileExisted_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -1277,7 +1241,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearFingerPrintFileExisted() {
-      
+      bitField0_ = (bitField0_ & ~0x00000040);
       fingerPrintFileExisted_ = false;
       onChanged();
       return this;
@@ -1298,8 +1262,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setRemovedSinceFingerPrintsFiles(int value) {
-      
+
       removedSinceFingerPrintsFiles_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -1308,7 +1273,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearRemovedSinceFingerPrintsFiles() {
-      
+      bitField0_ = (bitField0_ & ~0x00000080);
       removedSinceFingerPrintsFiles_ = 0;
       onChanged();
       return this;
@@ -1329,8 +1294,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setAddedSinceFingerPrintsFiles(int value) {
-      
+
       addedSinceFingerPrintsFiles_ = value;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -1339,7 +1305,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearAddedSinceFingerPrintsFiles() {
-      
+      bitField0_ = (bitField0_ & ~0x00000100);
       addedSinceFingerPrintsFiles_ = 0;
       onChanged();
       return this;
@@ -1348,9 +1314,9 @@ private static final long serialVersionUID = 0L;
     private java.util.List<com.android.build.gradle.internal.cxx.configure.EncodedChangedFile> changesToFingerPrintFiles_ =
       java.util.Collections.emptyList();
     private void ensureChangesToFingerPrintFilesIsMutable() {
-      if (!((bitField0_ & 0x00000001) != 0)) {
+      if (!((bitField0_ & 0x00000200) != 0)) {
         changesToFingerPrintFiles_ = new java.util.ArrayList<com.android.build.gradle.internal.cxx.configure.EncodedChangedFile>(changesToFingerPrintFiles_);
-        bitField0_ |= 0x00000001;
+        bitField0_ |= 0x00000200;
        }
     }
 
@@ -1500,7 +1466,7 @@ private static final long serialVersionUID = 0L;
     public Builder clearChangesToFingerPrintFiles() {
       if (changesToFingerPrintFilesBuilder_ == null) {
         changesToFingerPrintFiles_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000001);
+        bitField0_ = (bitField0_ & ~0x00000200);
         onChanged();
       } else {
         changesToFingerPrintFilesBuilder_.clear();
@@ -1577,7 +1543,7 @@ private static final long serialVersionUID = 0L;
         changesToFingerPrintFilesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
             com.android.build.gradle.internal.cxx.configure.EncodedChangedFile, com.android.build.gradle.internal.cxx.configure.EncodedChangedFile.Builder, com.android.build.gradle.internal.cxx.configure.EncodedChangedFileOrBuilder>(
                 changesToFingerPrintFiles_,
-                ((bitField0_ & 0x00000001) != 0),
+                ((bitField0_ & 0x00000200) != 0),
                 getParentForChildren(),
                 isClean());
         changesToFingerPrintFiles_ = null;
@@ -1600,8 +1566,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setUnchangedFingerPrintFiles(int value) {
-      
+
       unchangedFingerPrintFiles_ = value;
+      bitField0_ |= 0x00000400;
       onChanged();
       return this;
     }
@@ -1610,7 +1577,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearUnchangedFingerPrintFiles() {
-      
+      bitField0_ = (bitField0_ & ~0x00000400);
       unchangedFingerPrintFiles_ = 0;
       onChanged();
       return this;
@@ -1630,8 +1597,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setConfigureTypeValue(int value) {
-      
       configureType_ = value;
+      bitField0_ |= 0x00000800;
       onChanged();
       return this;
     }
@@ -1641,8 +1608,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.android.build.gradle.internal.cxx.configure.ConfigureType getConfigureType() {
-      @SuppressWarnings("deprecation")
-      com.android.build.gradle.internal.cxx.configure.ConfigureType result = com.android.build.gradle.internal.cxx.configure.ConfigureType.valueOf(configureType_);
+      com.android.build.gradle.internal.cxx.configure.ConfigureType result = com.android.build.gradle.internal.cxx.configure.ConfigureType.forNumber(configureType_);
       return result == null ? com.android.build.gradle.internal.cxx.configure.ConfigureType.UNRECOGNIZED : result;
     }
     /**
@@ -1654,7 +1620,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
         throw new NullPointerException();
       }
-      
+      bitField0_ |= 0x00000800;
       configureType_ = value.getNumber();
       onChanged();
       return this;
@@ -1664,7 +1630,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearConfigureType() {
-      
+      bitField0_ = (bitField0_ & ~0x00000800);
       configureType_ = 0;
       onChanged();
       return this;
@@ -1673,9 +1639,9 @@ private static final long serialVersionUID = 0L;
     private java.util.List<com.android.build.gradle.internal.cxx.configure.EncodedChangedFile> softConfigureReasons_ =
       java.util.Collections.emptyList();
     private void ensureSoftConfigureReasonsIsMutable() {
-      if (!((bitField0_ & 0x00000002) != 0)) {
+      if (!((bitField0_ & 0x00001000) != 0)) {
         softConfigureReasons_ = new java.util.ArrayList<com.android.build.gradle.internal.cxx.configure.EncodedChangedFile>(softConfigureReasons_);
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00001000;
        }
     }
 
@@ -1825,7 +1791,7 @@ private static final long serialVersionUID = 0L;
     public Builder clearSoftConfigureReasons() {
       if (softConfigureReasonsBuilder_ == null) {
         softConfigureReasons_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00001000);
         onChanged();
       } else {
         softConfigureReasonsBuilder_.clear();
@@ -1902,7 +1868,7 @@ private static final long serialVersionUID = 0L;
         softConfigureReasonsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
             com.android.build.gradle.internal.cxx.configure.EncodedChangedFile, com.android.build.gradle.internal.cxx.configure.EncodedChangedFile.Builder, com.android.build.gradle.internal.cxx.configure.EncodedChangedFileOrBuilder>(
                 softConfigureReasons_,
-                ((bitField0_ & 0x00000002) != 0),
+                ((bitField0_ & 0x00001000) != 0),
                 getParentForChildren(),
                 isClean());
         softConfigureReasons_ = null;
@@ -1913,9 +1879,9 @@ private static final long serialVersionUID = 0L;
     private java.util.List<com.android.build.gradle.internal.cxx.configure.EncodedChangedFile> hardConfigureReasons_ =
       java.util.Collections.emptyList();
     private void ensureHardConfigureReasonsIsMutable() {
-      if (!((bitField0_ & 0x00000004) != 0)) {
+      if (!((bitField0_ & 0x00002000) != 0)) {
         hardConfigureReasons_ = new java.util.ArrayList<com.android.build.gradle.internal.cxx.configure.EncodedChangedFile>(hardConfigureReasons_);
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00002000;
        }
     }
 
@@ -2065,7 +2031,7 @@ private static final long serialVersionUID = 0L;
     public Builder clearHardConfigureReasons() {
       if (hardConfigureReasonsBuilder_ == null) {
         hardConfigureReasons_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00002000);
         onChanged();
       } else {
         hardConfigureReasonsBuilder_.clear();
@@ -2142,7 +2108,7 @@ private static final long serialVersionUID = 0L;
         hardConfigureReasonsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
             com.android.build.gradle.internal.cxx.configure.EncodedChangedFile, com.android.build.gradle.internal.cxx.configure.EncodedChangedFile.Builder, com.android.build.gradle.internal.cxx.configure.EncodedChangedFileOrBuilder>(
                 hardConfigureReasons_,
-                ((bitField0_ & 0x00000004) != 0),
+                ((bitField0_ & 0x00002000) != 0),
                 getParentForChildren(),
                 isClean());
         hardConfigureReasons_ = null;
@@ -2182,7 +2148,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new EncodedConfigureInvalidationState(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

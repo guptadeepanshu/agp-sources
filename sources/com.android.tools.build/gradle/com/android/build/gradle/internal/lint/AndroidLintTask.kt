@@ -52,6 +52,7 @@ import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.BooleanOption.LINT_ANALYSIS_PER_COMPONENT
+import com.android.build.gradle.options.BooleanOption.LINT_USE_K2_UAST
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.utils.FileUtils
 import com.google.common.annotations.VisibleForTesting
@@ -542,7 +543,7 @@ abstract class AndroidLintTask : NonIncrementalTask() {
     }
 
     abstract class VariantCreationAction(val variant: VariantWithTests) :
-            VariantTaskCreationAction<AndroidLintTask, ComponentCreationConfig>(variant.main) {
+            VariantTaskCreationAction<AndroidLintTask, VariantCreationConfig>(variant.main) {
         final override val type: Class<AndroidLintTask> get() = AndroidLintTask::class.java
 
         abstract val fatalOnly: Boolean
@@ -800,6 +801,7 @@ abstract class AndroidLintTask : NonIncrementalTask() {
                         .projectOptions
                         .getProvider(BooleanOption.LINT_BASELINE_OMIT_LINE_NUMBERS)
                 )
+            task.useK2Uast.setDisallowChanges(creationConfig.useK2Uast)
         }
 
         abstract fun configureOutputSettings(task: AndroidLintTask)
@@ -891,9 +893,6 @@ abstract class AndroidLintTask : NonIncrementalTask() {
         }
         systemPropertyInputs.initialize(project.providers, lintMode)
         environmentVariableInputs.initialize(project.providers, lintMode)
-        useK2Uast.setDisallowChanges(
-            services.projectOptions.getProvider(BooleanOption.LINT_USE_K2_UAST)
-        )
         this.usesService(
             services.buildServiceRegistry.getLintParallelBuildService(services.projectOptions)
         )
@@ -976,6 +975,10 @@ abstract class AndroidLintTask : NonIncrementalTask() {
             .setDisallowChanges(
                 taskCreationServices.projectOptions
                     .getProvider(BooleanOption.LINT_BASELINE_OMIT_LINE_NUMBERS)
+            )
+        this.useK2Uast
+            .setDisallowChanges(
+                taskCreationServices.projectOptions.getProvider(LINT_USE_K2_UAST)
             )
     }
 

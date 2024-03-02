@@ -17,6 +17,8 @@
 package com.android.build.gradle.internal
 
 import com.android.build.api.dsl.CompileOptions
+import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
+import com.android.build.gradle.tasks.recordCompileOptionsForAnalytics
 import com.google.common.base.Charsets
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -93,7 +95,7 @@ abstract class CompileOptions : CompileOptions {
         sourceAndTargetFinalized = true
     }
 
-    fun finalizeSourceAndTargetCompatibility(project: Project) {
+    fun finalizeSourceAndTargetCompatibility(project: Project, globalConfig: GlobalTaskCreationConfig) {
         val toolchainVersion = project.extensions.getByType(JavaPluginExtension::class.java).toolchain.languageVersion.let {
             // Finalizing a property's value at configuration time is usually not recommended, but
             // we have to do it because AGP `CompileOptions` properties are currently not lazy
@@ -102,6 +104,11 @@ abstract class CompileOptions : CompileOptions {
             it.orNull?.run { JavaVersion.toVersion(asInt()) }
         }
         finalizeSourceAndTargetCompatibility(toolchainVersion)
+
+        recordCompileOptionsForAnalytics(
+            project, globalConfig.services.buildServiceRegistry,
+            sourceCompatibility, targetCompatibility, toolchainVersion
+        )
     }
 
     companion object {

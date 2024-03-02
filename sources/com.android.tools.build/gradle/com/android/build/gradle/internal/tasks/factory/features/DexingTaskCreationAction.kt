@@ -46,5 +46,5 @@ class DexingTaskCreationActionImpl(
 ): DexingTaskCreationAction {
 
     override val dexingCreationConfig: DexingCreationConfig =
-        creationConfig.dexingCreationConfig
+        creationConfig.dexing
 }

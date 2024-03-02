@@ -25,7 +25,6 @@ import com.android.build.gradle.internal.core.dsl.features.DexingDslInfo
 import com.android.build.gradle.internal.core.dsl.impl.features.DexingDslInfoImpl
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import com.android.build.gradle.internal.dsl.InternalDynamicFeatureExtension
-import com.android.build.gradle.internal.dsl.SigningConfig
 import com.android.build.gradle.internal.manifest.ManifestDataProvider
 import com.android.build.gradle.internal.profile.ProfilingMode
 import com.android.build.gradle.internal.services.VariantServices
@@ -64,8 +63,8 @@ internal class DynamicFeatureVariantDslInfoImpl(
             ?: (buildTypeObj as? ApplicationBuildType)?.isDebuggable
             ?: false
 
-    override val signingConfig: SigningConfig? = null
-    override val isSigningReady: Boolean = false
+    override val signingConfigResolver: SigningConfigResolver? = null
+
     override val isMultiDexSetFromDsl: Boolean
         get() = (buildTypeObj as? ApplicationBuildType)?.multiDexEnabled != null
 

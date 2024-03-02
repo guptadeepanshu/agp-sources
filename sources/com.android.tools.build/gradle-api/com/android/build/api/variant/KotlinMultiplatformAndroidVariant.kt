@@ -24,9 +24,7 @@ import org.gradle.api.file.FileCollection
  * Properties for the main Variant of a kotlin multiplatform android library
  */
 @Incubating
-interface KotlinMultiplatformAndroidVariant: HasAndroidTest,
-    HasUnitTest {
-
+interface KotlinMultiplatformAndroidVariant: HasAndroidTest, HasUnitTest {
     /**
      * The name of the variant
      */
@@ -52,4 +50,38 @@ interface KotlinMultiplatformAndroidVariant: HasAndroidTest,
      */
     @get:Incubating
     val compileClasspath: FileCollection
+
+    /**
+     * List of the components nested in the main variant, the returned list may contain:
+     *
+     * * [UnitTest] component if the unit tests for this variant are enabled,
+     * * [AndroidTest] component if this variant [HasAndroidTest] and android tests for this variant
+     * are enabled,
+     *
+     * Use this list to do operations on all nested components of this variant without having to
+     * manually check whether the variant has each component.
+     *
+     * Example:
+     *
+     * ```kotlin
+     *  androidComponents {
+     *     onVariant { variant ->
+     *         variant.nestedComponents.forEach { component ->
+     *             component.instrumentation.transformClassesWith(
+     *                 AsmClassVisitorFactoryImpl.class,
+     *                 InstrumentationScope.Project) { params -> params.x = "value" }
+     *             instrumentation.setAsmFramesComputationMode(COMPUTE_FRAMES_FOR_INSTRUMENTED_METHODS)
+     *         }
+     *     }
+     *  }
+     *  ```
+     */
+    @get:Incubating
+    val nestedComponents: List<Component>
+
+    /**
+     * Provides access to the [LifecycleTasks] created for this component.
+     */
+    @get:Incubating
+    val lifecycleTasks: LifecycleTasks
 }

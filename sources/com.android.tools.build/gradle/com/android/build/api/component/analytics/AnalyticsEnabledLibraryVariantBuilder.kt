@@ -16,6 +16,7 @@
 
 package com.android.build.api.component.analytics
 
+import com.android.build.api.variant.AndroidTestBuilder
 import com.android.build.api.variant.LibraryVariantBuilder
 import com.android.tools.build.gradle.internal.profile.VariantMethodType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
@@ -25,23 +26,23 @@ import javax.inject.Inject
  * Shim object for [LibraryVariantBuilder] that records all mutating accesses to the analytics.
  */
 open class AnalyticsEnabledLibraryVariantBuilder @Inject constructor(
-        override val delegate: LibraryVariantBuilder,
+        final override val delegate: LibraryVariantBuilder,
         stats: GradleBuildVariant.Builder
 ) : AnalyticsEnabledVariantBuilder(delegate, stats),
     LibraryVariantBuilder {
 
     override var androidTestEnabled: Boolean
-        get() = delegate.enableAndroidTest
+        get() = delegate.androidTest.enable
         set(value) {
             stats.variantApiAccessBuilder.addVariantAccessBuilder().type = VariantMethodType.ANDROID_TEST_ENABLED_VALUE
-            delegate.enableAndroidTest = value
+            delegate.androidTest.enable = value
         }
 
     override var enableAndroidTest: Boolean
-        get() = delegate.enableAndroidTest
+        get() = delegate.androidTest.enable
         set(value) {
             stats.variantApiAccessBuilder.addVariantAccessBuilder().type = VariantMethodType.ANDROID_TEST_ENABLED_VALUE
-            delegate.enableAndroidTest = value
+            delegate.androidTest.enable = value
         }
 
     override var enableTestFixtures: Boolean
@@ -56,5 +57,18 @@ open class AnalyticsEnabledLibraryVariantBuilder @Inject constructor(
         set(value) {
             stats.variantApiAccessBuilder.addVariantAccessBuilder().type = VariantMethodType.CODE_MINIFICATION_VALUE_VALUE
             delegate.isMinifyEnabled = value
+        }
+
+    private val _androidTest =
+        AnalyticsEnabledAndroidTestBuilder(
+                delegate.androidTest,
+                stats
+        )
+
+    override val androidTest: AndroidTestBuilder
+        get() {
+            stats.variantApiAccessBuilder.addVariantAccessBuilder().type =
+                VariantMethodType.ANDROID_TEST_BUILDER_VALUE
+            return _androidTest
         }
 }

@@ -37,6 +37,9 @@ interface DependenciesInfoBuilder {
      * block, `false` otherwise.
      *
      * Default value will match [com.android.build.api.dsl.DependenciesInfo.includeInApk]
+     *
+     * It's not safe to read this value. Use [DependenciesInfo.includedInApk] instead (found on
+     * [ApplicationVariant]
      */
     var includeInApk: Boolean
 
@@ -49,6 +52,9 @@ interface DependenciesInfoBuilder {
      * `false` otherwise.
      *
      * Default value will match [com.android.build.api.dsl.DependenciesInfo.includeInBundle]
+     *
+     * It's not safe to read this value. Use [DependenciesInfo.includedInBundle] instead (found on
+     * [ApplicationVariant]
      */
     var includeInBundle: Boolean
 }

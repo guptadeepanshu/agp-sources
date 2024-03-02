@@ -160,7 +160,7 @@ abstract class InstallVariantViaBundleTask : NonIncrementalTask() {
                         parameters.variantName.get()
                     )
 
-                    val privacySandboxSdkApkFromSplits =
+                    val privacySandboxSdkApkFromSplits: List<Path> =
                             if (!device.supportsPrivacySandbox) {
                                 parameters.privacySandboxSdkApksFromSplits.get()
                                         .map { it.toPath() }
@@ -168,8 +168,11 @@ abstract class InstallVariantViaBundleTask : NonIncrementalTask() {
                                 emptyList()
                             }
 
-                    val apkBuiltArtifacts = privacySandboxSdkApkFromSplits +
-                            parameters.apkBundle.get().asFile.toPath()
+                    val apkBuiltArtifacts: List<Path> = buildList {
+                        addAll(privacySandboxSdkApkFromSplits)
+                        add(parameters.apkBundle.get().asFile.toPath())
+                    }
+
                     val apkPaths = getApkFiles(apkBuiltArtifacts, deviceConfigProvider)
 
                     if (apkPaths.isEmpty()) {
@@ -264,7 +267,7 @@ abstract class InstallVariantViaBundleTask : NonIncrementalTask() {
 
             task.timeOutInMs = creationConfig.global.installationOptions.timeOutInMs
             task.buildTools.initialize(creationConfig)
-            if (creationConfig.services.projectOptions[BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT]) {
+            if (creationConfig.privacySandboxCreationConfig != null) {
                 task.privacySandboxSdkApksFiles.setFrom(
                     creationConfig.variantDependencies
                         .getArtifactFileCollection(

@@ -33,92 +33,6 @@ private static final long serialVersionUID = 0L;
     return new ObjectFileCacheEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
-  private ObjectFileCacheEvent(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 8: {
-            int rawValue = input.readEnum();
-
-            outcome_ = rawValue;
-            break;
-          }
-          case 18: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            keyDisplayName_ = s;
-            break;
-          }
-          case 26: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            keyHashCode_ = s;
-            break;
-          }
-          case 34: {
-            com.android.build.gradle.internal.cxx.caching.Compilation.Builder subBuilder = null;
-            if (compilation_ != null) {
-              subBuilder = compilation_.toBuilder();
-            }
-            compilation_ = input.readMessage(com.android.build.gradle.internal.cxx.caching.Compilation.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(compilation_);
-              compilation_ = subBuilder.buildPartial();
-            }
-
-            break;
-          }
-          case 42: {
-            com.android.build.gradle.internal.cxx.caching.Compilation.Builder subBuilder = null;
-            if (hashedCompilation_ != null) {
-              subBuilder = hashedCompilation_.toBuilder();
-            }
-            hashedCompilation_ = input.readMessage(com.android.build.gradle.internal.cxx.caching.Compilation.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(hashedCompilation_);
-              hashedCompilation_ = subBuilder.buildPartial();
-            }
-
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.android.build.gradle.internal.cxx.caching.CxxCaching.internal_static_ObjectFileCacheEvent_descriptor;
@@ -404,7 +318,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int OUTCOME_FIELD_NUMBER = 1;
-  private int outcome_;
+  private int outcome_ = 0;
   /**
    * <pre>
    * Load or store attempt outcome
@@ -425,13 +339,13 @@ private static final long serialVersionUID = 0L;
    * @return The outcome.
    */
   @java.lang.Override public com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent.Outcome getOutcome() {
-    @SuppressWarnings("deprecation")
-    com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent.Outcome result = com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent.Outcome.valueOf(outcome_);
+    com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent.Outcome result = com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent.Outcome.forNumber(outcome_);
     return result == null ? com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent.Outcome.UNRECOGNIZED : result;
   }
 
   public static final int KEY_DISPLAY_NAME_FIELD_NUMBER = 2;
-  private volatile java.lang.Object keyDisplayName_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object keyDisplayName_ = "";
   /**
    * <pre>
    * Human readable display like "hello-jni.c to hello-jni.c.o"
@@ -477,7 +391,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int KEY_HASH_CODE_FIELD_NUMBER = 3;
-  private volatile java.lang.Object keyHashCode_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object keyHashCode_ = "";
   /**
    * <pre>
    * A hash code of the cache key. Looks like:
@@ -559,7 +474,7 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public com.android.build.gradle.internal.cxx.caching.CompilationOrBuilder getCompilationOrBuilder() {
-    return getCompilation();
+    return compilation_ == null ? com.android.build.gradle.internal.cxx.caching.Compilation.getDefaultInstance() : compilation_;
   }
 
   public static final int HASHED_COMPILATION_FIELD_NUMBER = 5;
@@ -600,7 +515,7 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public com.android.build.gradle.internal.cxx.caching.CompilationOrBuilder getHashedCompilationOrBuilder() {
-    return getHashedCompilation();
+    return hashedCompilation_ == null ? com.android.build.gradle.internal.cxx.caching.Compilation.getDefaultInstance() : hashedCompilation_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -632,7 +547,7 @@ private static final long serialVersionUID = 0L;
     if (hashedCompilation_ != null) {
       output.writeMessage(5, getHashedCompilation());
     }
-    unknownFields.writeTo(output);
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -659,7 +574,7 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(5, getHashedCompilation());
     }
-    size += unknownFields.getSerializedSize();
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -689,7 +604,7 @@ private static final long serialVersionUID = 0L;
       if (!getHashedCompilation()
           .equals(other.getHashedCompilation())) return false;
     }
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -714,7 +629,7 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + HASHED_COMPILATION_FIELD_NUMBER;
       hash = (53 * hash) + getHashedCompilation().hashCode();
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -836,38 +751,29 @@ private static final long serialVersionUID = 0L;
 
     // Construct using com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessageV3
-              .alwaysUseFieldBuilders) {
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       outcome_ = 0;
-
       keyDisplayName_ = "";
-
       keyHashCode_ = "";
-
-      if (compilationBuilder_ == null) {
-        compilation_ = null;
-      } else {
-        compilation_ = null;
+      compilation_ = null;
+      if (compilationBuilder_ != null) {
+        compilationBuilder_.dispose();
         compilationBuilder_ = null;
       }
-      if (hashedCompilationBuilder_ == null) {
-        hashedCompilation_ = null;
-      } else {
-        hashedCompilation_ = null;
+      hashedCompilation_ = null;
+      if (hashedCompilationBuilder_ != null) {
+        hashedCompilationBuilder_.dispose();
         hashedCompilationBuilder_ = null;
       }
       return this;
@@ -896,55 +802,34 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent buildPartial() {
       com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent result = new com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent(this);
-      result.outcome_ = outcome_;
-      result.keyDisplayName_ = keyDisplayName_;
-      result.keyHashCode_ = keyHashCode_;
-      if (compilationBuilder_ == null) {
-        result.compilation_ = compilation_;
-      } else {
-        result.compilation_ = compilationBuilder_.build();
-      }
-      if (hashedCompilationBuilder_ == null) {
-        result.hashedCompilation_ = hashedCompilation_;
-      } else {
-        result.hashedCompilation_ = hashedCompilationBuilder_.build();
-      }
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.outcome_ = outcome_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.keyDisplayName_ = keyDisplayName_;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.keyHashCode_ = keyHashCode_;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.compilation_ = compilationBuilder_ == null
+            ? compilation_
+            : compilationBuilder_.build();
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.hashedCompilation_ = hashedCompilationBuilder_ == null
+            ? hashedCompilation_
+            : hashedCompilationBuilder_.build();
+      }
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent) {
@@ -962,10 +847,12 @@ private static final long serialVersionUID = 0L;
       }
       if (!other.getKeyDisplayName().isEmpty()) {
         keyDisplayName_ = other.keyDisplayName_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (!other.getKeyHashCode().isEmpty()) {
         keyHashCode_ = other.keyHashCode_;
+        bitField0_ |= 0x00000004;
         onChanged();
       }
       if (other.hasCompilation()) {
@@ -974,7 +861,7 @@ private static final long serialVersionUID = 0L;
       if (other.hasHashedCompilation()) {
         mergeHashedCompilation(other.getHashedCompilation());
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -989,19 +876,62 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              outcome_ = input.readEnum();
+              bitField0_ |= 0x00000001;
+              break;
+            } // case 8
+            case 18: {
+              keyDisplayName_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 18
+            case 26: {
+              keyHashCode_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 26
+            case 34: {
+              input.readMessage(
+                  getCompilationFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 34
+            case 42: {
+              input.readMessage(
+                  getHashedCompilationFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000010;
+              break;
+            } // case 42
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
+    private int bitField0_;
 
     private int outcome_ = 0;
     /**
@@ -1025,8 +955,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setOutcomeValue(int value) {
-      
       outcome_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1040,8 +970,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent.Outcome getOutcome() {
-      @SuppressWarnings("deprecation")
-      com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent.Outcome result = com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent.Outcome.valueOf(outcome_);
+      com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent.Outcome result = com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent.Outcome.forNumber(outcome_);
       return result == null ? com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent.Outcome.UNRECOGNIZED : result;
     }
     /**
@@ -1057,7 +986,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
         throw new NullPointerException();
       }
-      
+      bitField0_ |= 0x00000001;
       outcome_ = value.getNumber();
       onChanged();
       return this;
@@ -1071,7 +1000,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearOutcome() {
-      
+      bitField0_ = (bitField0_ & ~0x00000001);
       outcome_ = 0;
       onChanged();
       return this;
@@ -1130,11 +1059,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setKeyDisplayName(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       keyDisplayName_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1147,8 +1074,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearKeyDisplayName() {
-      
       keyDisplayName_ = getDefaultInstance().getKeyDisplayName();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -1163,12 +1090,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setKeyDisplayNameBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       keyDisplayName_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1229,11 +1154,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setKeyHashCode(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       keyHashCode_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1247,8 +1170,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearKeyHashCode() {
-      
       keyHashCode_ = getDefaultInstance().getKeyHashCode();
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
@@ -1264,12 +1187,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setKeyHashCodeBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       keyHashCode_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1286,7 +1207,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the compilation field is set.
      */
     public boolean hasCompilation() {
-      return compilationBuilder_ != null || compilation_ != null;
+      return ((bitField0_ & 0x00000008) != 0);
     }
     /**
      * <pre>
@@ -1316,11 +1237,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         compilation_ = value;
-        onChanged();
       } else {
         compilationBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -1334,11 +1255,11 @@ private static final long serialVersionUID = 0L;
         com.android.build.gradle.internal.cxx.caching.Compilation.Builder builderForValue) {
       if (compilationBuilder_ == null) {
         compilation_ = builderForValue.build();
-        onChanged();
       } else {
         compilationBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -1350,17 +1271,18 @@ private static final long serialVersionUID = 0L;
      */
     public Builder mergeCompilation(com.android.build.gradle.internal.cxx.caching.Compilation value) {
       if (compilationBuilder_ == null) {
-        if (compilation_ != null) {
-          compilation_ =
-            com.android.build.gradle.internal.cxx.caching.Compilation.newBuilder(compilation_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000008) != 0) &&
+          compilation_ != null &&
+          compilation_ != com.android.build.gradle.internal.cxx.caching.Compilation.getDefaultInstance()) {
+          getCompilationBuilder().mergeFrom(value);
         } else {
           compilation_ = value;
         }
-        onChanged();
       } else {
         compilationBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -1371,14 +1293,13 @@ private static final long serialVersionUID = 0L;
      * <code>.Compilation compilation = 4;</code>
      */
     public Builder clearCompilation() {
-      if (compilationBuilder_ == null) {
-        compilation_ = null;
-        onChanged();
-      } else {
-        compilation_ = null;
+      bitField0_ = (bitField0_ & ~0x00000008);
+      compilation_ = null;
+      if (compilationBuilder_ != null) {
+        compilationBuilder_.dispose();
         compilationBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
@@ -1389,7 +1310,7 @@ private static final long serialVersionUID = 0L;
      * <code>.Compilation compilation = 4;</code>
      */
     public com.android.build.gradle.internal.cxx.caching.Compilation.Builder getCompilationBuilder() {
-      
+      bitField0_ |= 0x00000008;
       onChanged();
       return getCompilationFieldBuilder().getBuilder();
     }
@@ -1442,7 +1363,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the hashedCompilation field is set.
      */
     public boolean hasHashedCompilation() {
-      return hashedCompilationBuilder_ != null || hashedCompilation_ != null;
+      return ((bitField0_ & 0x00000010) != 0);
     }
     /**
      * <pre>
@@ -1474,11 +1395,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         hashedCompilation_ = value;
-        onChanged();
       } else {
         hashedCompilationBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -1493,11 +1414,11 @@ private static final long serialVersionUID = 0L;
         com.android.build.gradle.internal.cxx.caching.Compilation.Builder builderForValue) {
       if (hashedCompilationBuilder_ == null) {
         hashedCompilation_ = builderForValue.build();
-        onChanged();
       } else {
         hashedCompilationBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -1510,17 +1431,18 @@ private static final long serialVersionUID = 0L;
      */
     public Builder mergeHashedCompilation(com.android.build.gradle.internal.cxx.caching.Compilation value) {
       if (hashedCompilationBuilder_ == null) {
-        if (hashedCompilation_ != null) {
-          hashedCompilation_ =
-            com.android.build.gradle.internal.cxx.caching.Compilation.newBuilder(hashedCompilation_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000010) != 0) &&
+          hashedCompilation_ != null &&
+          hashedCompilation_ != com.android.build.gradle.internal.cxx.caching.Compilation.getDefaultInstance()) {
+          getHashedCompilationBuilder().mergeFrom(value);
         } else {
           hashedCompilation_ = value;
         }
-        onChanged();
       } else {
         hashedCompilationBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -1532,14 +1454,13 @@ private static final long serialVersionUID = 0L;
      * <code>.Compilation hashed_compilation = 5;</code>
      */
     public Builder clearHashedCompilation() {
-      if (hashedCompilationBuilder_ == null) {
-        hashedCompilation_ = null;
-        onChanged();
-      } else {
-        hashedCompilation_ = null;
+      bitField0_ = (bitField0_ & ~0x00000010);
+      hashedCompilation_ = null;
+      if (hashedCompilationBuilder_ != null) {
+        hashedCompilationBuilder_.dispose();
         hashedCompilationBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
@@ -1551,7 +1472,7 @@ private static final long serialVersionUID = 0L;
      * <code>.Compilation hashed_compilation = 5;</code>
      */
     public com.android.build.gradle.internal.cxx.caching.Compilation.Builder getHashedCompilationBuilder() {
-      
+      bitField0_ |= 0x00000010;
       onChanged();
       return getHashedCompilationFieldBuilder().getBuilder();
     }
@@ -1625,7 +1546,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new ObjectFileCacheEvent(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

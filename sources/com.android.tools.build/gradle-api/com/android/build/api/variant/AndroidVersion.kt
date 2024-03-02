@@ -19,6 +19,12 @@ package com.android.build.api.variant
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
 
+/**
+ * A version of the Android platform.
+ *
+ * This includes support for preview versions that don't have a final API level, but instead
+ * use a [codename].
+ */
 interface AndroidVersion {
 
     /**

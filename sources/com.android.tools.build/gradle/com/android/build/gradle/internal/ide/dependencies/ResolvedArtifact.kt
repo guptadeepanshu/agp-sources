@@ -22,13 +22,13 @@ import com.android.SdkConstants.EXT_JAR
 import com.android.builder.dependency.MavenCoordinatesImpl
 import com.android.builder.internal.StringCachingService
 import com.android.builder.model.MavenCoordinates
-import com.google.common.collect.ImmutableMap
 import org.gradle.api.artifacts.component.ComponentIdentifier
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
 import org.gradle.api.artifacts.result.ResolvedArtifactResult
 import org.gradle.api.artifacts.result.ResolvedVariantResult
 import org.gradle.internal.component.local.model.OpaqueComponentArtifactIdentifier
+import org.gradle.internal.component.local.model.OpaqueComponentIdentifier
 import java.io.File
 import java.util.regex.Pattern
 
@@ -129,7 +129,7 @@ data class ResolvedArtifact internal constructor(
                 )
             }
 
-            is OpaqueComponentArtifactIdentifier -> {
+            is OpaqueComponentArtifactIdentifier, is OpaqueComponentIdentifier -> {
                 MavenCoordinatesCacheBuildService.getMavenCoordForLocalFile(
                     artifactFile!!,
                     stringCachingService
@@ -168,7 +168,9 @@ data class ResolvedArtifact internal constructor(
                 }
                 .toString().intern()
         }
-        is ModuleComponentIdentifier, is OpaqueComponentArtifactIdentifier -> {
+        is ModuleComponentIdentifier,
+        is OpaqueComponentArtifactIdentifier,
+        is OpaqueComponentIdentifier -> {
             (mavenCoordinatesCache.getMavenCoordinates(this).toString() +
                     if (this.isTestFixturesArtifact) {
                         "::testFixtures"

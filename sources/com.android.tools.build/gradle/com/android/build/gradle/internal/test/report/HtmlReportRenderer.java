@@ -106,16 +106,15 @@ public class HtmlReportRenderer {
     }
 
     /**
-     * Returns the substring of a string that follows the last
-     * occurence of a separator.
+     * Returns the substring of a string that follows the last occurrence of a separator.
      *
-     * <p>Largely replicated and slightly updated from the
-     * {@code apache.commons.lang.StringUtils} method of the same name.
+     * <p>Largely replicated and slightly updated from the {@code apache.commons.lang.StringUtils}
+     * method of the same name.
      *
-     * @param string    the String to get a substring from, may not be null
-     * @param separator the String to search for, may not be null
-     * @return the substring after the last occurrence of the separator or an
-     * empty string if not found.
+     * @param string the String to get a substring from, must not be null
+     * @param separator the String to search for, must not be null
+     * @return the substring after the last occurrence of the separator or an empty string if not
+     *     found.
      */
     public static String substringAfterLast(String string, String separator) {
         Preconditions.checkNotNull(string);
@@ -126,5 +125,4 @@ public class HtmlReportRenderer {
         }
         return string.substring(pos + separator.length());
     }
-
 }

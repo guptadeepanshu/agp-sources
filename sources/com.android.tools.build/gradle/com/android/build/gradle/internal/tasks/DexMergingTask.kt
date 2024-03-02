@@ -18,15 +18,14 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
 import com.android.build.api.artifact.MultipleArtifact
-import com.android.build.api.artifact.ScopedArtifact
+import com.android.build.api.artifact.impl.InternalScopedArtifact
 import com.android.build.api.artifact.impl.InternalScopedArtifacts
 import com.android.build.api.transform.TransformException
-import com.android.build.api.variant.impl.getFeatureLevel
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.crash.PluginCrashReporter
 import com.android.build.gradle.internal.dependency.AndroidAttributes
-import com.android.build.gradle.internal.dependency.getDexingArtifactConfiguration
+import com.android.build.gradle.internal.dependency.DexingRegistration
 import com.android.build.gradle.internal.errors.MessageReceiverImpl
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
@@ -38,6 +37,8 @@ import com.android.build.gradle.internal.tasks.DexMergingAction.MERGE_LIBRARY_PR
 import com.android.build.gradle.internal.tasks.DexMergingAction.MERGE_PROJECT
 import com.android.build.gradle.internal.tasks.DexMergingAction.MERGE_TRANSFORMED_CLASSES
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.features.DexingTaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.features.DexingTaskCreationActionImpl
 import com.android.build.gradle.internal.utils.getGlobalSyntheticsInput
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
@@ -45,6 +46,7 @@ import com.android.build.gradle.options.IntegerOption
 import com.android.build.gradle.options.ProjectOptions
 import com.android.build.gradle.options.SyncOptions
 import com.android.build.gradle.tasks.toSerializable
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.dexing.DexArchiveEntry
 import com.android.builder.dexing.DexArchiveMerger
 import com.android.builder.dexing.DexEntry
@@ -56,9 +58,6 @@ import com.android.builder.dexing.getSortedFilesInDir
 import com.android.builder.dexing.getSortedRelativePathsInJar
 import com.android.builder.dexing.isJarFile
 import com.android.builder.files.SerializableFileChanges
-import com.android.build.gradle.internal.tasks.factory.features.DexingTaskCreationAction
-import com.android.build.gradle.internal.tasks.factory.features.DexingTaskCreationActionImpl
-import com.android.buildanalyzer.common.TaskCategory
 import com.android.utils.FileUtils
 import com.google.common.annotations.VisibleForTesting
 import com.google.common.base.Throwables
@@ -158,7 +157,7 @@ abstract class DexMergingTask : NewIncrementalTask() {
             @get:Optional
             @get:InputFile
             @get:PathSensitive(PathSensitivity.NONE)
-            abstract val userMultidexKeepFile: Property<File>
+            abstract val userMultidexKeepFile: RegularFileProperty
 
             @get:Optional
             @get:Classpath
@@ -287,7 +286,7 @@ abstract class DexMergingTask : NewIncrementalTask() {
             // Shared parameters
             task.sharedParams.dexingType.setDisallowChanges(dexingType)
             task.sharedParams.minSdkVersion.setDisallowChanges(
-                dexingCreationConfig.minSdkVersionForDexing.getFeatureLevel()
+                dexingCreationConfig.minSdkVersionForDexing
             )
             task.sharedParams.debuggable.setDisallowChanges(creationConfig.debuggable)
             task.sharedParams.errorFormatMode.setDisallowChanges(
@@ -303,9 +302,9 @@ abstract class DexMergingTask : NewIncrementalTask() {
                     creationConfig.artifacts.getAll(MultipleArtifact.MULTIDEX_KEEP_PROGUARD)
                 )
 
-                dexingCreationConfig.multiDexKeepFile?.let {
-                    task.sharedParams.mainDexListConfig.userMultidexKeepFile.setDisallowChanges(it)
-                }
+                task.sharedParams.mainDexListConfig.userMultidexKeepFile.setDisallowChanges(
+                    dexingCreationConfig.multiDexKeepFile
+                )
 
                 task.sharedParams.mainDexListConfig.platformMultidexProguardRules
                     .setDisallowChanges(getPlatformRules())
@@ -314,9 +313,9 @@ abstract class DexMergingTask : NewIncrementalTask() {
                 task.sharedParams.mainDexListConfig.libraryClasses
                     .from(bootClasspath,
                         creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.TESTED_CODE)
-                            .getFinalArtifacts(ScopedArtifact.CLASSES),
+                            .getFinalArtifacts(InternalScopedArtifact.FINAL_TRANSFORMED_CLASSES),
                         creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.COMPILE_ONLY)
-                            .getFinalArtifacts(ScopedArtifact.CLASSES)
+                            .getFinalArtifacts(InternalScopedArtifact.FINAL_TRANSFORMED_CLASSES)
                     ).disallowChanges()
             }
 
@@ -334,7 +333,7 @@ abstract class DexMergingTask : NewIncrementalTask() {
                 )
             }
             if (creationConfig.enableGlobalSynthetics
-                && creationConfig.dexingCreationConfig.dexingType != NATIVE_MULTIDEX) {
+                && dexingType != NATIVE_MULTIDEX) {
                 task.globalSynthetics.from(
                     getGlobalSyntheticsInput(
                         creationConfig,
@@ -356,7 +355,8 @@ abstract class DexMergingTask : NewIncrementalTask() {
             creationConfig: ApkCreationConfig,
             action: DexMergingAction
         ): FileCollection {
-            val attributes = getDexingArtifactConfiguration(creationConfig).getAttributes()
+            val attributes =
+                DexingRegistration.ComponentSpecificParameters(creationConfig).getAttributes()
 
             fun forAction(action: DexMergingAction): FileCollection {
                 when (action) {
@@ -393,14 +393,10 @@ abstract class DexMergingTask : NewIncrementalTask() {
                                     LibraryElements::class.java,
                                     LibraryElements.CLASSES
                                 )
-                            check(!attributes.namedAttributes.containsKey(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE))
-                            val updatedAttributes = AndroidAttributes(
-                                stringAttributes = attributes.stringAttributes,
-                                namedAttributes = attributes.namedAttributes + Pair(
-                                    LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE,
-                                    classesLibraryElements
-                                ),
-                            )
+                            val updatedAttributes = attributes +
+                                    AndroidAttributes(
+                                        namedAttributes = mapOf(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE to classesLibraryElements)
+                                    )
                             creationConfig.variantDependencies.getArtifactFileCollection(
                                 AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                                 AndroidArtifacts.ArtifactScope.PROJECT,
@@ -466,11 +462,8 @@ abstract class DexMergingTask : NewIncrementalTask() {
                         return customNumberOfBuckets
                     }
 
-                    // Deploy API is either the minSdkVersion or if deploying from the IDE, the API level of
-                    // the device we're deploying too.
-                    val targetDeployApi = dexingCreationConfig.minSdkVersionForDexing.getFeatureLevel()
                     // We can be in native multidex mode while using 20- value for dexing
-                    val overrideMinSdkVersion = max(21, targetDeployApi)
+                    val overrideMinSdkVersion = max(21, dexingCreationConfig.minSdkVersionForDexing)
                     getNumberOfBuckets(minSdkVersion = overrideMinSdkVersion)
                 }
             }
@@ -894,7 +887,7 @@ abstract class DexMergingWorkAction : ProfileAwareWorkAction<DexMergingWorkActio
                 outputDir.toPath(),
                 proguardRules,
                 sharedParams.mainDexListConfig.platformMultidexProguardRules.orNull,
-                sharedParams.mainDexListConfig.userMultidexKeepFile.orNull?.toPath(),
+                sharedParams.mainDexListConfig.userMultidexKeepFile.orNull?.asFile?.toPath(),
                 sharedParams.mainDexListConfig.libraryClasses.map { it.toPath() },
                 mainDexListOutput
             )

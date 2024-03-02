@@ -16,13 +16,16 @@
 package com.android.build.api.variant.impl
 
 import com.android.build.api.component.analytics.AnalyticsEnabledApplicationVariantBuilder
+import com.android.build.api.variant.AndroidTestBuilder
 import com.android.build.api.variant.ApplicationVariantBuilder
 import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.DependenciesInfoBuilder
+import com.android.build.api.variant.PropertyAccessNotAllowedException
 import com.android.build.api.variant.VariantBuilder
 import com.android.build.gradle.internal.core.dsl.ApplicationVariantDslInfo
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.VariantBuilderServices
+import com.android.builder.errors.IssueReporter
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import javax.inject.Inject
 
@@ -42,12 +45,33 @@ open class ApplicationVariantBuilderImpl @Inject constructor(
         get() = (dslInfo as ApplicationVariantDslInfo).isDebuggable
 
     override var androidTestEnabled: Boolean
-        get() = enableAndroidTest
+        get() = androidTest.enable
         set(value) {
-            enableAndroidTest = value
+            androidTest.enable = value
         }
 
-    override var enableAndroidTest: Boolean = true
+    override var enableAndroidTest: Boolean
+        get() = androidTest.enable
+        set(value) {
+            androidTest.enable = value
+        }
+
+    internal var _profileable = dslInfo.isProfileable
+
+    override var profileable: Boolean
+        get() = throw PropertyAccessNotAllowedException("profileable", "ApplicationVariantBuilder")
+        set(value) {
+            if (debuggable && value) {
+                val message =
+                    "Variant '$name' can only have debuggable or profileable enabled.\n" +
+                            "Only one of these options can be used at a time.\n" +
+                            "Recommended action: Only set one of profileable=true via variant API \n" +
+                            "or debuggable=true via DSL"
+                variantBuilderServices.issueReporter.reportWarning(IssueReporter.Type.GENERIC, message)
+            } else {
+                _profileable = value
+            }
+        }
 
     override var enableTestFixtures: Boolean = dslInfo.testFixtures?.enable ?: false
 
@@ -83,4 +107,15 @@ open class ApplicationVariantBuilderImpl @Inject constructor(
         dslInfo.optimizationDslInfo.postProcessingOptions.resourcesShrinkingEnabled()
         set(value) = setMinificationIfPossible("shrinkResources", value){ field = it }
 
+    internal var _enableMultiDex = dslInfo.dexingDslInfo.isMultiDexEnabled
+    override var enableMultiDex: Boolean?
+        get() {
+            throw PropertyAccessNotAllowedException("enableMultiDex", "ApplicationVariantBuilder")
+        }
+        set(value) {
+            _enableMultiDex = value
+        }
+
+    override val androidTest: AndroidTestBuilder =
+        AndroidTestBuilderImpl(variantBuilderServices, _enableMultiDex)
 }

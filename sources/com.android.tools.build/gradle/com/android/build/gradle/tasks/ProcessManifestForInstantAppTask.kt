@@ -70,7 +70,6 @@ abstract class ProcessManifestForInstantAppTask @Inject constructor(
     @get:Internal
     abstract val transformationRequest: Property<ArtifactTransformationRequest<ProcessManifestForInstantAppTask>>
 
-    @TaskAction
     override fun doTaskAction() {
 
         transformationRequest.get().submit(this,

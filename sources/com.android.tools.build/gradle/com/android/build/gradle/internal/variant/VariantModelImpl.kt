@@ -16,7 +16,6 @@
 
 package com.android.build.gradle.internal.variant
 
-import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
@@ -77,9 +76,6 @@ class VariantModelImpl(
 
     override val filteredBootClasspath: Provider<List<RegularFile>>
         get() = globalConfig.filteredBootClasspath
-
-    override val globalArtifacts: ArtifactsImpl
-        get() = globalConfig.globalArtifacts
 
     /**
      * Calculates the default variant to put in the model.

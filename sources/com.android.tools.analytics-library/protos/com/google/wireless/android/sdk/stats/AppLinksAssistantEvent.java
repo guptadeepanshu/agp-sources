@@ -41,156 +41,6 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private AppLinksAssistantEvent(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    int mutable_bitField0_ = 0;
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 10: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000001;
-            projectId_ = bs;
-            break;
-          }
-          case 18: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000002;
-            appId_ = bs;
-            break;
-          }
-          case 24: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.EventSource value = com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.EventSource.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(3, rawValue);
-            } else {
-              bitField0_ |= 0x00000004;
-              eventSource_ = rawValue;
-            }
-            break;
-          }
-          case 32: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.EventState value = com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.EventState.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(4, rawValue);
-            } else {
-              bitField0_ |= 0x00000008;
-              eventState_ = rawValue;
-            }
-            break;
-          }
-          case 40: {
-            bitField0_ |= 0x00000010;
-            existingAppLinks_ = input.readBool();
-            break;
-          }
-          case 48: {
-            bitField0_ |= 0x00000020;
-            assistantPanelOpenDuration_ = input.readInt64();
-            break;
-          }
-          case 56: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.PathType value = com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.PathType.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(7, rawValue);
-            } else {
-              bitField0_ |= 0x00000040;
-              appLinkPathType_ = rawValue;
-            }
-            break;
-          }
-          case 64: {
-            bitField0_ |= 0x00000080;
-            newActivityLinked_ = input.readBool();
-            break;
-          }
-          case 72: {
-            bitField0_ |= 0x00000100;
-            newHostLinked_ = input.readBool();
-            break;
-          }
-          case 82: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000200;
-            rawProjectId_ = bs;
-            break;
-          }
-          case 90: {
-            com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000400) != 0)) {
-              subBuilder = validationSummary_.toBuilder();
-            }
-            validationSummary_ = input.readMessage(com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(validationSummary_);
-              validationSummary_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000400;
-            break;
-          }
-          case 98: {
-            com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000800) != 0)) {
-              subBuilder = intentFilterFix_.toBuilder();
-            }
-            intentFilterFix_ = input.readMessage(com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(intentFilterFix_);
-              intentFilterFix_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000800;
-            break;
-          }
-          case 104: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinkFilterOption value = com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinkFilterOption.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(13, rawValue);
-            } else {
-              bitField0_ |= 0x00001000;
-              linkFilterOption_ = rawValue;
-            }
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppLinksAssistantEvent_descriptor;
@@ -1337,94 +1187,6 @@ private static final long serialVersionUID = 0L;
     getUnknownFields() {
       return this.unknownFields;
     }
-    private ValidationSummary(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 8: {
-              bitField0_ |= 0x00000001;
-              totalCsLinks_ = input.readInt64();
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              totalValidCsLinks_ = input.readInt64();
-              break;
-            }
-            case 24: {
-              bitField0_ |= 0x00000004;
-              totalAppLinks_ = input.readInt64();
-              break;
-            }
-            case 32: {
-              bitField0_ |= 0x00000008;
-              totalValidAppLinks_ = input.readInt64();
-              break;
-            }
-            case 40: {
-              bitField0_ |= 0x00000010;
-              appLinksAppCheckFailed_ = input.readInt64();
-              break;
-            }
-            case 48: {
-              bitField0_ |= 0x00000020;
-              appLinksWebCheckFailed_ = input.readInt64();
-              break;
-            }
-            case 56: {
-              bitField0_ |= 0x00000040;
-              appLinksGoogleAdsPolicyFailed_ = input.readInt64();
-              break;
-            }
-            case 64: {
-              bitField0_ |= 0x00000080;
-              totalDomains_ = input.readInt64();
-              break;
-            }
-            case 72: {
-              bitField0_ |= 0x00000100;
-              domainsWebCheckFailed_ = input.readInt64();
-              break;
-            }
-            case 80: {
-              bitField0_ |= 0x00000200;
-              validationRuntimeMillis_ = input.readUInt64();
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppLinksAssistantEvent_ValidationSummary_descriptor;
@@ -1745,7 +1507,7 @@ private static final long serialVersionUID = 0L;
       if (((bitField0_ & 0x00000200) != 0)) {
         output.writeUInt64(10, validationRuntimeMillis_);
       }
-      unknownFields.writeTo(output);
+      getUnknownFields().writeTo(output);
     }
 
     @java.lang.Override
@@ -1794,7 +1556,7 @@ private static final long serialVersionUID = 0L;
         size += com.google.protobuf.CodedOutputStream
           .computeUInt64Size(10, validationRuntimeMillis_);
       }
-      size += unknownFields.getSerializedSize();
+      size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
     }
@@ -1859,7 +1621,7 @@ private static final long serialVersionUID = 0L;
         if (getValidationRuntimeMillis()
             != other.getValidationRuntimeMillis()) return false;
       }
-      if (!unknownFields.equals(other.unknownFields)) return false;
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
 
@@ -1920,7 +1682,7 @@ private static final long serialVersionUID = 0L;
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             getValidationRuntimeMillis());
       }
-      hash = (29 * hash) + unknownFields.hashCode();
+      hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
     }
@@ -2041,18 +1803,13 @@ private static final long serialVersionUID = 0L;
 
       // Construct using com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary.newBuilder()
       private Builder() {
-        maybeForceBuilderInitialization();
+
       }
 
       private Builder(
           com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
+
       }
       @java.lang.Override
       public Builder clear() {
@@ -2224,7 +1981,7 @@ private static final long serialVersionUID = 0L;
         if (other.hasValidationRuntimeMillis()) {
           setValidationRuntimeMillis(other.getValidationRuntimeMillis());
         }
-        this.mergeUnknownFields(other.unknownFields);
+        this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
       }
@@ -2239,17 +1996,80 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary parsedMessage = null;
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
         try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 8: {
+                totalCsLinks_ = input.readInt64();
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 8
+              case 16: {
+                totalValidCsLinks_ = input.readInt64();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 16
+              case 24: {
+                totalAppLinks_ = input.readInt64();
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 24
+              case 32: {
+                totalValidAppLinks_ = input.readInt64();
+                bitField0_ |= 0x00000008;
+                break;
+              } // case 32
+              case 40: {
+                appLinksAppCheckFailed_ = input.readInt64();
+                bitField0_ |= 0x00000010;
+                break;
+              } // case 40
+              case 48: {
+                appLinksWebCheckFailed_ = input.readInt64();
+                bitField0_ |= 0x00000020;
+                break;
+              } // case 48
+              case 56: {
+                appLinksGoogleAdsPolicyFailed_ = input.readInt64();
+                bitField0_ |= 0x00000040;
+                break;
+              } // case 56
+              case 64: {
+                totalDomains_ = input.readInt64();
+                bitField0_ |= 0x00000080;
+                break;
+              } // case 64
+              case 72: {
+                domainsWebCheckFailed_ = input.readInt64();
+                bitField0_ |= 0x00000100;
+                break;
+              } // case 72
+              case 80: {
+                validationRuntimeMillis_ = input.readUInt64();
+                bitField0_ |= 0x00000200;
+                break;
+              } // case 80
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
+          onChanged();
+        } // finally
         return this;
       }
       private int bitField0_;
@@ -2820,7 +2640,18 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ValidationSummary(input, extensionRegistry);
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
       }
     };
 
@@ -2927,59 +2758,6 @@ private static final long serialVersionUID = 0L;
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
-    }
-    private IntentFilterFix(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 8: {
-              bitField0_ |= 0x00000001;
-              totalLinks_ = input.readInt64();
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              numBrokenLinksBefore_ = input.readInt64();
-              break;
-            }
-            case 24: {
-              bitField0_ |= 0x00000004;
-              numBrokenLinksAfter_ = input.readInt64();
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
@@ -3099,7 +2877,7 @@ private static final long serialVersionUID = 0L;
       if (((bitField0_ & 0x00000004) != 0)) {
         output.writeInt64(3, numBrokenLinksAfter_);
       }
-      unknownFields.writeTo(output);
+      getUnknownFields().writeTo(output);
     }
 
     @java.lang.Override
@@ -3120,7 +2898,7 @@ private static final long serialVersionUID = 0L;
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(3, numBrokenLinksAfter_);
       }
-      size += unknownFields.getSerializedSize();
+      size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
     }
@@ -3150,7 +2928,7 @@ private static final long serialVersionUID = 0L;
         if (getNumBrokenLinksAfter()
             != other.getNumBrokenLinksAfter()) return false;
       }
-      if (!unknownFields.equals(other.unknownFields)) return false;
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
 
@@ -3176,7 +2954,7 @@ private static final long serialVersionUID = 0L;
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             getNumBrokenLinksAfter());
       }
-      hash = (29 * hash) + unknownFields.hashCode();
+      hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
     }
@@ -3293,18 +3071,13 @@ private static final long serialVersionUID = 0L;
 
       // Construct using com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix.newBuilder()
       private Builder() {
-        maybeForceBuilderInitialization();
+
       }
 
       private Builder(
           com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
+
       }
       @java.lang.Override
       public Builder clear() {
@@ -3413,7 +3186,7 @@ private static final long serialVersionUID = 0L;
         if (other.hasNumBrokenLinksAfter()) {
           setNumBrokenLinksAfter(other.getNumBrokenLinksAfter());
         }
-        this.mergeUnknownFields(other.unknownFields);
+        this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
       }
@@ -3428,17 +3201,45 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix parsedMessage = null;
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
         try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 8: {
+                totalLinks_ = input.readInt64();
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 8
+              case 16: {
+                numBrokenLinksBefore_ = input.readInt64();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 16
+              case 24: {
+                numBrokenLinksAfter_ = input.readInt64();
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 24
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
+          onChanged();
+        } // finally
         return this;
       }
       private int bitField0_;
@@ -3640,7 +3441,18 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new IntentFilterFix(input, extensionRegistry);
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
       }
     };
 
@@ -3655,6 +3467,3105 @@ private static final long serialVersionUID = 0L;
 
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface LinksRecordOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:android_studio.AppLinksAssistantEvent.LinksRecord)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * Salted (rotating every 540 days) and SHA256 hashed value of raw_schemes.
+     * </pre>
+     *
+     * <code>repeated string anonymized_schemes = 1;</code>
+     * @return A list containing the anonymizedSchemes.
+     */
+    java.util.List<java.lang.String>
+        getAnonymizedSchemesList();
+    /**
+     * <pre>
+     * Salted (rotating every 540 days) and SHA256 hashed value of raw_schemes.
+     * </pre>
+     *
+     * <code>repeated string anonymized_schemes = 1;</code>
+     * @return The count of anonymizedSchemes.
+     */
+    int getAnonymizedSchemesCount();
+    /**
+     * <pre>
+     * Salted (rotating every 540 days) and SHA256 hashed value of raw_schemes.
+     * </pre>
+     *
+     * <code>repeated string anonymized_schemes = 1;</code>
+     * @param index The index of the element to return.
+     * @return The anonymizedSchemes at the given index.
+     */
+    java.lang.String getAnonymizedSchemes(int index);
+    /**
+     * <pre>
+     * Salted (rotating every 540 days) and SHA256 hashed value of raw_schemes.
+     * </pre>
+     *
+     * <code>repeated string anonymized_schemes = 1;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the anonymizedSchemes at the given index.
+     */
+    com.google.protobuf.ByteString
+        getAnonymizedSchemesBytes(int index);
+
+    /**
+     * <pre>
+     * the scheme values defined by the &lt;data android:scheme&gt; tag in
+     * AndroidManifest.xml, e.g. 'https", "twitter"
+     * This may be sensitive information because the scheme can be a custom
+     * string and thus restricted to "raw" sawmill access.
+     * This data is only available in and for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_schemes = 2;</code>
+     * @return A list containing the rawSchemes.
+     */
+    java.util.List<java.lang.String>
+        getRawSchemesList();
+    /**
+     * <pre>
+     * the scheme values defined by the &lt;data android:scheme&gt; tag in
+     * AndroidManifest.xml, e.g. 'https", "twitter"
+     * This may be sensitive information because the scheme can be a custom
+     * string and thus restricted to "raw" sawmill access.
+     * This data is only available in and for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_schemes = 2;</code>
+     * @return The count of rawSchemes.
+     */
+    int getRawSchemesCount();
+    /**
+     * <pre>
+     * the scheme values defined by the &lt;data android:scheme&gt; tag in
+     * AndroidManifest.xml, e.g. 'https", "twitter"
+     * This may be sensitive information because the scheme can be a custom
+     * string and thus restricted to "raw" sawmill access.
+     * This data is only available in and for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_schemes = 2;</code>
+     * @param index The index of the element to return.
+     * @return The rawSchemes at the given index.
+     */
+    java.lang.String getRawSchemes(int index);
+    /**
+     * <pre>
+     * the scheme values defined by the &lt;data android:scheme&gt; tag in
+     * AndroidManifest.xml, e.g. 'https", "twitter"
+     * This may be sensitive information because the scheme can be a custom
+     * string and thus restricted to "raw" sawmill access.
+     * This data is only available in and for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_schemes = 2;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the rawSchemes at the given index.
+     */
+    com.google.protobuf.ByteString
+        getRawSchemesBytes(int index);
+
+    /**
+     * <pre>
+     * Salted (rotating every 540 days) and SHA256 hashed value of raw_hosts.
+     * </pre>
+     *
+     * <code>repeated string anonymized_hosts = 3;</code>
+     * @return A list containing the anonymizedHosts.
+     */
+    java.util.List<java.lang.String>
+        getAnonymizedHostsList();
+    /**
+     * <pre>
+     * Salted (rotating every 540 days) and SHA256 hashed value of raw_hosts.
+     * </pre>
+     *
+     * <code>repeated string anonymized_hosts = 3;</code>
+     * @return The count of anonymizedHosts.
+     */
+    int getAnonymizedHostsCount();
+    /**
+     * <pre>
+     * Salted (rotating every 540 days) and SHA256 hashed value of raw_hosts.
+     * </pre>
+     *
+     * <code>repeated string anonymized_hosts = 3;</code>
+     * @param index The index of the element to return.
+     * @return The anonymizedHosts at the given index.
+     */
+    java.lang.String getAnonymizedHosts(int index);
+    /**
+     * <pre>
+     * Salted (rotating every 540 days) and SHA256 hashed value of raw_hosts.
+     * </pre>
+     *
+     * <code>repeated string anonymized_hosts = 3;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the anonymizedHosts at the given index.
+     */
+    com.google.protobuf.ByteString
+        getAnonymizedHostsBytes(int index);
+
+    /**
+     * <pre>
+     * the host values defined by the &lt;data android:host&gt; tag in
+     * AndroidManifest.xml, e.g. "www.google.com", "*.twitter.com" This may be
+     * sensitive information because the host can be unreleased and thus
+     * restricted to "raw" sawmill access. This data is only available in and
+     * for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_hosts = 4;</code>
+     * @return A list containing the rawHosts.
+     */
+    java.util.List<java.lang.String>
+        getRawHostsList();
+    /**
+     * <pre>
+     * the host values defined by the &lt;data android:host&gt; tag in
+     * AndroidManifest.xml, e.g. "www.google.com", "*.twitter.com" This may be
+     * sensitive information because the host can be unreleased and thus
+     * restricted to "raw" sawmill access. This data is only available in and
+     * for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_hosts = 4;</code>
+     * @return The count of rawHosts.
+     */
+    int getRawHostsCount();
+    /**
+     * <pre>
+     * the host values defined by the &lt;data android:host&gt; tag in
+     * AndroidManifest.xml, e.g. "www.google.com", "*.twitter.com" This may be
+     * sensitive information because the host can be unreleased and thus
+     * restricted to "raw" sawmill access. This data is only available in and
+     * for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_hosts = 4;</code>
+     * @param index The index of the element to return.
+     * @return The rawHosts at the given index.
+     */
+    java.lang.String getRawHosts(int index);
+    /**
+     * <pre>
+     * the host values defined by the &lt;data android:host&gt; tag in
+     * AndroidManifest.xml, e.g. "www.google.com", "*.twitter.com" This may be
+     * sensitive information because the host can be unreleased and thus
+     * restricted to "raw" sawmill access. This data is only available in and
+     * for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_hosts = 4;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the rawHosts at the given index.
+     */
+    com.google.protobuf.ByteString
+        getRawHostsBytes(int index);
+
+    /**
+     * <pre>
+     * Salted (rotating every 540 days) and SHA256 hashed value of raw_paths.
+     * </pre>
+     *
+     * <code>repeated string anonymized_paths = 5;</code>
+     * @return A list containing the anonymizedPaths.
+     */
+    java.util.List<java.lang.String>
+        getAnonymizedPathsList();
+    /**
+     * <pre>
+     * Salted (rotating every 540 days) and SHA256 hashed value of raw_paths.
+     * </pre>
+     *
+     * <code>repeated string anonymized_paths = 5;</code>
+     * @return The count of anonymizedPaths.
+     */
+    int getAnonymizedPathsCount();
+    /**
+     * <pre>
+     * Salted (rotating every 540 days) and SHA256 hashed value of raw_paths.
+     * </pre>
+     *
+     * <code>repeated string anonymized_paths = 5;</code>
+     * @param index The index of the element to return.
+     * @return The anonymizedPaths at the given index.
+     */
+    java.lang.String getAnonymizedPaths(int index);
+    /**
+     * <pre>
+     * Salted (rotating every 540 days) and SHA256 hashed value of raw_paths.
+     * </pre>
+     *
+     * <code>repeated string anonymized_paths = 5;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the anonymizedPaths at the given index.
+     */
+    com.google.protobuf.ByteString
+        getAnonymizedPathsBytes(int index);
+
+    /**
+     * <pre>
+     * the path patterns defined by the &lt;data android:path&gt; or &lt;data
+     * android:pathPattern&gt;, etc. tags in AndroidManifest.xml, e.g. "/test",
+     * "/product/.*".This may be sensitive information because the path can be
+     * unreleased and thus restricted to "raw" sawmill access. This data is only
+     * available in and for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_paths = 6;</code>
+     * @return A list containing the rawPaths.
+     */
+    java.util.List<java.lang.String>
+        getRawPathsList();
+    /**
+     * <pre>
+     * the path patterns defined by the &lt;data android:path&gt; or &lt;data
+     * android:pathPattern&gt;, etc. tags in AndroidManifest.xml, e.g. "/test",
+     * "/product/.*".This may be sensitive information because the path can be
+     * unreleased and thus restricted to "raw" sawmill access. This data is only
+     * available in and for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_paths = 6;</code>
+     * @return The count of rawPaths.
+     */
+    int getRawPathsCount();
+    /**
+     * <pre>
+     * the path patterns defined by the &lt;data android:path&gt; or &lt;data
+     * android:pathPattern&gt;, etc. tags in AndroidManifest.xml, e.g. "/test",
+     * "/product/.*".This may be sensitive information because the path can be
+     * unreleased and thus restricted to "raw" sawmill access. This data is only
+     * available in and for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_paths = 6;</code>
+     * @param index The index of the element to return.
+     * @return The rawPaths at the given index.
+     */
+    java.lang.String getRawPaths(int index);
+    /**
+     * <pre>
+     * the path patterns defined by the &lt;data android:path&gt; or &lt;data
+     * android:pathPattern&gt;, etc. tags in AndroidManifest.xml, e.g. "/test",
+     * "/product/.*".This may be sensitive information because the path can be
+     * unreleased and thus restricted to "raw" sawmill access. This data is only
+     * available in and for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_paths = 6;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the rawPaths at the given index.
+     */
+    com.google.protobuf.ByteString
+        getRawPathsBytes(int index);
+
+    /**
+     * <pre>
+     * The path type defined in &lt;data android:path&gt; or &lt;data
+     * android:pathPattern&gt;, etc. tags,  used as additional information to
+     * distinguish the same path string under different types. For example,
+     * a path "/p" and a path prefix "/p" match different URLs.
+     * This field should match the raw_paths and anonymized_paths field elements
+     * one to one.
+     * </pre>
+     *
+     * <code>repeated .android_studio.AppLinksAssistantEvent.LinksRecord.PathType path_types = 7 [packed = true];</code>
+     * @return A list containing the pathTypes.
+     */
+    java.util.List<com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.PathType> getPathTypesList();
+    /**
+     * <pre>
+     * The path type defined in &lt;data android:path&gt; or &lt;data
+     * android:pathPattern&gt;, etc. tags,  used as additional information to
+     * distinguish the same path string under different types. For example,
+     * a path "/p" and a path prefix "/p" match different URLs.
+     * This field should match the raw_paths and anonymized_paths field elements
+     * one to one.
+     * </pre>
+     *
+     * <code>repeated .android_studio.AppLinksAssistantEvent.LinksRecord.PathType path_types = 7 [packed = true];</code>
+     * @return The count of pathTypes.
+     */
+    int getPathTypesCount();
+    /**
+     * <pre>
+     * The path type defined in &lt;data android:path&gt; or &lt;data
+     * android:pathPattern&gt;, etc. tags,  used as additional information to
+     * distinguish the same path string under different types. For example,
+     * a path "/p" and a path prefix "/p" match different URLs.
+     * This field should match the raw_paths and anonymized_paths field elements
+     * one to one.
+     * </pre>
+     *
+     * <code>repeated .android_studio.AppLinksAssistantEvent.LinksRecord.PathType path_types = 7 [packed = true];</code>
+     * @param index The index of the element to return.
+     * @return The pathTypes at the given index.
+     */
+    com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.PathType getPathTypes(int index);
+
+    /**
+     * <pre>
+     * The user's interaction on the link, used as the reason we log this link.
+     * </pre>
+     *
+     * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord.InteractionType interaction_type = 8;</code>
+     * @return Whether the interactionType field is set.
+     */
+    boolean hasInteractionType();
+    /**
+     * <pre>
+     * The user's interaction on the link, used as the reason we log this link.
+     * </pre>
+     *
+     * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord.InteractionType interaction_type = 8;</code>
+     * @return The interactionType.
+     */
+    com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.InteractionType getInteractionType();
+  }
+  /**
+   * Protobuf type {@code android_studio.AppLinksAssistantEvent.LinksRecord}
+   */
+  public static final class LinksRecord extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:android_studio.AppLinksAssistantEvent.LinksRecord)
+      LinksRecordOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use LinksRecord.newBuilder() to construct.
+    private LinksRecord(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private LinksRecord() {
+      anonymizedSchemes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      rawSchemes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      anonymizedHosts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      rawHosts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      anonymizedPaths_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      rawPaths_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      pathTypes_ = java.util.Collections.emptyList();
+      interactionType_ = 0;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new LinksRecord();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppLinksAssistantEvent_LinksRecord_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppLinksAssistantEvent_LinksRecord_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.class, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.Builder.class);
+    }
+
+    /**
+     * Protobuf enum {@code android_studio.AppLinksAssistantEvent.LinksRecord.PathType}
+     */
+    public enum PathType
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>PATH_TYPE_UNSPECIFIED = 0;</code>
+       */
+      PATH_TYPE_UNSPECIFIED(0),
+      /**
+       * <code>PATH = 1;</code>
+       */
+      PATH(1),
+      /**
+       * <code>PATH_PATTERN = 2;</code>
+       */
+      PATH_PATTERN(2),
+      /**
+       * <code>PATH_PREFIX = 3;</code>
+       */
+      PATH_PREFIX(3),
+      /**
+       * <code>PATH_EMPTY = 4;</code>
+       */
+      PATH_EMPTY(4),
+      /**
+       * <code>PATH_SUFFIX = 5;</code>
+       */
+      PATH_SUFFIX(5),
+      /**
+       * <code>PATH_ADVANCED_PATTERN = 6;</code>
+       */
+      PATH_ADVANCED_PATTERN(6),
+      ;
+
+      /**
+       * <code>PATH_TYPE_UNSPECIFIED = 0;</code>
+       */
+      public static final int PATH_TYPE_UNSPECIFIED_VALUE = 0;
+      /**
+       * <code>PATH = 1;</code>
+       */
+      public static final int PATH_VALUE = 1;
+      /**
+       * <code>PATH_PATTERN = 2;</code>
+       */
+      public static final int PATH_PATTERN_VALUE = 2;
+      /**
+       * <code>PATH_PREFIX = 3;</code>
+       */
+      public static final int PATH_PREFIX_VALUE = 3;
+      /**
+       * <code>PATH_EMPTY = 4;</code>
+       */
+      public static final int PATH_EMPTY_VALUE = 4;
+      /**
+       * <code>PATH_SUFFIX = 5;</code>
+       */
+      public static final int PATH_SUFFIX_VALUE = 5;
+      /**
+       * <code>PATH_ADVANCED_PATTERN = 6;</code>
+       */
+      public static final int PATH_ADVANCED_PATTERN_VALUE = 6;
+
+
+      public final int getNumber() {
+        return value;
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static PathType valueOf(int value) {
+        return forNumber(value);
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       */
+      public static PathType forNumber(int value) {
+        switch (value) {
+          case 0: return PATH_TYPE_UNSPECIFIED;
+          case 1: return PATH;
+          case 2: return PATH_PATTERN;
+          case 3: return PATH_PREFIX;
+          case 4: return PATH_EMPTY;
+          case 5: return PATH_SUFFIX;
+          case 6: return PATH_ADVANCED_PATTERN;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<PathType>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          PathType> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<PathType>() {
+              public PathType findValueByNumber(int number) {
+                return PathType.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final PathType[] VALUES = values();
+
+      public static PathType valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private PathType(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:android_studio.AppLinksAssistantEvent.LinksRecord.PathType)
+    }
+
+    /**
+     * Protobuf enum {@code android_studio.AppLinksAssistantEvent.LinksRecord.InteractionType}
+     */
+    public enum InteractionType
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>INTERACTION_TYPE_UNSPECIFIED = 0;</code>
+       */
+      INTERACTION_TYPE_UNSPECIFIED(0),
+      /**
+       * <pre>
+       * The recorded links are misconfigured and viewed by the user in link
+       * details page.
+       * </pre>
+       *
+       * <code>BROKEN_LINK_IN_DETAIL_PAGE = 1;</code>
+       */
+      BROKEN_LINK_IN_DETAIL_PAGE(1),
+      /**
+       * <pre>
+       * The recorded links are misconfigured and auto-fixed.
+       * </pre>
+       *
+       * <code>BROKEN_LINK_AUTO_FIXED = 2;</code>
+       */
+      BROKEN_LINK_AUTO_FIXED(2),
+      /**
+       * <pre>
+       * The recorded links are misconfigured and manually fixed after shown
+       * in the manual fix UI.
+       * The fixed link will be seen as a new link in the Play released version.
+       * </pre>
+       *
+       * <code>BROKEN_LINK_MANUALLY_FIXED = 3;</code>
+       */
+      BROKEN_LINK_MANUALLY_FIXED(3),
+      /**
+       * <pre>
+       * The recorded links are created using the "creation new link" feature.
+       * </pre>
+       *
+       * <code>NEW_LINK_CREATED = 4;</code>
+       */
+      NEW_LINK_CREATED(4),
+      /**
+       * <pre>
+       * The recorded links are misconfigured and shown in the manual fix page.
+       * They are generally links that miss some link component.
+       * The client doesn't have to report this kind of links for the purpose of
+       * ads impact tracking, as the fixed links will no longer match the ones
+       * that miss some link component.
+       * </pre>
+       *
+       * <code>BROKEN_LINK_MANUAL_FIX_PAGE = 5;</code>
+       */
+      BROKEN_LINK_MANUAL_FIX_PAGE(5),
+      /**
+       * <pre>
+       * The recorded links are valid. The client doesn't have to report this
+       * kind of links for the purpose of ads impact tracking, as they are not
+       * contributing to additional ads revenue.
+       * </pre>
+       *
+       * <code>VALID_LINK_IN_DETAIL_PAGE = 6;</code>
+       */
+      VALID_LINK_IN_DETAIL_PAGE(6),
+      ;
+
+      /**
+       * <code>INTERACTION_TYPE_UNSPECIFIED = 0;</code>
+       */
+      public static final int INTERACTION_TYPE_UNSPECIFIED_VALUE = 0;
+      /**
+       * <pre>
+       * The recorded links are misconfigured and viewed by the user in link
+       * details page.
+       * </pre>
+       *
+       * <code>BROKEN_LINK_IN_DETAIL_PAGE = 1;</code>
+       */
+      public static final int BROKEN_LINK_IN_DETAIL_PAGE_VALUE = 1;
+      /**
+       * <pre>
+       * The recorded links are misconfigured and auto-fixed.
+       * </pre>
+       *
+       * <code>BROKEN_LINK_AUTO_FIXED = 2;</code>
+       */
+      public static final int BROKEN_LINK_AUTO_FIXED_VALUE = 2;
+      /**
+       * <pre>
+       * The recorded links are misconfigured and manually fixed after shown
+       * in the manual fix UI.
+       * The fixed link will be seen as a new link in the Play released version.
+       * </pre>
+       *
+       * <code>BROKEN_LINK_MANUALLY_FIXED = 3;</code>
+       */
+      public static final int BROKEN_LINK_MANUALLY_FIXED_VALUE = 3;
+      /**
+       * <pre>
+       * The recorded links are created using the "creation new link" feature.
+       * </pre>
+       *
+       * <code>NEW_LINK_CREATED = 4;</code>
+       */
+      public static final int NEW_LINK_CREATED_VALUE = 4;
+      /**
+       * <pre>
+       * The recorded links are misconfigured and shown in the manual fix page.
+       * They are generally links that miss some link component.
+       * The client doesn't have to report this kind of links for the purpose of
+       * ads impact tracking, as the fixed links will no longer match the ones
+       * that miss some link component.
+       * </pre>
+       *
+       * <code>BROKEN_LINK_MANUAL_FIX_PAGE = 5;</code>
+       */
+      public static final int BROKEN_LINK_MANUAL_FIX_PAGE_VALUE = 5;
+      /**
+       * <pre>
+       * The recorded links are valid. The client doesn't have to report this
+       * kind of links for the purpose of ads impact tracking, as they are not
+       * contributing to additional ads revenue.
+       * </pre>
+       *
+       * <code>VALID_LINK_IN_DETAIL_PAGE = 6;</code>
+       */
+      public static final int VALID_LINK_IN_DETAIL_PAGE_VALUE = 6;
+
+
+      public final int getNumber() {
+        return value;
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static InteractionType valueOf(int value) {
+        return forNumber(value);
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       */
+      public static InteractionType forNumber(int value) {
+        switch (value) {
+          case 0: return INTERACTION_TYPE_UNSPECIFIED;
+          case 1: return BROKEN_LINK_IN_DETAIL_PAGE;
+          case 2: return BROKEN_LINK_AUTO_FIXED;
+          case 3: return BROKEN_LINK_MANUALLY_FIXED;
+          case 4: return NEW_LINK_CREATED;
+          case 5: return BROKEN_LINK_MANUAL_FIX_PAGE;
+          case 6: return VALID_LINK_IN_DETAIL_PAGE;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<InteractionType>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          InteractionType> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<InteractionType>() {
+              public InteractionType findValueByNumber(int number) {
+                return InteractionType.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.getDescriptor().getEnumTypes().get(1);
+      }
+
+      private static final InteractionType[] VALUES = values();
+
+      public static InteractionType valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private InteractionType(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:android_studio.AppLinksAssistantEvent.LinksRecord.InteractionType)
+    }
+
+    private int bitField0_;
+    public static final int ANONYMIZED_SCHEMES_FIELD_NUMBER = 1;
+    private com.google.protobuf.LazyStringList anonymizedSchemes_;
+    /**
+     * <pre>
+     * Salted (rotating every 540 days) and SHA256 hashed value of raw_schemes.
+     * </pre>
+     *
+     * <code>repeated string anonymized_schemes = 1;</code>
+     * @return A list containing the anonymizedSchemes.
+     */
+    public com.google.protobuf.ProtocolStringList
+        getAnonymizedSchemesList() {
+      return anonymizedSchemes_;
+    }
+    /**
+     * <pre>
+     * Salted (rotating every 540 days) and SHA256 hashed value of raw_schemes.
+     * </pre>
+     *
+     * <code>repeated string anonymized_schemes = 1;</code>
+     * @return The count of anonymizedSchemes.
+     */
+    public int getAnonymizedSchemesCount() {
+      return anonymizedSchemes_.size();
+    }
+    /**
+     * <pre>
+     * Salted (rotating every 540 days) and SHA256 hashed value of raw_schemes.
+     * </pre>
+     *
+     * <code>repeated string anonymized_schemes = 1;</code>
+     * @param index The index of the element to return.
+     * @return The anonymizedSchemes at the given index.
+     */
+    public java.lang.String getAnonymizedSchemes(int index) {
+      return anonymizedSchemes_.get(index);
+    }
+    /**
+     * <pre>
+     * Salted (rotating every 540 days) and SHA256 hashed value of raw_schemes.
+     * </pre>
+     *
+     * <code>repeated string anonymized_schemes = 1;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the anonymizedSchemes at the given index.
+     */
+    public com.google.protobuf.ByteString
+        getAnonymizedSchemesBytes(int index) {
+      return anonymizedSchemes_.getByteString(index);
+    }
+
+    public static final int RAW_SCHEMES_FIELD_NUMBER = 2;
+    private com.google.protobuf.LazyStringList rawSchemes_;
+    /**
+     * <pre>
+     * the scheme values defined by the &lt;data android:scheme&gt; tag in
+     * AndroidManifest.xml, e.g. 'https", "twitter"
+     * This may be sensitive information because the scheme can be a custom
+     * string and thus restricted to "raw" sawmill access.
+     * This data is only available in and for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_schemes = 2;</code>
+     * @return A list containing the rawSchemes.
+     */
+    public com.google.protobuf.ProtocolStringList
+        getRawSchemesList() {
+      return rawSchemes_;
+    }
+    /**
+     * <pre>
+     * the scheme values defined by the &lt;data android:scheme&gt; tag in
+     * AndroidManifest.xml, e.g. 'https", "twitter"
+     * This may be sensitive information because the scheme can be a custom
+     * string and thus restricted to "raw" sawmill access.
+     * This data is only available in and for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_schemes = 2;</code>
+     * @return The count of rawSchemes.
+     */
+    public int getRawSchemesCount() {
+      return rawSchemes_.size();
+    }
+    /**
+     * <pre>
+     * the scheme values defined by the &lt;data android:scheme&gt; tag in
+     * AndroidManifest.xml, e.g. 'https", "twitter"
+     * This may be sensitive information because the scheme can be a custom
+     * string and thus restricted to "raw" sawmill access.
+     * This data is only available in and for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_schemes = 2;</code>
+     * @param index The index of the element to return.
+     * @return The rawSchemes at the given index.
+     */
+    public java.lang.String getRawSchemes(int index) {
+      return rawSchemes_.get(index);
+    }
+    /**
+     * <pre>
+     * the scheme values defined by the &lt;data android:scheme&gt; tag in
+     * AndroidManifest.xml, e.g. 'https", "twitter"
+     * This may be sensitive information because the scheme can be a custom
+     * string and thus restricted to "raw" sawmill access.
+     * This data is only available in and for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_schemes = 2;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the rawSchemes at the given index.
+     */
+    public com.google.protobuf.ByteString
+        getRawSchemesBytes(int index) {
+      return rawSchemes_.getByteString(index);
+    }
+
+    public static final int ANONYMIZED_HOSTS_FIELD_NUMBER = 3;
+    private com.google.protobuf.LazyStringList anonymizedHosts_;
+    /**
+     * <pre>
+     * Salted (rotating every 540 days) and SHA256 hashed value of raw_hosts.
+     * </pre>
+     *
+     * <code>repeated string anonymized_hosts = 3;</code>
+     * @return A list containing the anonymizedHosts.
+     */
+    public com.google.protobuf.ProtocolStringList
+        getAnonymizedHostsList() {
+      return anonymizedHosts_;
+    }
+    /**
+     * <pre>
+     * Salted (rotating every 540 days) and SHA256 hashed value of raw_hosts.
+     * </pre>
+     *
+     * <code>repeated string anonymized_hosts = 3;</code>
+     * @return The count of anonymizedHosts.
+     */
+    public int getAnonymizedHostsCount() {
+      return anonymizedHosts_.size();
+    }
+    /**
+     * <pre>
+     * Salted (rotating every 540 days) and SHA256 hashed value of raw_hosts.
+     * </pre>
+     *
+     * <code>repeated string anonymized_hosts = 3;</code>
+     * @param index The index of the element to return.
+     * @return The anonymizedHosts at the given index.
+     */
+    public java.lang.String getAnonymizedHosts(int index) {
+      return anonymizedHosts_.get(index);
+    }
+    /**
+     * <pre>
+     * Salted (rotating every 540 days) and SHA256 hashed value of raw_hosts.
+     * </pre>
+     *
+     * <code>repeated string anonymized_hosts = 3;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the anonymizedHosts at the given index.
+     */
+    public com.google.protobuf.ByteString
+        getAnonymizedHostsBytes(int index) {
+      return anonymizedHosts_.getByteString(index);
+    }
+
+    public static final int RAW_HOSTS_FIELD_NUMBER = 4;
+    private com.google.protobuf.LazyStringList rawHosts_;
+    /**
+     * <pre>
+     * the host values defined by the &lt;data android:host&gt; tag in
+     * AndroidManifest.xml, e.g. "www.google.com", "*.twitter.com" This may be
+     * sensitive information because the host can be unreleased and thus
+     * restricted to "raw" sawmill access. This data is only available in and
+     * for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_hosts = 4;</code>
+     * @return A list containing the rawHosts.
+     */
+    public com.google.protobuf.ProtocolStringList
+        getRawHostsList() {
+      return rawHosts_;
+    }
+    /**
+     * <pre>
+     * the host values defined by the &lt;data android:host&gt; tag in
+     * AndroidManifest.xml, e.g. "www.google.com", "*.twitter.com" This may be
+     * sensitive information because the host can be unreleased and thus
+     * restricted to "raw" sawmill access. This data is only available in and
+     * for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_hosts = 4;</code>
+     * @return The count of rawHosts.
+     */
+    public int getRawHostsCount() {
+      return rawHosts_.size();
+    }
+    /**
+     * <pre>
+     * the host values defined by the &lt;data android:host&gt; tag in
+     * AndroidManifest.xml, e.g. "www.google.com", "*.twitter.com" This may be
+     * sensitive information because the host can be unreleased and thus
+     * restricted to "raw" sawmill access. This data is only available in and
+     * for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_hosts = 4;</code>
+     * @param index The index of the element to return.
+     * @return The rawHosts at the given index.
+     */
+    public java.lang.String getRawHosts(int index) {
+      return rawHosts_.get(index);
+    }
+    /**
+     * <pre>
+     * the host values defined by the &lt;data android:host&gt; tag in
+     * AndroidManifest.xml, e.g. "www.google.com", "*.twitter.com" This may be
+     * sensitive information because the host can be unreleased and thus
+     * restricted to "raw" sawmill access. This data is only available in and
+     * for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_hosts = 4;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the rawHosts at the given index.
+     */
+    public com.google.protobuf.ByteString
+        getRawHostsBytes(int index) {
+      return rawHosts_.getByteString(index);
+    }
+
+    public static final int ANONYMIZED_PATHS_FIELD_NUMBER = 5;
+    private com.google.protobuf.LazyStringList anonymizedPaths_;
+    /**
+     * <pre>
+     * Salted (rotating every 540 days) and SHA256 hashed value of raw_paths.
+     * </pre>
+     *
+     * <code>repeated string anonymized_paths = 5;</code>
+     * @return A list containing the anonymizedPaths.
+     */
+    public com.google.protobuf.ProtocolStringList
+        getAnonymizedPathsList() {
+      return anonymizedPaths_;
+    }
+    /**
+     * <pre>
+     * Salted (rotating every 540 days) and SHA256 hashed value of raw_paths.
+     * </pre>
+     *
+     * <code>repeated string anonymized_paths = 5;</code>
+     * @return The count of anonymizedPaths.
+     */
+    public int getAnonymizedPathsCount() {
+      return anonymizedPaths_.size();
+    }
+    /**
+     * <pre>
+     * Salted (rotating every 540 days) and SHA256 hashed value of raw_paths.
+     * </pre>
+     *
+     * <code>repeated string anonymized_paths = 5;</code>
+     * @param index The index of the element to return.
+     * @return The anonymizedPaths at the given index.
+     */
+    public java.lang.String getAnonymizedPaths(int index) {
+      return anonymizedPaths_.get(index);
+    }
+    /**
+     * <pre>
+     * Salted (rotating every 540 days) and SHA256 hashed value of raw_paths.
+     * </pre>
+     *
+     * <code>repeated string anonymized_paths = 5;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the anonymizedPaths at the given index.
+     */
+    public com.google.protobuf.ByteString
+        getAnonymizedPathsBytes(int index) {
+      return anonymizedPaths_.getByteString(index);
+    }
+
+    public static final int RAW_PATHS_FIELD_NUMBER = 6;
+    private com.google.protobuf.LazyStringList rawPaths_;
+    /**
+     * <pre>
+     * the path patterns defined by the &lt;data android:path&gt; or &lt;data
+     * android:pathPattern&gt;, etc. tags in AndroidManifest.xml, e.g. "/test",
+     * "/product/.*".This may be sensitive information because the path can be
+     * unreleased and thus restricted to "raw" sawmill access. This data is only
+     * available in and for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_paths = 6;</code>
+     * @return A list containing the rawPaths.
+     */
+    public com.google.protobuf.ProtocolStringList
+        getRawPathsList() {
+      return rawPaths_;
+    }
+    /**
+     * <pre>
+     * the path patterns defined by the &lt;data android:path&gt; or &lt;data
+     * android:pathPattern&gt;, etc. tags in AndroidManifest.xml, e.g. "/test",
+     * "/product/.*".This may be sensitive information because the path can be
+     * unreleased and thus restricted to "raw" sawmill access. This data is only
+     * available in and for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_paths = 6;</code>
+     * @return The count of rawPaths.
+     */
+    public int getRawPathsCount() {
+      return rawPaths_.size();
+    }
+    /**
+     * <pre>
+     * the path patterns defined by the &lt;data android:path&gt; or &lt;data
+     * android:pathPattern&gt;, etc. tags in AndroidManifest.xml, e.g. "/test",
+     * "/product/.*".This may be sensitive information because the path can be
+     * unreleased and thus restricted to "raw" sawmill access. This data is only
+     * available in and for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_paths = 6;</code>
+     * @param index The index of the element to return.
+     * @return The rawPaths at the given index.
+     */
+    public java.lang.String getRawPaths(int index) {
+      return rawPaths_.get(index);
+    }
+    /**
+     * <pre>
+     * the path patterns defined by the &lt;data android:path&gt; or &lt;data
+     * android:pathPattern&gt;, etc. tags in AndroidManifest.xml, e.g. "/test",
+     * "/product/.*".This may be sensitive information because the path can be
+     * unreleased and thus restricted to "raw" sawmill access. This data is only
+     * available in and for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_paths = 6;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the rawPaths at the given index.
+     */
+    public com.google.protobuf.ByteString
+        getRawPathsBytes(int index) {
+      return rawPaths_.getByteString(index);
+    }
+
+    public static final int PATH_TYPES_FIELD_NUMBER = 7;
+    private java.util.List<java.lang.Integer> pathTypes_;
+    private static final com.google.protobuf.Internal.ListAdapter.Converter<
+        java.lang.Integer, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.PathType> pathTypes_converter_ =
+            new com.google.protobuf.Internal.ListAdapter.Converter<
+                java.lang.Integer, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.PathType>() {
+              public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.PathType convert(java.lang.Integer from) {
+                @SuppressWarnings("deprecation")
+                com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.PathType result = com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.PathType.valueOf(from);
+                return result == null ? com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.PathType.PATH_TYPE_UNSPECIFIED : result;
+              }
+            };
+    /**
+     * <pre>
+     * The path type defined in &lt;data android:path&gt; or &lt;data
+     * android:pathPattern&gt;, etc. tags,  used as additional information to
+     * distinguish the same path string under different types. For example,
+     * a path "/p" and a path prefix "/p" match different URLs.
+     * This field should match the raw_paths and anonymized_paths field elements
+     * one to one.
+     * </pre>
+     *
+     * <code>repeated .android_studio.AppLinksAssistantEvent.LinksRecord.PathType path_types = 7 [packed = true];</code>
+     * @return A list containing the pathTypes.
+     */
+    @java.lang.Override
+    public java.util.List<com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.PathType> getPathTypesList() {
+      return new com.google.protobuf.Internal.ListAdapter<
+          java.lang.Integer, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.PathType>(pathTypes_, pathTypes_converter_);
+    }
+    /**
+     * <pre>
+     * The path type defined in &lt;data android:path&gt; or &lt;data
+     * android:pathPattern&gt;, etc. tags,  used as additional information to
+     * distinguish the same path string under different types. For example,
+     * a path "/p" and a path prefix "/p" match different URLs.
+     * This field should match the raw_paths and anonymized_paths field elements
+     * one to one.
+     * </pre>
+     *
+     * <code>repeated .android_studio.AppLinksAssistantEvent.LinksRecord.PathType path_types = 7 [packed = true];</code>
+     * @return The count of pathTypes.
+     */
+    @java.lang.Override
+    public int getPathTypesCount() {
+      return pathTypes_.size();
+    }
+    /**
+     * <pre>
+     * The path type defined in &lt;data android:path&gt; or &lt;data
+     * android:pathPattern&gt;, etc. tags,  used as additional information to
+     * distinguish the same path string under different types. For example,
+     * a path "/p" and a path prefix "/p" match different URLs.
+     * This field should match the raw_paths and anonymized_paths field elements
+     * one to one.
+     * </pre>
+     *
+     * <code>repeated .android_studio.AppLinksAssistantEvent.LinksRecord.PathType path_types = 7 [packed = true];</code>
+     * @param index The index of the element to return.
+     * @return The pathTypes at the given index.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.PathType getPathTypes(int index) {
+      return pathTypes_converter_.convert(pathTypes_.get(index));
+    }
+    private int pathTypesMemoizedSerializedSize;
+
+    public static final int INTERACTION_TYPE_FIELD_NUMBER = 8;
+    private int interactionType_;
+    /**
+     * <pre>
+     * The user's interaction on the link, used as the reason we log this link.
+     * </pre>
+     *
+     * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord.InteractionType interaction_type = 8;</code>
+     * @return Whether the interactionType field is set.
+     */
+    @java.lang.Override public boolean hasInteractionType() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <pre>
+     * The user's interaction on the link, used as the reason we log this link.
+     * </pre>
+     *
+     * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord.InteractionType interaction_type = 8;</code>
+     * @return The interactionType.
+     */
+    @java.lang.Override public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.InteractionType getInteractionType() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.InteractionType result = com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.InteractionType.valueOf(interactionType_);
+      return result == null ? com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.InteractionType.INTERACTION_TYPE_UNSPECIFIED : result;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      for (int i = 0; i < anonymizedSchemes_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, anonymizedSchemes_.getRaw(i));
+      }
+      for (int i = 0; i < rawSchemes_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, rawSchemes_.getRaw(i));
+      }
+      for (int i = 0; i < anonymizedHosts_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, anonymizedHosts_.getRaw(i));
+      }
+      for (int i = 0; i < rawHosts_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, rawHosts_.getRaw(i));
+      }
+      for (int i = 0; i < anonymizedPaths_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, anonymizedPaths_.getRaw(i));
+      }
+      for (int i = 0; i < rawPaths_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, rawPaths_.getRaw(i));
+      }
+      if (getPathTypesList().size() > 0) {
+        output.writeUInt32NoTag(58);
+        output.writeUInt32NoTag(pathTypesMemoizedSerializedSize);
+      }
+      for (int i = 0; i < pathTypes_.size(); i++) {
+        output.writeEnumNoTag(pathTypes_.get(i));
+      }
+      if (((bitField0_ & 0x00000001) != 0)) {
+        output.writeEnum(8, interactionType_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      {
+        int dataSize = 0;
+        for (int i = 0; i < anonymizedSchemes_.size(); i++) {
+          dataSize += computeStringSizeNoTag(anonymizedSchemes_.getRaw(i));
+        }
+        size += dataSize;
+        size += 1 * getAnonymizedSchemesList().size();
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < rawSchemes_.size(); i++) {
+          dataSize += computeStringSizeNoTag(rawSchemes_.getRaw(i));
+        }
+        size += dataSize;
+        size += 1 * getRawSchemesList().size();
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < anonymizedHosts_.size(); i++) {
+          dataSize += computeStringSizeNoTag(anonymizedHosts_.getRaw(i));
+        }
+        size += dataSize;
+        size += 1 * getAnonymizedHostsList().size();
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < rawHosts_.size(); i++) {
+          dataSize += computeStringSizeNoTag(rawHosts_.getRaw(i));
+        }
+        size += dataSize;
+        size += 1 * getRawHostsList().size();
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < anonymizedPaths_.size(); i++) {
+          dataSize += computeStringSizeNoTag(anonymizedPaths_.getRaw(i));
+        }
+        size += dataSize;
+        size += 1 * getAnonymizedPathsList().size();
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < rawPaths_.size(); i++) {
+          dataSize += computeStringSizeNoTag(rawPaths_.getRaw(i));
+        }
+        size += dataSize;
+        size += 1 * getRawPathsList().size();
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < pathTypes_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeEnumSizeNoTag(pathTypes_.get(i));
+        }
+        size += dataSize;
+        if (!getPathTypesList().isEmpty()) {  size += 1;
+          size += com.google.protobuf.CodedOutputStream
+            .computeUInt32SizeNoTag(dataSize);
+        }pathTypesMemoizedSerializedSize = dataSize;
+      }
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(8, interactionType_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord)) {
+        return super.equals(obj);
+      }
+      com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord other = (com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord) obj;
+
+      if (!getAnonymizedSchemesList()
+          .equals(other.getAnonymizedSchemesList())) return false;
+      if (!getRawSchemesList()
+          .equals(other.getRawSchemesList())) return false;
+      if (!getAnonymizedHostsList()
+          .equals(other.getAnonymizedHostsList())) return false;
+      if (!getRawHostsList()
+          .equals(other.getRawHostsList())) return false;
+      if (!getAnonymizedPathsList()
+          .equals(other.getAnonymizedPathsList())) return false;
+      if (!getRawPathsList()
+          .equals(other.getRawPathsList())) return false;
+      if (!pathTypes_.equals(other.pathTypes_)) return false;
+      if (hasInteractionType() != other.hasInteractionType()) return false;
+      if (hasInteractionType()) {
+        if (interactionType_ != other.interactionType_) return false;
+      }
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (getAnonymizedSchemesCount() > 0) {
+        hash = (37 * hash) + ANONYMIZED_SCHEMES_FIELD_NUMBER;
+        hash = (53 * hash) + getAnonymizedSchemesList().hashCode();
+      }
+      if (getRawSchemesCount() > 0) {
+        hash = (37 * hash) + RAW_SCHEMES_FIELD_NUMBER;
+        hash = (53 * hash) + getRawSchemesList().hashCode();
+      }
+      if (getAnonymizedHostsCount() > 0) {
+        hash = (37 * hash) + ANONYMIZED_HOSTS_FIELD_NUMBER;
+        hash = (53 * hash) + getAnonymizedHostsList().hashCode();
+      }
+      if (getRawHostsCount() > 0) {
+        hash = (37 * hash) + RAW_HOSTS_FIELD_NUMBER;
+        hash = (53 * hash) + getRawHostsList().hashCode();
+      }
+      if (getAnonymizedPathsCount() > 0) {
+        hash = (37 * hash) + ANONYMIZED_PATHS_FIELD_NUMBER;
+        hash = (53 * hash) + getAnonymizedPathsList().hashCode();
+      }
+      if (getRawPathsCount() > 0) {
+        hash = (37 * hash) + RAW_PATHS_FIELD_NUMBER;
+        hash = (53 * hash) + getRawPathsList().hashCode();
+      }
+      if (getPathTypesCount() > 0) {
+        hash = (37 * hash) + PATH_TYPES_FIELD_NUMBER;
+        hash = (53 * hash) + pathTypes_.hashCode();
+      }
+      if (hasInteractionType()) {
+        hash = (37 * hash) + INTERACTION_TYPE_FIELD_NUMBER;
+        hash = (53 * hash) + interactionType_;
+      }
+      hash = (29 * hash) + getUnknownFields().hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code android_studio.AppLinksAssistantEvent.LinksRecord}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:android_studio.AppLinksAssistantEvent.LinksRecord)
+        com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecordOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppLinksAssistantEvent_LinksRecord_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppLinksAssistantEvent_LinksRecord_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.class, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.Builder.class);
+      }
+
+      // Construct using com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.newBuilder()
+      private Builder() {
+
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        anonymizedSchemes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        rawSchemes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        anonymizedHosts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        rawHosts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        anonymizedPaths_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        rawPaths_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        pathTypes_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000040);
+        interactionType_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000080);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppLinksAssistantEvent_LinksRecord_descriptor;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord getDefaultInstanceForType() {
+        return com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord build() {
+        com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord buildPartial() {
+        com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord result = new com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((bitField0_ & 0x00000001) != 0)) {
+          anonymizedSchemes_ = anonymizedSchemes_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        }
+        result.anonymizedSchemes_ = anonymizedSchemes_;
+        if (((bitField0_ & 0x00000002) != 0)) {
+          rawSchemes_ = rawSchemes_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000002);
+        }
+        result.rawSchemes_ = rawSchemes_;
+        if (((bitField0_ & 0x00000004) != 0)) {
+          anonymizedHosts_ = anonymizedHosts_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000004);
+        }
+        result.anonymizedHosts_ = anonymizedHosts_;
+        if (((bitField0_ & 0x00000008) != 0)) {
+          rawHosts_ = rawHosts_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000008);
+        }
+        result.rawHosts_ = rawHosts_;
+        if (((bitField0_ & 0x00000010) != 0)) {
+          anonymizedPaths_ = anonymizedPaths_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000010);
+        }
+        result.anonymizedPaths_ = anonymizedPaths_;
+        if (((bitField0_ & 0x00000020) != 0)) {
+          rawPaths_ = rawPaths_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000020);
+        }
+        result.rawPaths_ = rawPaths_;
+        if (((bitField0_ & 0x00000040) != 0)) {
+          pathTypes_ = java.util.Collections.unmodifiableList(pathTypes_);
+          bitField0_ = (bitField0_ & ~0x00000040);
+        }
+        result.pathTypes_ = pathTypes_;
+        if (((from_bitField0_ & 0x00000080) != 0)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.interactionType_ = interactionType_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord) {
+          return mergeFrom((com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord other) {
+        if (other == com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.getDefaultInstance()) return this;
+        if (!other.anonymizedSchemes_.isEmpty()) {
+          if (anonymizedSchemes_.isEmpty()) {
+            anonymizedSchemes_ = other.anonymizedSchemes_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            ensureAnonymizedSchemesIsMutable();
+            anonymizedSchemes_.addAll(other.anonymizedSchemes_);
+          }
+          onChanged();
+        }
+        if (!other.rawSchemes_.isEmpty()) {
+          if (rawSchemes_.isEmpty()) {
+            rawSchemes_ = other.rawSchemes_;
+            bitField0_ = (bitField0_ & ~0x00000002);
+          } else {
+            ensureRawSchemesIsMutable();
+            rawSchemes_.addAll(other.rawSchemes_);
+          }
+          onChanged();
+        }
+        if (!other.anonymizedHosts_.isEmpty()) {
+          if (anonymizedHosts_.isEmpty()) {
+            anonymizedHosts_ = other.anonymizedHosts_;
+            bitField0_ = (bitField0_ & ~0x00000004);
+          } else {
+            ensureAnonymizedHostsIsMutable();
+            anonymizedHosts_.addAll(other.anonymizedHosts_);
+          }
+          onChanged();
+        }
+        if (!other.rawHosts_.isEmpty()) {
+          if (rawHosts_.isEmpty()) {
+            rawHosts_ = other.rawHosts_;
+            bitField0_ = (bitField0_ & ~0x00000008);
+          } else {
+            ensureRawHostsIsMutable();
+            rawHosts_.addAll(other.rawHosts_);
+          }
+          onChanged();
+        }
+        if (!other.anonymizedPaths_.isEmpty()) {
+          if (anonymizedPaths_.isEmpty()) {
+            anonymizedPaths_ = other.anonymizedPaths_;
+            bitField0_ = (bitField0_ & ~0x00000010);
+          } else {
+            ensureAnonymizedPathsIsMutable();
+            anonymizedPaths_.addAll(other.anonymizedPaths_);
+          }
+          onChanged();
+        }
+        if (!other.rawPaths_.isEmpty()) {
+          if (rawPaths_.isEmpty()) {
+            rawPaths_ = other.rawPaths_;
+            bitField0_ = (bitField0_ & ~0x00000020);
+          } else {
+            ensureRawPathsIsMutable();
+            rawPaths_.addAll(other.rawPaths_);
+          }
+          onChanged();
+        }
+        if (!other.pathTypes_.isEmpty()) {
+          if (pathTypes_.isEmpty()) {
+            pathTypes_ = other.pathTypes_;
+            bitField0_ = (bitField0_ & ~0x00000040);
+          } else {
+            ensurePathTypesIsMutable();
+            pathTypes_.addAll(other.pathTypes_);
+          }
+          onChanged();
+        }
+        if (other.hasInteractionType()) {
+          setInteractionType(other.getInteractionType());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                ensureAnonymizedSchemesIsMutable();
+                anonymizedSchemes_.add(bs);
+                break;
+              } // case 10
+              case 18: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                ensureRawSchemesIsMutable();
+                rawSchemes_.add(bs);
+                break;
+              } // case 18
+              case 26: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                ensureAnonymizedHostsIsMutable();
+                anonymizedHosts_.add(bs);
+                break;
+              } // case 26
+              case 34: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                ensureRawHostsIsMutable();
+                rawHosts_.add(bs);
+                break;
+              } // case 34
+              case 42: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                ensureAnonymizedPathsIsMutable();
+                anonymizedPaths_.add(bs);
+                break;
+              } // case 42
+              case 50: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                ensureRawPathsIsMutable();
+                rawPaths_.add(bs);
+                break;
+              } // case 50
+              case 56: {
+                int tmpRaw = input.readEnum();
+                com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.PathType tmpValue =
+                    com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.PathType.forNumber(tmpRaw);
+                if (tmpValue == null) {
+                  mergeUnknownVarintField(7, tmpRaw);
+                } else {
+                  ensurePathTypesIsMutable();
+                  pathTypes_.add(tmpRaw);
+                }
+                break;
+              } // case 56
+              case 58: {
+                int length = input.readRawVarint32();
+                int oldLimit = input.pushLimit(length);
+                while(input.getBytesUntilLimit() > 0) {
+                  int tmpRaw = input.readEnum();
+                  com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.PathType tmpValue =
+                      com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.PathType.forNumber(tmpRaw);
+                  if (tmpValue == null) {
+                    mergeUnknownVarintField(7, tmpRaw);
+                  } else {
+                    ensurePathTypesIsMutable();
+                    pathTypes_.add(tmpRaw);
+                  }
+                }
+                input.popLimit(oldLimit);
+                break;
+              } // case 58
+              case 64: {
+                int tmpRaw = input.readEnum();
+                com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.InteractionType tmpValue =
+                    com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.InteractionType.forNumber(tmpRaw);
+                if (tmpValue == null) {
+                  mergeUnknownVarintField(8, tmpRaw);
+                } else {
+                  interactionType_ = tmpRaw;
+                  bitField0_ |= 0x00000080;
+                }
+                break;
+              } // case 64
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.unwrapIOException();
+        } finally {
+          onChanged();
+        } // finally
+        return this;
+      }
+      private int bitField0_;
+
+      private com.google.protobuf.LazyStringList anonymizedSchemes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureAnonymizedSchemesIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          anonymizedSchemes_ = new com.google.protobuf.LazyStringArrayList(anonymizedSchemes_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+      /**
+       * <pre>
+       * Salted (rotating every 540 days) and SHA256 hashed value of raw_schemes.
+       * </pre>
+       *
+       * <code>repeated string anonymized_schemes = 1;</code>
+       * @return A list containing the anonymizedSchemes.
+       */
+      public com.google.protobuf.ProtocolStringList
+          getAnonymizedSchemesList() {
+        return anonymizedSchemes_.getUnmodifiableView();
+      }
+      /**
+       * <pre>
+       * Salted (rotating every 540 days) and SHA256 hashed value of raw_schemes.
+       * </pre>
+       *
+       * <code>repeated string anonymized_schemes = 1;</code>
+       * @return The count of anonymizedSchemes.
+       */
+      public int getAnonymizedSchemesCount() {
+        return anonymizedSchemes_.size();
+      }
+      /**
+       * <pre>
+       * Salted (rotating every 540 days) and SHA256 hashed value of raw_schemes.
+       * </pre>
+       *
+       * <code>repeated string anonymized_schemes = 1;</code>
+       * @param index The index of the element to return.
+       * @return The anonymizedSchemes at the given index.
+       */
+      public java.lang.String getAnonymizedSchemes(int index) {
+        return anonymizedSchemes_.get(index);
+      }
+      /**
+       * <pre>
+       * Salted (rotating every 540 days) and SHA256 hashed value of raw_schemes.
+       * </pre>
+       *
+       * <code>repeated string anonymized_schemes = 1;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the anonymizedSchemes at the given index.
+       */
+      public com.google.protobuf.ByteString
+          getAnonymizedSchemesBytes(int index) {
+        return anonymizedSchemes_.getByteString(index);
+      }
+      /**
+       * <pre>
+       * Salted (rotating every 540 days) and SHA256 hashed value of raw_schemes.
+       * </pre>
+       *
+       * <code>repeated string anonymized_schemes = 1;</code>
+       * @param index The index to set the value at.
+       * @param value The anonymizedSchemes to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAnonymizedSchemes(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureAnonymizedSchemesIsMutable();
+        anonymizedSchemes_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Salted (rotating every 540 days) and SHA256 hashed value of raw_schemes.
+       * </pre>
+       *
+       * <code>repeated string anonymized_schemes = 1;</code>
+       * @param value The anonymizedSchemes to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAnonymizedSchemes(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureAnonymizedSchemesIsMutable();
+        anonymizedSchemes_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Salted (rotating every 540 days) and SHA256 hashed value of raw_schemes.
+       * </pre>
+       *
+       * <code>repeated string anonymized_schemes = 1;</code>
+       * @param values The anonymizedSchemes to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllAnonymizedSchemes(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureAnonymizedSchemesIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, anonymizedSchemes_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Salted (rotating every 540 days) and SHA256 hashed value of raw_schemes.
+       * </pre>
+       *
+       * <code>repeated string anonymized_schemes = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAnonymizedSchemes() {
+        anonymizedSchemes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Salted (rotating every 540 days) and SHA256 hashed value of raw_schemes.
+       * </pre>
+       *
+       * <code>repeated string anonymized_schemes = 1;</code>
+       * @param value The bytes of the anonymizedSchemes to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAnonymizedSchemesBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureAnonymizedSchemesIsMutable();
+        anonymizedSchemes_.add(value);
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.LazyStringList rawSchemes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureRawSchemesIsMutable() {
+        if (!((bitField0_ & 0x00000002) != 0)) {
+          rawSchemes_ = new com.google.protobuf.LazyStringArrayList(rawSchemes_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+      /**
+       * <pre>
+       * the scheme values defined by the &lt;data android:scheme&gt; tag in
+       * AndroidManifest.xml, e.g. 'https", "twitter"
+       * This may be sensitive information because the scheme can be a custom
+       * string and thus restricted to "raw" sawmill access.
+       * This data is only available in and for PWG approved scenarios.
+       * </pre>
+       *
+       * <code>repeated string raw_schemes = 2;</code>
+       * @return A list containing the rawSchemes.
+       */
+      public com.google.protobuf.ProtocolStringList
+          getRawSchemesList() {
+        return rawSchemes_.getUnmodifiableView();
+      }
+      /**
+       * <pre>
+       * the scheme values defined by the &lt;data android:scheme&gt; tag in
+       * AndroidManifest.xml, e.g. 'https", "twitter"
+       * This may be sensitive information because the scheme can be a custom
+       * string and thus restricted to "raw" sawmill access.
+       * This data is only available in and for PWG approved scenarios.
+       * </pre>
+       *
+       * <code>repeated string raw_schemes = 2;</code>
+       * @return The count of rawSchemes.
+       */
+      public int getRawSchemesCount() {
+        return rawSchemes_.size();
+      }
+      /**
+       * <pre>
+       * the scheme values defined by the &lt;data android:scheme&gt; tag in
+       * AndroidManifest.xml, e.g. 'https", "twitter"
+       * This may be sensitive information because the scheme can be a custom
+       * string and thus restricted to "raw" sawmill access.
+       * This data is only available in and for PWG approved scenarios.
+       * </pre>
+       *
+       * <code>repeated string raw_schemes = 2;</code>
+       * @param index The index of the element to return.
+       * @return The rawSchemes at the given index.
+       */
+      public java.lang.String getRawSchemes(int index) {
+        return rawSchemes_.get(index);
+      }
+      /**
+       * <pre>
+       * the scheme values defined by the &lt;data android:scheme&gt; tag in
+       * AndroidManifest.xml, e.g. 'https", "twitter"
+       * This may be sensitive information because the scheme can be a custom
+       * string and thus restricted to "raw" sawmill access.
+       * This data is only available in and for PWG approved scenarios.
+       * </pre>
+       *
+       * <code>repeated string raw_schemes = 2;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the rawSchemes at the given index.
+       */
+      public com.google.protobuf.ByteString
+          getRawSchemesBytes(int index) {
+        return rawSchemes_.getByteString(index);
+      }
+      /**
+       * <pre>
+       * the scheme values defined by the &lt;data android:scheme&gt; tag in
+       * AndroidManifest.xml, e.g. 'https", "twitter"
+       * This may be sensitive information because the scheme can be a custom
+       * string and thus restricted to "raw" sawmill access.
+       * This data is only available in and for PWG approved scenarios.
+       * </pre>
+       *
+       * <code>repeated string raw_schemes = 2;</code>
+       * @param index The index to set the value at.
+       * @param value The rawSchemes to set.
+       * @return This builder for chaining.
+       */
+      public Builder setRawSchemes(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureRawSchemesIsMutable();
+        rawSchemes_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * the scheme values defined by the &lt;data android:scheme&gt; tag in
+       * AndroidManifest.xml, e.g. 'https", "twitter"
+       * This may be sensitive information because the scheme can be a custom
+       * string and thus restricted to "raw" sawmill access.
+       * This data is only available in and for PWG approved scenarios.
+       * </pre>
+       *
+       * <code>repeated string raw_schemes = 2;</code>
+       * @param value The rawSchemes to add.
+       * @return This builder for chaining.
+       */
+      public Builder addRawSchemes(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureRawSchemesIsMutable();
+        rawSchemes_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * the scheme values defined by the &lt;data android:scheme&gt; tag in
+       * AndroidManifest.xml, e.g. 'https", "twitter"
+       * This may be sensitive information because the scheme can be a custom
+       * string and thus restricted to "raw" sawmill access.
+       * This data is only available in and for PWG approved scenarios.
+       * </pre>
+       *
+       * <code>repeated string raw_schemes = 2;</code>
+       * @param values The rawSchemes to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllRawSchemes(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureRawSchemesIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, rawSchemes_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * the scheme values defined by the &lt;data android:scheme&gt; tag in
+       * AndroidManifest.xml, e.g. 'https", "twitter"
+       * This may be sensitive information because the scheme can be a custom
+       * string and thus restricted to "raw" sawmill access.
+       * This data is only available in and for PWG approved scenarios.
+       * </pre>
+       *
+       * <code>repeated string raw_schemes = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearRawSchemes() {
+        rawSchemes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * the scheme values defined by the &lt;data android:scheme&gt; tag in
+       * AndroidManifest.xml, e.g. 'https", "twitter"
+       * This may be sensitive information because the scheme can be a custom
+       * string and thus restricted to "raw" sawmill access.
+       * This data is only available in and for PWG approved scenarios.
+       * </pre>
+       *
+       * <code>repeated string raw_schemes = 2;</code>
+       * @param value The bytes of the rawSchemes to add.
+       * @return This builder for chaining.
+       */
+      public Builder addRawSchemesBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureRawSchemesIsMutable();
+        rawSchemes_.add(value);
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.LazyStringList anonymizedHosts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureAnonymizedHostsIsMutable() {
+        if (!((bitField0_ & 0x00000004) != 0)) {
+          anonymizedHosts_ = new com.google.protobuf.LazyStringArrayList(anonymizedHosts_);
+          bitField0_ |= 0x00000004;
+         }
+      }
+      /**
+       * <pre>
+       * Salted (rotating every 540 days) and SHA256 hashed value of raw_hosts.
+       * </pre>
+       *
+       * <code>repeated string anonymized_hosts = 3;</code>
+       * @return A list containing the anonymizedHosts.
+       */
+      public com.google.protobuf.ProtocolStringList
+          getAnonymizedHostsList() {
+        return anonymizedHosts_.getUnmodifiableView();
+      }
+      /**
+       * <pre>
+       * Salted (rotating every 540 days) and SHA256 hashed value of raw_hosts.
+       * </pre>
+       *
+       * <code>repeated string anonymized_hosts = 3;</code>
+       * @return The count of anonymizedHosts.
+       */
+      public int getAnonymizedHostsCount() {
+        return anonymizedHosts_.size();
+      }
+      /**
+       * <pre>
+       * Salted (rotating every 540 days) and SHA256 hashed value of raw_hosts.
+       * </pre>
+       *
+       * <code>repeated string anonymized_hosts = 3;</code>
+       * @param index The index of the element to return.
+       * @return The anonymizedHosts at the given index.
+       */
+      public java.lang.String getAnonymizedHosts(int index) {
+        return anonymizedHosts_.get(index);
+      }
+      /**
+       * <pre>
+       * Salted (rotating every 540 days) and SHA256 hashed value of raw_hosts.
+       * </pre>
+       *
+       * <code>repeated string anonymized_hosts = 3;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the anonymizedHosts at the given index.
+       */
+      public com.google.protobuf.ByteString
+          getAnonymizedHostsBytes(int index) {
+        return anonymizedHosts_.getByteString(index);
+      }
+      /**
+       * <pre>
+       * Salted (rotating every 540 days) and SHA256 hashed value of raw_hosts.
+       * </pre>
+       *
+       * <code>repeated string anonymized_hosts = 3;</code>
+       * @param index The index to set the value at.
+       * @param value The anonymizedHosts to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAnonymizedHosts(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureAnonymizedHostsIsMutable();
+        anonymizedHosts_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Salted (rotating every 540 days) and SHA256 hashed value of raw_hosts.
+       * </pre>
+       *
+       * <code>repeated string anonymized_hosts = 3;</code>
+       * @param value The anonymizedHosts to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAnonymizedHosts(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureAnonymizedHostsIsMutable();
+        anonymizedHosts_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Salted (rotating every 540 days) and SHA256 hashed value of raw_hosts.
+       * </pre>
+       *
+       * <code>repeated string anonymized_hosts = 3;</code>
+       * @param values The anonymizedHosts to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllAnonymizedHosts(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureAnonymizedHostsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, anonymizedHosts_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Salted (rotating every 540 days) and SHA256 hashed value of raw_hosts.
+       * </pre>
+       *
+       * <code>repeated string anonymized_hosts = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAnonymizedHosts() {
+        anonymizedHosts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Salted (rotating every 540 days) and SHA256 hashed value of raw_hosts.
+       * </pre>
+       *
+       * <code>repeated string anonymized_hosts = 3;</code>
+       * @param value The bytes of the anonymizedHosts to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAnonymizedHostsBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureAnonymizedHostsIsMutable();
+        anonymizedHosts_.add(value);
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.LazyStringList rawHosts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureRawHostsIsMutable() {
+        if (!((bitField0_ & 0x00000008) != 0)) {
+          rawHosts_ = new com.google.protobuf.LazyStringArrayList(rawHosts_);
+          bitField0_ |= 0x00000008;
+         }
+      }
+      /**
+       * <pre>
+       * the host values defined by the &lt;data android:host&gt; tag in
+       * AndroidManifest.xml, e.g. "www.google.com", "*.twitter.com" This may be
+       * sensitive information because the host can be unreleased and thus
+       * restricted to "raw" sawmill access. This data is only available in and
+       * for PWG approved scenarios.
+       * </pre>
+       *
+       * <code>repeated string raw_hosts = 4;</code>
+       * @return A list containing the rawHosts.
+       */
+      public com.google.protobuf.ProtocolStringList
+          getRawHostsList() {
+        return rawHosts_.getUnmodifiableView();
+      }
+      /**
+       * <pre>
+       * the host values defined by the &lt;data android:host&gt; tag in
+       * AndroidManifest.xml, e.g. "www.google.com", "*.twitter.com" This may be
+       * sensitive information because the host can be unreleased and thus
+       * restricted to "raw" sawmill access. This data is only available in and
+       * for PWG approved scenarios.
+       * </pre>
+       *
+       * <code>repeated string raw_hosts = 4;</code>
+       * @return The count of rawHosts.
+       */
+      public int getRawHostsCount() {
+        return rawHosts_.size();
+      }
+      /**
+       * <pre>
+       * the host values defined by the &lt;data android:host&gt; tag in
+       * AndroidManifest.xml, e.g. "www.google.com", "*.twitter.com" This may be
+       * sensitive information because the host can be unreleased and thus
+       * restricted to "raw" sawmill access. This data is only available in and
+       * for PWG approved scenarios.
+       * </pre>
+       *
+       * <code>repeated string raw_hosts = 4;</code>
+       * @param index The index of the element to return.
+       * @return The rawHosts at the given index.
+       */
+      public java.lang.String getRawHosts(int index) {
+        return rawHosts_.get(index);
+      }
+      /**
+       * <pre>
+       * the host values defined by the &lt;data android:host&gt; tag in
+       * AndroidManifest.xml, e.g. "www.google.com", "*.twitter.com" This may be
+       * sensitive information because the host can be unreleased and thus
+       * restricted to "raw" sawmill access. This data is only available in and
+       * for PWG approved scenarios.
+       * </pre>
+       *
+       * <code>repeated string raw_hosts = 4;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the rawHosts at the given index.
+       */
+      public com.google.protobuf.ByteString
+          getRawHostsBytes(int index) {
+        return rawHosts_.getByteString(index);
+      }
+      /**
+       * <pre>
+       * the host values defined by the &lt;data android:host&gt; tag in
+       * AndroidManifest.xml, e.g. "www.google.com", "*.twitter.com" This may be
+       * sensitive information because the host can be unreleased and thus
+       * restricted to "raw" sawmill access. This data is only available in and
+       * for PWG approved scenarios.
+       * </pre>
+       *
+       * <code>repeated string raw_hosts = 4;</code>
+       * @param index The index to set the value at.
+       * @param value The rawHosts to set.
+       * @return This builder for chaining.
+       */
+      public Builder setRawHosts(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureRawHostsIsMutable();
+        rawHosts_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * the host values defined by the &lt;data android:host&gt; tag in
+       * AndroidManifest.xml, e.g. "www.google.com", "*.twitter.com" This may be
+       * sensitive information because the host can be unreleased and thus
+       * restricted to "raw" sawmill access. This data is only available in and
+       * for PWG approved scenarios.
+       * </pre>
+       *
+       * <code>repeated string raw_hosts = 4;</code>
+       * @param value The rawHosts to add.
+       * @return This builder for chaining.
+       */
+      public Builder addRawHosts(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureRawHostsIsMutable();
+        rawHosts_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * the host values defined by the &lt;data android:host&gt; tag in
+       * AndroidManifest.xml, e.g. "www.google.com", "*.twitter.com" This may be
+       * sensitive information because the host can be unreleased and thus
+       * restricted to "raw" sawmill access. This data is only available in and
+       * for PWG approved scenarios.
+       * </pre>
+       *
+       * <code>repeated string raw_hosts = 4;</code>
+       * @param values The rawHosts to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllRawHosts(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureRawHostsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, rawHosts_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * the host values defined by the &lt;data android:host&gt; tag in
+       * AndroidManifest.xml, e.g. "www.google.com", "*.twitter.com" This may be
+       * sensitive information because the host can be unreleased and thus
+       * restricted to "raw" sawmill access. This data is only available in and
+       * for PWG approved scenarios.
+       * </pre>
+       *
+       * <code>repeated string raw_hosts = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearRawHosts() {
+        rawHosts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * the host values defined by the &lt;data android:host&gt; tag in
+       * AndroidManifest.xml, e.g. "www.google.com", "*.twitter.com" This may be
+       * sensitive information because the host can be unreleased and thus
+       * restricted to "raw" sawmill access. This data is only available in and
+       * for PWG approved scenarios.
+       * </pre>
+       *
+       * <code>repeated string raw_hosts = 4;</code>
+       * @param value The bytes of the rawHosts to add.
+       * @return This builder for chaining.
+       */
+      public Builder addRawHostsBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureRawHostsIsMutable();
+        rawHosts_.add(value);
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.LazyStringList anonymizedPaths_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureAnonymizedPathsIsMutable() {
+        if (!((bitField0_ & 0x00000010) != 0)) {
+          anonymizedPaths_ = new com.google.protobuf.LazyStringArrayList(anonymizedPaths_);
+          bitField0_ |= 0x00000010;
+         }
+      }
+      /**
+       * <pre>
+       * Salted (rotating every 540 days) and SHA256 hashed value of raw_paths.
+       * </pre>
+       *
+       * <code>repeated string anonymized_paths = 5;</code>
+       * @return A list containing the anonymizedPaths.
+       */
+      public com.google.protobuf.ProtocolStringList
+          getAnonymizedPathsList() {
+        return anonymizedPaths_.getUnmodifiableView();
+      }
+      /**
+       * <pre>
+       * Salted (rotating every 540 days) and SHA256 hashed value of raw_paths.
+       * </pre>
+       *
+       * <code>repeated string anonymized_paths = 5;</code>
+       * @return The count of anonymizedPaths.
+       */
+      public int getAnonymizedPathsCount() {
+        return anonymizedPaths_.size();
+      }
+      /**
+       * <pre>
+       * Salted (rotating every 540 days) and SHA256 hashed value of raw_paths.
+       * </pre>
+       *
+       * <code>repeated string anonymized_paths = 5;</code>
+       * @param index The index of the element to return.
+       * @return The anonymizedPaths at the given index.
+       */
+      public java.lang.String getAnonymizedPaths(int index) {
+        return anonymizedPaths_.get(index);
+      }
+      /**
+       * <pre>
+       * Salted (rotating every 540 days) and SHA256 hashed value of raw_paths.
+       * </pre>
+       *
+       * <code>repeated string anonymized_paths = 5;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the anonymizedPaths at the given index.
+       */
+      public com.google.protobuf.ByteString
+          getAnonymizedPathsBytes(int index) {
+        return anonymizedPaths_.getByteString(index);
+      }
+      /**
+       * <pre>
+       * Salted (rotating every 540 days) and SHA256 hashed value of raw_paths.
+       * </pre>
+       *
+       * <code>repeated string anonymized_paths = 5;</code>
+       * @param index The index to set the value at.
+       * @param value The anonymizedPaths to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAnonymizedPaths(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureAnonymizedPathsIsMutable();
+        anonymizedPaths_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Salted (rotating every 540 days) and SHA256 hashed value of raw_paths.
+       * </pre>
+       *
+       * <code>repeated string anonymized_paths = 5;</code>
+       * @param value The anonymizedPaths to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAnonymizedPaths(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureAnonymizedPathsIsMutable();
+        anonymizedPaths_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Salted (rotating every 540 days) and SHA256 hashed value of raw_paths.
+       * </pre>
+       *
+       * <code>repeated string anonymized_paths = 5;</code>
+       * @param values The anonymizedPaths to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllAnonymizedPaths(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureAnonymizedPathsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, anonymizedPaths_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Salted (rotating every 540 days) and SHA256 hashed value of raw_paths.
+       * </pre>
+       *
+       * <code>repeated string anonymized_paths = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAnonymizedPaths() {
+        anonymizedPaths_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Salted (rotating every 540 days) and SHA256 hashed value of raw_paths.
+       * </pre>
+       *
+       * <code>repeated string anonymized_paths = 5;</code>
+       * @param value The bytes of the anonymizedPaths to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAnonymizedPathsBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureAnonymizedPathsIsMutable();
+        anonymizedPaths_.add(value);
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.LazyStringList rawPaths_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureRawPathsIsMutable() {
+        if (!((bitField0_ & 0x00000020) != 0)) {
+          rawPaths_ = new com.google.protobuf.LazyStringArrayList(rawPaths_);
+          bitField0_ |= 0x00000020;
+         }
+      }
+      /**
+       * <pre>
+       * the path patterns defined by the &lt;data android:path&gt; or &lt;data
+       * android:pathPattern&gt;, etc. tags in AndroidManifest.xml, e.g. "/test",
+       * "/product/.*".This may be sensitive information because the path can be
+       * unreleased and thus restricted to "raw" sawmill access. This data is only
+       * available in and for PWG approved scenarios.
+       * </pre>
+       *
+       * <code>repeated string raw_paths = 6;</code>
+       * @return A list containing the rawPaths.
+       */
+      public com.google.protobuf.ProtocolStringList
+          getRawPathsList() {
+        return rawPaths_.getUnmodifiableView();
+      }
+      /**
+       * <pre>
+       * the path patterns defined by the &lt;data android:path&gt; or &lt;data
+       * android:pathPattern&gt;, etc. tags in AndroidManifest.xml, e.g. "/test",
+       * "/product/.*".This may be sensitive information because the path can be
+       * unreleased and thus restricted to "raw" sawmill access. This data is only
+       * available in and for PWG approved scenarios.
+       * </pre>
+       *
+       * <code>repeated string raw_paths = 6;</code>
+       * @return The count of rawPaths.
+       */
+      public int getRawPathsCount() {
+        return rawPaths_.size();
+      }
+      /**
+       * <pre>
+       * the path patterns defined by the &lt;data android:path&gt; or &lt;data
+       * android:pathPattern&gt;, etc. tags in AndroidManifest.xml, e.g. "/test",
+       * "/product/.*".This may be sensitive information because the path can be
+       * unreleased and thus restricted to "raw" sawmill access. This data is only
+       * available in and for PWG approved scenarios.
+       * </pre>
+       *
+       * <code>repeated string raw_paths = 6;</code>
+       * @param index The index of the element to return.
+       * @return The rawPaths at the given index.
+       */
+      public java.lang.String getRawPaths(int index) {
+        return rawPaths_.get(index);
+      }
+      /**
+       * <pre>
+       * the path patterns defined by the &lt;data android:path&gt; or &lt;data
+       * android:pathPattern&gt;, etc. tags in AndroidManifest.xml, e.g. "/test",
+       * "/product/.*".This may be sensitive information because the path can be
+       * unreleased and thus restricted to "raw" sawmill access. This data is only
+       * available in and for PWG approved scenarios.
+       * </pre>
+       *
+       * <code>repeated string raw_paths = 6;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the rawPaths at the given index.
+       */
+      public com.google.protobuf.ByteString
+          getRawPathsBytes(int index) {
+        return rawPaths_.getByteString(index);
+      }
+      /**
+       * <pre>
+       * the path patterns defined by the &lt;data android:path&gt; or &lt;data
+       * android:pathPattern&gt;, etc. tags in AndroidManifest.xml, e.g. "/test",
+       * "/product/.*".This may be sensitive information because the path can be
+       * unreleased and thus restricted to "raw" sawmill access. This data is only
+       * available in and for PWG approved scenarios.
+       * </pre>
+       *
+       * <code>repeated string raw_paths = 6;</code>
+       * @param index The index to set the value at.
+       * @param value The rawPaths to set.
+       * @return This builder for chaining.
+       */
+      public Builder setRawPaths(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureRawPathsIsMutable();
+        rawPaths_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * the path patterns defined by the &lt;data android:path&gt; or &lt;data
+       * android:pathPattern&gt;, etc. tags in AndroidManifest.xml, e.g. "/test",
+       * "/product/.*".This may be sensitive information because the path can be
+       * unreleased and thus restricted to "raw" sawmill access. This data is only
+       * available in and for PWG approved scenarios.
+       * </pre>
+       *
+       * <code>repeated string raw_paths = 6;</code>
+       * @param value The rawPaths to add.
+       * @return This builder for chaining.
+       */
+      public Builder addRawPaths(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureRawPathsIsMutable();
+        rawPaths_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * the path patterns defined by the &lt;data android:path&gt; or &lt;data
+       * android:pathPattern&gt;, etc. tags in AndroidManifest.xml, e.g. "/test",
+       * "/product/.*".This may be sensitive information because the path can be
+       * unreleased and thus restricted to "raw" sawmill access. This data is only
+       * available in and for PWG approved scenarios.
+       * </pre>
+       *
+       * <code>repeated string raw_paths = 6;</code>
+       * @param values The rawPaths to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllRawPaths(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureRawPathsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, rawPaths_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * the path patterns defined by the &lt;data android:path&gt; or &lt;data
+       * android:pathPattern&gt;, etc. tags in AndroidManifest.xml, e.g. "/test",
+       * "/product/.*".This may be sensitive information because the path can be
+       * unreleased and thus restricted to "raw" sawmill access. This data is only
+       * available in and for PWG approved scenarios.
+       * </pre>
+       *
+       * <code>repeated string raw_paths = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearRawPaths() {
+        rawPaths_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * the path patterns defined by the &lt;data android:path&gt; or &lt;data
+       * android:pathPattern&gt;, etc. tags in AndroidManifest.xml, e.g. "/test",
+       * "/product/.*".This may be sensitive information because the path can be
+       * unreleased and thus restricted to "raw" sawmill access. This data is only
+       * available in and for PWG approved scenarios.
+       * </pre>
+       *
+       * <code>repeated string raw_paths = 6;</code>
+       * @param value The bytes of the rawPaths to add.
+       * @return This builder for chaining.
+       */
+      public Builder addRawPathsBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureRawPathsIsMutable();
+        rawPaths_.add(value);
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<java.lang.Integer> pathTypes_ =
+        java.util.Collections.emptyList();
+      private void ensurePathTypesIsMutable() {
+        if (!((bitField0_ & 0x00000040) != 0)) {
+          pathTypes_ = new java.util.ArrayList<java.lang.Integer>(pathTypes_);
+          bitField0_ |= 0x00000040;
+        }
+      }
+      /**
+       * <pre>
+       * The path type defined in &lt;data android:path&gt; or &lt;data
+       * android:pathPattern&gt;, etc. tags,  used as additional information to
+       * distinguish the same path string under different types. For example,
+       * a path "/p" and a path prefix "/p" match different URLs.
+       * This field should match the raw_paths and anonymized_paths field elements
+       * one to one.
+       * </pre>
+       *
+       * <code>repeated .android_studio.AppLinksAssistantEvent.LinksRecord.PathType path_types = 7 [packed = true];</code>
+       * @return A list containing the pathTypes.
+       */
+      public java.util.List<com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.PathType> getPathTypesList() {
+        return new com.google.protobuf.Internal.ListAdapter<
+            java.lang.Integer, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.PathType>(pathTypes_, pathTypes_converter_);
+      }
+      /**
+       * <pre>
+       * The path type defined in &lt;data android:path&gt; or &lt;data
+       * android:pathPattern&gt;, etc. tags,  used as additional information to
+       * distinguish the same path string under different types. For example,
+       * a path "/p" and a path prefix "/p" match different URLs.
+       * This field should match the raw_paths and anonymized_paths field elements
+       * one to one.
+       * </pre>
+       *
+       * <code>repeated .android_studio.AppLinksAssistantEvent.LinksRecord.PathType path_types = 7 [packed = true];</code>
+       * @return The count of pathTypes.
+       */
+      public int getPathTypesCount() {
+        return pathTypes_.size();
+      }
+      /**
+       * <pre>
+       * The path type defined in &lt;data android:path&gt; or &lt;data
+       * android:pathPattern&gt;, etc. tags,  used as additional information to
+       * distinguish the same path string under different types. For example,
+       * a path "/p" and a path prefix "/p" match different URLs.
+       * This field should match the raw_paths and anonymized_paths field elements
+       * one to one.
+       * </pre>
+       *
+       * <code>repeated .android_studio.AppLinksAssistantEvent.LinksRecord.PathType path_types = 7 [packed = true];</code>
+       * @param index The index of the element to return.
+       * @return The pathTypes at the given index.
+       */
+      public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.PathType getPathTypes(int index) {
+        return pathTypes_converter_.convert(pathTypes_.get(index));
+      }
+      /**
+       * <pre>
+       * The path type defined in &lt;data android:path&gt; or &lt;data
+       * android:pathPattern&gt;, etc. tags,  used as additional information to
+       * distinguish the same path string under different types. For example,
+       * a path "/p" and a path prefix "/p" match different URLs.
+       * This field should match the raw_paths and anonymized_paths field elements
+       * one to one.
+       * </pre>
+       *
+       * <code>repeated .android_studio.AppLinksAssistantEvent.LinksRecord.PathType path_types = 7 [packed = true];</code>
+       * @param index The index to set the value at.
+       * @param value The pathTypes to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPathTypes(
+          int index, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.PathType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensurePathTypesIsMutable();
+        pathTypes_.set(index, value.getNumber());
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The path type defined in &lt;data android:path&gt; or &lt;data
+       * android:pathPattern&gt;, etc. tags,  used as additional information to
+       * distinguish the same path string under different types. For example,
+       * a path "/p" and a path prefix "/p" match different URLs.
+       * This field should match the raw_paths and anonymized_paths field elements
+       * one to one.
+       * </pre>
+       *
+       * <code>repeated .android_studio.AppLinksAssistantEvent.LinksRecord.PathType path_types = 7 [packed = true];</code>
+       * @param value The pathTypes to add.
+       * @return This builder for chaining.
+       */
+      public Builder addPathTypes(com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.PathType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensurePathTypesIsMutable();
+        pathTypes_.add(value.getNumber());
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The path type defined in &lt;data android:path&gt; or &lt;data
+       * android:pathPattern&gt;, etc. tags,  used as additional information to
+       * distinguish the same path string under different types. For example,
+       * a path "/p" and a path prefix "/p" match different URLs.
+       * This field should match the raw_paths and anonymized_paths field elements
+       * one to one.
+       * </pre>
+       *
+       * <code>repeated .android_studio.AppLinksAssistantEvent.LinksRecord.PathType path_types = 7 [packed = true];</code>
+       * @param values The pathTypes to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllPathTypes(
+          java.lang.Iterable<? extends com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.PathType> values) {
+        ensurePathTypesIsMutable();
+        for (com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.PathType value : values) {
+          pathTypes_.add(value.getNumber());
+        }
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The path type defined in &lt;data android:path&gt; or &lt;data
+       * android:pathPattern&gt;, etc. tags,  used as additional information to
+       * distinguish the same path string under different types. For example,
+       * a path "/p" and a path prefix "/p" match different URLs.
+       * This field should match the raw_paths and anonymized_paths field elements
+       * one to one.
+       * </pre>
+       *
+       * <code>repeated .android_studio.AppLinksAssistantEvent.LinksRecord.PathType path_types = 7 [packed = true];</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPathTypes() {
+        pathTypes_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000040);
+        onChanged();
+        return this;
+      }
+
+      private int interactionType_ = 0;
+      /**
+       * <pre>
+       * The user's interaction on the link, used as the reason we log this link.
+       * </pre>
+       *
+       * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord.InteractionType interaction_type = 8;</code>
+       * @return Whether the interactionType field is set.
+       */
+      @java.lang.Override public boolean hasInteractionType() {
+        return ((bitField0_ & 0x00000080) != 0);
+      }
+      /**
+       * <pre>
+       * The user's interaction on the link, used as the reason we log this link.
+       * </pre>
+       *
+       * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord.InteractionType interaction_type = 8;</code>
+       * @return The interactionType.
+       */
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.InteractionType getInteractionType() {
+        @SuppressWarnings("deprecation")
+        com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.InteractionType result = com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.InteractionType.valueOf(interactionType_);
+        return result == null ? com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.InteractionType.INTERACTION_TYPE_UNSPECIFIED : result;
+      }
+      /**
+       * <pre>
+       * The user's interaction on the link, used as the reason we log this link.
+       * </pre>
+       *
+       * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord.InteractionType interaction_type = 8;</code>
+       * @param value The interactionType to set.
+       * @return This builder for chaining.
+       */
+      public Builder setInteractionType(com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.InteractionType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000080;
+        interactionType_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The user's interaction on the link, used as the reason we log this link.
+       * </pre>
+       *
+       * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord.InteractionType interaction_type = 8;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearInteractionType() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        interactionType_ = 0;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:android_studio.AppLinksAssistantEvent.LinksRecord)
+    }
+
+    // @@protoc_insertion_point(class_scope:android_studio.AppLinksAssistantEvent.LinksRecord)
+    private static final com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord();
+    }
+
+    public static com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<LinksRecord>
+        PARSER = new com.google.protobuf.AbstractParser<LinksRecord>() {
+      @java.lang.Override
+      public LinksRecord parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
+      }
+    };
+
+    public static com.google.protobuf.Parser<LinksRecord> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<LinksRecord> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -4130,6 +7041,44 @@ private static final long serialVersionUID = 0L;
     return result == null ? com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinkFilterOption.UNKNOWN : result;
   }
 
+  public static final int LINKS_RECORD_FIELD_NUMBER = 14;
+  private com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord linksRecord_;
+  /**
+   * <pre>
+   * The information of an interacted link collected for impact tracking.
+   * </pre>
+   *
+   * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord links_record = 14;</code>
+   * @return Whether the linksRecord field is set.
+   */
+  @java.lang.Override
+  public boolean hasLinksRecord() {
+    return ((bitField0_ & 0x00002000) != 0);
+  }
+  /**
+   * <pre>
+   * The information of an interacted link collected for impact tracking.
+   * </pre>
+   *
+   * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord links_record = 14;</code>
+   * @return The linksRecord.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord getLinksRecord() {
+    return linksRecord_ == null ? com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.getDefaultInstance() : linksRecord_;
+  }
+  /**
+   * <pre>
+   * The information of an interacted link collected for impact tracking.
+   * </pre>
+   *
+   * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord links_record = 14;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecordOrBuilder getLinksRecordOrBuilder() {
+    return linksRecord_ == null ? com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.getDefaultInstance() : linksRecord_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -4183,7 +7132,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00001000) != 0)) {
       output.writeEnum(13, linkFilterOption_);
     }
-    unknownFields.writeTo(output);
+    if (((bitField0_ & 0x00002000) != 0)) {
+      output.writeMessage(14, getLinksRecord());
+    }
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -4241,7 +7193,11 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(13, linkFilterOption_);
     }
-    size += unknownFields.getSerializedSize();
+    if (((bitField0_ & 0x00002000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(14, getLinksRecord());
+    }
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -4317,7 +7273,12 @@ private static final long serialVersionUID = 0L;
     if (hasLinkFilterOption()) {
       if (linkFilterOption_ != other.linkFilterOption_) return false;
     }
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (hasLinksRecord() != other.hasLinksRecord()) return false;
+    if (hasLinksRecord()) {
+      if (!getLinksRecord()
+          .equals(other.getLinksRecord())) return false;
+    }
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -4384,7 +7345,11 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + LINK_FILTER_OPTION_FIELD_NUMBER;
       hash = (53 * hash) + linkFilterOption_;
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    if (hasLinksRecord()) {
+      hash = (37 * hash) + LINKS_RECORD_FIELD_NUMBER;
+      hash = (53 * hash) + getLinksRecord().hashCode();
+    }
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -4518,6 +7483,7 @@ private static final long serialVersionUID = 0L;
               .alwaysUseFieldBuilders) {
         getValidationSummaryFieldBuilder();
         getIntentFilterFixFieldBuilder();
+        getLinksRecordFieldBuilder();
       }
     }
     @java.lang.Override
@@ -4557,6 +7523,12 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000800);
       linkFilterOption_ = 0;
       bitField0_ = (bitField0_ & ~0x00001000);
+      if (linksRecordBuilder_ == null) {
+        linksRecord_ = null;
+      } else {
+        linksRecordBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00002000);
       return this;
     }
 
@@ -4645,6 +7617,14 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00001000;
       }
       result.linkFilterOption_ = linkFilterOption_;
+      if (((from_bitField0_ & 0x00002000) != 0)) {
+        if (linksRecordBuilder_ == null) {
+          result.linksRecord_ = linksRecord_;
+        } else {
+          result.linksRecord_ = linksRecordBuilder_.build();
+        }
+        to_bitField0_ |= 0x00002000;
+      }
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -4739,7 +7719,10 @@ private static final long serialVersionUID = 0L;
       if (other.hasLinkFilterOption()) {
         setLinkFilterOption(other.getLinkFilterOption());
       }
-      this.mergeUnknownFields(other.unknownFields);
+      if (other.hasLinksRecord()) {
+        mergeLinksRecord(other.getLinksRecord());
+      }
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -4754,17 +7737,134 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.google.wireless.android.sdk.stats.AppLinksAssistantEvent parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              projectId_ = input.readBytes();
+              bitField0_ |= 0x00000001;
+              break;
+            } // case 10
+            case 18: {
+              appId_ = input.readBytes();
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 18
+            case 24: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.EventSource tmpValue =
+                  com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.EventSource.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(3, tmpRaw);
+              } else {
+                eventSource_ = tmpRaw;
+                bitField0_ |= 0x00000004;
+              }
+              break;
+            } // case 24
+            case 32: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.EventState tmpValue =
+                  com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.EventState.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(4, tmpRaw);
+              } else {
+                eventState_ = tmpRaw;
+                bitField0_ |= 0x00000008;
+              }
+              break;
+            } // case 32
+            case 40: {
+              existingAppLinks_ = input.readBool();
+              bitField0_ |= 0x00000010;
+              break;
+            } // case 40
+            case 48: {
+              assistantPanelOpenDuration_ = input.readInt64();
+              bitField0_ |= 0x00000020;
+              break;
+            } // case 48
+            case 56: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.PathType tmpValue =
+                  com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.PathType.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(7, tmpRaw);
+              } else {
+                appLinkPathType_ = tmpRaw;
+                bitField0_ |= 0x00000040;
+              }
+              break;
+            } // case 56
+            case 64: {
+              newActivityLinked_ = input.readBool();
+              bitField0_ |= 0x00000080;
+              break;
+            } // case 64
+            case 72: {
+              newHostLinked_ = input.readBool();
+              bitField0_ |= 0x00000100;
+              break;
+            } // case 72
+            case 82: {
+              rawProjectId_ = input.readBytes();
+              bitField0_ |= 0x00000200;
+              break;
+            } // case 82
+            case 90: {
+              input.readMessage(
+                  getValidationSummaryFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000400;
+              break;
+            } // case 90
+            case 98: {
+              input.readMessage(
+                  getIntentFilterFixFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000800;
+              break;
+            } // case 98
+            case 104: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinkFilterOption tmpValue =
+                  com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinkFilterOption.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(13, tmpRaw);
+              } else {
+                linkFilterOption_ = tmpRaw;
+                bitField0_ |= 0x00001000;
+              }
+              break;
+            } // case 104
+            case 114: {
+              input.readMessage(
+                  getLinksRecordFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00002000;
+              break;
+            } // case 114
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.google.wireless.android.sdk.stats.AppLinksAssistantEvent) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
     private int bitField0_;
@@ -5830,6 +8930,162 @@ private static final long serialVersionUID = 0L;
       onChanged();
       return this;
     }
+
+    private com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord linksRecord_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.Builder, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecordOrBuilder> linksRecordBuilder_;
+    /**
+     * <pre>
+     * The information of an interacted link collected for impact tracking.
+     * </pre>
+     *
+     * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord links_record = 14;</code>
+     * @return Whether the linksRecord field is set.
+     */
+    public boolean hasLinksRecord() {
+      return ((bitField0_ & 0x00002000) != 0);
+    }
+    /**
+     * <pre>
+     * The information of an interacted link collected for impact tracking.
+     * </pre>
+     *
+     * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord links_record = 14;</code>
+     * @return The linksRecord.
+     */
+    public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord getLinksRecord() {
+      if (linksRecordBuilder_ == null) {
+        return linksRecord_ == null ? com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.getDefaultInstance() : linksRecord_;
+      } else {
+        return linksRecordBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * The information of an interacted link collected for impact tracking.
+     * </pre>
+     *
+     * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord links_record = 14;</code>
+     */
+    public Builder setLinksRecord(com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord value) {
+      if (linksRecordBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        linksRecord_ = value;
+        onChanged();
+      } else {
+        linksRecordBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00002000;
+      return this;
+    }
+    /**
+     * <pre>
+     * The information of an interacted link collected for impact tracking.
+     * </pre>
+     *
+     * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord links_record = 14;</code>
+     */
+    public Builder setLinksRecord(
+        com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.Builder builderForValue) {
+      if (linksRecordBuilder_ == null) {
+        linksRecord_ = builderForValue.build();
+        onChanged();
+      } else {
+        linksRecordBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00002000;
+      return this;
+    }
+    /**
+     * <pre>
+     * The information of an interacted link collected for impact tracking.
+     * </pre>
+     *
+     * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord links_record = 14;</code>
+     */
+    public Builder mergeLinksRecord(com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord value) {
+      if (linksRecordBuilder_ == null) {
+        if (((bitField0_ & 0x00002000) != 0) &&
+            linksRecord_ != null &&
+            linksRecord_ != com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.getDefaultInstance()) {
+          linksRecord_ =
+            com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.newBuilder(linksRecord_).mergeFrom(value).buildPartial();
+        } else {
+          linksRecord_ = value;
+        }
+        onChanged();
+      } else {
+        linksRecordBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00002000;
+      return this;
+    }
+    /**
+     * <pre>
+     * The information of an interacted link collected for impact tracking.
+     * </pre>
+     *
+     * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord links_record = 14;</code>
+     */
+    public Builder clearLinksRecord() {
+      if (linksRecordBuilder_ == null) {
+        linksRecord_ = null;
+        onChanged();
+      } else {
+        linksRecordBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00002000);
+      return this;
+    }
+    /**
+     * <pre>
+     * The information of an interacted link collected for impact tracking.
+     * </pre>
+     *
+     * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord links_record = 14;</code>
+     */
+    public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.Builder getLinksRecordBuilder() {
+      bitField0_ |= 0x00002000;
+      onChanged();
+      return getLinksRecordFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * The information of an interacted link collected for impact tracking.
+     * </pre>
+     *
+     * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord links_record = 14;</code>
+     */
+    public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecordOrBuilder getLinksRecordOrBuilder() {
+      if (linksRecordBuilder_ != null) {
+        return linksRecordBuilder_.getMessageOrBuilder();
+      } else {
+        return linksRecord_ == null ?
+            com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.getDefaultInstance() : linksRecord_;
+      }
+    }
+    /**
+     * <pre>
+     * The information of an interacted link collected for impact tracking.
+     * </pre>
+     *
+     * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord links_record = 14;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.Builder, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecordOrBuilder> 
+        getLinksRecordFieldBuilder() {
+      if (linksRecordBuilder_ == null) {
+        linksRecordBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord.Builder, com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecordOrBuilder>(
+                getLinksRecord(),
+                getParentForChildren(),
+                isClean());
+        linksRecord_ = null;
+      }
+      return linksRecordBuilder_;
+    }
     @java.lang.Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -5863,7 +9119,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new AppLinksAssistantEvent(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

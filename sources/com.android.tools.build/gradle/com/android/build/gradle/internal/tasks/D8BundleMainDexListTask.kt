@@ -18,6 +18,7 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.build.api.artifact.MultipleArtifact
 import com.android.build.api.artifact.ScopedArtifact
+import com.android.build.api.artifact.impl.InternalScopedArtifact
 import com.android.build.api.artifact.impl.InternalScopedArtifacts
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.errors.MessageReceiverImpl
@@ -73,7 +74,7 @@ abstract class D8BundleMainDexListTask : NonIncrementalTask() {
     @get:Optional
     @get:InputFile
     @get:PathSensitive(PathSensitivity.NONE)
-    abstract val userMultidexKeepFile: Property<File>
+    abstract val userMultidexKeepFile: RegularFileProperty
 
     @get:Classpath
     abstract val bootClasspath: ConfigurableFileCollection
@@ -114,7 +115,7 @@ abstract class D8BundleMainDexListTask : NonIncrementalTask() {
             abstract val programDexFiles: ConfigurableFileCollection
             abstract val libraryClasses: ConfigurableFileCollection
             abstract val bootClasspath: ConfigurableFileCollection
-            abstract val userMultidexKeepFile: Property<File>
+            abstract val userMultidexKeepFile: RegularFileProperty
             abstract val output: RegularFileProperty
             abstract val errorFormat: Property<SyncOptions.ErrorFormatMode>
         }
@@ -141,7 +142,7 @@ abstract class D8BundleMainDexListTask : NonIncrementalTask() {
             )
 
             parameters.userMultidexKeepFile.orNull?.let {
-                mainDexClasses.addAll(it.readLines())
+                mainDexClasses.addAll(it.asFile.readLines())
             }
 
             parameters.output.asFile.get().writeText(
@@ -187,11 +188,11 @@ abstract class D8BundleMainDexListTask : NonIncrementalTask() {
 
             task.libraryClasses.from(creationConfig.services.fileCollection().also {
                 it.from(creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.TESTED_CODE)
-                    .getFinalArtifacts(ScopedArtifact.CLASSES)
+                    .getFinalArtifacts(InternalScopedArtifact.FINAL_TRANSFORMED_CLASSES)
                 )
 
                 it.from(creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.COMPILE_ONLY)
-                    .getFinalArtifacts(ScopedArtifact.CLASSES)
+                    .getFinalArtifacts(InternalScopedArtifact.FINAL_TRANSFORMED_CLASSES)
                 )
             }).disallowChanges()
 

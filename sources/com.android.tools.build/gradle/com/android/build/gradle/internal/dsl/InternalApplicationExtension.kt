@@ -21,10 +21,11 @@ import com.android.build.api.dsl.ApplicationBuildFeatures
 import com.android.build.api.dsl.ApplicationBuildType
 import com.android.build.api.dsl.ApplicationDefaultConfig
 import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.api.dsl.ApplicationInstallation
 import com.android.build.api.dsl.ApplicationProductFlavor
 import com.android.build.api.dsl.ApplicationPublishing
-import com.android.build.api.dsl.Bundle
 import com.android.build.api.dsl.DependenciesInfo
+import com.android.build.api.dsl.PrivacySandbox
 import org.gradle.api.Action
 
 /** See [InternalCommonExtension] */
@@ -35,7 +36,8 @@ interface InternalApplicationExtension :
                 ApplicationBuildType,
                 ApplicationDefaultConfig,
                 ApplicationProductFlavor,
-                ApplicationAndroidResources> {
+                ApplicationAndroidResources,
+                ApplicationInstallation> {
     override val dynamicFeatures: MutableSet<String>
     fun setDynamicFeatures(dynamicFeatures: Set<String>)
     override val assetPacks: MutableSet<String>
@@ -45,4 +47,5 @@ interface InternalApplicationExtension :
     fun bundle(action: Action<BundleOptions>)
     fun dependenciesInfo(action: Action<DependenciesInfo>)
     fun publishing(action: Action<ApplicationPublishing>)
+    fun privacySandbox(action: Action<PrivacySandbox>)
 }

@@ -29,10 +29,10 @@ import org.gradle.api.artifacts.transform.InputArtifact
 import org.gradle.api.artifacts.transform.InputArtifactDependencies
 import org.gradle.api.artifacts.transform.TransformAction
 import org.gradle.api.artifacts.transform.TransformOutputs
+import org.gradle.api.artifacts.type.ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.file.RegularFile
-import org.gradle.api.internal.artifacts.ArtifactAttributes
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
@@ -115,18 +115,18 @@ abstract class RecalculateStackFramesTransform :
             dependencyHandler.registerTransform(RecalculateStackFramesTransform::class.java) { spec ->
                 if (fixInstrumentedJars) {
                     spec.from.attribute(
-                        ArtifactAttributes.ARTIFACT_FORMAT,
+                        ARTIFACT_TYPE_ATTRIBUTE,
                         AndroidArtifacts.ArtifactType.ASM_INSTRUMENTED_JARS.type
                     )
                 } else {
                     spec.from.attribute(
-                        ArtifactAttributes.ARTIFACT_FORMAT,
+                        ARTIFACT_TYPE_ATTRIBUTE,
                         AndroidArtifacts.ArtifactType.CLASSES_JAR.type
                     )
                 }
 
                 spec.to.attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
+                    ARTIFACT_TYPE_ATTRIBUTE,
                     AndroidArtifacts.ArtifactType.CLASSES_FIXED_FRAMES_JAR.type
                 )
 
@@ -138,7 +138,7 @@ abstract class RecalculateStackFramesTransform :
                     )
                 }
 
-                attributes.stringAttributes?.forEach { name, value ->
+                attributes.stringAttributes.forEach { name, value ->
                     spec.from.attribute(name, value)
                     spec.to.attribute(name, value)
                 }

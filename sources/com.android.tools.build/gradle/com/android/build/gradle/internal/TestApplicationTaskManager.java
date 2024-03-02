@@ -16,7 +16,6 @@
 
 package com.android.build.gradle.internal;
 
-import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.APK;
 
 import com.android.annotations.NonNull;
 import com.android.build.api.artifact.SingleArtifact;
@@ -30,6 +29,8 @@ import com.android.build.gradle.internal.component.TestCreationConfig;
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig;
 import com.android.build.gradle.internal.component.TestVariantCreationConfig;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts;
+import com.android.build.gradle.internal.scope.InternalArtifactType;
+import com.android.build.gradle.internal.tasks.AsarsToCompatSplitsTask;
 import com.android.build.gradle.internal.tasks.DeviceProviderInstrumentTestTask;
 import com.android.build.gradle.internal.tasks.SigningConfigVersionsWriterTask;
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig;
@@ -37,11 +38,9 @@ import com.android.build.gradle.internal.tasks.factory.TaskFactoryUtils;
 import com.android.build.gradle.internal.tasks.factory.TaskManagerConfig;
 import com.android.build.gradle.internal.test.TestApplicationTestData;
 import com.android.build.gradle.internal.variant.ComponentInfo;
-import com.android.build.gradle.options.BooleanOption;
 import com.android.build.gradle.tasks.CheckTestedAppObfuscation;
 import com.android.build.gradle.tasks.ManifestProcessorTask;
 import com.android.build.gradle.tasks.ProcessTestManifest;
-import com.android.build.gradle.tasks.sync.TestModuleVariantModelTask;
 import com.android.builder.core.ComponentType;
 import com.google.common.base.Preconditions;
 import java.util.Collection;
@@ -92,22 +91,11 @@ public class TestApplicationTaskManager
         Provider<Directory> testingApk =
                 testVariantProperties.getArtifacts().get(SingleArtifact.APK.INSTANCE);
 
-        taskFactory.register(new TestModuleVariantModelTask.CreationAction(testVariantProperties));
-
-        // The APKs to be tested.
-        FileCollection testedApks =
-                testVariantProperties
-                        .getVariantDependencies()
-                        .getArtifactFileCollection(
-                                AndroidArtifacts.ConsumedConfigType.PROVIDED_CLASSPATH,
-                                AndroidArtifacts.ArtifactScope.ALL,
-                                APK);
+        boolean privacySandboxEnabled =
+                testVariantProperties.getPrivacySandboxCreationConfig() != null;
 
         FileCollection privacySandboxSdkApks =
-                testVariantProperties
-                                .getServices()
-                                .getProjectOptions()
-                                .get(BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT)
+                privacySandboxEnabled
                         ? testVariantProperties
                                 .getVariantDependencies()
                                 .getArtifactFileCollection(
@@ -117,13 +105,21 @@ public class TestApplicationTaskManager
                                                 .ANDROID_PRIVACY_SANDBOX_SDK_APKS)
                         : null;
 
+        Provider<Directory> privacySandboxCompatSdkApks =
+                privacySandboxEnabled
+                        ? testVariantProperties
+                                .getArtifacts()
+                                .get(InternalArtifactType.SDK_SPLITS_APKS.INSTANCE)
+                        : null;
+
         TestApplicationTestData testData =
                 new TestApplicationTestData(
                         testVariantProperties.getNamespace(),
                         testVariantProperties,
                         testingApk,
-                        testedApks,
-                        privacySandboxSdkApks);
+                        testVariantProperties.getTestedApks(),
+                        privacySandboxSdkApks,
+                        privacySandboxCompatSdkApks);
 
         configureTestData(testVariantProperties, testData);
 
@@ -131,6 +127,7 @@ public class TestApplicationTaskManager
         createValidateSigningTask(testVariantProperties);
         taskFactory.register(
                 new SigningConfigVersionsWriterTask.CreationAction(testVariantProperties));
+        taskFactory.register(new AsarsToCompatSplitsTask.CreationAction(testVariantProperties));
 
         // create the test connected check task.
         TaskProvider<DeviceProviderInstrumentTestTask> instrumentTestTask =

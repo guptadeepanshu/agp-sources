@@ -29,7 +29,7 @@ class AndroidResourcesImpl(
 internal fun initializeAaptOptionsFromDsl(
     dslAndroidResources: com.android.build.api.dsl.AndroidResources,
     variantServices: VariantServices
-) : AndroidResources {
+) : AndroidResourcesImpl {
     return AndroidResourcesImpl(
         ignoreAssetsPatterns = variantServices.listPropertyOf(
             String::class.java,

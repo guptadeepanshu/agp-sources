@@ -550,9 +550,10 @@ class DexArchiveBuilderTaskDelegate(
                     externalLibChangedClasses,
                     mixedScopeChangedClasses
                 ).flatten().filter { it.file.extension == SdkConstants.EXT_JAR }.forEach {
-                    check(it.changeType != ChangeType.REMOVED) {
-                        "Reported ${it.file.canonicalPath} as removed. Output mapping should be non-incremental."
-                    }
+                    // Note: We're grouping all the changes across scopes, so if a jar is moved from
+                    // one scope to another, it may be reported as both REMOVED and ADDED
+                    // (b/308401803). Therefore, we will recompute the hash of a changed jar
+                    // regardless of its change type.
                     fileHashes[it.file] = getFileHash(it.file)
                 }
             } else {

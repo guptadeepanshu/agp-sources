@@ -19,7 +19,7 @@ package com.android.build.api.variant
 import org.gradle.api.Incubating
 
 /**
- * Interface for component that can shrink resources
+ * Build-time properties for [Component] that can minify Android resources.
  */
 @Incubating
 interface CanMinifyAndroidResources {

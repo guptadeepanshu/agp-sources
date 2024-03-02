@@ -80,4 +80,18 @@ internal class LibraryVariantDslInfoImpl internal constructor(
         ).isDebuggable
             ?: (buildTypeObj as? com.android.build.gradle.internal.dsl.BuildType)?.isDebuggable
             ?: false
+
+    override val isAndroidTestMultiDexEnabled: Boolean? by lazy {
+        var multiDexEnabled: Boolean? = null
+        computeMergedOptions(
+                defaultConfig,
+                buildTypeObj,
+                productFlavorList,
+                { (this as LibraryVariantDimension).multiDexEnabled },
+                { (this as LibraryVariantDimension).multiDexEnabled }
+        ) { coreOption: Boolean ->
+            multiDexEnabled = coreOption
+        }
+        multiDexEnabled
+    }
 }

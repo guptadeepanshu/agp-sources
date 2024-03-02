@@ -270,10 +270,10 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
             task.debuggable.setDisallowChanges(creationConfig.debuggable)
 
             task.noCompress.setDisallowChanges(
-                androidResourcesCreationConfig.androidResources.noCompress
+                creationConfig.androidResources.noCompress
             )
             task.aaptAdditionalParameters.setDisallowChanges(
-                androidResourcesCreationConfig.androidResources.aaptAdditionalParameters
+                creationConfig.androidResources.aaptAdditionalParameters
             )
 
             task.excludeResSourcesForReleaseBundles

@@ -58,9 +58,6 @@ public abstract class CommonFactory {
     public abstract Channel createChannelType();
 
     @NonNull
-    public abstract Archive.PatchesType createPatchesType();
-
-    @NonNull
     public Checksum createChecksum(String checksum, String type) {
         Checksum result = createChecksumType();
         result.setValue(checksum);
@@ -146,9 +143,6 @@ public abstract class CommonFactory {
 
     @NonNull
     public abstract Archive.CompleteType createCompleteType();
-
-    @NonNull
-    public abstract Archive.PatchType createPatchType();
 
     public abstract RemotePackageImpl.ChannelRef createChannelRefType();
 }

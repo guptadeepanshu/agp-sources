@@ -249,7 +249,9 @@ abstract class SvgNode {
                 return;
             }
         }
-        mVdAttributesMap.put(name, value);
+        if (!value.isEmpty()) {
+            mVdAttributesMap.put(name, value);
+        }
     }
 
     private <T, U extends T> int indexOf(@NonNull T[] array, @NonNull U element) {

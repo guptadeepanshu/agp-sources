@@ -18,6 +18,11 @@ package com.android.build.api.variant
 
 import org.gradle.api.Incubating
 
+/**
+ * Build-time properties for Java compile inside a [Component]
+ *
+ * This is accessed via [Component.javaCompilation]
+ */
 @Incubating
 interface JavaCompilation {
 

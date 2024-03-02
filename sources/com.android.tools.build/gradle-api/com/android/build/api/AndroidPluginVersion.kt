@@ -173,12 +173,28 @@ class AndroidPluginVersion private constructor(
                 (if (previewType != null) "-$previewType" else "") +
                 (if (preview > 0) preview else "")
 
-    private companion object {
-        val comparator: Comparator<AndroidPluginVersion> =
+    companion object {
+        private val comparator: Comparator<AndroidPluginVersion> =
             Comparator.comparingInt<AndroidPluginVersion> { it.major }
                 .thenComparingInt { it.minor }
                 .thenComparingInt { it.micro }
                 .thenComparingInt { it._previewType.ordinal }
                 .thenComparingInt { it.preview }
+
+        /**
+         * Returns the current version of the Android Gradle Plugin.
+         */
+        @JvmStatic
+        fun getCurrent(): AndroidPluginVersion {
+                val className =
+                    "com.android.build.api.extension.impl.CurrentAndroidGradlePluginVersion"
+                try {
+                    val myClassClass = Class.forName(className)
+                    val myFieldField = myClassClass.getDeclaredField("CURRENT_AGP_VERSION")
+                    return myFieldField.get(null) as AndroidPluginVersion
+                } catch(cause: Throwable) {
+                    throw IllegalStateException("Unable to determine Android Gradle plugin version", cause)
+                }
+        }
     }
 }

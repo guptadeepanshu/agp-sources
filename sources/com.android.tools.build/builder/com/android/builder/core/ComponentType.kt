@@ -142,7 +142,9 @@ interface ComponentType {
         const val UNIT_TEST_SUFFIX = "UnitTest"
         const val TEST_FIXTURES_PREFIX = "testFixtures"
         const val TEST_FIXTURES_SUFFIX = "TestFixtures"
-        const val SCREENSHOT_TEST_PREFIX = "screenshotTest"
+        const val PREVIEW_SCREENSHOT_PREFIX = "previewScreenshot"
+        const val PREVIEW_SCREENSHOT_UPDATE_PREFIX = "previewScreenshotUpdate"
+        const val PREVIEW_SCREENSHOT_RENDER_PREFIX = "previewScreenshotRender"
         const val SCREENSHOT_TEST_SUFFIX = "ScreenshotTest"
 
         val testComponents: ImmutableList<ComponentType>

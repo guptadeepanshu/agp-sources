@@ -1,6 +1,5 @@
 package com.android.build.gradle.internal.lint
 
-import com.android.build.gradle.internal.utils.createTargetSdkVersion
 import com.android.build.api.dsl.Lint
 import com.android.build.api.variant.impl.HasTestFixtures
 import com.android.build.gradle.internal.TaskManager
@@ -9,11 +8,12 @@ import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
 import com.android.build.gradle.internal.component.TestCreationConfig
-import com.android.build.gradle.internal.component.UnitTestCreationConfig
+import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.tasks.LintModelMetadataTask
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.tasks.factory.TaskFactory
+import com.android.build.gradle.internal.utils.createTargetSdkVersion
 import com.android.build.gradle.internal.variant.VariantModel
 import com.android.builder.core.ComponentType
 import com.android.builder.errors.IssueReporter
@@ -53,6 +53,9 @@ class LintTaskManager constructor(
         testComponentPropertiesList: Collection<TestComponentCreationConfig>,
         isPerComponent: Boolean
     ) {
+        if (globalTaskCreationConfig.avoidTaskRegistration) {
+            return
+        }
         return createLintTasks(
             componentType,
             defaultVariant = variantModel.defaultVariant,
@@ -321,7 +324,7 @@ class LintTaskManager constructor(
                             current.testFixtures
                         )
                 }
-                is UnitTestCreationConfig -> {
+                is HostTestCreationConfig -> {
                     check(current.unitTest == null) {
                         "Component ${current.main} appears to have two conflicting unit test components ${current.unitTest} and $testComponent"
                     }

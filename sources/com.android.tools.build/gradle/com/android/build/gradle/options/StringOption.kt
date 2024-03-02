@@ -141,6 +141,15 @@ enum class StringOption(
 
     ANDROID_PRIVACY_SANDBOX_SDK_API_PACKAGER("android.privacySandboxSdk.apiPackager", ApiStage.Experimental),
 
+    /**
+     * Normally, a minSdkVersion that is too low results in an error from NDK code:
+     *
+     * When this flag is set to the specific NDK version that is requested, that error is suppressed.
+     *
+     * Multiple versions may be specified by separating them with commas.
+     */
+    NDK_SUPPRESS_MIN_SDK_VERSION_ERROR("android.ndk.suppressMinSdkVersionError", ApiStage.Experimental),
+
     // An override for the Jacoco version to be set per module
     JACOCO_TOOL_VERSION("com.android.test.jacocoVersion", ApiStage.Experimental),
 

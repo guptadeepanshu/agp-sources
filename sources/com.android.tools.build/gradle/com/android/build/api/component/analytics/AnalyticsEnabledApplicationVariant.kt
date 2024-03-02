@@ -24,6 +24,7 @@ import com.android.build.api.variant.ApkPackaging
 import com.android.build.api.variant.ApplicationVariant
 import com.android.build.api.variant.BundleConfig
 import com.android.build.api.variant.DependenciesInfo
+import com.android.build.api.variant.Dexing
 import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.SigningConfig
 import com.android.build.api.variant.TestFixtures
@@ -62,7 +63,7 @@ open class AnalyticsEnabledApplicationVariant @Inject constructor(
             return delegate.dependenciesInfo
         }
 
-    val userVisibleSigningConfig: AnalyticsEnabledSigningConfig by lazy {
+    val userVisibleSigningConfig: AnalyticsEnabledSigningConfig by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
         objectFactory.newInstance(
             AnalyticsEnabledSigningConfig::class.java,
             delegate.signingConfig,
@@ -77,7 +78,7 @@ open class AnalyticsEnabledApplicationVariant @Inject constructor(
             return userVisibleSigningConfig
         }
 
-    private val userVisibleAndroidTest: AnalyticsEnabledAndroidTest? by lazy {
+    private val userVisibleAndroidTest: AnalyticsEnabledAndroidTest? by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
         delegate.androidTest?.let {
             objectFactory.newInstance(
                 AnalyticsEnabledAndroidTest::class.java,
@@ -94,7 +95,7 @@ open class AnalyticsEnabledApplicationVariant @Inject constructor(
             return userVisibleAndroidTest
         }
 
-    private val userVisibleTestFixtures: TestFixtures? by lazy {
+    private val userVisibleTestFixtures: TestFixtures? by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
         delegate.testFixtures?.let {
             objectFactory.newInstance(
                 AnalyticsEnabledTestFixtures::class.java,
@@ -111,7 +112,7 @@ open class AnalyticsEnabledApplicationVariant @Inject constructor(
             return userVisibleTestFixtures
         }
 
-    private val generatesApk: GeneratesApk by lazy {
+    private val generatesApk: GeneratesApk by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
         AnalyticsEnabledGeneratesApk(
                 delegate,
                 stats,
@@ -128,7 +129,7 @@ open class AnalyticsEnabledApplicationVariant @Inject constructor(
     override val packaging: ApkPackaging
         get() = generatesApk.packaging
 
-    private val userVisibleBundleConfig: BundleConfig by lazy {
+    private val userVisibleBundleConfig: BundleConfig by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
         objectFactory.newInstance(
             AnalyticsEnabledBundleConfig::class.java,
             delegate.bundleConfig,
@@ -163,4 +164,7 @@ open class AnalyticsEnabledApplicationVariant @Inject constructor(
                     VariantPropertiesMethodType.TARGET_SDK_VERSION_VALUE
             return delegate.targetSdk
         }
+
+    override val dexing: Dexing
+        get() = generatesApk.dexing
 }

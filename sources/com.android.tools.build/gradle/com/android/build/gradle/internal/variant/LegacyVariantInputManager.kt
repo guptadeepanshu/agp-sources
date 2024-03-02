@@ -18,7 +18,7 @@ package com.android.build.gradle.internal.variant
 
 import com.android.SdkConstants
 import com.android.build.gradle.internal.DefaultConfigData
-import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
+import com.android.build.gradle.internal.api.LazyAndroidSourceSet
 import com.android.build.gradle.internal.dependency.SourceSetManager
 import com.android.build.gradle.internal.dsl.BuildType
 import com.android.build.gradle.internal.dsl.BuildTypeFactory
@@ -31,6 +31,7 @@ import com.android.build.gradle.internal.packaging.getDefaultDebugKeystoreLocati
 import com.android.build.gradle.internal.services.AndroidLocationsBuildService
 import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.options.BooleanOption
 import com.android.builder.core.BuilderConstants
 import com.android.builder.core.ComponentType
 import org.gradle.api.NamedDomainObjectContainer
@@ -78,25 +79,25 @@ class LegacyVariantInputManager(
     override val defaultConfigData: DefaultConfigData<DefaultConfig>
 
     init {
-        var testFixturesSourceSet: DefaultAndroidSourceSet? = null
-        var androidTestSourceSet: DefaultAndroidSourceSet? = null
-        var unitTestSourceSet: DefaultAndroidSourceSet? = null
+        var testFixturesSourceSet: LazyAndroidSourceSet? = null
+        var androidTestSourceSet: LazyAndroidSourceSet? = null
+        var unitTestSourceSet: LazyAndroidSourceSet? = null
         if (componentType.hasTestComponents) {
             androidTestSourceSet =
-                sourceSetManager.setUpTestSourceSet(ComponentType.ANDROID_TEST_PREFIX) as DefaultAndroidSourceSet
+                sourceSetManager.setUpTestSourceSet(ComponentType.ANDROID_TEST_PREFIX)
             unitTestSourceSet =
-                sourceSetManager.setUpTestSourceSet(ComponentType.UNIT_TEST_PREFIX) as DefaultAndroidSourceSet
+                sourceSetManager.setUpTestSourceSet(ComponentType.UNIT_TEST_PREFIX)
             testFixturesSourceSet =
                 sourceSetManager.setUpSourceSet(ComponentType.TEST_FIXTURES_PREFIX)
-                        as DefaultAndroidSourceSet
         }
 
         defaultConfigData = DefaultConfigData(
             defaultConfig = defaultConfig,
-            sourceSet = sourceSetManager.setUpSourceSet(SdkConstants.FD_MAIN) as DefaultAndroidSourceSet,
+            sourceSet = sourceSetManager.setUpSourceSet(SdkConstants.FD_MAIN).get(),
             testFixturesSourceSet = testFixturesSourceSet,
             androidTestSourceSet = androidTestSourceSet,
-            unitTestSourceSet = unitTestSourceSet
+            unitTestSourceSet = unitTestSourceSet,
+            lazySourceSetCreation = dslServices.projectOptions[BooleanOption.ENABLE_NEW_TEST_DSL]
         )
 
         // map the whenObjectAdded/whenObjectRemoved callbacks on the containers.

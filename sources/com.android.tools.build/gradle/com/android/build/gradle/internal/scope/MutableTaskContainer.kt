@@ -89,7 +89,7 @@ class MutableTaskContainer : TaskContainer {
     // anything below is scheduled for removal, using BuildableArtifact to link tasks.
 
     var bundleTask: TaskProvider<out Task>? = null
-    lateinit var resourceGenTask: TaskProvider<Task>
+    lateinit var resourceGenTask: TaskProvider<out Task>
     lateinit var assetGenTask: TaskProvider<Task>
     var microApkTask: TaskProvider<out Task>? = null
     var cxxConfigurationModel: CxxConfigurationModel? = null

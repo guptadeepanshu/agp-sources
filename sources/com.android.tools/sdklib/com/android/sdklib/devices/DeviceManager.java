@@ -89,7 +89,7 @@ public class DeviceManager {
     private Table<String, String, Device> mVendorDevices;
     private Table<String, String, Device> mSysImgDevices;
     private Table<String, String, Device> mUserDevices;
-    private Table<String, String, Device> mDefaultDevices;
+    private final DefaultDevices mDefaultDevices;
     private final Object mLock = new Object();
     private final List<DevicesChangedListener> sListeners = new ArrayList<>();
     private final Path mOsSdkPath;
@@ -160,6 +160,7 @@ public class DeviceManager {
                         ? Paths.get("")
                         : sdkHandler.getAndroidFolder();
         mLog = log;
+        mDefaultDevices = new DefaultDevices(mLog);
     }
 
     /**
@@ -219,7 +220,7 @@ public class DeviceManager {
         if (d != null) {
             return d;
         }
-        d = mDefaultDevices.get(id, manufacturer);
+        d = mDefaultDevices.getDevice(id, manufacturer);
         if (d != null) {
             return d;
         }
@@ -252,8 +253,8 @@ public class DeviceManager {
         if (mUserDevices != null && (deviceFilter.contains(DeviceFilter.USER))) {
             devices.putAll(mUserDevices);
         }
-        if (mDefaultDevices != null && (deviceFilter.contains(DeviceFilter.DEFAULT))) {
-            devices.putAll(mDefaultDevices);
+        if (mDefaultDevices.getDevices() != null && (deviceFilter.contains(DeviceFilter.DEFAULT))) {
+            devices.putAll(mDefaultDevices.getDevices());
         }
         if (mVendorDevices != null && (deviceFilter.contains(DeviceFilter.VENDOR))) {
             devices.putAll(mVendorDevices);
@@ -266,43 +267,13 @@ public class DeviceManager {
     }
 
     private void initDevicesLists() {
-        boolean changed = initDefaultDevices();
+        boolean changed = mDefaultDevices.init();
         changed |= initVendorDevices();
         changed |= initSysImgDevices();
         changed |= initUserDevices();
         if (changed) {
             notifyListeners();
         }
-    }
-
-    /**
-     * Initializes the {@link Device}s packaged with the SDK.
-     * @return True if the list has changed.
-     */
-    private boolean initDefaultDevices() {
-        synchronized (mLock) {
-            if (mDefaultDevices != null) {
-                return false;
-            }
-            InputStream stream = DeviceManager.class
-                    .getResourceAsStream(SdkConstants.FN_DEVICES_XML);
-            try {
-                assert stream != null : SdkConstants.FN_DEVICES_XML + " not bundled in sdklib.";
-                mDefaultDevices = DeviceParser.parse(stream);
-                return true;
-            } catch (IllegalStateException e) {
-                // The device builders can throw IllegalStateExceptions if
-                // build gets called before everything is properly setup
-                mLog.error(e, null);
-                mDefaultDevices = HashBasedTable.create();
-            } catch (Exception e) {
-                mLog.error(e, "Error reading default devices");
-                mDefaultDevices = HashBasedTable.create();
-            } finally {
-                Closeables.closeQuietly(stream);
-            }
-        }
-        return false;
     }
 
     /**

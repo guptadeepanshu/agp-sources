@@ -16,4 +16,9 @@
 
 package com.android.build.api.dsl
 
+/**
+ * DSL object for configuring Android resource options for Library plugins.
+ *
+ * This is accessed via [LibraryExtension.androidResources]
+ */
 interface LibraryAndroidResources : AndroidResources

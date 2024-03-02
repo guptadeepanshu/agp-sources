@@ -16,22 +16,21 @@
 
 package com.android.build.gradle.internal
 
+import com.android.SdkConstants.CMAKE_DIR_PROPERTY
+import com.android.SdkConstants.NDK_DIR_PROPERTY
+import com.android.SdkConstants.NDK_SYMLINK_DIR
 import com.android.build.gradle.internal.component.ComponentCreationConfig
-import com.android.build.gradle.internal.core.Abi
 import com.android.build.gradle.internal.cxx.configure.NdkLocator
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import com.android.build.gradle.internal.cxx.stripping.SymbolStripExecutableFinder
 import com.android.build.gradle.internal.cxx.stripping.createSymbolStripExecutableFinder
 import com.android.build.gradle.internal.errors.SyncIssueReporterImpl
-import com.android.build.gradle.internal.fusedlibrary.FusedLibraryVariantScope
 import com.android.build.gradle.internal.ndk.NdkHandler
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
 import com.android.build.gradle.internal.services.AndroidLocationsBuildService
-import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.ServiceRegistrationAction
 import com.android.build.gradle.internal.services.getBuildService
-import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.build.gradle.internal.utils.validatePreviewTargetValue
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.IntegerOption
 import com.android.build.gradle.options.ProjectOptions
@@ -42,7 +41,6 @@ import com.android.sdklib.AndroidTargetHash.SYSTEM_IMAGE_PREFIX
 import com.android.sdklib.AndroidVersion
 import com.android.sdklib.BuildToolInfo
 import com.android.sdklib.OptionalLibrary
-import com.android.tools.analytics.Environment
 import org.gradle.api.DefaultTask
 import org.gradle.api.NonExtensible
 import org.gradle.api.Project
@@ -91,7 +89,7 @@ abstract class SdkComponentsBuildService @Inject constructor(
     }
 
     private val sdkSourceSet: SdkLocationSourceSet by lazy {
-        SdkLocationSourceSet(parameters.projectRootDir.get().asFile)
+        SdkLocationSourceSet(parameters.projectRootDir.get().asFile, providerFactory)
     }
 
     class Environment: SdkLibDataFactory.Environment() {
@@ -218,7 +216,8 @@ abstract class SdkComponentsBuildService @Inject constructor(
             objectFactory.directoryProperty().fileProvider(providerFactory.provider {
                 getSdkDir(
                     parameters.projectRootDir.get().asFile,
-                    parameters.issueReporter.get()
+                    parameters.issueReporter.get(),
+                    providerFactory,
                 )
             })
 
@@ -318,14 +317,17 @@ abstract class SdkComponentsBuildService @Inject constructor(
 
     private fun ndkLoader(
         ndkVersion: String?,
-        ndkPath: String?
+        ndkPathFromDsl: String?,
+        ndkPathFromProperties: String?,
     ) =
         NdkLocator(
             parameters.issueReporter.get(),
             ndkVersion,
-            ndkPath,
+            ndkPathFromDsl,
+            ndkPathFromProperties,
             parameters.projectRootDir.get().asFile,
-            sdkHandler
+            sdkHandler,
+            sdkSourceSet
         )
 
 
@@ -342,18 +344,35 @@ abstract class SdkComponentsBuildService @Inject constructor(
             compileSdkVersion,
             buildToolsRevision)
 
+    private val localProperties =
+        gradleLocalProperties(parameters.projectRootDir.asFile.get(), providerFactory)
+
+    val ndkDirFromProperties: String? = localProperties.getProperty(NDK_DIR_PROPERTY)
+
+    val ndkSymlinkDirFromProperties: String? = localProperties.getProperty(NDK_SYMLINK_DIR)
+
+    val cmakeDirFromProperties: String? = localProperties.getProperty(CMAKE_DIR_PROPERTY)
+
     fun versionedNdkHandler(
         ndkVersion: String?,
-        ndkPath: String?
+        ndkPathFromDsl: String?,
     ): VersionedNdkHandler =
         VersionedNdkHandler(
-            ndkLoader(ndkVersion, ndkPath),
+            ndkLoader(
+                ndkVersion,
+                ndkPathFromDsl,
+                ndkDirFromProperties,
+            ),
             objectFactory,
             providerFactory)
 
     fun versionedNdkHandler(input: NdkHandlerInput) =
         VersionedNdkHandler(
-            ndkLoader(input.ndkVersion.orNull, input.ndkPath.orNull),
+            ndkLoader(
+                input.ndkVersion.orNull,
+                input.ndkPathFromDsl.orNull,
+                ndkDirFromProperties
+            ),
             objectFactory,
             providerFactory)
 
@@ -374,7 +393,8 @@ abstract class SdkComponentsBuildService @Inject constructor(
         objectFactory.directoryProperty().fileProvider(providerFactory.provider {
             getSdkDir(
                 parameters.projectRootDir.get().asFile,
-                parameters.issueReporter.get()
+                parameters.issueReporter.get(),
+                providerFactory,
             )
         })
 
@@ -411,8 +431,8 @@ abstract class SdkComponentsBuildService @Inject constructor(
  * location. This is needed when AGP handles missing [com.android.build.gradle.BaseExtension.compileSdkVersion]
  * and it tries to add highest installed API when invoked from the IDE.
  */
-fun getSdkDir(projectRootDir: File, issueReporter: IssueReporter): File {
-    return SdkLocator.getSdkDirectory(projectRootDir, issueReporter)
+fun getSdkDir(projectRootDir: File, issueReporter: IssueReporter, providers: ProviderFactory): File {
+    return SdkLocator.getSdkDirectory(projectRootDir, issueReporter, SdkLocationSourceSet(projectRootDir, providers))
 }
 
 /** This can be used by tasks requiring android.jar as input with [org.gradle.api.tasks.Nested]. */
@@ -541,12 +561,12 @@ abstract class NdkHandlerInput {
 
     @get:Input
     @get:Optional
-    abstract val ndkPath: Property<String>
+    abstract val ndkPathFromDsl: Property<String>
 }
 
 fun NdkHandlerInput.initialize(creationConfig: ComponentCreationConfig) {
     ndkVersion.setDisallowChanges(creationConfig.global.ndkVersion)
-    ndkPath.setDisallowChanges(creationConfig.global.ndkPath)
+    ndkPathFromDsl.setDisallowChanges(creationConfig.global.ndkPath)
 }
 
 internal const val API_VERSIONS_FILE_NAME = "api-versions.xml"

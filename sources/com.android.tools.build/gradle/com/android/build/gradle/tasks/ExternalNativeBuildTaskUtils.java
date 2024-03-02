@@ -18,12 +18,9 @@ package com.android.build.gradle.tasks;
 
 
 import com.android.annotations.NonNull;
-import com.google.common.collect.Lists;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Shared utility methods for dealing with external native build tasks.

@@ -18,7 +18,6 @@ package com.android.build.gradle.internal.dependency;
 
 import static com.android.SdkConstants.FD_JARS;
 import static com.android.SdkConstants.FN_CLASSES_JAR;
-import static com.android.SdkConstants.FN_RESOURCE_STATIC_LIBRARY;
 import static com.android.SdkConstants.LIBS_FOLDER;
 
 import com.android.SdkConstants;

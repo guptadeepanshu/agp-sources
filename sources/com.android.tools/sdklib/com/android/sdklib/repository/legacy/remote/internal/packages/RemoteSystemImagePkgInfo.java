@@ -18,6 +18,7 @@ package com.android.sdklib.repository.legacy.remote.internal.packages;
 
 import com.android.repository.api.RepoManager;
 import com.android.sdklib.AndroidVersion;
+import com.android.sdklib.SystemImageTags;
 import com.android.sdklib.repository.AndroidSdkHandler;
 import com.android.sdklib.repository.IdDisplay;
 import com.android.sdklib.repository.legacy.descriptors.PkgDesc;
@@ -26,7 +27,6 @@ import com.android.sdklib.repository.legacy.remote.RemotePkgInfo;
 import com.android.sdklib.repository.legacy.remote.internal.sources.RepoConstants;
 import com.android.sdklib.repository.legacy.remote.internal.sources.SdkSource;
 import com.android.sdklib.repository.legacy.remote.internal.sources.SdkSysImgConstants;
-import com.android.sdklib.repository.targets.SystemImage;
 import java.util.Map;
 import org.w3c.dom.Node;
 
@@ -65,9 +65,11 @@ public class RemoteSystemImagePkgInfo extends RemotePkgInfo {
         String abi = RemotePackageParserUtils.getXmlString(packageNode, RepoConstants.NODE_ABI);
 
         // tag id
-        String tagId = RemotePackageParserUtils
-                .getXmlString(packageNode, SdkSysImgConstants.ATTR_TAG_ID,
-                        SystemImage.DEFAULT_TAG.getId());
+        String tagId =
+                RemotePackageParserUtils.getXmlString(
+                        packageNode,
+                        SdkSysImgConstants.ATTR_TAG_ID,
+                        SystemImageTags.DEFAULT_TAG.getId());
         String tagDisp = RemotePackageParserUtils
                 .getOptionalXmlString(packageNode, SdkSysImgConstants.ATTR_TAG_DISPLAY);
         if (tagDisp == null || tagDisp.isEmpty()) {

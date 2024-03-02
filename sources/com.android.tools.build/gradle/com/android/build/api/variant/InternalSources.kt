@@ -106,6 +106,7 @@ interface InternalSources: Sources {
 
     val artProfile: Provider<File>?
     val manifestFile: Provider<File>
+    // it's ordered from less to most prioritized
     val manifestOverlayFiles: Provider<List<File>>
 
     val sourceProviderNames: List<String>

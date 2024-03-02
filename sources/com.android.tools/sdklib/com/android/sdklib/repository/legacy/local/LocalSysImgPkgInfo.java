@@ -21,13 +21,12 @@ import com.android.annotations.Nullable;
 import com.android.repository.Revision;
 import com.android.repository.api.RepoManager;
 import com.android.sdklib.AndroidVersion;
+import com.android.sdklib.SystemImageTags;
 import com.android.sdklib.repository.AndroidSdkHandler;
+import com.android.sdklib.repository.IdDisplay;
 import com.android.sdklib.repository.PkgProps;
 import com.android.sdklib.repository.legacy.descriptors.IPkgDesc;
 import com.android.sdklib.repository.legacy.descriptors.PkgDesc;
-import com.android.sdklib.repository.IdDisplay;
-import com.android.sdklib.repository.targets.SystemImage;
-
 import java.io.File;
 import java.util.Locale;
 import java.util.Properties;
@@ -85,7 +84,8 @@ public class LocalSysImgPkgInfo extends LocalPkgInfo {
     @NonNull
     public static IdDisplay extractTagFromProps(Properties props) {
         if (props != null) {
-            String tagId   = props.getProperty(PkgProps.SYS_IMG_TAG_ID, SystemImage.DEFAULT_TAG.getId());
+            String tagId =
+                    props.getProperty(PkgProps.SYS_IMG_TAG_ID, SystemImageTags.DEFAULT_TAG.getId());
             String tagDisp = props.getProperty(PkgProps.SYS_IMG_TAG_DISPLAY, "");      //$NON-NLS-1$
             if (tagDisp == null || tagDisp.isEmpty()) {
                 tagDisp = tagIdToDisplay(tagId);
@@ -94,7 +94,7 @@ public class LocalSysImgPkgInfo extends LocalPkgInfo {
             assert tagDisp != null;
             return IdDisplay.create(tagId, tagDisp);
         }
-        return SystemImage.DEFAULT_TAG;
+        return SystemImageTags.DEFAULT_TAG;
     }
 
     /**
@@ -127,7 +127,7 @@ public class LocalSysImgPkgInfo extends LocalPkgInfo {
             return String.format("%1$s%2$s", listDisplay, obsolete ? " (Obsolete)" : "");
         }
 
-        boolean isDefaultTag = SystemImage.DEFAULT_TAG.equals(tag);
+        boolean isDefaultTag = SystemImageTags.DEFAULT_TAG.equals(tag);
         return String.format("%1$s%2$s System Image%3$s", isDefaultTag ? "" : (tag.getDisplay() + " "), abiDisplayName,
                 obsolete ? " (Obsolete)" : "");
     }
@@ -144,7 +144,7 @@ public class LocalSysImgPkgInfo extends LocalPkgInfo {
                     version.getApiString(), revision.toShortString(), obsolete ? " (Obsolete)" : "");
         }
 
-        boolean isDefaultTag = SystemImage.DEFAULT_TAG.equals(tag);
+        boolean isDefaultTag = SystemImageTags.DEFAULT_TAG.equals(tag);
         return String.format("%1$s%2$s System Image, %3$s API %4$s, revision %5$s%6$s", isDefaultTag ? "" : (tag.getDisplay() + " "),
                 getAbiDisplayNameInternal(abi), vendor == null ? "Android" : vendor.getDisplay(), version.getApiString(),
                 revision.toShortString(), obsolete ? " (Obsolete)" : "");

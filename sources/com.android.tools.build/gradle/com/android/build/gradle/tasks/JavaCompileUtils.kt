@@ -26,11 +26,13 @@ import com.android.build.gradle.internal.dependency.CONFIG_NAME_ANDROID_JDK_IMAG
 import com.android.build.gradle.internal.dependency.JDK_IMAGE_OUTPUT_DIR
 import com.android.build.gradle.internal.dependency.JRT_FS_JAR
 import com.android.build.gradle.internal.dependency.getJdkImageFromTransform
+import com.android.build.gradle.internal.profile.AnalyticsConfiguratorService
 import com.android.build.gradle.internal.profile.AnalyticsService
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.EXTERNAL
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.PROJECT
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.JAR
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.ANNOTATION_PROCESSOR
+import com.android.build.gradle.internal.services.getBuildService
 import com.android.builder.errors.DefaultIssueReporter
 import com.android.builder.errors.IssueReporter
 import com.android.sdklib.AndroidTargetHash
@@ -38,10 +40,14 @@ import com.android.utils.FileUtils
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.google.wireless.android.sdk.stats.AnnotationProcessorInfo
+import com.google.wireless.android.sdk.stats.GradleBuildProject
+import org.gradle.api.JavaVersion
+import org.gradle.api.Project
 import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.artifacts.result.ResolvedArtifactResult
 import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Provider
+import org.gradle.api.services.BuildServiceRegistry
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.process.CommandLineArgumentProvider
@@ -324,6 +330,26 @@ fun recordAnnotationProcessorsForAnalytics(
     }
     variant?.isAnnotationProcessingIncremental =
         !processors.values.contains(ProcessorInfo.NON_INCREMENTAL_AP)
+}
+
+/** Records compile options for analytics. */
+fun recordCompileOptionsForAnalytics(
+    project: Project,
+    buildServiceRegistry: BuildServiceRegistry,
+    sourceCompatibility: JavaVersion,
+    targetCompatibility: JavaVersion,
+    toolchainLanguageVersion: JavaVersion?
+) {
+    getBuildService(buildServiceRegistry, AnalyticsConfiguratorService::class.java).get()
+        .getProjectBuilder(project.path)?.apply {
+            compileOptions = GradleBuildProject.CompileOptions.newBuilder().also {
+                it.sourceCompatibility = sourceCompatibility.majorVersion.toInt()
+                it.targetCompatibility = targetCompatibility.majorVersion.toInt()
+                toolchainLanguageVersion?.let { version ->
+                    it.toolchainLanguageVersion = version.majorVersion.toInt()
+                }
+            }.build()
+        }
 }
 
 private fun checkSdkCompatibility(compileSdkVersion: String, issueReporter: IssueReporter) {

@@ -18,6 +18,7 @@ package com.android.build.gradle.internal.tasks
 import com.android.SdkConstants.AAR_FORMAT_VERSION_PROPERTY
 import com.android.SdkConstants.AAR_METADATA_VERSION_PROPERTY
 import com.android.SdkConstants.CORE_LIBRARY_DESUGARING_ENABLED_PROPERTY
+import com.android.SdkConstants.DESUGAR_JDK_LIB_PROPERTY
 import com.android.SdkConstants.FORCE_COMPILE_SDK_PREVIEW_PROPERTY
 import com.android.SdkConstants.MIN_ANDROID_GRADLE_PLUGIN_VERSION_PROPERTY
 import com.android.SdkConstants.MIN_COMPILE_SDK_EXTENSION_PROPERTY
@@ -30,6 +31,9 @@ import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.ide.dependencies.getIdString
 import com.android.build.gradle.internal.tasks.AarMetadataTask.Companion.DEFAULT_MIN_COMPILE_SDK_EXTENSION
+import com.android.build.gradle.internal.utils.checkDesugarJdkVariant
+import com.android.build.gradle.internal.utils.checkDesugarJdkVersion
+import com.android.build.gradle.internal.utils.getDesugarLibDependencyGraph
 import com.android.build.gradle.internal.utils.parseTargetHash
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
@@ -42,7 +46,10 @@ import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.artifacts.component.LibraryBinaryIdentifier
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
+import org.gradle.api.artifacts.component.ModuleComponentSelector
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
+import org.gradle.api.artifacts.result.ResolvedArtifactResult
+import org.gradle.api.artifacts.result.ResolvedComponentResult
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.ListProperty
@@ -89,6 +96,16 @@ abstract class CheckAarMetadataTask : NonIncrementalTask() {
     val aarMetadataFiles: FileCollection
         get() = aarMetadataArtifacts.artifactFiles
 
+    @VisibleForTesting
+    @get:Internal
+    internal var disallowedAsarArtifacts: ArtifactCollection? = null
+
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
+    @get:Optional
+    val disallowedAsarFiles: FileCollection?
+        get() = disallowedAsarArtifacts?.artifactFiles
+
     @get:Input
     abstract val aarFormatVersion: Property<String>
 
@@ -101,6 +118,10 @@ abstract class CheckAarMetadataTask : NonIncrementalTask() {
 
     @get:Input
     abstract val coreLibraryDesugaringEnabled: Property<Boolean>
+
+    @get:Input
+    @get:Optional
+    abstract val desugarJdkLibDependencyGraph: Property<ResolvedComponentResult>
 
     // platformSdkExtension is the actual extension level of the platform, if specified within the
     // SDK directory. This value is used if the extension level is not specified in the
@@ -126,18 +147,10 @@ abstract class CheckAarMetadataTask : NonIncrementalTask() {
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(
             CheckAarMetadataWorkAction::class.java
-        ) {
+        ) { it ->
             it.aarMetadataArtifacts.addAll(
                 aarMetadataArtifacts.artifacts.map { artifact ->
-                    AarMetadataArtifact(
-                        artifact.file,
-                        when (val id = artifact.id.componentIdentifier) {
-                            is LibraryBinaryIdentifier -> id.projectPath
-                            is ModuleComponentIdentifier -> "${id.group}:${id.module}:${id.version}"
-                            is ProjectComponentIdentifier -> id.getIdString()
-                            else -> id.displayName
-                        }
-                    )
+                    AarMetadataArtifact(artifact.file, artifact.userFacingName)
                 }
             )
             it.aarFormatVersion.set(aarFormatVersion)
@@ -152,6 +165,13 @@ abstract class CheckAarMetadataTask : NonIncrementalTask() {
             )
             it.projectPath.set(projectPath)
             it.disableCompileSdkChecks.set(disableCompileSdkChecks)
+            desugarJdkLibDependencyGraph.orNull?.dependencies?.firstOrNull()?.requested?.let { id ->
+                if (id is ModuleComponentSelector) {
+                    it.desugarJdkVariant.set(id.module)
+                    it.desugarJdkVersion.set(id.version)
+                }
+            }
+            it.disallowedAsarArtifacts.addAll(disallowedAsarArtifacts?.map { artifact -> artifact.userFacingName } ?: listOf())
         }
     }
 
@@ -188,11 +208,16 @@ abstract class CheckAarMetadataTask : NonIncrementalTask() {
             task.agpVersion.setDisallowChanges(Version.ANDROID_GRADLE_PLUGIN_VERSION)
             val coreLibraryDesugaringEnabled =
                 if (creationConfig is AndroidTestCreationConfig) {
-                    creationConfig.dexingCreationConfig.isCoreLibraryDesugaringEnabled
+                    creationConfig.dexing.isCoreLibraryDesugaringEnabled
                 } else {
                     creationConfig.global.compileOptions.isCoreLibraryDesugaringEnabled
                 }
             task.coreLibraryDesugaringEnabled.setDisallowChanges(coreLibraryDesugaringEnabled)
+            if (coreLibraryDesugaringEnabled) {
+                task.desugarJdkLibDependencyGraph.set(
+                    getDesugarLibDependencyGraph(creationConfig.services)
+                )
+            }
             task.maxRecommendedStableCompileSdkVersionForThisAgp.setDisallowChanges(
                 ToolsRevisionUtils.MAX_RECOMMENDED_COMPILE_SDK_VERSION.apiLevel
             )
@@ -210,9 +235,25 @@ abstract class CheckAarMetadataTask : NonIncrementalTask() {
             task.disableCompileSdkChecks.setDisallowChanges(
                 creationConfig.services.projectOptions[BooleanOption.DISABLE_COMPILE_SDK_CHECKS]
             )
+            if (creationConfig.privacySandboxCreationConfig == null) {
+                task.disallowedAsarArtifacts =
+                        creationConfig.variantDependencies.getArtifactCollection(
+                                AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
+                                AndroidArtifacts.ArtifactScope.ALL,
+                                AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_ARCHIVE
+                        )
+            }
         }
     }
 }
+
+private val ResolvedArtifactResult.userFacingName: String get() =
+        when (val id = id.componentIdentifier) {
+            is LibraryBinaryIdentifier -> id.projectPath
+            is ModuleComponentIdentifier -> "${id.group}:${id.module}:${id.version}"
+            is ProjectComponentIdentifier -> id.getIdString()
+            else -> id.displayName
+        }
 
 /** [WorkAction] to check AAR metadata files */
 abstract class CheckAarMetadataWorkAction: WorkAction<CheckAarMetadataWorkParameters> {
@@ -221,6 +262,20 @@ abstract class CheckAarMetadataWorkAction: WorkAction<CheckAarMetadataWorkParame
         val errorMessages: MutableList<String> = mutableListOf()
         parameters.aarMetadataArtifacts.get().forEach {
             checkAarMetadataArtifact(it, errorMessages)
+        }
+        parameters.disallowedAsarArtifacts.get().forEach {
+            errorMessages.add("""
+                Dependency $it is an Android Privacy Sandbox SDK library, and needs
+                Privacy Sandbox support to be enabled in projects that depend on it.
+
+                Recommended action: Enable privacy sandbox consumption in this project by setting
+                    android {
+                        privacySandbox {
+                            enable = true
+                        }
+                    }
+                in this project's build.gradle
+                """.trimIndent())
         }
         if (errorMessages.size > 0) {
             throw RuntimeException(StringBuilder().apply {
@@ -515,6 +570,30 @@ abstract class CheckAarMetadataWorkAction: WorkAction<CheckAarMetadataWorkParame
                     """.trimIndent()
                 )
             }
+
+            aarMetadataReader.desugarJdkLibId?.split(":")?.also {
+                check(it.size == 3) { "Unexpected desugarJdkLib ID format from AAR metadata"}
+                val variantFromAar = it[1]
+                val versionFromAar = it[2]
+
+                if (parameters.desugarJdkVariant.isPresent
+                    && parameters.desugarJdkVersion.isPresent) {
+                    checkDesugarJdkVariant(
+                        variantFromAar,
+                        parameters.desugarJdkVariant.get(),
+                        errorMessages,
+                        displayName,
+                        parameters.projectPath.get()
+                    )
+                    checkDesugarJdkVersion(
+                        versionFromAar,
+                        parameters.desugarJdkVersion.get(),
+                        errorMessages,
+                        displayName,
+                        parameters.projectPath.get()
+                    )
+                }
+            }
         }
     }
 
@@ -537,6 +616,12 @@ abstract class CheckAarMetadataWorkAction: WorkAction<CheckAarMetadataWorkParame
         // task).
         throw RuntimeException("Unsupported target hash: $sdkVersion")
     }
+
+    enum class DesugarJdkVariant(val size: Int) {
+        MINIMAL(0),
+        BASIC(1),
+        NIO(2);
+    }
 }
 
 /** [WorkParameters] for [CheckAarMetadataWorkAction] */
@@ -546,12 +631,15 @@ abstract class CheckAarMetadataWorkParameters: WorkParameters {
     abstract val aarMetadataVersion: Property<String>
     abstract val compileSdkVersion: Property<String>
     abstract val coreLibraryDesugaringEnabled: Property<Boolean>
+    abstract val desugarJdkVariant: Property<String>
+    abstract val desugarJdkVersion: Property<String>
     abstract val platformSdkExtension: Property<Int>
     abstract val platformSdkApiLevel: Property<Int>
     abstract val agpVersion: Property<String>
     abstract val maxRecommendedStableCompileSdkVersionForThisAgp: Property<Int>
     abstract val projectPath: Property<String>
     abstract val disableCompileSdkChecks: Property<Boolean>
+    abstract val disallowedAsarArtifacts: ListProperty<String>
 }
 
 data class AarMetadataReader(val inputStream: InputStream) {
@@ -563,6 +651,7 @@ data class AarMetadataReader(val inputStream: InputStream) {
     val forceCompileSdkPreview: String?
     val minCompileSdkExtension: String?
     val coreLibraryDesugaringEnabled: String?
+    val desugarJdkLibId: String?
 
     constructor(file: File) : this(file.inputStream())
 
@@ -576,6 +665,7 @@ data class AarMetadataReader(val inputStream: InputStream) {
         forceCompileSdkPreview = properties.getProperty(FORCE_COMPILE_SDK_PREVIEW_PROPERTY)
         minCompileSdkExtension = properties.getProperty(MIN_COMPILE_SDK_EXTENSION_PROPERTY)
         coreLibraryDesugaringEnabled = properties.getProperty(CORE_LIBRARY_DESUGARING_ENABLED_PROPERTY)
+        desugarJdkLibId = properties.getProperty(DESUGAR_JDK_LIB_PROPERTY)
     }
 }
 

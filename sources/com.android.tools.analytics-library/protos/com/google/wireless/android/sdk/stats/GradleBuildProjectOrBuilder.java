@@ -598,4 +598,31 @@ public interface GradleBuildProjectOrBuilder extends
    */
   com.google.wireless.android.sdk.stats.GradlePluginDataOrBuilder getAppliedPluginsOrBuilder(
       int index);
+
+  /**
+   * <pre>
+   * Java compilation options
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+   * @return Whether the compileOptions field is set.
+   */
+  boolean hasCompileOptions();
+  /**
+   * <pre>
+   * Java compilation options
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+   * @return The compileOptions.
+   */
+  com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions getCompileOptions();
+  /**
+   * <pre>
+   * Java compilation options
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+   */
+  com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptionsOrBuilder getCompileOptionsOrBuilder();
 }

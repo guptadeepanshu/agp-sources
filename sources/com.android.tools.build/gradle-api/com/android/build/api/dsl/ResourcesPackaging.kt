@@ -16,7 +16,19 @@
 
 package com.android.build.api.dsl
 
-/** Packaging options for java resource files */
+/**
+ * Packaging options for java resource files in the Android DSL
+ *
+ * ```kotlin
+ * android {
+ *     packaging {
+ *         resources {
+ *             excludes += "/..."
+ *         }
+ *     }
+ * }
+ * ```
+ */
 interface ResourcesPackaging {
     /**
      * The set of excluded patterns. Java resources matching any of these patterns do not get

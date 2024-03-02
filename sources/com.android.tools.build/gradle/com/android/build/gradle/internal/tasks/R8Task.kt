@@ -101,7 +101,7 @@ abstract class R8Task @Inject constructor(
     @get:InputFile
     @get:PathSensitive(PathSensitivity.NONE)
     @get:Optional
-    abstract val multiDexKeepFile: Property<File>
+    abstract val multiDexKeepFile: RegularFileProperty
 
     @get:InputFile
     @get:PathSensitive(PathSensitivity.NONE)
@@ -238,6 +238,10 @@ abstract class R8Task @Inject constructor(
     @get:Inject
     abstract val providerFactory: ProviderFactory
 
+    @get:Optional
+    @get:OutputFile
+    abstract val mergedStartupProfile: RegularFileProperty
+
     class CreationAction(
             creationConfig: ConsumableCreationConfig,
             isTestApplication: Boolean = false,
@@ -296,14 +300,14 @@ abstract class R8Task @Inject constructor(
 
             if (creationConfig is ApkCreationConfig) {
                 when {
-                    creationConfig.dexingCreationConfig.needsMainDexListForBundle -> {
+                    creationConfig.dexing.needsMainDexListForBundle -> {
                         creationConfig.artifacts.setInitialProvider(
                             taskProvider,
                             R8Task::mainDexListOutput
                         ).withName("mainDexList.txt")
                             .on(InternalArtifactType.MAIN_DEX_LIST_FOR_BUNDLE)
                     }
-                    creationConfig.dexingCreationConfig.dexingType.needsMainDexList -> {
+                    creationConfig.dexing.dexingType.needsMainDexList -> {
                         creationConfig.artifacts.setInitialProvider(
                             taskProvider,
                             R8Task::mainDexListOutput
@@ -316,7 +320,12 @@ abstract class R8Task @Inject constructor(
                 creationConfig.artifacts
                     .use(taskProvider)
                     .wiredWithFiles(R8Task::inputArtProfile, R8Task::outputArtProfile)
-                    .toTransform(InternalArtifactType.MERGED_ART_PROFILE)
+                    .toTransform(InternalArtifactType.R8_ART_PROFILE)
+
+                creationConfig.artifacts.setInitialProvider(
+                    taskProvider,
+                    R8Task::mergedStartupProfile
+                ).on(InternalArtifactType.MERGED_STARTUP_PROFILE)
             }
         }
 
@@ -352,13 +361,13 @@ abstract class R8Task @Inject constructor(
 
             task.enableDesugaring.setDisallowChanges(
                 creationConfig is ApkCreationConfig &&
-                        creationConfig.dexingCreationConfig.java8LangSupportType == Java8LangSupport.R8
+                        creationConfig.dexing.java8LangSupportType == Java8LangSupport.R8
             )
 
             setBootClasspathForCodeShrinker(task)
             if (creationConfig is ApkCreationConfig) {
                 task.minSdkVersion.set(
-                    creationConfig.dexingCreationConfig.minSdkVersionForDexing.apiLevel
+                    creationConfig.dexing.minSdkVersionForDexing
                 )
             } else {
                 task.minSdkVersion.set(creationConfig.minSdk.apiLevel)
@@ -372,7 +381,7 @@ abstract class R8Task @Inject constructor(
             task.errorFormatMode.set(SyncOptions.getErrorFormatMode(creationConfig.services.projectOptions))
             task.legacyMultiDexEnabled.setDisallowChanges(
                 creationConfig is ApkCreationConfig &&
-                        creationConfig.dexingCreationConfig.dexingType == DexingType.LEGACY_MULTIDEX
+                        creationConfig.dexing.dexingType == DexingType.LEGACY_MULTIDEX
             )
             task.useFullR8.setDisallowChanges(creationConfig.services.projectOptions[BooleanOption.FULL_R8])
 
@@ -389,7 +398,7 @@ abstract class R8Task @Inject constructor(
                         artifacts.getAll(MultipleArtifact.MULTIDEX_KEEP_PROGUARD)
                 )
 
-                if (creationConfig.dexingCreationConfig.dexingType.needsMainDexList &&
+                if (creationConfig.dexing.dexingType.needsMainDexList &&
                     !creationConfig.global.namespacedAndroidResources) {
                     task.mainDexRulesFiles.from(
                         artifacts.get(
@@ -398,7 +407,7 @@ abstract class R8Task @Inject constructor(
                     )
                 }
                 task.multiDexKeepFile.setDisallowChanges(
-                    creationConfig.dexingCreationConfig.multiDexKeepFile
+                    creationConfig.dexing.multiDexKeepFile
                 )
 
                 if ((creationConfig as? ApplicationCreationConfig)?.consumesFeatureJars == true) {
@@ -421,7 +430,7 @@ abstract class R8Task @Inject constructor(
                         )
                     )
                 }
-                if (creationConfig.dexingCreationConfig.isCoreLibraryDesugaringEnabled) {
+                if (creationConfig.dexing.isCoreLibraryDesugaringEnabled) {
                     task.coreLibDesugarConfig.set(getDesugarLibConfig(creationConfig.services))
                 }
             }
@@ -529,27 +538,26 @@ abstract class R8Task @Inject constructor(
             outputArtProfile.orNull?.asFile?.let { FileUtils.copyFile(inputArtProfileFile, it) }
         }
 
-        val inputBaselineProfileForStartupOptimization = if (enableDexStartupOptimization.get()) {
+        if (enableDexStartupOptimization.get()) {
             val sources = baselineProfilesSources.orNull
             if (sources.isNullOrEmpty()) {
-                throw RuntimeException("""
-                    Dex optimization based on startup profile has been turned on with flag
-                    ${ModulePropertyKey.BooleanWithDefault.R8_DEX_STARTUP_OPTIMIZATION.key} but there are no source folders.
-                    This should not happen, please file a bug.
-                """.trimIndent())
+                getLogger().debug(
+                    "Dex optimization based on startup profile is enabled, " +
+                    "but there are no source folders.")
+            } else {
+                val startupProfiles = sources.filter { it.asFile.exists() }.map { it.asFile }
+                if (startupProfiles.isEmpty()) {
+                    getLogger().debug(
+                        "Dex optimization based on startup profile is enabled, but there are no " +
+                        "input baseline profiles found in the baselineProfiles sources. " +
+                        "You should add ${sources.first().asFile.absolutePath}, for instance.")
+                } else {
+                    mergedStartupProfile.get().asFile.printWriter().buffered().use { writer ->
+                        startupProfiles.joinTo(writer, "\n") { it.readText() }
+                    }
+                }
             }
-            sources.firstOrNull {
-                it.asFile.exists()
-            }
-                ?: throw RuntimeException(
-            """
-                Dex optimization based on startup profile has been turned on with flag
-                ${ModulePropertyKey.BooleanWithDefault.R8_DEX_STARTUP_OPTIMIZATION.key} but there are no input
-                baseline profile found in the baselineProfiles sources.
-                You should add ${sources.first().asFile.absolutePath} for instance.
-            """.trimIndent()
-                )
-        } else null
+        }
 
         val workerAction = { it: R8Runnable.Params ->
             it.bootClasspath.from(bootClasspath.toList())
@@ -561,7 +569,7 @@ abstract class R8Task @Inject constructor(
             it.mainDexListFiles.from(
                 mutableListOf<File>().also {
                     if (multiDexKeepFile.isPresent) {
-                        it.add(multiDexKeepFile.get())
+                        it.add(multiDexKeepFile.get().asFile)
                     }
                 })
             it.mainDexRulesFiles.from(
@@ -618,10 +626,9 @@ abstract class R8Task @Inject constructor(
                 it.inputArtProfile.set(inputArtProfile)
                 it.outputArtProfile.set(outputArtProfile)
             }
-            if (enableDexStartupOptimization.get()) {
-                it.inputProfileForDexStartupOptimization.set(
-                    inputBaselineProfileForStartupOptimization
-                )
+            if (enableDexStartupOptimization.get() &&
+                mergedStartupProfile.orNull?.asFile?.exists() == true) {
+                it.inputProfileForDexStartupOptimization.set(mergedStartupProfile)
             }
         }
         if (executionOptions.get().runInSeparateProcess) {

@@ -27,7 +27,6 @@ import com.android.tools.lint.model.DefaultLintModelAndroidLibrary
 import com.android.tools.lint.model.DefaultLintModelJavaLibrary
 import com.android.tools.lint.model.DefaultLintModelMavenName
 import com.android.tools.lint.model.DefaultLintModelModuleLibrary
-import com.android.tools.lint.model.LintModelExternalLibrary
 import com.android.tools.lint.model.LintModelLibrary
 import com.android.tools.lint.model.LintModelMavenName
 import com.android.utils.FileUtils
@@ -101,14 +100,12 @@ class ExternalLintModelArtifactHandler private constructor(
         identitySupplier: () -> String
     ): LintModelLibrary {
         val sourceSetKey = ProjectSourceSetKey(
-            buildId = buildId,
-            projectPath = projectPath,
+            buildTreePath = (buildId + projectPath).replace("::", ":"), // TODO (b/298662354)
             variantName = variantName,
             isTestFixtures = isTestFixtures
         )
         val mainKey = ProjectKey(
-                buildId = buildId,
-                projectPath = projectPath,
+                buildTreePath = (buildId + projectPath).replace("::", ":"), // TODO (b/298662354)
                 variantName = variantName
         )
         if (mainKey in baseModuleModelFileMap || (sourceSetKey !in projectExplodedAarsMap && sourceSetKey in projectJarsMap)) {
@@ -180,8 +177,15 @@ class ExternalLintModelArtifactHandler private constructor(
         isTestFixtures: Boolean,
         identitySupplier: () -> String
     ): LintModelLibrary {
-        val sourceSetKey = ProjectSourceSetKey(buildId, projectPath, variantName, isTestFixtures)
-        val mainKey = ProjectKey(buildId, projectPath, variantName)
+        val sourceSetKey = ProjectSourceSetKey(
+            (buildId + projectPath).replace("::", ":"), // TODO (b/298662354)
+            variantName,
+            isTestFixtures
+        )
+        val mainKey = ProjectKey(
+            (buildId + projectPath).replace("::", ":"), // TODO (b/298662354)
+            variantName
+        )
         if (mainKey in baseModuleModelFileMap) {
             return DefaultLintModelModuleLibrary(
                     identifier = identitySupplier(),

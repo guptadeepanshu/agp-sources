@@ -279,4 +279,39 @@ public interface GradleProjectOptionsSettingsOrBuilder extends
    * @return The stringOptions at the given index.
    */
   int getStringOptions(int index);
+
+  /**
+   * <pre>
+   * Module property keys (experimental properties) that are explicitly set.
+   * A reference to the proto enum in android git, see ModulePropertyKeys in
+   * tools/analytics-library/protos/src/main/proto/analytics_enums.proto
+   * </pre>
+   *
+   * <code>repeated int32 module_property_keys = 8;</code>
+   * @return A list containing the modulePropertyKeys.
+   */
+  java.util.List<java.lang.Integer> getModulePropertyKeysList();
+  /**
+   * <pre>
+   * Module property keys (experimental properties) that are explicitly set.
+   * A reference to the proto enum in android git, see ModulePropertyKeys in
+   * tools/analytics-library/protos/src/main/proto/analytics_enums.proto
+   * </pre>
+   *
+   * <code>repeated int32 module_property_keys = 8;</code>
+   * @return The count of modulePropertyKeys.
+   */
+  int getModulePropertyKeysCount();
+  /**
+   * <pre>
+   * Module property keys (experimental properties) that are explicitly set.
+   * A reference to the proto enum in android git, see ModulePropertyKeys in
+   * tools/analytics-library/protos/src/main/proto/analytics_enums.proto
+   * </pre>
+   *
+   * <code>repeated int32 module_property_keys = 8;</code>
+   * @param index The index of the element to return.
+   * @return The modulePropertyKeys at the given index.
+   */
+  int getModulePropertyKeys(int index);
 }

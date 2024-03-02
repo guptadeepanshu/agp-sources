@@ -22,16 +22,15 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.utils.FileUtils
-import org.gradle.api.Project
 import org.gradle.api.artifacts.transform.CacheableTransform
 import org.gradle.api.artifacts.transform.InputArtifact
 import org.gradle.api.artifacts.transform.TransformAction
 import org.gradle.api.artifacts.transform.TransformOutputs
 import org.gradle.api.artifacts.transform.TransformSpec
+import org.gradle.api.artifacts.type.ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE
 import org.gradle.api.attributes.Attribute
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.FileSystemLocation
-import org.gradle.api.internal.artifacts.ArtifactAttributes
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Classpath
@@ -101,7 +100,7 @@ fun getJdkImageFromTransform(
     return configuration.incoming.artifactView { config ->
         config.attributes {
             it.attribute(
-                ArtifactAttributes.ARTIFACT_FORMAT,
+                ARTIFACT_TYPE_ATTRIBUTE,
                 ANDROID_JDK_IMAGE
             )
             it.attribute(ATTR_JDK_ID, getJdkId(javaCompiler))
@@ -120,8 +119,8 @@ private fun registerJdkImageTransform(services: TaskCreationServices, javaCompil
         JdkImageTransform::class.java
     ) { spec: TransformSpec<JdkImageTransform.Parameters> ->
         // Query for JAR instead of PROCESSED_JAR as core-for-system-modules.jar doesn't need processing
-        spec.from.attribute(ArtifactAttributes.ARTIFACT_FORMAT, AndroidArtifacts.ArtifactType.JAR.type)
-        spec.to.attribute(ArtifactAttributes.ARTIFACT_FORMAT, ANDROID_JDK_IMAGE)
+        spec.from.attribute(ARTIFACT_TYPE_ATTRIBUTE, AndroidArtifacts.ArtifactType.JAR.type)
+        spec.to.attribute(ARTIFACT_TYPE_ATTRIBUTE, ANDROID_JDK_IMAGE)
         spec.parameters.projectName.setDisallowChanges(services.projectInfo.name)
         spec.parameters.jdkId.setDisallowChanges(getJdkId(javaCompiler))
         spec.parameters.javaHome.setDisallowChanges(getJavaHome(javaCompiler))

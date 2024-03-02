@@ -17,7 +17,7 @@
 package com.android.sdklib.repository.meta;
 
 import static com.android.sdklib.AndroidVersionUtils.getFullApiName;
-import static com.android.sdklib.repository.targets.SystemImage.DEFAULT_TAG;
+import static com.android.sdklib.SystemImageTags.DEFAULT_TAG;
 
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;

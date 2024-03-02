@@ -16,7 +16,20 @@
 
 package com.android.build.api.dsl
 
-/** Packaging options for Dex (Android Dalvik Executable) files */
+/**
+ * Packaging options for Dex (Android Dalvik Executable) files in the Android DSL
+ *
+ * ```kotlin
+ * android {
+ *     packaging {
+ *         dex {
+ *             useLegacyPackaging = ...
+ *         }
+ *     }
+ * }
+ * ```
+ *
+ */
 interface DexPackaging {
     /**
      * Whether to use the legacy convention of compressing all dex files in the APK. If null, dex

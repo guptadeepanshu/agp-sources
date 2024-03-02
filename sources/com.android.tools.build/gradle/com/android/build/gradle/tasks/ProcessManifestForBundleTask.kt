@@ -69,7 +69,6 @@ abstract class ProcessManifestForBundleTask: NonIncrementalTask() {
     @get:Nested
     abstract val outputsHandler: Property<MultiOutputHandler>
 
-    @TaskAction
     override fun doTaskAction() {
         val builtArtifact = outputsHandler.get().getMainSplitArtifact(
             applicationMergedManifests

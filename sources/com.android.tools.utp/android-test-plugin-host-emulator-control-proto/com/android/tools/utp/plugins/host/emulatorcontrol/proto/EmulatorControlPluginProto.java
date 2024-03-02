@@ -161,6 +161,57 @@ public final class EmulatorControlPluginProto {
      */
     com.google.protobuf.ByteString
         getJwkFileBytes();
+
+    /**
+     * <pre>
+     * How long a token should be valid
+     * </pre>
+     *
+     * <code>int32 seconds_valid = 8;</code>
+     * @return The secondsValid.
+     */
+    int getSecondsValid();
+
+    /**
+     * <pre>
+     * Set of endpoints that are valid
+     * </pre>
+     *
+     * <code>repeated string allowed_endpoints = 9;</code>
+     * @return A list containing the allowedEndpoints.
+     */
+    java.util.List<java.lang.String>
+        getAllowedEndpointsList();
+    /**
+     * <pre>
+     * Set of endpoints that are valid
+     * </pre>
+     *
+     * <code>repeated string allowed_endpoints = 9;</code>
+     * @return The count of allowedEndpoints.
+     */
+    int getAllowedEndpointsCount();
+    /**
+     * <pre>
+     * Set of endpoints that are valid
+     * </pre>
+     *
+     * <code>repeated string allowed_endpoints = 9;</code>
+     * @param index The index of the element to return.
+     * @return The allowedEndpoints at the given index.
+     */
+    java.lang.String getAllowedEndpoints(int index);
+    /**
+     * <pre>
+     * Set of endpoints that are valid
+     * </pre>
+     *
+     * <code>repeated string allowed_endpoints = 9;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the allowedEndpoints at the given index.
+     */
+    com.google.protobuf.ByteString
+        getAllowedEndpointsBytes(int index);
   }
   /**
    * Protobuf type {@code com.android.tools.utp.plugins.host.emulatorcontrol.proto.EmulatorControlPlugin}
@@ -181,6 +232,7 @@ public final class EmulatorControlPluginProto {
       trustedCollectionRootPath_ = "";
       tlsCfgPrefix_ = "";
       jwkFile_ = "";
+      allowedEndpoints_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     }
 
     @java.lang.Override
@@ -194,84 +246,6 @@ public final class EmulatorControlPluginProto {
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
-    }
-    private EmulatorControlPlugin(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 8: {
-
-              emulatorGrpcPort_ = input.readInt32();
-              break;
-            }
-            case 18: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              token_ = s;
-              break;
-            }
-            case 26: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              emulatorClientPrivateKeyFilePath_ = s;
-              break;
-            }
-            case 34: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              emulatorClientCaFilePath_ = s;
-              break;
-            }
-            case 42: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              trustedCollectionRootPath_ = s;
-              break;
-            }
-            case 50: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              tlsCfgPrefix_ = s;
-              break;
-            }
-            case 58: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              jwkFile_ = s;
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
@@ -591,6 +565,72 @@ public final class EmulatorControlPluginProto {
       }
     }
 
+    public static final int SECONDS_VALID_FIELD_NUMBER = 8;
+    private int secondsValid_;
+    /**
+     * <pre>
+     * How long a token should be valid
+     * </pre>
+     *
+     * <code>int32 seconds_valid = 8;</code>
+     * @return The secondsValid.
+     */
+    @java.lang.Override
+    public int getSecondsValid() {
+      return secondsValid_;
+    }
+
+    public static final int ALLOWED_ENDPOINTS_FIELD_NUMBER = 9;
+    private com.google.protobuf.LazyStringList allowedEndpoints_;
+    /**
+     * <pre>
+     * Set of endpoints that are valid
+     * </pre>
+     *
+     * <code>repeated string allowed_endpoints = 9;</code>
+     * @return A list containing the allowedEndpoints.
+     */
+    public com.google.protobuf.ProtocolStringList
+        getAllowedEndpointsList() {
+      return allowedEndpoints_;
+    }
+    /**
+     * <pre>
+     * Set of endpoints that are valid
+     * </pre>
+     *
+     * <code>repeated string allowed_endpoints = 9;</code>
+     * @return The count of allowedEndpoints.
+     */
+    public int getAllowedEndpointsCount() {
+      return allowedEndpoints_.size();
+    }
+    /**
+     * <pre>
+     * Set of endpoints that are valid
+     * </pre>
+     *
+     * <code>repeated string allowed_endpoints = 9;</code>
+     * @param index The index of the element to return.
+     * @return The allowedEndpoints at the given index.
+     */
+    public java.lang.String getAllowedEndpoints(int index) {
+      return allowedEndpoints_.get(index);
+    }
+    /**
+     * <pre>
+     * Set of endpoints that are valid
+     * </pre>
+     *
+     * <code>repeated string allowed_endpoints = 9;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the allowedEndpoints at the given index.
+     */
+    public com.google.protobuf.ByteString
+        getAllowedEndpointsBytes(int index) {
+      return allowedEndpoints_.getByteString(index);
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -626,7 +666,13 @@ public final class EmulatorControlPluginProto {
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(jwkFile_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 7, jwkFile_);
       }
-      unknownFields.writeTo(output);
+      if (secondsValid_ != 0) {
+        output.writeInt32(8, secondsValid_);
+      }
+      for (int i = 0; i < allowedEndpoints_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, allowedEndpoints_.getRaw(i));
+      }
+      getUnknownFields().writeTo(output);
     }
 
     @java.lang.Override
@@ -657,7 +703,19 @@ public final class EmulatorControlPluginProto {
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(jwkFile_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, jwkFile_);
       }
-      size += unknownFields.getSerializedSize();
+      if (secondsValid_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(8, secondsValid_);
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < allowedEndpoints_.size(); i++) {
+          dataSize += computeStringSizeNoTag(allowedEndpoints_.getRaw(i));
+        }
+        size += dataSize;
+        size += 1 * getAllowedEndpointsList().size();
+      }
+      size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
     }
@@ -686,7 +744,11 @@ public final class EmulatorControlPluginProto {
           .equals(other.getTlsCfgPrefix())) return false;
       if (!getJwkFile()
           .equals(other.getJwkFile())) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
+      if (getSecondsValid()
+          != other.getSecondsValid()) return false;
+      if (!getAllowedEndpointsList()
+          .equals(other.getAllowedEndpointsList())) return false;
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
 
@@ -711,7 +773,13 @@ public final class EmulatorControlPluginProto {
       hash = (53 * hash) + getTlsCfgPrefix().hashCode();
       hash = (37 * hash) + JWK_FILE_FIELD_NUMBER;
       hash = (53 * hash) + getJwkFile().hashCode();
-      hash = (29 * hash) + unknownFields.hashCode();
+      hash = (37 * hash) + SECONDS_VALID_FIELD_NUMBER;
+      hash = (53 * hash) + getSecondsValid();
+      if (getAllowedEndpointsCount() > 0) {
+        hash = (37 * hash) + ALLOWED_ENDPOINTS_FIELD_NUMBER;
+        hash = (53 * hash) + getAllowedEndpointsList().hashCode();
+      }
+      hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
     }
@@ -828,18 +896,13 @@ public final class EmulatorControlPluginProto {
 
       // Construct using com.android.tools.utp.plugins.host.emulatorcontrol.proto.EmulatorControlPluginProto.EmulatorControlPlugin.newBuilder()
       private Builder() {
-        maybeForceBuilderInitialization();
+
       }
 
       private Builder(
           com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
+
       }
       @java.lang.Override
       public Builder clear() {
@@ -858,6 +921,10 @@ public final class EmulatorControlPluginProto {
 
         jwkFile_ = "";
 
+        secondsValid_ = 0;
+
+        allowedEndpoints_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
 
@@ -884,6 +951,7 @@ public final class EmulatorControlPluginProto {
       @java.lang.Override
       public com.android.tools.utp.plugins.host.emulatorcontrol.proto.EmulatorControlPluginProto.EmulatorControlPlugin buildPartial() {
         com.android.tools.utp.plugins.host.emulatorcontrol.proto.EmulatorControlPluginProto.EmulatorControlPlugin result = new com.android.tools.utp.plugins.host.emulatorcontrol.proto.EmulatorControlPluginProto.EmulatorControlPlugin(this);
+        int from_bitField0_ = bitField0_;
         result.emulatorGrpcPort_ = emulatorGrpcPort_;
         result.token_ = token_;
         result.emulatorClientPrivateKeyFilePath_ = emulatorClientPrivateKeyFilePath_;
@@ -891,6 +959,12 @@ public final class EmulatorControlPluginProto {
         result.trustedCollectionRootPath_ = trustedCollectionRootPath_;
         result.tlsCfgPrefix_ = tlsCfgPrefix_;
         result.jwkFile_ = jwkFile_;
+        result.secondsValid_ = secondsValid_;
+        if (((bitField0_ & 0x00000001) != 0)) {
+          allowedEndpoints_ = allowedEndpoints_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        }
+        result.allowedEndpoints_ = allowedEndpoints_;
         onBuilt();
         return result;
       }
@@ -966,7 +1040,20 @@ public final class EmulatorControlPluginProto {
           jwkFile_ = other.jwkFile_;
           onChanged();
         }
-        this.mergeUnknownFields(other.unknownFields);
+        if (other.getSecondsValid() != 0) {
+          setSecondsValid(other.getSecondsValid());
+        }
+        if (!other.allowedEndpoints_.isEmpty()) {
+          if (allowedEndpoints_.isEmpty()) {
+            allowedEndpoints_ = other.allowedEndpoints_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            ensureAllowedEndpointsIsMutable();
+            allowedEndpoints_.addAll(other.allowedEndpoints_);
+          }
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
       }
@@ -981,19 +1068,79 @@ public final class EmulatorControlPluginProto {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.android.tools.utp.plugins.host.emulatorcontrol.proto.EmulatorControlPluginProto.EmulatorControlPlugin parsedMessage = null;
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
         try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 8: {
+                emulatorGrpcPort_ = input.readInt32();
+
+                break;
+              } // case 8
+              case 18: {
+                token_ = input.readStringRequireUtf8();
+
+                break;
+              } // case 18
+              case 26: {
+                emulatorClientPrivateKeyFilePath_ = input.readStringRequireUtf8();
+
+                break;
+              } // case 26
+              case 34: {
+                emulatorClientCaFilePath_ = input.readStringRequireUtf8();
+
+                break;
+              } // case 34
+              case 42: {
+                trustedCollectionRootPath_ = input.readStringRequireUtf8();
+
+                break;
+              } // case 42
+              case 50: {
+                tlsCfgPrefix_ = input.readStringRequireUtf8();
+
+                break;
+              } // case 50
+              case 58: {
+                jwkFile_ = input.readStringRequireUtf8();
+
+                break;
+              } // case 58
+              case 64: {
+                secondsValid_ = input.readInt32();
+
+                break;
+              } // case 64
+              case 74: {
+                java.lang.String s = input.readStringRequireUtf8();
+                ensureAllowedEndpointsIsMutable();
+                allowedEndpoints_.add(s);
+                break;
+              } // case 74
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.android.tools.utp.plugins.host.emulatorcontrol.proto.EmulatorControlPluginProto.EmulatorControlPlugin) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
+          onChanged();
+        } // finally
         return this;
       }
+      private int bitField0_;
 
       private int emulatorGrpcPort_ ;
       /**
@@ -1648,6 +1795,195 @@ public final class EmulatorControlPluginProto {
         onChanged();
         return this;
       }
+
+      private int secondsValid_ ;
+      /**
+       * <pre>
+       * How long a token should be valid
+       * </pre>
+       *
+       * <code>int32 seconds_valid = 8;</code>
+       * @return The secondsValid.
+       */
+      @java.lang.Override
+      public int getSecondsValid() {
+        return secondsValid_;
+      }
+      /**
+       * <pre>
+       * How long a token should be valid
+       * </pre>
+       *
+       * <code>int32 seconds_valid = 8;</code>
+       * @param value The secondsValid to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSecondsValid(int value) {
+        
+        secondsValid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * How long a token should be valid
+       * </pre>
+       *
+       * <code>int32 seconds_valid = 8;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearSecondsValid() {
+        
+        secondsValid_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.LazyStringList allowedEndpoints_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureAllowedEndpointsIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          allowedEndpoints_ = new com.google.protobuf.LazyStringArrayList(allowedEndpoints_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+      /**
+       * <pre>
+       * Set of endpoints that are valid
+       * </pre>
+       *
+       * <code>repeated string allowed_endpoints = 9;</code>
+       * @return A list containing the allowedEndpoints.
+       */
+      public com.google.protobuf.ProtocolStringList
+          getAllowedEndpointsList() {
+        return allowedEndpoints_.getUnmodifiableView();
+      }
+      /**
+       * <pre>
+       * Set of endpoints that are valid
+       * </pre>
+       *
+       * <code>repeated string allowed_endpoints = 9;</code>
+       * @return The count of allowedEndpoints.
+       */
+      public int getAllowedEndpointsCount() {
+        return allowedEndpoints_.size();
+      }
+      /**
+       * <pre>
+       * Set of endpoints that are valid
+       * </pre>
+       *
+       * <code>repeated string allowed_endpoints = 9;</code>
+       * @param index The index of the element to return.
+       * @return The allowedEndpoints at the given index.
+       */
+      public java.lang.String getAllowedEndpoints(int index) {
+        return allowedEndpoints_.get(index);
+      }
+      /**
+       * <pre>
+       * Set of endpoints that are valid
+       * </pre>
+       *
+       * <code>repeated string allowed_endpoints = 9;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the allowedEndpoints at the given index.
+       */
+      public com.google.protobuf.ByteString
+          getAllowedEndpointsBytes(int index) {
+        return allowedEndpoints_.getByteString(index);
+      }
+      /**
+       * <pre>
+       * Set of endpoints that are valid
+       * </pre>
+       *
+       * <code>repeated string allowed_endpoints = 9;</code>
+       * @param index The index to set the value at.
+       * @param value The allowedEndpoints to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAllowedEndpoints(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureAllowedEndpointsIsMutable();
+        allowedEndpoints_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Set of endpoints that are valid
+       * </pre>
+       *
+       * <code>repeated string allowed_endpoints = 9;</code>
+       * @param value The allowedEndpoints to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllowedEndpoints(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureAllowedEndpointsIsMutable();
+        allowedEndpoints_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Set of endpoints that are valid
+       * </pre>
+       *
+       * <code>repeated string allowed_endpoints = 9;</code>
+       * @param values The allowedEndpoints to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllAllowedEndpoints(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureAllowedEndpointsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, allowedEndpoints_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Set of endpoints that are valid
+       * </pre>
+       *
+       * <code>repeated string allowed_endpoints = 9;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAllowedEndpoints() {
+        allowedEndpoints_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Set of endpoints that are valid
+       * </pre>
+       *
+       * <code>repeated string allowed_endpoints = 9;</code>
+       * @param value The bytes of the allowedEndpoints to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllowedEndpointsBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        ensureAllowedEndpointsIsMutable();
+        allowedEndpoints_.add(value);
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -1681,7 +2017,18 @@ public final class EmulatorControlPluginProto {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new EmulatorControlPlugin(input, extensionRegistry);
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
       }
     };
 
@@ -1717,15 +2064,17 @@ public final class EmulatorControlPluginProto {
     java.lang.String[] descriptorData = {
       "\n,src/main/proto/emulator_control_plugin" +
       ".proto\0228com.android.tools.utp.plugins.ho" +
-      "st.emulatorcontrol.proto\"\347\001\n\025EmulatorCon" +
+      "st.emulatorcontrol.proto\"\231\002\n\025EmulatorCon" +
       "trolPlugin\022\032\n\022emulator_grpc_port\030\001 \001(\005\022\r" +
       "\n\005token\030\002 \001(\t\022-\n%emulator_client_private" +
       "_key_file_path\030\003 \001(\t\022$\n\034emulator_client_" +
       "ca_file_path\030\004 \001(\t\022$\n\034trusted_collection" +
       "_root_path\030\005 \001(\t\022\026\n\016tls_cfg_prefix\030\006 \001(\t" +
-      "\022\020\n\010jwk_file\030\007 \001(\tBV\n8com.android.tools." +
-      "utp.plugins.host.emulatorcontrol.protoB\032" +
-      "EmulatorControlPluginProtob\006proto3"
+      "\022\020\n\010jwk_file\030\007 \001(\t\022\025\n\rseconds_valid\030\010 \001(" +
+      "\005\022\031\n\021allowed_endpoints\030\t \003(\tBV\n8com.andr" +
+      "oid.tools.utp.plugins.host.emulatorcontr" +
+      "ol.protoB\032EmulatorControlPluginProtob\006pr" +
+      "oto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -1736,7 +2085,7 @@ public final class EmulatorControlPluginProto {
     internal_static_com_android_tools_utp_plugins_host_emulatorcontrol_proto_EmulatorControlPlugin_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_android_tools_utp_plugins_host_emulatorcontrol_proto_EmulatorControlPlugin_descriptor,
-        new java.lang.String[] { "EmulatorGrpcPort", "Token", "EmulatorClientPrivateKeyFilePath", "EmulatorClientCaFilePath", "TrustedCollectionRootPath", "TlsCfgPrefix", "JwkFile", });
+        new java.lang.String[] { "EmulatorGrpcPort", "Token", "EmulatorClientPrivateKeyFilePath", "EmulatorClientCaFilePath", "TrustedCollectionRootPath", "TlsCfgPrefix", "JwkFile", "SecondsValid", "AllowedEndpoints", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

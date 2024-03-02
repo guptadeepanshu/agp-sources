@@ -15,38 +15,29 @@
  */
 package com.android.tools.analytics
 
-import com.android.utils.ILogger
 import com.google.common.base.Charsets
 import com.google.common.hash.Hashing
-import java.io.IOException
-import java.nio.charset.Charset
 
 /**
  * Anonymizes strings for analytics reporting. Each string is sha256 encoded with a salt that is
  * unique per user and rotated every 28 days with a predictable time window.
  */
 object Anonymizer {
-  /** Anonymizes a utf8 string. Logs any issues reading the salt for anonymizing.  */
-  @Throws(IOException::class)
+  /** Anonymizes a string. Returns null if the salt is not initialized in AnalyticsSettings. */
   @JvmStatic
-  fun anonymizeUtf8(logger: ILogger, data: String?): String {
-    return anonymize(logger, data, Charsets.UTF_8)
-  }
-
-  /**
-   * Anonymizes a string based on provided charset. Logs any issues reading the salt for
-   * anonymizing.
-   */
-  @Throws(IOException::class)
-  @JvmStatic
-  fun anonymize(
-    logger: ILogger, data: String?, charset: Charset): String {
+  fun anonymize(data: String?): String? {
     if (data == null || data == "") {
       return ""
     }
-    val hasher = Hashing.sha256().newHasher()
-    hasher.putBytes(AnalyticsSettings.salt)
-    hasher.putString(data, charset)
-    return hasher.hash().toString()
+
+    val salt = AnalyticsSettings.salt
+    if (salt.isEmpty()) {
+      return null
+    } else {
+      val hasher = Hashing.sha256().newHasher()
+      hasher.putBytes(salt)
+      hasher.putString(data, Charsets.UTF_8)
+      return hasher.hash().toString()
+    }
   }
 }

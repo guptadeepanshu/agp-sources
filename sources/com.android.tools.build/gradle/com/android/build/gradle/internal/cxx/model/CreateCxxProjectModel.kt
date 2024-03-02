@@ -17,9 +17,7 @@
 package com.android.build.gradle.internal.cxx.model
 
 import com.android.build.gradle.internal.SdkComponentsBuildService
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import com.android.build.gradle.internal.cxx.gradle.generator.CxxConfigurationParameters
-import java.io.File
 
 /**
  * Create a [CxxProjectModel] to hold project-wide settings and flags.

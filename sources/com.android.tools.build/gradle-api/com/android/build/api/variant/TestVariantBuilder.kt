@@ -16,6 +16,13 @@
 package com.android.build.api.variant
 
 /**
- * [VariantBuilder] type for tests associated with a module.
+ * Model for test components that only contains configuration-time properties that impacts
+ * the build flow.
+ *
+ * This is for components associated with the `com.android.test` plugin. This is not for
+ * test components associated with variants. For these see [TestComponent] (they currently
+ * do not have matching builder interfaces).
+ *
+ * See [ComponentBuilder] and [VariantBuilder] for more information.
  */
 interface TestVariantBuilder: VariantBuilder, GeneratesApkBuilder, CanMinifyCodeBuilder

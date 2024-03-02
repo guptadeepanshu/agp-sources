@@ -299,6 +299,11 @@ public class HardwareConfigHelper {
         return MANUFACTURER_GOOGLE.equals(device.getManufacturer());
     }
 
+    public static boolean isRollable(@NonNull String deviceId) {
+        // TODO: b/304585541 - Declare this in XML
+        return deviceId.equals("7.4in Rollable");
+    }
+
     /**
      * Whether the given device is a wear device
      */

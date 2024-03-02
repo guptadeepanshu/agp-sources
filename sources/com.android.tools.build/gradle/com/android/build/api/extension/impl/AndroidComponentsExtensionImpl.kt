@@ -32,7 +32,7 @@ import org.gradle.api.Action
 import org.gradle.api.plugins.ExtensionAware
 
 abstract class AndroidComponentsExtensionImpl<
-        DslExtensionT: CommonExtension<*, *, *, *, *>,
+        DslExtensionT: CommonExtension<*, *, *, *, *, *>,
         VariantBuilderT: VariantBuilder,
         VariantT: Variant>(
         private val dslServices: DslServices,
@@ -58,7 +58,7 @@ abstract class AndroidComponentsExtensionImpl<
     }
 
     override val pluginVersion: AndroidPluginVersion
-        get() = CURRENT_AGP_VERSION
+        get() = CurrentAndroidGradlePluginVersion.CURRENT_AGP_VERSION
 
     override fun beforeVariants(selector: VariantSelector, callback: (VariantBuilderT) -> Unit) {
         variantApiOperations.variantBuilderOperations.addOperation({

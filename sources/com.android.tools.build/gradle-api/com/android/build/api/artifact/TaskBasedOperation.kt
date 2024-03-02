@@ -16,6 +16,7 @@
 
 package com.android.build.api.artifact
 
+import org.gradle.api.Incubating
 import org.gradle.api.Task
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileSystemLocation
@@ -49,6 +50,20 @@ interface TaskBasedOperation<TaskT: Task> {
     fun <FileTypeT: FileSystemLocation> wiredWith(
         taskOutput: (TaskT) -> FileSystemLocationProperty<FileTypeT>
     ): OutOperationRequest<FileTypeT>
+
+    /**
+     * Sets the [TaskT] input method reference so the [TaskT] can be retrieve the current version
+     * of the target [MultipleArtifact] when invoking [taskInput].
+     *
+     * @param taskInput The method reference the [TaskT] will use to retrieve the current artifact
+     * version during [TaskT] execution (and only then).
+     * @return the [MultipleArtifactTypeOutOperationRequest] to set the desired operation type
+     * and the target [MultipleArtifact]
+     */
+    @Incubating
+    fun <FileTypeT: FileSystemLocation> wiredWithMultiple(
+        taskInput: (TaskT) -> ListProperty<FileTypeT>
+    ): MultipleArtifactTypeOutOperationRequest<FileTypeT>
 
     /**
      * Sets the [TaskT] input and output methods references so the [Task] can retrieve the

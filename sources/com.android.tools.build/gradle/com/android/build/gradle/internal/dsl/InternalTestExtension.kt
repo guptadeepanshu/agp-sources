@@ -21,6 +21,7 @@ import com.android.build.api.dsl.TestBuildFeatures
 import com.android.build.api.dsl.TestBuildType
 import com.android.build.api.dsl.TestDefaultConfig
 import com.android.build.api.dsl.TestExtension
+import com.android.build.api.dsl.TestInstallation
 import com.android.build.api.dsl.TestProductFlavor
 
 /** See [InternalCommonExtension] */
@@ -31,4 +32,5 @@ interface InternalTestExtension :
                 TestBuildType,
                 TestDefaultConfig,
                 TestProductFlavor,
-                TestAndroidResources>
+                TestAndroidResources,
+                TestInstallation>

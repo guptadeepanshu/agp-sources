@@ -36,7 +36,7 @@ public abstract class SplitApkInstallerBase {
 
     // We need two services. The most recent devices uses the same ABB_EXEC but to remain backward
     // compatible we must mimic how install used to take place with SHELL for create, commit and
-    // EXEC for write. Once we fix unify Fakeadbserver pm handling, we can move to having only
+    // EXEC for write. Once we fix unify FakeAdbServer pm handling, we can move to having only
     // once service for all four types of queries.
     @NonNull private final AdbHelper.AdbService mService;
     @NonNull private final AdbHelper.AdbService mServiceWrite;
@@ -98,11 +98,9 @@ public abstract class SplitApkInstallerBase {
         if (!options.trim().isEmpty()) {
             cmd = cmd + " " + options;
         }
-        AdbHelper.executeRemoteCommand(
-                AndroidDebugBridge.getSocketAddress(),
-                mService,
+        mDevice.executeRemoteCommand(
+          mService,
                 cmd,
-                mDevice,
                 receiver,
                 0L,
                 timeout,
@@ -131,22 +129,14 @@ public abstract class SplitApkInstallerBase {
         return sessionId;
     }
 
-    protected static final CharMatcher UNSAFE_PM_INSTALL_SESSION_SPLIT_NAME_CHARS =
-            CharMatcher.inRange('a', 'z')
-                    .or(CharMatcher.inRange('A', 'Z'))
-                    .or(CharMatcher.anyOf("_-"))
-                    .negate();
-
     protected void installCommit(@NonNull String sessionId, long timeout, @NonNull TimeUnit unit)
             throws TimeoutException, AdbCommandRejectedException, ShellCommandUnresponsiveException,
                     IOException, InstallException {
         String command = mPrefix + " install-commit " + sessionId;
         InstallReceiver receiver = new InstallReceiver();
-        AdbHelper.executeRemoteCommand(
-                AndroidDebugBridge.getSocketAddress(),
-                mService,
+        mDevice.executeRemoteCommand(
+          mService,
                 command,
-                mDevice,
                 receiver,
                 0L,
                 timeout,
@@ -170,11 +160,9 @@ public abstract class SplitApkInstallerBase {
                     IOException, InstallException {
         String command = mPrefix + " install-abandon " + sessionId;
         InstallReceiver receiver = new InstallReceiver();
-        AdbHelper.executeRemoteCommand(
-                AndroidDebugBridge.getSocketAddress(),
-                mService,
+        mDevice.executeRemoteCommand(
+          mService,
                 command,
-                mDevice,
                 receiver,
                 0L,
                 timeout,

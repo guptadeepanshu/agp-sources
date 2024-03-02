@@ -17,9 +17,7 @@
 package com.android.build.gradle.internal.cxx.json;
 
 import static com.android.build.gradle.internal.cxx.json.AndroidBuildGradleJsonsKtKt.readMiniConfigCreateIfNecessary;
-import static com.android.build.gradle.internal.cxx.json.LintKt.lint;
 import static com.android.build.gradle.internal.cxx.model.CxxAbiModelKt.getJsonFile;
-import static com.android.build.gradle.internal.cxx.model.CxxAbiModelKt.getMiniConfigFile;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
@@ -106,8 +104,6 @@ public class AndroidBuildGradleJsons {
      * Return a {@link NativeBuildConfigValueMini} for this {@link CxxAbiModel}. Generate if missing
      * or out of date with respect to corresponding android_gradle_build.json.
      *
-     * <p>Emit lint check errors against the {@link NativeBuildConfigValueMini} if there are any.
-     *
      * @param abi the ABI to get mini config fore.
      * @param stats the stats to update
      * @return the mini config
@@ -117,34 +113,7 @@ public class AndroidBuildGradleJsons {
     public static NativeBuildConfigValueMini getNativeBuildMiniConfig(
             @NonNull CxxAbiModel abi, @Nullable GradleBuildVariant.Builder stats) {
         File androidGradleBuildJsonFile = getJsonFile(abi);
-        NativeBuildConfigValueMini result =
-                readMiniConfigCreateIfNecessary(androidGradleBuildJsonFile, stats);
-        // Check the resulting mini config for problems. We have the right context here to attribute
-        // issues to a specific JSON or mini config JSON file name.
-
-        // Check the resulting mini config for problems. We have the right context here to attribute
-        // issues to a specific JSON or mini config JSON file name.
-        if (androidGradleBuildJsonFile.isFile()) {
-            // Report any lint-check errors against the original full JSON file rather than the mini
-            // config file that is derived from it.
-            lint(
-                    result,
-                    androidGradleBuildJsonFile,
-                    abi.getVariant().getModule().getNdkDefaultAbiList(),
-                    abi.getVariant().getModule().getNdkSupportedAbiList());
-        } else {
-            // A metadata provider may choose to only supply the mini config (with the rest of the
-            // relevant information provided by compile_commands.json). In this case, lint checks
-            // should report errors against the mini config file rather than the non-existent full
-            // JSON.
-            lint(
-                    result,
-                    getMiniConfigFile(abi),
-                    abi.getVariant().getModule().getNdkDefaultAbiList(),
-                    abi.getVariant().getModule().getNdkSupportedAbiList());
-        }
-
-        return result;
+        return readMiniConfigCreateIfNecessary(androidGradleBuildJsonFile, stats);
     }
 
     /**

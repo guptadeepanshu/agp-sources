@@ -44,7 +44,7 @@ object AnalyticsPaths {
   }
 
   @JvmStatic
-  fun getAndroidSettingsHome(): String {
+  private fun getAndroidSettingsHome(): String {
     // currently can't be shared with AndroidLocation see b/37123089
     return getEnvOrPropValue(EnvironmentVariable.ANDROID_PREFS_ROOT, SystemProperty.ANDROID_PREFS_ROOT)
       ?: getEnvOrPropValue(EnvironmentVariable.ANDROID_SDK_HOME, SystemProperty.ANDROID_SDK_HOME)

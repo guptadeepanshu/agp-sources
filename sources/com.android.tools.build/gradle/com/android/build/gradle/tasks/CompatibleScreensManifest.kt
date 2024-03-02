@@ -18,7 +18,6 @@ package com.android.build.gradle.tasks
 
 import com.android.SdkConstants
 import com.android.build.api.variant.FilterConfiguration
-import com.android.build.api.variant.impl.BuiltArtifactImpl
 import com.android.build.api.variant.impl.BuiltArtifactsImpl
 import com.android.build.api.variant.impl.VariantOutputImpl
 import com.android.build.api.variant.impl.dirName
@@ -85,12 +84,7 @@ abstract class CompatibleScreensManifest : NonIncrementalTask() {
             variantName = variantName,
             elements = variantOutputs.get().mapNotNull {
                 generate(it)?.let { generatedManifest ->
-                    BuiltArtifactImpl.make(
-                        outputFile = generatedManifest.absolutePath,
-                        versionCode = it.versionCode.orNull,
-                        versionName = it.versionName.orNull,
-                        variantOutputConfiguration = it.variantOutputConfiguration
-                    )
+                    it.toBuiltArtifact(generatedManifest)
                 }
             }
         ).save(outputFolder.get())

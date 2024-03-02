@@ -44,7 +44,7 @@ internal abstract class ConsumableComponentDslInfoImpl internal constructor(
     productFlavorList: List<ProductFlavor>,
     services: VariantServices,
     buildDirectory: DirectoryProperty,
-    extension: CommonExtension<*, *, *, *, *>
+    extension: CommonExtension<*, *, *, *, *, *>
 ) : ComponentDslInfoImpl(
     componentIdentity,
     componentType,

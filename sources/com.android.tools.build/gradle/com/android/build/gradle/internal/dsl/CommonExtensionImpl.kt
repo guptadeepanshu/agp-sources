@@ -23,8 +23,6 @@ import com.android.build.api.dsl.BuildFeatures
 import com.android.build.api.dsl.ComposeOptions
 import com.android.build.api.dsl.DefaultConfig
 import com.android.build.api.dsl.Installation
-import com.android.build.api.dsl.LibraryDefaultConfig
-import com.android.build.api.dsl.Lint
 import com.android.build.api.dsl.Packaging
 import com.android.build.api.dsl.SdkComponents
 import com.android.build.api.dsl.TestCoverage
@@ -34,16 +32,16 @@ import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.internal.coverage.JacocoOptions
 import com.android.build.gradle.internal.plugins.DslContainerProvider
 import com.android.build.gradle.internal.services.DslServices
-import com.android.build.gradle.internal.utils.validatePreviewTargetValue
 import com.android.build.gradle.internal.utils.parseTargetHash
+import com.android.build.gradle.internal.utils.validatePreviewTargetValue
 import com.android.builder.core.LibraryRequest
 import com.android.builder.core.ToolsRevisionUtils
 import com.android.builder.errors.IssueReporter
 import com.android.repository.Revision
-import java.util.function.Supplier
 import org.gradle.api.Action
 import org.gradle.api.NamedDomainObjectContainer
 import java.io.File
+import java.util.function.Supplier
 
 /** Internal implementation of the 'new' DSL interface */
 abstract class CommonExtensionImpl<
@@ -51,7 +49,8 @@ abstract class CommonExtensionImpl<
         BuildTypeT : com.android.build.api.dsl.BuildType,
         DefaultConfigT : DefaultConfig,
         ProductFlavorT : com.android.build.api.dsl.ProductFlavor,
-        AndroidResourcesT : AndroidResources>(
+        AndroidResourcesT : AndroidResources,
+        InstallationT : Installation>(
             protected val dslServices: DslServices,
             dslContainers: DslContainerProvider<DefaultConfigT, BuildTypeT, ProductFlavorT, SigningConfig>
         ) : InternalCommonExtension<
@@ -59,7 +58,8 @@ abstract class CommonExtensionImpl<
         BuildTypeT,
         DefaultConfigT,
         ProductFlavorT,
-        AndroidResourcesT> {
+        AndroidResourcesT,
+        InstallationT> {
 
     private val sourceSetManager = dslContainers.sourceSetManager
 
@@ -109,16 +109,11 @@ abstract class CommonExtensionImpl<
         action.execute(androidResources)
     }
 
-    override val installation: Installation = dslServices.newDecoratedInstance(
-        AdbOptions::class.java,
-        dslServices
-    )
-
-    override fun installation(action: Installation.() -> Unit) {
+    override fun installation(action: InstallationT.() -> Unit) {
         action.invoke(installation)
     }
 
-    override fun installation(action: Action<Installation>) {
+    override fun installation(action: Action<InstallationT>) {
         action.execute(installation)
     }
 

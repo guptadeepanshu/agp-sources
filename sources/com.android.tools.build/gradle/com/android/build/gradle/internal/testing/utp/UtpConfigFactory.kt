@@ -153,6 +153,7 @@ class UtpConfigFactory {
                     shardConfig,
                     uninstallApksAfterTest,
                     extractedSdkApks,
+                    reinstallIncompatibleApksBeforeTest = false,
                 )
             )
             singleDeviceExecutor = createSingleDeviceExecutor(device.serialNumber, shardConfig)
@@ -235,7 +236,7 @@ class UtpConfigFactory {
                         findAdditionalTestOutputDirectoryOnManagedDevice(device, testData)
                     },
                     coverageOutputDir, installApkTimeout, shardConfig, uninstallApksAfterTest,
-                    extractedSdkApks,
+                    extractedSdkApks, reinstallIncompatibleApksBeforeTest = true,
                 )
             )
             singleDeviceExecutor = createSingleDeviceExecutor(device.id, shardConfig)
@@ -360,6 +361,7 @@ class UtpConfigFactory {
         shardConfig: ShardConfig?,
         uninstallApksAfterTest: Boolean,
         extractedSdkApks: List<List<Path>>,
+        reinstallIncompatibleApksBeforeTest: Boolean,
     ): FixtureProto.TestFixture {
         return FixtureProto.TestFixture.newBuilder().apply {
             var additionalTestParams: MutableMap<String, String> = mutableMapOf()
@@ -373,31 +375,49 @@ class UtpConfigFactory {
             )
 
             if (emulatorControlConfig.enabled) {
-                // Looks like emulator access is on the menu.
-                val cfg = createTokenConfig(
-                    emulatorControlConfig.allowedEndpoints,
-                    emulatorControlConfig.secondsValid,
-                    "gradle-utp-emulator-control",
-                    grpcInfo
-                )
+                if (grpcInfo != null) {
+                    // We are configuring a running emulator
+                    val cfg = createTokenConfig(
+                        emulatorControlConfig.allowedEndpoints,
+                        emulatorControlConfig.secondsValid,
+                        "gradle-utp-emulator-control",
+                        grpcInfo
+                    )
 
-                if (cfg != INVALID_JWT_CONFIG) {
-                    additionalTestParams["grpc.port"] = grpcInfo?.port.toString()
-                    additionalTestParams["grpc.token"] = cfg.token
+                    if (cfg != INVALID_JWT_CONFIG) {
+                        // Note cfg != INVALID -> grpcInfo != null
+                        additionalTestParams["grpc.port"] = grpcInfo.port.toString()
+                        additionalTestParams["grpc.token"] = cfg.token
+                        addHostPlugin(
+                            createEmulatorControlPlugin(
+                                grpcInfo.port,
+                                cfg.token,
+                                cfg.jwkPath,
+                                emulatorControlConfig.secondsValid,
+                                emulatorControlConfig.allowedEndpoints,
+                                utpDependencies,
+                                emulatorControlConfig
+                            )
+                        )
+                    } else {
+                        logger.warn(
+                            "Control of the emulator is not supported for emulators without " +
+                                    "security features enabled. Please upgrade to a " +
+                                    "later version of the emulator."
+                        )
+                    }
+                } else {
+                    // We are doing late stage configuration with managed devices.
                     addHostPlugin(
                         createEmulatorControlPlugin(
-                            grpcInfo?.port,
-                            cfg.token,
-                            cfg.jwkPath,
+                            /* grpcPort= */ 0,
+                            /* jwtToken= */ "",
+                            /* jwkPath= */ "",
+                            emulatorControlConfig.secondsValid,
+                            emulatorControlConfig.allowedEndpoints,
                             utpDependencies,
                             emulatorControlConfig
                         )
-                    )
-                } else {
-                    logger.warn(
-                        "Control of the emulator is not supported for emulators without " +
-                                "security features enabled. Please upgrade to a " +
-                                "later version of the emulator."
                     )
                 }
             }
@@ -444,6 +464,7 @@ class UtpConfigFactory {
                     testData,
                     uninstallApksAfterTest,
                     utpDependencies,
+                    reinstallIncompatibleApksBeforeTest,
                 )
             )
             // This line is required since AndroidTestPlugin sends event message to context after
@@ -478,6 +499,8 @@ class UtpConfigFactory {
         grpcPort: Int?,
         jwtToken: String,
         jwkPath: String,
+        validTimeInSeconds: Int,
+        allowed: Set<String>,
         utpDependencies: UtpDependencies,
         emulatorControlConfig: EmulatorControlConfig
     ): ExtensionProto.Extension {
@@ -487,6 +510,8 @@ class UtpConfigFactory {
             emulatorGrpcPort = grpcPort ?: 0
             token = jwtToken
             jwkFile = jwkPath
+            secondsValid = validTimeInSeconds
+            addAllAllowedEndpoints(allowed)
             emulatorClientPrivateKeyFilePath = ""
             emulatorClientCaFilePath = ""
             trustedCollectionRootPath = ""
@@ -734,6 +759,7 @@ class UtpConfigFactory {
         testData: StaticTestData,
         uninstallApksAfterTest: Boolean,
         utpDependencies: UtpDependencies,
+        reinstallIncompatibleApksBeforeTest: Boolean,
     ): ExtensionProto.Extension {
         return ANDROID_TEST_PLUGIN_APK_INSTALLER.toExtensionProto(
             utpDependencies, AndroidApkInstallerConfig::newBuilder
@@ -751,6 +777,7 @@ class UtpConfigFactory {
                             )
                         }.build()
                         uninstallAfterTest = uninstallApksAfterTest
+                        forceReinstallBeforeTest = reinstallIncompatibleApksBeforeTest
                     }.build()
                 }
             }
@@ -770,6 +797,7 @@ class UtpConfigFactory {
                             testData.applicationId
                         )
                     )
+                    forceReinstallBeforeTest = reinstallIncompatibleApksBeforeTest
                 }.build()
             }
 
@@ -782,6 +810,7 @@ class UtpConfigFactory {
                         installAsTestService = true
                     }.build()
                     uninstallAfterTest = uninstallApksAfterTest
+                    forceReinstallBeforeTest = reinstallIncompatibleApksBeforeTest
                 }.build()
             }
 
@@ -793,6 +822,7 @@ class UtpConfigFactory {
                         if (installApkTimeout != null) setInstallApkTimeout(installApkTimeout)
                     }.build()
                     uninstallAfterTest = uninstallApksAfterTest
+                    forceReinstallBeforeTest = reinstallIncompatibleApksBeforeTest
                 }.build()
             }
         }

@@ -43,16 +43,9 @@ import java.io.IOException
  */
 fun buildBuildTools(sdkDirectory: File, revision: Revision): BuildToolInfo? {
     val buildToolsPath = DetailsTypes.getBuildToolsPath(revision).replace(';', '/')
-    val buildToolsXml = sdkDirectory.resolve(buildToolsPath).resolve("package.xml")
-    val buildToolsPackage = parsePackage(buildToolsXml) ?: return null
-    // BuildToolInfo is cheap to build and verify, so we can keep using it.
-    val buildToolInfo = BuildToolInfo.fromLocalPackage(buildToolsPackage)
+    val buildToolInfo = BuildToolInfo.fromStandardDirectoryLayout(revision, sdkDirectory.toPath().resolve(buildToolsPath))
     if (!buildToolInfo.isValid(null)) {
         // The build tools we loaded is missing some expected components.
-        return null
-    }
-    if (!buildToolInfo.revision.equals(revision)) {
-        // The path we guessed contained a build-tool but it had a different than the requested one.
         return null
     }
     return buildToolInfo

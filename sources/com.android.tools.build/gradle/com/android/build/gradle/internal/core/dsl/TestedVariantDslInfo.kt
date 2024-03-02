@@ -17,6 +17,7 @@
 package com.android.build.gradle.internal.core.dsl
 
 import com.android.build.api.dsl.TestFixtures
+import com.android.build.gradle.internal.core.dsl.features.AndroidResourcesDslInfo
 
 /**
  * Contains the final dsl info computed from the DSL object model (extension, default config,

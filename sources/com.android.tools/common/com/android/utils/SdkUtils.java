@@ -37,6 +37,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 import java.util.Properties;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /** Miscellaneous utilities used by the Android SDK tools */
@@ -195,6 +196,8 @@ public class SdkUtils {
                             while (next < explanationLength) {
                                 char c = text.charAt(next);
                                 if (Character.isWhitespace(c)) {
+                                    // Consume current white space so it is not used in next line
+                                    next++;
                                     break;
                                 } else {
                                     lineEnd++;
@@ -244,6 +247,41 @@ public class SdkUtils {
         }
         catch (URISyntaxException e) {
             return new File(url.getPath());
+        }
+    }
+
+    public static class FileLineColumnUrlData {
+        // Allow line numbers and column numbers to be tacked on at the end of the file URL:
+        //   file:<path>:<line>:<column>
+        //   file:<path>:<line>
+        public static final Pattern PATTERN = Pattern.compile(".*?(:(\\d+)(?::(\\d+))?)$");
+        @NonNull public final String urlString;
+        @Nullable public final Integer line;
+        @Nullable public final Integer column;
+
+        FileLineColumnUrlData(
+                @NonNull String urlString, @Nullable Integer line, @Nullable Integer column) {
+            this.urlString = urlString;
+            this.line = line;
+            this.column = column;
+        }
+    }
+
+    /**
+     * Accepts a string representation of a URL optionally suffixed with line and column data, and
+     * returns the URL String, line and column as structured data.
+     *
+     * @param string the String to parse
+     * @return URL String, line, column information
+     */
+    public static FileLineColumnUrlData parseDecoratedFileUrlString(@NonNull String string) {
+        Matcher matcher = FileLineColumnUrlData.PATTERN.matcher(string);
+        if (matcher.matches()) {
+            Integer line = matcher.group(2) == null ? null : Integer.decode(matcher.group(2));
+            Integer column = matcher.group(3) == null ? null : Integer.decode(matcher.group(3));
+            return new FileLineColumnUrlData(string.substring(0, matcher.start(1)), line, column);
+        } else {
+            return new FileLineColumnUrlData(string, null, null);
         }
     }
 

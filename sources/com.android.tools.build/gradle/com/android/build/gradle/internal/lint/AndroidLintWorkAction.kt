@@ -28,6 +28,7 @@ import org.gradle.api.provider.Property
 import org.gradle.workers.WorkAction
 import org.gradle.workers.WorkParameters
 import java.lang.ref.SoftReference
+import java.lang.reflect.InvocationTargetException
 import java.net.URI
 import java.net.URLClassLoader
 import javax.annotation.concurrent.GuardedBy
@@ -85,6 +86,8 @@ abstract class AndroidLintWorkAction : WorkAction<AndroidLintWorkAction.LintWork
         try {
             Thread.currentThread().contextClassLoader = null
             return invokeLintMainRunMethod(classLoader, arguments)
+        } catch (e: InvocationTargetException) {
+            throw e.targetException
         } finally {
             Thread.currentThread().contextClassLoader = currentContextClassLoader
         }

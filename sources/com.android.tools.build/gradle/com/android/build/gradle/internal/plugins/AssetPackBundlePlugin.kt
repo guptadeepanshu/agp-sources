@@ -96,13 +96,15 @@ abstract class AssetPackBundlePlugin : Plugin<Project> {
             projectOptions,
             project.gradle.sharedServices,
             LintFromMaven.from(project, projectOptions, syncIssueHandler),
+            null,
             create(project, projectOptions::get),
             project.gradle.startParameter.maxWorkerCount,
             ProjectInfo(project),
             project::file,
             project.configurations,
             project.dependencies,
-            project.extensions.extraProperties
+            project.extensions.extraProperties,
+            { name -> project.tasks.register(name) },
         )
         registerServices(project, projectOptions)
 
@@ -213,7 +215,7 @@ abstract class AssetPackBundlePlugin : Plugin<Project> {
             LinkManifestForAssetPackTask.CreationForAssetPackBundleAction(
                 artifacts,
                 projectServices,
-                extension.compileSdk!!
+                extension.compileSdk
             )
         )
 

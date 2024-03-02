@@ -19,5 +19,15 @@ package com.android.build.api.variant
 import org.gradle.api.Incubating
 import org.gradle.api.provider.Provider
 
+/**
+ * Model for Test Fixtures components that contains build-time properties
+ *
+ * This object is accessible on subtypes of [Variant] that implement [HasTestFixtures], via
+ * [HasTestFixtures.testFixtures]. It is also part of [Variant.nestedComponents].
+ *
+ * The presence of this component in a variant is controlled by
+ * [HasTestFixturesBuilder.enableTestFixtures] which is accessible on subtypes of [VariantBuilder]
+ * that implement [HasTestFixturesBuilder]
+ */
 @Incubating
 interface TestFixtures: GeneratesAar, HasAndroidResources, Component

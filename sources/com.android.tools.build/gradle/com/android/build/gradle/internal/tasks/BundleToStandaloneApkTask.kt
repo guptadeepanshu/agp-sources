@@ -186,7 +186,7 @@ abstract class BundleToStandaloneApkTask : NonIncrementalTask() {
             // Mirrors logic in OutputFactory.getOutputFileName, but without splits.
             val suffix =
 
-                if (creationConfig.signingConfigImpl?.isSigningReady() == true) SdkConstants.DOT_ANDROID_PACKAGE else "-unsigned.apk"
+                if (creationConfig.signingConfig?.isSigningReady() == true) SdkConstants.DOT_ANDROID_PACKAGE else "-unsigned.apk"
             creationConfig.artifacts.setInitialProvider(
                 taskProvider,
                 BundleToStandaloneApkTask::outputFile

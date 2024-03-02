@@ -23,7 +23,9 @@ interface LintModelMavenName : Comparable<LintModelMavenName> {
 
   // Support destructuring
   operator fun component1(): String = groupId
+
   operator fun component2(): String = artifactId
+
   operator fun component3(): String = version
 
   override fun compareTo(other: LintModelMavenName): Int {

@@ -29,7 +29,6 @@ import com.android.build.gradle.internal.tasks.factory.TaskManagerConfig
 import com.android.build.gradle.internal.tasks.featuresplit.FeatureNameWriterTask
 import com.android.build.gradle.internal.tasks.featuresplit.FeatureSplitDeclarationWriterTask
 import com.android.build.gradle.internal.variant.ComponentInfo
-import com.android.build.gradle.tasks.sync.DynamicFeatureVariantModelTask
 import org.gradle.api.Project
 
 internal class DynamicFeatureTaskManager(
@@ -58,8 +57,6 @@ internal class DynamicFeatureTaskManager(
         val variant = variantInfo.variant
 
         createDynamicBundleTask(variant)
-
-        taskFactory.register(DynamicFeatureVariantModelTask.CreationAction(variant))
 
         // Non-base feature specific task.
         // Task will produce artifacts consumed by the base feature

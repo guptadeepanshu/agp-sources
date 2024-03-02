@@ -75,6 +75,12 @@ public interface AndroidProject {
     @SuppressWarnings("unused")
     String PROPERTY_GENERATE_SOURCES_ONLY = "android.injected.generateSourcesOnly";
 
+    /**
+     * Used to ask AGP to avoid task registration (if possible) during sync, in order to improve
+     * sync performance. See http://b/303832930 for details.
+     */
+    String PROPERTY_AVOID_TASK_REGISTRATION = "android.injected.avoid.task.registration";
+
     String ARTIFACT_MAIN = "_main_";
     String ARTIFACT_ANDROID_TEST = "_android_test_";
     String ARTIFACT_UNIT_TEST = "_unit_test_";

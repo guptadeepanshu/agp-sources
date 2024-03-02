@@ -17,10 +17,32 @@ package com.android.utils
 
 /**
  * Returns a new map with entries having the keys of this map and the values obtained by applying
- * the [transform] function to each entry in this [Map], excluding entries with null values.
+ * the [transform] function to each entry in this [Map], excluding entries with `null` values.
  *
  * The returned map preserves the entry iteration order of the original map.
  */
 @Suppress("UNCHECKED_CAST")
 inline fun <K, V, R> Map<out K, V>.mapValuesNotNull(transform: (Map.Entry<K, V>) -> R?): Map<K, R> =
-    mapValues(transform).filterValues { it != null } as Map<K, R>
+  mapValues(transform).filterValues { it != null } as Map<K, R>
+
+/**
+ * Returns a new [Map] with entries having this [Iterable]'s entries as keys and corresponding
+ * values obtained by applying the [valueSelector] to each key, excluding those that are `null`.
+ */
+inline fun <K, V> Iterable<K>.associateWithNotNull(valueSelector: (K) -> V?): Map<K, V> =
+  mapNotNull { key -> valueSelector(key)?.let { key to it } }.toMap()
+
+/**
+ * Returns a new [Map] with entries having this [Iterable]'s entries as values and corresponding
+ * values obtained by applying the [keySelector] to each value, excluding those that are `null`.
+ */
+inline fun <T, K> Iterable<T>.associateByNotNull(keySelector: (T) -> K?): Map<K, T> =
+  mapNotNull { value -> keySelector(value)?.let { it to value } }.toMap()
+
+/**
+ * Returns a new [Map] with entries created from the non-`null` key/value [kotlin.Pair]s that result
+ * from applying [transform] to each item in this [Iterable].
+ */
+inline fun <T, K, V> Iterable<T>.associateNotNull(transform: (T) -> kotlin.Pair<K, V>?): Map<K, V> {
+  return mapNotNull { transform(it) }.toMap()
+}

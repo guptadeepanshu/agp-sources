@@ -16,26 +16,27 @@
 
 package com.android.build.gradle.internal.cxx.configure
 
-import com.android.SdkConstants.FN_LOCAL_PROPERTIES
-import com.google.common.base.Charsets
+import com.android.build.gradle.internal.PropertiesValueSource
+import org.gradle.api.provider.ProviderFactory
 import java.io.File
-import java.io.FileInputStream
-import java.io.InputStreamReader
+import java.io.StringReader
 import java.util.Properties
 
 /**
  * Retrieve the project local properties if they are available.
  * If there is no local properties file then an empty set of properties is returned.
  */
-fun gradleLocalProperties(projectRootDir : File) : Properties {
+fun gradleLocalProperties(projectRootDir : File, providers: ProviderFactory) : Properties {
     val properties = Properties()
-    val localProperties = File(projectRootDir, FN_LOCAL_PROPERTIES)
+    val propertiesContent =
+        providers.of(PropertiesValueSource::class.java) {
+            it.parameters.projectRoot.set(projectRootDir)
+        }.get()
 
-    if (localProperties.isFile) {
-        InputStreamReader(FileInputStream(localProperties), Charsets.UTF_8).use { reader ->
-            properties.load(reader)
-        }
+    StringReader(propertiesContent).use { reader ->
+        properties.load(reader)
     }
+
     return properties
 }
 

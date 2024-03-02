@@ -31,7 +31,7 @@ open class AnalyticsEnabledBundleConfig @Inject constructor(
     objectFactory: ObjectFactory
 ): BundleConfig {
 
-    private val userVisibleCodeTransparency: CodeTransparency by lazy {
+    private val userVisibleCodeTransparency: CodeTransparency by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
         objectFactory.newInstance(
             AnalyticsEnabledCodeTransparency::class.java,
             delegate.codeTransparency,

@@ -16,7 +16,6 @@
 
 package com.android.build.gradle.tasks
 
-import com.android.build.gradle.internal.dsl.ModulePropertyKey.OptionalString
 import com.android.build.gradle.internal.packaging.getDefaultDebugKeystoreSigningConfig
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInternalArtifactType
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
@@ -30,7 +29,6 @@ import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.configureVariantProperties
 import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.builder.signing.DefaultSigningConfig
 import com.android.ide.common.signing.KeystoreHelper
 import com.android.tools.build.bundletool.commands.BuildSdkAsarCommand
 import com.android.tools.build.bundletool.model.version.BundleToolVersion
@@ -45,7 +43,6 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.work.DisableCachingByDefault
-import java.io.File
 
 /**
  * Task to invoke the bundle tool command to create the final ASB bundle for privacy sandbox sdk
@@ -99,18 +96,14 @@ abstract class GeneratePrivacySandboxAsar : NonIncrementalTask() {
                     signingConfigData.keyAlias
             )
 
-            val builder =
+            val command =
                     BuildSdkAsarCommand
                             .builder()
                             .setSdkBundlePath(asb)
                             .setApkSigningCertificate(certInfo.certificate)
                             .setOverwriteOutput(true)
                             .setOutputFile(outputFile)
-
-            // TODO(b/235469089) Call directly once fixed bundle tool is released
-            val buildMethod = BuildSdkAsarCommand.Builder::class.java.getDeclaredMethod("build")
-            buildMethod.isAccessible = true
-            val command = buildMethod.invoke(builder) as BuildSdkAsarCommand
+                            .build()
 
             command.execute()
         }
@@ -147,32 +140,18 @@ abstract class GeneratePrivacySandboxAsar : NonIncrementalTask() {
             )
             val experimentalProps = creationConfig.experimentalProperties
             experimentalProps.finalizeValue()
-            val signingConfigProvider = if (
-                    OptionalString.ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_NAME.getValue(
-                            experimentalProps.get()) != null &&
-                    OptionalString.ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_STORE_FILE.getValue(
-                            experimentalProps.get()) != null) {
-                val localDeploymentSigningConfig = SigningConfigData(
-                        OptionalString.ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_NAME.getValue(
-                                experimentalProps.get())!!,
-                        OptionalString.ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_STORE_TYPE.getValue(
-                                experimentalProps.get()),
-                        File(OptionalString.ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_STORE_FILE.getValue(
-                                experimentalProps.get())!!),
-                        OptionalString.ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_STORE_PASSWORD.getValue(
-                                experimentalProps.get()) ?: DefaultSigningConfig.DEFAULT_PASSWORD,
-                        OptionalString.ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_KEY_ALIAS.getValue(
-                                experimentalProps.get()),
-                        OptionalString.ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_KEY_PASSOWRD.getValue(
-                                experimentalProps.get()) ?: DefaultSigningConfig.DEFAULT_ALIAS
-                )
-                creationConfig.services.provider { localDeploymentSigningConfig }
-            } else {
-                getBuildService(
-                        creationConfig.services.buildServiceRegistry,
-                        AndroidLocationsBuildService::class.java
-                ).map {
-                    it.getDefaultDebugKeystoreSigningConfig()
+            val signingFromExperimentalProperty =
+                    SigningConfigData.fromExperimentalPropertiesSigningConfig(creationConfig.experimentalProperties)
+            val signingConfigProvider = signingFromExperimentalProperty.let {
+                if (it != null) {
+                    creationConfig.services.provider { it }
+                } else {
+                    getBuildService(
+                            creationConfig.services.buildServiceRegistry,
+                            AndroidLocationsBuildService::class.java
+                    ).map {
+                        it.getDefaultDebugKeystoreSigningConfig()
+                    }
                 }
             }
             task.signingConfigDataProvider.setDisallowChanges(

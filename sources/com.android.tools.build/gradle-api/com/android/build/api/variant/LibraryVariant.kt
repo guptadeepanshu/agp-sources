@@ -15,7 +15,11 @@
  */
 package com.android.build.api.variant
 
-/** [Variant] for Library projects */
+/**
+ * Model for library components that only contains build-time properties.
+ *
+ * See [Component] and [Variant] for more information.
+ */
 interface LibraryVariant : Variant,
     GeneratesAar,
     HasAndroidTest,

@@ -42,251 +42,6 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private GradleBuildProject(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    int mutable_bitField0_ = 0;
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 8: {
-            bitField0_ |= 0x00000001;
-            id_ = input.readInt64();
-            break;
-          }
-          case 18: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000002;
-            androidPluginVersion_ = bs;
-            break;
-          }
-          case 24: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.GradleBuildProject.PluginType value = com.google.wireless.android.sdk.stats.GradleBuildProject.PluginType.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(3, rawValue);
-            } else {
-              bitField0_ |= 0x00000004;
-              androidPlugin_ = rawValue;
-            }
-            break;
-          }
-          case 32: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.GradleBuildProject.PluginGeneration value = com.google.wireless.android.sdk.stats.GradleBuildProject.PluginGeneration.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(4, rawValue);
-            } else {
-              bitField0_ |= 0x00000008;
-              pluginGeneration_ = rawValue;
-            }
-            break;
-          }
-          case 42: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000010;
-            buildToolsVersion_ = bs;
-            break;
-          }
-          case 50: {
-            com.google.wireless.android.sdk.stats.GradleBuildProjectMetrics.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000020) != 0)) {
-              subBuilder = metrics_.toBuilder();
-            }
-            metrics_ = input.readMessage(com.google.wireless.android.sdk.stats.GradleBuildProjectMetrics.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(metrics_);
-              metrics_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000020;
-            break;
-          }
-          case 58: {
-            if (!((mutable_bitField0_ & 0x00000040) != 0)) {
-              variant_ = new java.util.ArrayList<com.google.wireless.android.sdk.stats.GradleBuildVariant>();
-              mutable_bitField0_ |= 0x00000040;
-            }
-            variant_.add(
-                input.readMessage(com.google.wireless.android.sdk.stats.GradleBuildVariant.PARSER, extensionRegistry));
-            break;
-          }
-          case 64: {
-            bitField0_ |= 0x00000040;
-            atoms_ = input.readInt64();
-            break;
-          }
-          case 74: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000080;
-            compileSdk_ = bs;
-            break;
-          }
-          case 82: {
-            com.google.wireless.android.sdk.stats.GradleBuildSplits.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000100) != 0)) {
-              subBuilder = splits_.toBuilder();
-            }
-            splits_ = input.readMessage(com.google.wireless.android.sdk.stats.GradleBuildSplits.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(splits_);
-              splits_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000100;
-            break;
-          }
-          case 90: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000200;
-            kotlinPluginVersion_ = bs;
-            break;
-          }
-          case 98: {
-            com.google.wireless.android.sdk.stats.GradleProjectOptionsSettings.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000400) != 0)) {
-              subBuilder = options_.toBuilder();
-            }
-            options_ = input.readMessage(com.google.wireless.android.sdk.stats.GradleProjectOptionsSettings.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(options_);
-              options_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000400;
-            break;
-          }
-          case 104: {
-            int rawValue = input.readEnum();
-            @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.GradleBuildProject.GradlePlugin value = com.google.wireless.android.sdk.stats.GradleBuildProject.GradlePlugin.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(13, rawValue);
-            } else {
-              if (!((mutable_bitField0_ & 0x00001000) != 0)) {
-                plugin_ = new java.util.ArrayList<java.lang.Integer>();
-                mutable_bitField0_ |= 0x00001000;
-              }
-              plugin_.add(rawValue);
-            }
-            break;
-          }
-          case 106: {
-            int length = input.readRawVarint32();
-            int oldLimit = input.pushLimit(length);
-            while(input.getBytesUntilLimit() > 0) {
-              int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-              com.google.wireless.android.sdk.stats.GradleBuildProject.GradlePlugin value = com.google.wireless.android.sdk.stats.GradleBuildProject.GradlePlugin.valueOf(rawValue);
-              if (value == null) {
-                unknownFields.mergeVarintField(13, rawValue);
-              } else {
-                if (!((mutable_bitField0_ & 0x00001000) != 0)) {
-                  plugin_ = new java.util.ArrayList<java.lang.Integer>();
-                  mutable_bitField0_ |= 0x00001000;
-                }
-                plugin_.add(rawValue);
-              }
-            }
-            input.popLimit(oldLimit);
-            break;
-          }
-          case 114: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000800;
-            firebasePerformancePluginVersion_ = bs;
-            break;
-          }
-          case 120: {
-            bitField0_ |= 0x00001000;
-            composeEnabled_ = input.readBool();
-            break;
-          }
-          case 130: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            if (!((mutable_bitField0_ & 0x00008000) != 0)) {
-              pluginNames_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00008000;
-            }
-            pluginNames_.add(bs);
-            break;
-          }
-          case 138: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            if (!((mutable_bitField0_ & 0x00010000) != 0)) {
-              taskNames_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00010000;
-            }
-            taskNames_.add(bs);
-            break;
-          }
-          case 146: {
-            com.google.wireless.android.sdk.stats.ProjectApiUse.Builder subBuilder = null;
-            if (((bitField0_ & 0x00002000) != 0)) {
-              subBuilder = projectApiUse_.toBuilder();
-            }
-            projectApiUse_ = input.readMessage(com.google.wireless.android.sdk.stats.ProjectApiUse.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(projectApiUse_);
-              projectApiUse_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00002000;
-            break;
-          }
-          case 154: {
-            if (!((mutable_bitField0_ & 0x00040000) != 0)) {
-              appliedPlugins_ = new java.util.ArrayList<com.google.wireless.android.sdk.stats.GradlePluginData>();
-              mutable_bitField0_ |= 0x00040000;
-            }
-            appliedPlugins_.add(
-                input.readMessage(com.google.wireless.android.sdk.stats.GradlePluginData.PARSER, extensionRegistry));
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      if (((mutable_bitField0_ & 0x00000040) != 0)) {
-        variant_ = java.util.Collections.unmodifiableList(variant_);
-      }
-      if (((mutable_bitField0_ & 0x00001000) != 0)) {
-        plugin_ = java.util.Collections.unmodifiableList(plugin_);
-      }
-      if (((mutable_bitField0_ & 0x00008000) != 0)) {
-        pluginNames_ = pluginNames_.getUnmodifiableView();
-      }
-      if (((mutable_bitField0_ & 0x00010000) != 0)) {
-        taskNames_ = taskNames_.getUnmodifiableView();
-      }
-      if (((mutable_bitField0_ & 0x00040000) != 0)) {
-        appliedPlugins_ = java.util.Collections.unmodifiableList(appliedPlugins_);
-      }
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleBuildProject_descriptor;
@@ -1332,6 +1087,812 @@ private static final long serialVersionUID = 0L;
     // @@protoc_insertion_point(enum_scope:android_studio.GradleBuildProject.GradlePlugin)
   }
 
+  public interface CompileOptionsOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:android_studio.GradleBuildProject.CompileOptions)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * Major version of the Java source code (e.g., 8)
+     * </pre>
+     *
+     * <code>optional int32 source_compatibility = 1;</code>
+     * @return Whether the sourceCompatibility field is set.
+     */
+    boolean hasSourceCompatibility();
+    /**
+     * <pre>
+     * Major version of the Java source code (e.g., 8)
+     * </pre>
+     *
+     * <code>optional int32 source_compatibility = 1;</code>
+     * @return The sourceCompatibility.
+     */
+    int getSourceCompatibility();
+
+    /**
+     * <pre>
+     * Major version of the generated Java bytecode (e.g., 8)
+     * </pre>
+     *
+     * <code>optional int32 target_compatibility = 2;</code>
+     * @return Whether the targetCompatibility field is set.
+     */
+    boolean hasTargetCompatibility();
+    /**
+     * <pre>
+     * Major version of the generated Java bytecode (e.g., 8)
+     * </pre>
+     *
+     * <code>optional int32 target_compatibility = 2;</code>
+     * @return The targetCompatibility.
+     */
+    int getTargetCompatibility();
+
+    /**
+     * <pre>
+     * Major language version of the Java toolchain if it is used (e.g., 17)
+     * </pre>
+     *
+     * <code>optional int32 toolchain_language_version = 3;</code>
+     * @return Whether the toolchainLanguageVersion field is set.
+     */
+    boolean hasToolchainLanguageVersion();
+    /**
+     * <pre>
+     * Major language version of the Java toolchain if it is used (e.g., 17)
+     * </pre>
+     *
+     * <code>optional int32 toolchain_language_version = 3;</code>
+     * @return The toolchainLanguageVersion.
+     */
+    int getToolchainLanguageVersion();
+  }
+  /**
+   * <pre>
+   * Java compilation options
+   * </pre>
+   *
+   * Protobuf type {@code android_studio.GradleBuildProject.CompileOptions}
+   */
+  public static final class CompileOptions extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:android_studio.GradleBuildProject.CompileOptions)
+      CompileOptionsOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use CompileOptions.newBuilder() to construct.
+    private CompileOptions(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private CompileOptions() {
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new CompileOptions();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleBuildProject_CompileOptions_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleBuildProject_CompileOptions_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions.class, com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int SOURCE_COMPATIBILITY_FIELD_NUMBER = 1;
+    private int sourceCompatibility_;
+    /**
+     * <pre>
+     * Major version of the Java source code (e.g., 8)
+     * </pre>
+     *
+     * <code>optional int32 source_compatibility = 1;</code>
+     * @return Whether the sourceCompatibility field is set.
+     */
+    @java.lang.Override
+    public boolean hasSourceCompatibility() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <pre>
+     * Major version of the Java source code (e.g., 8)
+     * </pre>
+     *
+     * <code>optional int32 source_compatibility = 1;</code>
+     * @return The sourceCompatibility.
+     */
+    @java.lang.Override
+    public int getSourceCompatibility() {
+      return sourceCompatibility_;
+    }
+
+    public static final int TARGET_COMPATIBILITY_FIELD_NUMBER = 2;
+    private int targetCompatibility_;
+    /**
+     * <pre>
+     * Major version of the generated Java bytecode (e.g., 8)
+     * </pre>
+     *
+     * <code>optional int32 target_compatibility = 2;</code>
+     * @return Whether the targetCompatibility field is set.
+     */
+    @java.lang.Override
+    public boolean hasTargetCompatibility() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <pre>
+     * Major version of the generated Java bytecode (e.g., 8)
+     * </pre>
+     *
+     * <code>optional int32 target_compatibility = 2;</code>
+     * @return The targetCompatibility.
+     */
+    @java.lang.Override
+    public int getTargetCompatibility() {
+      return targetCompatibility_;
+    }
+
+    public static final int TOOLCHAIN_LANGUAGE_VERSION_FIELD_NUMBER = 3;
+    private int toolchainLanguageVersion_;
+    /**
+     * <pre>
+     * Major language version of the Java toolchain if it is used (e.g., 17)
+     * </pre>
+     *
+     * <code>optional int32 toolchain_language_version = 3;</code>
+     * @return Whether the toolchainLanguageVersion field is set.
+     */
+    @java.lang.Override
+    public boolean hasToolchainLanguageVersion() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <pre>
+     * Major language version of the Java toolchain if it is used (e.g., 17)
+     * </pre>
+     *
+     * <code>optional int32 toolchain_language_version = 3;</code>
+     * @return The toolchainLanguageVersion.
+     */
+    @java.lang.Override
+    public int getToolchainLanguageVersion() {
+      return toolchainLanguageVersion_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        output.writeInt32(1, sourceCompatibility_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        output.writeInt32(2, targetCompatibility_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        output.writeInt32(3, toolchainLanguageVersion_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, sourceCompatibility_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, targetCompatibility_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(3, toolchainLanguageVersion_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions)) {
+        return super.equals(obj);
+      }
+      com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions other = (com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions) obj;
+
+      if (hasSourceCompatibility() != other.hasSourceCompatibility()) return false;
+      if (hasSourceCompatibility()) {
+        if (getSourceCompatibility()
+            != other.getSourceCompatibility()) return false;
+      }
+      if (hasTargetCompatibility() != other.hasTargetCompatibility()) return false;
+      if (hasTargetCompatibility()) {
+        if (getTargetCompatibility()
+            != other.getTargetCompatibility()) return false;
+      }
+      if (hasToolchainLanguageVersion() != other.hasToolchainLanguageVersion()) return false;
+      if (hasToolchainLanguageVersion()) {
+        if (getToolchainLanguageVersion()
+            != other.getToolchainLanguageVersion()) return false;
+      }
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasSourceCompatibility()) {
+        hash = (37 * hash) + SOURCE_COMPATIBILITY_FIELD_NUMBER;
+        hash = (53 * hash) + getSourceCompatibility();
+      }
+      if (hasTargetCompatibility()) {
+        hash = (37 * hash) + TARGET_COMPATIBILITY_FIELD_NUMBER;
+        hash = (53 * hash) + getTargetCompatibility();
+      }
+      if (hasToolchainLanguageVersion()) {
+        hash = (37 * hash) + TOOLCHAIN_LANGUAGE_VERSION_FIELD_NUMBER;
+        hash = (53 * hash) + getToolchainLanguageVersion();
+      }
+      hash = (29 * hash) + getUnknownFields().hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * Java compilation options
+     * </pre>
+     *
+     * Protobuf type {@code android_studio.GradleBuildProject.CompileOptions}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:android_studio.GradleBuildProject.CompileOptions)
+        com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptionsOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleBuildProject_CompileOptions_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleBuildProject_CompileOptions_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions.class, com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions.Builder.class);
+      }
+
+      // Construct using com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions.newBuilder()
+      private Builder() {
+
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        sourceCompatibility_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        targetCompatibility_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        toolchainLanguageVersion_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleBuildProject_CompileOptions_descriptor;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions getDefaultInstanceForType() {
+        return com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions build() {
+        com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions buildPartial() {
+        com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions result = new com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.sourceCompatibility_ = sourceCompatibility_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.targetCompatibility_ = targetCompatibility_;
+          to_bitField0_ |= 0x00000002;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.toolchainLanguageVersion_ = toolchainLanguageVersion_;
+          to_bitField0_ |= 0x00000004;
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions) {
+          return mergeFrom((com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions other) {
+        if (other == com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions.getDefaultInstance()) return this;
+        if (other.hasSourceCompatibility()) {
+          setSourceCompatibility(other.getSourceCompatibility());
+        }
+        if (other.hasTargetCompatibility()) {
+          setTargetCompatibility(other.getTargetCompatibility());
+        }
+        if (other.hasToolchainLanguageVersion()) {
+          setToolchainLanguageVersion(other.getToolchainLanguageVersion());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 8: {
+                sourceCompatibility_ = input.readInt32();
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 8
+              case 16: {
+                targetCompatibility_ = input.readInt32();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 16
+              case 24: {
+                toolchainLanguageVersion_ = input.readInt32();
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 24
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.unwrapIOException();
+        } finally {
+          onChanged();
+        } // finally
+        return this;
+      }
+      private int bitField0_;
+
+      private int sourceCompatibility_ ;
+      /**
+       * <pre>
+       * Major version of the Java source code (e.g., 8)
+       * </pre>
+       *
+       * <code>optional int32 source_compatibility = 1;</code>
+       * @return Whether the sourceCompatibility field is set.
+       */
+      @java.lang.Override
+      public boolean hasSourceCompatibility() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <pre>
+       * Major version of the Java source code (e.g., 8)
+       * </pre>
+       *
+       * <code>optional int32 source_compatibility = 1;</code>
+       * @return The sourceCompatibility.
+       */
+      @java.lang.Override
+      public int getSourceCompatibility() {
+        return sourceCompatibility_;
+      }
+      /**
+       * <pre>
+       * Major version of the Java source code (e.g., 8)
+       * </pre>
+       *
+       * <code>optional int32 source_compatibility = 1;</code>
+       * @param value The sourceCompatibility to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSourceCompatibility(int value) {
+        bitField0_ |= 0x00000001;
+        sourceCompatibility_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Major version of the Java source code (e.g., 8)
+       * </pre>
+       *
+       * <code>optional int32 source_compatibility = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearSourceCompatibility() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        sourceCompatibility_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int targetCompatibility_ ;
+      /**
+       * <pre>
+       * Major version of the generated Java bytecode (e.g., 8)
+       * </pre>
+       *
+       * <code>optional int32 target_compatibility = 2;</code>
+       * @return Whether the targetCompatibility field is set.
+       */
+      @java.lang.Override
+      public boolean hasTargetCompatibility() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <pre>
+       * Major version of the generated Java bytecode (e.g., 8)
+       * </pre>
+       *
+       * <code>optional int32 target_compatibility = 2;</code>
+       * @return The targetCompatibility.
+       */
+      @java.lang.Override
+      public int getTargetCompatibility() {
+        return targetCompatibility_;
+      }
+      /**
+       * <pre>
+       * Major version of the generated Java bytecode (e.g., 8)
+       * </pre>
+       *
+       * <code>optional int32 target_compatibility = 2;</code>
+       * @param value The targetCompatibility to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTargetCompatibility(int value) {
+        bitField0_ |= 0x00000002;
+        targetCompatibility_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Major version of the generated Java bytecode (e.g., 8)
+       * </pre>
+       *
+       * <code>optional int32 target_compatibility = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTargetCompatibility() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        targetCompatibility_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int toolchainLanguageVersion_ ;
+      /**
+       * <pre>
+       * Major language version of the Java toolchain if it is used (e.g., 17)
+       * </pre>
+       *
+       * <code>optional int32 toolchain_language_version = 3;</code>
+       * @return Whether the toolchainLanguageVersion field is set.
+       */
+      @java.lang.Override
+      public boolean hasToolchainLanguageVersion() {
+        return ((bitField0_ & 0x00000004) != 0);
+      }
+      /**
+       * <pre>
+       * Major language version of the Java toolchain if it is used (e.g., 17)
+       * </pre>
+       *
+       * <code>optional int32 toolchain_language_version = 3;</code>
+       * @return The toolchainLanguageVersion.
+       */
+      @java.lang.Override
+      public int getToolchainLanguageVersion() {
+        return toolchainLanguageVersion_;
+      }
+      /**
+       * <pre>
+       * Major language version of the Java toolchain if it is used (e.g., 17)
+       * </pre>
+       *
+       * <code>optional int32 toolchain_language_version = 3;</code>
+       * @param value The toolchainLanguageVersion to set.
+       * @return This builder for chaining.
+       */
+      public Builder setToolchainLanguageVersion(int value) {
+        bitField0_ |= 0x00000004;
+        toolchainLanguageVersion_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Major language version of the Java toolchain if it is used (e.g., 17)
+       * </pre>
+       *
+       * <code>optional int32 toolchain_language_version = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearToolchainLanguageVersion() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        toolchainLanguageVersion_ = 0;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:android_studio.GradleBuildProject.CompileOptions)
+    }
+
+    // @@protoc_insertion_point(class_scope:android_studio.GradleBuildProject.CompileOptions)
+    private static final com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions();
+    }
+
+    public static com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<CompileOptions>
+        PARSER = new com.google.protobuf.AbstractParser<CompileOptions>() {
+      @java.lang.Override
+      public CompileOptions parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
+      }
+    };
+
+    public static com.google.protobuf.Parser<CompileOptions> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<CompileOptions> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private int bitField0_;
   public static final int ID_FIELD_NUMBER = 1;
   private long id_;
@@ -2238,6 +2799,44 @@ private static final long serialVersionUID = 0L;
     return appliedPlugins_.get(index);
   }
 
+  public static final int COMPILE_OPTIONS_FIELD_NUMBER = 20;
+  private com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions compileOptions_;
+  /**
+   * <pre>
+   * Java compilation options
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+   * @return Whether the compileOptions field is set.
+   */
+  @java.lang.Override
+  public boolean hasCompileOptions() {
+    return ((bitField0_ & 0x00004000) != 0);
+  }
+  /**
+   * <pre>
+   * Java compilation options
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+   * @return The compileOptions.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions getCompileOptions() {
+    return compileOptions_ == null ? com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions.getDefaultInstance() : compileOptions_;
+  }
+  /**
+   * <pre>
+   * Java compilation options
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptionsOrBuilder getCompileOptionsOrBuilder() {
+    return compileOptions_ == null ? com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions.getDefaultInstance() : compileOptions_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -2309,7 +2908,10 @@ private static final long serialVersionUID = 0L;
     for (int i = 0; i < appliedPlugins_.size(); i++) {
       output.writeMessage(19, appliedPlugins_.get(i));
     }
-    unknownFields.writeTo(output);
+    if (((bitField0_ & 0x00004000) != 0)) {
+      output.writeMessage(20, getCompileOptions());
+    }
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -2402,7 +3004,11 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(19, appliedPlugins_.get(i));
     }
-    size += unknownFields.getSerializedSize();
+    if (((bitField0_ & 0x00004000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(20, getCompileOptions());
+    }
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -2494,7 +3100,12 @@ private static final long serialVersionUID = 0L;
     }
     if (!getAppliedPluginsList()
         .equals(other.getAppliedPluginsList())) return false;
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (hasCompileOptions() != other.hasCompileOptions()) return false;
+    if (hasCompileOptions()) {
+      if (!getCompileOptions()
+          .equals(other.getCompileOptions())) return false;
+    }
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -2584,7 +3195,11 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + APPLIED_PLUGINS_FIELD_NUMBER;
       hash = (53 * hash) + getAppliedPluginsList().hashCode();
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    if (hasCompileOptions()) {
+      hash = (37 * hash) + COMPILE_OPTIONS_FIELD_NUMBER;
+      hash = (53 * hash) + getCompileOptions().hashCode();
+    }
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -2718,6 +3333,7 @@ private static final long serialVersionUID = 0L;
         getOptionsFieldBuilder();
         getProjectApiUseFieldBuilder();
         getAppliedPluginsFieldBuilder();
+        getCompileOptionsFieldBuilder();
       }
     }
     @java.lang.Override
@@ -2741,10 +3357,11 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000020);
       if (variantBuilder_ == null) {
         variant_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000040);
       } else {
+        variant_ = null;
         variantBuilder_.clear();
       }
+      bitField0_ = (bitField0_ & ~0x00000040);
       atoms_ = 0L;
       bitField0_ = (bitField0_ & ~0x00000080);
       compileSdk_ = "";
@@ -2781,10 +3398,17 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00020000);
       if (appliedPluginsBuilder_ == null) {
         appliedPlugins_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00040000);
       } else {
+        appliedPlugins_ = null;
         appliedPluginsBuilder_.clear();
       }
+      bitField0_ = (bitField0_ & ~0x00040000);
+      if (compileOptionsBuilder_ == null) {
+        compileOptions_ = null;
+      } else {
+        compileOptionsBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00080000);
       return this;
     }
 
@@ -2917,6 +3541,14 @@ private static final long serialVersionUID = 0L;
         result.appliedPlugins_ = appliedPlugins_;
       } else {
         result.appliedPlugins_ = appliedPluginsBuilder_.build();
+      }
+      if (((from_bitField0_ & 0x00080000) != 0)) {
+        if (compileOptionsBuilder_ == null) {
+          result.compileOptions_ = compileOptions_;
+        } else {
+          result.compileOptions_ = compileOptionsBuilder_.build();
+        }
+        to_bitField0_ |= 0x00004000;
       }
       result.bitField0_ = to_bitField0_;
       onBuilt();
@@ -3101,7 +3733,10 @@ private static final long serialVersionUID = 0L;
           }
         }
       }
-      this.mergeUnknownFields(other.unknownFields);
+      if (other.hasCompileOptions()) {
+        mergeCompileOptions(other.getCompileOptions());
+      }
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -3116,17 +3751,196 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.google.wireless.android.sdk.stats.GradleBuildProject parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              id_ = input.readInt64();
+              bitField0_ |= 0x00000001;
+              break;
+            } // case 8
+            case 18: {
+              androidPluginVersion_ = input.readBytes();
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 18
+            case 24: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.GradleBuildProject.PluginType tmpValue =
+                  com.google.wireless.android.sdk.stats.GradleBuildProject.PluginType.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(3, tmpRaw);
+              } else {
+                androidPlugin_ = tmpRaw;
+                bitField0_ |= 0x00000004;
+              }
+              break;
+            } // case 24
+            case 32: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.GradleBuildProject.PluginGeneration tmpValue =
+                  com.google.wireless.android.sdk.stats.GradleBuildProject.PluginGeneration.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(4, tmpRaw);
+              } else {
+                pluginGeneration_ = tmpRaw;
+                bitField0_ |= 0x00000008;
+              }
+              break;
+            } // case 32
+            case 42: {
+              buildToolsVersion_ = input.readBytes();
+              bitField0_ |= 0x00000010;
+              break;
+            } // case 42
+            case 50: {
+              input.readMessage(
+                  getMetricsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000020;
+              break;
+            } // case 50
+            case 58: {
+              com.google.wireless.android.sdk.stats.GradleBuildVariant m =
+                  input.readMessage(
+                      com.google.wireless.android.sdk.stats.GradleBuildVariant.PARSER,
+                      extensionRegistry);
+              if (variantBuilder_ == null) {
+                ensureVariantIsMutable();
+                variant_.add(m);
+              } else {
+                variantBuilder_.addMessage(m);
+              }
+              break;
+            } // case 58
+            case 64: {
+              atoms_ = input.readInt64();
+              bitField0_ |= 0x00000080;
+              break;
+            } // case 64
+            case 74: {
+              compileSdk_ = input.readBytes();
+              bitField0_ |= 0x00000100;
+              break;
+            } // case 74
+            case 82: {
+              input.readMessage(
+                  getSplitsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000200;
+              break;
+            } // case 82
+            case 90: {
+              kotlinPluginVersion_ = input.readBytes();
+              bitField0_ |= 0x00000400;
+              break;
+            } // case 90
+            case 98: {
+              input.readMessage(
+                  getOptionsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000800;
+              break;
+            } // case 98
+            case 104: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.GradleBuildProject.GradlePlugin tmpValue =
+                  com.google.wireless.android.sdk.stats.GradleBuildProject.GradlePlugin.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(13, tmpRaw);
+              } else {
+                ensurePluginIsMutable();
+                plugin_.add(tmpRaw);
+              }
+              break;
+            } // case 104
+            case 106: {
+              int length = input.readRawVarint32();
+              int oldLimit = input.pushLimit(length);
+              while(input.getBytesUntilLimit() > 0) {
+                int tmpRaw = input.readEnum();
+                com.google.wireless.android.sdk.stats.GradleBuildProject.GradlePlugin tmpValue =
+                    com.google.wireless.android.sdk.stats.GradleBuildProject.GradlePlugin.forNumber(tmpRaw);
+                if (tmpValue == null) {
+                  mergeUnknownVarintField(13, tmpRaw);
+                } else {
+                  ensurePluginIsMutable();
+                  plugin_.add(tmpRaw);
+                }
+              }
+              input.popLimit(oldLimit);
+              break;
+            } // case 106
+            case 114: {
+              firebasePerformancePluginVersion_ = input.readBytes();
+              bitField0_ |= 0x00002000;
+              break;
+            } // case 114
+            case 120: {
+              composeEnabled_ = input.readBool();
+              bitField0_ |= 0x00004000;
+              break;
+            } // case 120
+            case 130: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              ensurePluginNamesIsMutable();
+              pluginNames_.add(bs);
+              break;
+            } // case 130
+            case 138: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              ensureTaskNamesIsMutable();
+              taskNames_.add(bs);
+              break;
+            } // case 138
+            case 146: {
+              input.readMessage(
+                  getProjectApiUseFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00020000;
+              break;
+            } // case 146
+            case 154: {
+              com.google.wireless.android.sdk.stats.GradlePluginData m =
+                  input.readMessage(
+                      com.google.wireless.android.sdk.stats.GradlePluginData.PARSER,
+                      extensionRegistry);
+              if (appliedPluginsBuilder_ == null) {
+                ensureAppliedPluginsIsMutable();
+                appliedPlugins_.add(m);
+              } else {
+                appliedPluginsBuilder_.addMessage(m);
+              }
+              break;
+            } // case 154
+            case 162: {
+              input.readMessage(
+                  getCompileOptionsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00080000;
+              break;
+            } // case 162
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.google.wireless.android.sdk.stats.GradleBuildProject) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
     private int bitField0_;
@@ -5702,6 +6516,162 @@ private static final long serialVersionUID = 0L;
       }
       return appliedPluginsBuilder_;
     }
+
+    private com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions compileOptions_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions, com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions.Builder, com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptionsOrBuilder> compileOptionsBuilder_;
+    /**
+     * <pre>
+     * Java compilation options
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+     * @return Whether the compileOptions field is set.
+     */
+    public boolean hasCompileOptions() {
+      return ((bitField0_ & 0x00080000) != 0);
+    }
+    /**
+     * <pre>
+     * Java compilation options
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+     * @return The compileOptions.
+     */
+    public com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions getCompileOptions() {
+      if (compileOptionsBuilder_ == null) {
+        return compileOptions_ == null ? com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions.getDefaultInstance() : compileOptions_;
+      } else {
+        return compileOptionsBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * Java compilation options
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+     */
+    public Builder setCompileOptions(com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions value) {
+      if (compileOptionsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        compileOptions_ = value;
+        onChanged();
+      } else {
+        compileOptionsBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00080000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Java compilation options
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+     */
+    public Builder setCompileOptions(
+        com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions.Builder builderForValue) {
+      if (compileOptionsBuilder_ == null) {
+        compileOptions_ = builderForValue.build();
+        onChanged();
+      } else {
+        compileOptionsBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00080000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Java compilation options
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+     */
+    public Builder mergeCompileOptions(com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions value) {
+      if (compileOptionsBuilder_ == null) {
+        if (((bitField0_ & 0x00080000) != 0) &&
+            compileOptions_ != null &&
+            compileOptions_ != com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions.getDefaultInstance()) {
+          compileOptions_ =
+            com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions.newBuilder(compileOptions_).mergeFrom(value).buildPartial();
+        } else {
+          compileOptions_ = value;
+        }
+        onChanged();
+      } else {
+        compileOptionsBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00080000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Java compilation options
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+     */
+    public Builder clearCompileOptions() {
+      if (compileOptionsBuilder_ == null) {
+        compileOptions_ = null;
+        onChanged();
+      } else {
+        compileOptionsBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00080000);
+      return this;
+    }
+    /**
+     * <pre>
+     * Java compilation options
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+     */
+    public com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions.Builder getCompileOptionsBuilder() {
+      bitField0_ |= 0x00080000;
+      onChanged();
+      return getCompileOptionsFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Java compilation options
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+     */
+    public com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptionsOrBuilder getCompileOptionsOrBuilder() {
+      if (compileOptionsBuilder_ != null) {
+        return compileOptionsBuilder_.getMessageOrBuilder();
+      } else {
+        return compileOptions_ == null ?
+            com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions.getDefaultInstance() : compileOptions_;
+      }
+    }
+    /**
+     * <pre>
+     * Java compilation options
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions, com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions.Builder, com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptionsOrBuilder> 
+        getCompileOptionsFieldBuilder() {
+      if (compileOptionsBuilder_ == null) {
+        compileOptionsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions, com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions.Builder, com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptionsOrBuilder>(
+                getCompileOptions(),
+                getParentForChildren(),
+                isClean());
+        compileOptions_ = null;
+      }
+      return compileOptionsBuilder_;
+    }
     @java.lang.Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -5735,7 +6705,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new GradleBuildProject(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

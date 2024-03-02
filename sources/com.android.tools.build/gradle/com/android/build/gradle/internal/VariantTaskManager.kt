@@ -29,7 +29,7 @@ import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.NestedComponentCreationConfig
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig
-import com.android.build.gradle.internal.component.UnitTestCreationConfig
+import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.cxx.configure.createCxxTasks
 import com.android.build.gradle.internal.dependency.AndroidXDependencySubstitution
@@ -37,7 +37,6 @@ import com.android.build.gradle.internal.dsl.DataBindingOptions
 import com.android.build.gradle.internal.ide.dependencies.MavenCoordinatesCacheBuildService
 import com.android.build.gradle.internal.lint.LintTaskManager
 import com.android.build.gradle.internal.profile.AnalyticsConfiguratorService
-import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.AndroidLocationsBuildService
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.CheckJetifierTask
@@ -48,9 +47,9 @@ import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.tasks.factory.TaskManagerConfig
 import com.android.build.gradle.internal.utils.KOTLIN_KAPT_PLUGIN_ID
 import com.android.build.gradle.internal.utils.addComposeArgsToKotlinCompile
-import com.android.build.gradle.internal.utils.configureKotlinCompileForProject
-import com.android.build.gradle.internal.utils.isKotlinPluginApplied
-import com.android.build.gradle.internal.utils.recordIrBackendForAnalytics
+import com.android.build.gradle.internal.utils.configureKotlinCompileTasks
+import com.android.build.gradle.internal.utils.isKotlinPluginAppliedInTheSameClassloader
+import com.android.build.gradle.internal.utils.recordKgpPropertiesForAnalytics
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.internal.variant.ComponentInfo
 import com.android.build.gradle.internal.variant.VariantModel
@@ -66,7 +65,6 @@ import com.google.common.collect.ArrayListMultimap
 import com.google.common.collect.ListMultimap
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.api.UnknownTaskException
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.plugins.BasePlugin
 import org.gradle.api.provider.Provider
@@ -156,15 +154,15 @@ abstract class VariantTaskManager<VariantBuilderT : VariantBuilder, VariantT : V
      * This creates tasks common to all variant types.
      */
     private fun createTasksForVariant(
-        variant: ComponentInfo<VariantBuilderT, VariantT>,
+        componentInfo: ComponentInfo<VariantBuilderT, VariantT>,
     ) {
-        val variantProperties = variant.variant
-        val componentType = variantProperties.componentType
-        val variantDependencies = variantProperties.variantDependencies
-        if (variantProperties is ApkCreationConfig &&
-            variantProperties.dexingCreationConfig.dexingType.isLegacyMultiDexMode()) {
+        val variant = componentInfo.variant
+        val componentType = variant.componentType
+        val variantDependencies = variant.variantDependencies
+        if (variant is ApkCreationConfig &&
+            variant.dexing.dexingType.isLegacyMultiDexMode()) {
             val multiDexDependency =
-                if (variantProperties
+                if (variant
                         .services
                         .projectOptions[BooleanOption.USE_ANDROID_X])
                     ANDROIDX_MULTIDEX_MULTIDEX
@@ -174,7 +172,7 @@ abstract class VariantTaskManager<VariantBuilderT : VariantBuilder, VariantT : V
             project.dependencies
                 .add(variantDependencies.runtimeClasspath.name, multiDexDependency)
         }
-        if (variantProperties.renderscriptCreationConfig?.renderscript?.supportModeEnabled?.get()
+        if (variant.renderscriptCreationConfig?.renderscript?.supportModeEnabled?.get()
             == true) {
             val fileCollection = project.files(
                 globalConfig.versionedSdkLoader.flatMap {
@@ -186,14 +184,14 @@ abstract class VariantTaskManager<VariantBuilderT : VariantBuilder, VariantT : V
                 project.dependencies.add(variantDependencies.runtimeClasspath.name, fileCollection)
             }
         }
-        createAssembleTask(variantProperties)
-        if (variantProperties.services.projectOptions.get(BooleanOption.IDE_INVOKED_FROM_IDE)) {
-            variantProperties.taskContainer.assembleTask.configure {
-                it.dependsOn(variantProperties.artifacts.get(InternalArtifactType.VARIANT_MODEL))
-            }
-        }
+        createAssembleTask(variant)
 
-        doCreateTasksForVariant(variant)
+        doCreateTasksForVariant(componentInfo)
+
+        // now that the onVariants callback has run and tasks have been created,
+        // register all the listeners so we can ensure there is a Task providing the artifact
+        // they are listening too.
+        variant.artifacts.listenerManager.executeActions()
     }
 
     open fun createTopLevelTasks(componentType: ComponentType, variantModel: VariantModel) {
@@ -223,7 +221,7 @@ abstract class VariantTaskManager<VariantBuilderT : VariantBuilder, VariantT : V
         )
 
         // Global tasks required for privacy sandbox sdk consumption
-        if (globalConfig.services.projectOptions.get(BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT)) {
+        if (variants.any { it.variant.privacySandboxCreationConfig != null }) {
             taskFactory.register(ValidateSigningTask.PrivacySandboxSdkCreationAction(globalConfig))
         }
     }
@@ -309,7 +307,7 @@ abstract class VariantTaskManager<VariantBuilderT : VariantBuilder, VariantT : V
 
         }
         if (testVariant.componentType.isApk) { // ANDROID_TEST
-            if ((testVariant as ApkCreationConfig).dexingCreationConfig.dexingType.isLegacyMultiDexMode()) {
+            if ((testVariant as ApkCreationConfig).dexing.dexingType.isLegacyMultiDexMode()) {
                 val multiDexInstrumentationDep = if (testVariant
                         .services
                         .projectOptions[BooleanOption.USE_ANDROID_X])
@@ -327,19 +325,18 @@ abstract class VariantTaskManager<VariantBuilderT : VariantBuilder, VariantT : V
             androidTestTaskManager.createTasks(testVariant as AndroidTestCreationConfig)
         } else {
             // UNIT_TEST
-            unitTestTaskManager.createTasks(testVariant as UnitTestCreationConfig)
+            unitTestTaskManager.createTasks(testVariant as HostTestCreationConfig)
         }
     }
 
     private fun configureKotlinPluginTasksIfNecessary() {
-        if (!isKotlinPluginApplied(project)) {
+        if (!isKotlinPluginAppliedInTheSameClassloader(project)) {
             return
         }
         val composeIsEnabled = allPropertiesList
             .any { componentProperties: ComponentCreationConfig ->
                 componentProperties.buildFeatures.compose }
-        recordIrBackendForAnalytics(
-            allPropertiesList, extension, project, composeIsEnabled)
+        recordKgpPropertiesForAnalytics(project, allPropertiesList)
         if (!composeIsEnabled) {
             return
         }
@@ -368,16 +365,10 @@ abstract class VariantTaskManager<VariantBuilderT : VariantBuilder, VariantT : V
         kotlinExtension.description = "Configuration for Compose related kotlin compiler extension"
 
         // add compose args to all kotlin compile tasks
-        for (creationConfig in allPropertiesList) {
-            try {
-                configureKotlinCompileForProject(project, creationConfig) {
-                    addComposeArgsToKotlinCompile(
-                        it, creationConfig, project.files(kotlinExtension), useLiveLiterals
-                    )
-                }
-            } catch (e: UnknownTaskException) {
-                // ignore
-            }
+        configureKotlinCompileTasks(project, allPropertiesList) { kotlinCompile, creationConfig ->
+            addComposeArgsToKotlinCompile(
+                kotlinCompile, creationConfig, project.files(kotlinExtension), useLiveLiterals
+            )
         }
     }
 
@@ -471,7 +462,7 @@ abstract class VariantTaskManager<VariantBuilderT : VariantBuilder, VariantT : V
         val enableKtx = ktxDataBindingDslValue ?: ktxGradlePropertyValue
         if (enableKtx) {
             // Add Ktx dependency if AndroidX and Kotlin is used
-            if (useAndroidX && isKotlinPluginApplied(project)) {
+            if (useAndroidX && isKotlinPluginAppliedInTheSameClassloader(project)) {
                 project.dependencies
                     .add(
                         "api",

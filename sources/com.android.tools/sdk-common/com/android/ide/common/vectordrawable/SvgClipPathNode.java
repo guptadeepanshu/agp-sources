@@ -96,6 +96,13 @@ class SvgClipPathNode extends SvgGroupNode {
     @Override
     public void validate() {
         super.validate();
+        for (SvgNode n : mChildren) {
+            n.validate();
+        }
+        for (SvgNode n : mAffectedNodes) {
+            n.validate();
+        }
+
         if (mDocumentElement.getTagName().equals(SVG_MASK) && !isWhiteFill()) {
             // A mask that is not solid white creates a transparency effect that cannot be
             // reproduced by a clip-path.

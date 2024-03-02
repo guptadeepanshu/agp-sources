@@ -19,7 +19,10 @@ package com.android.ide.common.build
 import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
+import java.io.File
 import java.io.IOException
+import java.nio.file.Path
+import com.android.utils.PathUtils
 
 /**
  * Common behaviors for loading and saving [CommonBuiltArtifacts] subclass [T] to a json file.
@@ -28,13 +31,15 @@ abstract class CommonBuiltArtifactsTypeAdapter<
         T: CommonBuiltArtifacts,
         ArtifactTypeT,
         ElementT,
-        >: TypeAdapter<T>() {
+        >(val projectPath: Path): TypeAdapter<T>() {
 
     abstract val artifactTypeTypeAdapter: TypeAdapter<ArtifactTypeT>
     abstract val elementTypeAdapter: TypeAdapter<ElementT>
     abstract fun getArtifactType(artifacts: T): ArtifactTypeT
     abstract fun getElements(artifacts: T): Collection<ElementT>
     abstract fun getElementType(artifacts: T): String?
+    abstract fun getBaselineProfiles(artifacts: T): List<BaselineProfileDetails>?
+    abstract fun getMinSdkVersionForDexing(artifacts: T): Int?
 
     final override fun write(out: JsonWriter, value: T?) {
         if (value == null) {
@@ -55,6 +60,24 @@ abstract class CommonBuiltArtifactsTypeAdapter<
         getElementType(value)?.let {elementType ->
             out.name("elementType").value(elementType)
         }
+        val baselineProfiles = getBaselineProfiles(value)
+        if (baselineProfiles != null) {
+            out.name("baselineProfiles").beginArray()
+            baselineProfiles.forEach { entry ->
+                out.beginObject()
+                out.name("minApi").value(entry.minApi)
+                out.name("maxApi").value(entry.maxApi)
+                out.name("baselineProfiles").beginArray()
+                entry.baselineProfiles.forEach {
+                    val relativePath = projectPath.relativize(it.toPath())
+                    out.value(PathUtils.toSystemIndependentPath(relativePath))
+                }
+                out.endArray()
+                out.endObject()
+            }
+            out.endArray()
+        }
+        getMinSdkVersionForDexing(value)?.let { out.name("minSdkVersionForDexing").value(it) }
         out.endObject()
     }
 
@@ -66,6 +89,8 @@ abstract class CommonBuiltArtifactsTypeAdapter<
         variantName: String,
         elements: List<ElementT>,
         elementType: String?,
+        baselineProfiles: List<BaselineProfileDetails>?,
+        minSdkVersionForDexing: Int?,
     ) : T
 
     final override fun read(reader: JsonReader): T {
@@ -76,6 +101,8 @@ abstract class CommonBuiltArtifactsTypeAdapter<
         var variantName: String? = null
         val elements = mutableListOf<ElementT>()
         var elementType: String? = null
+        var baselineProfiles: List<BaselineProfileDetails>? = null
+        var minSdkVersionForDexing: Int? = null
 
         while (reader.hasNext()) {
             when (reader.nextName()) {
@@ -91,6 +118,42 @@ abstract class CommonBuiltArtifactsTypeAdapter<
                     reader.endArray()
                 }
                 "elementType" -> elementType = reader.nextString()
+                "baselineProfiles" -> {
+                    baselineProfiles = mutableListOf<BaselineProfileDetails>()
+                    reader.beginArray()
+                    while (reader.hasNext()) {
+                        reader.beginObject()
+                        var minApi: Int? = null
+                        var maxApi: Int? = null
+                        val baselineProfileFiles = mutableSetOf<File>()
+                        while (reader.hasNext()) {
+                            when (val attributeName = reader.nextName()) {
+                                "minApi" -> minApi = reader.nextInt()
+                                "maxApi" -> maxApi = reader.nextInt()
+                                "baselineProfiles" -> {
+                                    reader.beginArray()
+                                    while (reader.hasNext()) {
+                                        val baselineProfile =
+                                            projectPath.resolve(reader.nextString())
+                                                .normalize().toFile()
+                                        baselineProfileFiles.add(baselineProfile)
+                                    }
+                                    reader.endArray()
+                                }
+                            }
+                        }
+                        reader.endObject()
+                        baselineProfiles.add(
+                            BaselineProfileDetails(
+                                minApi ?: error("minApi is required"),
+                                maxApi ?: error("maxApi is required"),
+                                baselineProfileFiles
+                            )
+                        )
+                    }
+                    reader.endArray()
+                }
+                "minSdkVersionForDexing" -> minSdkVersionForDexing = reader.nextInt()
                 else -> reader.skipValue()
             }
         }
@@ -102,9 +165,10 @@ abstract class CommonBuiltArtifactsTypeAdapter<
             applicationId  ?: throw IOException("applicationId is required"),
             variantName ?: throw IOException("variantName is required"),
             elements,
-            elementType
+            elementType,
+            baselineProfiles,
+            minSdkVersionForDexing
         )
-
     }
 }
 
@@ -136,11 +200,13 @@ object GenericArtifactTypeTypeAdapter: TypeAdapter<GenericArtifactType>() {
     }
 }
 
-object GenericBuiltArtifactsTypeAdapter: CommonBuiltArtifactsTypeAdapter<
+class GenericBuiltArtifactsTypeAdapter(
+    projectPath: Path
+): CommonBuiltArtifactsTypeAdapter<
         GenericBuiltArtifacts,
         GenericArtifactType,
         GenericBuiltArtifact,
-        >() {
+        >(projectPath) {
 
     override val artifactTypeTypeAdapter get() = GenericArtifactTypeTypeAdapter
     override val elementTypeAdapter: TypeAdapter<GenericBuiltArtifact>
@@ -148,6 +214,8 @@ object GenericBuiltArtifactsTypeAdapter: CommonBuiltArtifactsTypeAdapter<
     override fun getArtifactType(artifacts: GenericBuiltArtifacts) = artifacts.artifactType
     override fun getElements(artifacts: GenericBuiltArtifacts) = artifacts.elements
     override fun getElementType(artifacts: GenericBuiltArtifacts): String? = artifacts.elementType
+    override fun getBaselineProfiles(artifacts: GenericBuiltArtifacts): List<BaselineProfileDetails>? = artifacts.baselineProfiles
+    override fun getMinSdkVersionForDexing(artifacts: GenericBuiltArtifacts): Int? = artifacts.minSdkVersionForDexing
 
     override fun instantiate(
         version: Int,
@@ -155,7 +223,9 @@ object GenericBuiltArtifactsTypeAdapter: CommonBuiltArtifactsTypeAdapter<
         applicationId: String,
         variantName: String,
         elements: List<GenericBuiltArtifact>,
-        elementType: String?
+        elementType: String?,
+        baselineProfiles: List<BaselineProfileDetails>?,
+        minSdkVersionForDexing: Int?,
     ) = GenericBuiltArtifacts(
         version = version,
         artifactType = artifactType,
@@ -163,5 +233,7 @@ object GenericBuiltArtifactsTypeAdapter: CommonBuiltArtifactsTypeAdapter<
         variantName = variantName,
         elements = elements,
         elementType = elementType,
+        baselineProfiles = baselineProfiles,
+        minSdkVersionForDexing = minSdkVersionForDexing
     )
 }

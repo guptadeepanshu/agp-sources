@@ -16,6 +16,11 @@
 
 package com.android.build.api.dsl
 
+/**
+ * Shared properties between [ApplicationProductFlavor] and [ApplicationDefaultConfig]
+ *
+ * See [ProductFlavor] and [DefaultConfig] for more information.
+ */
 interface ApplicationBaseFlavor :
     BaseFlavor,
     ApplicationVariantDimension {

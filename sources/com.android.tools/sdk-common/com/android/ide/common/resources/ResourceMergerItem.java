@@ -215,12 +215,6 @@ public class ResourceMergerItem extends DataItem<ResourceFile>
         return resourceFile.getType();
     }
 
-    @Override
-    @NonNull
-    public ResourceReference getReferenceToSelf() {
-        return new ResourceReference(mNamespace, mType, getName());
-    }
-
     /**
      * Sets the value of the resource and set its state to TOUCHED.
      *

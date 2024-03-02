@@ -204,7 +204,7 @@ public enum PkgType {
         return mHasMinPlatformToolsRev;
     }
 
-    /*
+    /**
      * Returns a pattern string used by {@link PkgDesc#getListDescription()} to
      * compute a default list-display representation string for this package.
      */

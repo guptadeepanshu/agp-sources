@@ -20,7 +20,7 @@ import com.android.build.api.component.impl.ComponentIdentityImpl
 import com.android.build.api.dsl.KotlinMultiplatformAndroidExtension
 import com.android.build.gradle.internal.core.dsl.KmpComponentDslInfo
 import com.android.build.gradle.internal.core.dsl.KmpVariantDslInfo
-import com.android.build.gradle.internal.core.dsl.UnitTestComponentDslInfo
+import com.android.build.gradle.internal.core.dsl.HostTestComponentDslInfo
 import com.android.build.api.variant.ResValue
 import com.android.build.gradle.internal.core.dsl.features.AndroidResourcesDslInfo
 import com.android.build.gradle.internal.dsl.AaptOptions
@@ -42,7 +42,7 @@ class KmpUnitTestDslInfoImpl(
     dslServices: DslServices
 ): KmpComponentDslInfoImpl(
     extension, services, withJava
-), UnitTestComponentDslInfo, KmpComponentDslInfo {
+), HostTestComponentDslInfo, KmpComponentDslInfo {
 
     private val testOnJvmConfig = (extension as KotlinMultiplatformAndroidExtensionImpl).androidTestOnJvmOptions!!
 

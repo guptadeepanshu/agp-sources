@@ -46,18 +46,27 @@ public interface ResourceItem extends Configurable {
 
     /** Returns a {@link ResourceReference} that points to this resource. */
     @NonNull
-    ResourceReference getReferenceToSelf();
+    default ResourceReference getReferenceToSelf() {
+        return new ResourceReference(getNamespace(), getType(), getName());
+    }
 
     /**
      * Returns a string that combines the namespace, type, name and qualifiers and should uniquely
      * identify a resource in a "correct" {@link ResourceRepository}.
      *
      * <p>The returned string is not unique if the same resource is declared twice for the same
-     * {@link FolderConfiguration} (by mistake most likely) and the resource items were not
-     * merged together during creation.
+     * {@link FolderConfiguration} (by mistake most likely) and the resource items were not merged
+     * together during creation.
      */
     @NonNull
-    String getKey();
+    default String getKey() {
+        String qualifiers = getConfiguration().getQualifierString();
+        if (!qualifiers.isEmpty()) {
+            return getType().getName() + '-' + qualifiers + '/' + getName();
+        }
+
+        return getType().getName() + '/' + getName();
+    }
 
     /**
      * Returns a {@link ResourceValue} built from parsing the XML for this resource. It can be used

@@ -63,4 +63,78 @@ public interface SoongSyncStatsOrBuilder extends
    * @return The totalTimeMs.
    */
   long getTotalTimeMs();
+
+  /**
+   * <pre>
+   * Lunch target used for sync
+   * </pre>
+   *
+   * <code>optional string lunch_target = 4;</code>
+   * @return Whether the lunchTarget field is set.
+   */
+  boolean hasLunchTarget();
+  /**
+   * <pre>
+   * Lunch target used for sync
+   * </pre>
+   *
+   * <code>optional string lunch_target = 4;</code>
+   * @return The lunchTarget.
+   */
+  java.lang.String getLunchTarget();
+  /**
+   * <pre>
+   * Lunch target used for sync
+   * </pre>
+   *
+   * <code>optional string lunch_target = 4;</code>
+   * @return The bytes for lunchTarget.
+   */
+  com.google.protobuf.ByteString
+      getLunchTargetBytes();
+
+  /**
+   * <pre>
+   * Module paths that were synced. These are paths relative
+   * to the Platform repo checkout and do not contain PII.
+   * </pre>
+   *
+   * <code>repeated string module_paths = 5;</code>
+   * @return A list containing the modulePaths.
+   */
+  java.util.List<java.lang.String>
+      getModulePathsList();
+  /**
+   * <pre>
+   * Module paths that were synced. These are paths relative
+   * to the Platform repo checkout and do not contain PII.
+   * </pre>
+   *
+   * <code>repeated string module_paths = 5;</code>
+   * @return The count of modulePaths.
+   */
+  int getModulePathsCount();
+  /**
+   * <pre>
+   * Module paths that were synced. These are paths relative
+   * to the Platform repo checkout and do not contain PII.
+   * </pre>
+   *
+   * <code>repeated string module_paths = 5;</code>
+   * @param index The index of the element to return.
+   * @return The modulePaths at the given index.
+   */
+  java.lang.String getModulePaths(int index);
+  /**
+   * <pre>
+   * Module paths that were synced. These are paths relative
+   * to the Platform repo checkout and do not contain PII.
+   * </pre>
+   *
+   * <code>repeated string module_paths = 5;</code>
+   * @param index The index of the value to return.
+   * @return The bytes of the modulePaths at the given index.
+   */
+  com.google.protobuf.ByteString
+      getModulePathsBytes(int index);
 }

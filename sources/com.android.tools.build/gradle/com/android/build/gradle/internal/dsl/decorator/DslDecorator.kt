@@ -477,6 +477,7 @@ class DslDecorator(supportedPropertyTypes: List<SupportedPropertyType>) {
                     )
                 }
             }
+            is SupportedPropertyType.Block -> {}
         }
     }
 

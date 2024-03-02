@@ -88,7 +88,8 @@ fun <VariantBuilderT : ComponentBuilder, VariantT : VariantCreationConfig> creat
         val configurationParameters = variants
                 .mapNotNull { tryCreateConfigurationParameters(
                     projectOptions,
-                    it.variant) }
+                    it.variant,
+                ) }
         if (configurationParameters.isEmpty()) return
         NativeLocationsBuildService.register(project)
 
@@ -332,7 +333,8 @@ fun createInitialCxxModel(
         val module =
             createCxxModuleModel(
                 sdkComponents,
-                parameters)
+                parameters,
+            )
         val variant = createCxxVariantModel(parameters, module)
         module.ndkMetaAbiList
             .map { abi -> createCxxAbiModel(sdkComponents, parameters, variant, abi.name)

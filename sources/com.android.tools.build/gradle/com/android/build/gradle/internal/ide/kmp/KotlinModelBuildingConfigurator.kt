@@ -24,7 +24,7 @@ import com.android.build.api.dsl.KotlinMultiplatformAndroidTarget
 import com.android.build.gradle.internal.component.AndroidTestCreationConfig
 import com.android.build.gradle.internal.component.KmpComponentCreationConfig
 import com.android.build.gradle.internal.component.KmpCreationConfig
-import com.android.build.gradle.internal.component.UnitTestCreationConfig
+import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.ide.proto.convert
 import com.android.build.gradle.internal.ide.proto.setIfNotNull
 import com.android.build.gradle.internal.ide.v2.ModelBuilder.Companion.getAgpFlags
@@ -82,7 +82,7 @@ object KotlinModelBuildingConfigurator {
                         AndroidCompilation.Builder::setMainInfo
                     )
                     .setIfNotNull(
-                        (component as? UnitTestCreationConfig)?.toInfo(),
+                        (component as? HostTestCreationConfig)?.toInfo(),
                         AndroidCompilation.Builder::setUnitTestInfo
                     )
                     .setIfNotNull(
@@ -197,7 +197,7 @@ object KotlinModelBuildingConfigurator {
             )
             .build()
 
-    private fun UnitTestCreationConfig.toInfo() =
+    private fun HostTestCreationConfig.toInfo() =
         UnitTestInfo.newBuilder()
             .setNamespace(namespace.get())
             .setIfNotNull(
@@ -220,7 +220,7 @@ object KotlinModelBuildingConfigurator {
                 InstrumentedTestInfo.Builder::setTestInstrumentationRunner
             )
             .setIfNotNull(
-                signingConfigImpl?.convert(),
+                signingConfig?.convert(),
                 InstrumentedTestInfo.Builder::setSigningConfig
             )
             .putAllTestInstrumentationRunnerArguments(testInstrumentationRunnerArguments)

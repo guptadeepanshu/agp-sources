@@ -17,6 +17,7 @@
 package com.android.build.gradle.internal.core.dsl.impl.features
 
 import com.android.build.api.dsl.BuildType
+import com.android.build.api.dsl.LibraryBuildType
 import com.android.build.api.dsl.ProductFlavor
 import com.android.build.gradle.ProguardFiles
 import com.android.build.gradle.internal.PostprocessingFeatures
@@ -105,7 +106,13 @@ class OptimizationDslInfoImpl(
 
             override fun getPostprocessingFeatures(): PostprocessingFeatures? = null
 
-            override fun codeShrinkerEnabled() = buildTypeObj.isMinifyEnabled
+            override fun codeShrinkerEnabled(): Boolean {
+                if (componentType.isTestComponent && buildTypeObj is LibraryBuildType) {
+                    return buildTypeObj.androidTest.enableMinification
+                } else {
+                    return buildTypeObj.isMinifyEnabled
+                }
+            }
 
             override fun resourcesShrinkingEnabled(): Boolean = buildTypeObj.isShrinkResources
 

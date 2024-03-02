@@ -53,2326 +53,6 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private AndroidStudioEvent(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    int mutable_bitField0_ = 0;
-    int mutable_bitField1_ = 0;
-    int mutable_bitField2_ = 0;
-    int mutable_bitField3_ = 0;
-    int mutable_bitField4_ = 0;
-    int mutable_bitField5_ = 0;
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 8: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.AndroidStudioEvent.EventCategory value = com.google.wireless.android.sdk.stats.AndroidStudioEvent.EventCategory.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(1, rawValue);
-            } else {
-              bitField0_ |= 0x00000001;
-              category_ = rawValue;
-            }
-            break;
-          }
-          case 16: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.AndroidStudioEvent.EventKind value = com.google.wireless.android.sdk.stats.AndroidStudioEvent.EventKind.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(2, rawValue);
-            } else {
-              bitField0_ |= 0x00000002;
-              kind_ = rawValue;
-            }
-            break;
-          }
-          case 26: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000004;
-            studioSessionId_ = bs;
-            break;
-          }
-          case 34: {
-            com.google.wireless.android.sdk.stats.ProductDetails.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000008) != 0)) {
-              subBuilder = productDetails_.toBuilder();
-            }
-            productDetails_ = input.readMessage(com.google.wireless.android.sdk.stats.ProductDetails.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(productDetails_);
-              productDetails_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000008;
-            break;
-          }
-          case 40: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.AndroidStudioEvent.MonitorType value = com.google.wireless.android.sdk.stats.AndroidStudioEvent.MonitorType.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(5, rawValue);
-            } else {
-              bitField0_ |= 0x00000010;
-              monitorType_ = rawValue;
-            }
-            break;
-          }
-          case 48: {
-            bitField0_ |= 0x00000020;
-            monitorPaused_ = input.readBool();
-            break;
-          }
-          case 56: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.AndroidStudioEvent.ProfilerCaptureType value = com.google.wireless.android.sdk.stats.AndroidStudioEvent.ProfilerCaptureType.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(7, rawValue);
-            } else {
-              bitField0_ |= 0x00000040;
-              profilerCaptureType_ = rawValue;
-            }
-            break;
-          }
-          case 66: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000080;
-            cloudTestingErrorMessage_ = bs;
-            break;
-          }
-          case 72: {
-            bitField0_ |= 0x00000100;
-            cloudTestingLoadedScreenshotsCount_ = input.readInt32();
-            break;
-          }
-          case 80: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType value = com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(10, rawValue);
-            } else {
-              bitField0_ |= 0x00000200;
-              runConfigurationType_ = rawValue;
-            }
-            break;
-          }
-          case 88: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType value = com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(11, rawValue);
-            } else {
-              bitField0_ |= 0x00000400;
-              debuggerType_ = rawValue;
-            }
-            break;
-          }
-          case 98: {
-            com.google.wireless.android.sdk.stats.DeviceInfo.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000800) != 0)) {
-              subBuilder = deviceInfo_.toBuilder();
-            }
-            deviceInfo_ = input.readMessage(com.google.wireless.android.sdk.stats.DeviceInfo.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(deviceInfo_);
-              deviceInfo_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000800;
-            break;
-          }
-          case 106: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00001000;
-            lldbSessionFailureMessage_ = bs;
-            break;
-          }
-          case 112: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.AndroidStudioEvent.DeveloperServiceKind value = com.google.wireless.android.sdk.stats.AndroidStudioEvent.DeveloperServiceKind.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(14, rawValue);
-            } else {
-              bitField0_ |= 0x00002000;
-              developerServiceKind_ = rawValue;
-            }
-            break;
-          }
-          case 122: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00004000;
-            gradleVersion_ = bs;
-            break;
-          }
-          case 128: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncFailure value = com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncFailure.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(16, rawValue);
-            } else {
-              bitField0_ |= 0x00008000;
-              gradleSyncFailure_ = rawValue;
-            }
-            break;
-          }
-          case 138: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00010000;
-            gradleMissingSignature_ = bs;
-            break;
-          }
-          case 144: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplateRenderer value = com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplateRenderer.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(18, rawValue);
-            } else {
-              bitField0_ |= 0x00020000;
-              templateRenderer_ = rawValue;
-            }
-            break;
-          }
-          case 154: {
-            com.google.wireless.android.sdk.stats.StudioCrash.Builder subBuilder = null;
-            if (((bitField0_ & 0x00040000) != 0)) {
-              subBuilder = studioCrash_.toBuilder();
-            }
-            studioCrash_ = input.readMessage(com.google.wireless.android.sdk.stats.StudioCrash.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(studioCrash_);
-              studioCrash_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00040000;
-            break;
-          }
-          case 162: {
-            com.google.wireless.android.sdk.stats.GradleBuildDetails.Builder subBuilder = null;
-            if (((bitField0_ & 0x00080000) != 0)) {
-              subBuilder = gradleBuildDetails_.toBuilder();
-            }
-            gradleBuildDetails_ = input.readMessage(com.google.wireless.android.sdk.stats.GradleBuildDetails.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(gradleBuildDetails_);
-              gradleBuildDetails_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00080000;
-            break;
-          }
-          case 170: {
-            com.google.wireless.android.sdk.stats.InstantRun.Builder subBuilder = null;
-            if (((bitField0_ & 0x00100000) != 0)) {
-              subBuilder = instantRun_.toBuilder();
-            }
-            instantRun_ = input.readMessage(com.google.wireless.android.sdk.stats.InstantRun.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(instantRun_);
-              instantRun_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00100000;
-            break;
-          }
-          case 178: {
-            com.google.wireless.android.sdk.stats.MetaMetrics.Builder subBuilder = null;
-            if (((bitField0_ & 0x00200000) != 0)) {
-              subBuilder = metaMetrics_.toBuilder();
-            }
-            metaMetrics_ = input.readMessage(com.google.wireless.android.sdk.stats.MetaMetrics.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(metaMetrics_);
-              metaMetrics_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00200000;
-            break;
-          }
-          case 186: {
-            com.google.wireless.android.sdk.stats.EmulatorDetails.Builder subBuilder = null;
-            if (((bitField0_ & 0x00400000) != 0)) {
-              subBuilder = emulatorDetails_.toBuilder();
-            }
-            emulatorDetails_ = input.readMessage(com.google.wireless.android.sdk.stats.EmulatorDetails.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(emulatorDetails_);
-              emulatorDetails_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00400000;
-            break;
-          }
-          case 194: {
-            com.google.wireless.android.sdk.stats.TestRun.Builder subBuilder = null;
-            if (((bitField0_ & 0x00800000) != 0)) {
-              subBuilder = testRun_.toBuilder();
-            }
-            testRun_ = input.readMessage(com.google.wireless.android.sdk.stats.TestRun.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(testRun_);
-              testRun_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00800000;
-            break;
-          }
-          case 202: {
-            com.google.wireless.android.sdk.stats.EmulatorUiEvent.Builder subBuilder = null;
-            if (((bitField0_ & 0x01000000) != 0)) {
-              subBuilder = emulatorUiEvent_.toBuilder();
-            }
-            emulatorUiEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.EmulatorUiEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(emulatorUiEvent_);
-              emulatorUiEvent_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x01000000;
-            break;
-          }
-          case 210: {
-            com.google.wireless.android.sdk.stats.Hypervisor.Builder subBuilder = null;
-            if (((bitField0_ & 0x02000000) != 0)) {
-              subBuilder = hypervisor_.toBuilder();
-            }
-            hypervisor_ = input.readMessage(com.google.wireless.android.sdk.stats.Hypervisor.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(hypervisor_);
-              hypervisor_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x02000000;
-            break;
-          }
-          case 218: {
-            com.google.wireless.android.sdk.stats.EmulatorHost.Builder subBuilder = null;
-            if (((bitField0_ & 0x04000000) != 0)) {
-              subBuilder = emulatorHost_.toBuilder();
-            }
-            emulatorHost_ = input.readMessage(com.google.wireless.android.sdk.stats.EmulatorHost.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(emulatorHost_);
-              emulatorHost_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x04000000;
-            break;
-          }
-          case 226: {
-            com.google.wireless.android.sdk.stats.GradleBuildProfile.Builder subBuilder = null;
-            if (((bitField0_ & 0x08000000) != 0)) {
-              subBuilder = gradleBuildProfile_.toBuilder();
-            }
-            gradleBuildProfile_ = input.readMessage(com.google.wireless.android.sdk.stats.GradleBuildProfile.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(gradleBuildProfile_);
-              gradleBuildProfile_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x08000000;
-            break;
-          }
-          case 234: {
-            com.google.wireless.android.sdk.stats.LLDBFrontendDetails.Builder subBuilder = null;
-            if (((bitField0_ & 0x10000000) != 0)) {
-              subBuilder = lldbFrontendDetails_.toBuilder();
-            }
-            lldbFrontendDetails_ = input.readMessage(com.google.wireless.android.sdk.stats.LLDBFrontendDetails.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(lldbFrontendDetails_);
-              lldbFrontendDetails_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x10000000;
-            break;
-          }
-          case 242: {
-            com.google.wireless.android.sdk.stats.FirebaseErrorDetails.Builder subBuilder = null;
-            if (((bitField0_ & 0x20000000) != 0)) {
-              subBuilder = firebaseErrorDetails_.toBuilder();
-            }
-            firebaseErrorDetails_ = input.readMessage(com.google.wireless.android.sdk.stats.FirebaseErrorDetails.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(firebaseErrorDetails_);
-              firebaseErrorDetails_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x20000000;
-            break;
-          }
-          case 250: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x40000000;
-            projectId_ = bs;
-            break;
-          }
-          case 258: {
-            com.google.wireless.android.sdk.stats.GfxTracingDetails.Builder subBuilder = null;
-            if (((bitField0_ & 0x80000000) != 0)) {
-              subBuilder = gfxTracingDetails_.toBuilder();
-            }
-            gfxTracingDetails_ = input.readMessage(com.google.wireless.android.sdk.stats.GfxTracingDetails.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(gfxTracingDetails_);
-              gfxTracingDetails_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x80000000;
-            break;
-          }
-          case 266: {
-            com.google.wireless.android.sdk.stats.TestRecorderDetails.Builder subBuilder = null;
-            if (((bitField1_ & 0x00000001) != 0)) {
-              subBuilder = testRecorderDetails_.toBuilder();
-            }
-            testRecorderDetails_ = input.readMessage(com.google.wireless.android.sdk.stats.TestRecorderDetails.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(testRecorderDetails_);
-              testRecorderDetails_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x00000001;
-            break;
-          }
-          case 274: {
-            com.google.wireless.android.sdk.stats.UIActionStats.Builder subBuilder = null;
-            if (((bitField1_ & 0x00000002) != 0)) {
-              subBuilder = uiActionStats_.toBuilder();
-            }
-            uiActionStats_ = input.readMessage(com.google.wireless.android.sdk.stats.UIActionStats.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(uiActionStats_);
-              uiActionStats_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x00000002;
-            break;
-          }
-          case 282: {
-            com.google.wireless.android.sdk.stats.MachineDetails.Builder subBuilder = null;
-            if (((bitField1_ & 0x00000004) != 0)) {
-              subBuilder = machineDetails_.toBuilder();
-            }
-            machineDetails_ = input.readMessage(com.google.wireless.android.sdk.stats.MachineDetails.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(machineDetails_);
-              machineDetails_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x00000004;
-            break;
-          }
-          case 290: {
-            com.google.wireless.android.sdk.stats.JvmDetails.Builder subBuilder = null;
-            if (((bitField1_ & 0x00000008) != 0)) {
-              subBuilder = jvmDetails_.toBuilder();
-            }
-            jvmDetails_ = input.readMessage(com.google.wireless.android.sdk.stats.JvmDetails.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(jvmDetails_);
-              jvmDetails_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x00000008;
-            break;
-          }
-          case 298: {
-            com.google.wireless.android.sdk.stats.JavaProcessStats.Builder subBuilder = null;
-            if (((bitField1_ & 0x00000010) != 0)) {
-              subBuilder = javaProcessStats_.toBuilder();
-            }
-            javaProcessStats_ = input.readMessage(com.google.wireless.android.sdk.stats.JavaProcessStats.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(javaProcessStats_);
-              javaProcessStats_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x00000010;
-            break;
-          }
-          case 306: {
-            com.google.wireless.android.sdk.stats.StudioPerformanceStats.Builder subBuilder = null;
-            if (((bitField1_ & 0x00000020) != 0)) {
-              subBuilder = studioPerformanceStats_.toBuilder();
-            }
-            studioPerformanceStats_ = input.readMessage(com.google.wireless.android.sdk.stats.StudioPerformanceStats.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(studioPerformanceStats_);
-              studioPerformanceStats_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x00000020;
-            break;
-          }
-          case 314: {
-            com.google.wireless.android.sdk.stats.LldbPerformanceStats.Builder subBuilder = null;
-            if (((bitField1_ & 0x00000040) != 0)) {
-              subBuilder = lldbPerformanceStats_.toBuilder();
-            }
-            lldbPerformanceStats_ = input.readMessage(com.google.wireless.android.sdk.stats.LldbPerformanceStats.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(lldbPerformanceStats_);
-              lldbPerformanceStats_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x00000040;
-            break;
-          }
-          case 322: {
-            com.google.wireless.android.sdk.stats.StudioProjectChange.Builder subBuilder = null;
-            if (((bitField1_ & 0x00000080) != 0)) {
-              subBuilder = studioProjectChange_.toBuilder();
-            }
-            studioProjectChange_ = input.readMessage(com.google.wireless.android.sdk.stats.StudioProjectChange.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(studioProjectChange_);
-              studioProjectChange_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x00000080;
-            break;
-          }
-          case 330: {
-            com.google.wireless.android.sdk.stats.FirebaseContextDetails.Builder subBuilder = null;
-            if (((bitField1_ & 0x00000100) != 0)) {
-              subBuilder = firebaseContextDetails_.toBuilder();
-            }
-            firebaseContextDetails_ = input.readMessage(com.google.wireless.android.sdk.stats.FirebaseContextDetails.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(firebaseContextDetails_);
-              firebaseContextDetails_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x00000100;
-            break;
-          }
-          case 338: {
-            com.google.wireless.android.sdk.stats.LayoutEditorEvent.Builder subBuilder = null;
-            if (((bitField1_ & 0x00000200) != 0)) {
-              subBuilder = layoutEditorEvent_.toBuilder();
-            }
-            layoutEditorEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.LayoutEditorEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(layoutEditorEvent_);
-              layoutEditorEvent_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x00000200;
-            break;
-          }
-          case 346: {
-            com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.Builder subBuilder = null;
-            if (((bitField1_ & 0x00000400) != 0)) {
-              subBuilder = appLinksAssistantEvent_.toBuilder();
-            }
-            appLinksAssistantEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(appLinksAssistantEvent_);
-              appLinksAssistantEvent_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x00000400;
-            break;
-          }
-          case 354: {
-            com.google.wireless.android.sdk.stats.EmulatorPerformanceStats.Builder subBuilder = null;
-            if (((bitField1_ & 0x00000800) != 0)) {
-              subBuilder = emulatorPerformanceStats_.toBuilder();
-            }
-            emulatorPerformanceStats_ = input.readMessage(com.google.wireless.android.sdk.stats.EmulatorPerformanceStats.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(emulatorPerformanceStats_);
-              emulatorPerformanceStats_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x00000800;
-            break;
-          }
-          case 362: {
-            com.google.wireless.android.sdk.stats.AdbAssistantStats.Builder subBuilder = null;
-            if (((bitField1_ & 0x00001000) != 0)) {
-              subBuilder = adbAssistantStats_.toBuilder();
-            }
-            adbAssistantStats_ = input.readMessage(com.google.wireless.android.sdk.stats.AdbAssistantStats.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(adbAssistantStats_);
-              adbAssistantStats_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x00001000;
-            break;
-          }
-          case 370: {
-            com.google.wireless.android.sdk.stats.LldbSessionStartDetails.Builder subBuilder = null;
-            if (((bitField1_ & 0x00002000) != 0)) {
-              subBuilder = lldbSessionStartDetails_.toBuilder();
-            }
-            lldbSessionStartDetails_ = input.readMessage(com.google.wireless.android.sdk.stats.LldbSessionStartDetails.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(lldbSessionStartDetails_);
-              lldbSessionStartDetails_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x00002000;
-            break;
-          }
-          case 378: {
-            com.google.wireless.android.sdk.stats.LldbSessionEndDetails.Builder subBuilder = null;
-            if (((bitField1_ & 0x00004000) != 0)) {
-              subBuilder = lldbSessionEndDetails_.toBuilder();
-            }
-            lldbSessionEndDetails_ = input.readMessage(com.google.wireless.android.sdk.stats.LldbSessionEndDetails.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(lldbSessionEndDetails_);
-              lldbSessionEndDetails_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x00004000;
-            break;
-          }
-          case 386: {
-            com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Builder subBuilder = null;
-            if (((bitField1_ & 0x00008000) != 0)) {
-              subBuilder = androidProfilerEvent_.toBuilder();
-            }
-            androidProfilerEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.AndroidProfilerEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(androidProfilerEvent_);
-              androidProfilerEvent_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x00008000;
-            break;
-          }
-          case 394: {
-            com.google.wireless.android.sdk.stats.ApkAnalyzerStats.Builder subBuilder = null;
-            if (((bitField1_ & 0x00010000) != 0)) {
-              subBuilder = apkAnalyzerStats_.toBuilder();
-            }
-            apkAnalyzerStats_ = input.readMessage(com.google.wireless.android.sdk.stats.ApkAnalyzerStats.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(apkAnalyzerStats_);
-              apkAnalyzerStats_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x00010000;
-            break;
-          }
-          case 402: {
-            com.google.wireless.android.sdk.stats.GradleSyncStats.Builder subBuilder = null;
-            if (((bitField1_ & 0x00020000) != 0)) {
-              subBuilder = gradleSyncStats_.toBuilder();
-            }
-            gradleSyncStats_ = input.readMessage(com.google.wireless.android.sdk.stats.GradleSyncStats.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(gradleSyncStats_);
-              gradleSyncStats_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x00020000;
-            break;
-          }
-          case 410: {
-            com.google.wireless.android.sdk.stats.ApkDebugProject.Builder subBuilder = null;
-            if (((bitField1_ & 0x00080000) != 0)) {
-              subBuilder = apkDebugProject_.toBuilder();
-            }
-            apkDebugProject_ = input.readMessage(com.google.wireless.android.sdk.stats.ApkDebugProject.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(apkDebugProject_);
-              apkDebugProject_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x00080000;
-            break;
-          }
-          case 418: {
-            com.google.wireless.android.sdk.stats.LayoutInspectorEvent.Builder subBuilder = null;
-            if (((bitField1_ & 0x00100000) != 0)) {
-              subBuilder = layoutInspectorEvent_.toBuilder();
-            }
-            layoutInspectorEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.LayoutInspectorEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(layoutInspectorEvent_);
-              layoutInspectorEvent_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x00100000;
-            break;
-          }
-          case 426: {
-            com.google.wireless.android.sdk.stats.AndroidProfilerDbStats.Builder subBuilder = null;
-            if (((bitField1_ & 0x00200000) != 0)) {
-              subBuilder = androidProfilerDbStats_.toBuilder();
-            }
-            androidProfilerDbStats_ = input.readMessage(com.google.wireless.android.sdk.stats.AndroidProfilerDbStats.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(androidProfilerDbStats_);
-              androidProfilerDbStats_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x00200000;
-            break;
-          }
-          case 434: {
-            com.google.wireless.android.sdk.stats.KotlinSupport.Builder subBuilder = null;
-            if (((bitField1_ & 0x00400000) != 0)) {
-              subBuilder = kotlinSupport_.toBuilder();
-            }
-            kotlinSupport_ = input.readMessage(com.google.wireless.android.sdk.stats.KotlinSupport.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(kotlinSupport_);
-              kotlinSupport_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x00400000;
-            break;
-          }
-          case 442: {
-            com.google.wireless.android.sdk.stats.ConnectionAssistantEvent.Builder subBuilder = null;
-            if (((bitField1_ & 0x00800000) != 0)) {
-              subBuilder = connectionAssistantEvent_.toBuilder();
-            }
-            connectionAssistantEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.ConnectionAssistantEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(connectionAssistantEvent_);
-              connectionAssistantEvent_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x00800000;
-            break;
-          }
-          case 450: {
-            com.google.wireless.android.sdk.stats.OomDialogEvent.Builder subBuilder = null;
-            if (((bitField1_ & 0x01000000) != 0)) {
-              subBuilder = oomDialogEvent_.toBuilder();
-            }
-            oomDialogEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.OomDialogEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(oomDialogEvent_);
-              oomDialogEvent_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x01000000;
-            break;
-          }
-          case 458: {
-            com.google.wireless.android.sdk.stats.CMakeEditingEvent.Builder subBuilder = null;
-            if (((bitField1_ & 0x02000000) != 0)) {
-              subBuilder = cmakeEditingEvent_.toBuilder();
-            }
-            cmakeEditingEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.CMakeEditingEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(cmakeEditingEvent_);
-              cmakeEditingEvent_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x02000000;
-            break;
-          }
-          case 464: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.AndroidStudioEvent.IdeBrand value = com.google.wireless.android.sdk.stats.AndroidStudioEvent.IdeBrand.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(58, rawValue);
-            } else {
-              bitField1_ |= 0x04000000;
-              ideBrand_ = rawValue;
-            }
-            break;
-          }
-          case 474: {
-            com.google.wireless.android.sdk.stats.CppHeadersViewEvent.Builder subBuilder = null;
-            if (((bitField1_ & 0x08000000) != 0)) {
-              subBuilder = cppHeadersViewEvent_.toBuilder();
-            }
-            cppHeadersViewEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.CppHeadersViewEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(cppHeadersViewEvent_);
-              cppHeadersViewEvent_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x08000000;
-            break;
-          }
-          case 482: {
-            com.google.wireless.android.sdk.stats.WhatsNewAssistantEvent.Builder subBuilder = null;
-            if (((bitField1_ & 0x10000000) != 0)) {
-              subBuilder = whatsNewAssistantEvent_.toBuilder();
-            }
-            whatsNewAssistantEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.WhatsNewAssistantEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(whatsNewAssistantEvent_);
-              whatsNewAssistantEvent_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x10000000;
-            break;
-          }
-          case 490: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField1_ |= 0x20000000;
-            rawProjectId_ = bs;
-            break;
-          }
-          case 498: {
-            com.google.wireless.android.sdk.stats.IntellijIndexingStats.Builder subBuilder = null;
-            if (((bitField1_ & 0x40000000) != 0)) {
-              subBuilder = intellijIndexingStats_.toBuilder();
-            }
-            intellijIndexingStats_ = input.readMessage(com.google.wireless.android.sdk.stats.IntellijIndexingStats.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(intellijIndexingStats_);
-              intellijIndexingStats_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x40000000;
-            break;
-          }
-          case 506: {
-            com.google.wireless.android.sdk.stats.LintSession.Builder subBuilder = null;
-            if (((bitField1_ & 0x80000000) != 0)) {
-              subBuilder = lintSession_.toBuilder();
-            }
-            lintSession_ = input.readMessage(com.google.wireless.android.sdk.stats.LintSession.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(lintSession_);
-              lintSession_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x80000000;
-            break;
-          }
-          case 514: {
-            com.google.wireless.android.sdk.stats.LintAction.Builder subBuilder = null;
-            if (((bitField2_ & 0x00000001) != 0)) {
-              subBuilder = lintAction_.toBuilder();
-            }
-            lintAction_ = input.readMessage(com.google.wireless.android.sdk.stats.LintAction.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(lintAction_);
-              lintAction_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x00000001;
-            break;
-          }
-          case 522: {
-            com.google.wireless.android.sdk.stats.StudioRunEvent.Builder subBuilder = null;
-            if (((bitField2_ & 0x00000002) != 0)) {
-              subBuilder = studioRunEvent_.toBuilder();
-            }
-            studioRunEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.StudioRunEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(studioRunEvent_);
-              studioRunEvent_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x00000002;
-            break;
-          }
-          case 530: {
-            if (!((mutable_bitField2_ & 0x00000004) != 0)) {
-              intellijProjectSizeStats_ = new java.util.ArrayList<com.google.wireless.android.sdk.stats.IntellijProjectSizeStats>();
-              mutable_bitField2_ |= 0x00000004;
-            }
-            intellijProjectSizeStats_.add(
-                input.readMessage(com.google.wireless.android.sdk.stats.IntellijProjectSizeStats.PARSER, extensionRegistry));
-            break;
-          }
-          case 538: {
-            com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.Builder subBuilder = null;
-            if (((bitField2_ & 0x00000004) != 0)) {
-              subBuilder = studioToolWindowActionStats_.toBuilder();
-            }
-            studioToolWindowActionStats_ = input.readMessage(com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(studioToolWindowActionStats_);
-              studioToolWindowActionStats_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x00000004;
-            break;
-          }
-          case 546: {
-            com.google.wireless.android.sdk.stats.PSDEvent.Builder subBuilder = null;
-            if (((bitField2_ & 0x00000008) != 0)) {
-              subBuilder = psdEvent_.toBuilder();
-            }
-            psdEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.PSDEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(psdEvent_);
-              psdEvent_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x00000008;
-            break;
-          }
-          case 552: {
-            bitField2_ |= 0x00000010;
-            ideaIsInternal_ = input.readBool();
-            break;
-          }
-          case 562: {
-            com.google.wireless.android.sdk.stats.JniInspectionEvent.Builder subBuilder = null;
-            if (((bitField2_ & 0x00000020) != 0)) {
-              subBuilder = jniInspectionEvent_.toBuilder();
-            }
-            jniInspectionEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.JniInspectionEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(jniInspectionEvent_);
-              jniInspectionEvent_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x00000020;
-            break;
-          }
-          case 570: {
-            com.google.wireless.android.sdk.stats.UserSentiment.Builder subBuilder = null;
-            if (((bitField2_ & 0x00000040) != 0)) {
-              subBuilder = userSentiment_.toBuilder();
-            }
-            userSentiment_ = input.readMessage(com.google.wireless.android.sdk.stats.UserSentiment.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(userSentiment_);
-              userSentiment_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x00000040;
-            break;
-          }
-          case 578: {
-            com.google.wireless.android.sdk.stats.RunEvent.Builder subBuilder = null;
-            if (((bitField2_ & 0x00000080) != 0)) {
-              subBuilder = runEvent_.toBuilder();
-            }
-            runEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.RunEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(runEvent_);
-              runEvent_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x00000080;
-            break;
-          }
-          case 586: {
-            com.google.wireless.android.sdk.stats.NavEditorEvent.Builder subBuilder = null;
-            if (((bitField2_ & 0x00000100) != 0)) {
-              subBuilder = navEditorEvent_.toBuilder();
-            }
-            navEditorEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.NavEditorEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(navEditorEvent_);
-              navEditorEvent_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x00000100;
-            break;
-          }
-          case 594: {
-            com.google.wireless.android.sdk.stats.DialogStats.Builder subBuilder = null;
-            if (((bitField2_ & 0x00000200) != 0)) {
-              subBuilder = dialogStats_.toBuilder();
-            }
-            dialogStats_ = input.readMessage(com.google.wireless.android.sdk.stats.DialogStats.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(dialogStats_);
-              dialogStats_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x00000200;
-            break;
-          }
-          case 602: {
-            com.google.wireless.android.sdk.stats.GradlePluginUpgradeDialogStats.Builder subBuilder = null;
-            if (((bitField2_ & 0x00000400) != 0)) {
-              subBuilder = gradlePluginUpgradeDialog_.toBuilder();
-            }
-            gradlePluginUpgradeDialog_ = input.readMessage(com.google.wireless.android.sdk.stats.GradlePluginUpgradeDialogStats.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(gradlePluginUpgradeDialog_);
-              gradlePluginUpgradeDialog_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x00000400;
-            break;
-          }
-          case 610: {
-            com.google.wireless.android.sdk.stats.DataBindingEvent.Builder subBuilder = null;
-            if (((bitField2_ & 0x00000800) != 0)) {
-              subBuilder = dataBindingEvent_.toBuilder();
-            }
-            dataBindingEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.DataBindingEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(dataBindingEvent_);
-              dataBindingEvent_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x00000800;
-            break;
-          }
-          case 618: {
-            com.google.wireless.android.sdk.stats.TypingLatencyStats.Builder subBuilder = null;
-            if (((bitField2_ & 0x00001000) != 0)) {
-              subBuilder = typingLatencyStats_.toBuilder();
-            }
-            typingLatencyStats_ = input.readMessage(com.google.wireless.android.sdk.stats.TypingLatencyStats.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(typingLatencyStats_);
-              typingLatencyStats_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x00001000;
-            break;
-          }
-          case 626: {
-            if (!((mutable_bitField2_ & 0x00004000) != 0)) {
-              gradleSyncIssues_ = new java.util.ArrayList<com.google.wireless.android.sdk.stats.GradleSyncIssue>();
-              mutable_bitField2_ |= 0x00004000;
-            }
-            gradleSyncIssues_.add(
-                input.readMessage(com.google.wireless.android.sdk.stats.GradleSyncIssue.PARSER, extensionRegistry));
-            break;
-          }
-          case 632: {
-            int rawValue = input.readEnum();
-            @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncQuickFix value = com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncQuickFix.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(79, rawValue);
-            } else {
-              if (!((mutable_bitField2_ & 0x00008000) != 0)) {
-                offeredQuickFixes_ = new java.util.ArrayList<java.lang.Integer>();
-                mutable_bitField2_ |= 0x00008000;
-              }
-              offeredQuickFixes_.add(rawValue);
-            }
-            break;
-          }
-          case 634: {
-            int length = input.readRawVarint32();
-            int oldLimit = input.pushLimit(length);
-            while(input.getBytesUntilLimit() > 0) {
-              int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-              com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncQuickFix value = com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncQuickFix.valueOf(rawValue);
-              if (value == null) {
-                unknownFields.mergeVarintField(79, rawValue);
-              } else {
-                if (!((mutable_bitField2_ & 0x00008000) != 0)) {
-                  offeredQuickFixes_ = new java.util.ArrayList<java.lang.Integer>();
-                  mutable_bitField2_ |= 0x00008000;
-                }
-                offeredQuickFixes_.add(rawValue);
-              }
-            }
-            input.popLimit(oldLimit);
-            break;
-          }
-          case 642: {
-            com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Builder subBuilder = null;
-            if (((bitField2_ & 0x00002000) != 0)) {
-              subBuilder = studioPatchUpdaterEvent_.toBuilder();
-            }
-            studioPatchUpdaterEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(studioPatchUpdaterEvent_);
-              studioPatchUpdaterEvent_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x00002000;
-            break;
-          }
-          case 650: {
-            com.google.wireless.android.sdk.stats.ResourceManagerEvent.Builder subBuilder = null;
-            if (((bitField2_ & 0x00004000) != 0)) {
-              subBuilder = resourceManagerEvent_.toBuilder();
-            }
-            resourceManagerEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.ResourceManagerEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(resourceManagerEvent_);
-              resourceManagerEvent_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x00004000;
-            break;
-          }
-          case 658: {
-            com.google.wireless.android.sdk.stats.IdePluginInfo.Builder subBuilder = null;
-            if (((bitField2_ & 0x00008000) != 0)) {
-              subBuilder = idePluginInfo_.toBuilder();
-            }
-            idePluginInfo_ = input.readMessage(com.google.wireless.android.sdk.stats.IdePluginInfo.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(idePluginInfo_);
-              idePluginInfo_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x00008000;
-            break;
-          }
-          case 666: {
-            com.google.wireless.android.sdk.stats.EditorHighlightingStats.Builder subBuilder = null;
-            if (((bitField2_ & 0x00010000) != 0)) {
-              subBuilder = editorHighlightingStats_.toBuilder();
-            }
-            editorHighlightingStats_ = input.readMessage(com.google.wireless.android.sdk.stats.EditorHighlightingStats.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(editorHighlightingStats_);
-              editorHighlightingStats_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x00010000;
-            break;
-          }
-          case 674: {
-            com.google.wireless.android.sdk.stats.WindowsDefenderStatus.Builder subBuilder = null;
-            if (((bitField2_ & 0x00020000) != 0)) {
-              subBuilder = windowsDefenderStatus_.toBuilder();
-            }
-            windowsDefenderStatus_ = input.readMessage(com.google.wireless.android.sdk.stats.WindowsDefenderStatus.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(windowsDefenderStatus_);
-              windowsDefenderStatus_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x00020000;
-            break;
-          }
-          case 682: {
-            com.google.wireless.android.sdk.stats.MemorySettingsEvent.Builder subBuilder = null;
-            if (((bitField2_ & 0x00040000) != 0)) {
-              subBuilder = memorySettingsEvent_.toBuilder();
-            }
-            memorySettingsEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.MemorySettingsEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(memorySettingsEvent_);
-              memorySettingsEvent_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x00040000;
-            break;
-          }
-          case 690: {
-            com.google.wireless.android.sdk.stats.StudioUpdateFlowEvent.Builder subBuilder = null;
-            if (((bitField2_ & 0x00080000) != 0)) {
-              subBuilder = studioUpdateFlowEvent_.toBuilder();
-            }
-            studioUpdateFlowEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.StudioUpdateFlowEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(studioUpdateFlowEvent_);
-              studioUpdateFlowEvent_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x00080000;
-            break;
-          }
-          case 698: {
-            com.google.wireless.android.sdk.stats.BuildOutputWindowStats.Builder subBuilder = null;
-            if (((bitField2_ & 0x00100000) != 0)) {
-              subBuilder = buildOutputWindowStats_.toBuilder();
-            }
-            buildOutputWindowStats_ = input.readMessage(com.google.wireless.android.sdk.stats.BuildOutputWindowStats.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(buildOutputWindowStats_);
-              buildOutputWindowStats_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x00100000;
-            break;
-          }
-          case 706: {
-            com.google.wireless.android.sdk.stats.GradlePluginDslUsageStats.Builder subBuilder = null;
-            if (((bitField2_ & 0x00200000) != 0)) {
-              subBuilder = gradlePluginDslUsageStats_.toBuilder();
-            }
-            gradlePluginDslUsageStats_ = input.readMessage(com.google.wireless.android.sdk.stats.GradlePluginDslUsageStats.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(gradlePluginDslUsageStats_);
-              gradlePluginDslUsageStats_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x00200000;
-            break;
-          }
-          case 714: {
-            com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.Builder subBuilder = null;
-            if (((bitField2_ & 0x00400000) != 0)) {
-              subBuilder = whatsNewAssistantUpdateEvent_.toBuilder();
-            }
-            whatsNewAssistantUpdateEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(whatsNewAssistantUpdateEvent_);
-              whatsNewAssistantUpdateEvent_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x00400000;
-            break;
-          }
-          case 722: {
-            com.google.wireless.android.sdk.stats.DefaultActivityLocatorStats.Builder subBuilder = null;
-            if (((bitField2_ & 0x00800000) != 0)) {
-              subBuilder = defaultActivityLocatorStats_.toBuilder();
-            }
-            defaultActivityLocatorStats_ = input.readMessage(com.google.wireless.android.sdk.stats.DefaultActivityLocatorStats.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(defaultActivityLocatorStats_);
-              defaultActivityLocatorStats_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x00800000;
-            break;
-          }
-          case 730: {
-            com.google.wireless.android.sdk.stats.MotionLayoutEditorEvent.Builder subBuilder = null;
-            if (((bitField2_ & 0x01000000) != 0)) {
-              subBuilder = motionLayoutEditorEvent_.toBuilder();
-            }
-            motionLayoutEditorEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.MotionLayoutEditorEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(motionLayoutEditorEvent_);
-              motionLayoutEditorEvent_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x01000000;
-            break;
-          }
-          case 738: {
-            com.google.wireless.android.sdk.stats.ComposeSampleEvent.Builder subBuilder = null;
-            if (((bitField2_ & 0x02000000) != 0)) {
-              subBuilder = composeSampleEvent_.toBuilder();
-            }
-            composeSampleEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.ComposeSampleEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(composeSampleEvent_);
-              composeSampleEvent_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x02000000;
-            break;
-          }
-          case 746: {
-            com.google.wireless.android.sdk.stats.ImportSampleEvent.Builder subBuilder = null;
-            if (((bitField2_ & 0x04000000) != 0)) {
-              subBuilder = importSampleEvent_.toBuilder();
-            }
-            importSampleEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.ImportSampleEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(importSampleEvent_);
-              importSampleEvent_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x04000000;
-            break;
-          }
-          case 754: {
-            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorEvent.Builder subBuilder = null;
-            if (((bitField2_ & 0x08000000) != 0)) {
-              subBuilder = dynamicLayoutInspectorEvent_.toBuilder();
-            }
-            dynamicLayoutInspectorEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(dynamicLayoutInspectorEvent_);
-              dynamicLayoutInspectorEvent_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x08000000;
-            break;
-          }
-          case 762: {
-            com.google.wireless.android.sdk.stats.BuildAttributionStats.Builder subBuilder = null;
-            if (((bitField2_ & 0x10000000) != 0)) {
-              subBuilder = buildAttributionStats_.toBuilder();
-            }
-            buildAttributionStats_ = input.readMessage(com.google.wireless.android.sdk.stats.BuildAttributionStats.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(buildAttributionStats_);
-              buildAttributionStats_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x10000000;
-            break;
-          }
-          case 770: {
-            com.google.wireless.android.sdk.stats.EditorCompletionStats.Builder subBuilder = null;
-            if (((bitField2_ & 0x20000000) != 0)) {
-              subBuilder = editorCompletionStats_.toBuilder();
-            }
-            editorCompletionStats_ = input.readMessage(com.google.wireless.android.sdk.stats.EditorCompletionStats.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(editorCompletionStats_);
-              editorCompletionStats_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x20000000;
-            break;
-          }
-          case 778: {
-            com.google.wireless.android.sdk.stats.MultiViewEvent.Builder subBuilder = null;
-            if (((bitField2_ & 0x40000000) != 0)) {
-              subBuilder = multiViewEvent_.toBuilder();
-            }
-            multiViewEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.MultiViewEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(multiViewEvent_);
-              multiViewEvent_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x40000000;
-            break;
-          }
-          case 786: {
-            com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.Builder subBuilder = null;
-            if (((bitField2_ & 0x80000000) != 0)) {
-              subBuilder = buildAttributionUiEvent_.toBuilder();
-            }
-            buildAttributionUiEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(buildAttributionUiEvent_);
-              buildAttributionUiEvent_ = subBuilder.buildPartial();
-            }
-            bitField2_ |= 0x80000000;
-            break;
-          }
-          case 794: {
-            com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.Builder subBuilder = null;
-            if (((bitField3_ & 0x00000001) != 0)) {
-              subBuilder = androidCppExtensionEvent_.toBuilder();
-            }
-            androidCppExtensionEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(androidCppExtensionEvent_);
-              androidCppExtensionEvent_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x00000001;
-            break;
-          }
-          case 802: {
-            com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.Builder subBuilder = null;
-            if (((bitField3_ & 0x00000002) != 0)) {
-              subBuilder = designEditorHelpPanelEvent_.toBuilder();
-            }
-            designEditorHelpPanelEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(designEditorHelpPanelEvent_);
-              designEditorHelpPanelEvent_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x00000002;
-            break;
-          }
-          case 810: {
-            com.google.wireless.android.sdk.stats.AppInspectionEvent.Builder subBuilder = null;
-            if (((bitField3_ & 0x00000004) != 0)) {
-              subBuilder = appInspectionEvent_.toBuilder();
-            }
-            appInspectionEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.AppInspectionEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(appInspectionEvent_);
-              appInspectionEvent_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x00000004;
-            break;
-          }
-          case 818: {
-            com.google.wireless.android.sdk.stats.MlModelBindingEvent.Builder subBuilder = null;
-            if (((bitField3_ & 0x00000008) != 0)) {
-              subBuilder = mlModelBindingEvent_.toBuilder();
-            }
-            mlModelBindingEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.MlModelBindingEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(mlModelBindingEvent_);
-              mlModelBindingEvent_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x00000008;
-            break;
-          }
-          case 826: {
-            com.google.wireless.android.sdk.stats.AvdLaunchEvent.Builder subBuilder = null;
-            if (((bitField3_ & 0x00000010) != 0)) {
-              subBuilder = avdLaunchEvent_.toBuilder();
-            }
-            avdLaunchEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.AvdLaunchEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(avdLaunchEvent_);
-              avdLaunchEvent_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x00000010;
-            break;
-          }
-          case 834: {
-            com.google.wireless.android.sdk.stats.NavSafeArgsEvent.Builder subBuilder = null;
-            if (((bitField3_ & 0x00000020) != 0)) {
-              subBuilder = navSafeArgsEvent_.toBuilder();
-            }
-            navSafeArgsEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.NavSafeArgsEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(navSafeArgsEvent_);
-              navSafeArgsEvent_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x00000020;
-            break;
-          }
-          case 842: {
-            com.google.wireless.android.sdk.stats.DaggerEditorEvent.Builder subBuilder = null;
-            if (((bitField3_ & 0x00000040) != 0)) {
-              subBuilder = daggerEditorEvent_.toBuilder();
-            }
-            daggerEditorEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.DaggerEditorEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(daggerEditorEvent_);
-              daggerEditorEvent_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x00000040;
-            break;
-          }
-          case 850: {
-            com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.Builder subBuilder = null;
-            if (((bitField3_ & 0x00000080) != 0)) {
-              subBuilder = parallelAndroidTestReportUiEvent_.toBuilder();
-            }
-            parallelAndroidTestReportUiEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(parallelAndroidTestReportUiEvent_);
-              parallelAndroidTestReportUiEvent_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x00000080;
-            break;
-          }
-          case 858: {
-            com.google.wireless.android.sdk.stats.ApplyChangesAgentError.Builder subBuilder = null;
-            if (((bitField3_ & 0x00000100) != 0)) {
-              subBuilder = applyChangesAgentError_.toBuilder();
-            }
-            applyChangesAgentError_ = input.readMessage(com.google.wireless.android.sdk.stats.ApplyChangesAgentError.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(applyChangesAgentError_);
-              applyChangesAgentError_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x00000100;
-            break;
-          }
-          case 866: {
-            com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.Builder subBuilder = null;
-            if (((bitField3_ & 0x00000200) != 0)) {
-              subBuilder = templateUsage_.toBuilder();
-            }
-            templateUsage_ = input.readMessage(com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(templateUsage_);
-              templateUsage_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x00000200;
-            break;
-          }
-          case 874: {
-            com.google.wireless.android.sdk.stats.UpgradeAssistantComponentEvent.Builder subBuilder = null;
-            if (((bitField3_ & 0x00000400) != 0)) {
-              subBuilder = upgradeAssistantComponentEvent_.toBuilder();
-            }
-            upgradeAssistantComponentEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.UpgradeAssistantComponentEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(upgradeAssistantComponentEvent_);
-              upgradeAssistantComponentEvent_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x00000400;
-            break;
-          }
-          case 882: {
-            com.google.wireless.android.sdk.stats.UpgradeAssistantProcessorEvent.Builder subBuilder = null;
-            if (((bitField3_ & 0x00000800) != 0)) {
-              subBuilder = upgradeAssistantProcessorEvent_.toBuilder();
-            }
-            upgradeAssistantProcessorEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.UpgradeAssistantProcessorEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(upgradeAssistantProcessorEvent_);
-              upgradeAssistantProcessorEvent_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x00000800;
-            break;
-          }
-          case 890: {
-            com.google.wireless.android.sdk.stats.InteractivePreviewEvent.Builder subBuilder = null;
-            if (((bitField3_ & 0x00001000) != 0)) {
-              subBuilder = interactivePreviewEvent_.toBuilder();
-            }
-            interactivePreviewEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.InteractivePreviewEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(interactivePreviewEvent_);
-              interactivePreviewEvent_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x00001000;
-            break;
-          }
-          case 898: {
-            com.google.wireless.android.sdk.stats.ComposeAnimationToolingEvent.Builder subBuilder = null;
-            if (((bitField3_ & 0x00002000) != 0)) {
-              subBuilder = composeAnimationToolingEvent_.toBuilder();
-            }
-            composeAnimationToolingEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.ComposeAnimationToolingEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(composeAnimationToolingEvent_);
-              composeAnimationToolingEvent_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x00002000;
-            break;
-          }
-          case 906: {
-            com.google.wireless.android.sdk.stats.GradleCppSyncStats.Builder subBuilder = null;
-            if (((bitField1_ & 0x00040000) != 0)) {
-              subBuilder = gradleCppSyncStats_.toBuilder();
-            }
-            gradleCppSyncStats_ = input.readMessage(com.google.wireless.android.sdk.stats.GradleCppSyncStats.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(gradleCppSyncStats_);
-              gradleCppSyncStats_ = subBuilder.buildPartial();
-            }
-            bitField1_ |= 0x00040000;
-            break;
-          }
-          case 914: {
-            if (!((mutable_bitField3_ & 0x00020000) != 0)) {
-              emulatorUiEvents_ = new java.util.ArrayList<com.google.wireless.android.sdk.stats.EmulatorUiEvent>();
-              mutable_bitField3_ |= 0x00020000;
-            }
-            emulatorUiEvents_.add(
-                input.readMessage(com.google.wireless.android.sdk.stats.EmulatorUiEvent.PARSER, extensionRegistry));
-            break;
-          }
-          case 922: {
-            com.google.wireless.android.sdk.stats.SurveyResponse.Builder subBuilder = null;
-            if (((bitField3_ & 0x00004000) != 0)) {
-              subBuilder = surveyResponse_.toBuilder();
-            }
-            surveyResponse_ = input.readMessage(com.google.wireless.android.sdk.stats.SurveyResponse.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(surveyResponse_);
-              surveyResponse_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x00004000;
-            break;
-          }
-          case 930: {
-            com.google.wireless.android.sdk.stats.ComposeDeployEvent.Builder subBuilder = null;
-            if (((bitField3_ & 0x00008000) != 0)) {
-              subBuilder = composeDeployEvent_.toBuilder();
-            }
-            composeDeployEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.ComposeDeployEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(composeDeployEvent_);
-              composeDeployEvent_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x00008000;
-            break;
-          }
-          case 938: {
-            com.google.wireless.android.sdk.stats.AutoImportEvent.Builder subBuilder = null;
-            if (((bitField3_ & 0x00010000) != 0)) {
-              subBuilder = autoImportEvent_.toBuilder();
-            }
-            autoImportEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.AutoImportEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(autoImportEvent_);
-              autoImportEvent_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x00010000;
-            break;
-          }
-          case 946: {
-            com.google.wireless.android.sdk.stats.FileUsage.Builder subBuilder = null;
-            if (((bitField3_ & 0x00020000) != 0)) {
-              subBuilder = fileUsage_.toBuilder();
-            }
-            fileUsage_ = input.readMessage(com.google.wireless.android.sdk.stats.FileUsage.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(fileUsage_);
-              fileUsage_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x00020000;
-            break;
-          }
-          case 954: {
-            com.google.wireless.android.sdk.stats.LiveLiteralsEvent.Builder subBuilder = null;
-            if (((bitField3_ & 0x00040000) != 0)) {
-              subBuilder = liveLiteralsEvent_.toBuilder();
-            }
-            liveLiteralsEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.LiveLiteralsEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(liveLiteralsEvent_);
-              liveLiteralsEvent_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x00040000;
-            break;
-          }
-          case 962: {
-            com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent.Builder subBuilder = null;
-            if (((bitField3_ & 0x00080000) != 0)) {
-              subBuilder = nonTransitiveRClassMigrationEvent_.toBuilder();
-            }
-            nonTransitiveRClassMigrationEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(nonTransitiveRClassMigrationEvent_);
-              nonTransitiveRClassMigrationEvent_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x00080000;
-            break;
-          }
-          case 970: {
-            com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.Builder subBuilder = null;
-            if (((bitField3_ & 0x00100000) != 0)) {
-              subBuilder = androidTestRetentionEvent_.toBuilder();
-            }
-            androidTestRetentionEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(androidTestRetentionEvent_);
-              androidTestRetentionEvent_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x00100000;
-            break;
-          }
-          case 978: {
-            com.google.wireless.android.sdk.stats.SuggestedImportEvent.Builder subBuilder = null;
-            if (((bitField3_ & 0x00200000) != 0)) {
-              subBuilder = suggestedImportEvent_.toBuilder();
-            }
-            suggestedImportEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.SuggestedImportEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(suggestedImportEvent_);
-              suggestedImportEvent_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x00200000;
-            break;
-          }
-          case 986: {
-            com.google.wireless.android.sdk.stats.VfsRefresh.Builder subBuilder = null;
-            if (((bitField3_ & 0x00400000) != 0)) {
-              subBuilder = vfsRefresh_.toBuilder();
-            }
-            vfsRefresh_ = input.readMessage(com.google.wireless.android.sdk.stats.VfsRefresh.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(vfsRefresh_);
-              vfsRefresh_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x00400000;
-            break;
-          }
-          case 994: {
-            com.google.wireless.android.sdk.stats.SigningWizardEvent.Builder subBuilder = null;
-            if (((bitField3_ & 0x00800000) != 0)) {
-              subBuilder = signingWizardEvent_.toBuilder();
-            }
-            signingWizardEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.SigningWizardEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(signingWizardEvent_);
-              signingWizardEvent_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x00800000;
-            break;
-          }
-          case 1002: {
-            com.google.wireless.android.sdk.stats.FileType.Builder subBuilder = null;
-            if (((bitField3_ & 0x01000000) != 0)) {
-              subBuilder = fileType_.toBuilder();
-            }
-            fileType_ = input.readMessage(com.google.wireless.android.sdk.stats.FileType.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(fileType_);
-              fileType_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x01000000;
-            break;
-          }
-          case 1010: {
-            com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.Builder subBuilder = null;
-            if (((bitField3_ & 0x02000000) != 0)) {
-              subBuilder = kotlinProjectConfiguration_.toBuilder();
-            }
-            kotlinProjectConfiguration_ = input.readMessage(com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(kotlinProjectConfiguration_);
-              kotlinProjectConfiguration_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x02000000;
-            break;
-          }
-          case 1018: {
-            com.google.wireless.android.sdk.stats.RunStartData.Builder subBuilder = null;
-            if (((bitField3_ & 0x04000000) != 0)) {
-              subBuilder = runStartData_.toBuilder();
-            }
-            runStartData_ = input.readMessage(com.google.wireless.android.sdk.stats.RunStartData.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(runStartData_);
-              runStartData_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x04000000;
-            break;
-          }
-          case 1026: {
-            com.google.wireless.android.sdk.stats.RunFinishData.Builder subBuilder = null;
-            if (((bitField3_ & 0x08000000) != 0)) {
-              subBuilder = runFinishData_.toBuilder();
-            }
-            runFinishData_ = input.readMessage(com.google.wireless.android.sdk.stats.RunFinishData.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(runFinishData_);
-              runFinishData_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x08000000;
-            break;
-          }
-          case 1034: {
-            com.google.wireless.android.sdk.stats.DeviceManagerEvent.Builder subBuilder = null;
-            if (((bitField3_ & 0x10000000) != 0)) {
-              subBuilder = deviceManagerEvent_.toBuilder();
-            }
-            deviceManagerEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.DeviceManagerEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(deviceManagerEvent_);
-              deviceManagerEvent_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x10000000;
-            break;
-          }
-          case 1042: {
-            com.google.wireless.android.sdk.stats.WearPairingEvent.Builder subBuilder = null;
-            if (((bitField3_ & 0x20000000) != 0)) {
-              subBuilder = wearPairingEvent_.toBuilder();
-            }
-            wearPairingEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.WearPairingEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(wearPairingEvent_);
-              wearPairingEvent_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x20000000;
-            break;
-          }
-          case 1050: {
-            com.google.wireless.android.sdk.stats.GradleJdkInvalidEvent.Builder subBuilder = null;
-            if (((bitField3_ & 0x40000000) != 0)) {
-              subBuilder = gradleJdkInvalidEvent_.toBuilder();
-            }
-            gradleJdkInvalidEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.GradleJdkInvalidEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(gradleJdkInvalidEvent_);
-              gradleJdkInvalidEvent_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x40000000;
-            break;
-          }
-          case 1058: {
-            com.google.wireless.android.sdk.stats.DeviceExplorerEvent.Builder subBuilder = null;
-            if (((bitField3_ & 0x80000000) != 0)) {
-              subBuilder = deviceExplorerEvent_.toBuilder();
-            }
-            deviceExplorerEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.DeviceExplorerEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(deviceExplorerEvent_);
-              deviceExplorerEvent_ = subBuilder.buildPartial();
-            }
-            bitField3_ |= 0x80000000;
-            break;
-          }
-          case 1066: {
-            com.google.wireless.android.sdk.stats.OptInToMetrics.Builder subBuilder = null;
-            if (((bitField4_ & 0x00000001) != 0)) {
-              subBuilder = optInToMetrics_.toBuilder();
-            }
-            optInToMetrics_ = input.readMessage(com.google.wireless.android.sdk.stats.OptInToMetrics.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(optInToMetrics_);
-              optInToMetrics_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x00000001;
-            break;
-          }
-          case 1074: {
-            com.google.wireless.android.sdk.stats.OptOutOfMetrics.Builder subBuilder = null;
-            if (((bitField4_ & 0x00000002) != 0)) {
-              subBuilder = optOutOfMetrics_.toBuilder();
-            }
-            optOutOfMetrics_ = input.readMessage(com.google.wireless.android.sdk.stats.OptOutOfMetrics.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(optOutOfMetrics_);
-              optOutOfMetrics_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x00000002;
-            break;
-          }
-          case 1082: {
-            com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.Builder subBuilder = null;
-            if (((bitField4_ & 0x00000004) != 0)) {
-              subBuilder = gradleVersionCatalogDetectorEvent_.toBuilder();
-            }
-            gradleVersionCatalogDetectorEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(gradleVersionCatalogDetectorEvent_);
-              gradleVersionCatalogDetectorEvent_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x00000004;
-            break;
-          }
-          case 1090: {
-            com.google.wireless.android.sdk.stats.CoroutineDebuggerEvent.Builder subBuilder = null;
-            if (((bitField4_ & 0x00000008) != 0)) {
-              subBuilder = coroutineDebuggerEvent_.toBuilder();
-            }
-            coroutineDebuggerEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.CoroutineDebuggerEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(coroutineDebuggerEvent_);
-              coroutineDebuggerEvent_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x00000008;
-            break;
-          }
-          case 1098: {
-            com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.Builder subBuilder = null;
-            if (((bitField4_ & 0x00000010) != 0)) {
-              subBuilder = splittingTabsUsageEvent_.toBuilder();
-            }
-            splittingTabsUsageEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(splittingTabsUsageEvent_);
-              splittingTabsUsageEvent_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x00000010;
-            break;
-          }
-          case 1106: {
-            com.google.wireless.android.sdk.stats.LogcatUsageEvent.Builder subBuilder = null;
-            if (((bitField4_ & 0x00000020) != 0)) {
-              subBuilder = logcatUsageEvent_.toBuilder();
-            }
-            logcatUsageEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.LogcatUsageEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(logcatUsageEvent_);
-              logcatUsageEvent_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x00000020;
-            break;
-          }
-          case 1114: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            if (!((mutable_bitField4_ & 0x00000400) != 0)) {
-              rawProjectIds_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField4_ |= 0x00000400;
-            }
-            rawProjectIds_.add(bs);
-            break;
-          }
-          case 1122: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            if (!((mutable_bitField4_ & 0x00000800) != 0)) {
-              projectIds_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField4_ |= 0x00000800;
-            }
-            projectIds_.add(bs);
-            break;
-          }
-          case 1130: {
-            com.google.wireless.android.sdk.stats.OSMetrics.Builder subBuilder = null;
-            if (((bitField4_ & 0x00000040) != 0)) {
-              subBuilder = osMetrics_.toBuilder();
-            }
-            osMetrics_ = input.readMessage(com.google.wireless.android.sdk.stats.OSMetrics.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(osMetrics_);
-              osMetrics_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x00000040;
-            break;
-          }
-          case 1138: {
-            com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails.Builder subBuilder = null;
-            if (((bitField4_ & 0x00000080) != 0)) {
-              subBuilder = sdkIndexLibraryDetails_.toBuilder();
-            }
-            sdkIndexLibraryDetails_ = input.readMessage(com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(sdkIndexLibraryDetails_);
-              sdkIndexLibraryDetails_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x00000080;
-            break;
-          }
-          case 1146: {
-            com.google.wireless.android.sdk.stats.EditorPickerEvent.Builder subBuilder = null;
-            if (((bitField4_ & 0x00000100) != 0)) {
-              subBuilder = editorPickerEvent_.toBuilder();
-            }
-            editorPickerEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.EditorPickerEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(editorPickerEvent_);
-              editorPickerEvent_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x00000100;
-            break;
-          }
-          case 1154: {
-            com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.Builder subBuilder = null;
-            if (((bitField4_ & 0x00000200) != 0)) {
-              subBuilder = composeMultiPreviewEvent_.toBuilder();
-            }
-            composeMultiPreviewEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(composeMultiPreviewEvent_);
-              composeMultiPreviewEvent_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x00000200;
-            break;
-          }
-          case 1162: {
-            com.google.wireless.android.sdk.stats.LiveEditEvent.Builder subBuilder = null;
-            if (((bitField4_ & 0x00000400) != 0)) {
-              subBuilder = liveEditEvent_.toBuilder();
-            }
-            liveEditEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.LiveEditEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(liveEditEvent_);
-              liveEditEvent_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x00000400;
-            break;
-          }
-          case 1170: {
-            com.google.wireless.android.sdk.stats.StopEvent.Builder subBuilder = null;
-            if (((bitField4_ & 0x00000800) != 0)) {
-              subBuilder = stopEvent_.toBuilder();
-            }
-            stopEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.StopEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(stopEvent_);
-              stopEvent_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x00000800;
-            break;
-          }
-          case 1178: {
-            com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.Builder subBuilder = null;
-            if (((bitField4_ & 0x00001000) != 0)) {
-              subBuilder = appQualityInsightsUsageEvent_.toBuilder();
-            }
-            appQualityInsightsUsageEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(appQualityInsightsUsageEvent_);
-              appQualityInsightsUsageEvent_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x00001000;
-            break;
-          }
-          case 1186: {
-            com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.Builder subBuilder = null;
-            if (((bitField4_ & 0x00002000) != 0)) {
-              subBuilder = googleLoginEvent_.toBuilder();
-            }
-            googleLoginEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(googleLoginEvent_);
-              googleLoginEvent_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x00002000;
-            break;
-          }
-          case 1194: {
-            com.google.wireless.android.sdk.stats.DeviceMirroringSession.Builder subBuilder = null;
-            if (((bitField4_ & 0x00004000) != 0)) {
-              subBuilder = deviceMirroringSession_.toBuilder();
-            }
-            deviceMirroringSession_ = input.readMessage(com.google.wireless.android.sdk.stats.DeviceMirroringSession.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(deviceMirroringSession_);
-              deviceMirroringSession_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x00004000;
-            break;
-          }
-          case 1202: {
-            com.google.wireless.android.sdk.stats.FastPreviewEvent.Builder subBuilder = null;
-            if (((bitField4_ & 0x00008000) != 0)) {
-              subBuilder = fastPreviewEvent_.toBuilder();
-            }
-            fastPreviewEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.FastPreviewEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(fastPreviewEvent_);
-              fastPreviewEvent_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x00008000;
-            break;
-          }
-          case 1210: {
-            com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.Builder subBuilder = null;
-            if (((bitField4_ & 0x00010000) != 0)) {
-              subBuilder = memoryUsageReportEvent_.toBuilder();
-            }
-            memoryUsageReportEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(memoryUsageReportEvent_);
-              memoryUsageReportEvent_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x00010000;
-            break;
-          }
-          case 1218: {
-            com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails.Builder subBuilder = null;
-            if (((bitField4_ & 0x00020000) != 0)) {
-              subBuilder = sdkIndexLoadingDetails_.toBuilder();
-            }
-            sdkIndexLoadingDetails_ = input.readMessage(com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(sdkIndexLoadingDetails_);
-              sdkIndexLoadingDetails_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x00020000;
-            break;
-          }
-          case 1226: {
-            com.google.wireless.android.sdk.stats.ManifestMergerStats.Builder subBuilder = null;
-            if (((bitField4_ & 0x00040000) != 0)) {
-              subBuilder = manifestMergerStats_.toBuilder();
-            }
-            manifestMergerStats_ = input.readMessage(com.google.wireless.android.sdk.stats.ManifestMergerStats.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(manifestMergerStats_);
-              manifestMergerStats_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x00040000;
-            break;
-          }
-          case 1234: {
-            com.google.wireless.android.sdk.stats.ThreadingAgentUsageEvent.Builder subBuilder = null;
-            if (((bitField4_ & 0x00080000) != 0)) {
-              subBuilder = threadingAgentUsageEvent_.toBuilder();
-            }
-            threadingAgentUsageEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.ThreadingAgentUsageEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(threadingAgentUsageEvent_);
-              threadingAgentUsageEvent_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x00080000;
-            break;
-          }
-          case 1242: {
-            com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent.Builder subBuilder = null;
-            if (((bitField4_ & 0x00100000) != 0)) {
-              subBuilder = projectViewSelectionChangeEvent_.toBuilder();
-            }
-            projectViewSelectionChangeEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(projectViewSelectionChangeEvent_);
-              projectViewSelectionChangeEvent_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x00100000;
-            break;
-          }
-          case 1250: {
-            com.google.wireless.android.sdk.stats.HeapReportEvent.Builder subBuilder = null;
-            if (((bitField4_ & 0x00200000) != 0)) {
-              subBuilder = heapReportEvent_.toBuilder();
-            }
-            heapReportEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.HeapReportEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(heapReportEvent_);
-              heapReportEvent_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x00200000;
-            break;
-          }
-          case 1258: {
-            com.google.wireless.android.sdk.stats.CreateDiagnosticReportAction.Builder subBuilder = null;
-            if (((bitField4_ & 0x00400000) != 0)) {
-              subBuilder = createDiagnosticReportActionEvent_.toBuilder();
-            }
-            createDiagnosticReportActionEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.CreateDiagnosticReportAction.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(createDiagnosticReportActionEvent_);
-              createDiagnosticReportActionEvent_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x00400000;
-            break;
-          }
-          case 1266: {
-            com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.Builder subBuilder = null;
-            if (((bitField4_ & 0x00800000) != 0)) {
-              subBuilder = directAccessUsageEvent_.toBuilder();
-            }
-            directAccessUsageEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(directAccessUsageEvent_);
-              directAccessUsageEvent_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x00800000;
-            break;
-          }
-          case 1274: {
-            com.google.wireless.android.sdk.stats.SafeModeStatsEvent.Builder subBuilder = null;
-            if (((bitField4_ & 0x01000000) != 0)) {
-              subBuilder = safeModeStatsEvent_.toBuilder();
-            }
-            safeModeStatsEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.SafeModeStatsEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(safeModeStatsEvent_);
-              safeModeStatsEvent_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x01000000;
-            break;
-          }
-          case 1282: {
-            com.google.wireless.android.sdk.stats.TSdkUAEvent.Builder subBuilder = null;
-            if (((bitField4_ & 0x02000000) != 0)) {
-              subBuilder = tsdkUaEvent_.toBuilder();
-            }
-            tsdkUaEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.TSdkUAEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(tsdkUaEvent_);
-              tsdkUaEvent_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x02000000;
-            break;
-          }
-          case 1290: {
-            com.google.wireless.android.sdk.stats.IntelliJNewUIState.Builder subBuilder = null;
-            if (((bitField4_ & 0x04000000) != 0)) {
-              subBuilder = intellijNewUiStateEvent_.toBuilder();
-            }
-            intellijNewUiStateEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.IntelliJNewUIState.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(intellijNewUiStateEvent_);
-              intellijNewUiStateEvent_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x04000000;
-            break;
-          }
-          case 1298: {
-            com.google.wireless.android.sdk.stats.KotlinGradlePerformance.Builder subBuilder = null;
-            if (((bitField4_ & 0x08000000) != 0)) {
-              subBuilder = kotlinGradlePerformanceEvent_.toBuilder();
-            }
-            kotlinGradlePerformanceEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.KotlinGradlePerformance.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(kotlinGradlePerformanceEvent_);
-              kotlinGradlePerformanceEvent_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x08000000;
-            break;
-          }
-          case 1306: {
-            com.google.wireless.android.sdk.stats.BuildOutputDownloadsInfoEvent.Builder subBuilder = null;
-            if (((bitField4_ & 0x10000000) != 0)) {
-              subBuilder = buildOutputDownloadsInfoEvent_.toBuilder();
-            }
-            buildOutputDownloadsInfoEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.BuildOutputDownloadsInfoEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(buildOutputDownloadsInfoEvent_);
-              buildOutputDownloadsInfoEvent_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x10000000;
-            break;
-          }
-          case 1314: {
-            com.google.wireless.android.sdk.stats.DeviceMirroringAbnormalAgentTermination.Builder subBuilder = null;
-            if (((bitField4_ & 0x20000000) != 0)) {
-              subBuilder = deviceMirroringAbnormalAgentTermination_.toBuilder();
-            }
-            deviceMirroringAbnormalAgentTermination_ = input.readMessage(com.google.wireless.android.sdk.stats.DeviceMirroringAbnormalAgentTermination.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(deviceMirroringAbnormalAgentTermination_);
-              deviceMirroringAbnormalAgentTermination_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x20000000;
-            break;
-          }
-          case 1322: {
-            com.google.wireless.android.sdk.stats.SystemHealthEvent.Builder subBuilder = null;
-            if (((bitField4_ & 0x40000000) != 0)) {
-              subBuilder = systemHealthEvent_.toBuilder();
-            }
-            systemHealthEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.SystemHealthEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(systemHealthEvent_);
-              systemHealthEvent_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x40000000;
-            break;
-          }
-          case 1330: {
-            com.google.wireless.android.sdk.stats.ComposePreviewCanvasEvent.Builder subBuilder = null;
-            if (((bitField4_ & 0x80000000) != 0)) {
-              subBuilder = composePreviewCanvasEvent_.toBuilder();
-            }
-            composePreviewCanvasEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.ComposePreviewCanvasEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(composePreviewCanvasEvent_);
-              composePreviewCanvasEvent_ = subBuilder.buildPartial();
-            }
-            bitField4_ |= 0x80000000;
-            break;
-          }
-          case 1338: {
-            com.google.wireless.android.sdk.stats.SmlCompletionEvent.Builder subBuilder = null;
-            if (((bitField5_ & 0x00000001) != 0)) {
-              subBuilder = smlCompletionEvent_.toBuilder();
-            }
-            smlCompletionEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.SmlCompletionEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(smlCompletionEvent_);
-              smlCompletionEvent_ = subBuilder.buildPartial();
-            }
-            bitField5_ |= 0x00000001;
-            break;
-          }
-          case 1346: {
-            com.google.wireless.android.sdk.stats.SmlTransformEvent.Builder subBuilder = null;
-            if (((bitField5_ & 0x00000002) != 0)) {
-              subBuilder = smlTransformEvent_.toBuilder();
-            }
-            smlTransformEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.SmlTransformEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(smlTransformEvent_);
-              smlTransformEvent_ = subBuilder.buildPartial();
-            }
-            bitField5_ |= 0x00000002;
-            break;
-          }
-          case 1354: {
-            com.google.wireless.android.sdk.stats.SmlChatBotEvent.Builder subBuilder = null;
-            if (((bitField5_ & 0x00000004) != 0)) {
-              subBuilder = smlChatBotEvent_.toBuilder();
-            }
-            smlChatBotEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.SmlChatBotEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(smlChatBotEvent_);
-              smlChatBotEvent_ = subBuilder.buildPartial();
-            }
-            bitField5_ |= 0x00000004;
-            break;
-          }
-          case 1362: {
-            com.google.wireless.android.sdk.stats.SmlConfigurationEvent.Builder subBuilder = null;
-            if (((bitField5_ & 0x00000008) != 0)) {
-              subBuilder = smlConfigurationEvent_.toBuilder();
-            }
-            smlConfigurationEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.SmlConfigurationEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(smlConfigurationEvent_);
-              smlConfigurationEvent_ = subBuilder.buildPartial();
-            }
-            bitField5_ |= 0x00000008;
-            break;
-          }
-          case 1370: {
-            com.google.wireless.android.sdk.stats.KotlinSupportDeclined.Builder subBuilder = null;
-            if (((bitField5_ & 0x00000010) != 0)) {
-              subBuilder = kotlinSupportDeclined_.toBuilder();
-            }
-            kotlinSupportDeclined_ = input.readMessage(com.google.wireless.android.sdk.stats.KotlinSupportDeclined.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(kotlinSupportDeclined_);
-              kotlinSupportDeclined_ = subBuilder.buildPartial();
-            }
-            bitField5_ |= 0x00000010;
-            break;
-          }
-          case 1378: {
-            com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.Builder subBuilder = null;
-            if (((bitField5_ & 0x00000020) != 0)) {
-              subBuilder = deviceScreenshotEvent_.toBuilder();
-            }
-            deviceScreenshotEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(deviceScreenshotEvent_);
-              deviceScreenshotEvent_ = subBuilder.buildPartial();
-            }
-            bitField5_ |= 0x00000020;
-            break;
-          }
-          case 1386: {
-            com.google.wireless.android.sdk.stats.EditorNotification.Builder subBuilder = null;
-            if (((bitField5_ & 0x00000040) != 0)) {
-              subBuilder = editorNotification_.toBuilder();
-            }
-            editorNotification_ = input.readMessage(com.google.wireless.android.sdk.stats.EditorNotification.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(editorNotification_);
-              editorNotification_ = subBuilder.buildPartial();
-            }
-            bitField5_ |= 0x00000040;
-            break;
-          }
-          case 1394: {
-            com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEvent.Builder subBuilder = null;
-            if (((bitField5_ & 0x00000080) != 0)) {
-              subBuilder = composePreviewLiteModeEvent_.toBuilder();
-            }
-            composePreviewLiteModeEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(composePreviewLiteModeEvent_);
-              composePreviewLiteModeEvent_ = subBuilder.buildPartial();
-            }
-            bitField5_ |= 0x00000080;
-            break;
-          }
-          case 1402: {
-            com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStats.Builder subBuilder = null;
-            if (((bitField5_ & 0x00000100) != 0)) {
-              subBuilder = upgradeAndroidStudioDialog_.toBuilder();
-            }
-            upgradeAndroidStudioDialog_ = input.readMessage(com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStats.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(upgradeAndroidStudioDialog_);
-              upgradeAndroidStudioDialog_ = subBuilder.buildPartial();
-            }
-            bitField5_ |= 0x00000100;
-            break;
-          }
-          case 1410: {
-            com.google.wireless.android.sdk.stats.DebuggerEvent.Builder subBuilder = null;
-            if (((bitField5_ & 0x00000200) != 0)) {
-              subBuilder = debuggerEvent_.toBuilder();
-            }
-            debuggerEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.DebuggerEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(debuggerEvent_);
-              debuggerEvent_ = subBuilder.buildPartial();
-            }
-            bitField5_ |= 0x00000200;
-            break;
-          }
-          case 1418: {
-            com.google.wireless.android.sdk.stats.SoongSyncStats.Builder subBuilder = null;
-            if (((bitField5_ & 0x00000400) != 0)) {
-              subBuilder = soongSyncStats_.toBuilder();
-            }
-            soongSyncStats_ = input.readMessage(com.google.wireless.android.sdk.stats.SoongSyncStats.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(soongSyncStats_);
-              soongSyncStats_ = subBuilder.buildPartial();
-            }
-            bitField5_ |= 0x00000400;
-            break;
-          }
-          case 1426: {
-            com.google.wireless.android.sdk.stats.IntelliJNewUISwitch.Builder subBuilder = null;
-            if (((bitField5_ & 0x00000800) != 0)) {
-              subBuilder = intellijNewUiSwitch_.toBuilder();
-            }
-            intellijNewUiSwitch_ = input.readMessage(com.google.wireless.android.sdk.stats.IntelliJNewUISwitch.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(intellijNewUiSwitch_);
-              intellijNewUiSwitch_ = subBuilder.buildPartial();
-            }
-            bitField5_ |= 0x00000800;
-            break;
-          }
-          case 1434: {
-            com.google.wireless.android.sdk.stats.EssentialsModeEvent.Builder subBuilder = null;
-            if (((bitField5_ & 0x00001000) != 0)) {
-              subBuilder = essentialsModeEvent_.toBuilder();
-            }
-            essentialsModeEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.EssentialsModeEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(essentialsModeEvent_);
-              essentialsModeEvent_ = subBuilder.buildPartial();
-            }
-            bitField5_ |= 0x00001000;
-            break;
-          }
-          case 1442: {
-            com.google.wireless.android.sdk.stats.LintTooltipLinkEvent.Builder subBuilder = null;
-            if (((bitField5_ & 0x00002000) != 0)) {
-              subBuilder = lintTooltipLinkEvent_.toBuilder();
-            }
-            lintTooltipLinkEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.LintTooltipLinkEvent.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(lintTooltipLinkEvent_);
-              lintTooltipLinkEvent_ = subBuilder.buildPartial();
-            }
-            bitField5_ |= 0x00002000;
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      if (((mutable_bitField2_ & 0x00000004) != 0)) {
-        intellijProjectSizeStats_ = java.util.Collections.unmodifiableList(intellijProjectSizeStats_);
-      }
-      if (((mutable_bitField2_ & 0x00004000) != 0)) {
-        gradleSyncIssues_ = java.util.Collections.unmodifiableList(gradleSyncIssues_);
-      }
-      if (((mutable_bitField2_ & 0x00008000) != 0)) {
-        offeredQuickFixes_ = java.util.Collections.unmodifiableList(offeredQuickFixes_);
-      }
-      if (((mutable_bitField3_ & 0x00020000) != 0)) {
-        emulatorUiEvents_ = java.util.Collections.unmodifiableList(emulatorUiEvents_);
-      }
-      if (((mutable_bitField4_ & 0x00000400) != 0)) {
-        rawProjectIds_ = rawProjectIds_.getUnmodifiableView();
-      }
-      if (((mutable_bitField4_ & 0x00000800) != 0)) {
-        projectIds_ = projectIds_.getUnmodifiableView();
-      }
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AndroidStudioEvent_descriptor;
@@ -4461,9 +2141,9 @@ private static final long serialVersionUID = 0L;
      */
     BUILD_ATTRIBUTION_UI_EVENT(199),
     /**
-     * <code>ANDROID_CPP_EXTENSION = 200;</code>
+     * <code>VS_PLUGIN = 200;</code>
      */
-    ANDROID_CPP_EXTENSION(200),
+    VS_PLUGIN(200),
     /**
      * <pre>
      * The event related to help panels in design editor
@@ -5218,6 +2898,54 @@ private static final long serialVersionUID = 0L;
      * <code>LINT_TOOLTIP_LINK_EVENT = 296;</code>
      */
     LINT_TOOLTIP_LINK_EVENT(296),
+    /**
+     * <pre>
+     * Event for Studio Bot aiexclude effects
+     * </pre>
+     *
+     * <code>SML_AI_EXCLUDE_EVENT = 297;</code>
+     */
+    SML_AI_EXCLUDE_EVENT(297),
+    /**
+     * <pre>
+     * Event for IDevice interface usage
+     * </pre>
+     *
+     * <code>I_DEVICE_USAGE_EVENT = 298;</code>
+     */
+    I_DEVICE_USAGE_EVENT(298),
+    /**
+     * <pre>
+     * Event related to merged manifest view usage
+     * </pre>
+     *
+     * <code>MANIFEST_PANEL_EVENT = 299;</code>
+     */
+    MANIFEST_PANEL_EVENT(299),
+    /**
+     * <pre>
+     * Event to report Gradle JDK configuration during sync
+     * </pre>
+     *
+     * <code>GRADLE_JDK_CONFIGURATION = 300;</code>
+     */
+    GRADLE_JDK_CONFIGURATION(300),
+    /**
+     * <pre>
+     * Render Security manager event
+     * </pre>
+     *
+     * <code>RENDER_SECURITY_MANAGER_EVENT = 301;</code>
+     */
+    RENDER_SECURITY_MANAGER_EVENT(301),
+    /**
+     * <pre>
+     * Event related to the refresh process of a preview tool
+     * </pre>
+     *
+     * <code>PREVIEW_REFRESH_EVENT = 302;</code>
+     */
+    PREVIEW_REFRESH_EVENT(302),
     ;
 
     /**
@@ -6666,9 +4394,9 @@ private static final long serialVersionUID = 0L;
      */
     public static final int BUILD_ATTRIBUTION_UI_EVENT_VALUE = 199;
     /**
-     * <code>ANDROID_CPP_EXTENSION = 200;</code>
+     * <code>VS_PLUGIN = 200;</code>
      */
-    public static final int ANDROID_CPP_EXTENSION_VALUE = 200;
+    public static final int VS_PLUGIN_VALUE = 200;
     /**
      * <pre>
      * The event related to help panels in design editor
@@ -7422,6 +5150,54 @@ private static final long serialVersionUID = 0L;
      * <code>LINT_TOOLTIP_LINK_EVENT = 296;</code>
      */
     public static final int LINT_TOOLTIP_LINK_EVENT_VALUE = 296;
+    /**
+     * <pre>
+     * Event for Studio Bot aiexclude effects
+     * </pre>
+     *
+     * <code>SML_AI_EXCLUDE_EVENT = 297;</code>
+     */
+    public static final int SML_AI_EXCLUDE_EVENT_VALUE = 297;
+    /**
+     * <pre>
+     * Event for IDevice interface usage
+     * </pre>
+     *
+     * <code>I_DEVICE_USAGE_EVENT = 298;</code>
+     */
+    public static final int I_DEVICE_USAGE_EVENT_VALUE = 298;
+    /**
+     * <pre>
+     * Event related to merged manifest view usage
+     * </pre>
+     *
+     * <code>MANIFEST_PANEL_EVENT = 299;</code>
+     */
+    public static final int MANIFEST_PANEL_EVENT_VALUE = 299;
+    /**
+     * <pre>
+     * Event to report Gradle JDK configuration during sync
+     * </pre>
+     *
+     * <code>GRADLE_JDK_CONFIGURATION = 300;</code>
+     */
+    public static final int GRADLE_JDK_CONFIGURATION_VALUE = 300;
+    /**
+     * <pre>
+     * Render Security manager event
+     * </pre>
+     *
+     * <code>RENDER_SECURITY_MANAGER_EVENT = 301;</code>
+     */
+    public static final int RENDER_SECURITY_MANAGER_EVENT_VALUE = 301;
+    /**
+     * <pre>
+     * Event related to the refresh process of a preview tool
+     * </pre>
+     *
+     * <code>PREVIEW_REFRESH_EVENT = 302;</code>
+     */
+    public static final int PREVIEW_REFRESH_EVENT_VALUE = 302;
 
 
     public final int getNumber() {
@@ -7640,7 +5416,7 @@ private static final long serialVersionUID = 0L;
         case 197: return EDITOR_COMPLETION_STATS;
         case 198: return MULTI_VIEW_EVENT;
         case 199: return BUILD_ATTRIBUTION_UI_EVENT;
-        case 200: return ANDROID_CPP_EXTENSION;
+        case 200: return VS_PLUGIN;
         case 201: return DESIGN_EDITOR_HELP_PANEL_EVENT;
         case 202: return APP_INSPECTION;
         case 203: return ML_MODEL_BINDING;
@@ -7736,6 +5512,12 @@ private static final long serialVersionUID = 0L;
         case 294: return INTELLIJ_NEW_UI_SWITCH;
         case 295: return ESSENTIALS_MODE_EVENT;
         case 296: return LINT_TOOLTIP_LINK_EVENT;
+        case 297: return SML_AI_EXCLUDE_EVENT;
+        case 298: return I_DEVICE_USAGE_EVENT;
+        case 299: return MANIFEST_PANEL_EVENT;
+        case 300: return GRADLE_JDK_CONFIGURATION;
+        case 301: return RENDER_SECURITY_MANAGER_EVENT;
+        case 302: return PREVIEW_REFRESH_EVENT;
         default: return null;
       }
     }
@@ -8825,6 +6607,10 @@ private static final long serialVersionUID = 0L;
      * <code>BASELINE_PROFILES_MODULE = 68;</code>
      */
     BASELINE_PROFILES_MODULE(68),
+    /**
+     * <code>EXPERIMENTAL_ACTIVITY = 69;</code>
+     */
+    EXPERIMENTAL_ACTIVITY(69),
     ;
 
     /**
@@ -9107,6 +6893,10 @@ private static final long serialVersionUID = 0L;
      * <code>BASELINE_PROFILES_MODULE = 68;</code>
      */
     public static final int BASELINE_PROFILES_MODULE_VALUE = 68;
+    /**
+     * <code>EXPERIMENTAL_ACTIVITY = 69;</code>
+     */
+    public static final int EXPERIMENTAL_ACTIVITY_VALUE = 69;
 
 
     public final int getNumber() {
@@ -9198,6 +6988,7 @@ private static final long serialVersionUID = 0L;
         case 66: return WEAR_OS_COMPOSE_ACTIVITY;
         case 67: return GOOGLE_WALLET_ACTIVITY;
         case 68: return BASELINE_PROFILES_MODULE;
+        case 69: return EXPERIMENTAL_ACTIVITY;
         default: return null;
       }
     }
@@ -9436,6 +7227,28 @@ private static final long serialVersionUID = 0L;
      * <code>ANDROID_SYNC_NO_VARIANTS_FOUND = 40;</code>
      */
     ANDROID_SYNC_NO_VARIANTS_FOUND(40),
+    /**
+     * <code>ANDROID_SYNC_JDK_IMPORT_CHECK = 41;</code>
+     */
+    ANDROID_SYNC_JDK_IMPORT_CHECK(41),
+    /**
+     * <pre>
+     * Next 2 are health check values helping to detect that some reasons remain
+     * unreported properly. Ideally counts of these should be next to 0. Report
+     * this when no specific value was reported but build issue was generated.
+     * </pre>
+     *
+     * <code>BUILD_ISSUE_CREATED_UNKNOWN_FAILURE = 42;</code>
+     */
+    BUILD_ISSUE_CREATED_UNKNOWN_FAILURE(42),
+    /**
+     * <pre>
+     * Same as above but we also see it was generated by Android Studio code.
+     * </pre>
+     *
+     * <code>ANDROID_BUILD_ISSUE_CREATED_UNKNOWN_FAILURE = 43;</code>
+     */
+    ANDROID_BUILD_ISSUE_CREATED_UNKNOWN_FAILURE(43),
     ;
 
     /**
@@ -9618,6 +7431,28 @@ private static final long serialVersionUID = 0L;
      * <code>ANDROID_SYNC_NO_VARIANTS_FOUND = 40;</code>
      */
     public static final int ANDROID_SYNC_NO_VARIANTS_FOUND_VALUE = 40;
+    /**
+     * <code>ANDROID_SYNC_JDK_IMPORT_CHECK = 41;</code>
+     */
+    public static final int ANDROID_SYNC_JDK_IMPORT_CHECK_VALUE = 41;
+    /**
+     * <pre>
+     * Next 2 are health check values helping to detect that some reasons remain
+     * unreported properly. Ideally counts of these should be next to 0. Report
+     * this when no specific value was reported but build issue was generated.
+     * </pre>
+     *
+     * <code>BUILD_ISSUE_CREATED_UNKNOWN_FAILURE = 42;</code>
+     */
+    public static final int BUILD_ISSUE_CREATED_UNKNOWN_FAILURE_VALUE = 42;
+    /**
+     * <pre>
+     * Same as above but we also see it was generated by Android Studio code.
+     * </pre>
+     *
+     * <code>ANDROID_BUILD_ISSUE_CREATED_UNKNOWN_FAILURE = 43;</code>
+     */
+    public static final int ANDROID_BUILD_ISSUE_CREATED_UNKNOWN_FAILURE_VALUE = 43;
 
 
     public final int getNumber() {
@@ -9681,6 +7516,9 @@ private static final long serialVersionUID = 0L;
         case 38: return MULTIPLE_ANDROID_PLUGIN_VERSIONS;
         case 39: return ANDROID_SYNC_NO_VALID_NATIVE_ABI_FOUND;
         case 40: return ANDROID_SYNC_NO_VARIANTS_FOUND;
+        case 41: return ANDROID_SYNC_JDK_IMPORT_CHECK;
+        case 42: return BUILD_ISSUE_CREATED_UNKNOWN_FAILURE;
+        case 43: return ANDROID_BUILD_ISSUE_CREATED_UNKNOWN_FAILURE;
         default: return null;
       }
     }
@@ -9773,12 +7611,20 @@ private static final long serialVersionUID = 0L;
     AGDE(6),
     /**
      * <pre>
-     * Android Studio for Platform (ASfP)
+     * Android Studio for Platform (ASfP) - Public
      * </pre>
      *
      * <code>ANDROID_STUDIO_FOR_PLATFORM = 7;</code>
      */
     ANDROID_STUDIO_FOR_PLATFORM(7),
+    /**
+     * <pre>
+     * Android Studio for Platform (ASfP) - Internal
+     * </pre>
+     *
+     * <code>ANDROID_STUDIO_FOR_PLATFORM_INTERNAL = 8;</code>
+     */
+    ANDROID_STUDIO_FOR_PLATFORM_INTERNAL(8),
     ;
 
     /**
@@ -9815,12 +7661,20 @@ private static final long serialVersionUID = 0L;
     public static final int AGDE_VALUE = 6;
     /**
      * <pre>
-     * Android Studio for Platform (ASfP)
+     * Android Studio for Platform (ASfP) - Public
      * </pre>
      *
      * <code>ANDROID_STUDIO_FOR_PLATFORM = 7;</code>
      */
     public static final int ANDROID_STUDIO_FOR_PLATFORM_VALUE = 7;
+    /**
+     * <pre>
+     * Android Studio for Platform (ASfP) - Internal
+     * </pre>
+     *
+     * <code>ANDROID_STUDIO_FOR_PLATFORM_INTERNAL = 8;</code>
+     */
+    public static final int ANDROID_STUDIO_FOR_PLATFORM_INTERNAL_VALUE = 8;
 
 
     public final int getNumber() {
@@ -9851,6 +7705,7 @@ private static final long serialVersionUID = 0L;
         case 5: return GAME_TOOLS;
         case 6: return AGDE;
         case 7: return ANDROID_STUDIO_FOR_PLATFORM;
+        case 8: return ANDROID_STUDIO_FOR_PLATFORM_INTERNAL;
         default: return null;
       }
     }
@@ -11630,96 +9485,6 @@ private static final long serialVersionUID = 0L;
     getUnknownFields() {
       return this.unknownFields;
     }
-    private TemplatesUsage(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000001) != 0)) {
-                subBuilder = templateComponent_.toBuilder();
-              }
-              templateComponent_ = input.readMessage(com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(templateComponent_);
-                templateComponent_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000001;
-              break;
-            }
-            case 18: {
-              com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000002) != 0)) {
-                subBuilder = templateModule_.toBuilder();
-              }
-              templateModule_ = input.readMessage(com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(templateModule_);
-                templateModule_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000002;
-              break;
-            }
-            case 26: {
-              com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateProject.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000004) != 0)) {
-                subBuilder = templateProject_.toBuilder();
-              }
-              templateProject_ = input.readMessage(com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateProject.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(templateProject_);
-                templateProject_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000004;
-              break;
-            }
-            case 34: {
-              com.google.wireless.android.sdk.stats.KotlinSupport.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000008) != 0)) {
-                subBuilder = kotlinSupport_.toBuilder();
-              }
-              kotlinSupport_ = input.readMessage(com.google.wireless.android.sdk.stats.KotlinSupport.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(kotlinSupport_);
-                kotlinSupport_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000008;
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AndroidStudioEvent_TemplatesUsage_descriptor;
@@ -11815,68 +9580,6 @@ private static final long serialVersionUID = 0L;
       getUnknownFields() {
         return this.unknownFields;
       }
-      private TemplateComponent(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        this();
-        if (extensionRegistry == null) {
-          throw new java.lang.NullPointerException();
-        }
-        int mutable_bitField0_ = 0;
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-            com.google.protobuf.UnknownFieldSet.newBuilder();
-        try {
-          boolean done = false;
-          while (!done) {
-            int tag = input.readTag();
-            switch (tag) {
-              case 0:
-                done = true;
-                break;
-              case 8: {
-                int rawValue = input.readEnum();
-                  @SuppressWarnings("deprecation")
-                com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.TemplateType value = com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.TemplateType.valueOf(rawValue);
-                if (value == null) {
-                  unknownFields.mergeVarintField(1, rawValue);
-                } else {
-                  bitField0_ |= 0x00000001;
-                  templateType_ = rawValue;
-                }
-                break;
-              }
-              case 16: {
-                int rawValue = input.readEnum();
-                  @SuppressWarnings("deprecation")
-                com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.WizardUiContext value = com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.WizardUiContext.valueOf(rawValue);
-                if (value == null) {
-                  unknownFields.mergeVarintField(2, rawValue);
-                } else {
-                  bitField0_ |= 0x00000002;
-                  wizardUiContext_ = rawValue;
-                }
-                break;
-              }
-              default: {
-                if (!parseUnknownField(
-                    input, unknownFields, extensionRegistry, tag)) {
-                  done = true;
-                }
-                break;
-              }
-            }
-          }
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          throw e.setUnfinishedMessage(this);
-        } catch (java.io.IOException e) {
-          throw new com.google.protobuf.InvalidProtocolBufferException(
-              e).setUnfinishedMessage(this);
-        } finally {
-          this.unknownFields = unknownFields.build();
-          makeExtensionsImmutable();
-        }
-      }
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AndroidStudioEvent_TemplatesUsage_TemplateComponent_descriptor;
@@ -11894,7 +9597,7 @@ private static final long serialVersionUID = 0L;
        * <pre>
        * The different template components (eg Activities, Fragments, Services,
        * etc) the template engine could be asked to render
-       * Next ID: 61
+       * Next ID: 63
        * </pre>
        *
        * Protobuf enum {@code android_studio.AndroidStudioEvent.TemplatesUsage.TemplateComponent.TemplateType}
@@ -12151,6 +9854,10 @@ private static final long serialVersionUID = 0L;
          * <code>CONTENT_PROVIDER = 56;</code>
          */
         CONTENT_PROVIDER(56),
+        /**
+         * <code>EXPERIMENTAL_ACTIVITY = 62;</code>
+         */
+        EXPERIMENTAL_ACTIVITY(62),
         ;
 
         /**
@@ -12401,6 +10108,10 @@ private static final long serialVersionUID = 0L;
          * <code>CONTENT_PROVIDER = 56;</code>
          */
         public static final int CONTENT_PROVIDER_VALUE = 56;
+        /**
+         * <code>EXPERIMENTAL_ACTIVITY = 62;</code>
+         */
+        public static final int EXPERIMENTAL_ACTIVITY_VALUE = 62;
 
 
         public final int getNumber() {
@@ -12485,6 +10196,7 @@ private static final long serialVersionUID = 0L;
             case 54: return SERVICE;
             case 55: return SLICE_PROVIDER;
             case 56: return CONTENT_PROVIDER;
+            case 62: return EXPERIMENTAL_ACTIVITY;
             default: return null;
           }
         }
@@ -12758,7 +10470,7 @@ private static final long serialVersionUID = 0L;
         if (((bitField0_ & 0x00000002) != 0)) {
           output.writeEnum(2, wizardUiContext_);
         }
-        unknownFields.writeTo(output);
+        getUnknownFields().writeTo(output);
       }
 
       @java.lang.Override
@@ -12775,7 +10487,7 @@ private static final long serialVersionUID = 0L;
           size += com.google.protobuf.CodedOutputStream
             .computeEnumSize(2, wizardUiContext_);
         }
-        size += unknownFields.getSerializedSize();
+        size += getUnknownFields().getSerializedSize();
         memoizedSize = size;
         return size;
       }
@@ -12798,7 +10510,7 @@ private static final long serialVersionUID = 0L;
         if (hasWizardUiContext()) {
           if (wizardUiContext_ != other.wizardUiContext_) return false;
         }
-        if (!unknownFields.equals(other.unknownFields)) return false;
+        if (!getUnknownFields().equals(other.getUnknownFields())) return false;
         return true;
       }
 
@@ -12817,7 +10529,7 @@ private static final long serialVersionUID = 0L;
           hash = (37 * hash) + WIZARD_UI_CONTEXT_FIELD_NUMBER;
           hash = (53 * hash) + wizardUiContext_;
         }
-        hash = (29 * hash) + unknownFields.hashCode();
+        hash = (29 * hash) + getUnknownFields().hashCode();
         memoizedHashCode = hash;
         return hash;
       }
@@ -12941,18 +10653,13 @@ private static final long serialVersionUID = 0L;
 
         // Construct using com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.newBuilder()
         private Builder() {
-          maybeForceBuilderInitialization();
+
         }
 
         private Builder(
             com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
           super(parent);
-          maybeForceBuilderInitialization();
-        }
-        private void maybeForceBuilderInitialization() {
-          if (com.google.protobuf.GeneratedMessageV3
-                  .alwaysUseFieldBuilders) {
-          }
+
         }
         @java.lang.Override
         public Builder clear() {
@@ -13052,7 +10759,7 @@ private static final long serialVersionUID = 0L;
           if (other.hasWizardUiContext()) {
             setWizardUiContext(other.getWizardUiContext());
           }
-          this.mergeUnknownFields(other.unknownFields);
+          this.mergeUnknownFields(other.getUnknownFields());
           onChanged();
           return this;
         }
@@ -13067,17 +10774,54 @@ private static final long serialVersionUID = 0L;
             com.google.protobuf.CodedInputStream input,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws java.io.IOException {
-          com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent parsedMessage = null;
+          if (extensionRegistry == null) {
+            throw new java.lang.NullPointerException();
+          }
           try {
-            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            boolean done = false;
+            while (!done) {
+              int tag = input.readTag();
+              switch (tag) {
+                case 0:
+                  done = true;
+                  break;
+                case 8: {
+                  int tmpRaw = input.readEnum();
+                  com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.TemplateType tmpValue =
+                      com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.TemplateType.forNumber(tmpRaw);
+                  if (tmpValue == null) {
+                    mergeUnknownVarintField(1, tmpRaw);
+                  } else {
+                    templateType_ = tmpRaw;
+                    bitField0_ |= 0x00000001;
+                  }
+                  break;
+                } // case 8
+                case 16: {
+                  int tmpRaw = input.readEnum();
+                  com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.WizardUiContext tmpValue =
+                      com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.WizardUiContext.forNumber(tmpRaw);
+                  if (tmpValue == null) {
+                    mergeUnknownVarintField(2, tmpRaw);
+                  } else {
+                    wizardUiContext_ = tmpRaw;
+                    bitField0_ |= 0x00000002;
+                  }
+                  break;
+                } // case 16
+                default: {
+                  if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                    done = true; // was an endgroup tag
+                  }
+                  break;
+                } // default:
+              } // switch (tag)
+            } // while (!done)
           } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-            parsedMessage = (com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent) e.getUnfinishedMessage();
             throw e.unwrapIOException();
           } finally {
-            if (parsedMessage != null) {
-              mergeFrom(parsedMessage);
-            }
-          }
+            onChanged();
+          } // finally
           return this;
         }
         private int bitField0_;
@@ -13240,7 +10984,18 @@ private static final long serialVersionUID = 0L;
             com.google.protobuf.CodedInputStream input,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws com.google.protobuf.InvalidProtocolBufferException {
-          return new TemplateComponent(input, extensionRegistry);
+          Builder builder = newBuilder();
+          try {
+            builder.mergeFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw e.setUnfinishedMessage(builder.buildPartial());
+          } catch (com.google.protobuf.UninitializedMessageException e) {
+            throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+          } catch (java.io.IOException e) {
+            throw new com.google.protobuf.InvalidProtocolBufferException(e)
+                .setUnfinishedMessage(builder.buildPartial());
+          }
+          return builder.buildPartial();
         }
       };
 
@@ -13357,73 +11112,6 @@ private static final long serialVersionUID = 0L;
       public final com.google.protobuf.UnknownFieldSet
       getUnknownFields() {
         return this.unknownFields;
-      }
-      private TemplateModule(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        this();
-        if (extensionRegistry == null) {
-          throw new java.lang.NullPointerException();
-        }
-        int mutable_bitField0_ = 0;
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-            com.google.protobuf.UnknownFieldSet.newBuilder();
-        try {
-          boolean done = false;
-          while (!done) {
-            int tag = input.readTag();
-            switch (tag) {
-              case 0:
-                done = true;
-                break;
-              case 8: {
-                int rawValue = input.readEnum();
-                  @SuppressWarnings("deprecation")
-                com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.ModuleType value = com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.ModuleType.valueOf(rawValue);
-                if (value == null) {
-                  unknownFields.mergeVarintField(1, rawValue);
-                } else {
-                  bitField0_ |= 0x00000001;
-                  moduleType_ = rawValue;
-                }
-                break;
-              }
-              case 16: {
-                bitField0_ |= 0x00000002;
-                minSdk_ = input.readUInt32();
-                break;
-              }
-              case 24: {
-                int rawValue = input.readEnum();
-                  @SuppressWarnings("deprecation")
-                com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.BytecodeLevel value = com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.BytecodeLevel.valueOf(rawValue);
-                if (value == null) {
-                  unknownFields.mergeVarintField(3, rawValue);
-                } else {
-                  bitField0_ |= 0x00000004;
-                  bytecodeLevel_ = rawValue;
-                }
-                break;
-              }
-              default: {
-                if (!parseUnknownField(
-                    input, unknownFields, extensionRegistry, tag)) {
-                  done = true;
-                }
-                break;
-              }
-            }
-          }
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          throw e.setUnfinishedMessage(this);
-        } catch (java.io.IOException e) {
-          throw new com.google.protobuf.InvalidProtocolBufferException(
-              e).setUnfinishedMessage(this);
-        } finally {
-          this.unknownFields = unknownFields.build();
-          makeExtensionsImmutable();
-        }
       }
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
@@ -13883,7 +11571,7 @@ private static final long serialVersionUID = 0L;
         if (((bitField0_ & 0x00000004) != 0)) {
           output.writeEnum(3, bytecodeLevel_);
         }
-        unknownFields.writeTo(output);
+        getUnknownFields().writeTo(output);
       }
 
       @java.lang.Override
@@ -13904,7 +11592,7 @@ private static final long serialVersionUID = 0L;
           size += com.google.protobuf.CodedOutputStream
             .computeEnumSize(3, bytecodeLevel_);
         }
-        size += unknownFields.getSerializedSize();
+        size += getUnknownFields().getSerializedSize();
         memoizedSize = size;
         return size;
       }
@@ -13932,7 +11620,7 @@ private static final long serialVersionUID = 0L;
         if (hasBytecodeLevel()) {
           if (bytecodeLevel_ != other.bytecodeLevel_) return false;
         }
-        if (!unknownFields.equals(other.unknownFields)) return false;
+        if (!getUnknownFields().equals(other.getUnknownFields())) return false;
         return true;
       }
 
@@ -13955,7 +11643,7 @@ private static final long serialVersionUID = 0L;
           hash = (37 * hash) + BYTECODE_LEVEL_FIELD_NUMBER;
           hash = (53 * hash) + bytecodeLevel_;
         }
-        hash = (29 * hash) + unknownFields.hashCode();
+        hash = (29 * hash) + getUnknownFields().hashCode();
         memoizedHashCode = hash;
         return hash;
       }
@@ -14076,18 +11764,13 @@ private static final long serialVersionUID = 0L;
 
         // Construct using com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.newBuilder()
         private Builder() {
-          maybeForceBuilderInitialization();
+
         }
 
         private Builder(
             com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
           super(parent);
-          maybeForceBuilderInitialization();
-        }
-        private void maybeForceBuilderInitialization() {
-          if (com.google.protobuf.GeneratedMessageV3
-                  .alwaysUseFieldBuilders) {
-          }
+
         }
         @java.lang.Override
         public Builder clear() {
@@ -14196,7 +11879,7 @@ private static final long serialVersionUID = 0L;
           if (other.hasBytecodeLevel()) {
             setBytecodeLevel(other.getBytecodeLevel());
           }
-          this.mergeUnknownFields(other.unknownFields);
+          this.mergeUnknownFields(other.getUnknownFields());
           onChanged();
           return this;
         }
@@ -14211,17 +11894,59 @@ private static final long serialVersionUID = 0L;
             com.google.protobuf.CodedInputStream input,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws java.io.IOException {
-          com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule parsedMessage = null;
+          if (extensionRegistry == null) {
+            throw new java.lang.NullPointerException();
+          }
           try {
-            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            boolean done = false;
+            while (!done) {
+              int tag = input.readTag();
+              switch (tag) {
+                case 0:
+                  done = true;
+                  break;
+                case 8: {
+                  int tmpRaw = input.readEnum();
+                  com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.ModuleType tmpValue =
+                      com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.ModuleType.forNumber(tmpRaw);
+                  if (tmpValue == null) {
+                    mergeUnknownVarintField(1, tmpRaw);
+                  } else {
+                    moduleType_ = tmpRaw;
+                    bitField0_ |= 0x00000001;
+                  }
+                  break;
+                } // case 8
+                case 16: {
+                  minSdk_ = input.readUInt32();
+                  bitField0_ |= 0x00000002;
+                  break;
+                } // case 16
+                case 24: {
+                  int tmpRaw = input.readEnum();
+                  com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.BytecodeLevel tmpValue =
+                      com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.BytecodeLevel.forNumber(tmpRaw);
+                  if (tmpValue == null) {
+                    mergeUnknownVarintField(3, tmpRaw);
+                  } else {
+                    bytecodeLevel_ = tmpRaw;
+                    bitField0_ |= 0x00000004;
+                  }
+                  break;
+                } // case 24
+                default: {
+                  if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                    done = true; // was an endgroup tag
+                  }
+                  break;
+                } // default:
+              } // switch (tag)
+            } // while (!done)
           } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-            parsedMessage = (com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule) e.getUnfinishedMessage();
             throw e.unwrapIOException();
           } finally {
-            if (parsedMessage != null) {
-              mergeFrom(parsedMessage);
-            }
-          }
+            onChanged();
+          } // finally
           return this;
         }
         private int bitField0_;
@@ -14439,7 +12164,18 @@ private static final long serialVersionUID = 0L;
             com.google.protobuf.CodedInputStream input,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws com.google.protobuf.InvalidProtocolBufferException {
-          return new TemplateModule(input, extensionRegistry);
+          Builder builder = newBuilder();
+          try {
+            builder.mergeFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw e.setUnfinishedMessage(builder.buildPartial());
+          } catch (com.google.protobuf.UninitializedMessageException e) {
+            throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+          } catch (java.io.IOException e) {
+            throw new com.google.protobuf.InvalidProtocolBufferException(e)
+                .setUnfinishedMessage(builder.buildPartial());
+          }
+          return builder.buildPartial();
         }
       };
 
@@ -14532,54 +12268,6 @@ private static final long serialVersionUID = 0L;
       getUnknownFields() {
         return this.unknownFields;
       }
-      private TemplateProject(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        this();
-        if (extensionRegistry == null) {
-          throw new java.lang.NullPointerException();
-        }
-        int mutable_bitField0_ = 0;
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-            com.google.protobuf.UnknownFieldSet.newBuilder();
-        try {
-          boolean done = false;
-          while (!done) {
-            int tag = input.readTag();
-            switch (tag) {
-              case 0:
-                done = true;
-                break;
-              case 8: {
-                bitField0_ |= 0x00000001;
-                usesLegacySupport_ = input.readBool();
-                break;
-              }
-              case 16: {
-                bitField0_ |= 0x00000002;
-                usesBuildGradleKts_ = input.readBool();
-                break;
-              }
-              default: {
-                if (!parseUnknownField(
-                    input, unknownFields, extensionRegistry, tag)) {
-                  done = true;
-                }
-                break;
-              }
-            }
-          }
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          throw e.setUnfinishedMessage(this);
-        } catch (java.io.IOException e) {
-          throw new com.google.protobuf.InvalidProtocolBufferException(
-              e).setUnfinishedMessage(this);
-        } finally {
-          this.unknownFields = unknownFields.build();
-          makeExtensionsImmutable();
-        }
-      }
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AndroidStudioEvent_TemplatesUsage_TemplateProject_descriptor;
@@ -14668,7 +12356,7 @@ private static final long serialVersionUID = 0L;
         if (((bitField0_ & 0x00000002) != 0)) {
           output.writeBool(2, usesBuildGradleKts_);
         }
-        unknownFields.writeTo(output);
+        getUnknownFields().writeTo(output);
       }
 
       @java.lang.Override
@@ -14685,7 +12373,7 @@ private static final long serialVersionUID = 0L;
           size += com.google.protobuf.CodedOutputStream
             .computeBoolSize(2, usesBuildGradleKts_);
         }
-        size += unknownFields.getSerializedSize();
+        size += getUnknownFields().getSerializedSize();
         memoizedSize = size;
         return size;
       }
@@ -14710,7 +12398,7 @@ private static final long serialVersionUID = 0L;
           if (getUsesBuildGradleKts()
               != other.getUsesBuildGradleKts()) return false;
         }
-        if (!unknownFields.equals(other.unknownFields)) return false;
+        if (!getUnknownFields().equals(other.getUnknownFields())) return false;
         return true;
       }
 
@@ -14731,7 +12419,7 @@ private static final long serialVersionUID = 0L;
           hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
               getUsesBuildGradleKts());
         }
-        hash = (29 * hash) + unknownFields.hashCode();
+        hash = (29 * hash) + getUnknownFields().hashCode();
         memoizedHashCode = hash;
         return hash;
       }
@@ -14852,18 +12540,13 @@ private static final long serialVersionUID = 0L;
 
         // Construct using com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateProject.newBuilder()
         private Builder() {
-          maybeForceBuilderInitialization();
+
         }
 
         private Builder(
             com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
           super(parent);
-          maybeForceBuilderInitialization();
-        }
-        private void maybeForceBuilderInitialization() {
-          if (com.google.protobuf.GeneratedMessageV3
-                  .alwaysUseFieldBuilders) {
-          }
+
         }
         @java.lang.Override
         public Builder clear() {
@@ -14963,7 +12646,7 @@ private static final long serialVersionUID = 0L;
           if (other.hasUsesBuildGradleKts()) {
             setUsesBuildGradleKts(other.getUsesBuildGradleKts());
           }
-          this.mergeUnknownFields(other.unknownFields);
+          this.mergeUnknownFields(other.getUnknownFields());
           onChanged();
           return this;
         }
@@ -14978,17 +12661,40 @@ private static final long serialVersionUID = 0L;
             com.google.protobuf.CodedInputStream input,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws java.io.IOException {
-          com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateProject parsedMessage = null;
+          if (extensionRegistry == null) {
+            throw new java.lang.NullPointerException();
+          }
           try {
-            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            boolean done = false;
+            while (!done) {
+              int tag = input.readTag();
+              switch (tag) {
+                case 0:
+                  done = true;
+                  break;
+                case 8: {
+                  usesLegacySupport_ = input.readBool();
+                  bitField0_ |= 0x00000001;
+                  break;
+                } // case 8
+                case 16: {
+                  usesBuildGradleKts_ = input.readBool();
+                  bitField0_ |= 0x00000002;
+                  break;
+                } // case 16
+                default: {
+                  if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                    done = true; // was an endgroup tag
+                  }
+                  break;
+                } // default:
+              } // switch (tag)
+            } // while (!done)
           } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-            parsedMessage = (com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateProject) e.getUnfinishedMessage();
             throw e.unwrapIOException();
           } finally {
-            if (parsedMessage != null) {
-              mergeFrom(parsedMessage);
-            }
-          }
+            onChanged();
+          } // finally
           return this;
         }
         private int bitField0_;
@@ -15135,7 +12841,18 @@ private static final long serialVersionUID = 0L;
             com.google.protobuf.CodedInputStream input,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws com.google.protobuf.InvalidProtocolBufferException {
-          return new TemplateProject(input, extensionRegistry);
+          Builder builder = newBuilder();
+          try {
+            builder.mergeFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw e.setUnfinishedMessage(builder.buildPartial());
+          } catch (com.google.protobuf.UninitializedMessageException e) {
+            throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+          } catch (java.io.IOException e) {
+            throw new com.google.protobuf.InvalidProtocolBufferException(e)
+                .setUnfinishedMessage(builder.buildPartial());
+          }
+          return builder.buildPartial();
         }
       };
 
@@ -15334,7 +13051,7 @@ private static final long serialVersionUID = 0L;
       if (((bitField0_ & 0x00000008) != 0)) {
         output.writeMessage(4, getKotlinSupport());
       }
-      unknownFields.writeTo(output);
+      getUnknownFields().writeTo(output);
     }
 
     @java.lang.Override
@@ -15359,7 +13076,7 @@ private static final long serialVersionUID = 0L;
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(4, getKotlinSupport());
       }
-      size += unknownFields.getSerializedSize();
+      size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
     }
@@ -15394,7 +13111,7 @@ private static final long serialVersionUID = 0L;
         if (!getKotlinSupport()
             .equals(other.getKotlinSupport())) return false;
       }
-      if (!unknownFields.equals(other.unknownFields)) return false;
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
 
@@ -15421,7 +13138,7 @@ private static final long serialVersionUID = 0L;
         hash = (37 * hash) + KOTLIN_SUPPORT_FIELD_NUMBER;
         hash = (53 * hash) + getKotlinSupport().hashCode();
       }
-      hash = (29 * hash) + unknownFields.hashCode();
+      hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
     }
@@ -15707,7 +13424,7 @@ private static final long serialVersionUID = 0L;
         if (other.hasKotlinSupport()) {
           mergeKotlinSupport(other.getKotlinSupport());
         }
-        this.mergeUnknownFields(other.unknownFields);
+        this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
       }
@@ -15722,17 +13439,58 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage parsedMessage = null;
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
         try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+                input.readMessage(
+                    getTemplateComponentFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 10
+              case 18: {
+                input.readMessage(
+                    getTemplateModuleFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 18
+              case 26: {
+                input.readMessage(
+                    getTemplateProjectFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 26
+              case 34: {
+                input.readMessage(
+                    getKotlinSupportFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bitField0_ |= 0x00000008;
+                break;
+              } // case 34
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
+          onChanged();
+        } // finally
         return this;
       }
       private int bitField0_;
@@ -16393,7 +14151,18 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new TemplatesUsage(input, extensionRegistry);
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
       }
     };
 
@@ -20412,42 +18181,42 @@ private static final long serialVersionUID = 0L;
     return buildAttributionUiEvent_ == null ? com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.getDefaultInstance() : buildAttributionUiEvent_;
   }
 
-  public static final int ANDROID_CPP_EXTENSION_EVENT_FIELD_NUMBER = 99;
-  private com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent androidCppExtensionEvent_;
+  public static final int VS_PLUGIN_EVENT_FIELD_NUMBER = 99;
+  private com.google.wireless.android.sdk.stats.VsPluginEvent vsPluginEvent_;
   /**
    * <pre>
-   * set when kind = ANDROID_CPP_EXTENSION
+   * set when kind = VS_PLUGIN
    * </pre>
    *
-   * <code>optional .android_studio.AndroidCppExtensionEvent android_cpp_extension_event = 99;</code>
-   * @return Whether the androidCppExtensionEvent field is set.
+   * <code>optional .android_studio.VsPluginEvent vs_plugin_event = 99;</code>
+   * @return Whether the vsPluginEvent field is set.
    */
   @java.lang.Override
-  public boolean hasAndroidCppExtensionEvent() {
+  public boolean hasVsPluginEvent() {
     return ((bitField3_ & 0x00000001) != 0);
   }
   /**
    * <pre>
-   * set when kind = ANDROID_CPP_EXTENSION
+   * set when kind = VS_PLUGIN
    * </pre>
    *
-   * <code>optional .android_studio.AndroidCppExtensionEvent android_cpp_extension_event = 99;</code>
-   * @return The androidCppExtensionEvent.
+   * <code>optional .android_studio.VsPluginEvent vs_plugin_event = 99;</code>
+   * @return The vsPluginEvent.
    */
   @java.lang.Override
-  public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent getAndroidCppExtensionEvent() {
-    return androidCppExtensionEvent_ == null ? com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.getDefaultInstance() : androidCppExtensionEvent_;
+  public com.google.wireless.android.sdk.stats.VsPluginEvent getVsPluginEvent() {
+    return vsPluginEvent_ == null ? com.google.wireless.android.sdk.stats.VsPluginEvent.getDefaultInstance() : vsPluginEvent_;
   }
   /**
    * <pre>
-   * set when kind = ANDROID_CPP_EXTENSION
+   * set when kind = VS_PLUGIN
    * </pre>
    *
-   * <code>optional .android_studio.AndroidCppExtensionEvent android_cpp_extension_event = 99;</code>
+   * <code>optional .android_studio.VsPluginEvent vs_plugin_event = 99;</code>
    */
   @java.lang.Override
-  public com.google.wireless.android.sdk.stats.AndroidCppExtensionEventOrBuilder getAndroidCppExtensionEventOrBuilder() {
-    return androidCppExtensionEvent_ == null ? com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.getDefaultInstance() : androidCppExtensionEvent_;
+  public com.google.wireless.android.sdk.stats.VsPluginEventOrBuilder getVsPluginEventOrBuilder() {
+    return vsPluginEvent_ == null ? com.google.wireless.android.sdk.stats.VsPluginEvent.getDefaultInstance() : vsPluginEvent_;
   }
 
   public static final int DESIGN_EDITOR_HELP_PANEL_EVENT_FIELD_NUMBER = 100;
@@ -23568,6 +21337,196 @@ private static final long serialVersionUID = 0L;
     return lintTooltipLinkEvent_ == null ? com.google.wireless.android.sdk.stats.LintTooltipLinkEvent.getDefaultInstance() : lintTooltipLinkEvent_;
   }
 
+  public static final int SML_AI_EXCLUDE_EVENT_FIELD_NUMBER = 181;
+  private com.google.wireless.android.sdk.stats.SmlAiExcludeEvent smlAiExcludeEvent_;
+  /**
+   * <pre>
+   * set when kind = SML_AI_EXCLUDE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlAiExcludeEvent sml_ai_exclude_event = 181;</code>
+   * @return Whether the smlAiExcludeEvent field is set.
+   */
+  @java.lang.Override
+  public boolean hasSmlAiExcludeEvent() {
+    return ((bitField5_ & 0x00004000) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = SML_AI_EXCLUDE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlAiExcludeEvent sml_ai_exclude_event = 181;</code>
+   * @return The smlAiExcludeEvent.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.SmlAiExcludeEvent getSmlAiExcludeEvent() {
+    return smlAiExcludeEvent_ == null ? com.google.wireless.android.sdk.stats.SmlAiExcludeEvent.getDefaultInstance() : smlAiExcludeEvent_;
+  }
+  /**
+   * <pre>
+   * set when kind = SML_AI_EXCLUDE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlAiExcludeEvent sml_ai_exclude_event = 181;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.SmlAiExcludeEventOrBuilder getSmlAiExcludeEventOrBuilder() {
+    return smlAiExcludeEvent_ == null ? com.google.wireless.android.sdk.stats.SmlAiExcludeEvent.getDefaultInstance() : smlAiExcludeEvent_;
+  }
+
+  public static final int I_DEVICE_USAGE_EVENT_FIELD_NUMBER = 182;
+  private com.google.wireless.android.sdk.stats.IDeviceUsageEvent iDeviceUsageEvent_;
+  /**
+   * <pre>
+   * set when kind = I_DEVICE_USAGE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.IDeviceUsageEvent i_device_usage_event = 182;</code>
+   * @return Whether the iDeviceUsageEvent field is set.
+   */
+  @java.lang.Override
+  public boolean hasIDeviceUsageEvent() {
+    return ((bitField5_ & 0x00008000) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = I_DEVICE_USAGE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.IDeviceUsageEvent i_device_usage_event = 182;</code>
+   * @return The iDeviceUsageEvent.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.IDeviceUsageEvent getIDeviceUsageEvent() {
+    return iDeviceUsageEvent_ == null ? com.google.wireless.android.sdk.stats.IDeviceUsageEvent.getDefaultInstance() : iDeviceUsageEvent_;
+  }
+  /**
+   * <pre>
+   * set when kind = I_DEVICE_USAGE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.IDeviceUsageEvent i_device_usage_event = 182;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.IDeviceUsageEventOrBuilder getIDeviceUsageEventOrBuilder() {
+    return iDeviceUsageEvent_ == null ? com.google.wireless.android.sdk.stats.IDeviceUsageEvent.getDefaultInstance() : iDeviceUsageEvent_;
+  }
+
+  public static final int GRADLE_JDK_CONFIGURATION_EVENT_FIELD_NUMBER = 183;
+  private com.google.wireless.android.sdk.stats.GradleJdkConfigurationEvent gradleJdkConfigurationEvent_;
+  /**
+   * <pre>
+   * set when kind = GRADLE_JDK_CONFIGURATION
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleJdkConfigurationEvent gradle_jdk_configuration_event = 183;</code>
+   * @return Whether the gradleJdkConfigurationEvent field is set.
+   */
+  @java.lang.Override
+  public boolean hasGradleJdkConfigurationEvent() {
+    return ((bitField5_ & 0x00010000) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = GRADLE_JDK_CONFIGURATION
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleJdkConfigurationEvent gradle_jdk_configuration_event = 183;</code>
+   * @return The gradleJdkConfigurationEvent.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.GradleJdkConfigurationEvent getGradleJdkConfigurationEvent() {
+    return gradleJdkConfigurationEvent_ == null ? com.google.wireless.android.sdk.stats.GradleJdkConfigurationEvent.getDefaultInstance() : gradleJdkConfigurationEvent_;
+  }
+  /**
+   * <pre>
+   * set when kind = GRADLE_JDK_CONFIGURATION
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleJdkConfigurationEvent gradle_jdk_configuration_event = 183;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.GradleJdkConfigurationEventOrBuilder getGradleJdkConfigurationEventOrBuilder() {
+    return gradleJdkConfigurationEvent_ == null ? com.google.wireless.android.sdk.stats.GradleJdkConfigurationEvent.getDefaultInstance() : gradleJdkConfigurationEvent_;
+  }
+
+  public static final int RENDER_SECURITY_MANAGER_EVENT_FIELD_NUMBER = 184;
+  private com.google.wireless.android.sdk.stats.RenderSecurityManagerEvent renderSecurityManagerEvent_;
+  /**
+   * <pre>
+   * set when kind = RENDER_SECURITY_MANAGER_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.RenderSecurityManagerEvent render_security_manager_event = 184;</code>
+   * @return Whether the renderSecurityManagerEvent field is set.
+   */
+  @java.lang.Override
+  public boolean hasRenderSecurityManagerEvent() {
+    return ((bitField5_ & 0x00020000) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = RENDER_SECURITY_MANAGER_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.RenderSecurityManagerEvent render_security_manager_event = 184;</code>
+   * @return The renderSecurityManagerEvent.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.RenderSecurityManagerEvent getRenderSecurityManagerEvent() {
+    return renderSecurityManagerEvent_ == null ? com.google.wireless.android.sdk.stats.RenderSecurityManagerEvent.getDefaultInstance() : renderSecurityManagerEvent_;
+  }
+  /**
+   * <pre>
+   * set when kind = RENDER_SECURITY_MANAGER_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.RenderSecurityManagerEvent render_security_manager_event = 184;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.RenderSecurityManagerEventOrBuilder getRenderSecurityManagerEventOrBuilder() {
+    return renderSecurityManagerEvent_ == null ? com.google.wireless.android.sdk.stats.RenderSecurityManagerEvent.getDefaultInstance() : renderSecurityManagerEvent_;
+  }
+
+  public static final int PREVIEW_REFRESH_EVENT_FIELD_NUMBER = 185;
+  private com.google.wireless.android.sdk.stats.PreviewRefreshEvent previewRefreshEvent_;
+  /**
+   * <pre>
+   * set when kind = PREVIEW_REFRESH_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.PreviewRefreshEvent preview_refresh_event = 185;</code>
+   * @return Whether the previewRefreshEvent field is set.
+   */
+  @java.lang.Override
+  public boolean hasPreviewRefreshEvent() {
+    return ((bitField5_ & 0x00040000) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = PREVIEW_REFRESH_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.PreviewRefreshEvent preview_refresh_event = 185;</code>
+   * @return The previewRefreshEvent.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.PreviewRefreshEvent getPreviewRefreshEvent() {
+    return previewRefreshEvent_ == null ? com.google.wireless.android.sdk.stats.PreviewRefreshEvent.getDefaultInstance() : previewRefreshEvent_;
+  }
+  /**
+   * <pre>
+   * set when kind = PREVIEW_REFRESH_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.PreviewRefreshEvent preview_refresh_event = 185;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.PreviewRefreshEventOrBuilder getPreviewRefreshEventOrBuilder() {
+    return previewRefreshEvent_ == null ? com.google.wireless.android.sdk.stats.PreviewRefreshEvent.getDefaultInstance() : previewRefreshEvent_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -23877,7 +21836,7 @@ private static final long serialVersionUID = 0L;
       output.writeMessage(98, getBuildAttributionUiEvent());
     }
     if (((bitField3_ & 0x00000001) != 0)) {
-      output.writeMessage(99, getAndroidCppExtensionEvent());
+      output.writeMessage(99, getVsPluginEvent());
     }
     if (((bitField3_ & 0x00000002) != 0)) {
       output.writeMessage(100, getDesignEditorHelpPanelEvent());
@@ -24122,7 +22081,22 @@ private static final long serialVersionUID = 0L;
     if (((bitField5_ & 0x00002000) != 0)) {
       output.writeMessage(180, getLintTooltipLinkEvent());
     }
-    unknownFields.writeTo(output);
+    if (((bitField5_ & 0x00004000) != 0)) {
+      output.writeMessage(181, getSmlAiExcludeEvent());
+    }
+    if (((bitField5_ & 0x00008000) != 0)) {
+      output.writeMessage(182, getIDeviceUsageEvent());
+    }
+    if (((bitField5_ & 0x00010000) != 0)) {
+      output.writeMessage(183, getGradleJdkConfigurationEvent());
+    }
+    if (((bitField5_ & 0x00020000) != 0)) {
+      output.writeMessage(184, getRenderSecurityManagerEvent());
+    }
+    if (((bitField5_ & 0x00040000) != 0)) {
+      output.writeMessage(185, getPreviewRefreshEvent());
+    }
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -24523,7 +22497,7 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField3_ & 0x00000001) != 0)) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(99, getAndroidCppExtensionEvent());
+        .computeMessageSize(99, getVsPluginEvent());
     }
     if (((bitField3_ & 0x00000002) != 0)) {
       size += com.google.protobuf.CodedOutputStream
@@ -24857,7 +22831,27 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(180, getLintTooltipLinkEvent());
     }
-    size += unknownFields.getSerializedSize();
+    if (((bitField5_ & 0x00004000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(181, getSmlAiExcludeEvent());
+    }
+    if (((bitField5_ & 0x00008000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(182, getIDeviceUsageEvent());
+    }
+    if (((bitField5_ & 0x00010000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(183, getGradleJdkConfigurationEvent());
+    }
+    if (((bitField5_ & 0x00020000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(184, getRenderSecurityManagerEvent());
+    }
+    if (((bitField5_ & 0x00040000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(185, getPreviewRefreshEvent());
+    }
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -25347,10 +23341,10 @@ private static final long serialVersionUID = 0L;
       if (!getBuildAttributionUiEvent()
           .equals(other.getBuildAttributionUiEvent())) return false;
     }
-    if (hasAndroidCppExtensionEvent() != other.hasAndroidCppExtensionEvent()) return false;
-    if (hasAndroidCppExtensionEvent()) {
-      if (!getAndroidCppExtensionEvent()
-          .equals(other.getAndroidCppExtensionEvent())) return false;
+    if (hasVsPluginEvent() != other.hasVsPluginEvent()) return false;
+    if (hasVsPluginEvent()) {
+      if (!getVsPluginEvent()
+          .equals(other.getVsPluginEvent())) return false;
     }
     if (hasDesignEditorHelpPanelEvent() != other.hasDesignEditorHelpPanelEvent()) return false;
     if (hasDesignEditorHelpPanelEvent()) {
@@ -25743,7 +23737,32 @@ private static final long serialVersionUID = 0L;
       if (!getLintTooltipLinkEvent()
           .equals(other.getLintTooltipLinkEvent())) return false;
     }
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (hasSmlAiExcludeEvent() != other.hasSmlAiExcludeEvent()) return false;
+    if (hasSmlAiExcludeEvent()) {
+      if (!getSmlAiExcludeEvent()
+          .equals(other.getSmlAiExcludeEvent())) return false;
+    }
+    if (hasIDeviceUsageEvent() != other.hasIDeviceUsageEvent()) return false;
+    if (hasIDeviceUsageEvent()) {
+      if (!getIDeviceUsageEvent()
+          .equals(other.getIDeviceUsageEvent())) return false;
+    }
+    if (hasGradleJdkConfigurationEvent() != other.hasGradleJdkConfigurationEvent()) return false;
+    if (hasGradleJdkConfigurationEvent()) {
+      if (!getGradleJdkConfigurationEvent()
+          .equals(other.getGradleJdkConfigurationEvent())) return false;
+    }
+    if (hasRenderSecurityManagerEvent() != other.hasRenderSecurityManagerEvent()) return false;
+    if (hasRenderSecurityManagerEvent()) {
+      if (!getRenderSecurityManagerEvent()
+          .equals(other.getRenderSecurityManagerEvent())) return false;
+    }
+    if (hasPreviewRefreshEvent() != other.hasPreviewRefreshEvent()) return false;
+    if (hasPreviewRefreshEvent()) {
+      if (!getPreviewRefreshEvent()
+          .equals(other.getPreviewRefreshEvent())) return false;
+    }
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -26152,9 +24171,9 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + BUILD_ATTRIBUTION_UI_EVENT_FIELD_NUMBER;
       hash = (53 * hash) + getBuildAttributionUiEvent().hashCode();
     }
-    if (hasAndroidCppExtensionEvent()) {
-      hash = (37 * hash) + ANDROID_CPP_EXTENSION_EVENT_FIELD_NUMBER;
-      hash = (53 * hash) + getAndroidCppExtensionEvent().hashCode();
+    if (hasVsPluginEvent()) {
+      hash = (37 * hash) + VS_PLUGIN_EVENT_FIELD_NUMBER;
+      hash = (53 * hash) + getVsPluginEvent().hashCode();
     }
     if (hasDesignEditorHelpPanelEvent()) {
       hash = (37 * hash) + DESIGN_EDITOR_HELP_PANEL_EVENT_FIELD_NUMBER;
@@ -26476,7 +24495,27 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + LINT_TOOLTIP_LINK_EVENT_FIELD_NUMBER;
       hash = (53 * hash) + getLintTooltipLinkEvent().hashCode();
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    if (hasSmlAiExcludeEvent()) {
+      hash = (37 * hash) + SML_AI_EXCLUDE_EVENT_FIELD_NUMBER;
+      hash = (53 * hash) + getSmlAiExcludeEvent().hashCode();
+    }
+    if (hasIDeviceUsageEvent()) {
+      hash = (37 * hash) + I_DEVICE_USAGE_EVENT_FIELD_NUMBER;
+      hash = (53 * hash) + getIDeviceUsageEvent().hashCode();
+    }
+    if (hasGradleJdkConfigurationEvent()) {
+      hash = (37 * hash) + GRADLE_JDK_CONFIGURATION_EVENT_FIELD_NUMBER;
+      hash = (53 * hash) + getGradleJdkConfigurationEvent().hashCode();
+    }
+    if (hasRenderSecurityManagerEvent()) {
+      hash = (37 * hash) + RENDER_SECURITY_MANAGER_EVENT_FIELD_NUMBER;
+      hash = (53 * hash) + getRenderSecurityManagerEvent().hashCode();
+    }
+    if (hasPreviewRefreshEvent()) {
+      hash = (37 * hash) + PREVIEW_REFRESH_EVENT_FIELD_NUMBER;
+      hash = (53 * hash) + getPreviewRefreshEvent().hashCode();
+    }
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -26682,7 +24721,7 @@ private static final long serialVersionUID = 0L;
         getEditorCompletionStatsFieldBuilder();
         getMultiViewEventFieldBuilder();
         getBuildAttributionUiEventFieldBuilder();
-        getAndroidCppExtensionEventFieldBuilder();
+        getVsPluginEventFieldBuilder();
         getDesignEditorHelpPanelEventFieldBuilder();
         getAppInspectionEventFieldBuilder();
         getMlModelBindingEventFieldBuilder();
@@ -26761,6 +24800,11 @@ private static final long serialVersionUID = 0L;
         getIntellijNewUiSwitchFieldBuilder();
         getEssentialsModeEventFieldBuilder();
         getLintTooltipLinkEventFieldBuilder();
+        getSmlAiExcludeEventFieldBuilder();
+        getIDeviceUsageEventFieldBuilder();
+        getGradleJdkConfigurationEventFieldBuilder();
+        getRenderSecurityManagerEventFieldBuilder();
+        getPreviewRefreshEventFieldBuilder();
       }
     }
     @java.lang.Override
@@ -27088,10 +25132,11 @@ private static final long serialVersionUID = 0L;
       bitField2_ = (bitField2_ & ~0x00000002);
       if (intellijProjectSizeStatsBuilder_ == null) {
         intellijProjectSizeStats_ = java.util.Collections.emptyList();
-        bitField2_ = (bitField2_ & ~0x00000004);
       } else {
+        intellijProjectSizeStats_ = null;
         intellijProjectSizeStatsBuilder_.clear();
       }
+      bitField2_ = (bitField2_ & ~0x00000004);
       if (studioToolWindowActionStatsBuilder_ == null) {
         studioToolWindowActionStats_ = null;
       } else {
@@ -27156,10 +25201,11 @@ private static final long serialVersionUID = 0L;
       bitField2_ = (bitField2_ & ~0x00002000);
       if (gradleSyncIssuesBuilder_ == null) {
         gradleSyncIssues_ = java.util.Collections.emptyList();
-        bitField2_ = (bitField2_ & ~0x00004000);
       } else {
+        gradleSyncIssues_ = null;
         gradleSyncIssuesBuilder_.clear();
       }
+      bitField2_ = (bitField2_ & ~0x00004000);
       offeredQuickFixes_ = java.util.Collections.emptyList();
       bitField2_ = (bitField2_ & ~0x00008000);
       if (studioPatchUpdaterEventBuilder_ == null) {
@@ -27276,10 +25322,10 @@ private static final long serialVersionUID = 0L;
         buildAttributionUiEventBuilder_.clear();
       }
       bitField3_ = (bitField3_ & ~0x00000004);
-      if (androidCppExtensionEventBuilder_ == null) {
-        androidCppExtensionEvent_ = null;
+      if (vsPluginEventBuilder_ == null) {
+        vsPluginEvent_ = null;
       } else {
-        androidCppExtensionEventBuilder_.clear();
+        vsPluginEventBuilder_.clear();
       }
       bitField3_ = (bitField3_ & ~0x00000008);
       if (designEditorHelpPanelEventBuilder_ == null) {
@@ -27362,10 +25408,11 @@ private static final long serialVersionUID = 0L;
       bitField3_ = (bitField3_ & ~0x00010000);
       if (emulatorUiEventsBuilder_ == null) {
         emulatorUiEvents_ = java.util.Collections.emptyList();
-        bitField3_ = (bitField3_ & ~0x00020000);
       } else {
+        emulatorUiEvents_ = null;
         emulatorUiEventsBuilder_.clear();
       }
+      bitField3_ = (bitField3_ & ~0x00020000);
       if (surveyResponseBuilder_ == null) {
         surveyResponse_ = null;
       } else {
@@ -27754,6 +25801,36 @@ private static final long serialVersionUID = 0L;
         lintTooltipLinkEventBuilder_.clear();
       }
       bitField5_ = (bitField5_ & ~0x00080000);
+      if (smlAiExcludeEventBuilder_ == null) {
+        smlAiExcludeEvent_ = null;
+      } else {
+        smlAiExcludeEventBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x00100000);
+      if (iDeviceUsageEventBuilder_ == null) {
+        iDeviceUsageEvent_ = null;
+      } else {
+        iDeviceUsageEventBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x00200000);
+      if (gradleJdkConfigurationEventBuilder_ == null) {
+        gradleJdkConfigurationEvent_ = null;
+      } else {
+        gradleJdkConfigurationEventBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x00400000);
+      if (renderSecurityManagerEventBuilder_ == null) {
+        renderSecurityManagerEvent_ = null;
+      } else {
+        renderSecurityManagerEventBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x00800000);
+      if (previewRefreshEventBuilder_ == null) {
+        previewRefreshEvent_ = null;
+      } else {
+        previewRefreshEventBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x01000000);
       return this;
     }
 
@@ -28504,10 +26581,10 @@ private static final long serialVersionUID = 0L;
         to_bitField2_ |= 0x80000000;
       }
       if (((from_bitField3_ & 0x00000008) != 0)) {
-        if (androidCppExtensionEventBuilder_ == null) {
-          result.androidCppExtensionEvent_ = androidCppExtensionEvent_;
+        if (vsPluginEventBuilder_ == null) {
+          result.vsPluginEvent_ = vsPluginEvent_;
         } else {
-          result.androidCppExtensionEvent_ = androidCppExtensionEventBuilder_.build();
+          result.vsPluginEvent_ = vsPluginEventBuilder_.build();
         }
         to_bitField3_ |= 0x00000001;
       }
@@ -29146,6 +27223,46 @@ private static final long serialVersionUID = 0L;
         }
         to_bitField5_ |= 0x00002000;
       }
+      if (((from_bitField5_ & 0x00100000) != 0)) {
+        if (smlAiExcludeEventBuilder_ == null) {
+          result.smlAiExcludeEvent_ = smlAiExcludeEvent_;
+        } else {
+          result.smlAiExcludeEvent_ = smlAiExcludeEventBuilder_.build();
+        }
+        to_bitField5_ |= 0x00004000;
+      }
+      if (((from_bitField5_ & 0x00200000) != 0)) {
+        if (iDeviceUsageEventBuilder_ == null) {
+          result.iDeviceUsageEvent_ = iDeviceUsageEvent_;
+        } else {
+          result.iDeviceUsageEvent_ = iDeviceUsageEventBuilder_.build();
+        }
+        to_bitField5_ |= 0x00008000;
+      }
+      if (((from_bitField5_ & 0x00400000) != 0)) {
+        if (gradleJdkConfigurationEventBuilder_ == null) {
+          result.gradleJdkConfigurationEvent_ = gradleJdkConfigurationEvent_;
+        } else {
+          result.gradleJdkConfigurationEvent_ = gradleJdkConfigurationEventBuilder_.build();
+        }
+        to_bitField5_ |= 0x00010000;
+      }
+      if (((from_bitField5_ & 0x00800000) != 0)) {
+        if (renderSecurityManagerEventBuilder_ == null) {
+          result.renderSecurityManagerEvent_ = renderSecurityManagerEvent_;
+        } else {
+          result.renderSecurityManagerEvent_ = renderSecurityManagerEventBuilder_.build();
+        }
+        to_bitField5_ |= 0x00020000;
+      }
+      if (((from_bitField5_ & 0x01000000) != 0)) {
+        if (previewRefreshEventBuilder_ == null) {
+          result.previewRefreshEvent_ = previewRefreshEvent_;
+        } else {
+          result.previewRefreshEvent_ = previewRefreshEventBuilder_.build();
+        }
+        to_bitField5_ |= 0x00040000;
+      }
       result.bitField0_ = to_bitField0_;
       result.bitField1_ = to_bitField1_;
       result.bitField2_ = to_bitField2_;
@@ -29564,8 +27681,8 @@ private static final long serialVersionUID = 0L;
       if (other.hasBuildAttributionUiEvent()) {
         mergeBuildAttributionUiEvent(other.getBuildAttributionUiEvent());
       }
-      if (other.hasAndroidCppExtensionEvent()) {
-        mergeAndroidCppExtensionEvent(other.getAndroidCppExtensionEvent());
+      if (other.hasVsPluginEvent()) {
+        mergeVsPluginEvent(other.getVsPluginEvent());
       }
       if (other.hasDesignEditorHelpPanelEvent()) {
         mergeDesignEditorHelpPanelEvent(other.getDesignEditorHelpPanelEvent());
@@ -29844,7 +27961,22 @@ private static final long serialVersionUID = 0L;
       if (other.hasLintTooltipLinkEvent()) {
         mergeLintTooltipLinkEvent(other.getLintTooltipLinkEvent());
       }
-      this.mergeUnknownFields(other.unknownFields);
+      if (other.hasSmlAiExcludeEvent()) {
+        mergeSmlAiExcludeEvent(other.getSmlAiExcludeEvent());
+      }
+      if (other.hasIDeviceUsageEvent()) {
+        mergeIDeviceUsageEvent(other.getIDeviceUsageEvent());
+      }
+      if (other.hasGradleJdkConfigurationEvent()) {
+        mergeGradleJdkConfigurationEvent(other.getGradleJdkConfigurationEvent());
+      }
+      if (other.hasRenderSecurityManagerEvent()) {
+        mergeRenderSecurityManagerEvent(other.getRenderSecurityManagerEvent());
+      }
+      if (other.hasPreviewRefreshEvent()) {
+        mergePreviewRefreshEvent(other.getPreviewRefreshEvent());
+      }
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -29859,17 +27991,1393 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.google.wireless.android.sdk.stats.AndroidStudioEvent parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.AndroidStudioEvent.EventCategory tmpValue =
+                  com.google.wireless.android.sdk.stats.AndroidStudioEvent.EventCategory.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(1, tmpRaw);
+              } else {
+                category_ = tmpRaw;
+                bitField0_ |= 0x00000001;
+              }
+              break;
+            } // case 8
+            case 16: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.AndroidStudioEvent.EventKind tmpValue =
+                  com.google.wireless.android.sdk.stats.AndroidStudioEvent.EventKind.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(2, tmpRaw);
+              } else {
+                kind_ = tmpRaw;
+                bitField0_ |= 0x00000002;
+              }
+              break;
+            } // case 16
+            case 26: {
+              studioSessionId_ = input.readBytes();
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 26
+            case 34: {
+              input.readMessage(
+                  getProductDetailsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 34
+            case 40: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.AndroidStudioEvent.MonitorType tmpValue =
+                  com.google.wireless.android.sdk.stats.AndroidStudioEvent.MonitorType.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(5, tmpRaw);
+              } else {
+                monitorType_ = tmpRaw;
+                bitField0_ |= 0x00000010;
+              }
+              break;
+            } // case 40
+            case 48: {
+              monitorPaused_ = input.readBool();
+              bitField0_ |= 0x00000020;
+              break;
+            } // case 48
+            case 56: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.AndroidStudioEvent.ProfilerCaptureType tmpValue =
+                  com.google.wireless.android.sdk.stats.AndroidStudioEvent.ProfilerCaptureType.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(7, tmpRaw);
+              } else {
+                profilerCaptureType_ = tmpRaw;
+                bitField0_ |= 0x00000040;
+              }
+              break;
+            } // case 56
+            case 66: {
+              cloudTestingErrorMessage_ = input.readBytes();
+              bitField0_ |= 0x00000080;
+              break;
+            } // case 66
+            case 72: {
+              cloudTestingLoadedScreenshotsCount_ = input.readInt32();
+              bitField0_ |= 0x00000100;
+              break;
+            } // case 72
+            case 80: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType tmpValue =
+                  com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(10, tmpRaw);
+              } else {
+                runConfigurationType_ = tmpRaw;
+                bitField0_ |= 0x00000200;
+              }
+              break;
+            } // case 80
+            case 88: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType tmpValue =
+                  com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(11, tmpRaw);
+              } else {
+                debuggerType_ = tmpRaw;
+                bitField0_ |= 0x00000400;
+              }
+              break;
+            } // case 88
+            case 98: {
+              input.readMessage(
+                  getDeviceInfoFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000800;
+              break;
+            } // case 98
+            case 106: {
+              lldbSessionFailureMessage_ = input.readBytes();
+              bitField0_ |= 0x00001000;
+              break;
+            } // case 106
+            case 112: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.AndroidStudioEvent.DeveloperServiceKind tmpValue =
+                  com.google.wireless.android.sdk.stats.AndroidStudioEvent.DeveloperServiceKind.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(14, tmpRaw);
+              } else {
+                developerServiceKind_ = tmpRaw;
+                bitField0_ |= 0x00002000;
+              }
+              break;
+            } // case 112
+            case 122: {
+              gradleVersion_ = input.readBytes();
+              bitField0_ |= 0x00004000;
+              break;
+            } // case 122
+            case 128: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncFailure tmpValue =
+                  com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncFailure.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(16, tmpRaw);
+              } else {
+                gradleSyncFailure_ = tmpRaw;
+                bitField0_ |= 0x00008000;
+              }
+              break;
+            } // case 128
+            case 138: {
+              gradleMissingSignature_ = input.readBytes();
+              bitField0_ |= 0x00010000;
+              break;
+            } // case 138
+            case 144: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplateRenderer tmpValue =
+                  com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplateRenderer.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(18, tmpRaw);
+              } else {
+                templateRenderer_ = tmpRaw;
+                bitField0_ |= 0x00020000;
+              }
+              break;
+            } // case 144
+            case 154: {
+              input.readMessage(
+                  getStudioCrashFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00040000;
+              break;
+            } // case 154
+            case 162: {
+              input.readMessage(
+                  getGradleBuildDetailsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00080000;
+              break;
+            } // case 162
+            case 170: {
+              input.readMessage(
+                  getInstantRunFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00100000;
+              break;
+            } // case 170
+            case 178: {
+              input.readMessage(
+                  getMetaMetricsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00200000;
+              break;
+            } // case 178
+            case 186: {
+              input.readMessage(
+                  getEmulatorDetailsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00400000;
+              break;
+            } // case 186
+            case 194: {
+              input.readMessage(
+                  getTestRunFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00800000;
+              break;
+            } // case 194
+            case 202: {
+              input.readMessage(
+                  getEmulatorUiEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x01000000;
+              break;
+            } // case 202
+            case 210: {
+              input.readMessage(
+                  getHypervisorFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x02000000;
+              break;
+            } // case 210
+            case 218: {
+              input.readMessage(
+                  getEmulatorHostFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x04000000;
+              break;
+            } // case 218
+            case 226: {
+              input.readMessage(
+                  getGradleBuildProfileFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x08000000;
+              break;
+            } // case 226
+            case 234: {
+              input.readMessage(
+                  getLldbFrontendDetailsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x10000000;
+              break;
+            } // case 234
+            case 242: {
+              input.readMessage(
+                  getFirebaseErrorDetailsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x20000000;
+              break;
+            } // case 242
+            case 250: {
+              projectId_ = input.readBytes();
+              bitField0_ |= 0x40000000;
+              break;
+            } // case 250
+            case 258: {
+              input.readMessage(
+                  getGfxTracingDetailsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x80000000;
+              break;
+            } // case 258
+            case 266: {
+              input.readMessage(
+                  getTestRecorderDetailsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x00000001;
+              break;
+            } // case 266
+            case 274: {
+              input.readMessage(
+                  getUiActionStatsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x00000002;
+              break;
+            } // case 274
+            case 282: {
+              input.readMessage(
+                  getMachineDetailsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x00000004;
+              break;
+            } // case 282
+            case 290: {
+              input.readMessage(
+                  getJvmDetailsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x00000008;
+              break;
+            } // case 290
+            case 298: {
+              input.readMessage(
+                  getJavaProcessStatsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x00000010;
+              break;
+            } // case 298
+            case 306: {
+              input.readMessage(
+                  getStudioPerformanceStatsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x00000020;
+              break;
+            } // case 306
+            case 314: {
+              input.readMessage(
+                  getLldbPerformanceStatsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x00000040;
+              break;
+            } // case 314
+            case 322: {
+              input.readMessage(
+                  getStudioProjectChangeFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x00000080;
+              break;
+            } // case 322
+            case 330: {
+              input.readMessage(
+                  getFirebaseContextDetailsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x00000100;
+              break;
+            } // case 330
+            case 338: {
+              input.readMessage(
+                  getLayoutEditorEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x00000200;
+              break;
+            } // case 338
+            case 346: {
+              input.readMessage(
+                  getAppLinksAssistantEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x00000400;
+              break;
+            } // case 346
+            case 354: {
+              input.readMessage(
+                  getEmulatorPerformanceStatsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x00000800;
+              break;
+            } // case 354
+            case 362: {
+              input.readMessage(
+                  getAdbAssistantStatsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x00001000;
+              break;
+            } // case 362
+            case 370: {
+              input.readMessage(
+                  getLldbSessionStartDetailsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x00002000;
+              break;
+            } // case 370
+            case 378: {
+              input.readMessage(
+                  getLldbSessionEndDetailsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x00004000;
+              break;
+            } // case 378
+            case 386: {
+              input.readMessage(
+                  getAndroidProfilerEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x00008000;
+              break;
+            } // case 386
+            case 394: {
+              input.readMessage(
+                  getApkAnalyzerStatsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x00010000;
+              break;
+            } // case 394
+            case 402: {
+              input.readMessage(
+                  getGradleSyncStatsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x00020000;
+              break;
+            } // case 402
+            case 410: {
+              input.readMessage(
+                  getApkDebugProjectFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x00080000;
+              break;
+            } // case 410
+            case 418: {
+              input.readMessage(
+                  getLayoutInspectorEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x00100000;
+              break;
+            } // case 418
+            case 426: {
+              input.readMessage(
+                  getAndroidProfilerDbStatsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x00200000;
+              break;
+            } // case 426
+            case 434: {
+              input.readMessage(
+                  getKotlinSupportFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x00400000;
+              break;
+            } // case 434
+            case 442: {
+              input.readMessage(
+                  getConnectionAssistantEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x00800000;
+              break;
+            } // case 442
+            case 450: {
+              input.readMessage(
+                  getOomDialogEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x01000000;
+              break;
+            } // case 450
+            case 458: {
+              input.readMessage(
+                  getCmakeEditingEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x02000000;
+              break;
+            } // case 458
+            case 464: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.AndroidStudioEvent.IdeBrand tmpValue =
+                  com.google.wireless.android.sdk.stats.AndroidStudioEvent.IdeBrand.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(58, tmpRaw);
+              } else {
+                ideBrand_ = tmpRaw;
+                bitField1_ |= 0x04000000;
+              }
+              break;
+            } // case 464
+            case 474: {
+              input.readMessage(
+                  getCppHeadersViewEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x08000000;
+              break;
+            } // case 474
+            case 482: {
+              input.readMessage(
+                  getWhatsNewAssistantEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x10000000;
+              break;
+            } // case 482
+            case 490: {
+              rawProjectId_ = input.readBytes();
+              bitField1_ |= 0x20000000;
+              break;
+            } // case 490
+            case 498: {
+              input.readMessage(
+                  getIntellijIndexingStatsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x40000000;
+              break;
+            } // case 498
+            case 506: {
+              input.readMessage(
+                  getLintSessionFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x80000000;
+              break;
+            } // case 506
+            case 514: {
+              input.readMessage(
+                  getLintActionFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField2_ |= 0x00000001;
+              break;
+            } // case 514
+            case 522: {
+              input.readMessage(
+                  getStudioRunEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField2_ |= 0x00000002;
+              break;
+            } // case 522
+            case 530: {
+              com.google.wireless.android.sdk.stats.IntellijProjectSizeStats m =
+                  input.readMessage(
+                      com.google.wireless.android.sdk.stats.IntellijProjectSizeStats.PARSER,
+                      extensionRegistry);
+              if (intellijProjectSizeStatsBuilder_ == null) {
+                ensureIntellijProjectSizeStatsIsMutable();
+                intellijProjectSizeStats_.add(m);
+              } else {
+                intellijProjectSizeStatsBuilder_.addMessage(m);
+              }
+              break;
+            } // case 530
+            case 538: {
+              input.readMessage(
+                  getStudioToolWindowActionStatsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField2_ |= 0x00000008;
+              break;
+            } // case 538
+            case 546: {
+              input.readMessage(
+                  getPsdEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField2_ |= 0x00000010;
+              break;
+            } // case 546
+            case 552: {
+              ideaIsInternal_ = input.readBool();
+              bitField2_ |= 0x00000020;
+              break;
+            } // case 552
+            case 562: {
+              input.readMessage(
+                  getJniInspectionEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField2_ |= 0x00000040;
+              break;
+            } // case 562
+            case 570: {
+              input.readMessage(
+                  getUserSentimentFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField2_ |= 0x00000080;
+              break;
+            } // case 570
+            case 578: {
+              input.readMessage(
+                  getRunEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField2_ |= 0x00000100;
+              break;
+            } // case 578
+            case 586: {
+              input.readMessage(
+                  getNavEditorEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField2_ |= 0x00000200;
+              break;
+            } // case 586
+            case 594: {
+              input.readMessage(
+                  getDialogStatsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField2_ |= 0x00000400;
+              break;
+            } // case 594
+            case 602: {
+              input.readMessage(
+                  getGradlePluginUpgradeDialogFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField2_ |= 0x00000800;
+              break;
+            } // case 602
+            case 610: {
+              input.readMessage(
+                  getDataBindingEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField2_ |= 0x00001000;
+              break;
+            } // case 610
+            case 618: {
+              input.readMessage(
+                  getTypingLatencyStatsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField2_ |= 0x00002000;
+              break;
+            } // case 618
+            case 626: {
+              com.google.wireless.android.sdk.stats.GradleSyncIssue m =
+                  input.readMessage(
+                      com.google.wireless.android.sdk.stats.GradleSyncIssue.PARSER,
+                      extensionRegistry);
+              if (gradleSyncIssuesBuilder_ == null) {
+                ensureGradleSyncIssuesIsMutable();
+                gradleSyncIssues_.add(m);
+              } else {
+                gradleSyncIssuesBuilder_.addMessage(m);
+              }
+              break;
+            } // case 626
+            case 632: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncQuickFix tmpValue =
+                  com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncQuickFix.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(79, tmpRaw);
+              } else {
+                ensureOfferedQuickFixesIsMutable();
+                offeredQuickFixes_.add(tmpRaw);
+              }
+              break;
+            } // case 632
+            case 634: {
+              int length = input.readRawVarint32();
+              int oldLimit = input.pushLimit(length);
+              while(input.getBytesUntilLimit() > 0) {
+                int tmpRaw = input.readEnum();
+                com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncQuickFix tmpValue =
+                    com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncQuickFix.forNumber(tmpRaw);
+                if (tmpValue == null) {
+                  mergeUnknownVarintField(79, tmpRaw);
+                } else {
+                  ensureOfferedQuickFixesIsMutable();
+                  offeredQuickFixes_.add(tmpRaw);
+                }
+              }
+              input.popLimit(oldLimit);
+              break;
+            } // case 634
+            case 642: {
+              input.readMessage(
+                  getStudioPatchUpdaterEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField2_ |= 0x00010000;
+              break;
+            } // case 642
+            case 650: {
+              input.readMessage(
+                  getResourceManagerEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField2_ |= 0x00020000;
+              break;
+            } // case 650
+            case 658: {
+              input.readMessage(
+                  getIdePluginInfoFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField2_ |= 0x00040000;
+              break;
+            } // case 658
+            case 666: {
+              input.readMessage(
+                  getEditorHighlightingStatsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField2_ |= 0x00080000;
+              break;
+            } // case 666
+            case 674: {
+              input.readMessage(
+                  getWindowsDefenderStatusFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField2_ |= 0x00100000;
+              break;
+            } // case 674
+            case 682: {
+              input.readMessage(
+                  getMemorySettingsEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField2_ |= 0x00200000;
+              break;
+            } // case 682
+            case 690: {
+              input.readMessage(
+                  getStudioUpdateFlowEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField2_ |= 0x00400000;
+              break;
+            } // case 690
+            case 698: {
+              input.readMessage(
+                  getBuildOutputWindowStatsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField2_ |= 0x00800000;
+              break;
+            } // case 698
+            case 706: {
+              input.readMessage(
+                  getGradlePluginDslUsageStatsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField2_ |= 0x01000000;
+              break;
+            } // case 706
+            case 714: {
+              input.readMessage(
+                  getWhatsNewAssistantUpdateEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField2_ |= 0x02000000;
+              break;
+            } // case 714
+            case 722: {
+              input.readMessage(
+                  getDefaultActivityLocatorStatsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField2_ |= 0x04000000;
+              break;
+            } // case 722
+            case 730: {
+              input.readMessage(
+                  getMotionLayoutEditorEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField2_ |= 0x08000000;
+              break;
+            } // case 730
+            case 738: {
+              input.readMessage(
+                  getComposeSampleEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField2_ |= 0x10000000;
+              break;
+            } // case 738
+            case 746: {
+              input.readMessage(
+                  getImportSampleEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField2_ |= 0x20000000;
+              break;
+            } // case 746
+            case 754: {
+              input.readMessage(
+                  getDynamicLayoutInspectorEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField2_ |= 0x40000000;
+              break;
+            } // case 754
+            case 762: {
+              input.readMessage(
+                  getBuildAttributionStatsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField2_ |= 0x80000000;
+              break;
+            } // case 762
+            case 770: {
+              input.readMessage(
+                  getEditorCompletionStatsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x00000001;
+              break;
+            } // case 770
+            case 778: {
+              input.readMessage(
+                  getMultiViewEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x00000002;
+              break;
+            } // case 778
+            case 786: {
+              input.readMessage(
+                  getBuildAttributionUiEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x00000004;
+              break;
+            } // case 786
+            case 794: {
+              input.readMessage(
+                  getVsPluginEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x00000008;
+              break;
+            } // case 794
+            case 802: {
+              input.readMessage(
+                  getDesignEditorHelpPanelEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x00000010;
+              break;
+            } // case 802
+            case 810: {
+              input.readMessage(
+                  getAppInspectionEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x00000020;
+              break;
+            } // case 810
+            case 818: {
+              input.readMessage(
+                  getMlModelBindingEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x00000040;
+              break;
+            } // case 818
+            case 826: {
+              input.readMessage(
+                  getAvdLaunchEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x00000080;
+              break;
+            } // case 826
+            case 834: {
+              input.readMessage(
+                  getNavSafeArgsEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x00000100;
+              break;
+            } // case 834
+            case 842: {
+              input.readMessage(
+                  getDaggerEditorEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x00000200;
+              break;
+            } // case 842
+            case 850: {
+              input.readMessage(
+                  getParallelAndroidTestReportUiEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x00000400;
+              break;
+            } // case 850
+            case 858: {
+              input.readMessage(
+                  getApplyChangesAgentErrorFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x00000800;
+              break;
+            } // case 858
+            case 866: {
+              input.readMessage(
+                  getTemplateUsageFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x00001000;
+              break;
+            } // case 866
+            case 874: {
+              input.readMessage(
+                  getUpgradeAssistantComponentEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x00002000;
+              break;
+            } // case 874
+            case 882: {
+              input.readMessage(
+                  getUpgradeAssistantProcessorEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x00004000;
+              break;
+            } // case 882
+            case 890: {
+              input.readMessage(
+                  getInteractivePreviewEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x00008000;
+              break;
+            } // case 890
+            case 898: {
+              input.readMessage(
+                  getComposeAnimationToolingEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x00010000;
+              break;
+            } // case 898
+            case 906: {
+              input.readMessage(
+                  getGradleCppSyncStatsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x00040000;
+              break;
+            } // case 906
+            case 914: {
+              com.google.wireless.android.sdk.stats.EmulatorUiEvent m =
+                  input.readMessage(
+                      com.google.wireless.android.sdk.stats.EmulatorUiEvent.PARSER,
+                      extensionRegistry);
+              if (emulatorUiEventsBuilder_ == null) {
+                ensureEmulatorUiEventsIsMutable();
+                emulatorUiEvents_.add(m);
+              } else {
+                emulatorUiEventsBuilder_.addMessage(m);
+              }
+              break;
+            } // case 914
+            case 922: {
+              input.readMessage(
+                  getSurveyResponseFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x00040000;
+              break;
+            } // case 922
+            case 930: {
+              input.readMessage(
+                  getComposeDeployEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x00080000;
+              break;
+            } // case 930
+            case 938: {
+              input.readMessage(
+                  getAutoImportEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x00100000;
+              break;
+            } // case 938
+            case 946: {
+              input.readMessage(
+                  getFileUsageFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x00200000;
+              break;
+            } // case 946
+            case 954: {
+              input.readMessage(
+                  getLiveLiteralsEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x00400000;
+              break;
+            } // case 954
+            case 962: {
+              input.readMessage(
+                  getNonTransitiveRClassMigrationEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x00800000;
+              break;
+            } // case 962
+            case 970: {
+              input.readMessage(
+                  getAndroidTestRetentionEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x01000000;
+              break;
+            } // case 970
+            case 978: {
+              input.readMessage(
+                  getSuggestedImportEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x02000000;
+              break;
+            } // case 978
+            case 986: {
+              input.readMessage(
+                  getVfsRefreshFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x04000000;
+              break;
+            } // case 986
+            case 994: {
+              input.readMessage(
+                  getSigningWizardEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x08000000;
+              break;
+            } // case 994
+            case 1002: {
+              input.readMessage(
+                  getFileTypeFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x10000000;
+              break;
+            } // case 1002
+            case 1010: {
+              input.readMessage(
+                  getKotlinProjectConfigurationFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x20000000;
+              break;
+            } // case 1010
+            case 1018: {
+              input.readMessage(
+                  getRunStartDataFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x40000000;
+              break;
+            } // case 1018
+            case 1026: {
+              input.readMessage(
+                  getRunFinishDataFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField3_ |= 0x80000000;
+              break;
+            } // case 1026
+            case 1034: {
+              input.readMessage(
+                  getDeviceManagerEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x00000001;
+              break;
+            } // case 1034
+            case 1042: {
+              input.readMessage(
+                  getWearPairingEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x00000002;
+              break;
+            } // case 1042
+            case 1050: {
+              input.readMessage(
+                  getGradleJdkInvalidEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x00000004;
+              break;
+            } // case 1050
+            case 1058: {
+              input.readMessage(
+                  getDeviceExplorerEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x00000008;
+              break;
+            } // case 1058
+            case 1066: {
+              input.readMessage(
+                  getOptInToMetricsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x00000010;
+              break;
+            } // case 1066
+            case 1074: {
+              input.readMessage(
+                  getOptOutOfMetricsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x00000020;
+              break;
+            } // case 1074
+            case 1082: {
+              input.readMessage(
+                  getGradleVersionCatalogDetectorEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x00000040;
+              break;
+            } // case 1082
+            case 1090: {
+              input.readMessage(
+                  getCoroutineDebuggerEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x00000080;
+              break;
+            } // case 1090
+            case 1098: {
+              input.readMessage(
+                  getSplittingTabsUsageEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x00000100;
+              break;
+            } // case 1098
+            case 1106: {
+              input.readMessage(
+                  getLogcatUsageEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x00000200;
+              break;
+            } // case 1106
+            case 1114: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              ensureRawProjectIdsIsMutable();
+              rawProjectIds_.add(bs);
+              break;
+            } // case 1114
+            case 1122: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              ensureProjectIdsIsMutable();
+              projectIds_.add(bs);
+              break;
+            } // case 1122
+            case 1130: {
+              input.readMessage(
+                  getOsMetricsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x00001000;
+              break;
+            } // case 1130
+            case 1138: {
+              input.readMessage(
+                  getSdkIndexLibraryDetailsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x00002000;
+              break;
+            } // case 1138
+            case 1146: {
+              input.readMessage(
+                  getEditorPickerEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x00004000;
+              break;
+            } // case 1146
+            case 1154: {
+              input.readMessage(
+                  getComposeMultiPreviewEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x00008000;
+              break;
+            } // case 1154
+            case 1162: {
+              input.readMessage(
+                  getLiveEditEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x00010000;
+              break;
+            } // case 1162
+            case 1170: {
+              input.readMessage(
+                  getStopEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x00020000;
+              break;
+            } // case 1170
+            case 1178: {
+              input.readMessage(
+                  getAppQualityInsightsUsageEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x00040000;
+              break;
+            } // case 1178
+            case 1186: {
+              input.readMessage(
+                  getGoogleLoginEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x00080000;
+              break;
+            } // case 1186
+            case 1194: {
+              input.readMessage(
+                  getDeviceMirroringSessionFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x00100000;
+              break;
+            } // case 1194
+            case 1202: {
+              input.readMessage(
+                  getFastPreviewEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x00200000;
+              break;
+            } // case 1202
+            case 1210: {
+              input.readMessage(
+                  getMemoryUsageReportEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x00400000;
+              break;
+            } // case 1210
+            case 1218: {
+              input.readMessage(
+                  getSdkIndexLoadingDetailsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x00800000;
+              break;
+            } // case 1218
+            case 1226: {
+              input.readMessage(
+                  getManifestMergerStatsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x01000000;
+              break;
+            } // case 1226
+            case 1234: {
+              input.readMessage(
+                  getThreadingAgentUsageEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x02000000;
+              break;
+            } // case 1234
+            case 1242: {
+              input.readMessage(
+                  getProjectViewSelectionChangeEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x04000000;
+              break;
+            } // case 1242
+            case 1250: {
+              input.readMessage(
+                  getHeapReportEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x08000000;
+              break;
+            } // case 1250
+            case 1258: {
+              input.readMessage(
+                  getCreateDiagnosticReportActionEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x10000000;
+              break;
+            } // case 1258
+            case 1266: {
+              input.readMessage(
+                  getDirectAccessUsageEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x20000000;
+              break;
+            } // case 1266
+            case 1274: {
+              input.readMessage(
+                  getSafeModeStatsEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x40000000;
+              break;
+            } // case 1274
+            case 1282: {
+              input.readMessage(
+                  getTsdkUaEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField4_ |= 0x80000000;
+              break;
+            } // case 1282
+            case 1290: {
+              input.readMessage(
+                  getIntellijNewUiStateEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x00000001;
+              break;
+            } // case 1290
+            case 1298: {
+              input.readMessage(
+                  getKotlinGradlePerformanceEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x00000002;
+              break;
+            } // case 1298
+            case 1306: {
+              input.readMessage(
+                  getBuildOutputDownloadsInfoEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x00000004;
+              break;
+            } // case 1306
+            case 1314: {
+              input.readMessage(
+                  getDeviceMirroringAbnormalAgentTerminationFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x00000008;
+              break;
+            } // case 1314
+            case 1322: {
+              input.readMessage(
+                  getSystemHealthEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x00000010;
+              break;
+            } // case 1322
+            case 1330: {
+              input.readMessage(
+                  getComposePreviewCanvasEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x00000020;
+              break;
+            } // case 1330
+            case 1338: {
+              input.readMessage(
+                  getSmlCompletionEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x00000040;
+              break;
+            } // case 1338
+            case 1346: {
+              input.readMessage(
+                  getSmlTransformEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x00000080;
+              break;
+            } // case 1346
+            case 1354: {
+              input.readMessage(
+                  getSmlChatBotEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x00000100;
+              break;
+            } // case 1354
+            case 1362: {
+              input.readMessage(
+                  getSmlConfigurationEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x00000200;
+              break;
+            } // case 1362
+            case 1370: {
+              input.readMessage(
+                  getKotlinSupportDeclinedFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x00000400;
+              break;
+            } // case 1370
+            case 1378: {
+              input.readMessage(
+                  getDeviceScreenshotEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x00000800;
+              break;
+            } // case 1378
+            case 1386: {
+              input.readMessage(
+                  getEditorNotificationFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x00001000;
+              break;
+            } // case 1386
+            case 1394: {
+              input.readMessage(
+                  getComposePreviewLiteModeEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x00002000;
+              break;
+            } // case 1394
+            case 1402: {
+              input.readMessage(
+                  getUpgradeAndroidStudioDialogFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x00004000;
+              break;
+            } // case 1402
+            case 1410: {
+              input.readMessage(
+                  getDebuggerEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x00008000;
+              break;
+            } // case 1410
+            case 1418: {
+              input.readMessage(
+                  getSoongSyncStatsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x00010000;
+              break;
+            } // case 1418
+            case 1426: {
+              input.readMessage(
+                  getIntellijNewUiSwitchFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x00020000;
+              break;
+            } // case 1426
+            case 1434: {
+              input.readMessage(
+                  getEssentialsModeEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x00040000;
+              break;
+            } // case 1434
+            case 1442: {
+              input.readMessage(
+                  getLintTooltipLinkEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x00080000;
+              break;
+            } // case 1442
+            case 1450: {
+              input.readMessage(
+                  getSmlAiExcludeEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x00100000;
+              break;
+            } // case 1450
+            case 1458: {
+              input.readMessage(
+                  getIDeviceUsageEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x00200000;
+              break;
+            } // case 1458
+            case 1466: {
+              input.readMessage(
+                  getGradleJdkConfigurationEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x00400000;
+              break;
+            } // case 1466
+            case 1474: {
+              input.readMessage(
+                  getRenderSecurityManagerEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x00800000;
+              break;
+            } // case 1474
+            case 1482: {
+              input.readMessage(
+                  getPreviewRefreshEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x01000000;
+              break;
+            } // case 1482
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.google.wireless.android.sdk.stats.AndroidStudioEvent) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
     private int bitField0_;
@@ -44396,160 +43904,160 @@ private static final long serialVersionUID = 0L;
       return buildAttributionUiEventBuilder_;
     }
 
-    private com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent androidCppExtensionEvent_;
+    private com.google.wireless.android.sdk.stats.VsPluginEvent vsPluginEvent_;
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent, com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.Builder, com.google.wireless.android.sdk.stats.AndroidCppExtensionEventOrBuilder> androidCppExtensionEventBuilder_;
+        com.google.wireless.android.sdk.stats.VsPluginEvent, com.google.wireless.android.sdk.stats.VsPluginEvent.Builder, com.google.wireless.android.sdk.stats.VsPluginEventOrBuilder> vsPluginEventBuilder_;
     /**
      * <pre>
-     * set when kind = ANDROID_CPP_EXTENSION
+     * set when kind = VS_PLUGIN
      * </pre>
      *
-     * <code>optional .android_studio.AndroidCppExtensionEvent android_cpp_extension_event = 99;</code>
-     * @return Whether the androidCppExtensionEvent field is set.
+     * <code>optional .android_studio.VsPluginEvent vs_plugin_event = 99;</code>
+     * @return Whether the vsPluginEvent field is set.
      */
-    public boolean hasAndroidCppExtensionEvent() {
+    public boolean hasVsPluginEvent() {
       return ((bitField3_ & 0x00000008) != 0);
     }
     /**
      * <pre>
-     * set when kind = ANDROID_CPP_EXTENSION
+     * set when kind = VS_PLUGIN
      * </pre>
      *
-     * <code>optional .android_studio.AndroidCppExtensionEvent android_cpp_extension_event = 99;</code>
-     * @return The androidCppExtensionEvent.
+     * <code>optional .android_studio.VsPluginEvent vs_plugin_event = 99;</code>
+     * @return The vsPluginEvent.
      */
-    public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent getAndroidCppExtensionEvent() {
-      if (androidCppExtensionEventBuilder_ == null) {
-        return androidCppExtensionEvent_ == null ? com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.getDefaultInstance() : androidCppExtensionEvent_;
+    public com.google.wireless.android.sdk.stats.VsPluginEvent getVsPluginEvent() {
+      if (vsPluginEventBuilder_ == null) {
+        return vsPluginEvent_ == null ? com.google.wireless.android.sdk.stats.VsPluginEvent.getDefaultInstance() : vsPluginEvent_;
       } else {
-        return androidCppExtensionEventBuilder_.getMessage();
+        return vsPluginEventBuilder_.getMessage();
       }
     }
     /**
      * <pre>
-     * set when kind = ANDROID_CPP_EXTENSION
+     * set when kind = VS_PLUGIN
      * </pre>
      *
-     * <code>optional .android_studio.AndroidCppExtensionEvent android_cpp_extension_event = 99;</code>
+     * <code>optional .android_studio.VsPluginEvent vs_plugin_event = 99;</code>
      */
-    public Builder setAndroidCppExtensionEvent(com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent value) {
-      if (androidCppExtensionEventBuilder_ == null) {
+    public Builder setVsPluginEvent(com.google.wireless.android.sdk.stats.VsPluginEvent value) {
+      if (vsPluginEventBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        androidCppExtensionEvent_ = value;
+        vsPluginEvent_ = value;
         onChanged();
       } else {
-        androidCppExtensionEventBuilder_.setMessage(value);
+        vsPluginEventBuilder_.setMessage(value);
       }
       bitField3_ |= 0x00000008;
       return this;
     }
     /**
      * <pre>
-     * set when kind = ANDROID_CPP_EXTENSION
+     * set when kind = VS_PLUGIN
      * </pre>
      *
-     * <code>optional .android_studio.AndroidCppExtensionEvent android_cpp_extension_event = 99;</code>
+     * <code>optional .android_studio.VsPluginEvent vs_plugin_event = 99;</code>
      */
-    public Builder setAndroidCppExtensionEvent(
-        com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.Builder builderForValue) {
-      if (androidCppExtensionEventBuilder_ == null) {
-        androidCppExtensionEvent_ = builderForValue.build();
+    public Builder setVsPluginEvent(
+        com.google.wireless.android.sdk.stats.VsPluginEvent.Builder builderForValue) {
+      if (vsPluginEventBuilder_ == null) {
+        vsPluginEvent_ = builderForValue.build();
         onChanged();
       } else {
-        androidCppExtensionEventBuilder_.setMessage(builderForValue.build());
+        vsPluginEventBuilder_.setMessage(builderForValue.build());
       }
       bitField3_ |= 0x00000008;
       return this;
     }
     /**
      * <pre>
-     * set when kind = ANDROID_CPP_EXTENSION
+     * set when kind = VS_PLUGIN
      * </pre>
      *
-     * <code>optional .android_studio.AndroidCppExtensionEvent android_cpp_extension_event = 99;</code>
+     * <code>optional .android_studio.VsPluginEvent vs_plugin_event = 99;</code>
      */
-    public Builder mergeAndroidCppExtensionEvent(com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent value) {
-      if (androidCppExtensionEventBuilder_ == null) {
+    public Builder mergeVsPluginEvent(com.google.wireless.android.sdk.stats.VsPluginEvent value) {
+      if (vsPluginEventBuilder_ == null) {
         if (((bitField3_ & 0x00000008) != 0) &&
-            androidCppExtensionEvent_ != null &&
-            androidCppExtensionEvent_ != com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.getDefaultInstance()) {
-          androidCppExtensionEvent_ =
-            com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.newBuilder(androidCppExtensionEvent_).mergeFrom(value).buildPartial();
+            vsPluginEvent_ != null &&
+            vsPluginEvent_ != com.google.wireless.android.sdk.stats.VsPluginEvent.getDefaultInstance()) {
+          vsPluginEvent_ =
+            com.google.wireless.android.sdk.stats.VsPluginEvent.newBuilder(vsPluginEvent_).mergeFrom(value).buildPartial();
         } else {
-          androidCppExtensionEvent_ = value;
+          vsPluginEvent_ = value;
         }
         onChanged();
       } else {
-        androidCppExtensionEventBuilder_.mergeFrom(value);
+        vsPluginEventBuilder_.mergeFrom(value);
       }
       bitField3_ |= 0x00000008;
       return this;
     }
     /**
      * <pre>
-     * set when kind = ANDROID_CPP_EXTENSION
+     * set when kind = VS_PLUGIN
      * </pre>
      *
-     * <code>optional .android_studio.AndroidCppExtensionEvent android_cpp_extension_event = 99;</code>
+     * <code>optional .android_studio.VsPluginEvent vs_plugin_event = 99;</code>
      */
-    public Builder clearAndroidCppExtensionEvent() {
-      if (androidCppExtensionEventBuilder_ == null) {
-        androidCppExtensionEvent_ = null;
+    public Builder clearVsPluginEvent() {
+      if (vsPluginEventBuilder_ == null) {
+        vsPluginEvent_ = null;
         onChanged();
       } else {
-        androidCppExtensionEventBuilder_.clear();
+        vsPluginEventBuilder_.clear();
       }
       bitField3_ = (bitField3_ & ~0x00000008);
       return this;
     }
     /**
      * <pre>
-     * set when kind = ANDROID_CPP_EXTENSION
+     * set when kind = VS_PLUGIN
      * </pre>
      *
-     * <code>optional .android_studio.AndroidCppExtensionEvent android_cpp_extension_event = 99;</code>
+     * <code>optional .android_studio.VsPluginEvent vs_plugin_event = 99;</code>
      */
-    public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.Builder getAndroidCppExtensionEventBuilder() {
+    public com.google.wireless.android.sdk.stats.VsPluginEvent.Builder getVsPluginEventBuilder() {
       bitField3_ |= 0x00000008;
       onChanged();
-      return getAndroidCppExtensionEventFieldBuilder().getBuilder();
+      return getVsPluginEventFieldBuilder().getBuilder();
     }
     /**
      * <pre>
-     * set when kind = ANDROID_CPP_EXTENSION
+     * set when kind = VS_PLUGIN
      * </pre>
      *
-     * <code>optional .android_studio.AndroidCppExtensionEvent android_cpp_extension_event = 99;</code>
+     * <code>optional .android_studio.VsPluginEvent vs_plugin_event = 99;</code>
      */
-    public com.google.wireless.android.sdk.stats.AndroidCppExtensionEventOrBuilder getAndroidCppExtensionEventOrBuilder() {
-      if (androidCppExtensionEventBuilder_ != null) {
-        return androidCppExtensionEventBuilder_.getMessageOrBuilder();
+    public com.google.wireless.android.sdk.stats.VsPluginEventOrBuilder getVsPluginEventOrBuilder() {
+      if (vsPluginEventBuilder_ != null) {
+        return vsPluginEventBuilder_.getMessageOrBuilder();
       } else {
-        return androidCppExtensionEvent_ == null ?
-            com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.getDefaultInstance() : androidCppExtensionEvent_;
+        return vsPluginEvent_ == null ?
+            com.google.wireless.android.sdk.stats.VsPluginEvent.getDefaultInstance() : vsPluginEvent_;
       }
     }
     /**
      * <pre>
-     * set when kind = ANDROID_CPP_EXTENSION
+     * set when kind = VS_PLUGIN
      * </pre>
      *
-     * <code>optional .android_studio.AndroidCppExtensionEvent android_cpp_extension_event = 99;</code>
+     * <code>optional .android_studio.VsPluginEvent vs_plugin_event = 99;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent, com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.Builder, com.google.wireless.android.sdk.stats.AndroidCppExtensionEventOrBuilder> 
-        getAndroidCppExtensionEventFieldBuilder() {
-      if (androidCppExtensionEventBuilder_ == null) {
-        androidCppExtensionEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent, com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.Builder, com.google.wireless.android.sdk.stats.AndroidCppExtensionEventOrBuilder>(
-                getAndroidCppExtensionEvent(),
+        com.google.wireless.android.sdk.stats.VsPluginEvent, com.google.wireless.android.sdk.stats.VsPluginEvent.Builder, com.google.wireless.android.sdk.stats.VsPluginEventOrBuilder> 
+        getVsPluginEventFieldBuilder() {
+      if (vsPluginEventBuilder_ == null) {
+        vsPluginEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.VsPluginEvent, com.google.wireless.android.sdk.stats.VsPluginEvent.Builder, com.google.wireless.android.sdk.stats.VsPluginEventOrBuilder>(
+                getVsPluginEvent(),
                 getParentForChildren(),
                 isClean());
-        androidCppExtensionEvent_ = null;
+        vsPluginEvent_ = null;
       }
-      return androidCppExtensionEventBuilder_;
+      return vsPluginEventBuilder_;
     }
 
     private com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent designEditorHelpPanelEvent_;
@@ -57239,6 +56747,786 @@ private static final long serialVersionUID = 0L;
       }
       return lintTooltipLinkEventBuilder_;
     }
+
+    private com.google.wireless.android.sdk.stats.SmlAiExcludeEvent smlAiExcludeEvent_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.SmlAiExcludeEvent, com.google.wireless.android.sdk.stats.SmlAiExcludeEvent.Builder, com.google.wireless.android.sdk.stats.SmlAiExcludeEventOrBuilder> smlAiExcludeEventBuilder_;
+    /**
+     * <pre>
+     * set when kind = SML_AI_EXCLUDE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlAiExcludeEvent sml_ai_exclude_event = 181;</code>
+     * @return Whether the smlAiExcludeEvent field is set.
+     */
+    public boolean hasSmlAiExcludeEvent() {
+      return ((bitField5_ & 0x00100000) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = SML_AI_EXCLUDE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlAiExcludeEvent sml_ai_exclude_event = 181;</code>
+     * @return The smlAiExcludeEvent.
+     */
+    public com.google.wireless.android.sdk.stats.SmlAiExcludeEvent getSmlAiExcludeEvent() {
+      if (smlAiExcludeEventBuilder_ == null) {
+        return smlAiExcludeEvent_ == null ? com.google.wireless.android.sdk.stats.SmlAiExcludeEvent.getDefaultInstance() : smlAiExcludeEvent_;
+      } else {
+        return smlAiExcludeEventBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = SML_AI_EXCLUDE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlAiExcludeEvent sml_ai_exclude_event = 181;</code>
+     */
+    public Builder setSmlAiExcludeEvent(com.google.wireless.android.sdk.stats.SmlAiExcludeEvent value) {
+      if (smlAiExcludeEventBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        smlAiExcludeEvent_ = value;
+        onChanged();
+      } else {
+        smlAiExcludeEventBuilder_.setMessage(value);
+      }
+      bitField5_ |= 0x00100000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = SML_AI_EXCLUDE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlAiExcludeEvent sml_ai_exclude_event = 181;</code>
+     */
+    public Builder setSmlAiExcludeEvent(
+        com.google.wireless.android.sdk.stats.SmlAiExcludeEvent.Builder builderForValue) {
+      if (smlAiExcludeEventBuilder_ == null) {
+        smlAiExcludeEvent_ = builderForValue.build();
+        onChanged();
+      } else {
+        smlAiExcludeEventBuilder_.setMessage(builderForValue.build());
+      }
+      bitField5_ |= 0x00100000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = SML_AI_EXCLUDE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlAiExcludeEvent sml_ai_exclude_event = 181;</code>
+     */
+    public Builder mergeSmlAiExcludeEvent(com.google.wireless.android.sdk.stats.SmlAiExcludeEvent value) {
+      if (smlAiExcludeEventBuilder_ == null) {
+        if (((bitField5_ & 0x00100000) != 0) &&
+            smlAiExcludeEvent_ != null &&
+            smlAiExcludeEvent_ != com.google.wireless.android.sdk.stats.SmlAiExcludeEvent.getDefaultInstance()) {
+          smlAiExcludeEvent_ =
+            com.google.wireless.android.sdk.stats.SmlAiExcludeEvent.newBuilder(smlAiExcludeEvent_).mergeFrom(value).buildPartial();
+        } else {
+          smlAiExcludeEvent_ = value;
+        }
+        onChanged();
+      } else {
+        smlAiExcludeEventBuilder_.mergeFrom(value);
+      }
+      bitField5_ |= 0x00100000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = SML_AI_EXCLUDE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlAiExcludeEvent sml_ai_exclude_event = 181;</code>
+     */
+    public Builder clearSmlAiExcludeEvent() {
+      if (smlAiExcludeEventBuilder_ == null) {
+        smlAiExcludeEvent_ = null;
+        onChanged();
+      } else {
+        smlAiExcludeEventBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x00100000);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = SML_AI_EXCLUDE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlAiExcludeEvent sml_ai_exclude_event = 181;</code>
+     */
+    public com.google.wireless.android.sdk.stats.SmlAiExcludeEvent.Builder getSmlAiExcludeEventBuilder() {
+      bitField5_ |= 0x00100000;
+      onChanged();
+      return getSmlAiExcludeEventFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = SML_AI_EXCLUDE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlAiExcludeEvent sml_ai_exclude_event = 181;</code>
+     */
+    public com.google.wireless.android.sdk.stats.SmlAiExcludeEventOrBuilder getSmlAiExcludeEventOrBuilder() {
+      if (smlAiExcludeEventBuilder_ != null) {
+        return smlAiExcludeEventBuilder_.getMessageOrBuilder();
+      } else {
+        return smlAiExcludeEvent_ == null ?
+            com.google.wireless.android.sdk.stats.SmlAiExcludeEvent.getDefaultInstance() : smlAiExcludeEvent_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = SML_AI_EXCLUDE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlAiExcludeEvent sml_ai_exclude_event = 181;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.SmlAiExcludeEvent, com.google.wireless.android.sdk.stats.SmlAiExcludeEvent.Builder, com.google.wireless.android.sdk.stats.SmlAiExcludeEventOrBuilder> 
+        getSmlAiExcludeEventFieldBuilder() {
+      if (smlAiExcludeEventBuilder_ == null) {
+        smlAiExcludeEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.SmlAiExcludeEvent, com.google.wireless.android.sdk.stats.SmlAiExcludeEvent.Builder, com.google.wireless.android.sdk.stats.SmlAiExcludeEventOrBuilder>(
+                getSmlAiExcludeEvent(),
+                getParentForChildren(),
+                isClean());
+        smlAiExcludeEvent_ = null;
+      }
+      return smlAiExcludeEventBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.IDeviceUsageEvent iDeviceUsageEvent_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.IDeviceUsageEvent, com.google.wireless.android.sdk.stats.IDeviceUsageEvent.Builder, com.google.wireless.android.sdk.stats.IDeviceUsageEventOrBuilder> iDeviceUsageEventBuilder_;
+    /**
+     * <pre>
+     * set when kind = I_DEVICE_USAGE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.IDeviceUsageEvent i_device_usage_event = 182;</code>
+     * @return Whether the iDeviceUsageEvent field is set.
+     */
+    public boolean hasIDeviceUsageEvent() {
+      return ((bitField5_ & 0x00200000) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = I_DEVICE_USAGE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.IDeviceUsageEvent i_device_usage_event = 182;</code>
+     * @return The iDeviceUsageEvent.
+     */
+    public com.google.wireless.android.sdk.stats.IDeviceUsageEvent getIDeviceUsageEvent() {
+      if (iDeviceUsageEventBuilder_ == null) {
+        return iDeviceUsageEvent_ == null ? com.google.wireless.android.sdk.stats.IDeviceUsageEvent.getDefaultInstance() : iDeviceUsageEvent_;
+      } else {
+        return iDeviceUsageEventBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = I_DEVICE_USAGE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.IDeviceUsageEvent i_device_usage_event = 182;</code>
+     */
+    public Builder setIDeviceUsageEvent(com.google.wireless.android.sdk.stats.IDeviceUsageEvent value) {
+      if (iDeviceUsageEventBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        iDeviceUsageEvent_ = value;
+        onChanged();
+      } else {
+        iDeviceUsageEventBuilder_.setMessage(value);
+      }
+      bitField5_ |= 0x00200000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = I_DEVICE_USAGE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.IDeviceUsageEvent i_device_usage_event = 182;</code>
+     */
+    public Builder setIDeviceUsageEvent(
+        com.google.wireless.android.sdk.stats.IDeviceUsageEvent.Builder builderForValue) {
+      if (iDeviceUsageEventBuilder_ == null) {
+        iDeviceUsageEvent_ = builderForValue.build();
+        onChanged();
+      } else {
+        iDeviceUsageEventBuilder_.setMessage(builderForValue.build());
+      }
+      bitField5_ |= 0x00200000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = I_DEVICE_USAGE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.IDeviceUsageEvent i_device_usage_event = 182;</code>
+     */
+    public Builder mergeIDeviceUsageEvent(com.google.wireless.android.sdk.stats.IDeviceUsageEvent value) {
+      if (iDeviceUsageEventBuilder_ == null) {
+        if (((bitField5_ & 0x00200000) != 0) &&
+            iDeviceUsageEvent_ != null &&
+            iDeviceUsageEvent_ != com.google.wireless.android.sdk.stats.IDeviceUsageEvent.getDefaultInstance()) {
+          iDeviceUsageEvent_ =
+            com.google.wireless.android.sdk.stats.IDeviceUsageEvent.newBuilder(iDeviceUsageEvent_).mergeFrom(value).buildPartial();
+        } else {
+          iDeviceUsageEvent_ = value;
+        }
+        onChanged();
+      } else {
+        iDeviceUsageEventBuilder_.mergeFrom(value);
+      }
+      bitField5_ |= 0x00200000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = I_DEVICE_USAGE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.IDeviceUsageEvent i_device_usage_event = 182;</code>
+     */
+    public Builder clearIDeviceUsageEvent() {
+      if (iDeviceUsageEventBuilder_ == null) {
+        iDeviceUsageEvent_ = null;
+        onChanged();
+      } else {
+        iDeviceUsageEventBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x00200000);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = I_DEVICE_USAGE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.IDeviceUsageEvent i_device_usage_event = 182;</code>
+     */
+    public com.google.wireless.android.sdk.stats.IDeviceUsageEvent.Builder getIDeviceUsageEventBuilder() {
+      bitField5_ |= 0x00200000;
+      onChanged();
+      return getIDeviceUsageEventFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = I_DEVICE_USAGE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.IDeviceUsageEvent i_device_usage_event = 182;</code>
+     */
+    public com.google.wireless.android.sdk.stats.IDeviceUsageEventOrBuilder getIDeviceUsageEventOrBuilder() {
+      if (iDeviceUsageEventBuilder_ != null) {
+        return iDeviceUsageEventBuilder_.getMessageOrBuilder();
+      } else {
+        return iDeviceUsageEvent_ == null ?
+            com.google.wireless.android.sdk.stats.IDeviceUsageEvent.getDefaultInstance() : iDeviceUsageEvent_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = I_DEVICE_USAGE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.IDeviceUsageEvent i_device_usage_event = 182;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.IDeviceUsageEvent, com.google.wireless.android.sdk.stats.IDeviceUsageEvent.Builder, com.google.wireless.android.sdk.stats.IDeviceUsageEventOrBuilder> 
+        getIDeviceUsageEventFieldBuilder() {
+      if (iDeviceUsageEventBuilder_ == null) {
+        iDeviceUsageEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.IDeviceUsageEvent, com.google.wireless.android.sdk.stats.IDeviceUsageEvent.Builder, com.google.wireless.android.sdk.stats.IDeviceUsageEventOrBuilder>(
+                getIDeviceUsageEvent(),
+                getParentForChildren(),
+                isClean());
+        iDeviceUsageEvent_ = null;
+      }
+      return iDeviceUsageEventBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.GradleJdkConfigurationEvent gradleJdkConfigurationEvent_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.GradleJdkConfigurationEvent, com.google.wireless.android.sdk.stats.GradleJdkConfigurationEvent.Builder, com.google.wireless.android.sdk.stats.GradleJdkConfigurationEventOrBuilder> gradleJdkConfigurationEventBuilder_;
+    /**
+     * <pre>
+     * set when kind = GRADLE_JDK_CONFIGURATION
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleJdkConfigurationEvent gradle_jdk_configuration_event = 183;</code>
+     * @return Whether the gradleJdkConfigurationEvent field is set.
+     */
+    public boolean hasGradleJdkConfigurationEvent() {
+      return ((bitField5_ & 0x00400000) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = GRADLE_JDK_CONFIGURATION
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleJdkConfigurationEvent gradle_jdk_configuration_event = 183;</code>
+     * @return The gradleJdkConfigurationEvent.
+     */
+    public com.google.wireless.android.sdk.stats.GradleJdkConfigurationEvent getGradleJdkConfigurationEvent() {
+      if (gradleJdkConfigurationEventBuilder_ == null) {
+        return gradleJdkConfigurationEvent_ == null ? com.google.wireless.android.sdk.stats.GradleJdkConfigurationEvent.getDefaultInstance() : gradleJdkConfigurationEvent_;
+      } else {
+        return gradleJdkConfigurationEventBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = GRADLE_JDK_CONFIGURATION
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleJdkConfigurationEvent gradle_jdk_configuration_event = 183;</code>
+     */
+    public Builder setGradleJdkConfigurationEvent(com.google.wireless.android.sdk.stats.GradleJdkConfigurationEvent value) {
+      if (gradleJdkConfigurationEventBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        gradleJdkConfigurationEvent_ = value;
+        onChanged();
+      } else {
+        gradleJdkConfigurationEventBuilder_.setMessage(value);
+      }
+      bitField5_ |= 0x00400000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = GRADLE_JDK_CONFIGURATION
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleJdkConfigurationEvent gradle_jdk_configuration_event = 183;</code>
+     */
+    public Builder setGradleJdkConfigurationEvent(
+        com.google.wireless.android.sdk.stats.GradleJdkConfigurationEvent.Builder builderForValue) {
+      if (gradleJdkConfigurationEventBuilder_ == null) {
+        gradleJdkConfigurationEvent_ = builderForValue.build();
+        onChanged();
+      } else {
+        gradleJdkConfigurationEventBuilder_.setMessage(builderForValue.build());
+      }
+      bitField5_ |= 0x00400000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = GRADLE_JDK_CONFIGURATION
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleJdkConfigurationEvent gradle_jdk_configuration_event = 183;</code>
+     */
+    public Builder mergeGradleJdkConfigurationEvent(com.google.wireless.android.sdk.stats.GradleJdkConfigurationEvent value) {
+      if (gradleJdkConfigurationEventBuilder_ == null) {
+        if (((bitField5_ & 0x00400000) != 0) &&
+            gradleJdkConfigurationEvent_ != null &&
+            gradleJdkConfigurationEvent_ != com.google.wireless.android.sdk.stats.GradleJdkConfigurationEvent.getDefaultInstance()) {
+          gradleJdkConfigurationEvent_ =
+            com.google.wireless.android.sdk.stats.GradleJdkConfigurationEvent.newBuilder(gradleJdkConfigurationEvent_).mergeFrom(value).buildPartial();
+        } else {
+          gradleJdkConfigurationEvent_ = value;
+        }
+        onChanged();
+      } else {
+        gradleJdkConfigurationEventBuilder_.mergeFrom(value);
+      }
+      bitField5_ |= 0x00400000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = GRADLE_JDK_CONFIGURATION
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleJdkConfigurationEvent gradle_jdk_configuration_event = 183;</code>
+     */
+    public Builder clearGradleJdkConfigurationEvent() {
+      if (gradleJdkConfigurationEventBuilder_ == null) {
+        gradleJdkConfigurationEvent_ = null;
+        onChanged();
+      } else {
+        gradleJdkConfigurationEventBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x00400000);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = GRADLE_JDK_CONFIGURATION
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleJdkConfigurationEvent gradle_jdk_configuration_event = 183;</code>
+     */
+    public com.google.wireless.android.sdk.stats.GradleJdkConfigurationEvent.Builder getGradleJdkConfigurationEventBuilder() {
+      bitField5_ |= 0x00400000;
+      onChanged();
+      return getGradleJdkConfigurationEventFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = GRADLE_JDK_CONFIGURATION
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleJdkConfigurationEvent gradle_jdk_configuration_event = 183;</code>
+     */
+    public com.google.wireless.android.sdk.stats.GradleJdkConfigurationEventOrBuilder getGradleJdkConfigurationEventOrBuilder() {
+      if (gradleJdkConfigurationEventBuilder_ != null) {
+        return gradleJdkConfigurationEventBuilder_.getMessageOrBuilder();
+      } else {
+        return gradleJdkConfigurationEvent_ == null ?
+            com.google.wireless.android.sdk.stats.GradleJdkConfigurationEvent.getDefaultInstance() : gradleJdkConfigurationEvent_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = GRADLE_JDK_CONFIGURATION
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleJdkConfigurationEvent gradle_jdk_configuration_event = 183;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.GradleJdkConfigurationEvent, com.google.wireless.android.sdk.stats.GradleJdkConfigurationEvent.Builder, com.google.wireless.android.sdk.stats.GradleJdkConfigurationEventOrBuilder> 
+        getGradleJdkConfigurationEventFieldBuilder() {
+      if (gradleJdkConfigurationEventBuilder_ == null) {
+        gradleJdkConfigurationEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.GradleJdkConfigurationEvent, com.google.wireless.android.sdk.stats.GradleJdkConfigurationEvent.Builder, com.google.wireless.android.sdk.stats.GradleJdkConfigurationEventOrBuilder>(
+                getGradleJdkConfigurationEvent(),
+                getParentForChildren(),
+                isClean());
+        gradleJdkConfigurationEvent_ = null;
+      }
+      return gradleJdkConfigurationEventBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.RenderSecurityManagerEvent renderSecurityManagerEvent_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.RenderSecurityManagerEvent, com.google.wireless.android.sdk.stats.RenderSecurityManagerEvent.Builder, com.google.wireless.android.sdk.stats.RenderSecurityManagerEventOrBuilder> renderSecurityManagerEventBuilder_;
+    /**
+     * <pre>
+     * set when kind = RENDER_SECURITY_MANAGER_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.RenderSecurityManagerEvent render_security_manager_event = 184;</code>
+     * @return Whether the renderSecurityManagerEvent field is set.
+     */
+    public boolean hasRenderSecurityManagerEvent() {
+      return ((bitField5_ & 0x00800000) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = RENDER_SECURITY_MANAGER_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.RenderSecurityManagerEvent render_security_manager_event = 184;</code>
+     * @return The renderSecurityManagerEvent.
+     */
+    public com.google.wireless.android.sdk.stats.RenderSecurityManagerEvent getRenderSecurityManagerEvent() {
+      if (renderSecurityManagerEventBuilder_ == null) {
+        return renderSecurityManagerEvent_ == null ? com.google.wireless.android.sdk.stats.RenderSecurityManagerEvent.getDefaultInstance() : renderSecurityManagerEvent_;
+      } else {
+        return renderSecurityManagerEventBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = RENDER_SECURITY_MANAGER_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.RenderSecurityManagerEvent render_security_manager_event = 184;</code>
+     */
+    public Builder setRenderSecurityManagerEvent(com.google.wireless.android.sdk.stats.RenderSecurityManagerEvent value) {
+      if (renderSecurityManagerEventBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        renderSecurityManagerEvent_ = value;
+        onChanged();
+      } else {
+        renderSecurityManagerEventBuilder_.setMessage(value);
+      }
+      bitField5_ |= 0x00800000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = RENDER_SECURITY_MANAGER_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.RenderSecurityManagerEvent render_security_manager_event = 184;</code>
+     */
+    public Builder setRenderSecurityManagerEvent(
+        com.google.wireless.android.sdk.stats.RenderSecurityManagerEvent.Builder builderForValue) {
+      if (renderSecurityManagerEventBuilder_ == null) {
+        renderSecurityManagerEvent_ = builderForValue.build();
+        onChanged();
+      } else {
+        renderSecurityManagerEventBuilder_.setMessage(builderForValue.build());
+      }
+      bitField5_ |= 0x00800000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = RENDER_SECURITY_MANAGER_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.RenderSecurityManagerEvent render_security_manager_event = 184;</code>
+     */
+    public Builder mergeRenderSecurityManagerEvent(com.google.wireless.android.sdk.stats.RenderSecurityManagerEvent value) {
+      if (renderSecurityManagerEventBuilder_ == null) {
+        if (((bitField5_ & 0x00800000) != 0) &&
+            renderSecurityManagerEvent_ != null &&
+            renderSecurityManagerEvent_ != com.google.wireless.android.sdk.stats.RenderSecurityManagerEvent.getDefaultInstance()) {
+          renderSecurityManagerEvent_ =
+            com.google.wireless.android.sdk.stats.RenderSecurityManagerEvent.newBuilder(renderSecurityManagerEvent_).mergeFrom(value).buildPartial();
+        } else {
+          renderSecurityManagerEvent_ = value;
+        }
+        onChanged();
+      } else {
+        renderSecurityManagerEventBuilder_.mergeFrom(value);
+      }
+      bitField5_ |= 0x00800000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = RENDER_SECURITY_MANAGER_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.RenderSecurityManagerEvent render_security_manager_event = 184;</code>
+     */
+    public Builder clearRenderSecurityManagerEvent() {
+      if (renderSecurityManagerEventBuilder_ == null) {
+        renderSecurityManagerEvent_ = null;
+        onChanged();
+      } else {
+        renderSecurityManagerEventBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x00800000);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = RENDER_SECURITY_MANAGER_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.RenderSecurityManagerEvent render_security_manager_event = 184;</code>
+     */
+    public com.google.wireless.android.sdk.stats.RenderSecurityManagerEvent.Builder getRenderSecurityManagerEventBuilder() {
+      bitField5_ |= 0x00800000;
+      onChanged();
+      return getRenderSecurityManagerEventFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = RENDER_SECURITY_MANAGER_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.RenderSecurityManagerEvent render_security_manager_event = 184;</code>
+     */
+    public com.google.wireless.android.sdk.stats.RenderSecurityManagerEventOrBuilder getRenderSecurityManagerEventOrBuilder() {
+      if (renderSecurityManagerEventBuilder_ != null) {
+        return renderSecurityManagerEventBuilder_.getMessageOrBuilder();
+      } else {
+        return renderSecurityManagerEvent_ == null ?
+            com.google.wireless.android.sdk.stats.RenderSecurityManagerEvent.getDefaultInstance() : renderSecurityManagerEvent_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = RENDER_SECURITY_MANAGER_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.RenderSecurityManagerEvent render_security_manager_event = 184;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.RenderSecurityManagerEvent, com.google.wireless.android.sdk.stats.RenderSecurityManagerEvent.Builder, com.google.wireless.android.sdk.stats.RenderSecurityManagerEventOrBuilder> 
+        getRenderSecurityManagerEventFieldBuilder() {
+      if (renderSecurityManagerEventBuilder_ == null) {
+        renderSecurityManagerEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.RenderSecurityManagerEvent, com.google.wireless.android.sdk.stats.RenderSecurityManagerEvent.Builder, com.google.wireless.android.sdk.stats.RenderSecurityManagerEventOrBuilder>(
+                getRenderSecurityManagerEvent(),
+                getParentForChildren(),
+                isClean());
+        renderSecurityManagerEvent_ = null;
+      }
+      return renderSecurityManagerEventBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.PreviewRefreshEvent previewRefreshEvent_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.PreviewRefreshEvent, com.google.wireless.android.sdk.stats.PreviewRefreshEvent.Builder, com.google.wireless.android.sdk.stats.PreviewRefreshEventOrBuilder> previewRefreshEventBuilder_;
+    /**
+     * <pre>
+     * set when kind = PREVIEW_REFRESH_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.PreviewRefreshEvent preview_refresh_event = 185;</code>
+     * @return Whether the previewRefreshEvent field is set.
+     */
+    public boolean hasPreviewRefreshEvent() {
+      return ((bitField5_ & 0x01000000) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = PREVIEW_REFRESH_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.PreviewRefreshEvent preview_refresh_event = 185;</code>
+     * @return The previewRefreshEvent.
+     */
+    public com.google.wireless.android.sdk.stats.PreviewRefreshEvent getPreviewRefreshEvent() {
+      if (previewRefreshEventBuilder_ == null) {
+        return previewRefreshEvent_ == null ? com.google.wireless.android.sdk.stats.PreviewRefreshEvent.getDefaultInstance() : previewRefreshEvent_;
+      } else {
+        return previewRefreshEventBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = PREVIEW_REFRESH_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.PreviewRefreshEvent preview_refresh_event = 185;</code>
+     */
+    public Builder setPreviewRefreshEvent(com.google.wireless.android.sdk.stats.PreviewRefreshEvent value) {
+      if (previewRefreshEventBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        previewRefreshEvent_ = value;
+        onChanged();
+      } else {
+        previewRefreshEventBuilder_.setMessage(value);
+      }
+      bitField5_ |= 0x01000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = PREVIEW_REFRESH_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.PreviewRefreshEvent preview_refresh_event = 185;</code>
+     */
+    public Builder setPreviewRefreshEvent(
+        com.google.wireless.android.sdk.stats.PreviewRefreshEvent.Builder builderForValue) {
+      if (previewRefreshEventBuilder_ == null) {
+        previewRefreshEvent_ = builderForValue.build();
+        onChanged();
+      } else {
+        previewRefreshEventBuilder_.setMessage(builderForValue.build());
+      }
+      bitField5_ |= 0x01000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = PREVIEW_REFRESH_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.PreviewRefreshEvent preview_refresh_event = 185;</code>
+     */
+    public Builder mergePreviewRefreshEvent(com.google.wireless.android.sdk.stats.PreviewRefreshEvent value) {
+      if (previewRefreshEventBuilder_ == null) {
+        if (((bitField5_ & 0x01000000) != 0) &&
+            previewRefreshEvent_ != null &&
+            previewRefreshEvent_ != com.google.wireless.android.sdk.stats.PreviewRefreshEvent.getDefaultInstance()) {
+          previewRefreshEvent_ =
+            com.google.wireless.android.sdk.stats.PreviewRefreshEvent.newBuilder(previewRefreshEvent_).mergeFrom(value).buildPartial();
+        } else {
+          previewRefreshEvent_ = value;
+        }
+        onChanged();
+      } else {
+        previewRefreshEventBuilder_.mergeFrom(value);
+      }
+      bitField5_ |= 0x01000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = PREVIEW_REFRESH_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.PreviewRefreshEvent preview_refresh_event = 185;</code>
+     */
+    public Builder clearPreviewRefreshEvent() {
+      if (previewRefreshEventBuilder_ == null) {
+        previewRefreshEvent_ = null;
+        onChanged();
+      } else {
+        previewRefreshEventBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x01000000);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = PREVIEW_REFRESH_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.PreviewRefreshEvent preview_refresh_event = 185;</code>
+     */
+    public com.google.wireless.android.sdk.stats.PreviewRefreshEvent.Builder getPreviewRefreshEventBuilder() {
+      bitField5_ |= 0x01000000;
+      onChanged();
+      return getPreviewRefreshEventFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = PREVIEW_REFRESH_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.PreviewRefreshEvent preview_refresh_event = 185;</code>
+     */
+    public com.google.wireless.android.sdk.stats.PreviewRefreshEventOrBuilder getPreviewRefreshEventOrBuilder() {
+      if (previewRefreshEventBuilder_ != null) {
+        return previewRefreshEventBuilder_.getMessageOrBuilder();
+      } else {
+        return previewRefreshEvent_ == null ?
+            com.google.wireless.android.sdk.stats.PreviewRefreshEvent.getDefaultInstance() : previewRefreshEvent_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = PREVIEW_REFRESH_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.PreviewRefreshEvent preview_refresh_event = 185;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.PreviewRefreshEvent, com.google.wireless.android.sdk.stats.PreviewRefreshEvent.Builder, com.google.wireless.android.sdk.stats.PreviewRefreshEventOrBuilder> 
+        getPreviewRefreshEventFieldBuilder() {
+      if (previewRefreshEventBuilder_ == null) {
+        previewRefreshEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.PreviewRefreshEvent, com.google.wireless.android.sdk.stats.PreviewRefreshEvent.Builder, com.google.wireless.android.sdk.stats.PreviewRefreshEventOrBuilder>(
+                getPreviewRefreshEvent(),
+                getParentForChildren(),
+                isClean());
+        previewRefreshEvent_ = null;
+      }
+      return previewRefreshEventBuilder_;
+    }
     @java.lang.Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -57272,7 +57560,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new AndroidStudioEvent(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

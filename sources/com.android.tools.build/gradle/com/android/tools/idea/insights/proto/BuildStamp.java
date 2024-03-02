@@ -22,6 +22,7 @@ private static final long serialVersionUID = 0L;
   }
   private BuildStamp() {
     repositories_ = java.util.Collections.emptyList();
+    generateErrorReason_ = 0;
   }
 
   @java.lang.Override
@@ -31,74 +32,6 @@ private static final long serialVersionUID = 0L;
     return new BuildStamp();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
-  private BuildStamp(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    int mutable_bitField0_ = 0;
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 10: {
-            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-              repositories_ = new java.util.ArrayList<com.android.tools.idea.insights.proto.RepositoryInfo>();
-              mutable_bitField0_ |= 0x00000001;
-            }
-            repositories_.add(
-                input.readMessage(com.android.tools.idea.insights.proto.RepositoryInfo.parser(), extensionRegistry));
-            break;
-          }
-          case 18: {
-            com.android.tools.idea.insights.proto.BuildInfo.Builder subBuilder = null;
-            if (buildInfo_ != null) {
-              subBuilder = buildInfo_.toBuilder();
-            }
-            buildInfo_ = input.readMessage(com.android.tools.idea.insights.proto.BuildInfo.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(buildInfo_);
-              buildInfo_ = subBuilder.buildPartial();
-            }
-
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      if (((mutable_bitField0_ & 0x00000001) != 0)) {
-        repositories_ = java.util.Collections.unmodifiableList(repositories_);
-      }
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.android.tools.idea.insights.proto.VersionControlMetadata.internal_static_BuildStamp_descriptor;
@@ -112,7 +45,126 @@ private static final long serialVersionUID = 0L;
             com.android.tools.idea.insights.proto.BuildStamp.class, com.android.tools.idea.insights.proto.BuildStamp.Builder.class);
   }
 
+  /**
+   * Protobuf enum {@code BuildStamp.GenerateErrorReason}
+   */
+  public enum GenerateErrorReason
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>UNSPECIFIED = 0;</code>
+     */
+    UNSPECIFIED(0),
+    /**
+     * <code>NO_SUPPORTED_VCS_FOUND = 1;</code>
+     */
+    NO_SUPPORTED_VCS_FOUND(1),
+    /**
+     * <code>NO_VALID_GIT_FOUND = 2;</code>
+     */
+    NO_VALID_GIT_FOUND(2),
+    UNRECOGNIZED(-1),
+    ;
+
+    /**
+     * <code>UNSPECIFIED = 0;</code>
+     */
+    public static final int UNSPECIFIED_VALUE = 0;
+    /**
+     * <code>NO_SUPPORTED_VCS_FOUND = 1;</code>
+     */
+    public static final int NO_SUPPORTED_VCS_FOUND_VALUE = 1;
+    /**
+     * <code>NO_VALID_GIT_FOUND = 2;</code>
+     */
+    public static final int NO_VALID_GIT_FOUND_VALUE = 2;
+
+
+    public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static GenerateErrorReason valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static GenerateErrorReason forNumber(int value) {
+      switch (value) {
+        case 0: return UNSPECIFIED;
+        case 1: return NO_SUPPORTED_VCS_FOUND;
+        case 2: return NO_VALID_GIT_FOUND;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<GenerateErrorReason>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        GenerateErrorReason> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<GenerateErrorReason>() {
+            public GenerateErrorReason findValueByNumber(int number) {
+              return GenerateErrorReason.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalStateException(
+            "Can't get the descriptor of an unrecognized enum value.");
+      }
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.android.tools.idea.insights.proto.BuildStamp.getDescriptor().getEnumTypes().get(0);
+    }
+
+    private static final GenerateErrorReason[] VALUES = values();
+
+    public static GenerateErrorReason valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      if (desc.getIndex() == -1) {
+        return UNRECOGNIZED;
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private GenerateErrorReason(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:BuildStamp.GenerateErrorReason)
+  }
+
+  private int bitField0_;
   public static final int REPOSITORIES_FIELD_NUMBER = 1;
+  @SuppressWarnings("serial")
   private java.util.List<com.android.tools.idea.insights.proto.RepositoryInfo> repositories_;
   /**
    * <pre>
@@ -179,19 +231,19 @@ private static final long serialVersionUID = 0L;
    * Build system data.
    * </pre>
    *
-   * <code>.BuildInfo build_info = 2;</code>
+   * <code>optional .BuildInfo build_info = 2;</code>
    * @return Whether the buildInfo field is set.
    */
   @java.lang.Override
   public boolean hasBuildInfo() {
-    return buildInfo_ != null;
+    return ((bitField0_ & 0x00000001) != 0);
   }
   /**
    * <pre>
    * Build system data.
    * </pre>
    *
-   * <code>.BuildInfo build_info = 2;</code>
+   * <code>optional .BuildInfo build_info = 2;</code>
    * @return The buildInfo.
    */
   @java.lang.Override
@@ -203,11 +255,48 @@ private static final long serialVersionUID = 0L;
    * Build system data.
    * </pre>
    *
-   * <code>.BuildInfo build_info = 2;</code>
+   * <code>optional .BuildInfo build_info = 2;</code>
    */
   @java.lang.Override
   public com.android.tools.idea.insights.proto.BuildInfoOrBuilder getBuildInfoOrBuilder() {
-    return getBuildInfo();
+    return buildInfo_ == null ? com.android.tools.idea.insights.proto.BuildInfo.getDefaultInstance() : buildInfo_;
+  }
+
+  public static final int GENERATE_ERROR_REASON_FIELD_NUMBER = 3;
+  private int generateErrorReason_ = 0;
+  /**
+   * <pre>
+   * Extra debug info which will help users identify issues
+   * </pre>
+   *
+   * <code>optional .BuildStamp.GenerateErrorReason generate_error_reason = 3;</code>
+   * @return Whether the generateErrorReason field is set.
+   */
+  @java.lang.Override public boolean hasGenerateErrorReason() {
+    return ((bitField0_ & 0x00000002) != 0);
+  }
+  /**
+   * <pre>
+   * Extra debug info which will help users identify issues
+   * </pre>
+   *
+   * <code>optional .BuildStamp.GenerateErrorReason generate_error_reason = 3;</code>
+   * @return The enum numeric value on the wire for generateErrorReason.
+   */
+  @java.lang.Override public int getGenerateErrorReasonValue() {
+    return generateErrorReason_;
+  }
+  /**
+   * <pre>
+   * Extra debug info which will help users identify issues
+   * </pre>
+   *
+   * <code>optional .BuildStamp.GenerateErrorReason generate_error_reason = 3;</code>
+   * @return The generateErrorReason.
+   */
+  @java.lang.Override public com.android.tools.idea.insights.proto.BuildStamp.GenerateErrorReason getGenerateErrorReason() {
+    com.android.tools.idea.insights.proto.BuildStamp.GenerateErrorReason result = com.android.tools.idea.insights.proto.BuildStamp.GenerateErrorReason.forNumber(generateErrorReason_);
+    return result == null ? com.android.tools.idea.insights.proto.BuildStamp.GenerateErrorReason.UNRECOGNIZED : result;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -227,10 +316,13 @@ private static final long serialVersionUID = 0L;
     for (int i = 0; i < repositories_.size(); i++) {
       output.writeMessage(1, repositories_.get(i));
     }
-    if (buildInfo_ != null) {
+    if (((bitField0_ & 0x00000001) != 0)) {
       output.writeMessage(2, getBuildInfo());
     }
-    unknownFields.writeTo(output);
+    if (((bitField0_ & 0x00000002) != 0)) {
+      output.writeEnum(3, generateErrorReason_);
+    }
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -243,11 +335,15 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(1, repositories_.get(i));
     }
-    if (buildInfo_ != null) {
+    if (((bitField0_ & 0x00000001) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(2, getBuildInfo());
     }
-    size += unknownFields.getSerializedSize();
+    if (((bitField0_ & 0x00000002) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(3, generateErrorReason_);
+    }
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -269,7 +365,11 @@ private static final long serialVersionUID = 0L;
       if (!getBuildInfo()
           .equals(other.getBuildInfo())) return false;
     }
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (hasGenerateErrorReason() != other.hasGenerateErrorReason()) return false;
+    if (hasGenerateErrorReason()) {
+      if (generateErrorReason_ != other.generateErrorReason_) return false;
+    }
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -288,7 +388,11 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + BUILD_INFO_FIELD_NUMBER;
       hash = (53 * hash) + getBuildInfo().hashCode();
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    if (hasGenerateErrorReason()) {
+      hash = (37 * hash) + GENERATE_ERROR_REASON_FIELD_NUMBER;
+      hash = (53 * hash) + generateErrorReason_;
+    }
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -422,23 +526,26 @@ private static final long serialVersionUID = 0L;
       if (com.google.protobuf.GeneratedMessageV3
               .alwaysUseFieldBuilders) {
         getRepositoriesFieldBuilder();
+        getBuildInfoFieldBuilder();
       }
     }
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       if (repositoriesBuilder_ == null) {
         repositories_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000001);
       } else {
+        repositories_ = null;
         repositoriesBuilder_.clear();
       }
-      if (buildInfoBuilder_ == null) {
-        buildInfo_ = null;
-      } else {
-        buildInfo_ = null;
+      bitField0_ = (bitField0_ & ~0x00000001);
+      buildInfo_ = null;
+      if (buildInfoBuilder_ != null) {
+        buildInfoBuilder_.dispose();
         buildInfoBuilder_ = null;
       }
+      generateErrorReason_ = 0;
       return this;
     }
 
@@ -465,7 +572,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.android.tools.idea.insights.proto.BuildStamp buildPartial() {
       com.android.tools.idea.insights.proto.BuildStamp result = new com.android.tools.idea.insights.proto.BuildStamp(this);
-      int from_bitField0_ = bitField0_;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.android.tools.idea.insights.proto.BuildStamp result) {
       if (repositoriesBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0)) {
           repositories_ = java.util.Collections.unmodifiableList(repositories_);
@@ -475,47 +588,24 @@ private static final long serialVersionUID = 0L;
       } else {
         result.repositories_ = repositoriesBuilder_.build();
       }
-      if (buildInfoBuilder_ == null) {
-        result.buildInfo_ = buildInfo_;
-      } else {
-        result.buildInfo_ = buildInfoBuilder_.build();
-      }
-      onBuilt();
-      return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.android.tools.idea.insights.proto.BuildStamp result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.buildInfo_ = buildInfoBuilder_ == null
+            ? buildInfo_
+            : buildInfoBuilder_.build();
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.generateErrorReason_ = generateErrorReason_;
+        to_bitField0_ |= 0x00000002;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.android.tools.idea.insights.proto.BuildStamp) {
@@ -557,7 +647,10 @@ private static final long serialVersionUID = 0L;
       if (other.hasBuildInfo()) {
         mergeBuildInfo(other.getBuildInfo());
       }
-      this.mergeUnknownFields(other.unknownFields);
+      if (other.hasGenerateErrorReason()) {
+        setGenerateErrorReason(other.getGenerateErrorReason());
+      }
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -572,17 +665,55 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.android.tools.idea.insights.proto.BuildStamp parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              com.android.tools.idea.insights.proto.RepositoryInfo m =
+                  input.readMessage(
+                      com.android.tools.idea.insights.proto.RepositoryInfo.parser(),
+                      extensionRegistry);
+              if (repositoriesBuilder_ == null) {
+                ensureRepositoriesIsMutable();
+                repositories_.add(m);
+              } else {
+                repositoriesBuilder_.addMessage(m);
+              }
+              break;
+            } // case 10
+            case 18: {
+              input.readMessage(
+                  getBuildInfoFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 18
+            case 24: {
+              generateErrorReason_ = input.readEnum();
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 24
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.android.tools.idea.insights.proto.BuildStamp) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
     private int bitField0_;
@@ -907,18 +1038,18 @@ private static final long serialVersionUID = 0L;
      * Build system data.
      * </pre>
      *
-     * <code>.BuildInfo build_info = 2;</code>
+     * <code>optional .BuildInfo build_info = 2;</code>
      * @return Whether the buildInfo field is set.
      */
     public boolean hasBuildInfo() {
-      return buildInfoBuilder_ != null || buildInfo_ != null;
+      return ((bitField0_ & 0x00000002) != 0);
     }
     /**
      * <pre>
      * Build system data.
      * </pre>
      *
-     * <code>.BuildInfo build_info = 2;</code>
+     * <code>optional .BuildInfo build_info = 2;</code>
      * @return The buildInfo.
      */
     public com.android.tools.idea.insights.proto.BuildInfo getBuildInfo() {
@@ -933,7 +1064,7 @@ private static final long serialVersionUID = 0L;
      * Build system data.
      * </pre>
      *
-     * <code>.BuildInfo build_info = 2;</code>
+     * <code>optional .BuildInfo build_info = 2;</code>
      */
     public Builder setBuildInfo(com.android.tools.idea.insights.proto.BuildInfo value) {
       if (buildInfoBuilder_ == null) {
@@ -941,11 +1072,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         buildInfo_ = value;
-        onChanged();
       } else {
         buildInfoBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -953,17 +1084,17 @@ private static final long serialVersionUID = 0L;
      * Build system data.
      * </pre>
      *
-     * <code>.BuildInfo build_info = 2;</code>
+     * <code>optional .BuildInfo build_info = 2;</code>
      */
     public Builder setBuildInfo(
         com.android.tools.idea.insights.proto.BuildInfo.Builder builderForValue) {
       if (buildInfoBuilder_ == null) {
         buildInfo_ = builderForValue.build();
-        onChanged();
       } else {
         buildInfoBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -971,21 +1102,22 @@ private static final long serialVersionUID = 0L;
      * Build system data.
      * </pre>
      *
-     * <code>.BuildInfo build_info = 2;</code>
+     * <code>optional .BuildInfo build_info = 2;</code>
      */
     public Builder mergeBuildInfo(com.android.tools.idea.insights.proto.BuildInfo value) {
       if (buildInfoBuilder_ == null) {
-        if (buildInfo_ != null) {
-          buildInfo_ =
-            com.android.tools.idea.insights.proto.BuildInfo.newBuilder(buildInfo_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000002) != 0) &&
+          buildInfo_ != null &&
+          buildInfo_ != com.android.tools.idea.insights.proto.BuildInfo.getDefaultInstance()) {
+          getBuildInfoBuilder().mergeFrom(value);
         } else {
           buildInfo_ = value;
         }
-        onChanged();
       } else {
         buildInfoBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -993,17 +1125,16 @@ private static final long serialVersionUID = 0L;
      * Build system data.
      * </pre>
      *
-     * <code>.BuildInfo build_info = 2;</code>
+     * <code>optional .BuildInfo build_info = 2;</code>
      */
     public Builder clearBuildInfo() {
-      if (buildInfoBuilder_ == null) {
-        buildInfo_ = null;
-        onChanged();
-      } else {
-        buildInfo_ = null;
+      bitField0_ = (bitField0_ & ~0x00000002);
+      buildInfo_ = null;
+      if (buildInfoBuilder_ != null) {
+        buildInfoBuilder_.dispose();
         buildInfoBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
@@ -1011,10 +1142,10 @@ private static final long serialVersionUID = 0L;
      * Build system data.
      * </pre>
      *
-     * <code>.BuildInfo build_info = 2;</code>
+     * <code>optional .BuildInfo build_info = 2;</code>
      */
     public com.android.tools.idea.insights.proto.BuildInfo.Builder getBuildInfoBuilder() {
-      
+      bitField0_ |= 0x00000002;
       onChanged();
       return getBuildInfoFieldBuilder().getBuilder();
     }
@@ -1023,7 +1154,7 @@ private static final long serialVersionUID = 0L;
      * Build system data.
      * </pre>
      *
-     * <code>.BuildInfo build_info = 2;</code>
+     * <code>optional .BuildInfo build_info = 2;</code>
      */
     public com.android.tools.idea.insights.proto.BuildInfoOrBuilder getBuildInfoOrBuilder() {
       if (buildInfoBuilder_ != null) {
@@ -1038,7 +1169,7 @@ private static final long serialVersionUID = 0L;
      * Build system data.
      * </pre>
      *
-     * <code>.BuildInfo build_info = 2;</code>
+     * <code>optional .BuildInfo build_info = 2;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.android.tools.idea.insights.proto.BuildInfo, com.android.tools.idea.insights.proto.BuildInfo.Builder, com.android.tools.idea.insights.proto.BuildInfoOrBuilder> 
@@ -1052,6 +1183,90 @@ private static final long serialVersionUID = 0L;
         buildInfo_ = null;
       }
       return buildInfoBuilder_;
+    }
+
+    private int generateErrorReason_ = 0;
+    /**
+     * <pre>
+     * Extra debug info which will help users identify issues
+     * </pre>
+     *
+     * <code>optional .BuildStamp.GenerateErrorReason generate_error_reason = 3;</code>
+     * @return Whether the generateErrorReason field is set.
+     */
+    @java.lang.Override public boolean hasGenerateErrorReason() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <pre>
+     * Extra debug info which will help users identify issues
+     * </pre>
+     *
+     * <code>optional .BuildStamp.GenerateErrorReason generate_error_reason = 3;</code>
+     * @return The enum numeric value on the wire for generateErrorReason.
+     */
+    @java.lang.Override public int getGenerateErrorReasonValue() {
+      return generateErrorReason_;
+    }
+    /**
+     * <pre>
+     * Extra debug info which will help users identify issues
+     * </pre>
+     *
+     * <code>optional .BuildStamp.GenerateErrorReason generate_error_reason = 3;</code>
+     * @param value The enum numeric value on the wire for generateErrorReason to set.
+     * @return This builder for chaining.
+     */
+    public Builder setGenerateErrorReasonValue(int value) {
+      generateErrorReason_ = value;
+      bitField0_ |= 0x00000004;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Extra debug info which will help users identify issues
+     * </pre>
+     *
+     * <code>optional .BuildStamp.GenerateErrorReason generate_error_reason = 3;</code>
+     * @return The generateErrorReason.
+     */
+    @java.lang.Override
+    public com.android.tools.idea.insights.proto.BuildStamp.GenerateErrorReason getGenerateErrorReason() {
+      com.android.tools.idea.insights.proto.BuildStamp.GenerateErrorReason result = com.android.tools.idea.insights.proto.BuildStamp.GenerateErrorReason.forNumber(generateErrorReason_);
+      return result == null ? com.android.tools.idea.insights.proto.BuildStamp.GenerateErrorReason.UNRECOGNIZED : result;
+    }
+    /**
+     * <pre>
+     * Extra debug info which will help users identify issues
+     * </pre>
+     *
+     * <code>optional .BuildStamp.GenerateErrorReason generate_error_reason = 3;</code>
+     * @param value The generateErrorReason to set.
+     * @return This builder for chaining.
+     */
+    public Builder setGenerateErrorReason(com.android.tools.idea.insights.proto.BuildStamp.GenerateErrorReason value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00000004;
+      generateErrorReason_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Extra debug info which will help users identify issues
+     * </pre>
+     *
+     * <code>optional .BuildStamp.GenerateErrorReason generate_error_reason = 3;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearGenerateErrorReason() {
+      bitField0_ = (bitField0_ & ~0x00000004);
+      generateErrorReason_ = 0;
+      onChanged();
+      return this;
     }
     @java.lang.Override
     public final Builder setUnknownFields(
@@ -1086,7 +1301,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new BuildStamp(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

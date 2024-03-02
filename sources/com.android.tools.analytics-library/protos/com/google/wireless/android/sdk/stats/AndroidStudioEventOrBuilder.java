@@ -2791,30 +2791,30 @@ public interface AndroidStudioEventOrBuilder extends
 
   /**
    * <pre>
-   * set when kind = ANDROID_CPP_EXTENSION
+   * set when kind = VS_PLUGIN
    * </pre>
    *
-   * <code>optional .android_studio.AndroidCppExtensionEvent android_cpp_extension_event = 99;</code>
-   * @return Whether the androidCppExtensionEvent field is set.
+   * <code>optional .android_studio.VsPluginEvent vs_plugin_event = 99;</code>
+   * @return Whether the vsPluginEvent field is set.
    */
-  boolean hasAndroidCppExtensionEvent();
+  boolean hasVsPluginEvent();
   /**
    * <pre>
-   * set when kind = ANDROID_CPP_EXTENSION
+   * set when kind = VS_PLUGIN
    * </pre>
    *
-   * <code>optional .android_studio.AndroidCppExtensionEvent android_cpp_extension_event = 99;</code>
-   * @return The androidCppExtensionEvent.
+   * <code>optional .android_studio.VsPluginEvent vs_plugin_event = 99;</code>
+   * @return The vsPluginEvent.
    */
-  com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent getAndroidCppExtensionEvent();
+  com.google.wireless.android.sdk.stats.VsPluginEvent getVsPluginEvent();
   /**
    * <pre>
-   * set when kind = ANDROID_CPP_EXTENSION
+   * set when kind = VS_PLUGIN
    * </pre>
    *
-   * <code>optional .android_studio.AndroidCppExtensionEvent android_cpp_extension_event = 99;</code>
+   * <code>optional .android_studio.VsPluginEvent vs_plugin_event = 99;</code>
    */
-  com.google.wireless.android.sdk.stats.AndroidCppExtensionEventOrBuilder getAndroidCppExtensionEventOrBuilder();
+  com.google.wireless.android.sdk.stats.VsPluginEventOrBuilder getVsPluginEventOrBuilder();
 
   /**
    * <pre>
@@ -5050,4 +5050,139 @@ public interface AndroidStudioEventOrBuilder extends
    * <code>optional .android_studio.LintTooltipLinkEvent lint_tooltip_link_event = 180;</code>
    */
   com.google.wireless.android.sdk.stats.LintTooltipLinkEventOrBuilder getLintTooltipLinkEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = SML_AI_EXCLUDE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlAiExcludeEvent sml_ai_exclude_event = 181;</code>
+   * @return Whether the smlAiExcludeEvent field is set.
+   */
+  boolean hasSmlAiExcludeEvent();
+  /**
+   * <pre>
+   * set when kind = SML_AI_EXCLUDE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlAiExcludeEvent sml_ai_exclude_event = 181;</code>
+   * @return The smlAiExcludeEvent.
+   */
+  com.google.wireless.android.sdk.stats.SmlAiExcludeEvent getSmlAiExcludeEvent();
+  /**
+   * <pre>
+   * set when kind = SML_AI_EXCLUDE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlAiExcludeEvent sml_ai_exclude_event = 181;</code>
+   */
+  com.google.wireless.android.sdk.stats.SmlAiExcludeEventOrBuilder getSmlAiExcludeEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = I_DEVICE_USAGE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.IDeviceUsageEvent i_device_usage_event = 182;</code>
+   * @return Whether the iDeviceUsageEvent field is set.
+   */
+  boolean hasIDeviceUsageEvent();
+  /**
+   * <pre>
+   * set when kind = I_DEVICE_USAGE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.IDeviceUsageEvent i_device_usage_event = 182;</code>
+   * @return The iDeviceUsageEvent.
+   */
+  com.google.wireless.android.sdk.stats.IDeviceUsageEvent getIDeviceUsageEvent();
+  /**
+   * <pre>
+   * set when kind = I_DEVICE_USAGE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.IDeviceUsageEvent i_device_usage_event = 182;</code>
+   */
+  com.google.wireless.android.sdk.stats.IDeviceUsageEventOrBuilder getIDeviceUsageEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = GRADLE_JDK_CONFIGURATION
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleJdkConfigurationEvent gradle_jdk_configuration_event = 183;</code>
+   * @return Whether the gradleJdkConfigurationEvent field is set.
+   */
+  boolean hasGradleJdkConfigurationEvent();
+  /**
+   * <pre>
+   * set when kind = GRADLE_JDK_CONFIGURATION
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleJdkConfigurationEvent gradle_jdk_configuration_event = 183;</code>
+   * @return The gradleJdkConfigurationEvent.
+   */
+  com.google.wireless.android.sdk.stats.GradleJdkConfigurationEvent getGradleJdkConfigurationEvent();
+  /**
+   * <pre>
+   * set when kind = GRADLE_JDK_CONFIGURATION
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleJdkConfigurationEvent gradle_jdk_configuration_event = 183;</code>
+   */
+  com.google.wireless.android.sdk.stats.GradleJdkConfigurationEventOrBuilder getGradleJdkConfigurationEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = RENDER_SECURITY_MANAGER_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.RenderSecurityManagerEvent render_security_manager_event = 184;</code>
+   * @return Whether the renderSecurityManagerEvent field is set.
+   */
+  boolean hasRenderSecurityManagerEvent();
+  /**
+   * <pre>
+   * set when kind = RENDER_SECURITY_MANAGER_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.RenderSecurityManagerEvent render_security_manager_event = 184;</code>
+   * @return The renderSecurityManagerEvent.
+   */
+  com.google.wireless.android.sdk.stats.RenderSecurityManagerEvent getRenderSecurityManagerEvent();
+  /**
+   * <pre>
+   * set when kind = RENDER_SECURITY_MANAGER_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.RenderSecurityManagerEvent render_security_manager_event = 184;</code>
+   */
+  com.google.wireless.android.sdk.stats.RenderSecurityManagerEventOrBuilder getRenderSecurityManagerEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = PREVIEW_REFRESH_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.PreviewRefreshEvent preview_refresh_event = 185;</code>
+   * @return Whether the previewRefreshEvent field is set.
+   */
+  boolean hasPreviewRefreshEvent();
+  /**
+   * <pre>
+   * set when kind = PREVIEW_REFRESH_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.PreviewRefreshEvent preview_refresh_event = 185;</code>
+   * @return The previewRefreshEvent.
+   */
+  com.google.wireless.android.sdk.stats.PreviewRefreshEvent getPreviewRefreshEvent();
+  /**
+   * <pre>
+   * set when kind = PREVIEW_REFRESH_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.PreviewRefreshEvent preview_refresh_event = 185;</code>
+   */
+  com.google.wireless.android.sdk.stats.PreviewRefreshEventOrBuilder getPreviewRefreshEventOrBuilder();
 }

@@ -22,12 +22,7 @@ import com.android.build.api.variant.AnnotationProcessor
 import com.android.build.api.variant.BuildConfigField
 import com.android.build.api.variant.Variant
 import com.android.build.api.variant.VariantOutputConfiguration
-import com.android.build.api.variant.impl.TaskProviderBasedDirectoryEntryImpl
-import com.android.build.api.variant.impl.VariantOutputConfigurationImpl
-import com.android.build.api.variant.impl.VariantOutputImpl
-import com.android.build.api.variant.impl.VariantOutputList
-import com.android.build.api.variant.impl.baseName
-import com.android.build.api.variant.impl.fullName
+import com.android.build.api.variant.impl.*
 import com.android.build.gradle.api.AnnotationProcessorOptions
 import com.android.build.gradle.api.JavaCompileOptions
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
@@ -77,7 +72,10 @@ class OldVariantApiLegacySupportImpl(
     override val mergedFlavor: MergedFlavor
         get() = (dslInfo as ComponentDslInfoImpl).mergedFlavor
     override val dslSigningConfig: com.android.build.gradle.internal.dsl.SigningConfig? =
-        (dslInfo as? ApkProducingComponentDslInfo)?.signingConfig
+        (dslInfo as? ApkProducingComponentDslInfo)?.signingConfigResolver?.resolveConfig(
+            profileable = false,
+            debuggable = false
+        )
 
     override val manifestPlaceholdersDslInfo: ManifestPlaceholdersDslInfo? by lazy(LazyThreadSafetyMode.NONE) {
         ManifestPlaceholdersDslInfoImpl(
@@ -195,6 +193,7 @@ class OldVariantApiLegacySupportImpl(
         versionNameProperty: Property<String?>,
         outputFileName: Property<String>?
     ): List<VariantOutputImpl> {
+
         return listOf(
             VariantOutputImpl(
                 versionCodeProperty,
@@ -208,10 +207,11 @@ class OldVariantApiLegacySupportImpl(
                     String::class.java,
                     internalServices.projectInfo.getProjectBaseName().map {
                         component.paths.getOutputFileName(
+                            dslSigningConfig != null,
                             it,
                             variantOutputConfiguration.baseName(component)
                         )
-                    },
+                    }
                 )
             )
         )

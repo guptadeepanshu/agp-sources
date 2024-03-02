@@ -34,7 +34,6 @@ import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.buildanalyzer.common.TaskCategory
-import com.android.ide.common.symbols.EMPTY
 import com.android.ide.common.symbols.SymbolIo
 import com.android.ide.common.symbols.SymbolTable
 import com.android.resources.ResourceType
@@ -165,7 +164,7 @@ abstract class DataBindingGenBaseClassesTask : AndroidVariantTask() {
         val depSymbolTables: List<SymbolTable> =
                 symbolTableBuildService.get().loadClasspath(dependenciesFileCollection.files)
         val localTable = when (val localR = localResourcesFile.orNull) {
-            null -> EMPTY
+            null -> SymbolTable.EMPTY
             else -> SymbolIo.readRDef(localR.asFile.toPath()).rename("")
         }
         return listOf(localTable).plus(depSymbolTables)

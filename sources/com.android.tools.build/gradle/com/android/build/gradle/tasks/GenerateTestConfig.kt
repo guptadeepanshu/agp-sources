@@ -18,10 +18,9 @@ package com.android.build.gradle.tasks
 
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.variant.FilterConfiguration
-import com.android.build.api.variant.VariantOutputConfiguration
 import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
 import com.android.build.gradle.internal.component.KmpComponentCreationConfig
-import com.android.build.gradle.internal.component.UnitTestCreationConfig
+import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.dsl.TestOptions
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.scope.InternalArtifactType
@@ -105,8 +104,8 @@ abstract class GenerateTestConfig @Inject constructor(objectFactory: ObjectFacto
         abstract val outputDirectory: DirectoryProperty
     }
 
-    class CreationAction(private val unitTestCreationConfig: UnitTestCreationConfig) :
-        VariantTaskCreationAction<GenerateTestConfig, UnitTestCreationConfig>(
+    class CreationAction(private val unitTestCreationConfig: HostTestCreationConfig) :
+        VariantTaskCreationAction<GenerateTestConfig, HostTestCreationConfig>(
             unitTestCreationConfig
         ) {
 
@@ -137,7 +136,7 @@ abstract class GenerateTestConfig @Inject constructor(objectFactory: ObjectFacto
         }
     }
 
-    class TestConfigInputs(creationConfig: UnitTestCreationConfig) {
+    class TestConfigInputs(creationConfig: HostTestCreationConfig) {
         @get:InputFiles
         @get:PathSensitive(PathSensitivity.RELATIVE)
         @get:Optional
@@ -154,12 +153,12 @@ abstract class GenerateTestConfig @Inject constructor(objectFactory: ObjectFacto
         @get:Input
         val buildDirectoryPath: String
 
+        @get:Input
+        val packageNameOfFinalRClass: Provider<String>
+
         @get:Optional
         @get:Input
         val targetConfiguration: Collection<FilterConfiguration>?
-
-        @get:Input
-        val packageNameOfFinalRClass: Provider<String>
 
         init {
             resourceApk = creationConfig.artifacts.get(APK_FOR_LOCAL_TEST)
@@ -176,6 +175,7 @@ abstract class GenerateTestConfig @Inject constructor(objectFactory: ObjectFacto
             } else {
                 creationConfig.artifacts.get(PACKAGED_MANIFESTS)
             }
+
             packageNameOfFinalRClass = creationConfig.mainVariant.namespace
             buildDirectoryPath =
                     creationConfig.services.projectInfo.buildDirectory.get().asFile.toRelativeString(

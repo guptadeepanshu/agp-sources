@@ -82,10 +82,11 @@ public interface ComponentInfoOrBuilder extends
    *
    * <code>map&lt;string, string&gt; product_flavors = 2;</code>
    */
-
-  java.lang.String getProductFlavorsOrDefault(
+  /* nullable */
+java.lang.String getProductFlavorsOrDefault(
       java.lang.String key,
-      java.lang.String defaultValue);
+      /* nullable */
+java.lang.String defaultValue);
   /**
    * <pre>
    * The product flavor attributes of this component, keyed by flavor dimension name.
@@ -94,7 +95,6 @@ public interface ComponentInfoOrBuilder extends
    *
    * <code>map&lt;string, string&gt; product_flavors = 2;</code>
    */
-
   java.lang.String getProductFlavorsOrThrow(
       java.lang.String key);
 
@@ -145,10 +145,11 @@ public interface ComponentInfoOrBuilder extends
    *
    * <code>map&lt;string, string&gt; attributes = 3;</code>
    */
-
-  java.lang.String getAttributesOrDefault(
+  /* nullable */
+java.lang.String getAttributesOrDefault(
       java.lang.String key,
-      java.lang.String defaultValue);
+      /* nullable */
+java.lang.String defaultValue);
   /**
    * <pre>
    * The list of attributes associated with the component.
@@ -158,7 +159,6 @@ public interface ComponentInfoOrBuilder extends
    *
    * <code>map&lt;string, string&gt; attributes = 3;</code>
    */
-
   java.lang.String getAttributesOrThrow(
       java.lang.String key);
 

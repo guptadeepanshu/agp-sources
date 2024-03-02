@@ -19,6 +19,7 @@ package com.android.build.api.component.analytics
 import com.android.build.api.artifact.CombiningOperationRequest
 import com.android.build.api.artifact.InAndOutDirectoryOperationRequest
 import com.android.build.api.artifact.InAndOutFileOperationRequest
+import com.android.build.api.artifact.MultipleArtifactTypeOutOperationRequest
 import com.android.build.api.artifact.OutOperationRequest
 import com.android.build.api.artifact.TaskBasedOperation
 import com.android.tools.build.gradle.internal.profile.VariantPropertiesMethodType
@@ -48,6 +49,20 @@ open class AnalyticsEnabledTaskBaseOperation<TaskT: Task> @Inject constructor(
             AnalyticsEnabledOutOperationRequest::class.java as Class<OutOperationRequest<FileTypeT>>,
             delegate.wiredWith(taskOutput),
             stats)
+    }
+
+    override fun <FileTypeT : FileSystemLocation> wiredWithMultiple(
+        taskInput: (TaskT) -> ListProperty<FileTypeT>
+    ): MultipleArtifactTypeOutOperationRequest<FileTypeT> {
+        stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+            VariantPropertiesMethodType.WIRED_WITH_MULTIPLE_VALUE
+        @Suppress("UNCHECKED_CAST")
+        return objectFactory.newInstance(
+            AnalyticsEnabledMultipleArtifactTypeOutOperationRequest::class.java
+                    as Class<MultipleArtifactTypeOutOperationRequest<FileTypeT>>,
+            delegate.wiredWithMultiple(taskInput),
+            stats
+        )
     }
 
     override fun wiredWithFiles(

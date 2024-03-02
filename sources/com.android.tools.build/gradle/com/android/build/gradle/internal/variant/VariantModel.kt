@@ -75,6 +75,4 @@ interface VariantModel {
     val filteredBootClasspath: Provider<List<RegularFile>>
 
     val versionedSdkLoader: Provider<VersionedSdkLoader>
-
-    val globalArtifacts: ArtifactsImpl
 }

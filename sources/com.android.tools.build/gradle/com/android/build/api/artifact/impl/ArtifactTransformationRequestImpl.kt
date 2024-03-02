@@ -87,10 +87,8 @@ class ArtifactTransformationRequestImpl<TaskT: Task>(
         }
 
         builtArtifactsReference.set(
-            BuiltArtifactsImpl(
+            sourceBuiltArtifacts.copy(
                 artifactType = outputArtifactType,
-                applicationId = sourceBuiltArtifacts.applicationId,
-                variantName = sourceBuiltArtifacts.variantName,
                 elements = sourceBuiltArtifacts.elements
                     .map {
                         val output = mapOfBuiltArtifactsToParameters[it]
@@ -119,9 +117,7 @@ class ArtifactTransformationRequestImpl<TaskT: Task>(
         val sourceBuiltArtifacts = BuiltArtifactsLoaderImpl().load(inputLocation(task).get())
             ?: throw RuntimeException("No provided artifacts.")
 
-        builtArtifactsReference.set(BuiltArtifactsImpl(
-            applicationId = sourceBuiltArtifacts.applicationId,
-            variantName = sourceBuiltArtifacts.variantName,
+        builtArtifactsReference.set(sourceBuiltArtifacts.copy(
             artifactType = outputArtifactType,
             elements = sourceBuiltArtifacts.elements.map {
                 it.newOutput(transformer(it).toPath())

@@ -24,14 +24,10 @@ import com.android.annotations.NonNull;
  */
 public interface ProgressRunner {
 
-    /**
-     * Runs a task synchronously.
-     */
+    /** Runs a task asynchronously. */
     void runAsyncWithProgress(@NonNull ProgressRunnable r);
 
-    /**
-     * Runs a task asynchronously.
-     */
+    /** Runs a task synchronously. */
     void runSyncWithProgress(@NonNull ProgressRunnable r);
 
     /**

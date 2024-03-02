@@ -18,10 +18,12 @@ package com.android.build.gradle.internal.signing
 
 import com.android.build.api.dsl.SigningConfig
 import com.android.build.api.variant.impl.SigningConfigImpl
+import com.android.build.gradle.internal.dsl.ModulePropertyKey
 import com.android.build.gradle.options.ProjectOptions
 import com.android.build.gradle.options.SigningOptions
+import com.android.builder.signing.DefaultSigningConfig
 import com.google.common.hash.Hashing
-import org.gradle.api.provider.ProviderFactory
+import org.gradle.api.provider.MapProperty
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Internal
@@ -84,6 +86,27 @@ data class SigningConfigData(
     companion object {
 
         private const val serialVersionUID = 2L
+
+        // This is intended for setting the signing config
+        fun fromExperimentalPropertiesSigningConfig(experimentalProperties: MapProperty<String, Any>): SigningConfigData? {
+            experimentalProperties.finalizeValue()
+            ModulePropertyKey.OptionalString.ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_STORE_FILE.getValue(
+                    experimentalProperties.get()) ?: return null
+            return SigningConfigData(
+                    ModulePropertyKey.OptionalString.ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_NAME.getValue(
+                            experimentalProperties.get()) ?: SigningOptions.SIGNING_CONFIG_NAME,
+                    ModulePropertyKey.OptionalString.ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_STORE_TYPE.getValue(
+                            experimentalProperties.get()),
+                    File(ModulePropertyKey.OptionalString.ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_STORE_FILE.getValue(
+                            experimentalProperties.get())!!),
+                    ModulePropertyKey.OptionalString.ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_STORE_PASSWORD.getValue(
+                            experimentalProperties.get()) ?: DefaultSigningConfig.DEFAULT_PASSWORD,
+                    ModulePropertyKey.OptionalString.ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_KEY_ALIAS.getValue(
+                            experimentalProperties.get()) ?: DefaultSigningConfig.DEFAULT_ALIAS,
+                    ModulePropertyKey.OptionalString.ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_KEY_PASSOWRD.getValue(
+                            experimentalProperties.get()) ?: DefaultSigningConfig.DEFAULT_PASSWORD
+            )
+        }
 
         fun fromSigningConfig(signingConfig: SigningConfigImpl): SigningConfigData {
             return SigningConfigData(

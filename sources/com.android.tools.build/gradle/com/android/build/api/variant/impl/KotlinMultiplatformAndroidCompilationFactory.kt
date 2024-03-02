@@ -28,7 +28,7 @@ import org.gradle.api.artifacts.Dependency
 import org.jetbrains.kotlin.gradle.ExternalKotlinTargetApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import org.jetbrains.kotlin.gradle.plugin.mpp.external.ExternalKotlinCompilationDescriptor.*
+import org.jetbrains.kotlin.gradle.plugin.mpp.external.ExternalKotlinCompilationDescriptor
 import org.jetbrains.kotlin.gradle.plugin.mpp.external.createCompilation
 
 @OptIn(ExternalKotlinTargetApi::class)
@@ -69,7 +69,7 @@ internal class KotlinMultiplatformAndroidCompilationFactory(
             defaultSourceSet = kotlinExtension.sourceSets.getByName(
                 compilationBuilder.defaultSourceSetName
             )
-            compilationFactory = CompilationFactory { delegate ->
+            compilationFactory = ExternalKotlinCompilationDescriptor.CompilationFactory { delegate ->
                 when(compilationType) {
                     KmpAndroidCompilationType.MAIN ->
                         KotlinMultiplatformAndroidCompilationImpl(delegate)
@@ -90,7 +90,7 @@ internal class KotlinMultiplatformAndroidCompilationFactory(
             )
 
             if (isTestComponent) {
-                compilationAssociator = CompilationAssociator { auxiliary, main ->
+                compilationAssociator = ExternalKotlinCompilationDescriptor.CompilationAssociator { auxiliary, main ->
                     // When associating a test compilation with a main compilation, we add a
                     // dependency from the configurations of the test components on the main project
                     // later. But we still need to add implementation and compileOnly dependencies
@@ -103,17 +103,14 @@ internal class KotlinMultiplatformAndroidCompilationFactory(
                             main.compileOnlyConfigurationName
                         )
                     } else {
-                        // TODO(b/295485387): kotlin will provide an external API of this in 1.9.20
-                        val defaultAssociator = org.jetbrains.kotlin.gradle.plugin.mpp.compilationImpl.DefaultKotlinCompilationAssociator
-                        defaultAssociator.associate(
-                            target,
+                        ExternalKotlinCompilationDescriptor.CompilationAssociator.default.associate(
                             auxiliary,
                             main
                         )
                     }
                 }
             }
-            sourceSetTreeClassifier = compilationBuilder.getSourceSetTreeClassifier()
+            sourceSetTreeClassifierV2 = compilationBuilder.getSourceSetTreeClassifier()
         }.also {
             it.compilerOptions.options.jvmTarget.set(
                 JvmTarget.fromTarget(CompileOptions.DEFAULT_JAVA_VERSION.toString())

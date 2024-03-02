@@ -19,36 +19,63 @@
 package com.android.build.api.variant
 
 /**
- * Variant object that contains properties that must be set during configuration time as it
- * changes the build flow for the variant.
+ * Model for variant components that only contains configuration-time properties that impacts the
+ * build flow.
+ *
+ * Variant components are the main output of the plugin (e.g. APKs, AARs). They contain references
+ * to optional secondary components (tests, fixtures). Their presence can be controlled in select
+ * subtypes of [VariantBuilder].
+ *
+ * It is the object passed to the [AndroidComponentsExtension.beforeVariants] method, like this:
+ *
+ * ```kotlin
+ * androidComponents {
+ *   beforeVariants(selector().all()) { variant: VariantBuilder ->
+ *   }
+ * }
+ * ```
+ *
+ * Note that depending on the actual implementation of [AndroidComponentsExtension], the object
+ * received may be a subtype. For instance [ApplicationAndroidComponentsExtension.beforeVariants]
+ * will pass [ApplicationVariantBuilder] to the lambda.
+ *
+ * See [here](https://developer.android.com/build/extend-agp#variant-api-artifacts-tasks) for
+ * more information
+ *
  */
 interface VariantBuilder: ComponentBuilder {
 
     /**
-     * Gets or sets the minimum supported SDK Version for this variant.
+     * Sets the minimum supported SDK Version for this variant.
      * Setting this it will override previous calls of [minSdk] and [minSdkPreview] setters. Only
      * one of [minSdk] and [minSdkPreview] should be set.
+     *
+     * It is not safe to read this value. Use [Variant.minSdk] instead.
      *
      * @return the minimum supported SDK Version or null if [minSdkPreview] was used to set it.
      */
     var minSdk: Int?
 
     /**
-     * Gets or sets the minimum supported SDK Version for this variant as a Preview codename.
+     * Sets the minimum supported SDK Version for this variant as a Preview codename.
      * Setting this it will override previous calls of [minSdk] and [minSdkPreview] setters. Only
      * one of [minSdk] and [minSdkPreview] should be set.
+     *
+     * It is not safe to read this value. Use [Variant.minSdk] instead.
      *
      * @return the minimum supported SDK Version or null if [minSdk] was used to set it.
      */
     var minSdkPreview: String?
 
     /**
-     * Gets the maximum supported SDK Version for this variant.
+     * Sets the maximum supported SDK Version for this variant.
+     *
+     * It is not safe to read this value. Use [Variant.maxSdk] instead.
      */
     var maxSdk: Int?
 
     /**
-     * Gets or sets the target SDK Version for this variant as a Preview codename.
+     * Sets the target SDK Version for this variant as a Preview codename.
      * Setting this it will override previous calls of [targetSdk] and [targetSdkPreview] setters.
      * Only one of [targetSdk] and [targetSdkPreview] should be set.
      *
@@ -63,7 +90,7 @@ interface VariantBuilder: ComponentBuilder {
     var targetSdk: Int?
 
     /**
-     * Gets or sets the target SDK Version for this variant as a Preview codename.
+     * Sets the target SDK Version for this variant as a Preview codename.
      * Setting this it will override previous calls of [targetSdk] and [targetSdkPreview] setters.
      * Only one of [targetSdk] and [targetSdkPreview] should be set.
      *
@@ -79,7 +106,9 @@ interface VariantBuilder: ComponentBuilder {
 
     /**
      * Specifies the bytecode version to be generated. We recommend you set this value to the
-     * lowest API level able to provide all the functionality you are using
+     * lowest API level able to provide all the functionality you are using. -1 means unspecified.
+     *
+     * It is not safe to read this value. Use [GeneratesApk.renderscript] instead
      *
      * @return the renderscript target api or -1 if not specified.
      */

@@ -64,7 +64,7 @@ final class BuildTypeContainerImpl implements BuildTypeContainer, Serializable {
 
         if (includeAndroidTest) {
             DefaultAndroidSourceSet sourceSet =
-                    buildTypeData.getTestSourceSet(ComponentTypeImpl.ANDROID_TEST);
+                    buildTypeData.getSourceSet(ComponentTypeImpl.ANDROID_TEST);
             if (sourceSet != null) {
                 clonedContainers.add(
                         SourceProviderContainerImpl.create(
@@ -74,7 +74,7 @@ final class BuildTypeContainerImpl implements BuildTypeContainer, Serializable {
 
         if (includeUnitTest) {
             DefaultAndroidSourceSet sourceSet =
-                    buildTypeData.getTestSourceSet(ComponentTypeImpl.UNIT_TEST);
+                    buildTypeData.getSourceSet(ComponentTypeImpl.UNIT_TEST);
             if (sourceSet != null) {
                 clonedContainers.add(
                         SourceProviderContainerImpl.create(

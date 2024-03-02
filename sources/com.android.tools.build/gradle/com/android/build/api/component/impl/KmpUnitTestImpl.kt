@@ -18,7 +18,6 @@ package com.android.build.api.component.impl
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.component.impl.features.AndroidResourcesCreationConfigImpl
-import com.android.build.api.component.impl.features.AssetsCreationConfigImpl
 import com.android.build.api.component.impl.features.ManifestPlaceholdersCreationConfigImpl
 import com.android.build.api.dsl.KotlinMultiplatformAndroidCompilation
 import com.android.build.api.instrumentation.AsmClassVisitorFactory
@@ -27,11 +26,12 @@ import com.android.build.api.instrumentation.InstrumentationParameters
 import com.android.build.api.instrumentation.InstrumentationScope
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.UnitTest
+import com.android.build.api.variant.impl.AndroidResourcesImpl
 import com.android.build.api.variant.impl.KmpVariantImpl
-import com.android.build.gradle.internal.component.UnitTestCreationConfig
+import com.android.build.api.variant.impl.initializeAaptOptionsFromDsl
+import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.component.features.AndroidResourcesCreationConfig
-import com.android.build.gradle.internal.component.features.AssetsCreationConfig
 import com.android.build.gradle.internal.component.features.ManifestPlaceholdersCreationConfig
 import com.android.build.gradle.internal.core.dsl.impl.DEFAULT_TEST_RUNNER
 import com.android.build.gradle.internal.core.dsl.impl.KmpUnitTestDslInfoImpl
@@ -72,7 +72,7 @@ open class KmpUnitTestImpl @Inject constructor(
     global,
     androidKotlinCompilation,
     manifestFile
-), UnitTestCreationConfig, UnitTest {
+), HostTestCreationConfig, UnitTest {
 
     override fun <T> onTestedVariant(action: (VariantCreationConfig) -> T): T {
         return action.invoke(mainVariant)
@@ -109,19 +109,6 @@ open class KmpUnitTestImpl @Inject constructor(
         }
     }
 
-    override val assetsCreationConfig: AssetsCreationConfig? by lazy {
-        if (global.unitTestOptions.isIncludeAndroidResources) {
-            AssetsCreationConfigImpl(
-                dslInfo.androidResourcesDsl!!,
-                internalServices,
-            ) {
-                androidResourcesCreationConfig
-            }
-        } else {
-            null
-        }
-    }
-
     override val isUnitTestCoverageEnabled: Boolean
         get() = dslInfo.isUnitTestCoverageEnabled
 
@@ -139,5 +126,15 @@ open class KmpUnitTestImpl @Inject constructor(
 
     override fun setAsmFramesComputationMode(mode: FramesComputationMode) {
         instrumentation.setAsmFramesComputationMode(mode)
+    }
+
+    override val androidResources: AndroidResourcesImpl? =
+        if (global.unitTestOptions.isIncludeAndroidResources) {
+            initializeAaptOptionsFromDsl(dslInfo.androidResourcesDsl!!.androidResources, internalServices)
+        } else {
+            null
+        }
+
+    override fun finalizeAndLock() {
     }
 }

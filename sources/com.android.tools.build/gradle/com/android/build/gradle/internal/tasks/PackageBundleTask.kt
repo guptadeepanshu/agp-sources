@@ -585,17 +585,20 @@ abstract class PackageBundleTask : NonIncrementalTask() {
                 task.integrityConfigFile
             )
 
-            task.nativeDebugMetadataFiles.fromDisallowChanges(
-                MergeNativeDebugMetadataTask.getNativeDebugMetadataFiles(creationConfig)
-            )
+            if (creationConfig.services.projectOptions[BooleanOption.PACKAGE_NATIVE_DEBUG_METADATA_IN_APP_BUNDLE]) {
+                task.nativeDebugMetadataFiles.fromDisallowChanges(
+                        MergeNativeDebugMetadataTask.getNativeDebugMetadataFiles(creationConfig)
+                )
+            } else {
+                task.nativeDebugMetadataFiles.disallowChanges()
+            }
 
             task.abiFilters.setDisallowChanges(
                 creationConfig.nativeBuildCreationConfig?.supportedAbis ?: emptyList()
             )
 
             task.aaptOptionsNoCompress.setDisallowChanges(
-                creationConfig.androidResourcesCreationConfig?.androidResources?.noCompress,
-                handleNullable = { empty() }
+                creationConfig.androidResources.noCompress
             )
 
             task.bundleOptions = creationConfig.global.bundleOptions.convert()
@@ -605,7 +608,7 @@ abstract class PackageBundleTask : NonIncrementalTask() {
             )
             task.compressNativeLibs.disallowChanges()
 
-            if (creationConfig.dexingCreationConfig.needsMainDexListForBundle) {
+            if (creationConfig.dexing.needsMainDexListForBundle) {
                 creationConfig.artifacts.setTaskInputToFinalProduct(
                     InternalArtifactType.MAIN_DEX_LIST_FOR_BUNDLE,
                     task.mainDexList

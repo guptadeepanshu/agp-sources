@@ -7,6 +7,7 @@ package com.android.build.gradle.internal.cxx.process;
  * <pre>
  **
  *The C/C++ structured log record for recording process execution.
+ *
  *Note: This protobuf encodes the environment as two separate string lists,
  *one for keys and one for values. The reason for doing this rather than
  *having a distinct key-value protobuf is because the string encoder can
@@ -27,13 +28,17 @@ private static final long serialVersionUID = 0L;
   }
   private ExecuteProcess() {
     executable_ = "";
-    args_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    args_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     description_ = "";
-    environmentKeys_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    environmentValues_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    environmentKeys_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+    environmentValues_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     jvmClassPath_ = "";
     jvmMainClass_ = "";
-    jvmArgs_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    jvmArgs_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
   }
 
   @java.lang.Override
@@ -43,126 +48,6 @@ private static final long serialVersionUID = 0L;
     return new ExecuteProcess();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
-  private ExecuteProcess(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    int mutable_bitField0_ = 0;
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 10: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            executable_ = s;
-            break;
-          }
-          case 18: {
-            java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-              args_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000001;
-            }
-            args_.add(s);
-            break;
-          }
-          case 26: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            description_ = s;
-            break;
-          }
-          case 34: {
-            java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000002) != 0)) {
-              environmentKeys_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000002;
-            }
-            environmentKeys_.add(s);
-            break;
-          }
-          case 42: {
-            java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000004) != 0)) {
-              environmentValues_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000004;
-            }
-            environmentValues_.add(s);
-            break;
-          }
-          case 50: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            jvmClassPath_ = s;
-            break;
-          }
-          case 58: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            jvmMainClass_ = s;
-            break;
-          }
-          case 66: {
-            java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000008) != 0)) {
-              jvmArgs_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000008;
-            }
-            jvmArgs_.add(s);
-            break;
-          }
-          case 72: {
-
-            exitCode_ = input.readInt32();
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      if (((mutable_bitField0_ & 0x00000001) != 0)) {
-        args_ = args_.getUnmodifiableView();
-      }
-      if (((mutable_bitField0_ & 0x00000002) != 0)) {
-        environmentKeys_ = environmentKeys_.getUnmodifiableView();
-      }
-      if (((mutable_bitField0_ & 0x00000004) != 0)) {
-        environmentValues_ = environmentValues_.getUnmodifiableView();
-      }
-      if (((mutable_bitField0_ & 0x00000008) != 0)) {
-        jvmArgs_ = jvmArgs_.getUnmodifiableView();
-      }
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.android.build.gradle.internal.cxx.process.CxxProcess.internal_static_ExecuteProcess_descriptor;
@@ -177,7 +62,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int EXECUTABLE_FIELD_NUMBER = 1;
-  private volatile java.lang.Object executable_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object executable_ = "";
   /**
    * <pre>
    * The executable invoked to run the process
@@ -223,7 +109,9 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ARGS_FIELD_NUMBER = 2;
-  private com.google.protobuf.LazyStringList args_;
+  @SuppressWarnings("serial")
+  private com.google.protobuf.LazyStringArrayList args_ =
+      com.google.protobuf.LazyStringArrayList.emptyList();
   /**
    * <pre>
    * The args passed to [executable]
@@ -274,7 +162,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DESCRIPTION_FIELD_NUMBER = 3;
-  private volatile java.lang.Object description_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object description_ = "";
   /**
    * <pre>
    * Context-defined description of the process
@@ -320,7 +209,9 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ENVIRONMENT_KEYS_FIELD_NUMBER = 4;
-  private com.google.protobuf.LazyStringList environmentKeys_;
+  @SuppressWarnings("serial")
+  private com.google.protobuf.LazyStringArrayList environmentKeys_ =
+      com.google.protobuf.LazyStringArrayList.emptyList();
   /**
    * <pre>
    * List of key names for the environment
@@ -371,7 +262,9 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ENVIRONMENT_VALUES_FIELD_NUMBER = 5;
-  private com.google.protobuf.LazyStringList environmentValues_;
+  @SuppressWarnings("serial")
+  private com.google.protobuf.LazyStringArrayList environmentValues_ =
+      com.google.protobuf.LazyStringArrayList.emptyList();
   /**
    * <pre>
    * 1-to-1 list of values corresponding to key names
@@ -422,7 +315,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int JVM_CLASS_PATH_FIELD_NUMBER = 6;
-  private volatile java.lang.Object jvmClassPath_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object jvmClassPath_ = "";
   /**
    * <pre>
    * For JVM processes, the class path
@@ -468,7 +362,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int JVM_MAIN_CLASS_FIELD_NUMBER = 7;
-  private volatile java.lang.Object jvmMainClass_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object jvmMainClass_ = "";
   /**
    * <pre>
    * For JVM processes, the entry point
@@ -514,7 +409,9 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int JVM_ARGS_FIELD_NUMBER = 8;
-  private com.google.protobuf.LazyStringList jvmArgs_;
+  @SuppressWarnings("serial")
+  private com.google.protobuf.LazyStringArrayList jvmArgs_ =
+      com.google.protobuf.LazyStringArrayList.emptyList();
   /**
    * <pre>
    * For JVM processes, the arguments passed to JVM
@@ -565,7 +462,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int EXIT_CODE_FIELD_NUMBER = 9;
-  private int exitCode_;
+  private int exitCode_ = 0;
   /**
    * <pre>
    * Result code from the process when it completed
@@ -620,7 +517,7 @@ private static final long serialVersionUID = 0L;
     if (exitCode_ != 0) {
       output.writeInt32(9, exitCode_);
     }
-    unknownFields.writeTo(output);
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -677,7 +574,7 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(9, exitCode_);
     }
-    size += unknownFields.getSerializedSize();
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -710,7 +607,7 @@ private static final long serialVersionUID = 0L;
         .equals(other.getJvmArgsList())) return false;
     if (getExitCode()
         != other.getExitCode()) return false;
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -747,7 +644,7 @@ private static final long serialVersionUID = 0L;
     }
     hash = (37 * hash) + EXIT_CODE_FIELD_NUMBER;
     hash = (53 * hash) + getExitCode();
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -846,6 +743,7 @@ private static final long serialVersionUID = 0L;
    * <pre>
    **
    *The C/C++ structured log record for recording process execution.
+   *
    *Note: This protobuf encodes the environment as two separate string lists,
    *one for keys and one for values. The reason for doing this rather than
    *having a distinct key-value protobuf is because the string encoder can
@@ -874,40 +772,31 @@ private static final long serialVersionUID = 0L;
 
     // Construct using com.android.build.gradle.internal.cxx.process.ExecuteProcess.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessageV3
-              .alwaysUseFieldBuilders) {
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       executable_ = "";
-
-      args_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000001);
+      args_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
       description_ = "";
-
-      environmentKeys_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000002);
-      environmentValues_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000004);
+      environmentKeys_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
+      environmentValues_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
       jvmClassPath_ = "";
-
       jvmMainClass_ = "";
-
-      jvmArgs_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000008);
+      jvmArgs_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
       exitCode_ = 0;
-
       return this;
     }
 
@@ -934,68 +823,46 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.android.build.gradle.internal.cxx.process.ExecuteProcess buildPartial() {
       com.android.build.gradle.internal.cxx.process.ExecuteProcess result = new com.android.build.gradle.internal.cxx.process.ExecuteProcess(this);
-      int from_bitField0_ = bitField0_;
-      result.executable_ = executable_;
-      if (((bitField0_ & 0x00000001) != 0)) {
-        args_ = args_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000001);
-      }
-      result.args_ = args_;
-      result.description_ = description_;
-      if (((bitField0_ & 0x00000002) != 0)) {
-        environmentKeys_ = environmentKeys_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000002);
-      }
-      result.environmentKeys_ = environmentKeys_;
-      if (((bitField0_ & 0x00000004) != 0)) {
-        environmentValues_ = environmentValues_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000004);
-      }
-      result.environmentValues_ = environmentValues_;
-      result.jvmClassPath_ = jvmClassPath_;
-      result.jvmMainClass_ = jvmMainClass_;
-      if (((bitField0_ & 0x00000008) != 0)) {
-        jvmArgs_ = jvmArgs_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000008);
-      }
-      result.jvmArgs_ = jvmArgs_;
-      result.exitCode_ = exitCode_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.android.build.gradle.internal.cxx.process.ExecuteProcess result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.executable_ = executable_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        args_.makeImmutable();
+        result.args_ = args_;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.description_ = description_;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        environmentKeys_.makeImmutable();
+        result.environmentKeys_ = environmentKeys_;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        environmentValues_.makeImmutable();
+        result.environmentValues_ = environmentValues_;
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.jvmClassPath_ = jvmClassPath_;
+      }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.jvmMainClass_ = jvmMainClass_;
+      }
+      if (((from_bitField0_ & 0x00000080) != 0)) {
+        jvmArgs_.makeImmutable();
+        result.jvmArgs_ = jvmArgs_;
+      }
+      if (((from_bitField0_ & 0x00000100) != 0)) {
+        result.exitCode_ = exitCode_;
+      }
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.android.build.gradle.internal.cxx.process.ExecuteProcess) {
@@ -1010,12 +877,13 @@ private static final long serialVersionUID = 0L;
       if (other == com.android.build.gradle.internal.cxx.process.ExecuteProcess.getDefaultInstance()) return this;
       if (!other.getExecutable().isEmpty()) {
         executable_ = other.executable_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (!other.args_.isEmpty()) {
         if (args_.isEmpty()) {
           args_ = other.args_;
-          bitField0_ = (bitField0_ & ~0x00000001);
+          bitField0_ |= 0x00000002;
         } else {
           ensureArgsIsMutable();
           args_.addAll(other.args_);
@@ -1024,12 +892,13 @@ private static final long serialVersionUID = 0L;
       }
       if (!other.getDescription().isEmpty()) {
         description_ = other.description_;
+        bitField0_ |= 0x00000004;
         onChanged();
       }
       if (!other.environmentKeys_.isEmpty()) {
         if (environmentKeys_.isEmpty()) {
           environmentKeys_ = other.environmentKeys_;
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ |= 0x00000008;
         } else {
           ensureEnvironmentKeysIsMutable();
           environmentKeys_.addAll(other.environmentKeys_);
@@ -1039,7 +908,7 @@ private static final long serialVersionUID = 0L;
       if (!other.environmentValues_.isEmpty()) {
         if (environmentValues_.isEmpty()) {
           environmentValues_ = other.environmentValues_;
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ |= 0x00000010;
         } else {
           ensureEnvironmentValuesIsMutable();
           environmentValues_.addAll(other.environmentValues_);
@@ -1048,16 +917,18 @@ private static final long serialVersionUID = 0L;
       }
       if (!other.getJvmClassPath().isEmpty()) {
         jvmClassPath_ = other.jvmClassPath_;
+        bitField0_ |= 0x00000020;
         onChanged();
       }
       if (!other.getJvmMainClass().isEmpty()) {
         jvmMainClass_ = other.jvmMainClass_;
+        bitField0_ |= 0x00000040;
         onChanged();
       }
       if (!other.jvmArgs_.isEmpty()) {
         if (jvmArgs_.isEmpty()) {
           jvmArgs_ = other.jvmArgs_;
-          bitField0_ = (bitField0_ & ~0x00000008);
+          bitField0_ |= 0x00000080;
         } else {
           ensureJvmArgsIsMutable();
           jvmArgs_.addAll(other.jvmArgs_);
@@ -1067,7 +938,7 @@ private static final long serialVersionUID = 0L;
       if (other.getExitCode() != 0) {
         setExitCode(other.getExitCode());
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -1082,17 +953,79 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.android.build.gradle.internal.cxx.process.ExecuteProcess parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              executable_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000001;
+              break;
+            } // case 10
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+              ensureArgsIsMutable();
+              args_.add(s);
+              break;
+            } // case 18
+            case 26: {
+              description_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 26
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+              ensureEnvironmentKeysIsMutable();
+              environmentKeys_.add(s);
+              break;
+            } // case 34
+            case 42: {
+              java.lang.String s = input.readStringRequireUtf8();
+              ensureEnvironmentValuesIsMutable();
+              environmentValues_.add(s);
+              break;
+            } // case 42
+            case 50: {
+              jvmClassPath_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000020;
+              break;
+            } // case 50
+            case 58: {
+              jvmMainClass_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000040;
+              break;
+            } // case 58
+            case 66: {
+              java.lang.String s = input.readStringRequireUtf8();
+              ensureJvmArgsIsMutable();
+              jvmArgs_.add(s);
+              break;
+            } // case 66
+            case 72: {
+              exitCode_ = input.readInt32();
+              bitField0_ |= 0x00000100;
+              break;
+            } // case 72
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.android.build.gradle.internal.cxx.process.ExecuteProcess) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
     private int bitField0_;
@@ -1150,11 +1083,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setExecutable(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       executable_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1167,8 +1098,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearExecutable() {
-      
       executable_ = getDefaultInstance().getExecutable();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -1183,22 +1114,21 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setExecutableBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       executable_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
 
-    private com.google.protobuf.LazyStringList args_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private com.google.protobuf.LazyStringArrayList args_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     private void ensureArgsIsMutable() {
-      if (!((bitField0_ & 0x00000001) != 0)) {
+      if (!args_.isModifiable()) {
         args_ = new com.google.protobuf.LazyStringArrayList(args_);
-        bitField0_ |= 0x00000001;
-       }
+      }
+      bitField0_ |= 0x00000002;
     }
     /**
      * <pre>
@@ -1210,7 +1140,8 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ProtocolStringList
         getArgsList() {
-      return args_.getUnmodifiableView();
+      args_.makeImmutable();
+      return args_;
     }
     /**
      * <pre>
@@ -1260,11 +1191,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setArgs(
         int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureArgsIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureArgsIsMutable();
       args_.set(index, value);
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1279,11 +1209,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addArgs(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureArgsIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureArgsIsMutable();
       args_.add(value);
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1301,6 +1230,7 @@ private static final long serialVersionUID = 0L;
       ensureArgsIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
           values, args_);
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1313,8 +1243,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearArgs() {
-      args_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000001);
+      args_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+      bitField0_ = (bitField0_ & ~0x00000002);;
       onChanged();
       return this;
     }
@@ -1329,12 +1260,11 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addArgsBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       ensureArgsIsMutable();
       args_.add(value);
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1392,11 +1322,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setDescription(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       description_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1409,8 +1337,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearDescription() {
-      
       description_ = getDefaultInstance().getDescription();
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
@@ -1425,22 +1353,21 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setDescriptionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       description_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
 
-    private com.google.protobuf.LazyStringList environmentKeys_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private com.google.protobuf.LazyStringArrayList environmentKeys_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     private void ensureEnvironmentKeysIsMutable() {
-      if (!((bitField0_ & 0x00000002) != 0)) {
+      if (!environmentKeys_.isModifiable()) {
         environmentKeys_ = new com.google.protobuf.LazyStringArrayList(environmentKeys_);
-        bitField0_ |= 0x00000002;
-       }
+      }
+      bitField0_ |= 0x00000008;
     }
     /**
      * <pre>
@@ -1452,7 +1379,8 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ProtocolStringList
         getEnvironmentKeysList() {
-      return environmentKeys_.getUnmodifiableView();
+      environmentKeys_.makeImmutable();
+      return environmentKeys_;
     }
     /**
      * <pre>
@@ -1502,11 +1430,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setEnvironmentKeys(
         int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureEnvironmentKeysIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureEnvironmentKeysIsMutable();
       environmentKeys_.set(index, value);
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1521,11 +1448,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addEnvironmentKeys(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureEnvironmentKeysIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureEnvironmentKeysIsMutable();
       environmentKeys_.add(value);
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1543,6 +1469,7 @@ private static final long serialVersionUID = 0L;
       ensureEnvironmentKeysIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
           values, environmentKeys_);
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1555,8 +1482,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearEnvironmentKeys() {
-      environmentKeys_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000002);
+      environmentKeys_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+      bitField0_ = (bitField0_ & ~0x00000008);;
       onChanged();
       return this;
     }
@@ -1571,22 +1499,22 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addEnvironmentKeysBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       ensureEnvironmentKeysIsMutable();
       environmentKeys_.add(value);
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
 
-    private com.google.protobuf.LazyStringList environmentValues_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private com.google.protobuf.LazyStringArrayList environmentValues_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     private void ensureEnvironmentValuesIsMutable() {
-      if (!((bitField0_ & 0x00000004) != 0)) {
+      if (!environmentValues_.isModifiable()) {
         environmentValues_ = new com.google.protobuf.LazyStringArrayList(environmentValues_);
-        bitField0_ |= 0x00000004;
-       }
+      }
+      bitField0_ |= 0x00000010;
     }
     /**
      * <pre>
@@ -1598,7 +1526,8 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ProtocolStringList
         getEnvironmentValuesList() {
-      return environmentValues_.getUnmodifiableView();
+      environmentValues_.makeImmutable();
+      return environmentValues_;
     }
     /**
      * <pre>
@@ -1648,11 +1577,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setEnvironmentValues(
         int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureEnvironmentValuesIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureEnvironmentValuesIsMutable();
       environmentValues_.set(index, value);
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1667,11 +1595,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addEnvironmentValues(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureEnvironmentValuesIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureEnvironmentValuesIsMutable();
       environmentValues_.add(value);
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1689,6 +1616,7 @@ private static final long serialVersionUID = 0L;
       ensureEnvironmentValuesIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
           values, environmentValues_);
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1701,8 +1629,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearEnvironmentValues() {
-      environmentValues_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000004);
+      environmentValues_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+      bitField0_ = (bitField0_ & ~0x00000010);;
       onChanged();
       return this;
     }
@@ -1717,12 +1646,11 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addEnvironmentValuesBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       ensureEnvironmentValuesIsMutable();
       environmentValues_.add(value);
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1780,11 +1708,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setJvmClassPath(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       jvmClassPath_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1797,8 +1723,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearJvmClassPath() {
-      
       jvmClassPath_ = getDefaultInstance().getJvmClassPath();
+      bitField0_ = (bitField0_ & ~0x00000020);
       onChanged();
       return this;
     }
@@ -1813,12 +1739,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setJvmClassPathBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       jvmClassPath_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1876,11 +1800,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setJvmMainClass(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       jvmMainClass_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -1893,8 +1815,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearJvmMainClass() {
-      
       jvmMainClass_ = getDefaultInstance().getJvmMainClass();
+      bitField0_ = (bitField0_ & ~0x00000040);
       onChanged();
       return this;
     }
@@ -1909,22 +1831,21 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setJvmMainClassBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       jvmMainClass_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
 
-    private com.google.protobuf.LazyStringList jvmArgs_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private com.google.protobuf.LazyStringArrayList jvmArgs_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     private void ensureJvmArgsIsMutable() {
-      if (!((bitField0_ & 0x00000008) != 0)) {
+      if (!jvmArgs_.isModifiable()) {
         jvmArgs_ = new com.google.protobuf.LazyStringArrayList(jvmArgs_);
-        bitField0_ |= 0x00000008;
-       }
+      }
+      bitField0_ |= 0x00000080;
     }
     /**
      * <pre>
@@ -1936,7 +1857,8 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ProtocolStringList
         getJvmArgsList() {
-      return jvmArgs_.getUnmodifiableView();
+      jvmArgs_.makeImmutable();
+      return jvmArgs_;
     }
     /**
      * <pre>
@@ -1986,11 +1908,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setJvmArgs(
         int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureJvmArgsIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureJvmArgsIsMutable();
       jvmArgs_.set(index, value);
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -2005,11 +1926,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addJvmArgs(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureJvmArgsIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureJvmArgsIsMutable();
       jvmArgs_.add(value);
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -2027,6 +1947,7 @@ private static final long serialVersionUID = 0L;
       ensureJvmArgsIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
           values, jvmArgs_);
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -2039,8 +1960,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearJvmArgs() {
-      jvmArgs_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000008);
+      jvmArgs_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+      bitField0_ = (bitField0_ & ~0x00000080);;
       onChanged();
       return this;
     }
@@ -2055,12 +1977,11 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addJvmArgsBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       ensureJvmArgsIsMutable();
       jvmArgs_.add(value);
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -2088,8 +2009,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setExitCode(int value) {
-      
+
       exitCode_ = value;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -2102,7 +2024,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearExitCode() {
-      
+      bitField0_ = (bitField0_ & ~0x00000100);
       exitCode_ = 0;
       onChanged();
       return this;
@@ -2140,7 +2062,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new ExecuteProcess(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

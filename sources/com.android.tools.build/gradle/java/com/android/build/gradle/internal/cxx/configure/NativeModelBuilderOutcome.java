@@ -22,12 +22,18 @@ private static final long serialVersionUID = 0L;
   private NativeModelBuilderOutcome() {
     outcome_ = 0;
     gradlePath_ = "";
-    requestedAbis_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    requestedVariants_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    availableVariantAbis_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    successfullyConfiguredVariantAbis_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    failedConfigureVariantAbis_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    failedConfigureMessages_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    requestedAbis_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+    requestedVariants_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+    availableVariantAbis_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+    successfullyConfiguredVariantAbis_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+    failedConfigureVariantAbis_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+    failedConfigureMessages_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
   }
 
   @java.lang.Override
@@ -37,133 +43,6 @@ private static final long serialVersionUID = 0L;
     return new NativeModelBuilderOutcome();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
-  private NativeModelBuilderOutcome(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    int mutable_bitField0_ = 0;
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 8: {
-            int rawValue = input.readEnum();
-
-            outcome_ = rawValue;
-            break;
-          }
-          case 18: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            gradlePath_ = s;
-            break;
-          }
-          case 26: {
-            java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-              requestedAbis_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000001;
-            }
-            requestedAbis_.add(s);
-            break;
-          }
-          case 34: {
-            java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000002) != 0)) {
-              requestedVariants_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000002;
-            }
-            requestedVariants_.add(s);
-            break;
-          }
-          case 42: {
-            java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000004) != 0)) {
-              availableVariantAbis_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000004;
-            }
-            availableVariantAbis_.add(s);
-            break;
-          }
-          case 50: {
-            java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000008) != 0)) {
-              successfullyConfiguredVariantAbis_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000008;
-            }
-            successfullyConfiguredVariantAbis_.add(s);
-            break;
-          }
-          case 58: {
-            java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000010) != 0)) {
-              failedConfigureVariantAbis_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000010;
-            }
-            failedConfigureVariantAbis_.add(s);
-            break;
-          }
-          case 66: {
-            java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000020) != 0)) {
-              failedConfigureMessages_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000020;
-            }
-            failedConfigureMessages_.add(s);
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      if (((mutable_bitField0_ & 0x00000001) != 0)) {
-        requestedAbis_ = requestedAbis_.getUnmodifiableView();
-      }
-      if (((mutable_bitField0_ & 0x00000002) != 0)) {
-        requestedVariants_ = requestedVariants_.getUnmodifiableView();
-      }
-      if (((mutable_bitField0_ & 0x00000004) != 0)) {
-        availableVariantAbis_ = availableVariantAbis_.getUnmodifiableView();
-      }
-      if (((mutable_bitField0_ & 0x00000008) != 0)) {
-        successfullyConfiguredVariantAbis_ = successfullyConfiguredVariantAbis_.getUnmodifiableView();
-      }
-      if (((mutable_bitField0_ & 0x00000010) != 0)) {
-        failedConfigureVariantAbis_ = failedConfigureVariantAbis_.getUnmodifiableView();
-      }
-      if (((mutable_bitField0_ & 0x00000020) != 0)) {
-        failedConfigureMessages_ = failedConfigureMessages_.getUnmodifiableView();
-      }
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.android.build.gradle.internal.cxx.configure.CxxConfigure.internal_static_NativeModelBuilderOutcome_descriptor;
@@ -304,7 +183,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int OUTCOME_FIELD_NUMBER = 1;
-  private int outcome_;
+  private int outcome_ = 0;
   /**
    * <pre>
    * Outcome code
@@ -325,13 +204,13 @@ private static final long serialVersionUID = 0L;
    * @return The outcome.
    */
   @java.lang.Override public com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome.Outcome getOutcome() {
-    @SuppressWarnings("deprecation")
-    com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome.Outcome result = com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome.Outcome.valueOf(outcome_);
+    com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome.Outcome result = com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome.Outcome.forNumber(outcome_);
     return result == null ? com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome.Outcome.UNRECOGNIZED : result;
   }
 
   public static final int GRADLE_PATH_FIELD_NUMBER = 2;
-  private volatile java.lang.Object gradlePath_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object gradlePath_ = "";
   /**
    * <pre>
    * The gradle project path (like :lib)
@@ -377,7 +256,9 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int REQUESTED_ABIS_FIELD_NUMBER = 3;
-  private com.google.protobuf.LazyStringList requestedAbis_;
+  @SuppressWarnings("serial")
+  private com.google.protobuf.LazyStringArrayList requestedAbis_ =
+      com.google.protobuf.LazyStringArrayList.emptyList();
   /**
    * <pre>
    * The ABIs that Android Studio requested
@@ -428,7 +309,9 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int REQUESTED_VARIANTS_FIELD_NUMBER = 4;
-  private com.google.protobuf.LazyStringList requestedVariants_;
+  @SuppressWarnings("serial")
+  private com.google.protobuf.LazyStringArrayList requestedVariants_ =
+      com.google.protobuf.LazyStringArrayList.emptyList();
   /**
    * <pre>
    * The variants that Android Studio requested
@@ -479,7 +362,9 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int AVAILABLE_VARIANT_ABIS_FIELD_NUMBER = 5;
-  private com.google.protobuf.LazyStringList availableVariantAbis_;
+  @SuppressWarnings("serial")
+  private com.google.protobuf.LazyStringArrayList availableVariantAbis_ =
+      com.google.protobuf.LazyStringArrayList.emptyList();
   /**
    * <pre>
    * The variant-abis separated by colons that were available to configure (ex debug:x86)
@@ -530,7 +415,9 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SUCCESSFULLY_CONFIGURED_VARIANT_ABIS_FIELD_NUMBER = 6;
-  private com.google.protobuf.LazyStringList successfullyConfiguredVariantAbis_;
+  @SuppressWarnings("serial")
+  private com.google.protobuf.LazyStringArrayList successfullyConfiguredVariantAbis_ =
+      com.google.protobuf.LazyStringArrayList.emptyList();
   /**
    * <pre>
    * The variant-abis separated by colons that were successfully configured (ex debug:x86)
@@ -581,7 +468,9 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FAILED_CONFIGURE_VARIANT_ABIS_FIELD_NUMBER = 7;
-  private com.google.protobuf.LazyStringList failedConfigureVariantAbis_;
+  @SuppressWarnings("serial")
+  private com.google.protobuf.LazyStringArrayList failedConfigureVariantAbis_ =
+      com.google.protobuf.LazyStringArrayList.emptyList();
   /**
    * <pre>
    * The variant-abis separated by colons that failed to configure  (ex debug:x86)
@@ -632,7 +521,9 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FAILED_CONFIGURE_MESSAGES_FIELD_NUMBER = 8;
-  private com.google.protobuf.LazyStringList failedConfigureMessages_;
+  @SuppressWarnings("serial")
+  private com.google.protobuf.LazyStringArrayList failedConfigureMessages_ =
+      com.google.protobuf.LazyStringArrayList.emptyList();
   /**
    * <pre>
    * For each element of [failed_configure_variant_abis], the failure error message
@@ -720,7 +611,7 @@ private static final long serialVersionUID = 0L;
     for (int i = 0; i < failedConfigureMessages_.size(); i++) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 8, failedConfigureMessages_.getRaw(i));
     }
-    unknownFields.writeTo(output);
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -784,7 +675,7 @@ private static final long serialVersionUID = 0L;
       size += dataSize;
       size += 1 * getFailedConfigureMessagesList().size();
     }
-    size += unknownFields.getSerializedSize();
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -814,7 +705,7 @@ private static final long serialVersionUID = 0L;
         .equals(other.getFailedConfigureVariantAbisList())) return false;
     if (!getFailedConfigureMessagesList()
         .equals(other.getFailedConfigureMessagesList())) return false;
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -853,7 +744,7 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + FAILED_CONFIGURE_MESSAGES_FIELD_NUMBER;
       hash = (53 * hash) + getFailedConfigureMessagesList().hashCode();
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -974,38 +865,32 @@ private static final long serialVersionUID = 0L;
 
     // Construct using com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessageV3
-              .alwaysUseFieldBuilders) {
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       outcome_ = 0;
-
       gradlePath_ = "";
-
-      requestedAbis_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      requestedVariants_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000002);
-      availableVariantAbis_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000004);
-      successfullyConfiguredVariantAbis_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000008);
-      failedConfigureVariantAbis_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000010);
-      failedConfigureMessages_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000020);
+      requestedAbis_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
+      requestedVariants_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
+      availableVariantAbis_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
+      successfullyConfiguredVariantAbis_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
+      failedConfigureVariantAbis_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
+      failedConfigureMessages_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
       return this;
     }
 
@@ -1032,75 +917,45 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome buildPartial() {
       com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome result = new com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome(this);
-      int from_bitField0_ = bitField0_;
-      result.outcome_ = outcome_;
-      result.gradlePath_ = gradlePath_;
-      if (((bitField0_ & 0x00000001) != 0)) {
-        requestedAbis_ = requestedAbis_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000001);
-      }
-      result.requestedAbis_ = requestedAbis_;
-      if (((bitField0_ & 0x00000002) != 0)) {
-        requestedVariants_ = requestedVariants_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000002);
-      }
-      result.requestedVariants_ = requestedVariants_;
-      if (((bitField0_ & 0x00000004) != 0)) {
-        availableVariantAbis_ = availableVariantAbis_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000004);
-      }
-      result.availableVariantAbis_ = availableVariantAbis_;
-      if (((bitField0_ & 0x00000008) != 0)) {
-        successfullyConfiguredVariantAbis_ = successfullyConfiguredVariantAbis_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000008);
-      }
-      result.successfullyConfiguredVariantAbis_ = successfullyConfiguredVariantAbis_;
-      if (((bitField0_ & 0x00000010) != 0)) {
-        failedConfigureVariantAbis_ = failedConfigureVariantAbis_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000010);
-      }
-      result.failedConfigureVariantAbis_ = failedConfigureVariantAbis_;
-      if (((bitField0_ & 0x00000020) != 0)) {
-        failedConfigureMessages_ = failedConfigureMessages_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000020);
-      }
-      result.failedConfigureMessages_ = failedConfigureMessages_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.outcome_ = outcome_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.gradlePath_ = gradlePath_;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        requestedAbis_.makeImmutable();
+        result.requestedAbis_ = requestedAbis_;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        requestedVariants_.makeImmutable();
+        result.requestedVariants_ = requestedVariants_;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        availableVariantAbis_.makeImmutable();
+        result.availableVariantAbis_ = availableVariantAbis_;
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        successfullyConfiguredVariantAbis_.makeImmutable();
+        result.successfullyConfiguredVariantAbis_ = successfullyConfiguredVariantAbis_;
+      }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        failedConfigureVariantAbis_.makeImmutable();
+        result.failedConfigureVariantAbis_ = failedConfigureVariantAbis_;
+      }
+      if (((from_bitField0_ & 0x00000080) != 0)) {
+        failedConfigureMessages_.makeImmutable();
+        result.failedConfigureMessages_ = failedConfigureMessages_;
+      }
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome) {
@@ -1118,12 +973,13 @@ private static final long serialVersionUID = 0L;
       }
       if (!other.getGradlePath().isEmpty()) {
         gradlePath_ = other.gradlePath_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (!other.requestedAbis_.isEmpty()) {
         if (requestedAbis_.isEmpty()) {
           requestedAbis_ = other.requestedAbis_;
-          bitField0_ = (bitField0_ & ~0x00000001);
+          bitField0_ |= 0x00000004;
         } else {
           ensureRequestedAbisIsMutable();
           requestedAbis_.addAll(other.requestedAbis_);
@@ -1133,7 +989,7 @@ private static final long serialVersionUID = 0L;
       if (!other.requestedVariants_.isEmpty()) {
         if (requestedVariants_.isEmpty()) {
           requestedVariants_ = other.requestedVariants_;
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ |= 0x00000008;
         } else {
           ensureRequestedVariantsIsMutable();
           requestedVariants_.addAll(other.requestedVariants_);
@@ -1143,7 +999,7 @@ private static final long serialVersionUID = 0L;
       if (!other.availableVariantAbis_.isEmpty()) {
         if (availableVariantAbis_.isEmpty()) {
           availableVariantAbis_ = other.availableVariantAbis_;
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ |= 0x00000010;
         } else {
           ensureAvailableVariantAbisIsMutable();
           availableVariantAbis_.addAll(other.availableVariantAbis_);
@@ -1153,7 +1009,7 @@ private static final long serialVersionUID = 0L;
       if (!other.successfullyConfiguredVariantAbis_.isEmpty()) {
         if (successfullyConfiguredVariantAbis_.isEmpty()) {
           successfullyConfiguredVariantAbis_ = other.successfullyConfiguredVariantAbis_;
-          bitField0_ = (bitField0_ & ~0x00000008);
+          bitField0_ |= 0x00000020;
         } else {
           ensureSuccessfullyConfiguredVariantAbisIsMutable();
           successfullyConfiguredVariantAbis_.addAll(other.successfullyConfiguredVariantAbis_);
@@ -1163,7 +1019,7 @@ private static final long serialVersionUID = 0L;
       if (!other.failedConfigureVariantAbis_.isEmpty()) {
         if (failedConfigureVariantAbis_.isEmpty()) {
           failedConfigureVariantAbis_ = other.failedConfigureVariantAbis_;
-          bitField0_ = (bitField0_ & ~0x00000010);
+          bitField0_ |= 0x00000040;
         } else {
           ensureFailedConfigureVariantAbisIsMutable();
           failedConfigureVariantAbis_.addAll(other.failedConfigureVariantAbis_);
@@ -1173,14 +1029,14 @@ private static final long serialVersionUID = 0L;
       if (!other.failedConfigureMessages_.isEmpty()) {
         if (failedConfigureMessages_.isEmpty()) {
           failedConfigureMessages_ = other.failedConfigureMessages_;
-          bitField0_ = (bitField0_ & ~0x00000020);
+          bitField0_ |= 0x00000080;
         } else {
           ensureFailedConfigureMessagesIsMutable();
           failedConfigureMessages_.addAll(other.failedConfigureMessages_);
         }
         onChanged();
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -1195,17 +1051,76 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              outcome_ = input.readEnum();
+              bitField0_ |= 0x00000001;
+              break;
+            } // case 8
+            case 18: {
+              gradlePath_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 18
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+              ensureRequestedAbisIsMutable();
+              requestedAbis_.add(s);
+              break;
+            } // case 26
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+              ensureRequestedVariantsIsMutable();
+              requestedVariants_.add(s);
+              break;
+            } // case 34
+            case 42: {
+              java.lang.String s = input.readStringRequireUtf8();
+              ensureAvailableVariantAbisIsMutable();
+              availableVariantAbis_.add(s);
+              break;
+            } // case 42
+            case 50: {
+              java.lang.String s = input.readStringRequireUtf8();
+              ensureSuccessfullyConfiguredVariantAbisIsMutable();
+              successfullyConfiguredVariantAbis_.add(s);
+              break;
+            } // case 50
+            case 58: {
+              java.lang.String s = input.readStringRequireUtf8();
+              ensureFailedConfigureVariantAbisIsMutable();
+              failedConfigureVariantAbis_.add(s);
+              break;
+            } // case 58
+            case 66: {
+              java.lang.String s = input.readStringRequireUtf8();
+              ensureFailedConfigureMessagesIsMutable();
+              failedConfigureMessages_.add(s);
+              break;
+            } // case 66
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
     private int bitField0_;
@@ -1232,8 +1147,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setOutcomeValue(int value) {
-      
       outcome_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1247,8 +1162,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome.Outcome getOutcome() {
-      @SuppressWarnings("deprecation")
-      com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome.Outcome result = com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome.Outcome.valueOf(outcome_);
+      com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome.Outcome result = com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome.Outcome.forNumber(outcome_);
       return result == null ? com.android.build.gradle.internal.cxx.configure.NativeModelBuilderOutcome.Outcome.UNRECOGNIZED : result;
     }
     /**
@@ -1264,7 +1178,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
         throw new NullPointerException();
       }
-      
+      bitField0_ |= 0x00000001;
       outcome_ = value.getNumber();
       onChanged();
       return this;
@@ -1278,7 +1192,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearOutcome() {
-      
+      bitField0_ = (bitField0_ & ~0x00000001);
       outcome_ = 0;
       onChanged();
       return this;
@@ -1337,11 +1251,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setGradlePath(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       gradlePath_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1354,8 +1266,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearGradlePath() {
-      
       gradlePath_ = getDefaultInstance().getGradlePath();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -1370,22 +1282,21 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setGradlePathBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       gradlePath_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
 
-    private com.google.protobuf.LazyStringList requestedAbis_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private com.google.protobuf.LazyStringArrayList requestedAbis_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     private void ensureRequestedAbisIsMutable() {
-      if (!((bitField0_ & 0x00000001) != 0)) {
+      if (!requestedAbis_.isModifiable()) {
         requestedAbis_ = new com.google.protobuf.LazyStringArrayList(requestedAbis_);
-        bitField0_ |= 0x00000001;
-       }
+      }
+      bitField0_ |= 0x00000004;
     }
     /**
      * <pre>
@@ -1397,7 +1308,8 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ProtocolStringList
         getRequestedAbisList() {
-      return requestedAbis_.getUnmodifiableView();
+      requestedAbis_.makeImmutable();
+      return requestedAbis_;
     }
     /**
      * <pre>
@@ -1447,11 +1359,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setRequestedAbis(
         int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureRequestedAbisIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureRequestedAbisIsMutable();
       requestedAbis_.set(index, value);
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1466,11 +1377,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addRequestedAbis(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureRequestedAbisIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureRequestedAbisIsMutable();
       requestedAbis_.add(value);
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1488,6 +1398,7 @@ private static final long serialVersionUID = 0L;
       ensureRequestedAbisIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
           values, requestedAbis_);
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1500,8 +1411,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearRequestedAbis() {
-      requestedAbis_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000001);
+      requestedAbis_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+      bitField0_ = (bitField0_ & ~0x00000004);;
       onChanged();
       return this;
     }
@@ -1516,22 +1428,22 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addRequestedAbisBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       ensureRequestedAbisIsMutable();
       requestedAbis_.add(value);
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
 
-    private com.google.protobuf.LazyStringList requestedVariants_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private com.google.protobuf.LazyStringArrayList requestedVariants_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     private void ensureRequestedVariantsIsMutable() {
-      if (!((bitField0_ & 0x00000002) != 0)) {
+      if (!requestedVariants_.isModifiable()) {
         requestedVariants_ = new com.google.protobuf.LazyStringArrayList(requestedVariants_);
-        bitField0_ |= 0x00000002;
-       }
+      }
+      bitField0_ |= 0x00000008;
     }
     /**
      * <pre>
@@ -1543,7 +1455,8 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ProtocolStringList
         getRequestedVariantsList() {
-      return requestedVariants_.getUnmodifiableView();
+      requestedVariants_.makeImmutable();
+      return requestedVariants_;
     }
     /**
      * <pre>
@@ -1593,11 +1506,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setRequestedVariants(
         int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureRequestedVariantsIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureRequestedVariantsIsMutable();
       requestedVariants_.set(index, value);
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1612,11 +1524,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addRequestedVariants(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureRequestedVariantsIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureRequestedVariantsIsMutable();
       requestedVariants_.add(value);
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1634,6 +1545,7 @@ private static final long serialVersionUID = 0L;
       ensureRequestedVariantsIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
           values, requestedVariants_);
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1646,8 +1558,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearRequestedVariants() {
-      requestedVariants_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000002);
+      requestedVariants_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+      bitField0_ = (bitField0_ & ~0x00000008);;
       onChanged();
       return this;
     }
@@ -1662,22 +1575,22 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addRequestedVariantsBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       ensureRequestedVariantsIsMutable();
       requestedVariants_.add(value);
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
 
-    private com.google.protobuf.LazyStringList availableVariantAbis_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private com.google.protobuf.LazyStringArrayList availableVariantAbis_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     private void ensureAvailableVariantAbisIsMutable() {
-      if (!((bitField0_ & 0x00000004) != 0)) {
+      if (!availableVariantAbis_.isModifiable()) {
         availableVariantAbis_ = new com.google.protobuf.LazyStringArrayList(availableVariantAbis_);
-        bitField0_ |= 0x00000004;
-       }
+      }
+      bitField0_ |= 0x00000010;
     }
     /**
      * <pre>
@@ -1689,7 +1602,8 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ProtocolStringList
         getAvailableVariantAbisList() {
-      return availableVariantAbis_.getUnmodifiableView();
+      availableVariantAbis_.makeImmutable();
+      return availableVariantAbis_;
     }
     /**
      * <pre>
@@ -1739,11 +1653,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setAvailableVariantAbis(
         int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureAvailableVariantAbisIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureAvailableVariantAbisIsMutable();
       availableVariantAbis_.set(index, value);
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1758,11 +1671,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addAvailableVariantAbis(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureAvailableVariantAbisIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureAvailableVariantAbisIsMutable();
       availableVariantAbis_.add(value);
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1780,6 +1692,7 @@ private static final long serialVersionUID = 0L;
       ensureAvailableVariantAbisIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
           values, availableVariantAbis_);
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1792,8 +1705,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearAvailableVariantAbis() {
-      availableVariantAbis_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000004);
+      availableVariantAbis_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+      bitField0_ = (bitField0_ & ~0x00000010);;
       onChanged();
       return this;
     }
@@ -1808,22 +1722,22 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addAvailableVariantAbisBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       ensureAvailableVariantAbisIsMutable();
       availableVariantAbis_.add(value);
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
 
-    private com.google.protobuf.LazyStringList successfullyConfiguredVariantAbis_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private com.google.protobuf.LazyStringArrayList successfullyConfiguredVariantAbis_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     private void ensureSuccessfullyConfiguredVariantAbisIsMutable() {
-      if (!((bitField0_ & 0x00000008) != 0)) {
+      if (!successfullyConfiguredVariantAbis_.isModifiable()) {
         successfullyConfiguredVariantAbis_ = new com.google.protobuf.LazyStringArrayList(successfullyConfiguredVariantAbis_);
-        bitField0_ |= 0x00000008;
-       }
+      }
+      bitField0_ |= 0x00000020;
     }
     /**
      * <pre>
@@ -1835,7 +1749,8 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ProtocolStringList
         getSuccessfullyConfiguredVariantAbisList() {
-      return successfullyConfiguredVariantAbis_.getUnmodifiableView();
+      successfullyConfiguredVariantAbis_.makeImmutable();
+      return successfullyConfiguredVariantAbis_;
     }
     /**
      * <pre>
@@ -1885,11 +1800,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setSuccessfullyConfiguredVariantAbis(
         int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureSuccessfullyConfiguredVariantAbisIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureSuccessfullyConfiguredVariantAbisIsMutable();
       successfullyConfiguredVariantAbis_.set(index, value);
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1904,11 +1818,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addSuccessfullyConfiguredVariantAbis(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureSuccessfullyConfiguredVariantAbisIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureSuccessfullyConfiguredVariantAbisIsMutable();
       successfullyConfiguredVariantAbis_.add(value);
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1926,6 +1839,7 @@ private static final long serialVersionUID = 0L;
       ensureSuccessfullyConfiguredVariantAbisIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
           values, successfullyConfiguredVariantAbis_);
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1938,8 +1852,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearSuccessfullyConfiguredVariantAbis() {
-      successfullyConfiguredVariantAbis_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000008);
+      successfullyConfiguredVariantAbis_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+      bitField0_ = (bitField0_ & ~0x00000020);;
       onChanged();
       return this;
     }
@@ -1954,22 +1869,22 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addSuccessfullyConfiguredVariantAbisBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       ensureSuccessfullyConfiguredVariantAbisIsMutable();
       successfullyConfiguredVariantAbis_.add(value);
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
 
-    private com.google.protobuf.LazyStringList failedConfigureVariantAbis_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private com.google.protobuf.LazyStringArrayList failedConfigureVariantAbis_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     private void ensureFailedConfigureVariantAbisIsMutable() {
-      if (!((bitField0_ & 0x00000010) != 0)) {
+      if (!failedConfigureVariantAbis_.isModifiable()) {
         failedConfigureVariantAbis_ = new com.google.protobuf.LazyStringArrayList(failedConfigureVariantAbis_);
-        bitField0_ |= 0x00000010;
-       }
+      }
+      bitField0_ |= 0x00000040;
     }
     /**
      * <pre>
@@ -1981,7 +1896,8 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ProtocolStringList
         getFailedConfigureVariantAbisList() {
-      return failedConfigureVariantAbis_.getUnmodifiableView();
+      failedConfigureVariantAbis_.makeImmutable();
+      return failedConfigureVariantAbis_;
     }
     /**
      * <pre>
@@ -2031,11 +1947,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setFailedConfigureVariantAbis(
         int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureFailedConfigureVariantAbisIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureFailedConfigureVariantAbisIsMutable();
       failedConfigureVariantAbis_.set(index, value);
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -2050,11 +1965,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addFailedConfigureVariantAbis(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureFailedConfigureVariantAbisIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureFailedConfigureVariantAbisIsMutable();
       failedConfigureVariantAbis_.add(value);
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -2072,6 +1986,7 @@ private static final long serialVersionUID = 0L;
       ensureFailedConfigureVariantAbisIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
           values, failedConfigureVariantAbis_);
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -2084,8 +1999,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearFailedConfigureVariantAbis() {
-      failedConfigureVariantAbis_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000010);
+      failedConfigureVariantAbis_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+      bitField0_ = (bitField0_ & ~0x00000040);;
       onChanged();
       return this;
     }
@@ -2100,22 +2016,22 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addFailedConfigureVariantAbisBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       ensureFailedConfigureVariantAbisIsMutable();
       failedConfigureVariantAbis_.add(value);
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
 
-    private com.google.protobuf.LazyStringList failedConfigureMessages_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private com.google.protobuf.LazyStringArrayList failedConfigureMessages_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     private void ensureFailedConfigureMessagesIsMutable() {
-      if (!((bitField0_ & 0x00000020) != 0)) {
+      if (!failedConfigureMessages_.isModifiable()) {
         failedConfigureMessages_ = new com.google.protobuf.LazyStringArrayList(failedConfigureMessages_);
-        bitField0_ |= 0x00000020;
-       }
+      }
+      bitField0_ |= 0x00000080;
     }
     /**
      * <pre>
@@ -2127,7 +2043,8 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ProtocolStringList
         getFailedConfigureMessagesList() {
-      return failedConfigureMessages_.getUnmodifiableView();
+      failedConfigureMessages_.makeImmutable();
+      return failedConfigureMessages_;
     }
     /**
      * <pre>
@@ -2177,11 +2094,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setFailedConfigureMessages(
         int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureFailedConfigureMessagesIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureFailedConfigureMessagesIsMutable();
       failedConfigureMessages_.set(index, value);
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -2196,11 +2112,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addFailedConfigureMessages(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureFailedConfigureMessagesIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureFailedConfigureMessagesIsMutable();
       failedConfigureMessages_.add(value);
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -2218,6 +2133,7 @@ private static final long serialVersionUID = 0L;
       ensureFailedConfigureMessagesIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
           values, failedConfigureMessages_);
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -2230,8 +2146,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearFailedConfigureMessages() {
-      failedConfigureMessages_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000020);
+      failedConfigureMessages_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+      bitField0_ = (bitField0_ & ~0x00000080);;
       onChanged();
       return this;
     }
@@ -2246,12 +2163,11 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addFailedConfigureMessagesBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       ensureFailedConfigureMessagesIsMutable();
       failedConfigureMessages_.add(value);
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -2288,7 +2204,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new NativeModelBuilderOutcome(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

@@ -95,5 +95,4 @@ public interface RepoPackage extends Comparable<RepoPackage> {
      */
     @NonNull
     RepoPackageImpl asMarshallable();
-
 }

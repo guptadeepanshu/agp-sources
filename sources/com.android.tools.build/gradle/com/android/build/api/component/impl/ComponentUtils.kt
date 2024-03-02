@@ -20,7 +20,6 @@ package com.android.build.api.component.impl
 
 import com.android.build.api.variant.AndroidResources
 import com.android.build.api.variant.AndroidVersion
-import com.android.build.api.variant.impl.AndroidVersionImpl
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.LibraryCreationConfig
@@ -31,7 +30,6 @@ import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.OptionalBooleanOption
 import com.android.build.gradle.options.StringOption
-import com.android.builder.core.DefaultApiVersion
 import com.android.builder.errors.IssueReporter
 import com.android.sdklib.AndroidTargetHash
 import com.google.common.base.Strings
@@ -40,17 +38,6 @@ import org.gradle.api.file.FileCollection
 val ENABLE_LEGACY_API: String =
     "Turn on with by putting '${BooleanOption.ENABLE_LEGACY_API.propertyName}=true in gradle.properties'\n" +
             "Using this deprecated API may still fail, depending on usage of the new Variant API, like computing applicationId via a task output."
-
-/**
- * AndroidResources block currently contains asset options, while disabling android resources
- * doesn't disable assets. To work around this, AndroidResources block is duplicated between
- * [AssetsCreationConfig] and [AndroidResourcesCreationConfig]. If android resources is disabled,
- * the value is returned from [AssetsCreationConfig].
- */
-internal fun ComponentImpl<*>.getAndroidResources(): AndroidResources {
-    return androidResourcesCreationConfig?.androidResources
-        ?: assetsCreationConfig.androidResources
-}
 
 /**
  * Determine if the final output should be marked as testOnly to prevent uploading to Play

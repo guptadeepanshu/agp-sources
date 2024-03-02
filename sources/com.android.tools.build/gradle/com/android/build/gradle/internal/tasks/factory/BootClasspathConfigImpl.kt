@@ -47,7 +47,7 @@ class BootClasspathConfigImpl(
         project: Project,
         projectServices: ProjectServices,
         versionedSdkLoaderService: VersionedSdkLoaderService,
-        extension: CommonExtensionImpl<*,*,*,*,*>,
+        extension: CommonExtensionImpl<*,*,*,*,*,*>,
         forUnitTest: Boolean
     ): this(
         project,

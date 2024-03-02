@@ -39,6 +39,8 @@ import com.android.build.gradle.internal.scope.ProjectInfo
 import com.android.build.gradle.internal.services.AndroidLocationsBuildService
 import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.services.ProjectServices
+import com.android.build.gradle.internal.transforms.LayoutlibFromMaven
+import com.android.build.gradle.internal.utils.MUTUALLY_EXCLUSIVE_ANDROID_GRADLE_PLUGINS
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.ProjectOptionService
 import com.android.build.gradle.options.ProjectOptions
@@ -90,13 +92,16 @@ abstract class AndroidPluginBaseServices(
                 projectOptions,
                 project.gradle.sharedServices,
                 from(project, projectOptions, syncIssueReporter),
+                LayoutlibFromMaven.create(project),
                 create(project, projectOptions::get),
                 project.gradle.startParameter.maxWorkerCount,
                 ProjectInfo(project),
                 { o: Any -> project.file(o) },
                 project.configurations,
                 project.dependencies,
-                project.extensions.extraProperties)
+                project.extensions.extraProperties,
+                { name: String -> project.tasks.register(name) }
+            )
         }
     }
 
@@ -117,7 +122,7 @@ abstract class AndroidPluginBaseServices(
 
         this.project = project
         AndroidLocationsBuildService.RegistrationAction(project).execute()
-
+        checkPluginsCompatibility(project)
         checkMinJvmVersion()
         val projectOptions: ProjectOptions = projectServices.projectOptions
         if (projectOptions.isAnalyticsEnabled) {
@@ -172,6 +177,21 @@ abstract class AndroidPluginBaseServices(
             null,
         ) {
             createTasks(project)
+        }
+    }
+
+    private fun checkPluginsCompatibility(project: Project) {
+        val currentPlugin = MUTUALLY_EXCLUSIVE_ANDROID_GRADLE_PLUGINS[this::class.java]
+        val incompatiblePlugin = currentPlugin?.let {
+            MUTUALLY_EXCLUSIVE_ANDROID_GRADLE_PLUGINS.entries.firstOrNull {
+                it.value != currentPlugin && project.pluginManager.hasPlugin(it.value)
+            }
+        }
+
+        if (incompatiblePlugin != null) {
+            error(
+                "'$currentPlugin' and '${incompatiblePlugin.value}' plugins cannot be applied in the same project."
+            )
         }
     }
 

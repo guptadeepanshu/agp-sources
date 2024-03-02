@@ -100,10 +100,12 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.provider.Provider
 import org.gradle.build.event.BuildEventsListenerRegistry
+import org.jetbrains.kotlin.gradle.ExternalKotlinTargetApi
 import javax.inject.Inject
+import org.jetbrains.kotlin.gradle.plugin.mpp.external.publishSources
 
 @Incubating
-abstract class KotlinMultiplatformAndroidPlugin @Inject constructor(
+class KotlinMultiplatformAndroidPlugin @Inject constructor(
     listenerRegistry: BuildEventsListenerRegistry
 ): AndroidPluginBaseServices(listenerRegistry), Plugin<Project> {
 
@@ -134,7 +136,8 @@ abstract class KotlinMultiplatformAndroidPlugin @Inject constructor(
         withProject("kotlinMultiplatformHandler") { project ->
             KotlinMultiplatformAndroidHandlerImpl(
                 project = project,
-                dslServices = dslServices
+                dslServices = dslServices,
+                objectFactory = projectServices.objectFactory
             )
         }
     }
@@ -170,6 +173,11 @@ abstract class KotlinMultiplatformAndroidPlugin @Inject constructor(
         // enable the gradle property that enables the kgp IDE import APIs that we rely on.
         project.extensions.extraProperties.set(
             "kotlin.mpp.import.enableKgpDependencyResolution", "true"
+        )
+        // publish the jvm target with TargetJvmEnvironment attribute so that we're able to
+        // distinguish between jvm and android targets based on that attribute.
+        project.extensions.extraProperties.set(
+            "kotlin.publishJvmEnvironmentAttribute", "true"
         )
     }
 
@@ -293,7 +301,6 @@ abstract class KotlinMultiplatformAndroidPlugin @Inject constructor(
         kmpVariantApiOperationsRegistrar.executeDslFinalizationBlocks()
         androidExtension.lock()
 
-        configureDisambiguationRules(project)
 
         val dependencyConfigurator = DependencyConfigurator(
             project = project,
@@ -318,6 +325,9 @@ abstract class KotlinMultiplatformAndroidPlugin @Inject constructor(
             taskServices,
             kotlinMultiplatformHandler.getAndroidTarget()
         )
+
+        val sandboxConsumptionEnabled = mainVariant.privacySandboxCreationConfig != null
+        configureDisambiguationRules(project, sandboxConsumptionEnabled)
 
         val unitTest = createUnitTestComponent(
             project,
@@ -359,7 +369,8 @@ abstract class KotlinMultiplatformAndroidPlugin @Inject constructor(
             it.syncAndroidAndKmpClasspathAndSources()
         }
 
-        (global.compileOptions as CompileOptions).finalizeSourceAndTargetCompatibility(project)
+        (global.compileOptions as CompileOptions)
+            .finalizeSourceAndTargetCompatibility(project, global)
 
         dependencyConfigurator.configureVariantTransforms(
             variants = listOf(mainVariant),
@@ -391,33 +402,39 @@ abstract class KotlinMultiplatformAndroidPlugin @Inject constructor(
         }
     }
 
+    @OptIn(ExternalKotlinTargetApi::class)
     private fun createVariantDependencies(
         project: Project,
         dslInfo: KmpComponentDslInfo,
         androidKotlinCompilation: KotlinMultiplatformAndroidCompilation,
         androidTarget: KotlinMultiplatformAndroidTarget
-    ): VariantDependencies = VariantDependencies.createForKotlinMultiplatform(
-        project = project,
-        projectOptions = projectServices.projectOptions,
-        dslInfo = dslInfo,
-        apiClasspath = project.configurations.getByName(
-            androidKotlinCompilation.apiConfigurationName
-        ),
-        compileClasspath = project.configurations.getByName(
-            androidKotlinCompilation.compileDependencyConfigurationName
-        ),
-        runtimeClasspath = project.configurations.getByName(
-            androidKotlinCompilation.runtimeDependencyConfigurationName!!
-        ),
-        apiElements = (androidTarget as KotlinMultiplatformAndroidTargetImpl)
-            .apiElementsConfiguration.forMainVariantConfiguration(dslInfo),
-        runtimeElements = androidTarget.runtimeElementsConfiguration.forMainVariantConfiguration(dslInfo),
-        sourcesElements = project.configurations.findByName(
-            androidTarget.sourcesElementsConfigurationName
-        )?.forMainVariantConfiguration(dslInfo),
-        apiPublication = androidTarget.apiElementsPublishedConfiguration.forMainVariantConfiguration(dslInfo),
-        runtimePublication = androidTarget.runtimeElementsPublishedConfiguration.forMainVariantConfiguration(dslInfo)
-    )
+    ): VariantDependencies {
+        return VariantDependencies.createForKotlinMultiplatform(
+            project = project,
+            projectOptions = projectServices.projectOptions,
+            dslInfo = dslInfo,
+            apiClasspath = project.configurations.getByName(
+                androidKotlinCompilation.apiConfigurationName
+            ),
+            compileClasspath = project.configurations.getByName(
+                androidKotlinCompilation.compileDependencyConfigurationName
+            ),
+            runtimeClasspath = project.configurations.getByName(
+                androidKotlinCompilation.runtimeDependencyConfigurationName!!
+            ),
+            apiElements = (androidTarget as KotlinMultiplatformAndroidTargetImpl)
+                .apiElementsConfiguration.forMainVariantConfiguration(dslInfo),
+            runtimeElements = androidTarget.runtimeElementsConfiguration.forMainVariantConfiguration(dslInfo),
+            sourcesElements = project.configurations.findByName(
+                androidTarget.sourcesElementsConfigurationName
+            )?.forMainVariantConfiguration(dslInfo),
+            apiPublication = androidTarget.apiElementsPublishedConfiguration.forMainVariantConfiguration(dslInfo),
+            runtimePublication = androidTarget.runtimeElementsPublishedConfiguration.forMainVariantConfiguration(dslInfo),
+            sourcesPublication = androidTarget.sourcesElementsPublishedConfiguration.forMainVariantConfiguration(dslInfo).also {
+                it?.let { androidTarget.publishSources(androidKotlinCompilation as KotlinMultiplatformAndroidCompilationImpl) }
+            }
+        )
+    }
 
     private fun getAndroidManifestDefaultLocation(
         compilation: KotlinMultiplatformAndroidCompilation
@@ -537,15 +554,15 @@ abstract class KotlinMultiplatformAndroidPlugin @Inject constructor(
 
         val manifestLocation = getAndroidManifestDefaultLocation(kotlinCompilation)
 
+        taskManager.canParseManifest.set(
+            !dslServices.projectOptions[BooleanOption.DISABLE_EARLY_MANIFEST_PARSING]
+        )
         val manifestParser = LazyManifestParser(
             manifestFile = projectServices.objectFactory.fileProperty().fileValue(manifestLocation),
             manifestFileRequired = true,
-            projectServices = projectServices
-        ) {
-            taskManager.hasCreatedTasks || !projectServices.projectOptions.get(
-                BooleanOption.DISABLE_EARLY_MANIFEST_PARSING
-            )
-        }
+            taskManager.canParseManifest,
+            projectServices = projectServices,
+        )
 
         val dslInfo = KmpAndroidTestDslInfoImpl(
             androidExtension,
@@ -581,16 +598,15 @@ abstract class KotlinMultiplatformAndroidPlugin @Inject constructor(
         )
     }
 
-    private fun configureDisambiguationRules(project: Project) {
+    private fun configureDisambiguationRules(
+            project: Project, supportPrivacySandboxSdkConsumption: Boolean) {
         project.dependencies.attributesSchema { schema ->
             val buildTypesToMatch = androidExtension.dependencyVariantSelection.buildTypes.get()
-            if (buildTypesToMatch.isNotEmpty()){
-                schema.attribute(BuildTypeAttr.ATTRIBUTE)
-                    .disambiguationRules
-                    .add(SingleVariantBuildTypeRule::class.java) { config ->
-                        config.setParams(buildTypesToMatch)
-                    }
-            }
+            schema.attribute(BuildTypeAttr.ATTRIBUTE)
+                .disambiguationRules
+                .add(SingleVariantBuildTypeRule::class.java) { config ->
+                    config.setParams(buildTypesToMatch)
+                }
 
             androidExtension.dependencyVariantSelection.productFlavors.get().forEach { (dimension, fallbacks) ->
                 schema.attribute(ProductFlavorAttr.of(dimension))
@@ -603,8 +619,7 @@ abstract class KotlinMultiplatformAndroidPlugin @Inject constructor(
             schema.attribute(AgpVersionAttr.ATTRIBUTE)
                 .compatibilityRules
                 .add(AgpVersionCompatibilityRule::class.java)
-
-            setUp(schema)
+            setUp(schema, supportPrivacySandboxSdkConsumption)
         }
     }
 

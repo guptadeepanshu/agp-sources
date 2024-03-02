@@ -27,6 +27,8 @@ import com.google.common.collect.ImmutableList
  */
 abstract class SyncIssueReporter : IssueReporter() {
 
+    abstract fun isInStandardEvaluationMode(): Boolean
+
     abstract val syncIssues: ImmutableList<SyncIssue>
 
     /**

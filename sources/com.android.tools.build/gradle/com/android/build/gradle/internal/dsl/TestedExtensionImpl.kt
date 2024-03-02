@@ -19,6 +19,7 @@ package com.android.build.gradle.internal.dsl
 import com.android.build.api.dsl.AndroidResources
 import com.android.build.api.dsl.BuildFeatures
 import com.android.build.api.dsl.DefaultConfig
+import com.android.build.api.dsl.Installation
 import com.android.build.api.dsl.TestFixtures
 import com.android.build.gradle.internal.plugins.DslContainerProvider
 import com.android.build.gradle.internal.services.DslServices
@@ -31,7 +32,8 @@ abstract class TestedExtensionImpl<
         BuildTypeT : com.android.build.api.dsl.BuildType,
         DefaultConfigT : DefaultConfig,
         ProductFlavorT : com.android.build.api.dsl.ProductFlavor,
-        AndroidResourcesT : AndroidResources>(
+        AndroidResourcesT : AndroidResources,
+        InstallationT : Installation>(
             dslServices: DslServices,
             dslContainers: DslContainerProvider<DefaultConfigT, BuildTypeT, ProductFlavorT, SigningConfig>
         ) : CommonExtensionImpl<
@@ -39,7 +41,8 @@ abstract class TestedExtensionImpl<
         BuildTypeT,
         DefaultConfigT,
         ProductFlavorT,
-        AndroidResourcesT>(
+        AndroidResourcesT,
+        InstallationT>(
     dslServices,
     dslContainers
 ), com.android.build.api.dsl.TestedExtension {

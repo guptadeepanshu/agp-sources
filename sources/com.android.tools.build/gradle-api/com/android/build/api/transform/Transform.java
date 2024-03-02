@@ -37,54 +37,52 @@ import org.gradle.api.provider.Property;
 /**
  * A Transform that processes intermediary build artifacts.
  *
- * <p>This API is deprecated and is planned to be removed in Android Gradle plugin 8.0.
+ * <p>This API is deprecated and is planned to be removed in Android Gradle plugin 9.0.
  *
  * <p>There is no single replacement. For more information about how to migrate, see <a
  * href="https://developer.android.com/studio/releases/gradle-plugin-roadmap">
  * https://developer.android.com/studio/releases/gradle-plugin-roadmap </a>.
  *
- * <p>For each added transform, a new task is created. The action of adding a transform takes
- * care of handling dependencies between the tasks. This is done based on what the transform
- * processes. The output of the transform becomes consumable by other transforms and these
- * tasks get automatically linked together.
+ * <p>For each added transform, a new task is created. The action of adding a transform takes care
+ * of handling dependencies between the tasks. This is done based on what the transform processes.
+ * The output of the transform becomes consumable by other transforms and these tasks get
+ * automatically linked together.
  *
  * <p>The Transform indicates what it applies to (content, scope) and what it generates (content).
  *
- * <p>A transform receives input as a collection {@link TransformInput}, which is composed of
- * {@link JarInput}s and {@link DirectoryInput}s.
- * Both provide information about the {@link Scope}s and {@link ContentType}s associated with their
- * particular content.
+ * <p>A transform receives input as a collection {@link TransformInput}, which is composed of {@link
+ * JarInput}s and {@link DirectoryInput}s. Both provide information about the {@link Scope}s and
+ * {@link ContentType}s associated with their particular content.
  *
- * <p>The output is handled by {@link TransformOutputProvider} which allows creating new self-contained
- * content, each associated with their own Scopes and Content Types.
- * The content handled by TransformInput/Output is managed by the transform system, and their
- * location is not configurable.
+ * <p>The output is handled by {@link TransformOutputProvider} which allows creating new
+ * self-contained content, each associated with their own Scopes and Content Types. The content
+ * handled by TransformInput/Output is managed by the transform system, and their location is not
+ * configurable.
  *
- * <p>It is best practice to write into as many outputs as Jar/Folder Inputs have been received by the
- * transform. Combining all the inputs into a single output prevents downstream transform from
+ * <p>It is best practice to write into as many outputs as Jar/Folder Inputs have been received by
+ * the transform. Combining all the inputs into a single output prevents downstream transform from
  * processing limited scopes.
  *
- * <p>While it's possible to differentiate different Content Types by file extension, it's not possible
- * to do so for Scopes. Therefore if a transform request a Scope but the only available Output
- * contains more than the requested Scope, the build will fail.<br>
+ * <p>While it's possible to differentiate different Content Types by file extension, it's not
+ * possible to do so for Scopes. Therefore if a transform request a Scope but the only available
+ * Output contains more than the requested Scope, the build will fail.<br>
  * If a transform request a single content type but the only available content includes more than
- * the requested type, the input file/folder will contain all the files of all the types, but
- * the transform should only read, process and output the type(s) it requested.
- *
+ * the requested type, the input file/folder will contain all the files of all the types, but the
+ * transform should only read, process and output the type(s) it requested.
  *
  * <p>Additionally, a transform can indicate secondary inputs/outputs. These are not handled by
  * upstream or downstream transforms, and are not restricted by type handled by transform. They can
  * be anything.
  *
  * <p>It's up to each transform to manage where these files are, and to make sure that these files
- * are generated before the transform is called. This is done through additional parameters
- * when register the transform.
+ * are generated before the transform is called. This is done through additional parameters when
+ * register the transform.
  *
- * <p>These secondary inputs/outputs allow a transform to read but not process any content. This
- * can be achieved by having {@link #getScopes()} return an empty list and use
- * {@link #getReferencedScopes()} to indicate what to read instead.
+ * <p>These secondary inputs/outputs allow a transform to read but not process any content. This can
+ * be achieved by having {@link #getScopes()} return an empty list and use {@link
+ * #getReferencedScopes()} to indicate what to read instead.
  *
- * @deprecated This API is planned to be removed in Android Gradle Plugin 8.0.
+ * @deprecated This API is planned to be removed in Android Gradle Plugin 9.0.
  */
 @SuppressWarnings("MethodMayBeStatic")
 @Deprecated

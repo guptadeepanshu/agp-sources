@@ -16,6 +16,7 @@
 
 package com.android.build.api.component.analytics
 
+import com.android.build.api.variant.PropertyAccessNotAllowedException
 import com.android.build.api.variant.TestVariantBuilder
 import com.android.tools.build.gradle.internal.profile.VariantMethodType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
@@ -35,4 +36,11 @@ open class AnalyticsEnabledTestVariantBuilder @Inject constructor(
             stats.variantApiAccessBuilder.addVariantAccessBuilder().type = VariantMethodType.CODE_MINIFICATION_VALUE_VALUE
             delegate.isMinifyEnabled = value
         }
-    }
+
+    override var enableMultiDex: Boolean?
+        get() = throw PropertyAccessNotAllowedException("enableMultiDex", "TestVariantBuilder")
+        set(value) {
+            stats.variantApiAccessBuilder.addVariantAccessBuilder().type = VariantMethodType.ENABLE_MULTI_DEX_VALUE
+            delegate.enableMultiDex = value
+        }
+}

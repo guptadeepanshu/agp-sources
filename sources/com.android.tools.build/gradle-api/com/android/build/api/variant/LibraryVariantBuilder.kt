@@ -16,7 +16,10 @@
 package com.android.build.api.variant
 
 /**
- * [VariantBuilder] type for library projects
+ * Model for library components that only contains configuration-time properties that impacts
+ * the build flow.
+ *
+ * See [ComponentBuilder] and [VariantBuilder] for more information.
  */
 interface LibraryVariantBuilder : VariantBuilder,
     HasAndroidTestBuilder,

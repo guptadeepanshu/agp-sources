@@ -21,6 +21,7 @@ import com.android.build.api.variant.impl.BuiltArtifactImpl
 import com.android.build.api.variant.impl.BuiltArtifactsImpl
 import com.android.build.api.variant.impl.BuiltArtifactsImpl.Companion.saveAll
 import com.android.build.gradle.internal.component.ApkCreationConfig
+import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
@@ -142,7 +143,7 @@ abstract class BuildPrivacySandboxSdkApks : NonIncrementalTask() {
     }
 
 
-    class CreationAction(creationConfig: ApkCreationConfig) : VariantTaskCreationAction<BuildPrivacySandboxSdkApks, ApkCreationConfig>(
+    class CreationAction(creationConfig: ApplicationCreationConfig) : VariantTaskCreationAction<BuildPrivacySandboxSdkApks, ApplicationCreationConfig>(
             creationConfig,
             dependsOnPreBuildTask = false
     ) {
@@ -182,7 +183,7 @@ abstract class BuildPrivacySandboxSdkApks : NonIncrementalTask() {
         }
 
         companion object {
-            fun getTaskName(creationConfig: ComponentCreationConfig) = creationConfig.computeTaskName("buildPrivacySandboxSdkApksFor")
+            fun getTaskName(creationConfig: ApplicationCreationConfig) = creationConfig.computeTaskName("buildPrivacySandboxSdkApksFor")
         }
     }
 }

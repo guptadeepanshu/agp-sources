@@ -24,9 +24,9 @@ import com.android.repository.api.License;
 import com.android.repository.api.RepoManager;
 import com.android.sdklib.AndroidTargetHash;
 import com.android.sdklib.AndroidVersion;
+import com.android.sdklib.SystemImageTags;
 import com.android.sdklib.repository.AndroidSdkHandler;
 import com.android.sdklib.repository.IdDisplay;
-import com.android.sdklib.repository.targets.SystemImage;
 import com.google.common.annotations.VisibleForTesting;
 import java.nio.file.Path;
 import java.util.Locale;
@@ -309,23 +309,29 @@ public class PkgDesc implements IPkgDesc {
             break;
 
         case PKG_SYS_IMAGE:
-            sb.append("sys-img-")
-              .append(getPath())    // path==ABI for sys-img
-              .append('-')
-              .append(SystemImage.DEFAULT_TAG.equals(getTag()) ? "android" : getTag().getId())
-              .append('-')
-              .append(getAndroidVersion().getApiString());
+                sb.append("sys-img-")
+                        .append(getPath()) // path==ABI for sys-img
+                        .append('-')
+                        .append(
+                                SystemImageTags.DEFAULT_TAG.equals(getTag())
+                                        ? "android"
+                                        : getTag().getId())
+                        .append('-')
+                        .append(getAndroidVersion().getApiString());
             break;
 
         case PKG_ADDON_SYS_IMAGE:
-            sb.append("sys-img-")
-              .append(getPath())    // path==ABI for sys-img
-              .append("-addon-")
-              .append(SystemImage.DEFAULT_TAG.equals(getTag()) ? "android" : getTag().getId())
-              .append('-')
-              .append(getVendor().getId())
-              .append('-')
-              .append(getAndroidVersion().getApiString());
+                sb.append("sys-img-")
+                        .append(getPath()) // path==ABI for sys-img
+                        .append("-addon-")
+                        .append(
+                                SystemImageTags.DEFAULT_TAG.equals(getTag())
+                                        ? "android"
+                                        : getTag().getId())
+                        .append('-')
+                        .append(getVendor().getId())
+                        .append('-')
+                        .append(getAndroidVersion().getApiString());
             break;
 
         case PKG_NDK:
@@ -381,19 +387,22 @@ public class PkgDesc implements IPkgDesc {
                                                 + sanitize(getAndroidVersion().getApiString()))
                                 .resolve(
                                         sanitize(
-                                                SystemImage.DEFAULT_TAG.equals(getTag())
+                                                SystemImageTags.DEFAULT_TAG.equals(getTag())
                                                         ? "android"
                                                         : getTag().getId()))
                                 .resolve(sanitize(getPath())); // path==abi
             break;
 
         case PKG_ADDON_SYS_IMAGE:
-            String name = "addon-"
-                        + (SystemImage.DEFAULT_TAG.equals(getTag()) ? "android" : getTag().getId())
-                        + '-'
-                        + getVendor().getId()
-                        + '-'
-                        + getAndroidVersion().getApiString();
+                String name =
+                        "addon-"
+                                + (SystemImageTags.DEFAULT_TAG.equals(getTag())
+                                        ? "android"
+                                        : getTag().getId())
+                                + '-'
+                                + getVendor().getId()
+                                + '-'
+                                + getAndroidVersion().getApiString();
                 f = f.resolve(sanitize(name)).resolve(sanitize(getPath())); // path==abi
           break;
 
@@ -588,9 +597,12 @@ public class PkgDesc implements IPkgDesc {
         result = result
                 .replace("$API", hasAndroidVersion() ? getAndroidVersion().getApiString() : "");
         result = result.replace("$PATH", hasPath() ? getPath() : "");
-        result = result.replace("$TAG",  hasTag() && !getTag().equals(
-                SystemImage.DEFAULT_TAG) ?
-                                                getTag().getDisplay() : "");
+        result =
+                result.replace(
+                        "$TAG",
+                        hasTag() && !getTag().equals(SystemImageTags.DEFAULT_TAG)
+                                ? getTag().getDisplay()
+                                : "");
         result = result.replace("$VEND",  hasVendor() ? getVendor().getDisplay() : "");
         String name = "";
         if (hasName()) {

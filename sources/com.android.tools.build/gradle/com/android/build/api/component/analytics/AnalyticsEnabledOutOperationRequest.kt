@@ -52,4 +52,10 @@ open class AnalyticsEnabledOutOperationRequest<FileTypeT: FileSystemLocation> @I
         }
         delegate.toCreate(type)
     }
+
+    override fun <ArtifactTypeT : Artifact.Single<FileTypeT>> toListenTo(type: ArtifactTypeT) {
+        stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+            VariantPropertiesMethodType.SINGLE_TO_LISTEN_TO_VALUE
+        delegate.toListenTo(type)
+    }
 }

@@ -12,7 +12,16 @@ public interface RepositoryInfoOrBuilder extends
    * VC system used by the app.
    * </pre>
    *
-   * <code>.VersionControlSystem system = 1;</code>
+   * <code>optional .VersionControlSystem system = 1;</code>
+   * @return Whether the system field is set.
+   */
+  boolean hasSystem();
+  /**
+   * <pre>
+   * VC system used by the app.
+   * </pre>
+   *
+   * <code>optional .VersionControlSystem system = 1;</code>
    * @return The enum numeric value on the wire for system.
    */
   int getSystemValue();
@@ -21,7 +30,7 @@ public interface RepositoryInfoOrBuilder extends
    * VC system used by the app.
    * </pre>
    *
-   * <code>.VersionControlSystem system = 1;</code>
+   * <code>optional .VersionControlSystem system = 1;</code>
    * @return The system.
    */
   com.android.tools.idea.insights.proto.VersionControlSystem getSystem();
@@ -31,7 +40,16 @@ public interface RepositoryInfoOrBuilder extends
    * The local repository path starts with the “$PROJECT_DIR” or “$ABOVE_PROJECT_DIR” placeholder.
    * </pre>
    *
-   * <code>string local_root_path = 2;</code>
+   * <code>optional string local_root_path = 2;</code>
+   * @return Whether the localRootPath field is set.
+   */
+  boolean hasLocalRootPath();
+  /**
+   * <pre>
+   * The local repository path starts with the “$PROJECT_DIR” or “$ABOVE_PROJECT_DIR” placeholder.
+   * </pre>
+   *
+   * <code>optional string local_root_path = 2;</code>
    * @return The localRootPath.
    */
   java.lang.String getLocalRootPath();
@@ -40,7 +58,7 @@ public interface RepositoryInfoOrBuilder extends
    * The local repository path starts with the “$PROJECT_DIR” or “$ABOVE_PROJECT_DIR” placeholder.
    * </pre>
    *
-   * <code>string local_root_path = 2;</code>
+   * <code>optional string local_root_path = 2;</code>
    * @return The bytes for localRootPath.
    */
   com.google.protobuf.ByteString
@@ -51,7 +69,16 @@ public interface RepositoryInfoOrBuilder extends
    * The revision identifier, e.g. the SHA1 git commit id
    * </pre>
    *
-   * <code>string revision = 3;</code>
+   * <code>optional string revision = 3;</code>
+   * @return Whether the revision field is set.
+   */
+  boolean hasRevision();
+  /**
+   * <pre>
+   * The revision identifier, e.g. the SHA1 git commit id
+   * </pre>
+   *
+   * <code>optional string revision = 3;</code>
    * @return The revision.
    */
   java.lang.String getRevision();
@@ -60,7 +87,7 @@ public interface RepositoryInfoOrBuilder extends
    * The revision identifier, e.g. the SHA1 git commit id
    * </pre>
    *
-   * <code>string revision = 3;</code>
+   * <code>optional string revision = 3;</code>
    * @return The bytes for revision.
    */
   com.google.protobuf.ByteString
@@ -71,7 +98,16 @@ public interface RepositoryInfoOrBuilder extends
    * Status of the working tree this app was built from.
    * </pre>
    *
-   * <code>.RepositoryInfo.WorktreeStatus worktree_status = 4;</code>
+   * <code>optional .RepositoryInfo.WorktreeStatus worktree_status = 4;</code>
+   * @return Whether the worktreeStatus field is set.
+   */
+  boolean hasWorktreeStatus();
+  /**
+   * <pre>
+   * Status of the working tree this app was built from.
+   * </pre>
+   *
+   * <code>optional .RepositoryInfo.WorktreeStatus worktree_status = 4;</code>
    * @return The enum numeric value on the wire for worktreeStatus.
    */
   int getWorktreeStatusValue();
@@ -80,7 +116,7 @@ public interface RepositoryInfoOrBuilder extends
    * Status of the working tree this app was built from.
    * </pre>
    *
-   * <code>.RepositoryInfo.WorktreeStatus worktree_status = 4;</code>
+   * <code>optional .RepositoryInfo.WorktreeStatus worktree_status = 4;</code>
    * @return The worktreeStatus.
    */
   com.android.tools.idea.insights.proto.RepositoryInfo.WorktreeStatus getWorktreeStatus();

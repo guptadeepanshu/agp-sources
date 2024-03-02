@@ -19,10 +19,12 @@ package com.android.build.gradle.internal
 import com.android.SdkConstants
 import com.android.builder.errors.IssueReporter
 import com.google.common.annotations.VisibleForTesting
-import com.google.common.base.Charsets
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.ProviderFactory
+import org.gradle.api.provider.ValueSource
+import org.gradle.api.provider.ValueSourceParameters
 import java.io.File
-import java.io.FileInputStream
-import java.io.InputStreamReader
+import java.io.StringReader
 import java.util.Properties
 
 /**
@@ -50,7 +52,8 @@ data class SdkLocation(val directory: File?, val type: SdkType)
  */
 data class SdkLocationSourceSet(
     val projectRoot: File,
-    internal val localProperties: Properties = GradleLocalPropertiesFactory.get(projectRoot),
+    private val providers: ProviderFactory,
+    internal val localProperties: Properties = GradleLocalPropertiesFactory.get(projectRoot, providers),
     internal val environmentProperties: Properties = EnvironmentVariablesPropertiesFactory.get(),
     internal val systemProperties: Properties = SystemPropertiesFactory.get())
 
@@ -193,8 +196,13 @@ It is recommended to use ANDROID_HOME as other methods are deprecated
     private var cachedSdkLocation: SdkLocation? = null
 
     @JvmStatic
-    fun getSdkDirectory(projectRootDir: File, issueReporter: IssueReporter): File {
-        val sdkLocation = getSdkLocation(SdkLocationSourceSet(projectRootDir), issueReporter)
+    fun getSdkDirectory(
+        projectRootDir: File,
+        issueReporter: IssueReporter,
+        sdkLocationSourceSet: SdkLocationSourceSet
+    ): File {
+        val sdkLocation =
+            getSdkLocation(sdkLocationSourceSet, issueReporter)
         return if (sdkLocation.type == SdkType.MISSING) {
             // This error should have been reported earlier when SdkLocation was created, so we can
             // just return a dummy file here as it won't be used anyway.
@@ -255,7 +263,6 @@ It is recommended to use ANDROID_HOME as other methods are deprecated
         GradleLocalPropertiesFactory.resetCache()
         cachedSdkLocationKey = null
         cachedSdkLocation = null
-
     }
 }
 
@@ -264,14 +271,15 @@ private object GradleLocalPropertiesFactory {
     val cache = mutableMapOf<File, Properties>()
 
     @Synchronized
-    internal fun get(projectRoot: File): Properties {
+    internal fun get(projectRoot: File, providers: ProviderFactory): Properties {
         val properties = Properties()
-        val localProperties = File(projectRoot, SdkConstants.FN_LOCAL_PROPERTIES)
 
-        if (localProperties.isFile) {
-            InputStreamReader(FileInputStream(localProperties), Charsets.UTF_8).use { reader ->
-                properties.load(reader)
-            }
+        val propertiesContent =
+            providers.of(PropertiesValueSource::class.java) {
+                it.parameters.projectRoot.set(projectRoot)
+            }.get()
+        StringReader(propertiesContent).use { reader ->
+            properties.load(reader)
         }
 
         cache[projectRoot] = properties
@@ -283,6 +291,21 @@ private object GradleLocalPropertiesFactory {
         cache.clear()
     }
 
+}
+
+abstract class PropertiesValueSource : ValueSource<String, PropertiesValueSource.Params> {
+    interface Params: ValueSourceParameters {
+        val projectRoot: RegularFileProperty
+    }
+
+    override fun obtain(): String {
+        val localPropertiesFile =
+            File(parameters.projectRoot.get().asFile, SdkConstants.FN_LOCAL_PROPERTIES)
+        if (localPropertiesFile.isFile) {
+            return localPropertiesFile.readText()
+        }
+        return ""
+    }
 }
 
 private object EnvironmentVariablesPropertiesFactory {

@@ -263,99 +263,6 @@ public final class InstrumentationData {
       return new ResultsBundleEntry();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private ResultsBundleEntry(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000001;
-              key_ = bs;
-              break;
-            }
-            case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000002;
-              valueString_ = bs;
-              break;
-            }
-            case 24: {
-              bitField0_ |= 0x00000004;
-              valueInt_ = input.readSInt32();
-              break;
-            }
-            case 37: {
-              bitField0_ |= 0x00000008;
-              valueFloat_ = input.readFloat();
-              break;
-            }
-            case 41: {
-              bitField0_ |= 0x00000010;
-              valueDouble_ = input.readDouble();
-              break;
-            }
-            case 48: {
-              bitField0_ |= 0x00000020;
-              valueLong_ = input.readSInt64();
-              break;
-            }
-            case 58: {
-              com.android.commands.am.InstrumentationData.ResultsBundle.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000040) != 0)) {
-                subBuilder = valueBundle_.toBuilder();
-              }
-              valueBundle_ = input.readMessage(com.android.commands.am.InstrumentationData.ResultsBundle.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(valueBundle_);
-                valueBundle_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000040;
-              break;
-            }
-            case 66: {
-              bitField0_ |= 0x00000080;
-              valueBytes_ = input.readBytes();
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.android.commands.am.InstrumentationData.internal_static_android_am_ResultsBundleEntry_descriptor;
@@ -371,7 +278,8 @@ public final class InstrumentationData {
 
     private int bitField0_;
     public static final int KEY_FIELD_NUMBER = 1;
-    private volatile java.lang.Object key_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object key_ = "";
     /**
      * <code>optional string key = 1;</code>
      * @return Whether the key field is set.
@@ -419,7 +327,8 @@ public final class InstrumentationData {
     }
 
     public static final int VALUE_STRING_FIELD_NUMBER = 2;
-    private volatile java.lang.Object valueString_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object valueString_ = "";
     /**
      * <code>optional string value_string = 2;</code>
      * @return Whether the valueString field is set.
@@ -467,7 +376,7 @@ public final class InstrumentationData {
     }
 
     public static final int VALUE_INT_FIELD_NUMBER = 3;
-    private int valueInt_;
+    private int valueInt_ = 0;
     /**
      * <code>optional sint32 value_int = 3;</code>
      * @return Whether the valueInt field is set.
@@ -486,7 +395,7 @@ public final class InstrumentationData {
     }
 
     public static final int VALUE_FLOAT_FIELD_NUMBER = 4;
-    private float valueFloat_;
+    private float valueFloat_ = 0F;
     /**
      * <code>optional float value_float = 4;</code>
      * @return Whether the valueFloat field is set.
@@ -505,7 +414,7 @@ public final class InstrumentationData {
     }
 
     public static final int VALUE_DOUBLE_FIELD_NUMBER = 5;
-    private double valueDouble_;
+    private double valueDouble_ = 0D;
     /**
      * <code>optional double value_double = 5;</code>
      * @return Whether the valueDouble field is set.
@@ -524,7 +433,7 @@ public final class InstrumentationData {
     }
 
     public static final int VALUE_LONG_FIELD_NUMBER = 6;
-    private long valueLong_;
+    private long valueLong_ = 0L;
     /**
      * <code>optional sint64 value_long = 6;</code>
      * @return Whether the valueLong field is set.
@@ -569,7 +478,7 @@ public final class InstrumentationData {
     }
 
     public static final int VALUE_BYTES_FIELD_NUMBER = 8;
-    private com.google.protobuf.ByteString valueBytes_;
+    private com.google.protobuf.ByteString valueBytes_ = com.google.protobuf.ByteString.EMPTY;
     /**
      * <code>optional bytes value_bytes = 8;</code>
      * @return Whether the valueBytes field is set.
@@ -625,7 +534,7 @@ public final class InstrumentationData {
       if (((bitField0_ & 0x00000080) != 0)) {
         output.writeBytes(8, valueBytes_);
       }
-      unknownFields.writeTo(output);
+      getUnknownFields().writeTo(output);
     }
 
     @java.lang.Override
@@ -664,7 +573,7 @@ public final class InstrumentationData {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(8, valueBytes_);
       }
-      size += unknownFields.getSerializedSize();
+      size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
     }
@@ -721,7 +630,7 @@ public final class InstrumentationData {
         if (!getValueBytes()
             .equals(other.getValueBytes())) return false;
       }
-      if (!unknownFields.equals(other.unknownFields)) return false;
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
 
@@ -767,7 +676,7 @@ public final class InstrumentationData {
         hash = (37 * hash) + VALUE_BYTES_FIELD_NUMBER;
         hash = (53 * hash) + getValueBytes().hashCode();
       }
-      hash = (29 * hash) + unknownFields.hashCode();
+      hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
     }
@@ -901,26 +810,19 @@ public final class InstrumentationData {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         key_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
         valueString_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
         valueInt_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000004);
         valueFloat_ = 0F;
-        bitField0_ = (bitField0_ & ~0x00000008);
         valueDouble_ = 0D;
-        bitField0_ = (bitField0_ & ~0x00000010);
         valueLong_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000020);
-        if (valueBundleBuilder_ == null) {
-          valueBundle_ = null;
-        } else {
-          valueBundleBuilder_.clear();
+        valueBundle_ = null;
+        if (valueBundleBuilder_ != null) {
+          valueBundleBuilder_.dispose();
+          valueBundleBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000040);
         valueBytes_ = com.google.protobuf.ByteString.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000080);
         return this;
       }
 
@@ -947,16 +849,22 @@ public final class InstrumentationData {
       @java.lang.Override
       public com.android.commands.am.InstrumentationData.ResultsBundleEntry buildPartial() {
         com.android.commands.am.InstrumentationData.ResultsBundleEntry result = new com.android.commands.am.InstrumentationData.ResultsBundleEntry(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.android.commands.am.InstrumentationData.ResultsBundleEntry result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.key_ = key_;
           to_bitField0_ |= 0x00000001;
         }
-        result.key_ = key_;
         if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.valueString_ = valueString_;
           to_bitField0_ |= 0x00000002;
         }
-        result.valueString_ = valueString_;
         if (((from_bitField0_ & 0x00000004) != 0)) {
           result.valueInt_ = valueInt_;
           to_bitField0_ |= 0x00000004;
@@ -974,54 +882,18 @@ public final class InstrumentationData {
           to_bitField0_ |= 0x00000020;
         }
         if (((from_bitField0_ & 0x00000040) != 0)) {
-          if (valueBundleBuilder_ == null) {
-            result.valueBundle_ = valueBundle_;
-          } else {
-            result.valueBundle_ = valueBundleBuilder_.build();
-          }
+          result.valueBundle_ = valueBundleBuilder_ == null
+              ? valueBundle_
+              : valueBundleBuilder_.build();
           to_bitField0_ |= 0x00000040;
         }
         if (((from_bitField0_ & 0x00000080) != 0)) {
+          result.valueBytes_ = valueBytes_;
           to_bitField0_ |= 0x00000080;
         }
-        result.valueBytes_ = valueBytes_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.android.commands.am.InstrumentationData.ResultsBundleEntry) {
@@ -1035,13 +907,13 @@ public final class InstrumentationData {
       public Builder mergeFrom(com.android.commands.am.InstrumentationData.ResultsBundleEntry other) {
         if (other == com.android.commands.am.InstrumentationData.ResultsBundleEntry.getDefaultInstance()) return this;
         if (other.hasKey()) {
-          bitField0_ |= 0x00000001;
           key_ = other.key_;
+          bitField0_ |= 0x00000001;
           onChanged();
         }
         if (other.hasValueString()) {
-          bitField0_ |= 0x00000002;
           valueString_ = other.valueString_;
+          bitField0_ |= 0x00000002;
           onChanged();
         }
         if (other.hasValueInt()) {
@@ -1062,7 +934,7 @@ public final class InstrumentationData {
         if (other.hasValueBytes()) {
           setValueBytes(other.getValueBytes());
         }
-        this.mergeUnknownFields(other.unknownFields);
+        this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
       }
@@ -1077,17 +949,72 @@ public final class InstrumentationData {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.android.commands.am.InstrumentationData.ResultsBundleEntry parsedMessage = null;
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
         try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+                key_ = input.readBytes();
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 10
+              case 18: {
+                valueString_ = input.readBytes();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 18
+              case 24: {
+                valueInt_ = input.readSInt32();
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 24
+              case 37: {
+                valueFloat_ = input.readFloat();
+                bitField0_ |= 0x00000008;
+                break;
+              } // case 37
+              case 41: {
+                valueDouble_ = input.readDouble();
+                bitField0_ |= 0x00000010;
+                break;
+              } // case 41
+              case 48: {
+                valueLong_ = input.readSInt64();
+                bitField0_ |= 0x00000020;
+                break;
+              } // case 48
+              case 58: {
+                input.readMessage(
+                    getValueBundleFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bitField0_ |= 0x00000040;
+                break;
+              } // case 58
+              case 66: {
+                valueBytes_ = input.readBytes();
+                bitField0_ |= 0x00000080;
+                break;
+              } // case 66
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.android.commands.am.InstrumentationData.ResultsBundleEntry) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
+          onChanged();
+        } // finally
         return this;
       }
       private int bitField0_;
@@ -1142,11 +1069,9 @@ public final class InstrumentationData {
        */
       public Builder setKey(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+        if (value == null) { throw new NullPointerException(); }
         key_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -1155,8 +1080,8 @@ public final class InstrumentationData {
        * @return This builder for chaining.
        */
       public Builder clearKey() {
-        bitField0_ = (bitField0_ & ~0x00000001);
         key_ = getDefaultInstance().getKey();
+        bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
         return this;
       }
@@ -1167,11 +1092,9 @@ public final class InstrumentationData {
        */
       public Builder setKeyBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+        if (value == null) { throw new NullPointerException(); }
         key_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -1226,11 +1149,9 @@ public final class InstrumentationData {
        */
       public Builder setValueString(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+        if (value == null) { throw new NullPointerException(); }
         valueString_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1239,8 +1160,8 @@ public final class InstrumentationData {
        * @return This builder for chaining.
        */
       public Builder clearValueString() {
-        bitField0_ = (bitField0_ & ~0x00000002);
         valueString_ = getDefaultInstance().getValueString();
+        bitField0_ = (bitField0_ & ~0x00000002);
         onChanged();
         return this;
       }
@@ -1251,11 +1172,9 @@ public final class InstrumentationData {
        */
       public Builder setValueStringBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+        if (value == null) { throw new NullPointerException(); }
         valueString_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1283,8 +1202,9 @@ public final class InstrumentationData {
        * @return This builder for chaining.
        */
       public Builder setValueInt(int value) {
-        bitField0_ |= 0x00000004;
+
         valueInt_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -1322,8 +1242,9 @@ public final class InstrumentationData {
        * @return This builder for chaining.
        */
       public Builder setValueFloat(float value) {
-        bitField0_ |= 0x00000008;
+
         valueFloat_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -1361,8 +1282,9 @@ public final class InstrumentationData {
        * @return This builder for chaining.
        */
       public Builder setValueDouble(double value) {
-        bitField0_ |= 0x00000010;
+
         valueDouble_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -1400,8 +1322,9 @@ public final class InstrumentationData {
        * @return This builder for chaining.
        */
       public Builder setValueLong(long value) {
-        bitField0_ |= 0x00000020;
+
         valueLong_ = value;
+        bitField0_ |= 0x00000020;
         onChanged();
         return this;
       }
@@ -1446,11 +1369,11 @@ public final class InstrumentationData {
             throw new NullPointerException();
           }
           valueBundle_ = value;
-          onChanged();
         } else {
           valueBundleBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000040;
+        onChanged();
         return this;
       }
       /**
@@ -1460,11 +1383,11 @@ public final class InstrumentationData {
           com.android.commands.am.InstrumentationData.ResultsBundle.Builder builderForValue) {
         if (valueBundleBuilder_ == null) {
           valueBundle_ = builderForValue.build();
-          onChanged();
         } else {
           valueBundleBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000040;
+        onChanged();
         return this;
       }
       /**
@@ -1473,31 +1396,30 @@ public final class InstrumentationData {
       public Builder mergeValueBundle(com.android.commands.am.InstrumentationData.ResultsBundle value) {
         if (valueBundleBuilder_ == null) {
           if (((bitField0_ & 0x00000040) != 0) &&
-              valueBundle_ != null &&
-              valueBundle_ != com.android.commands.am.InstrumentationData.ResultsBundle.getDefaultInstance()) {
-            valueBundle_ =
-              com.android.commands.am.InstrumentationData.ResultsBundle.newBuilder(valueBundle_).mergeFrom(value).buildPartial();
+            valueBundle_ != null &&
+            valueBundle_ != com.android.commands.am.InstrumentationData.ResultsBundle.getDefaultInstance()) {
+            getValueBundleBuilder().mergeFrom(value);
           } else {
             valueBundle_ = value;
           }
-          onChanged();
         } else {
           valueBundleBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000040;
+        onChanged();
         return this;
       }
       /**
        * <code>optional .android.am.ResultsBundle value_bundle = 7;</code>
        */
       public Builder clearValueBundle() {
-        if (valueBundleBuilder_ == null) {
-          valueBundle_ = null;
-          onChanged();
-        } else {
-          valueBundleBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000040);
+        valueBundle_ = null;
+        if (valueBundleBuilder_ != null) {
+          valueBundleBuilder_.dispose();
+          valueBundleBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -1559,11 +1481,9 @@ public final class InstrumentationData {
        * @return This builder for chaining.
        */
       public Builder setValueBytes(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000080;
+        if (value == null) { throw new NullPointerException(); }
         valueBytes_ = value;
+        bitField0_ |= 0x00000080;
         onChanged();
         return this;
       }
@@ -1610,7 +1530,18 @@ public final class InstrumentationData {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ResultsBundleEntry(input, extensionRegistry);
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
       }
     };
 
@@ -1681,61 +1612,6 @@ public final class InstrumentationData {
       return new ResultsBundle();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private ResultsBundle(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-                entries_ = new java.util.ArrayList<com.android.commands.am.InstrumentationData.ResultsBundleEntry>();
-                mutable_bitField0_ |= 0x00000001;
-              }
-              entries_.add(
-                  input.readMessage(com.android.commands.am.InstrumentationData.ResultsBundleEntry.PARSER, extensionRegistry));
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        if (((mutable_bitField0_ & 0x00000001) != 0)) {
-          entries_ = java.util.Collections.unmodifiableList(entries_);
-        }
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.android.commands.am.InstrumentationData.internal_static_android_am_ResultsBundle_descriptor;
@@ -1750,6 +1626,7 @@ public final class InstrumentationData {
     }
 
     public static final int ENTRIES_FIELD_NUMBER = 1;
+    @SuppressWarnings("serial")
     private java.util.List<com.android.commands.am.InstrumentationData.ResultsBundleEntry> entries_;
     /**
      * <code>repeated .android.am.ResultsBundleEntry entries = 1;</code>
@@ -1806,7 +1683,7 @@ public final class InstrumentationData {
       for (int i = 0; i < entries_.size(); i++) {
         output.writeMessage(1, entries_.get(i));
       }
-      unknownFields.writeTo(output);
+      getUnknownFields().writeTo(output);
     }
 
     @java.lang.Override
@@ -1819,7 +1696,7 @@ public final class InstrumentationData {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, entries_.get(i));
       }
-      size += unknownFields.getSerializedSize();
+      size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
     }
@@ -1836,7 +1713,7 @@ public final class InstrumentationData {
 
       if (!getEntriesList()
           .equals(other.getEntriesList())) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
 
@@ -1851,7 +1728,7 @@ public final class InstrumentationData {
         hash = (37 * hash) + ENTRIES_FIELD_NUMBER;
         hash = (53 * hash) + getEntriesList().hashCode();
       }
-      hash = (29 * hash) + unknownFields.hashCode();
+      hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
     }
@@ -1968,29 +1845,25 @@ public final class InstrumentationData {
 
       // Construct using com.android.commands.am.InstrumentationData.ResultsBundle.newBuilder()
       private Builder() {
-        maybeForceBuilderInitialization();
+
       }
 
       private Builder(
           com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-          getEntriesFieldBuilder();
-        }
+
       }
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         if (entriesBuilder_ == null) {
           entries_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
         } else {
+          entries_ = null;
           entriesBuilder_.clear();
         }
+        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
 
@@ -2017,7 +1890,13 @@ public final class InstrumentationData {
       @java.lang.Override
       public com.android.commands.am.InstrumentationData.ResultsBundle buildPartial() {
         com.android.commands.am.InstrumentationData.ResultsBundle result = new com.android.commands.am.InstrumentationData.ResultsBundle(this);
-        int from_bitField0_ = bitField0_;
+        buildPartialRepeatedFields(result);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartialRepeatedFields(com.android.commands.am.InstrumentationData.ResultsBundle result) {
         if (entriesBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0)) {
             entries_ = java.util.Collections.unmodifiableList(entries_);
@@ -2027,42 +1906,12 @@ public final class InstrumentationData {
         } else {
           result.entries_ = entriesBuilder_.build();
         }
-        onBuilt();
-        return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.android.commands.am.InstrumentationData.ResultsBundle result) {
+        int from_bitField0_ = bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.android.commands.am.InstrumentationData.ResultsBundle) {
@@ -2101,7 +1950,7 @@ public final class InstrumentationData {
             }
           }
         }
-        this.mergeUnknownFields(other.unknownFields);
+        this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
       }
@@ -2116,17 +1965,43 @@ public final class InstrumentationData {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.android.commands.am.InstrumentationData.ResultsBundle parsedMessage = null;
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
         try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+                com.android.commands.am.InstrumentationData.ResultsBundleEntry m =
+                    input.readMessage(
+                        com.android.commands.am.InstrumentationData.ResultsBundleEntry.PARSER,
+                        extensionRegistry);
+                if (entriesBuilder_ == null) {
+                  ensureEntriesIsMutable();
+                  entries_.add(m);
+                } else {
+                  entriesBuilder_.addMessage(m);
+                }
+                break;
+              } // case 10
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.android.commands.am.InstrumentationData.ResultsBundle) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
+          onChanged();
+        } // finally
         return this;
       }
       private int bitField0_;
@@ -2403,7 +2278,18 @@ public final class InstrumentationData {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ResultsBundle(input, extensionRegistry);
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
       }
     };
 
@@ -2493,73 +2379,6 @@ public final class InstrumentationData {
       return new TestStatus();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private TestStatus(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 24: {
-              bitField0_ |= 0x00000001;
-              resultCode_ = input.readSInt32();
-              break;
-            }
-            case 34: {
-              com.android.commands.am.InstrumentationData.ResultsBundle.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000002) != 0)) {
-                subBuilder = results_.toBuilder();
-              }
-              results_ = input.readMessage(com.android.commands.am.InstrumentationData.ResultsBundle.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(results_);
-                results_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000002;
-              break;
-            }
-            case 42: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000004;
-              logcat_ = bs;
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.android.commands.am.InstrumentationData.internal_static_android_am_TestStatus_descriptor;
@@ -2575,7 +2394,7 @@ public final class InstrumentationData {
 
     private int bitField0_;
     public static final int RESULT_CODE_FIELD_NUMBER = 3;
-    private int resultCode_;
+    private int resultCode_ = 0;
     /**
      * <code>optional sint32 result_code = 3;</code>
      * @return Whether the resultCode field is set.
@@ -2620,7 +2439,8 @@ public final class InstrumentationData {
     }
 
     public static final int LOGCAT_FIELD_NUMBER = 5;
-    private volatile java.lang.Object logcat_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object logcat_ = "";
     /**
      * <code>optional string logcat = 5;</code>
      * @return Whether the logcat field is set.
@@ -2690,7 +2510,7 @@ public final class InstrumentationData {
       if (((bitField0_ & 0x00000004) != 0)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 5, logcat_);
       }
-      unknownFields.writeTo(output);
+      getUnknownFields().writeTo(output);
     }
 
     @java.lang.Override
@@ -2710,7 +2530,7 @@ public final class InstrumentationData {
       if (((bitField0_ & 0x00000004) != 0)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, logcat_);
       }
-      size += unknownFields.getSerializedSize();
+      size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
     }
@@ -2740,7 +2560,7 @@ public final class InstrumentationData {
         if (!getLogcat()
             .equals(other.getLogcat())) return false;
       }
-      if (!unknownFields.equals(other.unknownFields)) return false;
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
 
@@ -2763,7 +2583,7 @@ public final class InstrumentationData {
         hash = (37 * hash) + LOGCAT_FIELD_NUMBER;
         hash = (53 * hash) + getLogcat().hashCode();
       }
-      hash = (29 * hash) + unknownFields.hashCode();
+      hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
     }
@@ -2897,16 +2717,14 @@ public final class InstrumentationData {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         resultCode_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        if (resultsBuilder_ == null) {
-          results_ = null;
-        } else {
-          resultsBuilder_.clear();
+        results_ = null;
+        if (resultsBuilder_ != null) {
+          resultsBuilder_.dispose();
+          resultsBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000002);
         logcat_ = "";
-        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -2933,6 +2751,12 @@ public final class InstrumentationData {
       @java.lang.Override
       public com.android.commands.am.InstrumentationData.TestStatus buildPartial() {
         com.android.commands.am.InstrumentationData.TestStatus result = new com.android.commands.am.InstrumentationData.TestStatus(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.android.commands.am.InstrumentationData.TestStatus result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -2940,54 +2764,18 @@ public final class InstrumentationData {
           to_bitField0_ |= 0x00000001;
         }
         if (((from_bitField0_ & 0x00000002) != 0)) {
-          if (resultsBuilder_ == null) {
-            result.results_ = results_;
-          } else {
-            result.results_ = resultsBuilder_.build();
-          }
+          result.results_ = resultsBuilder_ == null
+              ? results_
+              : resultsBuilder_.build();
           to_bitField0_ |= 0x00000002;
         }
         if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.logcat_ = logcat_;
           to_bitField0_ |= 0x00000004;
         }
-        result.logcat_ = logcat_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.android.commands.am.InstrumentationData.TestStatus) {
@@ -3007,11 +2795,11 @@ public final class InstrumentationData {
           mergeResults(other.getResults());
         }
         if (other.hasLogcat()) {
-          bitField0_ |= 0x00000004;
           logcat_ = other.logcat_;
+          bitField0_ |= 0x00000004;
           onChanged();
         }
-        this.mergeUnknownFields(other.unknownFields);
+        this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
       }
@@ -3026,17 +2814,47 @@ public final class InstrumentationData {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.android.commands.am.InstrumentationData.TestStatus parsedMessage = null;
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
         try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 24: {
+                resultCode_ = input.readSInt32();
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 24
+              case 34: {
+                input.readMessage(
+                    getResultsFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 34
+              case 42: {
+                logcat_ = input.readBytes();
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 42
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.android.commands.am.InstrumentationData.TestStatus) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
+          onChanged();
+        } // finally
         return this;
       }
       private int bitField0_;
@@ -3064,8 +2882,9 @@ public final class InstrumentationData {
        * @return This builder for chaining.
        */
       public Builder setResultCode(int value) {
-        bitField0_ |= 0x00000001;
+
         resultCode_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -3110,11 +2929,11 @@ public final class InstrumentationData {
             throw new NullPointerException();
           }
           results_ = value;
-          onChanged();
         } else {
           resultsBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -3124,11 +2943,11 @@ public final class InstrumentationData {
           com.android.commands.am.InstrumentationData.ResultsBundle.Builder builderForValue) {
         if (resultsBuilder_ == null) {
           results_ = builderForValue.build();
-          onChanged();
         } else {
           resultsBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -3137,31 +2956,30 @@ public final class InstrumentationData {
       public Builder mergeResults(com.android.commands.am.InstrumentationData.ResultsBundle value) {
         if (resultsBuilder_ == null) {
           if (((bitField0_ & 0x00000002) != 0) &&
-              results_ != null &&
-              results_ != com.android.commands.am.InstrumentationData.ResultsBundle.getDefaultInstance()) {
-            results_ =
-              com.android.commands.am.InstrumentationData.ResultsBundle.newBuilder(results_).mergeFrom(value).buildPartial();
+            results_ != null &&
+            results_ != com.android.commands.am.InstrumentationData.ResultsBundle.getDefaultInstance()) {
+            getResultsBuilder().mergeFrom(value);
           } else {
             results_ = value;
           }
-          onChanged();
         } else {
           resultsBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
        * <code>optional .android.am.ResultsBundle results = 4;</code>
        */
       public Builder clearResults() {
-        if (resultsBuilder_ == null) {
-          results_ = null;
-          onChanged();
-        } else {
-          resultsBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000002);
+        results_ = null;
+        if (resultsBuilder_ != null) {
+          resultsBuilder_.dispose();
+          resultsBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -3250,11 +3068,9 @@ public final class InstrumentationData {
        */
       public Builder setLogcat(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+        if (value == null) { throw new NullPointerException(); }
         logcat_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -3263,8 +3079,8 @@ public final class InstrumentationData {
        * @return This builder for chaining.
        */
       public Builder clearLogcat() {
-        bitField0_ = (bitField0_ & ~0x00000004);
         logcat_ = getDefaultInstance().getLogcat();
+        bitField0_ = (bitField0_ & ~0x00000004);
         onChanged();
         return this;
       }
@@ -3275,11 +3091,9 @@ public final class InstrumentationData {
        */
       public Builder setLogcatBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+        if (value == null) { throw new NullPointerException(); }
         logcat_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -3316,7 +3130,18 @@ public final class InstrumentationData {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new TestStatus(input, extensionRegistry);
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
       }
     };
 
@@ -3418,85 +3243,6 @@ public final class InstrumentationData {
       return new SessionStatus();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private SessionStatus(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 8: {
-              int rawValue = input.readEnum();
-                @SuppressWarnings("deprecation")
-              com.android.commands.am.InstrumentationData.SessionStatusCode value = com.android.commands.am.InstrumentationData.SessionStatusCode.valueOf(rawValue);
-              if (value == null) {
-                unknownFields.mergeVarintField(1, rawValue);
-              } else {
-                bitField0_ |= 0x00000001;
-                statusCode_ = rawValue;
-              }
-              break;
-            }
-            case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000002;
-              errorText_ = bs;
-              break;
-            }
-            case 24: {
-              bitField0_ |= 0x00000004;
-              resultCode_ = input.readSInt32();
-              break;
-            }
-            case 34: {
-              com.android.commands.am.InstrumentationData.ResultsBundle.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000008) != 0)) {
-                subBuilder = results_.toBuilder();
-              }
-              results_ = input.readMessage(com.android.commands.am.InstrumentationData.ResultsBundle.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(results_);
-                results_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000008;
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.android.commands.am.InstrumentationData.internal_static_android_am_SessionStatus_descriptor;
@@ -3512,7 +3258,7 @@ public final class InstrumentationData {
 
     private int bitField0_;
     public static final int STATUS_CODE_FIELD_NUMBER = 1;
-    private int statusCode_;
+    private int statusCode_ = 0;
     /**
      * <code>optional .android.am.SessionStatusCode status_code = 1;</code>
      * @return Whether the statusCode field is set.
@@ -3525,13 +3271,13 @@ public final class InstrumentationData {
      * @return The statusCode.
      */
     @java.lang.Override public com.android.commands.am.InstrumentationData.SessionStatusCode getStatusCode() {
-      @SuppressWarnings("deprecation")
-      com.android.commands.am.InstrumentationData.SessionStatusCode result = com.android.commands.am.InstrumentationData.SessionStatusCode.valueOf(statusCode_);
+      com.android.commands.am.InstrumentationData.SessionStatusCode result = com.android.commands.am.InstrumentationData.SessionStatusCode.forNumber(statusCode_);
       return result == null ? com.android.commands.am.InstrumentationData.SessionStatusCode.SESSION_FINISHED : result;
     }
 
     public static final int ERROR_TEXT_FIELD_NUMBER = 2;
-    private volatile java.lang.Object errorText_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object errorText_ = "";
     /**
      * <code>optional string error_text = 2;</code>
      * @return Whether the errorText field is set.
@@ -3579,7 +3325,7 @@ public final class InstrumentationData {
     }
 
     public static final int RESULT_CODE_FIELD_NUMBER = 3;
-    private int resultCode_;
+    private int resultCode_ = 0;
     /**
      * <code>optional sint32 result_code = 3;</code>
      * @return Whether the resultCode field is set.
@@ -3649,7 +3395,7 @@ public final class InstrumentationData {
       if (((bitField0_ & 0x00000008) != 0)) {
         output.writeMessage(4, getResults());
       }
-      unknownFields.writeTo(output);
+      getUnknownFields().writeTo(output);
     }
 
     @java.lang.Override
@@ -3673,7 +3419,7 @@ public final class InstrumentationData {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(4, getResults());
       }
-      size += unknownFields.getSerializedSize();
+      size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
     }
@@ -3707,7 +3453,7 @@ public final class InstrumentationData {
         if (!getResults()
             .equals(other.getResults())) return false;
       }
-      if (!unknownFields.equals(other.unknownFields)) return false;
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
 
@@ -3734,7 +3480,7 @@ public final class InstrumentationData {
         hash = (37 * hash) + RESULTS_FIELD_NUMBER;
         hash = (53 * hash) + getResults().hashCode();
       }
-      hash = (29 * hash) + unknownFields.hashCode();
+      hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
     }
@@ -3868,18 +3614,15 @@ public final class InstrumentationData {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         statusCode_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         errorText_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
         resultCode_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000004);
-        if (resultsBuilder_ == null) {
-          results_ = null;
-        } else {
-          resultsBuilder_.clear();
+        results_ = null;
+        if (resultsBuilder_ != null) {
+          resultsBuilder_.dispose();
+          resultsBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -3906,65 +3649,35 @@ public final class InstrumentationData {
       @java.lang.Override
       public com.android.commands.am.InstrumentationData.SessionStatus buildPartial() {
         com.android.commands.am.InstrumentationData.SessionStatus result = new com.android.commands.am.InstrumentationData.SessionStatus(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.android.commands.am.InstrumentationData.SessionStatus result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.statusCode_ = statusCode_;
           to_bitField0_ |= 0x00000001;
         }
-        result.statusCode_ = statusCode_;
         if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.errorText_ = errorText_;
           to_bitField0_ |= 0x00000002;
         }
-        result.errorText_ = errorText_;
         if (((from_bitField0_ & 0x00000004) != 0)) {
           result.resultCode_ = resultCode_;
           to_bitField0_ |= 0x00000004;
         }
         if (((from_bitField0_ & 0x00000008) != 0)) {
-          if (resultsBuilder_ == null) {
-            result.results_ = results_;
-          } else {
-            result.results_ = resultsBuilder_.build();
-          }
+          result.results_ = resultsBuilder_ == null
+              ? results_
+              : resultsBuilder_.build();
           to_bitField0_ |= 0x00000008;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.android.commands.am.InstrumentationData.SessionStatus) {
@@ -3981,8 +3694,8 @@ public final class InstrumentationData {
           setStatusCode(other.getStatusCode());
         }
         if (other.hasErrorText()) {
-          bitField0_ |= 0x00000002;
           errorText_ = other.errorText_;
+          bitField0_ |= 0x00000002;
           onChanged();
         }
         if (other.hasResultCode()) {
@@ -3991,7 +3704,7 @@ public final class InstrumentationData {
         if (other.hasResults()) {
           mergeResults(other.getResults());
         }
-        this.mergeUnknownFields(other.unknownFields);
+        this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
       }
@@ -4006,17 +3719,59 @@ public final class InstrumentationData {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.android.commands.am.InstrumentationData.SessionStatus parsedMessage = null;
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
         try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 8: {
+                int tmpRaw = input.readEnum();
+                com.android.commands.am.InstrumentationData.SessionStatusCode tmpValue =
+                    com.android.commands.am.InstrumentationData.SessionStatusCode.forNumber(tmpRaw);
+                if (tmpValue == null) {
+                  mergeUnknownVarintField(1, tmpRaw);
+                } else {
+                  statusCode_ = tmpRaw;
+                  bitField0_ |= 0x00000001;
+                }
+                break;
+              } // case 8
+              case 18: {
+                errorText_ = input.readBytes();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 18
+              case 24: {
+                resultCode_ = input.readSInt32();
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 24
+              case 34: {
+                input.readMessage(
+                    getResultsFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bitField0_ |= 0x00000008;
+                break;
+              } // case 34
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.android.commands.am.InstrumentationData.SessionStatus) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
+          onChanged();
+        } // finally
         return this;
       }
       private int bitField0_;
@@ -4035,8 +3790,7 @@ public final class InstrumentationData {
        */
       @java.lang.Override
       public com.android.commands.am.InstrumentationData.SessionStatusCode getStatusCode() {
-        @SuppressWarnings("deprecation")
-        com.android.commands.am.InstrumentationData.SessionStatusCode result = com.android.commands.am.InstrumentationData.SessionStatusCode.valueOf(statusCode_);
+        com.android.commands.am.InstrumentationData.SessionStatusCode result = com.android.commands.am.InstrumentationData.SessionStatusCode.forNumber(statusCode_);
         return result == null ? com.android.commands.am.InstrumentationData.SessionStatusCode.SESSION_FINISHED : result;
       }
       /**
@@ -4114,11 +3868,9 @@ public final class InstrumentationData {
        */
       public Builder setErrorText(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+        if (value == null) { throw new NullPointerException(); }
         errorText_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -4127,8 +3879,8 @@ public final class InstrumentationData {
        * @return This builder for chaining.
        */
       public Builder clearErrorText() {
-        bitField0_ = (bitField0_ & ~0x00000002);
         errorText_ = getDefaultInstance().getErrorText();
+        bitField0_ = (bitField0_ & ~0x00000002);
         onChanged();
         return this;
       }
@@ -4139,11 +3891,9 @@ public final class InstrumentationData {
        */
       public Builder setErrorTextBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+        if (value == null) { throw new NullPointerException(); }
         errorText_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -4171,8 +3921,9 @@ public final class InstrumentationData {
        * @return This builder for chaining.
        */
       public Builder setResultCode(int value) {
-        bitField0_ |= 0x00000004;
+
         resultCode_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -4217,11 +3968,11 @@ public final class InstrumentationData {
             throw new NullPointerException();
           }
           results_ = value;
-          onChanged();
         } else {
           resultsBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000008;
+        onChanged();
         return this;
       }
       /**
@@ -4231,11 +3982,11 @@ public final class InstrumentationData {
           com.android.commands.am.InstrumentationData.ResultsBundle.Builder builderForValue) {
         if (resultsBuilder_ == null) {
           results_ = builderForValue.build();
-          onChanged();
         } else {
           resultsBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000008;
+        onChanged();
         return this;
       }
       /**
@@ -4244,31 +3995,30 @@ public final class InstrumentationData {
       public Builder mergeResults(com.android.commands.am.InstrumentationData.ResultsBundle value) {
         if (resultsBuilder_ == null) {
           if (((bitField0_ & 0x00000008) != 0) &&
-              results_ != null &&
-              results_ != com.android.commands.am.InstrumentationData.ResultsBundle.getDefaultInstance()) {
-            results_ =
-              com.android.commands.am.InstrumentationData.ResultsBundle.newBuilder(results_).mergeFrom(value).buildPartial();
+            results_ != null &&
+            results_ != com.android.commands.am.InstrumentationData.ResultsBundle.getDefaultInstance()) {
+            getResultsBuilder().mergeFrom(value);
           } else {
             results_ = value;
           }
-          onChanged();
         } else {
           resultsBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000008;
+        onChanged();
         return this;
       }
       /**
        * <code>optional .android.am.ResultsBundle results = 4;</code>
        */
       public Builder clearResults() {
-        if (resultsBuilder_ == null) {
-          results_ = null;
-          onChanged();
-        } else {
-          resultsBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000008);
+        results_ = null;
+        if (resultsBuilder_ != null) {
+          resultsBuilder_.dispose();
+          resultsBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -4339,7 +4089,18 @@ public final class InstrumentationData {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new SessionStatus(input, extensionRegistry);
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
       }
     };
 
@@ -4425,74 +4186,6 @@ public final class InstrumentationData {
       return new Session();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private Session(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-                testStatus_ = new java.util.ArrayList<com.android.commands.am.InstrumentationData.TestStatus>();
-                mutable_bitField0_ |= 0x00000001;
-              }
-              testStatus_.add(
-                  input.readMessage(com.android.commands.am.InstrumentationData.TestStatus.PARSER, extensionRegistry));
-              break;
-            }
-            case 18: {
-              com.android.commands.am.InstrumentationData.SessionStatus.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000001) != 0)) {
-                subBuilder = sessionStatus_.toBuilder();
-              }
-              sessionStatus_ = input.readMessage(com.android.commands.am.InstrumentationData.SessionStatus.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(sessionStatus_);
-                sessionStatus_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000001;
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        if (((mutable_bitField0_ & 0x00000001) != 0)) {
-          testStatus_ = java.util.Collections.unmodifiableList(testStatus_);
-        }
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.android.commands.am.InstrumentationData.internal_static_android_am_Session_descriptor;
@@ -4508,6 +4201,7 @@ public final class InstrumentationData {
 
     private int bitField0_;
     public static final int TEST_STATUS_FIELD_NUMBER = 1;
+    @SuppressWarnings("serial")
     private java.util.List<com.android.commands.am.InstrumentationData.TestStatus> testStatus_;
     /**
      * <code>repeated .android.am.TestStatus test_status = 1;</code>
@@ -4593,7 +4287,7 @@ public final class InstrumentationData {
       if (((bitField0_ & 0x00000001) != 0)) {
         output.writeMessage(2, getSessionStatus());
       }
-      unknownFields.writeTo(output);
+      getUnknownFields().writeTo(output);
     }
 
     @java.lang.Override
@@ -4610,7 +4304,7 @@ public final class InstrumentationData {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, getSessionStatus());
       }
-      size += unknownFields.getSerializedSize();
+      size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
     }
@@ -4632,7 +4326,7 @@ public final class InstrumentationData {
         if (!getSessionStatus()
             .equals(other.getSessionStatus())) return false;
       }
-      if (!unknownFields.equals(other.unknownFields)) return false;
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
 
@@ -4651,7 +4345,7 @@ public final class InstrumentationData {
         hash = (37 * hash) + SESSION_STATUS_FIELD_NUMBER;
         hash = (53 * hash) + getSessionStatus().hashCode();
       }
-      hash = (29 * hash) + unknownFields.hashCode();
+      hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
     }
@@ -4786,18 +4480,19 @@ public final class InstrumentationData {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         if (testStatusBuilder_ == null) {
           testStatus_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
         } else {
+          testStatus_ = null;
           testStatusBuilder_.clear();
         }
-        if (sessionStatusBuilder_ == null) {
-          sessionStatus_ = null;
-        } else {
-          sessionStatusBuilder_.clear();
+        bitField0_ = (bitField0_ & ~0x00000001);
+        sessionStatus_ = null;
+        if (sessionStatusBuilder_ != null) {
+          sessionStatusBuilder_.dispose();
+          sessionStatusBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -4824,8 +4519,13 @@ public final class InstrumentationData {
       @java.lang.Override
       public com.android.commands.am.InstrumentationData.Session buildPartial() {
         com.android.commands.am.InstrumentationData.Session result = new com.android.commands.am.InstrumentationData.Session(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
+        buildPartialRepeatedFields(result);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartialRepeatedFields(com.android.commands.am.InstrumentationData.Session result) {
         if (testStatusBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0)) {
             testStatus_ = java.util.Collections.unmodifiableList(testStatus_);
@@ -4835,51 +4535,20 @@ public final class InstrumentationData {
         } else {
           result.testStatus_ = testStatusBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          if (sessionStatusBuilder_ == null) {
-            result.sessionStatus_ = sessionStatus_;
-          } else {
-            result.sessionStatus_ = sessionStatusBuilder_.build();
-          }
-          to_bitField0_ |= 0x00000001;
-        }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.android.commands.am.InstrumentationData.Session result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.sessionStatus_ = sessionStatusBuilder_ == null
+              ? sessionStatus_
+              : sessionStatusBuilder_.build();
+          to_bitField0_ |= 0x00000001;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.android.commands.am.InstrumentationData.Session) {
@@ -4921,7 +4590,7 @@ public final class InstrumentationData {
         if (other.hasSessionStatus()) {
           mergeSessionStatus(other.getSessionStatus());
         }
-        this.mergeUnknownFields(other.unknownFields);
+        this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
       }
@@ -4936,17 +4605,50 @@ public final class InstrumentationData {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.android.commands.am.InstrumentationData.Session parsedMessage = null;
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
         try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+                com.android.commands.am.InstrumentationData.TestStatus m =
+                    input.readMessage(
+                        com.android.commands.am.InstrumentationData.TestStatus.PARSER,
+                        extensionRegistry);
+                if (testStatusBuilder_ == null) {
+                  ensureTestStatusIsMutable();
+                  testStatus_.add(m);
+                } else {
+                  testStatusBuilder_.addMessage(m);
+                }
+                break;
+              } // case 10
+              case 18: {
+                input.readMessage(
+                    getSessionStatusFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 18
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.android.commands.am.InstrumentationData.Session) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
+          onChanged();
+        } // finally
         return this;
       }
       private int bitField0_;
@@ -5221,11 +4923,11 @@ public final class InstrumentationData {
             throw new NullPointerException();
           }
           sessionStatus_ = value;
-          onChanged();
         } else {
           sessionStatusBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -5235,11 +4937,11 @@ public final class InstrumentationData {
           com.android.commands.am.InstrumentationData.SessionStatus.Builder builderForValue) {
         if (sessionStatusBuilder_ == null) {
           sessionStatus_ = builderForValue.build();
-          onChanged();
         } else {
           sessionStatusBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -5248,31 +4950,30 @@ public final class InstrumentationData {
       public Builder mergeSessionStatus(com.android.commands.am.InstrumentationData.SessionStatus value) {
         if (sessionStatusBuilder_ == null) {
           if (((bitField0_ & 0x00000002) != 0) &&
-              sessionStatus_ != null &&
-              sessionStatus_ != com.android.commands.am.InstrumentationData.SessionStatus.getDefaultInstance()) {
-            sessionStatus_ =
-              com.android.commands.am.InstrumentationData.SessionStatus.newBuilder(sessionStatus_).mergeFrom(value).buildPartial();
+            sessionStatus_ != null &&
+            sessionStatus_ != com.android.commands.am.InstrumentationData.SessionStatus.getDefaultInstance()) {
+            getSessionStatusBuilder().mergeFrom(value);
           } else {
             sessionStatus_ = value;
           }
-          onChanged();
         } else {
           sessionStatusBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
        * <code>optional .android.am.SessionStatus session_status = 2;</code>
        */
       public Builder clearSessionStatus() {
-        if (sessionStatusBuilder_ == null) {
-          sessionStatus_ = null;
-          onChanged();
-        } else {
-          sessionStatusBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000002);
+        sessionStatus_ = null;
+        if (sessionStatusBuilder_ != null) {
+          sessionStatusBuilder_.dispose();
+          sessionStatusBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -5343,7 +5044,18 @@ public final class InstrumentationData {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new Session(input, extensionRegistry);
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
       }
     };
 

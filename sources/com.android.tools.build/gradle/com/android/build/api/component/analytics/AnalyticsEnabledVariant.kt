@@ -32,7 +32,6 @@ import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
-import org.gradle.api.provider.Provider
 import java.io.Serializable
 
 abstract class AnalyticsEnabledVariant (
@@ -68,7 +67,7 @@ abstract class AnalyticsEnabledVariant (
             return delegate.manifestPlaceholders
         }
 
-    private val userVisiblePackaging: Packaging by lazy {
+    private val userVisiblePackaging: Packaging by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
         objectFactory.newInstance(
             AnalyticsEnabledPackaging::class.java,
             delegate.packaging,
@@ -83,7 +82,7 @@ abstract class AnalyticsEnabledVariant (
             return userVisiblePackaging
         }
 
-    private val userVisibleExternalNativeBuild: ExternalNativeBuild? by lazy {
+    private val userVisibleExternalNativeBuild: ExternalNativeBuild? by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
         delegate.externalNativeBuild?.let {
             if (it is ExternalNdkBuildImpl) {
                 objectFactory.newInstance(
@@ -111,7 +110,7 @@ abstract class AnalyticsEnabledVariant (
             return userVisibleExternalNativeBuild
         }
 
-    private val userVisibleUnitTest: AnalyticsEnabledUnitTest? by lazy {
+    private val userVisibleUnitTest: AnalyticsEnabledUnitTest? by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
         delegate.unitTest?.let {
             objectFactory.newInstance(
                 AnalyticsEnabledUnitTest::class.java,

@@ -18,9 +18,7 @@ package com.android.build.api.variant.impl
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.component.analytics.AnalyticsEnabledTestVariant
-import com.android.build.api.component.impl.features.DexingCreationConfigImpl
-import com.android.build.api.component.impl.getAndroidResources
-import com.android.build.api.variant.AndroidResources
+import com.android.build.api.component.impl.features.DexingImpl
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.ApkPackaging
 import com.android.build.api.variant.Component
@@ -41,6 +39,7 @@ import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
+import org.gradle.api.file.Directory
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
@@ -81,8 +80,8 @@ open class TestVariantImpl @Inject constructor(
     override val applicationId: Property<String> =
         internalServices.propertyOf(String::class.java, dslInfo.applicationId)
 
-    override val androidResources: AndroidResources by lazy {
-        getAndroidResources()
+    override val androidResources: AndroidResourcesImpl by lazy {
+        getAndroidResources(dslInfo.androidResourcesDsl.androidResources)
     }
 
     // TODO: We should keep this (for the manifest) but just fix the test runner to get the
@@ -100,7 +99,7 @@ open class TestVariantImpl @Inject constructor(
     override val instrumentationRunner: Property<String> by lazy {
         internalServices.propertyOf(
             String::class.java,
-            dslInfo.getInstrumentationRunner(dexingCreationConfig.dexingType)
+            dslInfo.getInstrumentationRunner(dexing.dexingType)
         )
     }
 
@@ -124,18 +123,33 @@ open class TestVariantImpl @Inject constructor(
     override val renderscript: Renderscript? by lazy {
         renderscriptCreationConfig?.renderscript
     }
+    override val testedApks: Provider<Directory> by lazy {
+        val projectDirectory = services.projectInfo.projectDirectory
+        variantDependencies.getArtifactFileCollection(
+            AndroidArtifacts.ConsumedConfigType.PROVIDED_CLASSPATH,
+            AndroidArtifacts.ArtifactScope.ALL,
+            AndroidArtifacts.ArtifactType.APK
+        ).elements.map {
+            projectDirectory.dir(
+                it.single().asFile.absolutePath
+            )
+        }
+    }
+
+    override val dexing: DexingCreationConfig by lazy(LazyThreadSafetyMode.NONE) {
+        DexingImpl(
+            this,
+            variantBuilder._enableMultiDex,
+            dslInfo.dexingDslInfo.multiDexKeepProguard,
+            dslInfo.dexingDslInfo.multiDexKeepFile,
+            internalServices,
+        )
+    }
 
     // ---------------------------------------------------------------------------------------------
     // INTERNAL API
     // ---------------------------------------------------------------------------------------------
 
-    override val dexingCreationConfig: DexingCreationConfig by lazy(LazyThreadSafetyMode.NONE) {
-        DexingCreationConfigImpl(
-            this,
-            dslInfo.dexingDslInfo,
-            internalServices
-        )
-    }
     override val targetSdk: AndroidVersion by lazy(LazyThreadSafetyMode.NONE) {
         global.androidTestOptions.targetSdkVersion ?: variantBuilder.targetSdkVersion
     }
@@ -168,10 +182,10 @@ open class TestVariantImpl @Inject constructor(
     override val shouldPackageProfilerDependencies: Boolean = false
     override val advancedProfilingTransforms: List<String> = emptyList()
 
-    override val signingConfigImpl: SigningConfigImpl? by lazy {
-        dslInfo.signingConfig?.let {
+    override val signingConfig: SigningConfigImpl? by lazy {
+        dslInfo.signingConfigResolver?.let {
             SigningConfigImpl(
-                it,
+                it.resolveConfig(profileable = false, debuggable),
                 internalServices,
                 minSdk.apiLevel,
                 global.targetDeployApiFromIDE
@@ -226,4 +240,9 @@ open class TestVariantImpl @Inject constructor(
 
     override val enableGlobalSynthetics: Boolean
         get() = isGlobalSyntheticsEnabled()
+
+    override fun finalizeAndLock() {
+        super.finalizeAndLock()
+        dexing.finalizeAndLock()
+    }
 }

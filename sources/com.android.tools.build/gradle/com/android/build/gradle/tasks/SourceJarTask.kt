@@ -72,7 +72,7 @@ abstract class SourceJarTask : Jar(), VariantAwareTask {
             task.isReproducibleFileOrder = true
             task.isPreserveFileTimestamps = false
 
-            task.from(computeJavaSource(creationConfig))
+            task.from(computeJavaSource(creationConfig, includeKotlinSources = true))
             creationConfig.sources.kotlin { kotlinSources ->
                 task.from(
                     task.project.files(kotlinSources.all).asFileTree.matching(

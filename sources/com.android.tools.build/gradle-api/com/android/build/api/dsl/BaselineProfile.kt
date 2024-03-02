@@ -23,9 +23,18 @@ import org.gradle.api.Incubating
  */
 @Incubating
 interface BaselineProfile {
+    /**
+     * Ignore baseline profiles from listed external dependencies. External dependencies can be
+     * specified via GAV coordinates(e.g. "groupId:artifactId:version") or in the format of
+     * "groupId:artifactId" in which case dependencies are ignored as long as they match
+     * groupId & artifactId.
+     */
     @get:Incubating
     val ignoreFrom: MutableSet<String>
 
+    /**
+     * Ignore baseline profiles from all the external dependencies.
+     */
     @get:Incubating
     @set:Incubating
     var ignoreFromAllExternalDependencies: Boolean

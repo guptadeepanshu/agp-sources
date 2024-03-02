@@ -16,7 +16,16 @@
 
 package com.android.build.api.dsl
 
-
+/**
+ * Packaging option entry point for the Android DSL.
+ *
+ * ```kotlin
+ * android {
+ *     packaging {
+ *     }
+ * }
+ * ```
+ */
 interface Packaging {
     /** The set of excluded paths.*/
     @Deprecated(
@@ -99,21 +108,57 @@ interface Packaging {
     )
     fun doNotStrip(pattern: String)
 
-    /** PackagingOptions for dex */
+    /** Packaging options for dex files */
     val dex: DexPackaging
 
-    /** PackagingOptions for dex */
+    /**
+     * Method to configure the packaging options for dex files via a lambda
+     *
+     * ```kotlin
+     * android {
+     *     packaging {
+     *         dex {
+     *             useLegacyPackaging = false
+     *         }
+     *     }
+     * }
+     * ```
+     */
     fun dex(action: DexPackaging.() -> Unit)
 
-    /** PackagingOptions for jniLibs */
+    /** Packaging options for JNI library files */
     val jniLibs: JniLibsPackaging
 
-    /** PackagingOptions for jniLibs */
+    /**
+     * Method to configure the packaging options for JNI library files via a lambda
+     *
+     * ```kotlin
+     * android {
+     *     packaging {
+     *         jniLibs {
+     *             excludes += "/..."
+     *         }
+     *     }
+     * }
+     * ```
+     */
     fun jniLibs(action: JniLibsPackaging.() -> Unit)
 
-    /** PackagingOptions for java resources */
+    /** Packaging options for java resources */
     val resources: ResourcesPackaging
 
-    /** PackagingOptions for java resources */
+    /**
+     * Method to configure the packaging options for Java resources via a lambda
+     *
+     * ```kotlin
+     * android {
+     *     packaging {
+     *         resources {
+     *             excludes += "/..."
+     *         }
+     *     }
+     * }
+     * ```
+     */
     fun resources(action: ResourcesPackaging.() -> Unit)
 }

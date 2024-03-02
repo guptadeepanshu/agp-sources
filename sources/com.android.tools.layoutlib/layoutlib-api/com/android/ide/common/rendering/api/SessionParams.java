@@ -17,7 +17,9 @@
 package com.android.ide.common.rendering.api;
 
 import com.android.annotations.NonNull;
+import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -61,6 +63,7 @@ public class SessionParams extends RenderParams {
     private boolean mExtendedViewInfoMode = false;
     private final int mSimulatedPlatformVersion;
     private Function<Object, List<ViewInfo>> mCustomContentHierarchyParser = null;
+    private Consumer<BufferedImage> myImageTransformation = null;
 
     /**
      * @param layoutDescription the {@link ILayoutPullParser} letting the LayoutLib Bridge visit the
@@ -129,6 +132,7 @@ public class SessionParams extends RenderParams {
         mSimulatedPlatformVersion = params.mSimulatedPlatformVersion;
         mExtendedViewInfoMode = params.mExtendedViewInfoMode;
         mCustomContentHierarchyParser = params.mCustomContentHierarchyParser;
+        myImageTransformation = params.myImageTransformation;
     }
 
     public ILayoutPullParser getLayoutDescription() {
@@ -160,6 +164,18 @@ public class SessionParams extends RenderParams {
 
     public Function<Object, List<ViewInfo>> getCustomContentHierarchyParser() {
         return mCustomContentHierarchyParser;
+    }
+
+    /**
+     * Sets a image transformation to be applied to the rendering of layoutlib, but before ATF
+     * validation happens.
+     */
+    public void setImageTransformation(Consumer<BufferedImage> transformation) {
+        myImageTransformation = transformation;
+    }
+
+    public Consumer<BufferedImage> getImageTransformation() {
+        return myImageTransformation;
     }
 
     public int getSimulatedPlatformVersion() {

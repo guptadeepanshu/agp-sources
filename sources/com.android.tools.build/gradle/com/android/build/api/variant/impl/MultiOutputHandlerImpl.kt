@@ -19,6 +19,7 @@ package com.android.build.api.variant.impl
 import com.android.build.api.variant.FilterConfiguration
 import com.android.build.api.variant.MultiOutputHandler
 import com.android.build.api.variant.VariantOutputConfiguration
+import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import org.gradle.api.file.Directory
@@ -172,13 +173,19 @@ internal class SingleOutputHandler(
 ): MultiOutputHandlerImplBase() {
 
     @get:Input
-    val singleOutputFileName: Provider<String> = creationConfig
-        .services
-        .projectInfo
-        .getProjectBaseName()
-        .map {
-            creationConfig.paths.getOutputFileName(it, creationConfig.baseName)
-        }
+    val singleOutputFileName: Provider<String> =
+        creationConfig
+            .services
+            .projectInfo
+            .getProjectBaseName()
+            .map {
+                creationConfig.paths.getOutputFileName(
+                    (creationConfig as? ApkCreationConfig)?.signingConfig?.hasConfig() != null,
+                    it,
+                    creationConfig.baseName
+                )
+            }
+
 
     override fun createSerializable(): MultiOutputHandler =
         SerializableSingleOutputHandler(this)
@@ -197,7 +204,7 @@ private class SerializableSingleOutputHandler(
         variantOutputConfiguration = VariantOutputConfigurationImpl(),
         baseName = "",
         fullName = "",
-        outputFileName = ""
+        outputFileName = "",
     )
 
     override val mainVersionCode = null

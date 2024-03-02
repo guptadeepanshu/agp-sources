@@ -22,6 +22,7 @@ import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.VariantBuilder
 import com.android.build.gradle.internal.core.dsl.VariantDslInfo
 import com.android.build.gradle.internal.services.VariantBuilderServices
+import com.android.build.gradle.options.BooleanOption
 import com.android.builder.errors.IssueReporter
 
 abstract class VariantBuilderImpl(
@@ -126,7 +127,8 @@ abstract class VariantBuilderImpl(
             return if (targetApi > minSdk) targetApi else minSdk
         }
 
-    override var enableUnitTest: Boolean = true
+    override var enableUnitTest: Boolean =
+        !variantBuilderServices.projectOptions[BooleanOption.ENABLE_NEW_TEST_DSL]
 
     override var unitTestEnabled: Boolean
         get() = enableUnitTest

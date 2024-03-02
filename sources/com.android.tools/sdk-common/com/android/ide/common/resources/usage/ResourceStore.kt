@@ -28,6 +28,8 @@ import com.google.common.base.Splitter
 import com.google.common.collect.ArrayListMultimap
 import com.google.common.collect.BiMap
 import com.google.common.collect.HashBiMap
+import com.google.common.collect.ImmutableBiMap
+import com.google.common.collect.LinkedListMultimap
 import com.google.common.collect.ListMultimap
 import com.google.common.collect.Lists
 import com.google.common.collect.Maps
@@ -61,7 +63,7 @@ class ResourceStore(val supportMultipackages: Boolean = false) {
         Lists.newArrayListWithCapacity<Resource>(TYPICAL_RESOURCE_COUNT)
 
     /** Resources partitioned by type and name.  */
-    private val typeToName: MutableMap<ResourceType, ListMultimap<String, Resource>> =
+    private val typeToName: MutableMap<ResourceType, LinkedListMultimap<String, Resource>> =
         Maps.newEnumMap(ResourceType::class.java)
 
     /** Map from resource ID value (R field value) to corresponding resource.  */
@@ -174,7 +176,7 @@ class ResourceStore(val supportMultipackages: Boolean = false) {
         val updated = if (stored == null) {
             resourceById += id to resource
             _resources += resource
-            typeToName.computeIfAbsent(resource.type) { ArrayListMultimap.create() }
+            typeToName.computeIfAbsent(resource.type) { LinkedListMultimap.create() }
                 .put(resource.name, resource)
             if (resource.value != -1) {
                 valueToResource += resource.value to resource

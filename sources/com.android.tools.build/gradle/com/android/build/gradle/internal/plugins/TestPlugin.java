@@ -23,6 +23,7 @@ import com.android.build.api.dsl.TestAndroidResources;
 import com.android.build.api.dsl.TestBuildFeatures;
 import com.android.build.api.dsl.TestBuildType;
 import com.android.build.api.dsl.TestDefaultConfig;
+import com.android.build.api.dsl.TestInstallation;
 import com.android.build.api.dsl.TestProductFlavor;
 import com.android.build.api.extension.impl.TestAndroidComponentsExtensionImpl;
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar;
@@ -74,6 +75,7 @@ public class TestPlugin
                 TestDefaultConfig,
                 TestProductFlavor,
                 TestAndroidResources,
+                TestInstallation,
                 com.android.build.api.dsl.TestExtension,
                 TestAndroidComponentsExtension,
                 TestVariantBuilder,
@@ -106,6 +108,7 @@ public class TestPlugin
                     TestDefaultConfig,
                     TestProductFlavor,
                     TestAndroidResources,
+                    TestInstallation,
                     com.android.build.api.dsl.TestExtension>
             createExtension(
                     @NonNull DslServices dslServices,

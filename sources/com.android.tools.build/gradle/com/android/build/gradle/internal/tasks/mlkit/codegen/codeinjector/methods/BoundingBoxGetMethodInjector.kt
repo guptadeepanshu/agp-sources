@@ -75,7 +75,7 @@ class BoundingBoxGetMethodInjector(private val modelInfo : ModelInfo) : MethodIn
     @Nullable
     private fun getTargetedImageTensor(): TensorInfo? {
         // Only support one TensorImage in input for now, so get first RGB image.
-        for (tensorInfo in modelInfo!!.inputs) {
+        for (tensorInfo in modelInfo.inputs) {
             if (tensorInfo.isRGBImage) {
                 return tensorInfo
             }

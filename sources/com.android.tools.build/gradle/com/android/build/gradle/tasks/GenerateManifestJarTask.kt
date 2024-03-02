@@ -56,7 +56,6 @@ abstract class GenerateManifestJarTask : NonIncrementalTask() {
     @get:OutputFile
     abstract val outputJar: RegularFileProperty
 
-    @TaskAction
     override fun doTaskAction() {
         ManifestClassGenerator(
                 ManifestClassData(

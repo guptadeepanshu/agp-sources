@@ -34,154 +34,6 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private EmulatorSnapshotUICounts(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    int mutable_bitField0_ = 0;
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 8: {
-            bitField0_ |= 0x00000001;
-            quickbootSelectionYes_ = input.readUInt32();
-            break;
-          }
-          case 16: {
-            bitField0_ |= 0x00000002;
-            quickbootSelectionNo_ = input.readUInt32();
-            break;
-          }
-          case 24: {
-            bitField0_ |= 0x00000004;
-            quickbootSelectionAsk_ = input.readUInt32();
-            break;
-          }
-          case 80: {
-            bitField0_ |= 0x00000008;
-            quickbootAskCanceled_ = input.readUInt32();
-            break;
-          }
-          case 88: {
-            bitField0_ |= 0x00000010;
-            quickbootAskYes_ = input.readUInt32();
-            break;
-          }
-          case 96: {
-            bitField0_ |= 0x00000020;
-            quickbootAskNo_ = input.readUInt32();
-            break;
-          }
-          case 104: {
-            bitField0_ |= 0x00000040;
-            quickbootAskTotalTimeMs_ = input.readUInt32();
-            break;
-          }
-          case 800: {
-            bitField0_ |= 0x00000080;
-            quickbootSaveNow_ = input.readUInt32();
-            break;
-          }
-          case 8000: {
-            bitField0_ |= 0x00000100;
-            genericSave_ = input.readUInt32();
-            break;
-          }
-          case 8008: {
-            bitField0_ |= 0x00000200;
-            genericLoad_ = input.readUInt32();
-            break;
-          }
-          case 8016: {
-            bitField0_ |= 0x00000400;
-            genericDelete_ = input.readUInt32();
-            break;
-          }
-          case 8024: {
-            bitField0_ |= 0x00000800;
-            genericClone_ = input.readUInt32();
-            break;
-          }
-          case 8032: {
-            bitField0_ |= 0x00001000;
-            genericEdit_ = input.readUInt32();
-            break;
-          }
-          case 8040: {
-            bitField0_ |= 0x00002000;
-            genericEditedName_ = input.readUInt32();
-            break;
-          }
-          case 8048: {
-            bitField0_ |= 0x00004000;
-            genericEditedDescription_ = input.readUInt32();
-            break;
-          }
-          case 8056: {
-            bitField0_ |= 0x00008000;
-            genericExport_ = input.readUInt32();
-            break;
-          }
-          case 8064: {
-            bitField0_ |= 0x00010000;
-            genericImport_ = input.readUInt32();
-            break;
-          }
-          case 8072: {
-            bitField0_ |= 0x00020000;
-            genericFlatView_ = input.readUInt32();
-            break;
-          }
-          case 8080: {
-            bitField0_ |= 0x00040000;
-            genericTreeView_ = input.readUInt32();
-            break;
-          }
-          case 8088: {
-            bitField0_ |= 0x00080000;
-            genericTotalTimeFlatViewMs_ = input.readUInt32();
-            break;
-          }
-          case 8096: {
-            bitField0_ |= 0x00100000;
-            genericTotalTimeTreeViewMs_ = input.readUInt32();
-            break;
-          }
-          case 8104: {
-            bitField0_ |= 0x00200000;
-            genericTotalTimeMs_ = input.readUInt32();
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EmulatorSnapshotUICounts_descriptor;
@@ -750,7 +602,7 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00200000) != 0)) {
       output.writeUInt32(1013, genericTotalTimeMs_);
     }
-    unknownFields.writeTo(output);
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -847,7 +699,7 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeUInt32Size(1013, genericTotalTimeMs_);
     }
-    size += unknownFields.getSerializedSize();
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -972,7 +824,7 @@ private static final long serialVersionUID = 0L;
       if (getGenericTotalTimeMs()
           != other.getGenericTotalTimeMs()) return false;
     }
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -1071,7 +923,7 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + GENERIC_TOTAL_TIME_MS_FIELD_NUMBER;
       hash = (53 * hash) + getGenericTotalTimeMs();
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -1192,18 +1044,13 @@ private static final long serialVersionUID = 0L;
 
     // Construct using com.google.wireless.android.sdk.stats.EmulatorSnapshotUICounts.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessageV3
-              .alwaysUseFieldBuilders) {
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
@@ -1483,7 +1330,7 @@ private static final long serialVersionUID = 0L;
       if (other.hasGenericTotalTimeMs()) {
         setGenericTotalTimeMs(other.getGenericTotalTimeMs());
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -1498,17 +1345,140 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.google.wireless.android.sdk.stats.EmulatorSnapshotUICounts parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              quickbootSelectionYes_ = input.readUInt32();
+              bitField0_ |= 0x00000001;
+              break;
+            } // case 8
+            case 16: {
+              quickbootSelectionNo_ = input.readUInt32();
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 16
+            case 24: {
+              quickbootSelectionAsk_ = input.readUInt32();
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 24
+            case 80: {
+              quickbootAskCanceled_ = input.readUInt32();
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 80
+            case 88: {
+              quickbootAskYes_ = input.readUInt32();
+              bitField0_ |= 0x00000010;
+              break;
+            } // case 88
+            case 96: {
+              quickbootAskNo_ = input.readUInt32();
+              bitField0_ |= 0x00000020;
+              break;
+            } // case 96
+            case 104: {
+              quickbootAskTotalTimeMs_ = input.readUInt32();
+              bitField0_ |= 0x00000040;
+              break;
+            } // case 104
+            case 800: {
+              quickbootSaveNow_ = input.readUInt32();
+              bitField0_ |= 0x00000080;
+              break;
+            } // case 800
+            case 8000: {
+              genericSave_ = input.readUInt32();
+              bitField0_ |= 0x00000100;
+              break;
+            } // case 8000
+            case 8008: {
+              genericLoad_ = input.readUInt32();
+              bitField0_ |= 0x00000200;
+              break;
+            } // case 8008
+            case 8016: {
+              genericDelete_ = input.readUInt32();
+              bitField0_ |= 0x00000400;
+              break;
+            } // case 8016
+            case 8024: {
+              genericClone_ = input.readUInt32();
+              bitField0_ |= 0x00000800;
+              break;
+            } // case 8024
+            case 8032: {
+              genericEdit_ = input.readUInt32();
+              bitField0_ |= 0x00001000;
+              break;
+            } // case 8032
+            case 8040: {
+              genericEditedName_ = input.readUInt32();
+              bitField0_ |= 0x00002000;
+              break;
+            } // case 8040
+            case 8048: {
+              genericEditedDescription_ = input.readUInt32();
+              bitField0_ |= 0x00004000;
+              break;
+            } // case 8048
+            case 8056: {
+              genericExport_ = input.readUInt32();
+              bitField0_ |= 0x00008000;
+              break;
+            } // case 8056
+            case 8064: {
+              genericImport_ = input.readUInt32();
+              bitField0_ |= 0x00010000;
+              break;
+            } // case 8064
+            case 8072: {
+              genericFlatView_ = input.readUInt32();
+              bitField0_ |= 0x00020000;
+              break;
+            } // case 8072
+            case 8080: {
+              genericTreeView_ = input.readUInt32();
+              bitField0_ |= 0x00040000;
+              break;
+            } // case 8080
+            case 8088: {
+              genericTotalTimeFlatViewMs_ = input.readUInt32();
+              bitField0_ |= 0x00080000;
+              break;
+            } // case 8088
+            case 8096: {
+              genericTotalTimeTreeViewMs_ = input.readUInt32();
+              bitField0_ |= 0x00100000;
+              break;
+            } // case 8096
+            case 8104: {
+              genericTotalTimeMs_ = input.readUInt32();
+              bitField0_ |= 0x00200000;
+              break;
+            } // case 8104
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.google.wireless.android.sdk.stats.EmulatorSnapshotUICounts) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
     private int bitField0_;
@@ -2515,7 +2485,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new EmulatorSnapshotUICounts(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

@@ -37,7 +37,9 @@ interface NdkInfo {
 
     fun findSuitablePlatformVersion(
         abi: String,
-        androidVersion: AndroidVersion?
+        androidVersion: AndroidVersion?,
+        ignoreMinSdkVersionFromDsl: Any?,
+        ignoreMinSdkVersionFromProperty: String?
     ): Int
 
     /** Return the executable for removing debug symbols from a shared object.  */

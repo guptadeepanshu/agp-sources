@@ -79,7 +79,7 @@ abstract class InvokeManifestMerger : NonIncrementalTask(), Supplier<File> {
         }
     }
 
-    override fun get(): File? {
-        return outputFile
+    override fun get(): File {
+        return outputFile!!
     }
 }

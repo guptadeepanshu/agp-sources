@@ -9,6 +9,7 @@ import com.android.repository.api.RepoManager;
 import com.android.repository.impl.meta.TypeDetails;
 import com.android.sdklib.AndroidVersion;
 import com.android.sdklib.ISystemImage;
+import com.android.sdklib.SystemImageTags;
 import com.android.sdklib.repository.IdDisplay;
 import com.android.sdklib.repository.PackageParserUtils;
 import com.android.sdklib.repository.meta.DetailsTypes;
@@ -222,11 +223,11 @@ public class SystemImageManager {
         if (details instanceof DetailsTypes.SysImgDetailsType) {
             // TODO: support multi-tag
             List<IdDisplay> tags = ((DetailsTypes.SysImgDetailsType) details).getTags();
-            tag = tags.isEmpty() ? SystemImage.DEFAULT_TAG : tags.get(0);
+            tag = tags.isEmpty() ? SystemImageTags.DEFAULT_TAG : tags.get(0);
         } else if (details instanceof DetailsTypes.AddonDetailsType) {
             tag = ((DetailsTypes.AddonDetailsType) details).getTag();
         } else {
-            tag = SystemImage.DEFAULT_TAG;
+            tag = SystemImageTags.DEFAULT_TAG;
         }
 
         Path skinDir = dir.resolve(SdkConstants.FD_SKINS);

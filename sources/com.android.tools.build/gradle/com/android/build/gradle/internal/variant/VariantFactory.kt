@@ -21,18 +21,19 @@ import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.DataBinding
 import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.VariantBuilder
+import com.android.build.api.variant.impl.AndroidTestBuilderImpl
 import com.android.build.api.variant.impl.GlobalVariantBuilderConfig
 import com.android.build.gradle.internal.api.BaseVariantImpl
 import com.android.build.gradle.internal.api.ReadOnlyObjectProvider
 import com.android.build.gradle.internal.component.AndroidTestCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig
-import com.android.build.gradle.internal.component.UnitTestCreationConfig
+import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.core.dsl.AndroidTestComponentDslInfo
 import com.android.build.gradle.internal.core.dsl.TestFixturesComponentDslInfo
-import com.android.build.gradle.internal.core.dsl.UnitTestComponentDslInfo
+import com.android.build.gradle.internal.core.dsl.HostTestComponentDslInfo
 import com.android.build.gradle.internal.core.dsl.VariantDslInfo
 import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.dsl.BuildType
@@ -100,7 +101,7 @@ interface VariantFactory<VariantBuilderT : VariantBuilder, VariantDslInfoT: Vari
     fun createUnitTest(
         componentIdentity: ComponentIdentity,
         buildFeatures: BuildFeatureValues,
-        dslInfo: UnitTestComponentDslInfo,
+        dslInfo: HostTestComponentDslInfo,
         variantDependencies: VariantDependencies,
         variantSources: VariantSources,
         paths: VariantPathHelper,
@@ -111,7 +112,7 @@ interface VariantFactory<VariantBuilderT : VariantBuilder, VariantDslInfoT: Vari
         variantServices: VariantServices,
         taskCreationServices: TaskCreationServices,
         globalConfig: GlobalTaskCreationConfig,
-    ): UnitTestCreationConfig
+    ): HostTestCreationConfig
 
     fun createAndroidTest(
         componentIdentity: ComponentIdentity,
@@ -127,6 +128,7 @@ interface VariantFactory<VariantBuilderT : VariantBuilder, VariantDslInfoT: Vari
         variantServices: VariantServices,
         taskCreationServices: TaskCreationServices,
         globalConfig: GlobalTaskCreationConfig,
+        androidTestBuilder: AndroidTestBuilderImpl,
     ): AndroidTestCreationConfig
 
     fun createVariantData(
@@ -145,7 +147,7 @@ interface VariantFactory<VariantBuilderT : VariantBuilder, VariantDslInfoT: Vari
         androidResourcesEnabled: Boolean
     ): BuildFeatureValues
 
-    fun createUnitTestBuildFeatureValues(
+    fun createHostTestBuildFeatureValues(
         buildFeatures: BuildFeatures,
         dataBinding: DataBinding,
         projectOptions: ProjectOptions,
@@ -177,7 +179,7 @@ interface VariantFactory<VariantBuilderT : VariantBuilder, VariantDslInfoT: Vari
      */
     fun preVariantCallback(
         project: Project,
-        dslExtension: CommonExtension<*, *, *, *, *>,
+        dslExtension: CommonExtension<*, *, *, *, *, *>,
         model: VariantInputModel<DefaultConfig, BuildType, ProductFlavor, SigningConfig>
     )
 

@@ -35,73 +35,6 @@ private static final long serialVersionUID = 0L;
     return new Compilation();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
-  private Compilation(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 10: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            workingDirectory_ = s;
-            break;
-          }
-          case 18: {
-            com.android.build.gradle.internal.cxx.caching.ObjectFileKey.Builder subBuilder = null;
-            if (objectFileKey_ != null) {
-              subBuilder = objectFileKey_.toBuilder();
-            }
-            objectFileKey_ = input.readMessage(com.android.build.gradle.internal.cxx.caching.ObjectFileKey.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(objectFileKey_);
-              objectFileKey_ = subBuilder.buildPartial();
-            }
-
-            break;
-          }
-          case 26: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            objectFile_ = s;
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.android.build.gradle.internal.cxx.caching.CxxCaching.internal_static_Compilation_descriptor;
@@ -116,7 +49,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int WORKING_DIRECTORY_FIELD_NUMBER = 1;
-  private volatile java.lang.Object workingDirectory_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object workingDirectory_ = "";
   /**
    * <pre>
    * Working directory of the build (base folder when [object_file] is relative)
@@ -196,11 +130,12 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public com.android.build.gradle.internal.cxx.caching.ObjectFileKeyOrBuilder getObjectFileKeyOrBuilder() {
-    return getObjectFileKey();
+    return objectFileKey_ == null ? com.android.build.gradle.internal.cxx.caching.ObjectFileKey.getDefaultInstance() : objectFileKey_;
   }
 
   public static final int OBJECT_FILE_FIELD_NUMBER = 3;
-  private volatile java.lang.Object objectFile_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object objectFile_ = "";
   /**
    * <pre>
    * Location of the object file to produce
@@ -268,7 +203,7 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(objectFile_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 3, objectFile_);
     }
-    unknownFields.writeTo(output);
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -287,7 +222,7 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(objectFile_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, objectFile_);
     }
-    size += unknownFields.getSerializedSize();
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -311,7 +246,7 @@ private static final long serialVersionUID = 0L;
     }
     if (!getObjectFile()
         .equals(other.getObjectFile())) return false;
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -330,7 +265,7 @@ private static final long serialVersionUID = 0L;
     }
     hash = (37 * hash) + OBJECT_FILE_FIELD_NUMBER;
     hash = (53 * hash) + getObjectFile().hashCode();
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -455,32 +390,25 @@ private static final long serialVersionUID = 0L;
 
     // Construct using com.android.build.gradle.internal.cxx.caching.Compilation.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessageV3
-              .alwaysUseFieldBuilders) {
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       workingDirectory_ = "";
-
-      if (objectFileKeyBuilder_ == null) {
-        objectFileKey_ = null;
-      } else {
-        objectFileKey_ = null;
+      objectFileKey_ = null;
+      if (objectFileKeyBuilder_ != null) {
+        objectFileKeyBuilder_.dispose();
         objectFileKeyBuilder_ = null;
       }
       objectFile_ = "";
-
       return this;
     }
 
@@ -507,49 +435,26 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.android.build.gradle.internal.cxx.caching.Compilation buildPartial() {
       com.android.build.gradle.internal.cxx.caching.Compilation result = new com.android.build.gradle.internal.cxx.caching.Compilation(this);
-      result.workingDirectory_ = workingDirectory_;
-      if (objectFileKeyBuilder_ == null) {
-        result.objectFileKey_ = objectFileKey_;
-      } else {
-        result.objectFileKey_ = objectFileKeyBuilder_.build();
-      }
-      result.objectFile_ = objectFile_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.android.build.gradle.internal.cxx.caching.Compilation result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.workingDirectory_ = workingDirectory_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.objectFileKey_ = objectFileKeyBuilder_ == null
+            ? objectFileKey_
+            : objectFileKeyBuilder_.build();
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.objectFile_ = objectFile_;
+      }
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.android.build.gradle.internal.cxx.caching.Compilation) {
@@ -564,6 +469,7 @@ private static final long serialVersionUID = 0L;
       if (other == com.android.build.gradle.internal.cxx.caching.Compilation.getDefaultInstance()) return this;
       if (!other.getWorkingDirectory().isEmpty()) {
         workingDirectory_ = other.workingDirectory_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasObjectFileKey()) {
@@ -571,9 +477,10 @@ private static final long serialVersionUID = 0L;
       }
       if (!other.getObjectFile().isEmpty()) {
         objectFile_ = other.objectFile_;
+        bitField0_ |= 0x00000004;
         onChanged();
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -588,19 +495,50 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.android.build.gradle.internal.cxx.caching.Compilation parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              workingDirectory_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000001;
+              break;
+            } // case 10
+            case 18: {
+              input.readMessage(
+                  getObjectFileKeyFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 18
+            case 26: {
+              objectFile_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 26
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.android.build.gradle.internal.cxx.caching.Compilation) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
+    private int bitField0_;
 
     private java.lang.Object workingDirectory_ = "";
     /**
@@ -655,11 +593,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setWorkingDirectory(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       workingDirectory_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -672,8 +608,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearWorkingDirectory() {
-      
       workingDirectory_ = getDefaultInstance().getWorkingDirectory();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -688,12 +624,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setWorkingDirectoryBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       workingDirectory_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -710,7 +644,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the objectFileKey field is set.
      */
     public boolean hasObjectFileKey() {
-      return objectFileKeyBuilder_ != null || objectFileKey_ != null;
+      return ((bitField0_ & 0x00000002) != 0);
     }
     /**
      * <pre>
@@ -740,11 +674,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         objectFileKey_ = value;
-        onChanged();
       } else {
         objectFileKeyBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -758,11 +692,11 @@ private static final long serialVersionUID = 0L;
         com.android.build.gradle.internal.cxx.caching.ObjectFileKey.Builder builderForValue) {
       if (objectFileKeyBuilder_ == null) {
         objectFileKey_ = builderForValue.build();
-        onChanged();
       } else {
         objectFileKeyBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -774,17 +708,18 @@ private static final long serialVersionUID = 0L;
      */
     public Builder mergeObjectFileKey(com.android.build.gradle.internal.cxx.caching.ObjectFileKey value) {
       if (objectFileKeyBuilder_ == null) {
-        if (objectFileKey_ != null) {
-          objectFileKey_ =
-            com.android.build.gradle.internal.cxx.caching.ObjectFileKey.newBuilder(objectFileKey_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000002) != 0) &&
+          objectFileKey_ != null &&
+          objectFileKey_ != com.android.build.gradle.internal.cxx.caching.ObjectFileKey.getDefaultInstance()) {
+          getObjectFileKeyBuilder().mergeFrom(value);
         } else {
           objectFileKey_ = value;
         }
-        onChanged();
       } else {
         objectFileKeyBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -795,14 +730,13 @@ private static final long serialVersionUID = 0L;
      * <code>.ObjectFileKey object_file_key = 2;</code>
      */
     public Builder clearObjectFileKey() {
-      if (objectFileKeyBuilder_ == null) {
-        objectFileKey_ = null;
-        onChanged();
-      } else {
-        objectFileKey_ = null;
+      bitField0_ = (bitField0_ & ~0x00000002);
+      objectFileKey_ = null;
+      if (objectFileKeyBuilder_ != null) {
+        objectFileKeyBuilder_.dispose();
         objectFileKeyBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
@@ -813,7 +747,7 @@ private static final long serialVersionUID = 0L;
      * <code>.ObjectFileKey object_file_key = 2;</code>
      */
     public com.android.build.gradle.internal.cxx.caching.ObjectFileKey.Builder getObjectFileKeyBuilder() {
-      
+      bitField0_ |= 0x00000002;
       onChanged();
       return getObjectFileKeyFieldBuilder().getBuilder();
     }
@@ -906,11 +840,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setObjectFile(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       objectFile_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -923,8 +855,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearObjectFile() {
-      
       objectFile_ = getDefaultInstance().getObjectFile();
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
@@ -939,12 +871,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setObjectFileBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       objectFile_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -981,7 +911,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new Compilation(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

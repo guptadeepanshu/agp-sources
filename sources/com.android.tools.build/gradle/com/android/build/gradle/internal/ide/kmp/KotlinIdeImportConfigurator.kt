@@ -25,7 +25,6 @@ import com.android.build.gradle.internal.ide.dependencies.LibraryServiceImpl
 import com.android.build.gradle.internal.ide.kmp.KotlinAndroidSourceSetMarker.Companion.android
 import com.android.build.gradle.internal.ide.kmp.resolvers.AndroidLibraryDependencyResolver
 import com.android.build.gradle.internal.ide.kmp.resolvers.KotlinModelBuildingHook
-import com.android.build.gradle.internal.ide.kmp.resolvers.LocalFileDependencyResolver
 import com.android.build.gradle.internal.ide.kmp.resolvers.ProjectDependencyResolver
 import com.android.build.gradle.internal.ide.kmp.serialization.AndroidExtrasSerializationExtension
 import com.android.build.gradle.internal.ide.v2.GlobalSyncService
@@ -33,7 +32,6 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.services.getBuildService
 import org.gradle.api.Project
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
-import org.gradle.internal.component.local.model.OpaqueComponentArtifactIdentifier
 import org.jetbrains.kotlin.gradle.ExternalKotlinTargetApi
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.plugin.ide.IdeDependencyResolver
@@ -112,28 +110,10 @@ internal object KotlinIdeImportConfigurator {
                             AndroidArtifacts.ArtifactType.CLASSES_JAR.type
                         )
                     },
-                    // The [IdeBinaryDependencyResolver] implemented by the kotlin plugin doesn't
-                    // resolve [OpaqueComponentArtifactIdentifier] file dependencies, and we handle
-                    // them by a custom resolver [LocalFileDependencyResolver].
-                    // The kotlin team mentioned that they will support resolving file dependencies
-                    // from within the [IdeBinaryDependencyResolver] at some point in the future,
-                    // and so we filter out the [OpaqueComponentArtifactIdentifier] from here, so
-                    // we don't have problems with future kotlin versions.
                     componentFilter = {
-                        it !is ProjectComponentIdentifier &&
-                                it !is OpaqueComponentArtifactIdentifier
+                        it !is ProjectComponentIdentifier
                     }
                 )
-            ),
-            constraint = androidSourceSetFilter,
-            phase = resolutionPhase,
-            priority = resolutionPriority
-        )
-
-        service.registerDependencyResolver(
-            resolver = LocalFileDependencyResolver(
-                libraryResolver = libraryResolver,
-                sourceSetToCreationConfigMap = sourceSetToCreationConfigMap
             ),
             constraint = androidSourceSetFilter,
             phase = resolutionPhase,

@@ -21,8 +21,13 @@ import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.component.impl.KmpAndroidTestImpl
 import com.android.build.api.component.impl.KmpComponentImpl
 import com.android.build.api.component.impl.KmpUnitTestImpl
+import com.android.build.api.component.impl.TestComponentImpl
 import com.android.build.api.component.impl.features.OptimizationCreationConfigImpl
 import com.android.build.api.dsl.KotlinMultiplatformAndroidCompilation
+import com.android.build.api.instrumentation.AsmClassVisitorFactory
+import com.android.build.api.instrumentation.FramesComputationMode
+import com.android.build.api.instrumentation.InstrumentationParameters
+import com.android.build.api.instrumentation.InstrumentationScope
 import com.android.build.api.variant.AarMetadata
 import com.android.build.api.variant.CanMinifyAndroidResourcesBuilder
 import com.android.build.api.variant.CanMinifyCodeBuilder
@@ -118,8 +123,11 @@ open class KmpVariantImpl @Inject constructor(
     override val isAndroidTestCoverageEnabled: Boolean
         get() = androidTest?.isAndroidTestCoverageEnabled ?: false
 
-    override val nestedComponents: List<ComponentCreationConfig>
-        get() = listOfNotNull(unitTest, androidTest)
+    override val nestedComponents: List<KmpComponentImpl<*>>
+        get() = listOfNotNull(
+            unitTest,
+            androidTest
+        )
 
     override val experimentalProperties: MapProperty<String, Any> =
         internalServices.mapPropertyOf(
@@ -145,6 +153,22 @@ open class KmpVariantImpl @Inject constructor(
             .initFromCompilation(androidKotlinCompilation)
     }
 
+    override fun <ParamT : InstrumentationParameters> transformClassesWith(
+        classVisitorFactoryImplClass: Class<out AsmClassVisitorFactory<ParamT>>,
+        scope: InstrumentationScope,
+        instrumentationParamsConfig: (ParamT) -> Unit
+    ) {
+        instrumentation.transformClassesWith(
+            classVisitorFactoryImplClass,
+            scope,
+            instrumentationParamsConfig
+        )
+    }
+
+    override fun setAsmFramesComputationMode(mode: FramesComputationMode) {
+        instrumentation.setAsmFramesComputationMode(mode)
+    }
+
     override fun <T : Component> createUserVisibleVariantObject(
         stats: GradleBuildVariant.Builder?
     ): T {
@@ -156,4 +180,7 @@ open class KmpVariantImpl @Inject constructor(
     override val renderscriptCreationConfig: RenderscriptCreationConfig? = null
     override val shadersCreationConfig: ShadersCreationConfig? = null
     override val nativeBuildCreationConfig: NativeBuildCreationConfig? = null
+
+    override fun finalizeAndLock() {
+    }
 }

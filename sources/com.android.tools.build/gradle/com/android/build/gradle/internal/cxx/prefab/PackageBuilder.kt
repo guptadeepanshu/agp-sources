@@ -22,7 +22,7 @@ import com.android.build.gradle.internal.cxx.io.synchronizeFile
 import com.android.build.gradle.internal.cxx.io.writeTextIfDifferent
 import com.android.build.gradle.internal.cxx.json.writeJsonFileIfDifferent
 import com.android.build.gradle.internal.cxx.logging.infoln
-import org.gradle.api.internal.file.FileOperations
+import org.gradle.api.file.FileSystemOperations
 import java.io.File
 
 /**
@@ -58,7 +58,7 @@ import java.io.File
  *      }
  */
 fun buildPrefabPackage(
-    fileOperations: FileOperations? = null,
+    fileOperations: FileSystemOperations? = null,
     payloadIndirection: Boolean = false,
     publication: PrefabPublication
 ) : List<PayloadMapping> {
@@ -85,7 +85,7 @@ data class PayloadMapping(
 )
 
 private class PrefabPackageBuilder(
-    private val fileOperations: FileOperations?,
+    private val fileOperations: FileSystemOperations?,
     private val payloadIndirection: Boolean
 ) {
     private val payloadMappings = mutableListOf<PayloadMapping>()

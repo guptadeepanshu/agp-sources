@@ -226,6 +226,8 @@ fun buildArtProfileWithDexMetadata(
  */
 internal data class SerializerInfo(val serializer: ArtProfileSerializer, val apiLevels: IntRange)
 
+const val SDK_LEVEL_FOR_V0_1_5_S = 31
+
 /**
  * Builds DM payloads for all known profile versions.
  *
@@ -236,11 +238,14 @@ internal fun buildDexMetadata(
         profile: ArtProfile,
         outputDir: File,
         infoList: List<SerializerInfo> = listOf(
-                SerializerInfo(ArtProfileSerializer.V0_1_5_S, 31..34),
-                SerializerInfo(ArtProfileSerializer.V0_1_0_P, 28..30),
-                SerializerInfo(ArtProfileSerializer.V0_0_9_OMR1, 27..27),
-                SerializerInfo(ArtProfileSerializer.V0_0_5_O, 26..26),
-                SerializerInfo(ArtProfileSerializer.V0_0_1_N, 24..25),
+                SerializerInfo(
+                    ArtProfileSerializer.V0_1_5_S,
+                    SDK_LEVEL_FOR_V0_1_5_S..Int.MAX_VALUE
+                ),
+                SerializerInfo(
+                    ArtProfileSerializer.V0_1_0_P,
+                    28..30
+                ),
         )
 ): Map<AndroidSdkLevel, File> {
     val fileMap = mutableMapOf<Int, File>()
@@ -255,8 +260,14 @@ internal fun buildDexMetadata(
                         profileVersion = info.serializer,
                         metadataVersion = ArtProfileSerializer.METADATA_0_0_2
                 )
-        info.apiLevels.forEach { apiLevel ->
-            fileMap[apiLevel] = output
+        if (info.serializer == ArtProfileSerializer.V0_1_5_S) {
+            // Just encode the first and last API level when we find the S format.
+            fileMap[info.apiLevels.first] = output
+            fileMap[info.apiLevels.last] = output
+        } else {
+            info.apiLevels.forEach { apiLevel ->
+                fileMap[apiLevel] = output
+            }
         }
     }
     return fileMap

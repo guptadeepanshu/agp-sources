@@ -29,97 +29,6 @@ private static final long serialVersionUID = 0L;
     return new AppDependencies();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
-  private AppDependencies(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    int mutable_bitField0_ = 0;
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 10: {
-            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-              library_ = new java.util.ArrayList<com.android.tools.build.libraries.metadata.Library>();
-              mutable_bitField0_ |= 0x00000001;
-            }
-            library_.add(
-                input.readMessage(com.android.tools.build.libraries.metadata.Library.parser(), extensionRegistry));
-            break;
-          }
-          case 18: {
-            if (!((mutable_bitField0_ & 0x00000002) != 0)) {
-              libraryDependencies_ = new java.util.ArrayList<com.android.tools.build.libraries.metadata.LibraryDependencies>();
-              mutable_bitField0_ |= 0x00000002;
-            }
-            libraryDependencies_.add(
-                input.readMessage(com.android.tools.build.libraries.metadata.LibraryDependencies.parser(), extensionRegistry));
-            break;
-          }
-          case 26: {
-            if (!((mutable_bitField0_ & 0x00000004) != 0)) {
-              moduleDependencies_ = new java.util.ArrayList<com.android.tools.build.libraries.metadata.ModuleDependencies>();
-              mutable_bitField0_ |= 0x00000004;
-            }
-            moduleDependencies_.add(
-                input.readMessage(com.android.tools.build.libraries.metadata.ModuleDependencies.parser(), extensionRegistry));
-            break;
-          }
-          case 34: {
-            if (!((mutable_bitField0_ & 0x00000008) != 0)) {
-              repositories_ = new java.util.ArrayList<com.android.tools.build.libraries.metadata.Repository>();
-              mutable_bitField0_ |= 0x00000008;
-            }
-            repositories_.add(
-                input.readMessage(com.android.tools.build.libraries.metadata.Repository.parser(), extensionRegistry));
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      if (((mutable_bitField0_ & 0x00000001) != 0)) {
-        library_ = java.util.Collections.unmodifiableList(library_);
-      }
-      if (((mutable_bitField0_ & 0x00000002) != 0)) {
-        libraryDependencies_ = java.util.Collections.unmodifiableList(libraryDependencies_);
-      }
-      if (((mutable_bitField0_ & 0x00000004) != 0)) {
-        moduleDependencies_ = java.util.Collections.unmodifiableList(moduleDependencies_);
-      }
-      if (((mutable_bitField0_ & 0x00000008) != 0)) {
-        repositories_ = java.util.Collections.unmodifiableList(repositories_);
-      }
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.android.tools.build.libraries.metadata.AppBundleDependenciesMetadata.internal_static_AppDependencies_descriptor;
@@ -134,6 +43,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LIBRARY_FIELD_NUMBER = 1;
+  @SuppressWarnings("serial")
   private java.util.List<com.android.tools.build.libraries.metadata.Library> library_;
   /**
    * <pre>
@@ -194,6 +104,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LIBRARY_DEPENDENCIES_FIELD_NUMBER = 2;
+  @SuppressWarnings("serial")
   private java.util.List<com.android.tools.build.libraries.metadata.LibraryDependencies> libraryDependencies_;
   /**
    * <pre>
@@ -254,6 +165,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int MODULE_DEPENDENCIES_FIELD_NUMBER = 3;
+  @SuppressWarnings("serial")
   private java.util.List<com.android.tools.build.libraries.metadata.ModuleDependencies> moduleDependencies_;
   /**
    * <pre>
@@ -314,6 +226,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int REPOSITORIES_FIELD_NUMBER = 4;
+  @SuppressWarnings("serial")
   private java.util.List<com.android.tools.build.libraries.metadata.Repository> repositories_;
   /**
    * <pre>
@@ -399,7 +312,7 @@ private static final long serialVersionUID = 0L;
     for (int i = 0; i < repositories_.size(); i++) {
       output.writeMessage(4, repositories_.get(i));
     }
-    unknownFields.writeTo(output);
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -424,7 +337,7 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(4, repositories_.get(i));
     }
-    size += unknownFields.getSerializedSize();
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -447,7 +360,7 @@ private static final long serialVersionUID = 0L;
         .equals(other.getModuleDependenciesList())) return false;
     if (!getRepositoriesList()
         .equals(other.getRepositoriesList())) return false;
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -474,7 +387,7 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + REPOSITORIES_FIELD_NUMBER;
       hash = (53 * hash) + getRepositoriesList().hashCode();
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -591,50 +504,46 @@ private static final long serialVersionUID = 0L;
 
     // Construct using com.android.tools.build.libraries.metadata.AppDependencies.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessageV3
-              .alwaysUseFieldBuilders) {
-        getLibraryFieldBuilder();
-        getLibraryDependenciesFieldBuilder();
-        getModuleDependenciesFieldBuilder();
-        getRepositoriesFieldBuilder();
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       if (libraryBuilder_ == null) {
         library_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000001);
       } else {
+        library_ = null;
         libraryBuilder_.clear();
       }
+      bitField0_ = (bitField0_ & ~0x00000001);
       if (libraryDependenciesBuilder_ == null) {
         libraryDependencies_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000002);
       } else {
+        libraryDependencies_ = null;
         libraryDependenciesBuilder_.clear();
       }
+      bitField0_ = (bitField0_ & ~0x00000002);
       if (moduleDependenciesBuilder_ == null) {
         moduleDependencies_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000004);
       } else {
+        moduleDependencies_ = null;
         moduleDependenciesBuilder_.clear();
       }
+      bitField0_ = (bitField0_ & ~0x00000004);
       if (repositoriesBuilder_ == null) {
         repositories_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000008);
       } else {
+        repositories_ = null;
         repositoriesBuilder_.clear();
       }
+      bitField0_ = (bitField0_ & ~0x00000008);
       return this;
     }
 
@@ -661,7 +570,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.android.tools.build.libraries.metadata.AppDependencies buildPartial() {
       com.android.tools.build.libraries.metadata.AppDependencies result = new com.android.tools.build.libraries.metadata.AppDependencies(this);
-      int from_bitField0_ = bitField0_;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.android.tools.build.libraries.metadata.AppDependencies result) {
       if (libraryBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0)) {
           library_ = java.util.Collections.unmodifiableList(library_);
@@ -698,42 +613,12 @@ private static final long serialVersionUID = 0L;
       } else {
         result.repositories_ = repositoriesBuilder_.build();
       }
-      onBuilt();
-      return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.android.tools.build.libraries.metadata.AppDependencies result) {
+      int from_bitField0_ = bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.android.tools.build.libraries.metadata.AppDependencies) {
@@ -850,7 +735,7 @@ private static final long serialVersionUID = 0L;
           }
         }
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -865,17 +750,82 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.android.tools.build.libraries.metadata.AppDependencies parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              com.android.tools.build.libraries.metadata.Library m =
+                  input.readMessage(
+                      com.android.tools.build.libraries.metadata.Library.parser(),
+                      extensionRegistry);
+              if (libraryBuilder_ == null) {
+                ensureLibraryIsMutable();
+                library_.add(m);
+              } else {
+                libraryBuilder_.addMessage(m);
+              }
+              break;
+            } // case 10
+            case 18: {
+              com.android.tools.build.libraries.metadata.LibraryDependencies m =
+                  input.readMessage(
+                      com.android.tools.build.libraries.metadata.LibraryDependencies.parser(),
+                      extensionRegistry);
+              if (libraryDependenciesBuilder_ == null) {
+                ensureLibraryDependenciesIsMutable();
+                libraryDependencies_.add(m);
+              } else {
+                libraryDependenciesBuilder_.addMessage(m);
+              }
+              break;
+            } // case 18
+            case 26: {
+              com.android.tools.build.libraries.metadata.ModuleDependencies m =
+                  input.readMessage(
+                      com.android.tools.build.libraries.metadata.ModuleDependencies.parser(),
+                      extensionRegistry);
+              if (moduleDependenciesBuilder_ == null) {
+                ensureModuleDependenciesIsMutable();
+                moduleDependencies_.add(m);
+              } else {
+                moduleDependenciesBuilder_.addMessage(m);
+              }
+              break;
+            } // case 26
+            case 34: {
+              com.android.tools.build.libraries.metadata.Repository m =
+                  input.readMessage(
+                      com.android.tools.build.libraries.metadata.Repository.parser(),
+                      extensionRegistry);
+              if (repositoriesBuilder_ == null) {
+                ensureRepositoriesIsMutable();
+                repositories_.add(m);
+              } else {
+                repositoriesBuilder_.addMessage(m);
+              }
+              break;
+            } // case 34
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.android.tools.build.libraries.metadata.AppDependencies) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
     private int bitField0_;
@@ -2160,7 +2110,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new AppDependencies(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

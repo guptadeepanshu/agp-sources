@@ -30,69 +30,6 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private SmlConfigurationEvent(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    int mutable_bitField0_ = 0;
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 8: {
-            bitField0_ |= 0x00000001;
-            smlAvailable_ = input.readBool();
-            break;
-          }
-          case 16: {
-            bitField0_ |= 0x00000008;
-            completionEnabled_ = input.readBool();
-            break;
-          }
-          case 24: {
-            bitField0_ |= 0x00000010;
-            transformEnabled_ = input.readBool();
-            break;
-          }
-          case 32: {
-            bitField0_ |= 0x00000002;
-            botOnboardingStarted_ = input.readBool();
-            break;
-          }
-          case 40: {
-            bitField0_ |= 0x00000004;
-            botOnboardingCompleted_ = input.readBool();
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlConfigurationEvent_descriptor;
@@ -242,6 +179,33 @@ private static final long serialVersionUID = 0L;
     return transformEnabled_;
   }
 
+  public static final int PROJECT_CONTEXT_ENABLED_FIELD_NUMBER = 6;
+  private boolean projectContextEnabled_;
+  /**
+   * <pre>
+   * User agrees to sending project context with queries
+   * </pre>
+   *
+   * <code>optional bool project_context_enabled = 6;</code>
+   * @return Whether the projectContextEnabled field is set.
+   */
+  @java.lang.Override
+  public boolean hasProjectContextEnabled() {
+    return ((bitField0_ & 0x00000020) != 0);
+  }
+  /**
+   * <pre>
+   * User agrees to sending project context with queries
+   * </pre>
+   *
+   * <code>optional bool project_context_enabled = 6;</code>
+   * @return The projectContextEnabled.
+   */
+  @java.lang.Override
+  public boolean getProjectContextEnabled() {
+    return projectContextEnabled_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -271,7 +235,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000004) != 0)) {
       output.writeBool(5, botOnboardingCompleted_);
     }
-    unknownFields.writeTo(output);
+    if (((bitField0_ & 0x00000020) != 0)) {
+      output.writeBool(6, projectContextEnabled_);
+    }
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -300,7 +267,11 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeBoolSize(5, botOnboardingCompleted_);
     }
-    size += unknownFields.getSerializedSize();
+    if (((bitField0_ & 0x00000020) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(6, projectContextEnabled_);
+    }
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -340,7 +311,12 @@ private static final long serialVersionUID = 0L;
       if (getTransformEnabled()
           != other.getTransformEnabled()) return false;
     }
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (hasProjectContextEnabled() != other.hasProjectContextEnabled()) return false;
+    if (hasProjectContextEnabled()) {
+      if (getProjectContextEnabled()
+          != other.getProjectContextEnabled()) return false;
+    }
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -376,7 +352,12 @@ private static final long serialVersionUID = 0L;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getTransformEnabled());
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    if (hasProjectContextEnabled()) {
+      hash = (37 * hash) + PROJECT_CONTEXT_ENABLED_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getProjectContextEnabled());
+    }
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -493,18 +474,13 @@ private static final long serialVersionUID = 0L;
 
     // Construct using com.google.wireless.android.sdk.stats.SmlConfigurationEvent.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessageV3
-              .alwaysUseFieldBuilders) {
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
@@ -519,6 +495,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000008);
       transformEnabled_ = false;
       bitField0_ = (bitField0_ & ~0x00000010);
+      projectContextEnabled_ = false;
+      bitField0_ = (bitField0_ & ~0x00000020);
       return this;
     }
 
@@ -566,6 +544,10 @@ private static final long serialVersionUID = 0L;
       if (((from_bitField0_ & 0x00000010) != 0)) {
         result.transformEnabled_ = transformEnabled_;
         to_bitField0_ |= 0x00000010;
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.projectContextEnabled_ = projectContextEnabled_;
+        to_bitField0_ |= 0x00000020;
       }
       result.bitField0_ = to_bitField0_;
       onBuilt();
@@ -631,7 +613,10 @@ private static final long serialVersionUID = 0L;
       if (other.hasTransformEnabled()) {
         setTransformEnabled(other.getTransformEnabled());
       }
-      this.mergeUnknownFields(other.unknownFields);
+      if (other.hasProjectContextEnabled()) {
+        setProjectContextEnabled(other.getProjectContextEnabled());
+      }
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -646,17 +631,60 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.google.wireless.android.sdk.stats.SmlConfigurationEvent parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              smlAvailable_ = input.readBool();
+              bitField0_ |= 0x00000001;
+              break;
+            } // case 8
+            case 16: {
+              completionEnabled_ = input.readBool();
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 16
+            case 24: {
+              transformEnabled_ = input.readBool();
+              bitField0_ |= 0x00000010;
+              break;
+            } // case 24
+            case 32: {
+              botOnboardingStarted_ = input.readBool();
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 32
+            case 40: {
+              botOnboardingCompleted_ = input.readBool();
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 40
+            case 48: {
+              projectContextEnabled_ = input.readBool();
+              bitField0_ |= 0x00000020;
+              break;
+            } // case 48
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.google.wireless.android.sdk.stats.SmlConfigurationEvent) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
     private int bitField0_;
@@ -935,6 +963,61 @@ private static final long serialVersionUID = 0L;
       onChanged();
       return this;
     }
+
+    private boolean projectContextEnabled_ ;
+    /**
+     * <pre>
+     * User agrees to sending project context with queries
+     * </pre>
+     *
+     * <code>optional bool project_context_enabled = 6;</code>
+     * @return Whether the projectContextEnabled field is set.
+     */
+    @java.lang.Override
+    public boolean hasProjectContextEnabled() {
+      return ((bitField0_ & 0x00000020) != 0);
+    }
+    /**
+     * <pre>
+     * User agrees to sending project context with queries
+     * </pre>
+     *
+     * <code>optional bool project_context_enabled = 6;</code>
+     * @return The projectContextEnabled.
+     */
+    @java.lang.Override
+    public boolean getProjectContextEnabled() {
+      return projectContextEnabled_;
+    }
+    /**
+     * <pre>
+     * User agrees to sending project context with queries
+     * </pre>
+     *
+     * <code>optional bool project_context_enabled = 6;</code>
+     * @param value The projectContextEnabled to set.
+     * @return This builder for chaining.
+     */
+    public Builder setProjectContextEnabled(boolean value) {
+      bitField0_ |= 0x00000020;
+      projectContextEnabled_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * User agrees to sending project context with queries
+     * </pre>
+     *
+     * <code>optional bool project_context_enabled = 6;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearProjectContextEnabled() {
+      bitField0_ = (bitField0_ & ~0x00000020);
+      projectContextEnabled_ = false;
+      onChanged();
+      return this;
+    }
     @java.lang.Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -968,7 +1051,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new SmlConfigurationEvent(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

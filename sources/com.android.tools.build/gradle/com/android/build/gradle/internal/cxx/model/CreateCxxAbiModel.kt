@@ -26,7 +26,6 @@ import com.android.build.gradle.internal.cxx.settings.createBuildSettingsFromFil
 import com.android.build.gradle.internal.ndk.Stl
 import com.android.build.gradle.tasks.NativeBuildSystem
 import com.android.utils.FileUtils.join
-import com.android.utils.cxx.CxxDiagnosticCode
 import com.android.utils.cxx.CxxDiagnosticCode.ABI_IS_UNSUPPORTED
 import java.io.File
 import java.security.MessageDigest
@@ -79,13 +78,15 @@ fun createCxxAbiModel(
                     sdkComponents
                             .versionedNdkHandler(
                                 ndkVersion = configurationParameters.ndkVersion,
-                                ndkPath = configurationParameters.ndkPath
+                                ndkPathFromDsl = configurationParameters.ndkPathFromDsl
                             )
                             .ndkPlatform
                             .getOrThrow()
                             .ndkInfo
                             .findSuitablePlatformVersion(info.name,
-                                configurationParameters.minSdkVersion),
+                                configurationParameters.minSdkVersion,
+                                configurationParameters.ignoreMinSdkVersionFromDsl,
+                                configurationParameters.ignoreMinSdkVersionFromProperty),
                 cmake = when(module.buildSystem) {
                     NativeBuildSystem.CMAKE ->  CxxCmakeAbiModel(
                         buildCommandArgs = null,

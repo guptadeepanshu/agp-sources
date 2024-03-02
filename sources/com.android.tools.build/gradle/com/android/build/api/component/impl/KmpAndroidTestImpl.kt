@@ -18,8 +18,7 @@ package com.android.build.api.component.impl
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.component.impl.features.AndroidResourcesCreationConfigImpl
-import com.android.build.api.component.impl.features.AssetsCreationConfigImpl
-import com.android.build.api.component.impl.features.DexingCreationConfigImpl
+import com.android.build.api.component.impl.features.DexingImpl
 import com.android.build.api.component.impl.features.ManifestPlaceholdersCreationConfigImpl
 import com.android.build.api.component.impl.features.OptimizationCreationConfigImpl
 import com.android.build.api.dsl.KotlinMultiplatformAndroidCompilation
@@ -27,7 +26,6 @@ import com.android.build.api.instrumentation.AsmClassVisitorFactory
 import com.android.build.api.instrumentation.FramesComputationMode
 import com.android.build.api.instrumentation.InstrumentationParameters
 import com.android.build.api.instrumentation.InstrumentationScope
-import com.android.build.api.variant.AndroidResources
 import com.android.build.api.variant.AndroidTest
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.ApkPackaging
@@ -35,14 +33,15 @@ import com.android.build.api.variant.BuildConfigField
 import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.ResValue
 import com.android.build.api.variant.SigningConfig
+import com.android.build.api.variant.impl.AndroidResourcesImpl
 import com.android.build.api.variant.impl.ApkPackagingImpl
 import com.android.build.api.variant.impl.KmpVariantImpl
 import com.android.build.api.variant.impl.ResValueKeyImpl
 import com.android.build.api.variant.impl.SigningConfigImpl
+import com.android.build.api.variant.impl.initializeAaptOptionsFromDsl
 import com.android.build.gradle.internal.component.AndroidTestCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.component.features.AndroidResourcesCreationConfig
-import com.android.build.gradle.internal.component.features.AssetsCreationConfig
 import com.android.build.gradle.internal.component.features.DexingCreationConfig
 import com.android.build.gradle.internal.component.features.FeatureNames
 import com.android.build.gradle.internal.component.features.ManifestPlaceholdersCreationConfig
@@ -115,7 +114,7 @@ open class KmpAndroidTestImpl @Inject constructor(
     override val instrumentationRunner: Property<String> by lazy {
         internalServices.propertyOf(
             String::class.java,
-            dslInfo.getInstrumentationRunner(dexingCreationConfig.dexingType)
+            dslInfo.getInstrumentationRunner(dexing.dexingType)
         )
     }
 
@@ -152,36 +151,28 @@ open class KmpAndroidTestImpl @Inject constructor(
         )
     }
 
-    override val assetsCreationConfig: AssetsCreationConfig
-        get() = AssetsCreationConfigImpl(
-            dslInfo.androidResourcesDsl,
-            internalServices,
-        ) {
-            androidResourcesCreationConfig
-        }
-
-    override val dexingCreationConfig: DexingCreationConfig by lazy {
-        DexingCreationConfigImpl(
+    override val dexing: DexingCreationConfig by lazy(LazyThreadSafetyMode.NONE) {
+        DexingImpl(
             this,
-            dslInfo.dexingDslInfo,
-            internalServices
+            // TODO : Change this to VariantBuilder ?
+            dslInfo.dexingDslInfo.isMultiDexEnabled,
+            dslInfo.dexingDslInfo.multiDexKeepProguard,
+            dslInfo.dexingDslInfo.multiDexKeepFile,
+            internalServices,
         )
     }
 
     override val isCoreLibraryDesugaringEnabledLintCheck: Boolean
-        get() = dexingCreationConfig.isCoreLibraryDesugaringEnabled
+        get() = dexing.isCoreLibraryDesugaringEnabled
 
-    override val signingConfigImpl: SigningConfigImpl? by lazy {
+    override val signingConfig: SigningConfigImpl? by lazy {
         SigningConfigImpl(
-            dslInfo.signingConfig,
+            dslInfo.signingConfigResolver?.resolveConfig(profileable = false, debuggable = false),
             internalServices,
             minSdk.apiLevel,
             global.targetDeployApiFromIDE
         )
     }
-
-    override val signingConfig: SigningConfig?
-        get() = signingConfigImpl
 
     override val optimizationCreationConfig: OptimizationCreationConfig by lazy(LazyThreadSafetyMode.NONE) {
         OptimizationCreationConfigImpl(
@@ -199,6 +190,10 @@ open class KmpAndroidTestImpl @Inject constructor(
             emptyMap(),
             internalServices
         )
+    }
+
+    override fun finalizeAndLock() {
+        dexing.finalizeAndLock()
     }
 
     override val packaging: ApkPackaging by lazy {
@@ -225,8 +220,8 @@ open class KmpAndroidTestImpl @Inject constructor(
     override val proguardFiles: ListProperty<RegularFile>
         get() = optimizationCreationConfig.proguardFiles
 
-    override val androidResources: AndroidResources
-        get() = androidResourcesCreationConfig.androidResources
+    override val androidResources: AndroidResourcesImpl =
+        initializeAaptOptionsFromDsl(dslInfo.androidResourcesDsl.androidResources, internalServices)
 
     override fun makeResValueKey(type: String, name: String): ResValue.Key =
         ResValueKeyImpl(type, name)

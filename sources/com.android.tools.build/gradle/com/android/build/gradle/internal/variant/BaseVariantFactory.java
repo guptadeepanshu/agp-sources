@@ -26,19 +26,20 @@ import com.android.build.api.component.impl.UnitTestImpl;
 import com.android.build.api.dsl.CommonExtension;
 import com.android.build.api.variant.ComponentIdentity;
 import com.android.build.api.variant.VariantBuilder;
+import com.android.build.api.variant.impl.AndroidTestBuilderImpl;
 import com.android.build.gradle.internal.BuildTypeData;
 import com.android.build.gradle.internal.ProductFlavorData;
 import com.android.build.gradle.internal.api.BaseVariantImpl;
 import com.android.build.gradle.internal.api.ReadOnlyObjectProvider;
 import com.android.build.gradle.internal.component.AndroidTestCreationConfig;
 import com.android.build.gradle.internal.component.ComponentCreationConfig;
+import com.android.build.gradle.internal.component.HostTestCreationConfig;
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig;
-import com.android.build.gradle.internal.component.UnitTestCreationConfig;
 import com.android.build.gradle.internal.component.VariantCreationConfig;
 import com.android.build.gradle.internal.core.VariantSources;
 import com.android.build.gradle.internal.core.dsl.AndroidTestComponentDslInfo;
+import com.android.build.gradle.internal.core.dsl.HostTestComponentDslInfo;
 import com.android.build.gradle.internal.core.dsl.TestFixturesComponentDslInfo;
-import com.android.build.gradle.internal.core.dsl.UnitTestComponentDslInfo;
 import com.android.build.gradle.internal.core.dsl.VariantDslInfo;
 import com.android.build.gradle.internal.dependency.VariantDependencies;
 import com.android.build.gradle.internal.dsl.BuildType;
@@ -105,10 +106,10 @@ public abstract class BaseVariantFactory<
 
     @NonNull
     @Override
-    public UnitTestCreationConfig createUnitTest(
+    public HostTestCreationConfig createUnitTest(
             @NonNull ComponentIdentity componentIdentity,
             @NonNull BuildFeatureValues buildFeatures,
-            @NonNull UnitTestComponentDslInfo dslInfo,
+            @NonNull HostTestComponentDslInfo dslInfo,
             @NonNull VariantDependencies variantDependencies,
             @NonNull VariantSources variantSources,
             @NonNull VariantPathHelper paths,
@@ -151,7 +152,8 @@ public abstract class BaseVariantFactory<
             @NonNull VariantCreationConfig testedVariant,
             @NonNull VariantServices variantServices,
             @NonNull TaskCreationServices taskCreationServices,
-            @NonNull GlobalTaskCreationConfig globalConfig) {
+            @NonNull GlobalTaskCreationConfig globalConfig,
+            @NonNull AndroidTestBuilderImpl androidTestBuilder) {
         return dslServices.newInstance(
                 AndroidTestImpl.class,
                 componentIdentity,
@@ -166,7 +168,8 @@ public abstract class BaseVariantFactory<
                 testedVariant,
                 variantServices,
                 taskCreationServices,
-                globalConfig);
+                globalConfig,
+                androidTestBuilder);
     }
 
     @Nullable
@@ -190,7 +193,7 @@ public abstract class BaseVariantFactory<
     @Override
     public void preVariantCallback(
             @NonNull Project project,
-            @NonNull CommonExtension<?, ?, ?, ?, ?> dslExtension,
+            @NonNull CommonExtension<?, ?, ?, ?, ?, ?> dslExtension,
             @NonNull
                     VariantInputModel<DefaultConfig, BuildType, ProductFlavor, SigningConfig>
                             model) {

@@ -31,61 +31,6 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private DeviceMirroringSession(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    int mutable_bitField0_ = 0;
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 8: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.DeviceMirroringSession.DeviceKind value = com.google.wireless.android.sdk.stats.DeviceMirroringSession.DeviceKind.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(1, rawValue);
-            } else {
-              bitField0_ |= 0x00000001;
-              deviceKind_ = rawValue;
-            }
-            break;
-          }
-          case 16: {
-            bitField0_ |= 0x00000002;
-            durationSec_ = input.readInt64();
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DeviceMirroringSession_descriptor;
@@ -243,6 +188,60 @@ private static final long serialVersionUID = 0L;
     return durationSec_;
   }
 
+  public static final int AGENT_PUSH_TIME_MILLIS_FIELD_NUMBER = 3;
+  private long agentPushTimeMillis_;
+  /**
+   * <pre>
+   * Time it took to push the Screen Sharing Agent to the device.
+   * </pre>
+   *
+   * <code>optional int64 agent_push_time_millis = 3;</code>
+   * @return Whether the agentPushTimeMillis field is set.
+   */
+  @java.lang.Override
+  public boolean hasAgentPushTimeMillis() {
+    return ((bitField0_ & 0x00000004) != 0);
+  }
+  /**
+   * <pre>
+   * Time it took to push the Screen Sharing Agent to the device.
+   * </pre>
+   *
+   * <code>optional int64 agent_push_time_millis = 3;</code>
+   * @return The agentPushTimeMillis.
+   */
+  @java.lang.Override
+  public long getAgentPushTimeMillis() {
+    return agentPushTimeMillis_;
+  }
+
+  public static final int FIRST_FRAME_DELAY_MILLIS_FIELD_NUMBER = 4;
+  private long firstFrameDelayMillis_;
+  /**
+   * <pre>
+   * Time between the end of agent push and the arrival of the first frame.
+   * </pre>
+   *
+   * <code>optional int64 first_frame_delay_millis = 4;</code>
+   * @return Whether the firstFrameDelayMillis field is set.
+   */
+  @java.lang.Override
+  public boolean hasFirstFrameDelayMillis() {
+    return ((bitField0_ & 0x00000008) != 0);
+  }
+  /**
+   * <pre>
+   * Time between the end of agent push and the arrival of the first frame.
+   * </pre>
+   *
+   * <code>optional int64 first_frame_delay_millis = 4;</code>
+   * @return The firstFrameDelayMillis.
+   */
+  @java.lang.Override
+  public long getFirstFrameDelayMillis() {
+    return firstFrameDelayMillis_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -263,7 +262,13 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000002) != 0)) {
       output.writeInt64(2, durationSec_);
     }
-    unknownFields.writeTo(output);
+    if (((bitField0_ & 0x00000004) != 0)) {
+      output.writeInt64(3, agentPushTimeMillis_);
+    }
+    if (((bitField0_ & 0x00000008) != 0)) {
+      output.writeInt64(4, firstFrameDelayMillis_);
+    }
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -280,7 +285,15 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeInt64Size(2, durationSec_);
     }
-    size += unknownFields.getSerializedSize();
+    if (((bitField0_ & 0x00000004) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt64Size(3, agentPushTimeMillis_);
+    }
+    if (((bitField0_ & 0x00000008) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt64Size(4, firstFrameDelayMillis_);
+    }
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -304,7 +317,17 @@ private static final long serialVersionUID = 0L;
       if (getDurationSec()
           != other.getDurationSec()) return false;
     }
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (hasAgentPushTimeMillis() != other.hasAgentPushTimeMillis()) return false;
+    if (hasAgentPushTimeMillis()) {
+      if (getAgentPushTimeMillis()
+          != other.getAgentPushTimeMillis()) return false;
+    }
+    if (hasFirstFrameDelayMillis() != other.hasFirstFrameDelayMillis()) return false;
+    if (hasFirstFrameDelayMillis()) {
+      if (getFirstFrameDelayMillis()
+          != other.getFirstFrameDelayMillis()) return false;
+    }
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -324,7 +347,17 @@ private static final long serialVersionUID = 0L;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getDurationSec());
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    if (hasAgentPushTimeMillis()) {
+      hash = (37 * hash) + AGENT_PUSH_TIME_MILLIS_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getAgentPushTimeMillis());
+    }
+    if (hasFirstFrameDelayMillis()) {
+      hash = (37 * hash) + FIRST_FRAME_DELAY_MILLIS_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getFirstFrameDelayMillis());
+    }
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -441,18 +474,13 @@ private static final long serialVersionUID = 0L;
 
     // Construct using com.google.wireless.android.sdk.stats.DeviceMirroringSession.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessageV3
-              .alwaysUseFieldBuilders) {
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
@@ -461,6 +489,10 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000001);
       durationSec_ = 0L;
       bitField0_ = (bitField0_ & ~0x00000002);
+      agentPushTimeMillis_ = 0L;
+      bitField0_ = (bitField0_ & ~0x00000004);
+      firstFrameDelayMillis_ = 0L;
+      bitField0_ = (bitField0_ & ~0x00000008);
       return this;
     }
 
@@ -496,6 +528,14 @@ private static final long serialVersionUID = 0L;
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.durationSec_ = durationSec_;
         to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.agentPushTimeMillis_ = agentPushTimeMillis_;
+        to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.firstFrameDelayMillis_ = firstFrameDelayMillis_;
+        to_bitField0_ |= 0x00000008;
       }
       result.bitField0_ = to_bitField0_;
       onBuilt();
@@ -552,7 +592,13 @@ private static final long serialVersionUID = 0L;
       if (other.hasDurationSec()) {
         setDurationSec(other.getDurationSec());
       }
-      this.mergeUnknownFields(other.unknownFields);
+      if (other.hasAgentPushTimeMillis()) {
+        setAgentPushTimeMillis(other.getAgentPushTimeMillis());
+      }
+      if (other.hasFirstFrameDelayMillis()) {
+        setFirstFrameDelayMillis(other.getFirstFrameDelayMillis());
+      }
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -567,17 +613,57 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.google.wireless.android.sdk.stats.DeviceMirroringSession parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.DeviceMirroringSession.DeviceKind tmpValue =
+                  com.google.wireless.android.sdk.stats.DeviceMirroringSession.DeviceKind.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(1, tmpRaw);
+              } else {
+                deviceKind_ = tmpRaw;
+                bitField0_ |= 0x00000001;
+              }
+              break;
+            } // case 8
+            case 16: {
+              durationSec_ = input.readInt64();
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 16
+            case 24: {
+              agentPushTimeMillis_ = input.readInt64();
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 24
+            case 32: {
+              firstFrameDelayMillis_ = input.readInt64();
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 32
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.google.wireless.android.sdk.stats.DeviceMirroringSession) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
     private int bitField0_;
@@ -663,6 +749,116 @@ private static final long serialVersionUID = 0L;
       onChanged();
       return this;
     }
+
+    private long agentPushTimeMillis_ ;
+    /**
+     * <pre>
+     * Time it took to push the Screen Sharing Agent to the device.
+     * </pre>
+     *
+     * <code>optional int64 agent_push_time_millis = 3;</code>
+     * @return Whether the agentPushTimeMillis field is set.
+     */
+    @java.lang.Override
+    public boolean hasAgentPushTimeMillis() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <pre>
+     * Time it took to push the Screen Sharing Agent to the device.
+     * </pre>
+     *
+     * <code>optional int64 agent_push_time_millis = 3;</code>
+     * @return The agentPushTimeMillis.
+     */
+    @java.lang.Override
+    public long getAgentPushTimeMillis() {
+      return agentPushTimeMillis_;
+    }
+    /**
+     * <pre>
+     * Time it took to push the Screen Sharing Agent to the device.
+     * </pre>
+     *
+     * <code>optional int64 agent_push_time_millis = 3;</code>
+     * @param value The agentPushTimeMillis to set.
+     * @return This builder for chaining.
+     */
+    public Builder setAgentPushTimeMillis(long value) {
+      bitField0_ |= 0x00000004;
+      agentPushTimeMillis_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Time it took to push the Screen Sharing Agent to the device.
+     * </pre>
+     *
+     * <code>optional int64 agent_push_time_millis = 3;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearAgentPushTimeMillis() {
+      bitField0_ = (bitField0_ & ~0x00000004);
+      agentPushTimeMillis_ = 0L;
+      onChanged();
+      return this;
+    }
+
+    private long firstFrameDelayMillis_ ;
+    /**
+     * <pre>
+     * Time between the end of agent push and the arrival of the first frame.
+     * </pre>
+     *
+     * <code>optional int64 first_frame_delay_millis = 4;</code>
+     * @return Whether the firstFrameDelayMillis field is set.
+     */
+    @java.lang.Override
+    public boolean hasFirstFrameDelayMillis() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <pre>
+     * Time between the end of agent push and the arrival of the first frame.
+     * </pre>
+     *
+     * <code>optional int64 first_frame_delay_millis = 4;</code>
+     * @return The firstFrameDelayMillis.
+     */
+    @java.lang.Override
+    public long getFirstFrameDelayMillis() {
+      return firstFrameDelayMillis_;
+    }
+    /**
+     * <pre>
+     * Time between the end of agent push and the arrival of the first frame.
+     * </pre>
+     *
+     * <code>optional int64 first_frame_delay_millis = 4;</code>
+     * @param value The firstFrameDelayMillis to set.
+     * @return This builder for chaining.
+     */
+    public Builder setFirstFrameDelayMillis(long value) {
+      bitField0_ |= 0x00000008;
+      firstFrameDelayMillis_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Time between the end of agent push and the arrival of the first frame.
+     * </pre>
+     *
+     * <code>optional int64 first_frame_delay_millis = 4;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearFirstFrameDelayMillis() {
+      bitField0_ = (bitField0_ & ~0x00000008);
+      firstFrameDelayMillis_ = 0L;
+      onChanged();
+      return this;
+    }
     @java.lang.Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -696,7 +892,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new DeviceMirroringSession(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

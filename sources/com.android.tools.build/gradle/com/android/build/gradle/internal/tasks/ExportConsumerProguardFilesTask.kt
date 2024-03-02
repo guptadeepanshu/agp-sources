@@ -73,11 +73,20 @@ abstract class ExportConsumerProguardFilesTask : NonIncrementalTask() {
 
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:Optional
+    abstract val defaultProguardFilesDirectory: DirectoryProperty
+
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val consumerProguardFiles: ConfigurableFileCollection
 
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val inputFiles: ConfigurableFileCollection
+
+    @get:Input
+    @get:Optional
+    abstract val defaultProguardFileNames: SetProperty<String>
 
     @get:Input
     @get:Optional
@@ -98,12 +107,23 @@ abstract class ExportConsumerProguardFilesTask : NonIncrementalTask() {
     abstract val outputDir: DirectoryProperty
 
     public override fun doTaskAction() {
+        // combine the default proguard files with the consumer ones into a single collection.
+        val finalListOfProguardFiles = mutableListOf<File>().also {
+            it.addAll(consumerProguardFiles.files)
+        }
+        if (defaultProguardFilesDirectory.isPresent) {
+            defaultProguardFileNames.get().forEach {fileName ->
+                finalListOfProguardFiles.add(
+                    defaultProguardFilesDirectory.get().file(fileName).asFile
+                )
+            }
+        }
         // We check for default files unless it's a base feature, which can include default files.
         if (!isBaseModule) {
             checkProguardFiles(
                 buildDirectory,
                 isDynamicFeature,
-                consumerProguardFiles.files
+                finalListOfProguardFiles
             ) { exception -> throw EvalIssueException(exception) }
         }
 
@@ -156,9 +176,48 @@ abstract class ExportConsumerProguardFilesTask : NonIncrementalTask() {
         ) {
             super.configure(task)
 
+            // For compatibility reasons, the `consumerProguardFiles` file collection contains
+            // the default proguard files that can be specified in the DSL using :
+            //          proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
+            // This is problematic because such default proguard files are actually extracted
+            // from the AGP jars resources. The extraction is done by `ExtractProguardFiles` task
+            // and stored in the InternalArtifactType.DEFAULT_PROGUARD_FILES.
+            // Since `consumerProguardFiles` is a List<File>, we cannot represent the task
+            // dependency.
+            // Therefore even though the file reference is contained in `consumerProguardFiles`,
+            // it represents an implicit binding that is flagged by Gradle as an Error. To avoid
+            // the problem, we should remove all the default proguard files from the
+            // `consumerProguardFiles` collection and use a normal @InputFiles annotated field
+            // to store the DEFAULT_PROGUARD_FILES artifact.
+
+            // first, identify all the default proguard files contained in the List<File>
+            // collection.
+            val defaultProguardFiles = optimizationCreationConfig.consumerProguardFiles.filter {
+                it.absolutePath.startsWith(ProguardFiles
+                    .getDefaultProguardFileDirectory(creationConfig.services.projectInfo.buildDirectory).get().asFile.absolutePath)
+            }
+            // keep the file names, as the DEFAULT_PROGUARD_FILES is a directory.
+            defaultProguardFiles.forEach {
+                task.defaultProguardFileNames.add(it.name)
+            }
+
+            // calculate the final list, potentially removing all the default proguard files we
+            // identified.
+            val finalListOfProguardFiles = if (defaultProguardFiles.isNotEmpty()) {
+                optimizationCreationConfig.consumerProguardFiles - defaultProguardFiles
+            } else optimizationCreationConfig.consumerProguardFiles
+
             task.consumerProguardFiles.from(
-                optimizationCreationConfig.consumerProguardFiles
+                finalListOfProguardFiles
             )
+            // that's how the default proguard files will be consumed by the Task.
+            if (defaultProguardFiles.isNotEmpty()) {
+                val defaultRulesFiles = creationConfig.global.globalArtifacts.get(
+                    InternalArtifactType.DEFAULT_PROGUARD_FILES
+                )
+                task.defaultProguardFilesDirectory.set(defaultRulesFiles)
+                task.inputFiles.from(defaultRulesFiles)
+            }
             task.isBaseModule = creationConfig.componentType.isBaseModule
             task.isDynamicFeature = creationConfig.componentType.isDynamicFeature
 

@@ -17,15 +17,6 @@
 package com.android.build.gradle.external.cmake.server;
 
 import com.android.annotations.NonNull;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.List;
 
 /** Utility class for Cmake server. */
 public class ServerUtils {

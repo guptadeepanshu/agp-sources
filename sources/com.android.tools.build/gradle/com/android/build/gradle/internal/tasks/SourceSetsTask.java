@@ -76,18 +76,18 @@ public class SourceSetsTask extends ProjectBasedReportTask {
                         project);
                 renderDirectorySet("JNI sources", sourceSet.getJni(), project);
                 renderDirectorySet("JNI libraries", sourceSet.getJniLibs(), project);
-                if (sourceSet instanceof DefaultAndroidSourceSet) {
-                    DefaultAndroidSourceSet androidSourceSet = (DefaultAndroidSourceSet) sourceSet;
-                    if (!androidSourceSet.getExtras$gradle_core().isEmpty()) {
-                        androidSourceSet
-                                .getExtras$gradle_core()
-                                .forEach(
-                                        androidSourceDirectorySet ->
-                                                renderDirectorySet(
-                                                        "Custom sources",
-                                                        androidSourceDirectorySet,
-                                                        project));
-                    }
+            }
+            if (sourceSet instanceof DefaultAndroidSourceSet) {
+                DefaultAndroidSourceSet androidSourceSet = (DefaultAndroidSourceSet) sourceSet;
+                if (!androidSourceSet.getExtras$gradle_core().isEmpty()) {
+                    androidSourceSet
+                            .getExtras$gradle_core()
+                            .forEach(
+                                    androidSourceDirectorySet ->
+                                            renderDirectorySet(
+                                                    "Custom sources",
+                                                    androidSourceDirectorySet,
+                                                    project));
                 }
             }
 

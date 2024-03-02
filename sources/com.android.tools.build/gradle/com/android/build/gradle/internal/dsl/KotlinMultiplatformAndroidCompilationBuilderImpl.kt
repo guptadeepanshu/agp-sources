@@ -19,8 +19,8 @@ package com.android.build.gradle.internal.dsl
 import com.android.build.api.dsl.KotlinMultiplatformAndroidCompilationBuilder
 import com.android.build.api.variant.impl.KmpAndroidCompilationType
 import org.jetbrains.kotlin.gradle.ExternalKotlinTargetApi
-import org.jetbrains.kotlin.gradle.plugin.KotlinTargetHierarchy
-import org.jetbrains.kotlin.gradle.plugin.mpp.targetHierarchy.SourceSetTreeClassifier
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
+import org.jetbrains.kotlin.gradle.plugin.hierarchy.KotlinSourceSetTreeClassifier
 
 internal class KotlinMultiplatformAndroidCompilationBuilderImpl(
     private val compilationType: KmpAndroidCompilationType
@@ -30,17 +30,17 @@ internal class KotlinMultiplatformAndroidCompilationBuilderImpl(
     override var sourceSetTreeName = compilationType.defaultSourceSetTreeName
 
     @OptIn(ExternalKotlinTargetApi::class)
-    internal fun getSourceSetTreeClassifier(): SourceSetTreeClassifier {
+    internal fun getSourceSetTreeClassifier(): KotlinSourceSetTreeClassifier {
         return when (compilationType) {
-            KmpAndroidCompilationType.MAIN -> SourceSetTreeClassifier.Default
+            KmpAndroidCompilationType.MAIN -> KotlinSourceSetTreeClassifier.Default
 
             KmpAndroidCompilationType.TEST_ON_JVM -> sourceSetTreeName?.let {
-                SourceSetTreeClassifier.Name(it)
-            } ?: SourceSetTreeClassifier.Value(KotlinTargetHierarchy.SourceSetTree.test)
+                KotlinSourceSetTreeClassifier.Name(it)
+            } ?: KotlinSourceSetTreeClassifier.Value(KotlinSourceSetTree.test)
 
             KmpAndroidCompilationType.TEST_ON_DEVICE -> sourceSetTreeName?.let {
-                SourceSetTreeClassifier.Name(it)
-            } ?: SourceSetTreeClassifier.None
+                KotlinSourceSetTreeClassifier.Name(it)
+            } ?: KotlinSourceSetTreeClassifier.None
         }
     }
 }

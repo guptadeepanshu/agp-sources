@@ -115,27 +115,30 @@ public class SyncService implements AutoCloseable {
     }
 
     public static class FileStat {
-      private final int myMode;
-      private final int mySize;
-      private final Date myLastModified;
 
-      public FileStat(int mode, int size, int lastModifiedSecs) {
-        myMode = mode;
-        mySize = size;
-        myLastModified = new Date((long)(lastModifiedSecs) * 1000);
-      }
+        private final int myMode;
 
-      public int getMode() {
-        return myMode;
-      }
+        private final int mySize;
 
-      public int getSize() {
-        return mySize;
-      }
+        private final Date myLastModified;
 
-      public Date getLastModified() {
-        return myLastModified;
-      }
+        public FileStat(int mode, int size, long lastModifiedSecs) {
+            myMode = mode;
+            mySize = size;
+            myLastModified = new Date(lastModifiedSecs * 1000);
+        }
+
+        public int getMode() {
+            return myMode;
+        }
+
+        public int getSize() {
+            return mySize;
+        }
+
+        public Date getLastModified() {
+            return myLastModified;
+        }
     }
 
     /**

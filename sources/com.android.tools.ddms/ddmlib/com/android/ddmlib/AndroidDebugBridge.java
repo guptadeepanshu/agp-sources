@@ -21,6 +21,9 @@ import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.ddmlib.Log.LogLevel;
 import com.android.ddmlib.clientmanager.ClientManager;
+import com.android.ddmlib.idevicemanager.IDeviceManager;
+import com.android.ddmlib.idevicemanager.IDeviceManagerFactory;
+import com.android.ddmlib.idevicemanager.IDeviceManagerUtils;
 import com.android.ddmlib.internal.ClientImpl;
 import com.android.ddmlib.internal.DefaultJdwpProcessorFactory;
 import com.android.ddmlib.internal.DeviceMonitor;
@@ -110,10 +113,12 @@ public class AndroidDebugBridge {
     /** Last known good {@link InetSocketAddress} to ADB. */
     private static InetSocketAddress sLastKnownGoodAddress;
 
-    private static AndroidDebugBridge sThis;
+    private static volatile AndroidDebugBridge sThis;
     private static boolean sInitialized = false;
     private static boolean sClientSupport;
     private static ClientManager sClientManager;
+    private static IDeviceManagerFactory sIDeviceManagerFactory;
+    private static IDeviceUsageTracker iDeviceUsageTracker;
     private static Map<String, String> sAdbEnvVars; // env vars to set while launching adb
 
     /** Full path to adb. */
@@ -125,6 +130,8 @@ public class AndroidDebugBridge {
     private boolean mStarted = false;
 
     private DeviceMonitor mDeviceMonitor;
+
+    private final IDeviceManager mIDeviceManager;
 
     // lock object for synchronization
     private static final Object sLock = new Object();
@@ -284,10 +291,17 @@ public class AndroidDebugBridge {
     public static synchronized void init(AdbInitOptions options) {
         Preconditions.checkState(!sInitialized, "AndroidDebugBridge.init() has already been called.");
         sInitialized = true;
+        sIDeviceManagerFactory = options.iDeviceManagerFactory;
+        iDeviceUsageTracker = options.iDeviceUsageTracker;
         sClientSupport = options.clientSupport;
         sClientManager = options.clientManager;
         if (sClientManager != null) {
             // A custom client manager is not compatible with "client support"
+            sClientSupport = false;
+        }
+        if (sIDeviceManagerFactory != null) {
+            // A custom "IDevice" manager is not compatible with a "Client" manager
+            sClientManager = null;
             sClientSupport = false;
         }
         sAdbEnvVars = options.adbEnvVars;
@@ -382,6 +396,14 @@ public class AndroidDebugBridge {
         if (sThis != null && sThis.mDeviceMonitor != null) {
             sThis.mDeviceMonitor.stop();
             sThis.mDeviceMonitor = null;
+        }
+        if (sThis != null && sThis.mIDeviceManager != null) {
+            try {
+                sThis.mIDeviceManager.close();
+            } catch (Exception e) {
+                Log.e(DDMS, "Could not close IDeviceManager:");
+                Log.e(DDMS, e);
+            }
         }
 
         MonitorThread monitorThread = MonitorThread.getInstance();
@@ -709,10 +731,7 @@ public class AndroidDebugBridge {
     public static void addDebugBridgeChangeListener(@NonNull IDebugBridgeChangeListener listener) {
         sBridgeListeners.add(listener);
 
-        AndroidDebugBridge localThis;
-        synchronized (sLock) {
-            localThis = sThis;
-        }
+        AndroidDebugBridge localThis = sThis;
 
         if (localThis != null) {
             // we attempt to catch any exception so that a bad listener doesn't kill our thread
@@ -801,6 +820,9 @@ public class AndroidDebugBridge {
      */
     @NonNull
     public IDevice[] getDevices() {
+        if (mIDeviceManager != null) {
+            return mIDeviceManager.getDevices().toArray(new IDevice[0]);
+        }
         synchronized (sLock) {
             if (mDeviceMonitor != null) {
                 return mDeviceMonitor.getDevices();
@@ -822,6 +844,10 @@ public class AndroidDebugBridge {
      * IDeviceChangeListener} object.
      */
     public boolean hasInitialDeviceList() {
+        if (mIDeviceManager != null) {
+            return mIDeviceManager.hasInitialDeviceList();
+        }
+
         if (mDeviceMonitor != null) {
             return mDeviceMonitor.hasInitialDeviceList();
         }
@@ -862,12 +888,18 @@ public class AndroidDebugBridge {
         return -1;
     }
 
+    @Nullable
+    public IDeviceUsageTracker getiDeviceUsageTracker() {
+        return iDeviceUsageTracker;
+    }
+
     /**
      * Creates a new bridge.
      * @param osLocation the location of the command line tool
      * @throws InvalidParameterException
      */
     private AndroidDebugBridge(String osLocation) throws InvalidParameterException {
+        this();
         if (osLocation == null || osLocation.isEmpty()) {
             throw new InvalidParameterException();
         }
@@ -885,6 +917,11 @@ public class AndroidDebugBridge {
      * Creates a new bridge not linked to any particular adb executable.
      */
     private AndroidDebugBridge() {
+        mIDeviceManager =
+                (sIDeviceManagerFactory == null)
+                        ? null
+                        : sIDeviceManagerFactory.createIDeviceManager(
+                                this, IDeviceManagerUtils.createIDeviceManagerListener());
     }
 
     /**
@@ -1142,10 +1179,17 @@ public class AndroidDebugBridge {
         mStarted = true;
 
         // Start the underlying services.
-        mDeviceMonitor = new DeviceMonitor(this, new MonitorErrorHandler());
-        mDeviceMonitor.start();
+        startDeviceMonitor();
 
         return true;
+    }
+
+    private void startDeviceMonitor() {
+        // If `IDeviceManager` is available then it is used to process the device updates and
+        // `DeviceMonitor` is used only to establish and track adb server connection, etc.
+        boolean emitDeviceListUpdates = mIDeviceManager == null;
+        mDeviceMonitor = new DeviceMonitor(this, new MonitorErrorHandler(), emitDeviceListUpdates);
+        mDeviceMonitor.start();
     }
 
     /**
@@ -1241,8 +1285,7 @@ public class AndroidDebugBridge {
             }
 
             if (isSuccessful && mDeviceMonitor == null) {
-                mDeviceMonitor = new DeviceMonitor(this, new MonitorErrorHandler());
-                mDeviceMonitor.start();
+                startDeviceMonitor();
             }
         }
 
@@ -1399,6 +1442,7 @@ public class AndroidDebugBridge {
                     env.put("ADBHOST", adbHostValue);
                 }
             }
+            processBuilder.directory(new File(mAdbOsLocation).getParentFile());
             proc = processBuilder.start();
 
             ArrayList<String> errorOutput = new ArrayList<String>();

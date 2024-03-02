@@ -211,4 +211,31 @@ public interface TestRunOrBuilder extends
    * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
    */
   com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailureOrBuilder getAutomaticSnapshotOnFailureOrBuilder();
+
+  /**
+   * <pre>
+   * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
+   * </pre>
+   *
+   * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+   * @return Whether the previewScreenshotRun field is set.
+   */
+  boolean hasPreviewScreenshotRun();
+  /**
+   * <pre>
+   * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
+   * </pre>
+   *
+   * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+   * @return The previewScreenshotRun.
+   */
+  com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun getPreviewScreenshotRun();
+  /**
+   * <pre>
+   * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
+   * </pre>
+   *
+   * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+   */
+  com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRunOrBuilder getPreviewScreenshotRunOrBuilder();
 }

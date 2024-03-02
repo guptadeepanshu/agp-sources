@@ -100,14 +100,24 @@ public abstract class AaptOptions implements com.android.build.api.dsl.AaptOptio
         return getInternalNoCompressList();
     }
 
+    /**
+     * @deprecated New cruncher always enbled by default. This api is deprecated and will be removed
+     *     in 9.0
+     */
     @SuppressWarnings("MethodMayBeStatic")
+    @Deprecated
     public void useNewCruncher(boolean value) {
         LoggerWrapper.getLogger(AaptOptions.class).warning("useNewCruncher has been deprecated. "
                 + "It will be removed in a future version of the gradle plugin. New cruncher is "
                 + "now always enabled.");
     }
 
+    /**
+     * @deprecated New cruncher always enbled by default. This api is deprecated and will be removed
+     *     in 9.0
+     */
     @SuppressWarnings("MethodMayBeStatic")
+    @Deprecated
     public void setUseNewCruncher(boolean value) {
         LoggerWrapper.getLogger(AaptOptions.class).warning("useNewCruncher has been deprecated. "
                 + "It will be removed in a future version of the gradle plugin. New cruncher is "
@@ -194,14 +204,12 @@ public abstract class AaptOptions implements com.android.build.api.dsl.AaptOptio
     @NonNull
     public abstract List<String> getAdditionalParameters();
 
+    /** @deprecated This api is deprecated and will be removed in 9.0 */
+    @Deprecated
     public abstract void setCruncherProcesses(int cruncherProcesses);
 
-    /**
-     * Obtains the number of cruncher processes to use. More cruncher processes will crunch files
-     * faster, but will require more memory and CPU.
-     *
-     * @return the number of cruncher processes, {@code 0} to use the default
-     */
+    /** @deprecated This api is deprecated and will be removed in 9.0 */
+    @Deprecated
     public abstract int getCruncherProcesses();
 
     @Override

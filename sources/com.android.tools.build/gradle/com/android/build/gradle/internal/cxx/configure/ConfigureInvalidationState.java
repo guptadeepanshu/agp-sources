@@ -21,14 +21,21 @@ private static final long serialVersionUID = 0L;
   }
   private ConfigureInvalidationState() {
     fingerPrintFile_ = "";
-    inputFiles_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    requiredOutputFiles_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    optionalOutputFiles_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    hardConfigureFiles_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    removedSinceFingerPrintsFiles_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    addedSinceFingerPrintsFiles_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    inputFiles_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+    requiredOutputFiles_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+    optionalOutputFiles_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+    hardConfigureFiles_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+    removedSinceFingerPrintsFiles_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+    addedSinceFingerPrintsFiles_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     changesToFingerPrintFiles_ = java.util.Collections.emptyList();
-    unchangedFingerPrintFiles_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    unchangedFingerPrintFiles_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     configureType_ = 0;
     softConfigureReasons_ = java.util.Collections.emptyList();
     hardConfigureReasons_ = java.util.Collections.emptyList();
@@ -41,191 +48,6 @@ private static final long serialVersionUID = 0L;
     return new ConfigureInvalidationState();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
-  private ConfigureInvalidationState(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    int mutable_bitField0_ = 0;
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 8: {
-
-            forceConfigure_ = input.readBool();
-            break;
-          }
-          case 18: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            fingerPrintFile_ = s;
-            break;
-          }
-          case 26: {
-            java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-              inputFiles_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000001;
-            }
-            inputFiles_.add(s);
-            break;
-          }
-          case 34: {
-            java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000002) != 0)) {
-              requiredOutputFiles_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000002;
-            }
-            requiredOutputFiles_.add(s);
-            break;
-          }
-          case 42: {
-            java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000004) != 0)) {
-              optionalOutputFiles_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000004;
-            }
-            optionalOutputFiles_.add(s);
-            break;
-          }
-          case 50: {
-            java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000008) != 0)) {
-              hardConfigureFiles_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000008;
-            }
-            hardConfigureFiles_.add(s);
-            break;
-          }
-          case 56: {
-
-            fingerPrintFileExisted_ = input.readBool();
-            break;
-          }
-          case 66: {
-            java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000010) != 0)) {
-              removedSinceFingerPrintsFiles_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000010;
-            }
-            removedSinceFingerPrintsFiles_.add(s);
-            break;
-          }
-          case 74: {
-            java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000020) != 0)) {
-              addedSinceFingerPrintsFiles_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000020;
-            }
-            addedSinceFingerPrintsFiles_.add(s);
-            break;
-          }
-          case 82: {
-            if (!((mutable_bitField0_ & 0x00000040) != 0)) {
-              changesToFingerPrintFiles_ = new java.util.ArrayList<com.android.build.gradle.internal.cxx.configure.ChangedFile>();
-              mutable_bitField0_ |= 0x00000040;
-            }
-            changesToFingerPrintFiles_.add(
-                input.readMessage(com.android.build.gradle.internal.cxx.configure.ChangedFile.parser(), extensionRegistry));
-            break;
-          }
-          case 90: {
-            java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000080) != 0)) {
-              unchangedFingerPrintFiles_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000080;
-            }
-            unchangedFingerPrintFiles_.add(s);
-            break;
-          }
-          case 96: {
-            int rawValue = input.readEnum();
-
-            configureType_ = rawValue;
-            break;
-          }
-          case 106: {
-            if (!((mutable_bitField0_ & 0x00000100) != 0)) {
-              softConfigureReasons_ = new java.util.ArrayList<com.android.build.gradle.internal.cxx.configure.ChangedFile>();
-              mutable_bitField0_ |= 0x00000100;
-            }
-            softConfigureReasons_.add(
-                input.readMessage(com.android.build.gradle.internal.cxx.configure.ChangedFile.parser(), extensionRegistry));
-            break;
-          }
-          case 114: {
-            if (!((mutable_bitField0_ & 0x00000200) != 0)) {
-              hardConfigureReasons_ = new java.util.ArrayList<com.android.build.gradle.internal.cxx.configure.ChangedFile>();
-              mutable_bitField0_ |= 0x00000200;
-            }
-            hardConfigureReasons_.add(
-                input.readMessage(com.android.build.gradle.internal.cxx.configure.ChangedFile.parser(), extensionRegistry));
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      if (((mutable_bitField0_ & 0x00000001) != 0)) {
-        inputFiles_ = inputFiles_.getUnmodifiableView();
-      }
-      if (((mutable_bitField0_ & 0x00000002) != 0)) {
-        requiredOutputFiles_ = requiredOutputFiles_.getUnmodifiableView();
-      }
-      if (((mutable_bitField0_ & 0x00000004) != 0)) {
-        optionalOutputFiles_ = optionalOutputFiles_.getUnmodifiableView();
-      }
-      if (((mutable_bitField0_ & 0x00000008) != 0)) {
-        hardConfigureFiles_ = hardConfigureFiles_.getUnmodifiableView();
-      }
-      if (((mutable_bitField0_ & 0x00000010) != 0)) {
-        removedSinceFingerPrintsFiles_ = removedSinceFingerPrintsFiles_.getUnmodifiableView();
-      }
-      if (((mutable_bitField0_ & 0x00000020) != 0)) {
-        addedSinceFingerPrintsFiles_ = addedSinceFingerPrintsFiles_.getUnmodifiableView();
-      }
-      if (((mutable_bitField0_ & 0x00000040) != 0)) {
-        changesToFingerPrintFiles_ = java.util.Collections.unmodifiableList(changesToFingerPrintFiles_);
-      }
-      if (((mutable_bitField0_ & 0x00000080) != 0)) {
-        unchangedFingerPrintFiles_ = unchangedFingerPrintFiles_.getUnmodifiableView();
-      }
-      if (((mutable_bitField0_ & 0x00000100) != 0)) {
-        softConfigureReasons_ = java.util.Collections.unmodifiableList(softConfigureReasons_);
-      }
-      if (((mutable_bitField0_ & 0x00000200) != 0)) {
-        hardConfigureReasons_ = java.util.Collections.unmodifiableList(hardConfigureReasons_);
-      }
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.android.build.gradle.internal.cxx.configure.CxxConfigure.internal_static_ConfigureInvalidationState_descriptor;
@@ -240,7 +62,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FORCE_CONFIGURE_FIELD_NUMBER = 1;
-  private boolean forceConfigure_;
+  private boolean forceConfigure_ = false;
   /**
    * <pre>
    * ------------------------------------------------------------------------
@@ -258,7 +80,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FINGER_PRINT_FILE_FIELD_NUMBER = 2;
-  private volatile java.lang.Object fingerPrintFile_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object fingerPrintFile_ = "";
   /**
    * <pre>
    * File that contains finger print of files as they were after the last
@@ -306,7 +129,9 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int INPUT_FILES_FIELD_NUMBER = 3;
-  private com.google.protobuf.LazyStringList inputFiles_;
+  @SuppressWarnings("serial")
+  private com.google.protobuf.LazyStringArrayList inputFiles_ =
+      com.google.protobuf.LazyStringArrayList.emptyList();
   /**
    * <pre>
    * Inputs to the C++ configuration phase.
@@ -357,7 +182,9 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int REQUIRED_OUTPUT_FILES_FIELD_NUMBER = 4;
-  private com.google.protobuf.LazyStringList requiredOutputFiles_;
+  @SuppressWarnings("serial")
+  private com.google.protobuf.LazyStringArrayList requiredOutputFiles_ =
+      com.google.protobuf.LazyStringArrayList.emptyList();
   /**
    * <pre>
    * Required outputs of the C++ configuration phase.
@@ -408,7 +235,9 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int OPTIONAL_OUTPUT_FILES_FIELD_NUMBER = 5;
-  private com.google.protobuf.LazyStringList optionalOutputFiles_;
+  @SuppressWarnings("serial")
+  private com.google.protobuf.LazyStringArrayList optionalOutputFiles_ =
+      com.google.protobuf.LazyStringArrayList.emptyList();
   /**
    * <pre>
    * Optional outputs of the C++ configuration phase.
@@ -459,7 +288,9 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int HARD_CONFIGURE_FILES_FIELD_NUMBER = 6;
-  private com.google.protobuf.LazyStringList hardConfigureFiles_;
+  @SuppressWarnings("serial")
+  private com.google.protobuf.LazyStringArrayList hardConfigureFiles_ =
+      com.google.protobuf.LazyStringArrayList.emptyList();
   /**
    * <pre>
    * Files that, when changed, will cause a complete re-run of C++
@@ -514,7 +345,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FINGER_PRINT_FILE_EXISTED_FIELD_NUMBER = 7;
-  private boolean fingerPrintFileExisted_;
+  private boolean fingerPrintFileExisted_ = false;
   /**
    * <pre>
    * ------------------------------------------------------------------------
@@ -532,7 +363,9 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int REMOVED_SINCE_FINGER_PRINTS_FILES_FIELD_NUMBER = 8;
-  private com.google.protobuf.LazyStringList removedSinceFingerPrintsFiles_;
+  @SuppressWarnings("serial")
+  private com.google.protobuf.LazyStringArrayList removedSinceFingerPrintsFiles_ =
+      com.google.protobuf.LazyStringArrayList.emptyList();
   /**
    * <pre>
    * Files that were listed in fingerprints file last time but not this time.
@@ -583,7 +416,9 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ADDED_SINCE_FINGER_PRINTS_FILES_FIELD_NUMBER = 9;
-  private com.google.protobuf.LazyStringList addedSinceFingerPrintsFiles_;
+  @SuppressWarnings("serial")
+  private com.google.protobuf.LazyStringArrayList addedSinceFingerPrintsFiles_ =
+      com.google.protobuf.LazyStringArrayList.emptyList();
   /**
    * <pre>
    * Files that were not listed in fingerprints file last time but are present
@@ -638,6 +473,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CHANGES_TO_FINGER_PRINT_FILES_FIELD_NUMBER = 10;
+  @SuppressWarnings("serial")
   private java.util.List<com.android.build.gradle.internal.cxx.configure.ChangedFile> changesToFingerPrintFiles_;
   /**
    * <code>repeated .ChangedFile changes_to_finger_print_files = 10;</code>
@@ -678,7 +514,9 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int UNCHANGED_FINGER_PRINT_FILES_FIELD_NUMBER = 11;
-  private com.google.protobuf.LazyStringList unchangedFingerPrintFiles_;
+  @SuppressWarnings("serial")
+  private com.google.protobuf.LazyStringArrayList unchangedFingerPrintFiles_ =
+      com.google.protobuf.LazyStringArrayList.emptyList();
   /**
    * <code>repeated string unchanged_finger_print_files = 11;</code>
    * @return A list containing the unchangedFingerPrintFiles.
@@ -713,7 +551,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CONFIGURE_TYPE_FIELD_NUMBER = 12;
-  private int configureType_;
+  private int configureType_ = 0;
   /**
    * <pre>
    * ------------------------------------------------------------------------
@@ -740,12 +578,12 @@ private static final long serialVersionUID = 0L;
    * @return The configureType.
    */
   @java.lang.Override public com.android.build.gradle.internal.cxx.configure.ConfigureType getConfigureType() {
-    @SuppressWarnings("deprecation")
-    com.android.build.gradle.internal.cxx.configure.ConfigureType result = com.android.build.gradle.internal.cxx.configure.ConfigureType.valueOf(configureType_);
+    com.android.build.gradle.internal.cxx.configure.ConfigureType result = com.android.build.gradle.internal.cxx.configure.ConfigureType.forNumber(configureType_);
     return result == null ? com.android.build.gradle.internal.cxx.configure.ConfigureType.UNRECOGNIZED : result;
   }
 
   public static final int SOFT_CONFIGURE_REASONS_FIELD_NUMBER = 13;
+  @SuppressWarnings("serial")
   private java.util.List<com.android.build.gradle.internal.cxx.configure.ChangedFile> softConfigureReasons_;
   /**
    * <pre>
@@ -806,6 +644,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int HARD_CONFIGURE_REASONS_FIELD_NUMBER = 14;
+  @SuppressWarnings("serial")
   private java.util.List<com.android.build.gradle.internal.cxx.configure.ChangedFile> hardConfigureReasons_;
   /**
    * <pre>
@@ -921,7 +760,7 @@ private static final long serialVersionUID = 0L;
     for (int i = 0; i < hardConfigureReasons_.size(); i++) {
       output.writeMessage(14, hardConfigureReasons_.get(i));
     }
-    unknownFields.writeTo(output);
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -1013,7 +852,7 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(14, hardConfigureReasons_.get(i));
     }
-    size += unknownFields.getSerializedSize();
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -1055,7 +894,7 @@ private static final long serialVersionUID = 0L;
         .equals(other.getSoftConfigureReasonsList())) return false;
     if (!getHardConfigureReasonsList()
         .equals(other.getHardConfigureReasonsList())) return false;
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -1116,7 +955,7 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + HARD_CONFIGURE_REASONS_FIELD_NUMBER;
       hash = (53 * hash) + getHardConfigureReasonsList().hashCode();
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -1237,65 +1076,57 @@ private static final long serialVersionUID = 0L;
 
     // Construct using com.android.build.gradle.internal.cxx.configure.ConfigureInvalidationState.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessageV3
-              .alwaysUseFieldBuilders) {
-        getChangesToFingerPrintFilesFieldBuilder();
-        getSoftConfigureReasonsFieldBuilder();
-        getHardConfigureReasonsFieldBuilder();
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       forceConfigure_ = false;
-
       fingerPrintFile_ = "";
-
-      inputFiles_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      requiredOutputFiles_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000002);
-      optionalOutputFiles_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000004);
-      hardConfigureFiles_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000008);
+      inputFiles_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
+      requiredOutputFiles_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
+      optionalOutputFiles_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
+      hardConfigureFiles_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
       fingerPrintFileExisted_ = false;
-
-      removedSinceFingerPrintsFiles_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000010);
-      addedSinceFingerPrintsFiles_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000020);
+      removedSinceFingerPrintsFiles_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
+      addedSinceFingerPrintsFiles_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
       if (changesToFingerPrintFilesBuilder_ == null) {
         changesToFingerPrintFiles_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000040);
       } else {
+        changesToFingerPrintFiles_ = null;
         changesToFingerPrintFilesBuilder_.clear();
       }
-      unchangedFingerPrintFiles_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000080);
+      bitField0_ = (bitField0_ & ~0x00000200);
+      unchangedFingerPrintFiles_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
       configureType_ = 0;
-
       if (softConfigureReasonsBuilder_ == null) {
         softConfigureReasons_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000100);
       } else {
+        softConfigureReasons_ = null;
         softConfigureReasonsBuilder_.clear();
       }
+      bitField0_ = (bitField0_ & ~0x00001000);
       if (hardConfigureReasonsBuilder_ == null) {
         hardConfigureReasons_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000200);
       } else {
+        hardConfigureReasons_ = null;
         hardConfigureReasonsBuilder_.clear();
       }
+      bitField0_ = (bitField0_ & ~0x00002000);
       return this;
     }
 
@@ -1322,109 +1153,86 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.android.build.gradle.internal.cxx.configure.ConfigureInvalidationState buildPartial() {
       com.android.build.gradle.internal.cxx.configure.ConfigureInvalidationState result = new com.android.build.gradle.internal.cxx.configure.ConfigureInvalidationState(this);
-      int from_bitField0_ = bitField0_;
-      result.forceConfigure_ = forceConfigure_;
-      result.fingerPrintFile_ = fingerPrintFile_;
-      if (((bitField0_ & 0x00000001) != 0)) {
-        inputFiles_ = inputFiles_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000001);
-      }
-      result.inputFiles_ = inputFiles_;
-      if (((bitField0_ & 0x00000002) != 0)) {
-        requiredOutputFiles_ = requiredOutputFiles_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000002);
-      }
-      result.requiredOutputFiles_ = requiredOutputFiles_;
-      if (((bitField0_ & 0x00000004) != 0)) {
-        optionalOutputFiles_ = optionalOutputFiles_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000004);
-      }
-      result.optionalOutputFiles_ = optionalOutputFiles_;
-      if (((bitField0_ & 0x00000008) != 0)) {
-        hardConfigureFiles_ = hardConfigureFiles_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000008);
-      }
-      result.hardConfigureFiles_ = hardConfigureFiles_;
-      result.fingerPrintFileExisted_ = fingerPrintFileExisted_;
-      if (((bitField0_ & 0x00000010) != 0)) {
-        removedSinceFingerPrintsFiles_ = removedSinceFingerPrintsFiles_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000010);
-      }
-      result.removedSinceFingerPrintsFiles_ = removedSinceFingerPrintsFiles_;
-      if (((bitField0_ & 0x00000020) != 0)) {
-        addedSinceFingerPrintsFiles_ = addedSinceFingerPrintsFiles_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000020);
-      }
-      result.addedSinceFingerPrintsFiles_ = addedSinceFingerPrintsFiles_;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.android.build.gradle.internal.cxx.configure.ConfigureInvalidationState result) {
       if (changesToFingerPrintFilesBuilder_ == null) {
-        if (((bitField0_ & 0x00000040) != 0)) {
+        if (((bitField0_ & 0x00000200) != 0)) {
           changesToFingerPrintFiles_ = java.util.Collections.unmodifiableList(changesToFingerPrintFiles_);
-          bitField0_ = (bitField0_ & ~0x00000040);
+          bitField0_ = (bitField0_ & ~0x00000200);
         }
         result.changesToFingerPrintFiles_ = changesToFingerPrintFiles_;
       } else {
         result.changesToFingerPrintFiles_ = changesToFingerPrintFilesBuilder_.build();
       }
-      if (((bitField0_ & 0x00000080) != 0)) {
-        unchangedFingerPrintFiles_ = unchangedFingerPrintFiles_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000080);
-      }
-      result.unchangedFingerPrintFiles_ = unchangedFingerPrintFiles_;
-      result.configureType_ = configureType_;
       if (softConfigureReasonsBuilder_ == null) {
-        if (((bitField0_ & 0x00000100) != 0)) {
+        if (((bitField0_ & 0x00001000) != 0)) {
           softConfigureReasons_ = java.util.Collections.unmodifiableList(softConfigureReasons_);
-          bitField0_ = (bitField0_ & ~0x00000100);
+          bitField0_ = (bitField0_ & ~0x00001000);
         }
         result.softConfigureReasons_ = softConfigureReasons_;
       } else {
         result.softConfigureReasons_ = softConfigureReasonsBuilder_.build();
       }
       if (hardConfigureReasonsBuilder_ == null) {
-        if (((bitField0_ & 0x00000200) != 0)) {
+        if (((bitField0_ & 0x00002000) != 0)) {
           hardConfigureReasons_ = java.util.Collections.unmodifiableList(hardConfigureReasons_);
-          bitField0_ = (bitField0_ & ~0x00000200);
+          bitField0_ = (bitField0_ & ~0x00002000);
         }
         result.hardConfigureReasons_ = hardConfigureReasons_;
       } else {
         result.hardConfigureReasons_ = hardConfigureReasonsBuilder_.build();
       }
-      onBuilt();
-      return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.android.build.gradle.internal.cxx.configure.ConfigureInvalidationState result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.forceConfigure_ = forceConfigure_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.fingerPrintFile_ = fingerPrintFile_;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        inputFiles_.makeImmutable();
+        result.inputFiles_ = inputFiles_;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        requiredOutputFiles_.makeImmutable();
+        result.requiredOutputFiles_ = requiredOutputFiles_;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        optionalOutputFiles_.makeImmutable();
+        result.optionalOutputFiles_ = optionalOutputFiles_;
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        hardConfigureFiles_.makeImmutable();
+        result.hardConfigureFiles_ = hardConfigureFiles_;
+      }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.fingerPrintFileExisted_ = fingerPrintFileExisted_;
+      }
+      if (((from_bitField0_ & 0x00000080) != 0)) {
+        removedSinceFingerPrintsFiles_.makeImmutable();
+        result.removedSinceFingerPrintsFiles_ = removedSinceFingerPrintsFiles_;
+      }
+      if (((from_bitField0_ & 0x00000100) != 0)) {
+        addedSinceFingerPrintsFiles_.makeImmutable();
+        result.addedSinceFingerPrintsFiles_ = addedSinceFingerPrintsFiles_;
+      }
+      if (((from_bitField0_ & 0x00000400) != 0)) {
+        unchangedFingerPrintFiles_.makeImmutable();
+        result.unchangedFingerPrintFiles_ = unchangedFingerPrintFiles_;
+      }
+      if (((from_bitField0_ & 0x00000800) != 0)) {
+        result.configureType_ = configureType_;
+      }
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.android.build.gradle.internal.cxx.configure.ConfigureInvalidationState) {
@@ -1442,12 +1250,13 @@ private static final long serialVersionUID = 0L;
       }
       if (!other.getFingerPrintFile().isEmpty()) {
         fingerPrintFile_ = other.fingerPrintFile_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (!other.inputFiles_.isEmpty()) {
         if (inputFiles_.isEmpty()) {
           inputFiles_ = other.inputFiles_;
-          bitField0_ = (bitField0_ & ~0x00000001);
+          bitField0_ |= 0x00000004;
         } else {
           ensureInputFilesIsMutable();
           inputFiles_.addAll(other.inputFiles_);
@@ -1457,7 +1266,7 @@ private static final long serialVersionUID = 0L;
       if (!other.requiredOutputFiles_.isEmpty()) {
         if (requiredOutputFiles_.isEmpty()) {
           requiredOutputFiles_ = other.requiredOutputFiles_;
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ |= 0x00000008;
         } else {
           ensureRequiredOutputFilesIsMutable();
           requiredOutputFiles_.addAll(other.requiredOutputFiles_);
@@ -1467,7 +1276,7 @@ private static final long serialVersionUID = 0L;
       if (!other.optionalOutputFiles_.isEmpty()) {
         if (optionalOutputFiles_.isEmpty()) {
           optionalOutputFiles_ = other.optionalOutputFiles_;
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ |= 0x00000010;
         } else {
           ensureOptionalOutputFilesIsMutable();
           optionalOutputFiles_.addAll(other.optionalOutputFiles_);
@@ -1477,7 +1286,7 @@ private static final long serialVersionUID = 0L;
       if (!other.hardConfigureFiles_.isEmpty()) {
         if (hardConfigureFiles_.isEmpty()) {
           hardConfigureFiles_ = other.hardConfigureFiles_;
-          bitField0_ = (bitField0_ & ~0x00000008);
+          bitField0_ |= 0x00000020;
         } else {
           ensureHardConfigureFilesIsMutable();
           hardConfigureFiles_.addAll(other.hardConfigureFiles_);
@@ -1490,7 +1299,7 @@ private static final long serialVersionUID = 0L;
       if (!other.removedSinceFingerPrintsFiles_.isEmpty()) {
         if (removedSinceFingerPrintsFiles_.isEmpty()) {
           removedSinceFingerPrintsFiles_ = other.removedSinceFingerPrintsFiles_;
-          bitField0_ = (bitField0_ & ~0x00000010);
+          bitField0_ |= 0x00000080;
         } else {
           ensureRemovedSinceFingerPrintsFilesIsMutable();
           removedSinceFingerPrintsFiles_.addAll(other.removedSinceFingerPrintsFiles_);
@@ -1500,7 +1309,7 @@ private static final long serialVersionUID = 0L;
       if (!other.addedSinceFingerPrintsFiles_.isEmpty()) {
         if (addedSinceFingerPrintsFiles_.isEmpty()) {
           addedSinceFingerPrintsFiles_ = other.addedSinceFingerPrintsFiles_;
-          bitField0_ = (bitField0_ & ~0x00000020);
+          bitField0_ |= 0x00000100;
         } else {
           ensureAddedSinceFingerPrintsFilesIsMutable();
           addedSinceFingerPrintsFiles_.addAll(other.addedSinceFingerPrintsFiles_);
@@ -1511,7 +1320,7 @@ private static final long serialVersionUID = 0L;
         if (!other.changesToFingerPrintFiles_.isEmpty()) {
           if (changesToFingerPrintFiles_.isEmpty()) {
             changesToFingerPrintFiles_ = other.changesToFingerPrintFiles_;
-            bitField0_ = (bitField0_ & ~0x00000040);
+            bitField0_ = (bitField0_ & ~0x00000200);
           } else {
             ensureChangesToFingerPrintFilesIsMutable();
             changesToFingerPrintFiles_.addAll(other.changesToFingerPrintFiles_);
@@ -1524,7 +1333,7 @@ private static final long serialVersionUID = 0L;
             changesToFingerPrintFilesBuilder_.dispose();
             changesToFingerPrintFilesBuilder_ = null;
             changesToFingerPrintFiles_ = other.changesToFingerPrintFiles_;
-            bitField0_ = (bitField0_ & ~0x00000040);
+            bitField0_ = (bitField0_ & ~0x00000200);
             changesToFingerPrintFilesBuilder_ = 
               com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                  getChangesToFingerPrintFilesFieldBuilder() : null;
@@ -1536,7 +1345,7 @@ private static final long serialVersionUID = 0L;
       if (!other.unchangedFingerPrintFiles_.isEmpty()) {
         if (unchangedFingerPrintFiles_.isEmpty()) {
           unchangedFingerPrintFiles_ = other.unchangedFingerPrintFiles_;
-          bitField0_ = (bitField0_ & ~0x00000080);
+          bitField0_ |= 0x00000400;
         } else {
           ensureUnchangedFingerPrintFilesIsMutable();
           unchangedFingerPrintFiles_.addAll(other.unchangedFingerPrintFiles_);
@@ -1550,7 +1359,7 @@ private static final long serialVersionUID = 0L;
         if (!other.softConfigureReasons_.isEmpty()) {
           if (softConfigureReasons_.isEmpty()) {
             softConfigureReasons_ = other.softConfigureReasons_;
-            bitField0_ = (bitField0_ & ~0x00000100);
+            bitField0_ = (bitField0_ & ~0x00001000);
           } else {
             ensureSoftConfigureReasonsIsMutable();
             softConfigureReasons_.addAll(other.softConfigureReasons_);
@@ -1563,7 +1372,7 @@ private static final long serialVersionUID = 0L;
             softConfigureReasonsBuilder_.dispose();
             softConfigureReasonsBuilder_ = null;
             softConfigureReasons_ = other.softConfigureReasons_;
-            bitField0_ = (bitField0_ & ~0x00000100);
+            bitField0_ = (bitField0_ & ~0x00001000);
             softConfigureReasonsBuilder_ = 
               com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                  getSoftConfigureReasonsFieldBuilder() : null;
@@ -1576,7 +1385,7 @@ private static final long serialVersionUID = 0L;
         if (!other.hardConfigureReasons_.isEmpty()) {
           if (hardConfigureReasons_.isEmpty()) {
             hardConfigureReasons_ = other.hardConfigureReasons_;
-            bitField0_ = (bitField0_ & ~0x00000200);
+            bitField0_ = (bitField0_ & ~0x00002000);
           } else {
             ensureHardConfigureReasonsIsMutable();
             hardConfigureReasons_.addAll(other.hardConfigureReasons_);
@@ -1589,7 +1398,7 @@ private static final long serialVersionUID = 0L;
             hardConfigureReasonsBuilder_.dispose();
             hardConfigureReasonsBuilder_ = null;
             hardConfigureReasons_ = other.hardConfigureReasons_;
-            bitField0_ = (bitField0_ & ~0x00000200);
+            bitField0_ = (bitField0_ & ~0x00002000);
             hardConfigureReasonsBuilder_ = 
               com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                  getHardConfigureReasonsFieldBuilder() : null;
@@ -1598,7 +1407,7 @@ private static final long serialVersionUID = 0L;
           }
         }
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -1613,17 +1422,131 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.android.build.gradle.internal.cxx.configure.ConfigureInvalidationState parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              forceConfigure_ = input.readBool();
+              bitField0_ |= 0x00000001;
+              break;
+            } // case 8
+            case 18: {
+              fingerPrintFile_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 18
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+              ensureInputFilesIsMutable();
+              inputFiles_.add(s);
+              break;
+            } // case 26
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+              ensureRequiredOutputFilesIsMutable();
+              requiredOutputFiles_.add(s);
+              break;
+            } // case 34
+            case 42: {
+              java.lang.String s = input.readStringRequireUtf8();
+              ensureOptionalOutputFilesIsMutable();
+              optionalOutputFiles_.add(s);
+              break;
+            } // case 42
+            case 50: {
+              java.lang.String s = input.readStringRequireUtf8();
+              ensureHardConfigureFilesIsMutable();
+              hardConfigureFiles_.add(s);
+              break;
+            } // case 50
+            case 56: {
+              fingerPrintFileExisted_ = input.readBool();
+              bitField0_ |= 0x00000040;
+              break;
+            } // case 56
+            case 66: {
+              java.lang.String s = input.readStringRequireUtf8();
+              ensureRemovedSinceFingerPrintsFilesIsMutable();
+              removedSinceFingerPrintsFiles_.add(s);
+              break;
+            } // case 66
+            case 74: {
+              java.lang.String s = input.readStringRequireUtf8();
+              ensureAddedSinceFingerPrintsFilesIsMutable();
+              addedSinceFingerPrintsFiles_.add(s);
+              break;
+            } // case 74
+            case 82: {
+              com.android.build.gradle.internal.cxx.configure.ChangedFile m =
+                  input.readMessage(
+                      com.android.build.gradle.internal.cxx.configure.ChangedFile.parser(),
+                      extensionRegistry);
+              if (changesToFingerPrintFilesBuilder_ == null) {
+                ensureChangesToFingerPrintFilesIsMutable();
+                changesToFingerPrintFiles_.add(m);
+              } else {
+                changesToFingerPrintFilesBuilder_.addMessage(m);
+              }
+              break;
+            } // case 82
+            case 90: {
+              java.lang.String s = input.readStringRequireUtf8();
+              ensureUnchangedFingerPrintFilesIsMutable();
+              unchangedFingerPrintFiles_.add(s);
+              break;
+            } // case 90
+            case 96: {
+              configureType_ = input.readEnum();
+              bitField0_ |= 0x00000800;
+              break;
+            } // case 96
+            case 106: {
+              com.android.build.gradle.internal.cxx.configure.ChangedFile m =
+                  input.readMessage(
+                      com.android.build.gradle.internal.cxx.configure.ChangedFile.parser(),
+                      extensionRegistry);
+              if (softConfigureReasonsBuilder_ == null) {
+                ensureSoftConfigureReasonsIsMutable();
+                softConfigureReasons_.add(m);
+              } else {
+                softConfigureReasonsBuilder_.addMessage(m);
+              }
+              break;
+            } // case 106
+            case 114: {
+              com.android.build.gradle.internal.cxx.configure.ChangedFile m =
+                  input.readMessage(
+                      com.android.build.gradle.internal.cxx.configure.ChangedFile.parser(),
+                      extensionRegistry);
+              if (hardConfigureReasonsBuilder_ == null) {
+                ensureHardConfigureReasonsIsMutable();
+                hardConfigureReasons_.add(m);
+              } else {
+                hardConfigureReasonsBuilder_.addMessage(m);
+              }
+              break;
+            } // case 114
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.android.build.gradle.internal.cxx.configure.ConfigureInvalidationState) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
     private int bitField0_;
@@ -1657,8 +1580,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setForceConfigure(boolean value) {
-      
+
       forceConfigure_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1674,7 +1598,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearForceConfigure() {
-      
+      bitField0_ = (bitField0_ & ~0x00000001);
       forceConfigure_ = false;
       onChanged();
       return this;
@@ -1736,11 +1660,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setFingerPrintFile(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       fingerPrintFile_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1754,8 +1676,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearFingerPrintFile() {
-      
       fingerPrintFile_ = getDefaultInstance().getFingerPrintFile();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -1771,22 +1693,21 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setFingerPrintFileBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       fingerPrintFile_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
 
-    private com.google.protobuf.LazyStringList inputFiles_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private com.google.protobuf.LazyStringArrayList inputFiles_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     private void ensureInputFilesIsMutable() {
-      if (!((bitField0_ & 0x00000001) != 0)) {
+      if (!inputFiles_.isModifiable()) {
         inputFiles_ = new com.google.protobuf.LazyStringArrayList(inputFiles_);
-        bitField0_ |= 0x00000001;
-       }
+      }
+      bitField0_ |= 0x00000004;
     }
     /**
      * <pre>
@@ -1798,7 +1719,8 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ProtocolStringList
         getInputFilesList() {
-      return inputFiles_.getUnmodifiableView();
+      inputFiles_.makeImmutable();
+      return inputFiles_;
     }
     /**
      * <pre>
@@ -1848,11 +1770,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setInputFiles(
         int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureInputFilesIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureInputFilesIsMutable();
       inputFiles_.set(index, value);
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1867,11 +1788,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addInputFiles(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureInputFilesIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureInputFilesIsMutable();
       inputFiles_.add(value);
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1889,6 +1809,7 @@ private static final long serialVersionUID = 0L;
       ensureInputFilesIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
           values, inputFiles_);
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1901,8 +1822,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearInputFiles() {
-      inputFiles_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000001);
+      inputFiles_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+      bitField0_ = (bitField0_ & ~0x00000004);;
       onChanged();
       return this;
     }
@@ -1917,22 +1839,22 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addInputFilesBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       ensureInputFilesIsMutable();
       inputFiles_.add(value);
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
 
-    private com.google.protobuf.LazyStringList requiredOutputFiles_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private com.google.protobuf.LazyStringArrayList requiredOutputFiles_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     private void ensureRequiredOutputFilesIsMutable() {
-      if (!((bitField0_ & 0x00000002) != 0)) {
+      if (!requiredOutputFiles_.isModifiable()) {
         requiredOutputFiles_ = new com.google.protobuf.LazyStringArrayList(requiredOutputFiles_);
-        bitField0_ |= 0x00000002;
-       }
+      }
+      bitField0_ |= 0x00000008;
     }
     /**
      * <pre>
@@ -1944,7 +1866,8 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ProtocolStringList
         getRequiredOutputFilesList() {
-      return requiredOutputFiles_.getUnmodifiableView();
+      requiredOutputFiles_.makeImmutable();
+      return requiredOutputFiles_;
     }
     /**
      * <pre>
@@ -1994,11 +1917,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setRequiredOutputFiles(
         int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureRequiredOutputFilesIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureRequiredOutputFilesIsMutable();
       requiredOutputFiles_.set(index, value);
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -2013,11 +1935,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addRequiredOutputFiles(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureRequiredOutputFilesIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureRequiredOutputFilesIsMutable();
       requiredOutputFiles_.add(value);
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -2035,6 +1956,7 @@ private static final long serialVersionUID = 0L;
       ensureRequiredOutputFilesIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
           values, requiredOutputFiles_);
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -2047,8 +1969,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearRequiredOutputFiles() {
-      requiredOutputFiles_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000002);
+      requiredOutputFiles_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+      bitField0_ = (bitField0_ & ~0x00000008);;
       onChanged();
       return this;
     }
@@ -2063,22 +1986,22 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addRequiredOutputFilesBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       ensureRequiredOutputFilesIsMutable();
       requiredOutputFiles_.add(value);
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
 
-    private com.google.protobuf.LazyStringList optionalOutputFiles_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private com.google.protobuf.LazyStringArrayList optionalOutputFiles_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     private void ensureOptionalOutputFilesIsMutable() {
-      if (!((bitField0_ & 0x00000004) != 0)) {
+      if (!optionalOutputFiles_.isModifiable()) {
         optionalOutputFiles_ = new com.google.protobuf.LazyStringArrayList(optionalOutputFiles_);
-        bitField0_ |= 0x00000004;
-       }
+      }
+      bitField0_ |= 0x00000010;
     }
     /**
      * <pre>
@@ -2090,7 +2013,8 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ProtocolStringList
         getOptionalOutputFilesList() {
-      return optionalOutputFiles_.getUnmodifiableView();
+      optionalOutputFiles_.makeImmutable();
+      return optionalOutputFiles_;
     }
     /**
      * <pre>
@@ -2140,11 +2064,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setOptionalOutputFiles(
         int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureOptionalOutputFilesIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureOptionalOutputFilesIsMutable();
       optionalOutputFiles_.set(index, value);
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -2159,11 +2082,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addOptionalOutputFiles(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureOptionalOutputFilesIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureOptionalOutputFilesIsMutable();
       optionalOutputFiles_.add(value);
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -2181,6 +2103,7 @@ private static final long serialVersionUID = 0L;
       ensureOptionalOutputFilesIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
           values, optionalOutputFiles_);
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -2193,8 +2116,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearOptionalOutputFiles() {
-      optionalOutputFiles_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000004);
+      optionalOutputFiles_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+      bitField0_ = (bitField0_ & ~0x00000010);;
       onChanged();
       return this;
     }
@@ -2209,22 +2133,22 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addOptionalOutputFilesBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       ensureOptionalOutputFilesIsMutable();
       optionalOutputFiles_.add(value);
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
 
-    private com.google.protobuf.LazyStringList hardConfigureFiles_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private com.google.protobuf.LazyStringArrayList hardConfigureFiles_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     private void ensureHardConfigureFilesIsMutable() {
-      if (!((bitField0_ & 0x00000008) != 0)) {
+      if (!hardConfigureFiles_.isModifiable()) {
         hardConfigureFiles_ = new com.google.protobuf.LazyStringArrayList(hardConfigureFiles_);
-        bitField0_ |= 0x00000008;
-       }
+      }
+      bitField0_ |= 0x00000020;
     }
     /**
      * <pre>
@@ -2237,7 +2161,8 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ProtocolStringList
         getHardConfigureFilesList() {
-      return hardConfigureFiles_.getUnmodifiableView();
+      hardConfigureFiles_.makeImmutable();
+      return hardConfigureFiles_;
     }
     /**
      * <pre>
@@ -2291,11 +2216,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setHardConfigureFiles(
         int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureHardConfigureFilesIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureHardConfigureFilesIsMutable();
       hardConfigureFiles_.set(index, value);
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -2311,11 +2235,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addHardConfigureFiles(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureHardConfigureFilesIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureHardConfigureFilesIsMutable();
       hardConfigureFiles_.add(value);
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -2334,6 +2257,7 @@ private static final long serialVersionUID = 0L;
       ensureHardConfigureFilesIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
           values, hardConfigureFiles_);
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -2347,8 +2271,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearHardConfigureFiles() {
-      hardConfigureFiles_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000008);
+      hardConfigureFiles_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+      bitField0_ = (bitField0_ & ~0x00000020);;
       onChanged();
       return this;
     }
@@ -2364,12 +2289,11 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addHardConfigureFilesBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       ensureHardConfigureFilesIsMutable();
       hardConfigureFiles_.add(value);
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -2403,8 +2327,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFingerPrintFileExisted(boolean value) {
-      
+
       fingerPrintFileExisted_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -2420,18 +2345,19 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearFingerPrintFileExisted() {
-      
+      bitField0_ = (bitField0_ & ~0x00000040);
       fingerPrintFileExisted_ = false;
       onChanged();
       return this;
     }
 
-    private com.google.protobuf.LazyStringList removedSinceFingerPrintsFiles_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private com.google.protobuf.LazyStringArrayList removedSinceFingerPrintsFiles_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     private void ensureRemovedSinceFingerPrintsFilesIsMutable() {
-      if (!((bitField0_ & 0x00000010) != 0)) {
+      if (!removedSinceFingerPrintsFiles_.isModifiable()) {
         removedSinceFingerPrintsFiles_ = new com.google.protobuf.LazyStringArrayList(removedSinceFingerPrintsFiles_);
-        bitField0_ |= 0x00000010;
-       }
+      }
+      bitField0_ |= 0x00000080;
     }
     /**
      * <pre>
@@ -2443,7 +2369,8 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ProtocolStringList
         getRemovedSinceFingerPrintsFilesList() {
-      return removedSinceFingerPrintsFiles_.getUnmodifiableView();
+      removedSinceFingerPrintsFiles_.makeImmutable();
+      return removedSinceFingerPrintsFiles_;
     }
     /**
      * <pre>
@@ -2493,11 +2420,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setRemovedSinceFingerPrintsFiles(
         int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureRemovedSinceFingerPrintsFilesIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureRemovedSinceFingerPrintsFilesIsMutable();
       removedSinceFingerPrintsFiles_.set(index, value);
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -2512,11 +2438,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addRemovedSinceFingerPrintsFiles(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureRemovedSinceFingerPrintsFilesIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureRemovedSinceFingerPrintsFilesIsMutable();
       removedSinceFingerPrintsFiles_.add(value);
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -2534,6 +2459,7 @@ private static final long serialVersionUID = 0L;
       ensureRemovedSinceFingerPrintsFilesIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
           values, removedSinceFingerPrintsFiles_);
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -2546,8 +2472,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearRemovedSinceFingerPrintsFiles() {
-      removedSinceFingerPrintsFiles_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000010);
+      removedSinceFingerPrintsFiles_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+      bitField0_ = (bitField0_ & ~0x00000080);;
       onChanged();
       return this;
     }
@@ -2562,22 +2489,22 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addRemovedSinceFingerPrintsFilesBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       ensureRemovedSinceFingerPrintsFilesIsMutable();
       removedSinceFingerPrintsFiles_.add(value);
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
 
-    private com.google.protobuf.LazyStringList addedSinceFingerPrintsFiles_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private com.google.protobuf.LazyStringArrayList addedSinceFingerPrintsFiles_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     private void ensureAddedSinceFingerPrintsFilesIsMutable() {
-      if (!((bitField0_ & 0x00000020) != 0)) {
+      if (!addedSinceFingerPrintsFiles_.isModifiable()) {
         addedSinceFingerPrintsFiles_ = new com.google.protobuf.LazyStringArrayList(addedSinceFingerPrintsFiles_);
-        bitField0_ |= 0x00000020;
-       }
+      }
+      bitField0_ |= 0x00000100;
     }
     /**
      * <pre>
@@ -2590,7 +2517,8 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ProtocolStringList
         getAddedSinceFingerPrintsFilesList() {
-      return addedSinceFingerPrintsFiles_.getUnmodifiableView();
+      addedSinceFingerPrintsFiles_.makeImmutable();
+      return addedSinceFingerPrintsFiles_;
     }
     /**
      * <pre>
@@ -2644,11 +2572,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setAddedSinceFingerPrintsFiles(
         int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureAddedSinceFingerPrintsFilesIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureAddedSinceFingerPrintsFilesIsMutable();
       addedSinceFingerPrintsFiles_.set(index, value);
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -2664,11 +2591,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addAddedSinceFingerPrintsFiles(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureAddedSinceFingerPrintsFilesIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureAddedSinceFingerPrintsFilesIsMutable();
       addedSinceFingerPrintsFiles_.add(value);
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -2687,6 +2613,7 @@ private static final long serialVersionUID = 0L;
       ensureAddedSinceFingerPrintsFilesIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
           values, addedSinceFingerPrintsFiles_);
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -2700,8 +2627,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearAddedSinceFingerPrintsFiles() {
-      addedSinceFingerPrintsFiles_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000020);
+      addedSinceFingerPrintsFiles_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+      bitField0_ = (bitField0_ & ~0x00000100);;
       onChanged();
       return this;
     }
@@ -2717,12 +2645,11 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addAddedSinceFingerPrintsFilesBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       ensureAddedSinceFingerPrintsFilesIsMutable();
       addedSinceFingerPrintsFiles_.add(value);
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -2730,9 +2657,9 @@ private static final long serialVersionUID = 0L;
     private java.util.List<com.android.build.gradle.internal.cxx.configure.ChangedFile> changesToFingerPrintFiles_ =
       java.util.Collections.emptyList();
     private void ensureChangesToFingerPrintFilesIsMutable() {
-      if (!((bitField0_ & 0x00000040) != 0)) {
+      if (!((bitField0_ & 0x00000200) != 0)) {
         changesToFingerPrintFiles_ = new java.util.ArrayList<com.android.build.gradle.internal.cxx.configure.ChangedFile>(changesToFingerPrintFiles_);
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000200;
        }
     }
 
@@ -2882,7 +2809,7 @@ private static final long serialVersionUID = 0L;
     public Builder clearChangesToFingerPrintFiles() {
       if (changesToFingerPrintFilesBuilder_ == null) {
         changesToFingerPrintFiles_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000200);
         onChanged();
       } else {
         changesToFingerPrintFilesBuilder_.clear();
@@ -2959,7 +2886,7 @@ private static final long serialVersionUID = 0L;
         changesToFingerPrintFilesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
             com.android.build.gradle.internal.cxx.configure.ChangedFile, com.android.build.gradle.internal.cxx.configure.ChangedFile.Builder, com.android.build.gradle.internal.cxx.configure.ChangedFileOrBuilder>(
                 changesToFingerPrintFiles_,
-                ((bitField0_ & 0x00000040) != 0),
+                ((bitField0_ & 0x00000200) != 0),
                 getParentForChildren(),
                 isClean());
         changesToFingerPrintFiles_ = null;
@@ -2967,12 +2894,13 @@ private static final long serialVersionUID = 0L;
       return changesToFingerPrintFilesBuilder_;
     }
 
-    private com.google.protobuf.LazyStringList unchangedFingerPrintFiles_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private com.google.protobuf.LazyStringArrayList unchangedFingerPrintFiles_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     private void ensureUnchangedFingerPrintFilesIsMutable() {
-      if (!((bitField0_ & 0x00000080) != 0)) {
+      if (!unchangedFingerPrintFiles_.isModifiable()) {
         unchangedFingerPrintFiles_ = new com.google.protobuf.LazyStringArrayList(unchangedFingerPrintFiles_);
-        bitField0_ |= 0x00000080;
-       }
+      }
+      bitField0_ |= 0x00000400;
     }
     /**
      * <code>repeated string unchanged_finger_print_files = 11;</code>
@@ -2980,7 +2908,8 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ProtocolStringList
         getUnchangedFingerPrintFilesList() {
-      return unchangedFingerPrintFiles_.getUnmodifiableView();
+      unchangedFingerPrintFiles_.makeImmutable();
+      return unchangedFingerPrintFiles_;
     }
     /**
      * <code>repeated string unchanged_finger_print_files = 11;</code>
@@ -3014,11 +2943,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setUnchangedFingerPrintFiles(
         int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureUnchangedFingerPrintFilesIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureUnchangedFingerPrintFilesIsMutable();
       unchangedFingerPrintFiles_.set(index, value);
+      bitField0_ |= 0x00000400;
       onChanged();
       return this;
     }
@@ -3029,11 +2957,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addUnchangedFingerPrintFiles(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureUnchangedFingerPrintFilesIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureUnchangedFingerPrintFilesIsMutable();
       unchangedFingerPrintFiles_.add(value);
+      bitField0_ |= 0x00000400;
       onChanged();
       return this;
     }
@@ -3047,6 +2974,7 @@ private static final long serialVersionUID = 0L;
       ensureUnchangedFingerPrintFilesIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
           values, unchangedFingerPrintFiles_);
+      bitField0_ |= 0x00000400;
       onChanged();
       return this;
     }
@@ -3055,8 +2983,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearUnchangedFingerPrintFiles() {
-      unchangedFingerPrintFiles_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000080);
+      unchangedFingerPrintFiles_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+      bitField0_ = (bitField0_ & ~0x00000400);;
       onChanged();
       return this;
     }
@@ -3067,12 +2996,11 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addUnchangedFingerPrintFilesBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       ensureUnchangedFingerPrintFilesIsMutable();
       unchangedFingerPrintFiles_.add(value);
+      bitField0_ |= 0x00000400;
       onChanged();
       return this;
     }
@@ -3105,8 +3033,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setConfigureTypeValue(int value) {
-      
       configureType_ = value;
+      bitField0_ |= 0x00000800;
       onChanged();
       return this;
     }
@@ -3123,8 +3051,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.android.build.gradle.internal.cxx.configure.ConfigureType getConfigureType() {
-      @SuppressWarnings("deprecation")
-      com.android.build.gradle.internal.cxx.configure.ConfigureType result = com.android.build.gradle.internal.cxx.configure.ConfigureType.valueOf(configureType_);
+      com.android.build.gradle.internal.cxx.configure.ConfigureType result = com.android.build.gradle.internal.cxx.configure.ConfigureType.forNumber(configureType_);
       return result == null ? com.android.build.gradle.internal.cxx.configure.ConfigureType.UNRECOGNIZED : result;
     }
     /**
@@ -3143,7 +3070,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
         throw new NullPointerException();
       }
-      
+      bitField0_ |= 0x00000800;
       configureType_ = value.getNumber();
       onChanged();
       return this;
@@ -3160,7 +3087,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearConfigureType() {
-      
+      bitField0_ = (bitField0_ & ~0x00000800);
       configureType_ = 0;
       onChanged();
       return this;
@@ -3169,9 +3096,9 @@ private static final long serialVersionUID = 0L;
     private java.util.List<com.android.build.gradle.internal.cxx.configure.ChangedFile> softConfigureReasons_ =
       java.util.Collections.emptyList();
     private void ensureSoftConfigureReasonsIsMutable() {
-      if (!((bitField0_ & 0x00000100) != 0)) {
+      if (!((bitField0_ & 0x00001000) != 0)) {
         softConfigureReasons_ = new java.util.ArrayList<com.android.build.gradle.internal.cxx.configure.ChangedFile>(softConfigureReasons_);
-        bitField0_ |= 0x00000100;
+        bitField0_ |= 0x00001000;
        }
     }
 
@@ -3365,7 +3292,7 @@ private static final long serialVersionUID = 0L;
     public Builder clearSoftConfigureReasons() {
       if (softConfigureReasonsBuilder_ == null) {
         softConfigureReasons_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000100);
+        bitField0_ = (bitField0_ & ~0x00001000);
         onChanged();
       } else {
         softConfigureReasonsBuilder_.clear();
@@ -3470,7 +3397,7 @@ private static final long serialVersionUID = 0L;
         softConfigureReasonsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
             com.android.build.gradle.internal.cxx.configure.ChangedFile, com.android.build.gradle.internal.cxx.configure.ChangedFile.Builder, com.android.build.gradle.internal.cxx.configure.ChangedFileOrBuilder>(
                 softConfigureReasons_,
-                ((bitField0_ & 0x00000100) != 0),
+                ((bitField0_ & 0x00001000) != 0),
                 getParentForChildren(),
                 isClean());
         softConfigureReasons_ = null;
@@ -3481,9 +3408,9 @@ private static final long serialVersionUID = 0L;
     private java.util.List<com.android.build.gradle.internal.cxx.configure.ChangedFile> hardConfigureReasons_ =
       java.util.Collections.emptyList();
     private void ensureHardConfigureReasonsIsMutable() {
-      if (!((bitField0_ & 0x00000200) != 0)) {
+      if (!((bitField0_ & 0x00002000) != 0)) {
         hardConfigureReasons_ = new java.util.ArrayList<com.android.build.gradle.internal.cxx.configure.ChangedFile>(hardConfigureReasons_);
-        bitField0_ |= 0x00000200;
+        bitField0_ |= 0x00002000;
        }
     }
 
@@ -3677,7 +3604,7 @@ private static final long serialVersionUID = 0L;
     public Builder clearHardConfigureReasons() {
       if (hardConfigureReasonsBuilder_ == null) {
         hardConfigureReasons_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000200);
+        bitField0_ = (bitField0_ & ~0x00002000);
         onChanged();
       } else {
         hardConfigureReasonsBuilder_.clear();
@@ -3782,7 +3709,7 @@ private static final long serialVersionUID = 0L;
         hardConfigureReasonsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
             com.android.build.gradle.internal.cxx.configure.ChangedFile, com.android.build.gradle.internal.cxx.configure.ChangedFile.Builder, com.android.build.gradle.internal.cxx.configure.ChangedFileOrBuilder>(
                 hardConfigureReasons_,
-                ((bitField0_ & 0x00000200) != 0),
+                ((bitField0_ & 0x00002000) != 0),
                 getParentForChildren(),
                 isClean());
         hardConfigureReasons_ = null;
@@ -3822,7 +3749,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new ConfigureInvalidationState(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

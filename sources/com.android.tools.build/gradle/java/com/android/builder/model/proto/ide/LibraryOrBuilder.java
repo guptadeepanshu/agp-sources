@@ -67,6 +67,7 @@ public interface LibraryOrBuilder extends
   /**
    * <pre>
    * Returns the project info to uniquely identify it (and its variant)
+   *
    * Only valid for instances where [type] is [LibraryType.PROJECT]. It is null in other cases.
    * </pre>
    *
@@ -77,6 +78,7 @@ public interface LibraryOrBuilder extends
   /**
    * <pre>
    * Returns the project info to uniquely identify it (and its variant)
+   *
    * Only valid for instances where [type] is [LibraryType.PROJECT]. It is null in other cases.
    * </pre>
    *
@@ -87,6 +89,7 @@ public interface LibraryOrBuilder extends
   /**
    * <pre>
    * Returns the project info to uniquely identify it (and its variant)
+   *
    * Only valid for instances where [type] is [LibraryType.PROJECT]. It is null in other cases.
    * </pre>
    *
@@ -97,6 +100,7 @@ public interface LibraryOrBuilder extends
   /**
    * <pre>
    * Returns the external library info to uniquely identify it (and its variant)
+   *
    * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY], or
    * [LibraryType.JAVA_LIBRARY]. It is null in other cases.
    * </pre>
@@ -108,6 +112,7 @@ public interface LibraryOrBuilder extends
   /**
    * <pre>
    * Returns the external library info to uniquely identify it (and its variant)
+   *
    * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY], or
    * [LibraryType.JAVA_LIBRARY]. It is null in other cases.
    * </pre>
@@ -119,6 +124,7 @@ public interface LibraryOrBuilder extends
   /**
    * <pre>
    * Returns the external library info to uniquely identify it (and its variant)
+   *
    * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY], or
    * [LibraryType.JAVA_LIBRARY]. It is null in other cases.
    * </pre>
@@ -130,6 +136,7 @@ public interface LibraryOrBuilder extends
   /**
    * <pre>
    * The artifact location.
+   *
    * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
    * [LibraryType.ANDROID_LIBRARY]
    * </pre>
@@ -141,6 +148,7 @@ public interface LibraryOrBuilder extends
   /**
    * <pre>
    * The artifact location.
+   *
    * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
    * [LibraryType.ANDROID_LIBRARY]
    * </pre>
@@ -152,6 +160,7 @@ public interface LibraryOrBuilder extends
   /**
    * <pre>
    * The artifact location.
+   *
    * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
    * [LibraryType.ANDROID_LIBRARY]
    * </pre>
@@ -164,7 +173,9 @@ public interface LibraryOrBuilder extends
    * <pre>
    * The jar containing custom lint checks for consumers to use. This is filled by the
    * lintPublish configuration.
+   *
    * The file may not exist.
+   *
    * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY]
    * </pre>
    *
@@ -176,7 +187,9 @@ public interface LibraryOrBuilder extends
    * <pre>
    * The jar containing custom lint checks for consumers to use. This is filled by the
    * lintPublish configuration.
+   *
    * The file may not exist.
+   *
    * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY]
    * </pre>
    *
@@ -188,7 +201,9 @@ public interface LibraryOrBuilder extends
    * <pre>
    * The jar containing custom lint checks for consumers to use. This is filled by the
    * lintPublish configuration.
+   *
    * The file may not exist.
+   *
    * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY]
    * </pre>
    *
@@ -199,6 +214,7 @@ public interface LibraryOrBuilder extends
   /**
    * <pre>
    * The jar containing the sources for the [artifact]
+   *
    * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
    * [LibraryType.ANDROID_LIBRARY]
    * </pre>
@@ -210,6 +226,7 @@ public interface LibraryOrBuilder extends
   /**
    * <pre>
    * The jar containing the sources for the [artifact]
+   *
    * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
    * [LibraryType.ANDROID_LIBRARY]
    * </pre>
@@ -221,6 +238,7 @@ public interface LibraryOrBuilder extends
   /**
    * <pre>
    * The jar containing the sources for the [artifact]
+   *
    * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
    * [LibraryType.ANDROID_LIBRARY]
    * </pre>
@@ -232,6 +250,7 @@ public interface LibraryOrBuilder extends
   /**
    * <pre>
    * The jar containing the documentation for the [artifact]
+   *
    * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
    * [LibraryType.ANDROID_LIBRARY]
    * </pre>
@@ -243,6 +262,7 @@ public interface LibraryOrBuilder extends
   /**
    * <pre>
    * The jar containing the documentation for the [artifact]
+   *
    * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
    * [LibraryType.ANDROID_LIBRARY]
    * </pre>
@@ -254,6 +274,7 @@ public interface LibraryOrBuilder extends
   /**
    * <pre>
    * The jar containing the documentation for the [artifact]
+   *
    * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
    * [LibraryType.ANDROID_LIBRARY]
    * </pre>
@@ -265,6 +286,7 @@ public interface LibraryOrBuilder extends
   /**
    * <pre>
    * The jar containing samples for the [artifact]
+   *
    * Only valid for instance where [type] is [LibraryType.JAVA_LIBRARY] or
    * [LibraryType.ANDROID_LIBRARY]
    * </pre>
@@ -276,6 +298,7 @@ public interface LibraryOrBuilder extends
   /**
    * <pre>
    * The jar containing samples for the [artifact]
+   *
    * Only valid for instance where [type] is [LibraryType.JAVA_LIBRARY] or
    * [LibraryType.ANDROID_LIBRARY]
    * </pre>
@@ -287,6 +310,7 @@ public interface LibraryOrBuilder extends
   /**
    * <pre>
    * The jar containing samples for the [artifact]
+   *
    * Only valid for instance where [type] is [LibraryType.JAVA_LIBRARY] or
    * [LibraryType.ANDROID_LIBRARY]
    * </pre>

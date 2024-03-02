@@ -28,18 +28,21 @@ import java.io.File
 import java.util.stream.Collectors
 
 /** Implementation of [TestData] for separate test modules.  */
-class TestApplicationTestData constructor(
+class TestApplicationTestData(
     namespace: Provider<String>,
     creationConfig: TestVariantCreationConfig,
     testApkDir: Provider<Directory>,
-    testedApksDir: FileCollection,
+    testedApksDir: Provider<Directory>,
     privacySandboxSdkApks: FileCollection?,
+    privacySandboxCompatSdkApksDir: Provider<Directory>?,
 ) : AbstractTestDataImpl(
     namespace,
     creationConfig,
     testApkDir,
     testedApksDir,
-    privacySandboxSdkApks
+    privacySandboxSdkApks,
+    privacySandboxCompatSdkApksDir,
+    null
 ) {
 
     override val libraryType = creationConfig.services.provider { false }
@@ -50,7 +53,9 @@ class TestApplicationTestData constructor(
     // application instead of tested application. To always return the tested application ID from
     // this method, we override this method.
     override val testedApplicationId: Provider<String> =
-        testedApksDir.elements.map { BuiltArtifactsLoaderImpl().load(it.single())?.applicationId!! }
+        testedApksDir.map {
+            BuiltArtifactsLoaderImpl().load(it)?.applicationId!!
+        }
 
     override val testedApksFinder: ApksFinder
         get() = _testedApksFinder ?:

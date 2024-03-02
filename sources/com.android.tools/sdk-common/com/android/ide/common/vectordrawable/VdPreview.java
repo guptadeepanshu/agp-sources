@@ -25,12 +25,16 @@ import com.android.utils.XmlUtils;
 import com.google.common.base.Strings;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.math.RoundingMode;
-import org.apache.xml.serialize.OutputFormat;
-import org.apache.xml.serialize.XMLSerializer;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -71,19 +75,19 @@ public class VdPreview {
         }
     }
 
-    /**
-     * Returns a format object for XML formatting.
-     */
+    /** Returns a format object for XML formatting. */
     @NonNull
-    private static OutputFormat getPrettyPrintFormat() {
-        OutputFormat format = new OutputFormat();
-        format.setLineWidth(120);
-        format.setIndenting(true);
-        format.setIndent(4);
-        format.setEncoding("UTF-8");
-        format.setOmitComments(true);
-        format.setOmitXMLDeclaration(true);
-        return format;
+    private static Transformer getPrettyPrintTransformer()
+            throws TransformerConfigurationException {
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+        transformer.setOutputProperty(OutputKeys.VERSION, "1.0");
+        return transformer;
     }
 
     /**
@@ -139,13 +143,14 @@ public class VdPreview {
         if (contentChanged) {
             // Pretty-print the XML string from the document.
             StringWriter stringOut = new StringWriter();
-            XMLSerializer serial = new XMLSerializer(stringOut, getPrettyPrintFormat());
+
             try {
-                serial.serialize(document);
-            }
-            catch (IOException e) {
+                Transformer transformer = getPrettyPrintTransformer();
+                transformer.transform(new DOMSource(document), new StreamResult(stringOut));
+            } catch (TransformerException e) {
                 if (errorLog != null) {
-                    errorLog.append("Exception while parsing XML file:\n").append(e.getMessage());
+                    errorLog.append("Exception while serializing XML file:\n")
+                            .append(e.getMessage());
                 }
             }
             return stringOut.toString();

@@ -16,10 +16,11 @@
 
 package com.android.build.gradle.internal.ide.v2
 
-import com.android.builder.model.v2.ModelSyncFile
+import com.android.builder.model.v2.ide.BytecodeTransformation
 import com.android.builder.model.v2.ide.JavaArtifact
 import java.io.File
 import java.io.Serializable
+import java.util.Collections
 
 /**
  * Implementation of [JavaArtifact] for serialization via the Tooling API.
@@ -32,9 +33,12 @@ data class JavaArtifactImpl(
     override val runtimeResourceFolder: File?,
     override val ideSetupTaskNames: Set<String>,
     override val generatedSourceFolders: Collection<File>,
-    override val modelSyncFiles: Collection<ModelSyncFile>,
-    override val generatedClassPaths: Map<String, File>
+    override val generatedClassPaths: Map<String, File>,
+    override val bytecodeTransformations: Collection<BytecodeTransformation>,
 ) : JavaArtifact, Serializable {
+    @Deprecated("Was never used, removed in AGP 8.3")
+    override val modelSyncFiles: Collection<Void> get() = Collections.emptyList()
+
     companion object {
         @JvmStatic
         private val serialVersionUID: Long = 1L

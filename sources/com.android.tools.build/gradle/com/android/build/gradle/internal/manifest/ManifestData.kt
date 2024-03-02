@@ -19,11 +19,17 @@ package com.android.build.gradle.internal.manifest
 import com.android.SdkConstants
 import com.android.builder.errors.IssueReporter
 import com.android.utils.XmlUtils
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.logging.Logger
+import org.gradle.api.provider.Provider
+import org.gradle.api.provider.ValueSource
+import org.gradle.api.provider.ValueSourceParameters
 import org.xml.sax.Attributes
+import org.xml.sax.InputSource
 import org.xml.sax.SAXException
 import org.xml.sax.helpers.DefaultHandler
-import java.io.File
-import java.util.function.BooleanSupplier
+import java.io.StringReader
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.xml.parsers.SAXParserFactory
 
 /**
@@ -168,12 +174,14 @@ class ManifestData(
 }
 
 fun parseManifest(
-    file: File,
+    manifestFileContent: String,
+    manifestFilePath: String,
     manifestFileRequired: Boolean,
-    manifestParsingAllowed: BooleanSupplier,
-    issueReporter: IssueReporter
+    manifestParsingAllowedProvider: Provider<Boolean>? = null,
+    issueReporter: IssueReporter,
 ): ManifestData {
-    if (!manifestParsingAllowed.asBoolean) {
+    val manifestParsingAllowed = manifestParsingAllowedProvider?.get() ?: true
+    if (!manifestParsingAllowed) {
         // This is not an exception since we still want sync to succeed if this occurs.
         // Instead print part of the relevant stack trace so that the developer will know
         // how this occurred.
@@ -189,13 +197,13 @@ fun parseManifest(
 
     val data = ManifestData()
 
-    if (!file.exists()) {
+    if (manifestFileContent.isEmpty()) {
         if (manifestFileRequired) {
             issueReporter.reportError(
                 IssueReporter.Type.MISSING_ANDROID_MANIFEST,
-                "Manifest file does not exist: ${file.absolutePath}"
+                "Manifest file does not exist: $manifestFilePath"
             )
-            // init data with placeholder values to prevent downstream code to have to deal with NPE
+            // init data with placeholder values to prevent downstream coe to have to deal with NPE
             data.packageName = "fake.package.name.for.sync"
         }
 
@@ -288,7 +296,7 @@ fun parseManifest(
 
     try {
         val saxParser = XmlUtils.createSaxParser(PARSER_FACTORY)
-        saxParser.parse(file, handler)
+        saxParser.parse(InputSource(StringReader(manifestFileContent)), handler)
     } catch (e: Exception) {
         throw RuntimeException(e)
     }
@@ -307,5 +315,25 @@ private fun String.toAndroidTarget(): ManifestData.AndroidTarget {
         ManifestData.AndroidTarget(apiLevel = apiLevel, codeName = null)
     } catch (ignored: NumberFormatException) {
         ManifestData.AndroidTarget(apiLevel = null, codeName = this)
+    }
+}
+
+abstract class ManifestValueSource: ValueSource<String, ManifestValueSource.Params> {
+    interface Params: ValueSourceParameters {
+        val manifestFile: RegularFileProperty
+    }
+
+    var manifestContent: String? = null
+    val manifestContentObtained = AtomicBoolean(false)
+
+    override fun obtain(): String {
+        if (!manifestContentObtained.get()) {
+            val manifestFile = parameters.manifestFile.get().asFile
+            if (manifestFile.exists()) {
+                manifestContent = manifestFile.readText()
+            }
+            manifestContentObtained.set(true)
+        }
+        return manifestContent ?: ""
     }
 }

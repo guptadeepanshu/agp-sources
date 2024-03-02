@@ -37,5 +37,5 @@ public interface RepositoryOrBuilder extends
    */
   com.android.tools.build.libraries.metadata.IvyRepoOrBuilder getIvyRepoOrBuilder();
 
-  public com.android.tools.build.libraries.metadata.Repository.RepoOneofCase getRepoOneofCase();
+  com.android.tools.build.libraries.metadata.Repository.RepoOneofCase getRepoOneofCase();
 }

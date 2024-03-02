@@ -19,10 +19,8 @@ import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.component.analytics.AnalyticsEnabledApplicationVariant
 import com.android.build.api.component.impl.AndroidTestImpl
 import com.android.build.api.component.impl.TestFixturesImpl
-import com.android.build.api.component.impl.features.DexingCreationConfigImpl
-import com.android.build.api.component.impl.getAndroidResources
+import com.android.build.api.component.impl.features.DexingImpl
 import com.android.build.api.component.impl.isTestApk
-import com.android.build.api.variant.AndroidResources
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.ApkPackaging
 import com.android.build.api.variant.ApplicationVariant
@@ -36,6 +34,7 @@ import com.android.build.gradle.internal.component.features.DexingCreationConfig
 import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.core.dsl.ApplicationVariantDslInfo
 import com.android.build.gradle.internal.dependency.VariantDependencies
+import com.android.build.gradle.internal.profile.ProfilingMode
 import com.android.build.gradle.internal.publishing.VariantPublishingInfo
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.MutableTaskContainer
@@ -45,6 +44,7 @@ import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
 import com.android.build.gradle.options.StringOption
+import com.android.builder.errors.IssueReporter
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.provider.Property
 import javax.inject.Inject
@@ -76,7 +76,7 @@ open class ApplicationVariantImpl @Inject constructor(
     internalServices,
     taskCreationServices,
     globalTaskCreationConfig
-), ApplicationVariant, ApplicationCreationConfig, HasAndroidTest, HasTestFixtures {
+), ApplicationVariant, ApplicationCreationConfig, HasDeviceTests, HasTestFixtures {
 
     // ---------------------------------------------------------------------------------------------
     // PUBLIC API
@@ -94,17 +94,13 @@ open class ApplicationVariantImpl @Inject constructor(
         )
     }
 
-    override val androidResources: AndroidResources by lazy {
-        getAndroidResources()
-    }
-
-    override val signingConfigImpl: SigningConfigImpl? by lazy {
-        signingConfig
+    override val androidResources: AndroidResourcesImpl by lazy {
+        getAndroidResources(dslInfo.androidResourcesDsl.androidResources)
     }
 
     override val signingConfig: SigningConfigImpl by lazy {
         SigningConfigImpl(
-            dslInfo.signingConfig,
+            dslInfo.signingConfigResolver?.resolveConfig(profileable, debuggable),
             internalServices,
             minSdk.apiLevel,
             global.targetDeployApiFromIDE
@@ -146,16 +142,43 @@ open class ApplicationVariantImpl @Inject constructor(
     override val targetSdkOverride: AndroidVersion?
         get() = variantBuilder.mutableTargetSdk?.sanitize()
 
+
+    override val dexing: DexingCreationConfig by lazy(LazyThreadSafetyMode.NONE) {
+        DexingImpl(
+            this,
+            variantBuilder._enableMultiDex,
+            dslInfo.dexingDslInfo.multiDexKeepProguard,
+            dslInfo.dexingDslInfo.multiDexKeepFile,
+            internalServices,
+        )
+    }
+
     // ---------------------------------------------------------------------------------------------
     // INTERNAL API
     // ---------------------------------------------------------------------------------------------
 
-    override val dexingCreationConfig: DexingCreationConfig by lazy(LazyThreadSafetyMode.NONE) {
-        DexingCreationConfigImpl(
-            this,
-            dslInfo.dexingDslInfo,
-            internalServices
-        )
+    override fun finalizeAndLock() {
+        super.finalizeAndLock()
+        dexing.finalizeAndLock()
+        checkProfileableWithCompileSdk()
+    }
+
+    private fun checkProfileableWithCompileSdk() {
+        val minProfileableSdk = 29
+        val _compileSdk = dslInfo.compileSdk ?: minProfileableSdk
+        val fromProfilingModeOption = ProfilingMode.getProfilingModeType(
+            services.projectOptions[StringOption.PROFILING_MODE]
+        ).isProfileable
+        if ((fromProfilingModeOption == true || profileable) &&
+            _compileSdk < minProfileableSdk
+        ) {
+            services.issueReporter.reportError(
+                IssueReporter.Type.COMPILE_SDK_VERSION_TOO_LOW,
+                """'profileable' is enabled in variant '$name' with compile SDK less than API 29.
+                        Recommended action: If possible, upgrade compileSdk from $_compileSdk to at least API 29."""
+                    .trimIndent()
+            )
+        }
     }
 
     override val testOnlyApk: Boolean
@@ -167,7 +190,7 @@ open class ApplicationVariantImpl @Inject constructor(
     override val debuggable: Boolean
         get() = dslInfo.isDebuggable
     override val profileable: Boolean
-        get() = dslInfo.isProfileable
+        get() = variantBuilder._profileable
 
     override val shouldPackageProfilerDependencies: Boolean
         get() = advancedProfilingTransforms.isNotEmpty()
@@ -215,9 +238,9 @@ open class ApplicationVariantImpl @Inject constructor(
                 internalServices.newPropertyBackingDeprecatedApi(
                     String::class.java,
                     internalServices.projectInfo.getProjectBaseName().map {
-                        paths.getOutputFileName(it, variantOutputConfiguration.baseName(this))
+                        paths.getOutputFileName(signingConfig.hasConfig(), it, variantOutputConfiguration.baseName(this))
                     },
-                )
+                ),
             )
         )
     }
@@ -260,4 +283,7 @@ open class ApplicationVariantImpl @Inject constructor(
 
     override val enableGlobalSynthetics: Boolean
         get() = isGlobalSyntheticsEnabled()
+
+    override val includeVcsInfo: Boolean?
+        get() = dslInfo.includeVcsInfo
 }

@@ -64,6 +64,7 @@ import java.util.function.Function;
 public final class DeviceMonitor implements ClientTracker {
     private final AndroidDebugBridge mServer;
     private final MonitorErrorHandler mMonitorErrorHandler;
+    private final boolean mEmitDeviceListUpdates;
     private DeviceListMonitorTask mDeviceListMonitorTask;
     @Nullable private Thread mDeviceListMonitorThread;
     @Nullable private DeviceClientMonitorTask myDeviceClientMonitorTask;
@@ -82,9 +83,12 @@ public final class DeviceMonitor implements ClientTracker {
      * @param server the running {@link AndroidDebugBridge}.
      */
     public DeviceMonitor(
-            @NonNull AndroidDebugBridge server, @NonNull MonitorErrorHandler monitorErrorHandler) {
+            @NonNull AndroidDebugBridge server,
+            @NonNull MonitorErrorHandler monitorErrorHandler,
+            boolean emitDeviceListUpdates) {
         mServer = server;
         mMonitorErrorHandler = monitorErrorHandler;
+        mEmitDeviceListUpdates = emitDeviceListUpdates;
     }
 
     /** Starts the monitoring. */
@@ -104,7 +108,9 @@ public final class DeviceMonitor implements ClientTracker {
             }
 
             // To terminate thread call stop on each respective task.
-            mDeviceListMonitorTask = new DeviceListMonitorTask(mServer, new DeviceListUpdateListener());
+            mDeviceListMonitorTask =
+                    new DeviceListMonitorTask(
+                            mServer, new DeviceListUpdateListener(), mEmitDeviceListUpdates);
             if (AndroidDebugBridge.getClientSupport()) {
                 myDeviceClientMonitorTask = new DeviceClientMonitorTask();
                 mDeviceClientMonitorThread =
@@ -407,7 +413,8 @@ public final class DeviceMonitor implements ClientTracker {
                                 DeviceMonitor.this,
                                 deviceClientManagerProvider,
                                 entry.getKey(),
-                                entry.getValue()));
+                                entry.getValue(),
+                                getServer().getiDeviceUsageTracker()));
             }
             // now merge the new devices with the old ones.
             updateDevices(l);

@@ -18,9 +18,12 @@ package com.android.build.gradle.internal.variant
 
 import com.android.SdkConstants
 import com.android.build.api.dsl.ProductFlavor
+import com.android.build.api.variant.ApplicationVariant
 import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.FilterConfiguration
+import com.android.build.api.variant.SigningConfig
 import com.android.build.api.variant.impl.FilterConfigurationImpl
+import com.android.build.api.variant.impl.SigningConfigImpl
 import com.android.build.gradle.internal.core.dsl.ApkProducingComponentDslInfo
 import com.android.build.gradle.internal.core.dsl.ComponentDslInfo
 import com.android.build.gradle.internal.core.dsl.MultiVariantComponentDslInfo
@@ -187,12 +190,11 @@ class VariantPathHelper(
      * @param archivesBaseName the project's archiveBaseName
      * @param baseName the variant baseName
      */
-    fun getOutputFileName(archivesBaseName: String, baseName: String): String {
+    fun getOutputFileName(hasSigningConfig: Boolean, archivesBaseName: String, baseName: String): String {
         // we only know if it is signed during configuration, if it's the base module.
         // Otherwise, don't differentiate between signed and unsigned.
         val suffix =
-            if ((dslInfo as? ApkProducingComponentDslInfo)?.isSigningReady == true
-                || !dslInfo.componentType.isBaseModule)
+            if (hasSigningConfig || !dslInfo.componentType.isBaseModule)
                 SdkConstants.DOT_ANDROID_PACKAGE
             else "-unsigned.apk"
         return "$archivesBaseName-$baseName$suffix"

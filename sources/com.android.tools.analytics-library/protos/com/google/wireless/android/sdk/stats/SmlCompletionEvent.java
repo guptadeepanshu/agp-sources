@@ -30,100 +30,6 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private SmlCompletionEvent(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    int mutable_bitField0_ = 0;
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 10: {
-            com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.Builder subBuilder = null;
-            if (completionCase_ == 1) {
-              subBuilder = ((com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest) completion_).toBuilder();
-            }
-            completion_ =
-                input.readMessage(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom((com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest) completion_);
-              completion_ = subBuilder.buildPartial();
-            }
-            completionCase_ = 1;
-            break;
-          }
-          case 18: {
-            com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse.Builder subBuilder = null;
-            if (completionCase_ == 2) {
-              subBuilder = ((com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse) completion_).toBuilder();
-            }
-            completion_ =
-                input.readMessage(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom((com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse) completion_);
-              completion_ = subBuilder.buildPartial();
-            }
-            completionCase_ = 2;
-            break;
-          }
-          case 26: {
-            com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown.Builder subBuilder = null;
-            if (completionCase_ == 3) {
-              subBuilder = ((com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown) completion_).toBuilder();
-            }
-            completion_ =
-                input.readMessage(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom((com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown) completion_);
-              completion_ = subBuilder.buildPartial();
-            }
-            completionCase_ = 3;
-            break;
-          }
-          case 34: {
-            com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted.Builder subBuilder = null;
-            if (completionCase_ == 4) {
-              subBuilder = ((com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted) completion_).toBuilder();
-            }
-            completion_ =
-                input.readMessage(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom((com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted) completion_);
-              completion_ = subBuilder.buildPartial();
-            }
-            completionCase_ = 4;
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlCompletionEvent_descriptor;
@@ -137,74 +43,102 @@ private static final long serialVersionUID = 0L;
             com.google.wireless.android.sdk.stats.SmlCompletionEvent.class, com.google.wireless.android.sdk.stats.SmlCompletionEvent.Builder.class);
   }
 
-  public interface CompletionRequestOrBuilder extends
+  @java.lang.Deprecated public interface CompletionRequestOrBuilder extends
       // @@protoc_insertion_point(interface_extends:android_studio.SmlCompletionEvent.CompletionRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .android_studio.SmlCompletionEvent.CompletionRequest.Trigger trigger = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionRequest.Trigger trigger = 1 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the trigger field is set.
      */
-    boolean hasTrigger();
+    @java.lang.Deprecated boolean hasTrigger();
     /**
-     * <code>optional .android_studio.SmlCompletionEvent.CompletionRequest.Trigger trigger = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionRequest.Trigger trigger = 1 [deprecated = true];</code>
+     * @deprecated
      * @return The trigger.
      */
-    com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.Trigger getTrigger();
+    @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.Trigger getTrigger();
 
     /**
-     * <code>optional .android_studio.EditorFileType file_type = 2;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorFileType file_type = 2 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the fileType field is set.
      */
-    boolean hasFileType();
+    @java.lang.Deprecated boolean hasFileType();
     /**
-     * <code>optional .android_studio.EditorFileType file_type = 2;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorFileType file_type = 2 [deprecated = true];</code>
+     * @deprecated
      * @return The fileType.
      */
-    com.google.wireless.android.sdk.stats.EditorFileType getFileType();
+    @java.lang.Deprecated com.google.wireless.android.sdk.stats.EditorFileType getFileType();
 
     /**
      * <pre>
-     * Length of prefix (# of chars before cursor) included in the request
+     * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional uint32 prefix_length = 3;</code>
+     * <code>optional uint32 prefix_length = 3 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the prefixLength field is set.
      */
-    boolean hasPrefixLength();
+    @java.lang.Deprecated boolean hasPrefixLength();
     /**
      * <pre>
-     * Length of prefix (# of chars before cursor) included in the request
+     * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional uint32 prefix_length = 3;</code>
+     * <code>optional uint32 prefix_length = 3 [deprecated = true];</code>
+     * @deprecated
      * @return The prefixLength.
      */
-    int getPrefixLength();
+    @java.lang.Deprecated int getPrefixLength();
 
     /**
      * <pre>
-     * Length of suffix (# of chars after cursor) included in the request
+     * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional uint32 suffix_length = 4;</code>
+     * <code>optional uint32 suffix_length = 4 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the suffixLength field is set.
      */
-    boolean hasSuffixLength();
+    @java.lang.Deprecated boolean hasSuffixLength();
     /**
      * <pre>
-     * Length of suffix (# of chars after cursor) included in the request
+     * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional uint32 suffix_length = 4;</code>
+     * <code>optional uint32 suffix_length = 4 [deprecated = true];</code>
+     * @deprecated
      * @return The suffixLength.
      */
-    int getSuffixLength();
+    @java.lang.Deprecated int getSuffixLength();
   }
   /**
+   * <pre>
+   * DEPRECATED Use CompletionAggregateEvent instead
+   * </pre>
+   *
    * Protobuf type {@code android_studio.SmlCompletionEvent.CompletionRequest}
    */
-  public static final class CompletionRequest extends
+  @java.lang.Deprecated public static final class CompletionRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.SmlCompletionEvent.CompletionRequest)
       CompletionRequestOrBuilder {
@@ -230,78 +164,6 @@ private static final long serialVersionUID = 0L;
     getUnknownFields() {
       return this.unknownFields;
     }
-    private CompletionRequest(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 8: {
-              int rawValue = input.readEnum();
-                @SuppressWarnings("deprecation")
-              com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.Trigger value = com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.Trigger.valueOf(rawValue);
-              if (value == null) {
-                unknownFields.mergeVarintField(1, rawValue);
-              } else {
-                bitField0_ |= 0x00000001;
-                trigger_ = rawValue;
-              }
-              break;
-            }
-            case 16: {
-              int rawValue = input.readEnum();
-                @SuppressWarnings("deprecation")
-              com.google.wireless.android.sdk.stats.EditorFileType value = com.google.wireless.android.sdk.stats.EditorFileType.valueOf(rawValue);
-              if (value == null) {
-                unknownFields.mergeVarintField(2, rawValue);
-              } else {
-                bitField0_ |= 0x00000002;
-                fileType_ = rawValue;
-              }
-              break;
-            }
-            case 24: {
-              bitField0_ |= 0x00000004;
-              prefixLength_ = input.readUInt32();
-              break;
-            }
-            case 32: {
-              bitField0_ |= 0x00000008;
-              suffixLength_ = input.readUInt32();
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlCompletionEvent_CompletionRequest_descriptor;
@@ -321,47 +183,34 @@ private static final long serialVersionUID = 0L;
     public enum Trigger
         implements com.google.protobuf.ProtocolMessageEnum {
       /**
-       * <code>UNKNOWN = 0;</code>
+       * <code>UNKNOWN = 0 [deprecated = true];</code>
        */
+      @java.lang.Deprecated
       UNKNOWN(0),
       /**
-       * <pre>
-       * User explicitly triggered completion
-       * </pre>
-       *
-       * <code>USER = 1;</code>
+       * <code>USER = 1 [deprecated = true];</code>
        */
+      @java.lang.Deprecated
       USER(1),
       /**
-       * <pre>
-       * Completion was automatically triggered
-       * </pre>
-       *
-       * <code>AUTOMATIC = 2;</code>
+       * <code>AUTOMATIC = 2 [deprecated = true];</code>
        */
+      @java.lang.Deprecated
       AUTOMATIC(2),
       ;
 
       /**
-       * <code>UNKNOWN = 0;</code>
+       * <code>UNKNOWN = 0 [deprecated = true];</code>
        */
-      public static final int UNKNOWN_VALUE = 0;
+      @java.lang.Deprecated public static final int UNKNOWN_VALUE = 0;
       /**
-       * <pre>
-       * User explicitly triggered completion
-       * </pre>
-       *
-       * <code>USER = 1;</code>
+       * <code>USER = 1 [deprecated = true];</code>
        */
-      public static final int USER_VALUE = 1;
+      @java.lang.Deprecated public static final int USER_VALUE = 1;
       /**
-       * <pre>
-       * Completion was automatically triggered
-       * </pre>
-       *
-       * <code>AUTOMATIC = 2;</code>
+       * <code>AUTOMATIC = 2 [deprecated = true];</code>
        */
-      public static final int AUTOMATIC_VALUE = 2;
+      @java.lang.Deprecated public static final int AUTOMATIC_VALUE = 2;
 
 
       public final int getNumber() {
@@ -440,17 +289,27 @@ private static final long serialVersionUID = 0L;
     public static final int TRIGGER_FIELD_NUMBER = 1;
     private int trigger_;
     /**
-     * <code>optional .android_studio.SmlCompletionEvent.CompletionRequest.Trigger trigger = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionRequest.Trigger trigger = 1 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the trigger field is set.
      */
-    @java.lang.Override public boolean hasTrigger() {
+    @java.lang.Override @java.lang.Deprecated public boolean hasTrigger() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional .android_studio.SmlCompletionEvent.CompletionRequest.Trigger trigger = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionRequest.Trigger trigger = 1 [deprecated = true];</code>
+     * @deprecated
      * @return The trigger.
      */
-    @java.lang.Override public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.Trigger getTrigger() {
+    @java.lang.Override @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.Trigger getTrigger() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.Trigger result = com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.Trigger.valueOf(trigger_);
       return result == null ? com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.Trigger.UNKNOWN : result;
@@ -459,17 +318,27 @@ private static final long serialVersionUID = 0L;
     public static final int FILE_TYPE_FIELD_NUMBER = 2;
     private int fileType_;
     /**
-     * <code>optional .android_studio.EditorFileType file_type = 2;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorFileType file_type = 2 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the fileType field is set.
      */
-    @java.lang.Override public boolean hasFileType() {
+    @java.lang.Override @java.lang.Deprecated public boolean hasFileType() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
-     * <code>optional .android_studio.EditorFileType file_type = 2;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorFileType file_type = 2 [deprecated = true];</code>
+     * @deprecated
      * @return The fileType.
      */
-    @java.lang.Override public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
+    @java.lang.Override @java.lang.Deprecated public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.valueOf(fileType_);
       return result == null ? com.google.wireless.android.sdk.stats.EditorFileType.UNKNOWN : result;
@@ -479,26 +348,28 @@ private static final long serialVersionUID = 0L;
     private int prefixLength_;
     /**
      * <pre>
-     * Length of prefix (# of chars before cursor) included in the request
+     * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional uint32 prefix_length = 3;</code>
+     * <code>optional uint32 prefix_length = 3 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the prefixLength field is set.
      */
     @java.lang.Override
-    public boolean hasPrefixLength() {
+    @java.lang.Deprecated public boolean hasPrefixLength() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
      * <pre>
-     * Length of prefix (# of chars before cursor) included in the request
+     * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional uint32 prefix_length = 3;</code>
+     * <code>optional uint32 prefix_length = 3 [deprecated = true];</code>
+     * @deprecated
      * @return The prefixLength.
      */
     @java.lang.Override
-    public int getPrefixLength() {
+    @java.lang.Deprecated public int getPrefixLength() {
       return prefixLength_;
     }
 
@@ -506,26 +377,28 @@ private static final long serialVersionUID = 0L;
     private int suffixLength_;
     /**
      * <pre>
-     * Length of suffix (# of chars after cursor) included in the request
+     * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional uint32 suffix_length = 4;</code>
+     * <code>optional uint32 suffix_length = 4 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the suffixLength field is set.
      */
     @java.lang.Override
-    public boolean hasSuffixLength() {
+    @java.lang.Deprecated public boolean hasSuffixLength() {
       return ((bitField0_ & 0x00000008) != 0);
     }
     /**
      * <pre>
-     * Length of suffix (# of chars after cursor) included in the request
+     * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional uint32 suffix_length = 4;</code>
+     * <code>optional uint32 suffix_length = 4 [deprecated = true];</code>
+     * @deprecated
      * @return The suffixLength.
      */
     @java.lang.Override
-    public int getSuffixLength() {
+    @java.lang.Deprecated public int getSuffixLength() {
       return suffixLength_;
     }
 
@@ -555,7 +428,7 @@ private static final long serialVersionUID = 0L;
       if (((bitField0_ & 0x00000008) != 0)) {
         output.writeUInt32(4, suffixLength_);
       }
-      unknownFields.writeTo(output);
+      getUnknownFields().writeTo(output);
     }
 
     @java.lang.Override
@@ -580,7 +453,7 @@ private static final long serialVersionUID = 0L;
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(4, suffixLength_);
       }
-      size += unknownFields.getSerializedSize();
+      size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
     }
@@ -613,7 +486,7 @@ private static final long serialVersionUID = 0L;
         if (getSuffixLength()
             != other.getSuffixLength()) return false;
       }
-      if (!unknownFields.equals(other.unknownFields)) return false;
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
 
@@ -640,7 +513,7 @@ private static final long serialVersionUID = 0L;
         hash = (37 * hash) + SUFFIX_LENGTH_FIELD_NUMBER;
         hash = (53 * hash) + getSuffixLength();
       }
-      hash = (29 * hash) + unknownFields.hashCode();
+      hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
     }
@@ -736,6 +609,10 @@ private static final long serialVersionUID = 0L;
       return builder;
     }
     /**
+     * <pre>
+     * DEPRECATED Use CompletionAggregateEvent instead
+     * </pre>
+     *
      * Protobuf type {@code android_studio.SmlCompletionEvent.CompletionRequest}
      */
     public static final class Builder extends
@@ -757,18 +634,13 @@ private static final long serialVersionUID = 0L;
 
       // Construct using com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.newBuilder()
       private Builder() {
-        maybeForceBuilderInitialization();
+
       }
 
       private Builder(
           com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
+
       }
       @java.lang.Override
       public Builder clear() {
@@ -886,7 +758,7 @@ private static final long serialVersionUID = 0L;
         if (other.hasSuffixLength()) {
           setSuffixLength(other.getSuffixLength());
         }
-        this.mergeUnknownFields(other.unknownFields);
+        this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
       }
@@ -901,45 +773,107 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest parsedMessage = null;
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
         try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 8: {
+                int tmpRaw = input.readEnum();
+                com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.Trigger tmpValue =
+                    com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.Trigger.forNumber(tmpRaw);
+                if (tmpValue == null) {
+                  mergeUnknownVarintField(1, tmpRaw);
+                } else {
+                  trigger_ = tmpRaw;
+                  bitField0_ |= 0x00000001;
+                }
+                break;
+              } // case 8
+              case 16: {
+                int tmpRaw = input.readEnum();
+                com.google.wireless.android.sdk.stats.EditorFileType tmpValue =
+                    com.google.wireless.android.sdk.stats.EditorFileType.forNumber(tmpRaw);
+                if (tmpValue == null) {
+                  mergeUnknownVarintField(2, tmpRaw);
+                } else {
+                  fileType_ = tmpRaw;
+                  bitField0_ |= 0x00000002;
+                }
+                break;
+              } // case 16
+              case 24: {
+                prefixLength_ = input.readUInt32();
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 24
+              case 32: {
+                suffixLength_ = input.readUInt32();
+                bitField0_ |= 0x00000008;
+                break;
+              } // case 32
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
+          onChanged();
+        } // finally
         return this;
       }
       private int bitField0_;
 
       private int trigger_ = 0;
       /**
-       * <code>optional .android_studio.SmlCompletionEvent.CompletionRequest.Trigger trigger = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionRequest.Trigger trigger = 1 [deprecated = true];</code>
+       * @deprecated
        * @return Whether the trigger field is set.
        */
-      @java.lang.Override public boolean hasTrigger() {
+      @java.lang.Override @java.lang.Deprecated public boolean hasTrigger() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional .android_studio.SmlCompletionEvent.CompletionRequest.Trigger trigger = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionRequest.Trigger trigger = 1 [deprecated = true];</code>
+       * @deprecated
        * @return The trigger.
        */
       @java.lang.Override
-      public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.Trigger getTrigger() {
+      @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.Trigger getTrigger() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.Trigger result = com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.Trigger.valueOf(trigger_);
         return result == null ? com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.Trigger.UNKNOWN : result;
       }
       /**
-       * <code>optional .android_studio.SmlCompletionEvent.CompletionRequest.Trigger trigger = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionRequest.Trigger trigger = 1 [deprecated = true];</code>
+       * @deprecated
        * @param value The trigger to set.
        * @return This builder for chaining.
        */
-      public Builder setTrigger(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.Trigger value) {
+      @java.lang.Deprecated public Builder setTrigger(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.Trigger value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -949,10 +883,15 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlCompletionEvent.CompletionRequest.Trigger trigger = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionRequest.Trigger trigger = 1 [deprecated = true];</code>
+       * @deprecated
        * @return This builder for chaining.
        */
-      public Builder clearTrigger() {
+      @java.lang.Deprecated public Builder clearTrigger() {
         bitField0_ = (bitField0_ & ~0x00000001);
         trigger_ = 0;
         onChanged();
@@ -961,28 +900,43 @@ private static final long serialVersionUID = 0L;
 
       private int fileType_ = 0;
       /**
-       * <code>optional .android_studio.EditorFileType file_type = 2;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.EditorFileType file_type = 2 [deprecated = true];</code>
+       * @deprecated
        * @return Whether the fileType field is set.
        */
-      @java.lang.Override public boolean hasFileType() {
+      @java.lang.Override @java.lang.Deprecated public boolean hasFileType() {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
-       * <code>optional .android_studio.EditorFileType file_type = 2;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.EditorFileType file_type = 2 [deprecated = true];</code>
+       * @deprecated
        * @return The fileType.
        */
       @java.lang.Override
-      public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
+      @java.lang.Deprecated public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.valueOf(fileType_);
         return result == null ? com.google.wireless.android.sdk.stats.EditorFileType.UNKNOWN : result;
       }
       /**
-       * <code>optional .android_studio.EditorFileType file_type = 2;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.EditorFileType file_type = 2 [deprecated = true];</code>
+       * @deprecated
        * @param value The fileType to set.
        * @return This builder for chaining.
        */
-      public Builder setFileType(com.google.wireless.android.sdk.stats.EditorFileType value) {
+      @java.lang.Deprecated public Builder setFileType(com.google.wireless.android.sdk.stats.EditorFileType value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -992,10 +946,15 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.EditorFileType file_type = 2;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.EditorFileType file_type = 2 [deprecated = true];</code>
+       * @deprecated
        * @return This builder for chaining.
        */
-      public Builder clearFileType() {
+      @java.lang.Deprecated public Builder clearFileType() {
         bitField0_ = (bitField0_ & ~0x00000002);
         fileType_ = 0;
         onChanged();
@@ -1005,38 +964,41 @@ private static final long serialVersionUID = 0L;
       private int prefixLength_ ;
       /**
        * <pre>
-       * Length of prefix (# of chars before cursor) included in the request
+       * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional uint32 prefix_length = 3;</code>
+       * <code>optional uint32 prefix_length = 3 [deprecated = true];</code>
+       * @deprecated
        * @return Whether the prefixLength field is set.
        */
       @java.lang.Override
-      public boolean hasPrefixLength() {
+      @java.lang.Deprecated public boolean hasPrefixLength() {
         return ((bitField0_ & 0x00000004) != 0);
       }
       /**
        * <pre>
-       * Length of prefix (# of chars before cursor) included in the request
+       * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional uint32 prefix_length = 3;</code>
+       * <code>optional uint32 prefix_length = 3 [deprecated = true];</code>
+       * @deprecated
        * @return The prefixLength.
        */
       @java.lang.Override
-      public int getPrefixLength() {
+      @java.lang.Deprecated public int getPrefixLength() {
         return prefixLength_;
       }
       /**
        * <pre>
-       * Length of prefix (# of chars before cursor) included in the request
+       * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional uint32 prefix_length = 3;</code>
+       * <code>optional uint32 prefix_length = 3 [deprecated = true];</code>
+       * @deprecated
        * @param value The prefixLength to set.
        * @return This builder for chaining.
        */
-      public Builder setPrefixLength(int value) {
+      @java.lang.Deprecated public Builder setPrefixLength(int value) {
         bitField0_ |= 0x00000004;
         prefixLength_ = value;
         onChanged();
@@ -1044,13 +1006,14 @@ private static final long serialVersionUID = 0L;
       }
       /**
        * <pre>
-       * Length of prefix (# of chars before cursor) included in the request
+       * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional uint32 prefix_length = 3;</code>
+       * <code>optional uint32 prefix_length = 3 [deprecated = true];</code>
+       * @deprecated
        * @return This builder for chaining.
        */
-      public Builder clearPrefixLength() {
+      @java.lang.Deprecated public Builder clearPrefixLength() {
         bitField0_ = (bitField0_ & ~0x00000004);
         prefixLength_ = 0;
         onChanged();
@@ -1060,38 +1023,41 @@ private static final long serialVersionUID = 0L;
       private int suffixLength_ ;
       /**
        * <pre>
-       * Length of suffix (# of chars after cursor) included in the request
+       * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional uint32 suffix_length = 4;</code>
+       * <code>optional uint32 suffix_length = 4 [deprecated = true];</code>
+       * @deprecated
        * @return Whether the suffixLength field is set.
        */
       @java.lang.Override
-      public boolean hasSuffixLength() {
+      @java.lang.Deprecated public boolean hasSuffixLength() {
         return ((bitField0_ & 0x00000008) != 0);
       }
       /**
        * <pre>
-       * Length of suffix (# of chars after cursor) included in the request
+       * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional uint32 suffix_length = 4;</code>
+       * <code>optional uint32 suffix_length = 4 [deprecated = true];</code>
+       * @deprecated
        * @return The suffixLength.
        */
       @java.lang.Override
-      public int getSuffixLength() {
+      @java.lang.Deprecated public int getSuffixLength() {
         return suffixLength_;
       }
       /**
        * <pre>
-       * Length of suffix (# of chars after cursor) included in the request
+       * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional uint32 suffix_length = 4;</code>
+       * <code>optional uint32 suffix_length = 4 [deprecated = true];</code>
+       * @deprecated
        * @param value The suffixLength to set.
        * @return This builder for chaining.
        */
-      public Builder setSuffixLength(int value) {
+      @java.lang.Deprecated public Builder setSuffixLength(int value) {
         bitField0_ |= 0x00000008;
         suffixLength_ = value;
         onChanged();
@@ -1099,13 +1065,14 @@ private static final long serialVersionUID = 0L;
       }
       /**
        * <pre>
-       * Length of suffix (# of chars after cursor) included in the request
+       * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional uint32 suffix_length = 4;</code>
+       * <code>optional uint32 suffix_length = 4 [deprecated = true];</code>
+       * @deprecated
        * @return This builder for chaining.
        */
-      public Builder clearSuffixLength() {
+      @java.lang.Deprecated public Builder clearSuffixLength() {
         bitField0_ = (bitField0_ & ~0x00000008);
         suffixLength_ = 0;
         onChanged();
@@ -1144,7 +1111,18 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new CompletionRequest(input, extensionRegistry);
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
       }
     };
 
@@ -1164,25 +1142,39 @@ private static final long serialVersionUID = 0L;
 
   }
 
-  public interface CompletionErrorOrBuilder extends
+  @java.lang.Deprecated public interface CompletionErrorOrBuilder extends
       // @@protoc_insertion_point(interface_extends:android_studio.SmlCompletionEvent.CompletionError)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional int32 status_code = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional int32 status_code = 1 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the statusCode field is set.
      */
-    boolean hasStatusCode();
+    @java.lang.Deprecated boolean hasStatusCode();
     /**
-     * <code>optional int32 status_code = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional int32 status_code = 1 [deprecated = true];</code>
+     * @deprecated
      * @return The statusCode.
      */
-    int getStatusCode();
+    @java.lang.Deprecated int getStatusCode();
   }
   /**
+   * <pre>
+   * DEPRECATED Use CompletionAggregateEvent instead
+   * </pre>
+   *
    * Protobuf type {@code android_studio.SmlCompletionEvent.CompletionError}
    */
-  public static final class CompletionError extends
+  @java.lang.Deprecated public static final class CompletionError extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.SmlCompletionEvent.CompletionError)
       CompletionErrorOrBuilder {
@@ -1206,49 +1198,6 @@ private static final long serialVersionUID = 0L;
     getUnknownFields() {
       return this.unknownFields;
     }
-    private CompletionError(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 8: {
-              bitField0_ |= 0x00000001;
-              statusCode_ = input.readInt32();
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlCompletionEvent_CompletionError_descriptor;
@@ -1266,19 +1215,29 @@ private static final long serialVersionUID = 0L;
     public static final int STATUS_CODE_FIELD_NUMBER = 1;
     private int statusCode_;
     /**
-     * <code>optional int32 status_code = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional int32 status_code = 1 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the statusCode field is set.
      */
     @java.lang.Override
-    public boolean hasStatusCode() {
+    @java.lang.Deprecated public boolean hasStatusCode() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional int32 status_code = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional int32 status_code = 1 [deprecated = true];</code>
+     * @deprecated
      * @return The statusCode.
      */
     @java.lang.Override
-    public int getStatusCode() {
+    @java.lang.Deprecated public int getStatusCode() {
       return statusCode_;
     }
 
@@ -1299,7 +1258,7 @@ private static final long serialVersionUID = 0L;
       if (((bitField0_ & 0x00000001) != 0)) {
         output.writeInt32(1, statusCode_);
       }
-      unknownFields.writeTo(output);
+      getUnknownFields().writeTo(output);
     }
 
     @java.lang.Override
@@ -1312,7 +1271,7 @@ private static final long serialVersionUID = 0L;
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(1, statusCode_);
       }
-      size += unknownFields.getSerializedSize();
+      size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
     }
@@ -1332,7 +1291,7 @@ private static final long serialVersionUID = 0L;
         if (getStatusCode()
             != other.getStatusCode()) return false;
       }
-      if (!unknownFields.equals(other.unknownFields)) return false;
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
 
@@ -1347,7 +1306,7 @@ private static final long serialVersionUID = 0L;
         hash = (37 * hash) + STATUS_CODE_FIELD_NUMBER;
         hash = (53 * hash) + getStatusCode();
       }
-      hash = (29 * hash) + unknownFields.hashCode();
+      hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
     }
@@ -1443,6 +1402,10 @@ private static final long serialVersionUID = 0L;
       return builder;
     }
     /**
+     * <pre>
+     * DEPRECATED Use CompletionAggregateEvent instead
+     * </pre>
+     *
      * Protobuf type {@code android_studio.SmlCompletionEvent.CompletionError}
      */
     public static final class Builder extends
@@ -1464,18 +1427,13 @@ private static final long serialVersionUID = 0L;
 
       // Construct using com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError.newBuilder()
       private Builder() {
-        maybeForceBuilderInitialization();
+
       }
 
       private Builder(
           com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
+
       }
       @java.lang.Override
       public Builder clear() {
@@ -1566,7 +1524,7 @@ private static final long serialVersionUID = 0L;
         if (other.hasStatusCode()) {
           setStatusCode(other.getStatusCode());
         }
-        this.mergeUnknownFields(other.unknownFields);
+        this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
       }
@@ -1581,54 +1539,92 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError parsedMessage = null;
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
         try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 8: {
+                statusCode_ = input.readInt32();
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 8
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
+          onChanged();
+        } // finally
         return this;
       }
       private int bitField0_;
 
       private int statusCode_ ;
       /**
-       * <code>optional int32 status_code = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional int32 status_code = 1 [deprecated = true];</code>
+       * @deprecated
        * @return Whether the statusCode field is set.
        */
       @java.lang.Override
-      public boolean hasStatusCode() {
+      @java.lang.Deprecated public boolean hasStatusCode() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional int32 status_code = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional int32 status_code = 1 [deprecated = true];</code>
+       * @deprecated
        * @return The statusCode.
        */
       @java.lang.Override
-      public int getStatusCode() {
+      @java.lang.Deprecated public int getStatusCode() {
         return statusCode_;
       }
       /**
-       * <code>optional int32 status_code = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional int32 status_code = 1 [deprecated = true];</code>
+       * @deprecated
        * @param value The statusCode to set.
        * @return This builder for chaining.
        */
-      public Builder setStatusCode(int value) {
+      @java.lang.Deprecated public Builder setStatusCode(int value) {
         bitField0_ |= 0x00000001;
         statusCode_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 status_code = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional int32 status_code = 1 [deprecated = true];</code>
+       * @deprecated
        * @return This builder for chaining.
        */
-      public Builder clearStatusCode() {
+      @java.lang.Deprecated public Builder clearStatusCode() {
         bitField0_ = (bitField0_ & ~0x00000001);
         statusCode_ = 0;
         onChanged();
@@ -1667,7 +1663,18 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new CompletionError(input, extensionRegistry);
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
       }
     };
 
@@ -1687,51 +1694,89 @@ private static final long serialVersionUID = 0L;
 
   }
 
-  public interface CompletionResultOrBuilder extends
+  @java.lang.Deprecated public interface CompletionResultOrBuilder extends
       // @@protoc_insertion_point(interface_extends:android_studio.SmlCompletionEvent.CompletionResult)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the metadata field is set.
      */
-    boolean hasMetadata();
+    @java.lang.Deprecated boolean hasMetadata();
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * @deprecated
      * @return The metadata.
      */
-    com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata();
+    @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata();
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
      */
-    com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder();
+    @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder();
 
     /**
-     * <code>optional uint64 latency_ms = 2;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional uint64 latency_ms = 2 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the latencyMs field is set.
      */
-    boolean hasLatencyMs();
+    @java.lang.Deprecated boolean hasLatencyMs();
     /**
-     * <code>optional uint64 latency_ms = 2;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional uint64 latency_ms = 2 [deprecated = true];</code>
+     * @deprecated
      * @return The latencyMs.
      */
-    long getLatencyMs();
+    @java.lang.Deprecated long getLatencyMs();
 
     /**
-     * <code>optional int32 num_completions = 3;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional int32 num_completions = 3 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the numCompletions field is set.
      */
-    boolean hasNumCompletions();
+    @java.lang.Deprecated boolean hasNumCompletions();
     /**
-     * <code>optional int32 num_completions = 3;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional int32 num_completions = 3 [deprecated = true];</code>
+     * @deprecated
      * @return The numCompletions.
      */
-    int getNumCompletions();
+    @java.lang.Deprecated int getNumCompletions();
   }
   /**
+   * <pre>
+   * DEPRECATED Use CompletionAggregateEvent instead
+   * </pre>
+   *
    * Protobuf type {@code android_studio.SmlCompletionEvent.CompletionResult}
    */
-  public static final class CompletionResult extends
+  @java.lang.Deprecated public static final class CompletionResult extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.SmlCompletionEvent.CompletionResult)
       CompletionResultOrBuilder {
@@ -1755,67 +1800,6 @@ private static final long serialVersionUID = 0L;
     getUnknownFields() {
       return this.unknownFields;
     }
-    private CompletionResult(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000001) != 0)) {
-                subBuilder = metadata_.toBuilder();
-              }
-              metadata_ = input.readMessage(com.google.wireless.android.sdk.stats.SmlResponseMetadata.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(metadata_);
-                metadata_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000001;
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              latencyMs_ = input.readUInt64();
-              break;
-            }
-            case 24: {
-              bitField0_ |= 0x00000004;
-              numCompletions_ = input.readInt32();
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlCompletionEvent_CompletionResult_descriptor;
@@ -1833,64 +1817,98 @@ private static final long serialVersionUID = 0L;
     public static final int METADATA_FIELD_NUMBER = 1;
     private com.google.wireless.android.sdk.stats.SmlResponseMetadata metadata_;
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the metadata field is set.
      */
     @java.lang.Override
-    public boolean hasMetadata() {
+    @java.lang.Deprecated public boolean hasMetadata() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * @deprecated
      * @return The metadata.
      */
     @java.lang.Override
-    public com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata() {
+    @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata() {
       return metadata_ == null ? com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance() : metadata_;
     }
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
      */
     @java.lang.Override
-    public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
+    @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
       return metadata_ == null ? com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance() : metadata_;
     }
 
     public static final int LATENCY_MS_FIELD_NUMBER = 2;
     private long latencyMs_;
     /**
-     * <code>optional uint64 latency_ms = 2;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional uint64 latency_ms = 2 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the latencyMs field is set.
      */
     @java.lang.Override
-    public boolean hasLatencyMs() {
+    @java.lang.Deprecated public boolean hasLatencyMs() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
-     * <code>optional uint64 latency_ms = 2;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional uint64 latency_ms = 2 [deprecated = true];</code>
+     * @deprecated
      * @return The latencyMs.
      */
     @java.lang.Override
-    public long getLatencyMs() {
+    @java.lang.Deprecated public long getLatencyMs() {
       return latencyMs_;
     }
 
     public static final int NUM_COMPLETIONS_FIELD_NUMBER = 3;
     private int numCompletions_;
     /**
-     * <code>optional int32 num_completions = 3;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional int32 num_completions = 3 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the numCompletions field is set.
      */
     @java.lang.Override
-    public boolean hasNumCompletions() {
+    @java.lang.Deprecated public boolean hasNumCompletions() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
-     * <code>optional int32 num_completions = 3;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional int32 num_completions = 3 [deprecated = true];</code>
+     * @deprecated
      * @return The numCompletions.
      */
     @java.lang.Override
-    public int getNumCompletions() {
+    @java.lang.Deprecated public int getNumCompletions() {
       return numCompletions_;
     }
 
@@ -1917,7 +1935,7 @@ private static final long serialVersionUID = 0L;
       if (((bitField0_ & 0x00000004) != 0)) {
         output.writeInt32(3, numCompletions_);
       }
-      unknownFields.writeTo(output);
+      getUnknownFields().writeTo(output);
     }
 
     @java.lang.Override
@@ -1938,7 +1956,7 @@ private static final long serialVersionUID = 0L;
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(3, numCompletions_);
       }
-      size += unknownFields.getSerializedSize();
+      size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
     }
@@ -1968,7 +1986,7 @@ private static final long serialVersionUID = 0L;
         if (getNumCompletions()
             != other.getNumCompletions()) return false;
       }
-      if (!unknownFields.equals(other.unknownFields)) return false;
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
 
@@ -1992,7 +2010,7 @@ private static final long serialVersionUID = 0L;
         hash = (37 * hash) + NUM_COMPLETIONS_FIELD_NUMBER;
         hash = (53 * hash) + getNumCompletions();
       }
-      hash = (29 * hash) + unknownFields.hashCode();
+      hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
     }
@@ -2088,6 +2106,10 @@ private static final long serialVersionUID = 0L;
       return builder;
     }
     /**
+     * <pre>
+     * DEPRECATED Use CompletionAggregateEvent instead
+     * </pre>
+     *
      * Protobuf type {@code android_studio.SmlCompletionEvent.CompletionResult}
      */
     public static final class Builder extends
@@ -2238,7 +2260,7 @@ private static final long serialVersionUID = 0L;
         if (other.hasNumCompletions()) {
           setNumCompletions(other.getNumCompletions());
         }
-        this.mergeUnknownFields(other.unknownFields);
+        this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
       }
@@ -2253,17 +2275,47 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult parsedMessage = null;
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
         try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+                input.readMessage(
+                    getMetadataFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 10
+              case 16: {
+                latencyMs_ = input.readUInt64();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 16
+              case 24: {
+                numCompletions_ = input.readInt32();
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 24
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
+          onChanged();
+        } // finally
         return this;
       }
       private int bitField0_;
@@ -2272,17 +2324,27 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlResponseMetadata, com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder, com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder> metadataBuilder_;
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * @deprecated
        * @return Whether the metadata field is set.
        */
-      public boolean hasMetadata() {
+      @java.lang.Deprecated public boolean hasMetadata() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * @deprecated
        * @return The metadata.
        */
-      public com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata() {
+      @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata() {
         if (metadataBuilder_ == null) {
           return metadata_ == null ? com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance() : metadata_;
         } else {
@@ -2290,9 +2352,13 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
        */
-      public Builder setMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
+      @java.lang.Deprecated public Builder setMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -2306,9 +2372,13 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
        */
-      public Builder setMetadata(
+      @java.lang.Deprecated public Builder setMetadata(
           com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder builderForValue) {
         if (metadataBuilder_ == null) {
           metadata_ = builderForValue.build();
@@ -2320,9 +2390,13 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
        */
-      public Builder mergeMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
+      @java.lang.Deprecated public Builder mergeMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0) &&
               metadata_ != null &&
@@ -2340,9 +2414,13 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
        */
-      public Builder clearMetadata() {
+      @java.lang.Deprecated public Builder clearMetadata() {
         if (metadataBuilder_ == null) {
           metadata_ = null;
           onChanged();
@@ -2353,17 +2431,25 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
        */
-      public com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder getMetadataBuilder() {
+      @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder getMetadataBuilder() {
         bitField0_ |= 0x00000001;
         onChanged();
         return getMetadataFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
        */
-      public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
+      @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
         if (metadataBuilder_ != null) {
           return metadataBuilder_.getMessageOrBuilder();
         } else {
@@ -2372,7 +2458,11 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlResponseMetadata, com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder, com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder> 
@@ -2390,37 +2480,57 @@ private static final long serialVersionUID = 0L;
 
       private long latencyMs_ ;
       /**
-       * <code>optional uint64 latency_ms = 2;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional uint64 latency_ms = 2 [deprecated = true];</code>
+       * @deprecated
        * @return Whether the latencyMs field is set.
        */
       @java.lang.Override
-      public boolean hasLatencyMs() {
+      @java.lang.Deprecated public boolean hasLatencyMs() {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
-       * <code>optional uint64 latency_ms = 2;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional uint64 latency_ms = 2 [deprecated = true];</code>
+       * @deprecated
        * @return The latencyMs.
        */
       @java.lang.Override
-      public long getLatencyMs() {
+      @java.lang.Deprecated public long getLatencyMs() {
         return latencyMs_;
       }
       /**
-       * <code>optional uint64 latency_ms = 2;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional uint64 latency_ms = 2 [deprecated = true];</code>
+       * @deprecated
        * @param value The latencyMs to set.
        * @return This builder for chaining.
        */
-      public Builder setLatencyMs(long value) {
+      @java.lang.Deprecated public Builder setLatencyMs(long value) {
         bitField0_ |= 0x00000002;
         latencyMs_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional uint64 latency_ms = 2;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional uint64 latency_ms = 2 [deprecated = true];</code>
+       * @deprecated
        * @return This builder for chaining.
        */
-      public Builder clearLatencyMs() {
+      @java.lang.Deprecated public Builder clearLatencyMs() {
         bitField0_ = (bitField0_ & ~0x00000002);
         latencyMs_ = 0L;
         onChanged();
@@ -2429,37 +2539,57 @@ private static final long serialVersionUID = 0L;
 
       private int numCompletions_ ;
       /**
-       * <code>optional int32 num_completions = 3;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional int32 num_completions = 3 [deprecated = true];</code>
+       * @deprecated
        * @return Whether the numCompletions field is set.
        */
       @java.lang.Override
-      public boolean hasNumCompletions() {
+      @java.lang.Deprecated public boolean hasNumCompletions() {
         return ((bitField0_ & 0x00000004) != 0);
       }
       /**
-       * <code>optional int32 num_completions = 3;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional int32 num_completions = 3 [deprecated = true];</code>
+       * @deprecated
        * @return The numCompletions.
        */
       @java.lang.Override
-      public int getNumCompletions() {
+      @java.lang.Deprecated public int getNumCompletions() {
         return numCompletions_;
       }
       /**
-       * <code>optional int32 num_completions = 3;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional int32 num_completions = 3 [deprecated = true];</code>
+       * @deprecated
        * @param value The numCompletions to set.
        * @return This builder for chaining.
        */
-      public Builder setNumCompletions(int value) {
+      @java.lang.Deprecated public Builder setNumCompletions(int value) {
         bitField0_ |= 0x00000004;
         numCompletions_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 num_completions = 3;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional int32 num_completions = 3 [deprecated = true];</code>
+       * @deprecated
        * @return This builder for chaining.
        */
-      public Builder clearNumCompletions() {
+      @java.lang.Deprecated public Builder clearNumCompletions() {
         bitField0_ = (bitField0_ & ~0x00000004);
         numCompletions_ = 0;
         onChanged();
@@ -2498,7 +2628,18 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new CompletionResult(input, extensionRegistry);
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
       }
     };
 
@@ -2518,46 +2659,76 @@ private static final long serialVersionUID = 0L;
 
   }
 
-  public interface CompletionResponseOrBuilder extends
+  @java.lang.Deprecated public interface CompletionResponseOrBuilder extends
       // @@protoc_insertion_point(interface_extends:android_studio.SmlCompletionEvent.CompletionResponse)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionResult result = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the result field is set.
      */
-    boolean hasResult();
+    @java.lang.Deprecated boolean hasResult();
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionResult result = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
+     * @deprecated
      * @return The result.
      */
-    com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult getResult();
+    @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult getResult();
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionResult result = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
      */
-    com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResultOrBuilder getResultOrBuilder();
+    @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResultOrBuilder getResultOrBuilder();
 
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionError backend_error = 2;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the backendError field is set.
      */
-    boolean hasBackendError();
+    @java.lang.Deprecated boolean hasBackendError();
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionError backend_error = 2;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
+     * @deprecated
      * @return The backendError.
      */
-    com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError getBackendError();
+    @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError getBackendError();
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionError backend_error = 2;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
      */
-    com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionErrorOrBuilder getBackendErrorOrBuilder();
-
-    public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse.ResponseCase getResponseCase();
+    @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionErrorOrBuilder getBackendErrorOrBuilder();
   }
   /**
+   * <pre>
+   * DEPRECATED Use CompletionAggregateEvent instead
+   * </pre>
+   *
    * Protobuf type {@code android_studio.SmlCompletionEvent.CompletionResponse}
    */
-  public static final class CompletionResponse extends
+  @java.lang.Deprecated public static final class CompletionResponse extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.SmlCompletionEvent.CompletionResponse)
       CompletionResponseOrBuilder {
@@ -2581,72 +2752,6 @@ private static final long serialVersionUID = 0L;
     getUnknownFields() {
       return this.unknownFields;
     }
-    private CompletionResponse(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult.Builder subBuilder = null;
-              if (responseCase_ == 1) {
-                subBuilder = ((com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult) response_).toBuilder();
-              }
-              response_ =
-                  input.readMessage(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom((com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult) response_);
-                response_ = subBuilder.buildPartial();
-              }
-              responseCase_ = 1;
-              break;
-            }
-            case 18: {
-              com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError.Builder subBuilder = null;
-              if (responseCase_ == 2) {
-                subBuilder = ((com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError) response_).toBuilder();
-              }
-              response_ =
-                  input.readMessage(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom((com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError) response_);
-                response_ = subBuilder.buildPartial();
-              }
-              responseCase_ = 2;
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlCompletionEvent_CompletionResponse_descriptor;
@@ -2661,107 +2766,84 @@ private static final long serialVersionUID = 0L;
     }
 
     private int bitField0_;
-    private int responseCase_ = 0;
-    private java.lang.Object response_;
-    public enum ResponseCase
-        implements com.google.protobuf.Internal.EnumLite,
-            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
-      RESULT(1),
-      BACKEND_ERROR(2),
-      RESPONSE_NOT_SET(0);
-      private final int value;
-      private ResponseCase(int value) {
-        this.value = value;
-      }
-      /**
-       * @param value The number of the enum to look for.
-       * @return The enum associated with the given number.
-       * @deprecated Use {@link #forNumber(int)} instead.
-       */
-      @java.lang.Deprecated
-      public static ResponseCase valueOf(int value) {
-        return forNumber(value);
-      }
-
-      public static ResponseCase forNumber(int value) {
-        switch (value) {
-          case 1: return RESULT;
-          case 2: return BACKEND_ERROR;
-          case 0: return RESPONSE_NOT_SET;
-          default: return null;
-        }
-      }
-      public int getNumber() {
-        return this.value;
-      }
-    };
-
-    public ResponseCase
-    getResponseCase() {
-      return ResponseCase.forNumber(
-          responseCase_);
-    }
-
     public static final int RESULT_FIELD_NUMBER = 1;
+    private com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult result_;
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionResult result = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the result field is set.
      */
     @java.lang.Override
-    public boolean hasResult() {
-      return responseCase_ == 1;
+    @java.lang.Deprecated public boolean hasResult() {
+      return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionResult result = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
+     * @deprecated
      * @return The result.
      */
     @java.lang.Override
-    public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult getResult() {
-      if (responseCase_ == 1) {
-         return (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult) response_;
-      }
-      return com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult.getDefaultInstance();
+    @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult getResult() {
+      return result_ == null ? com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult.getDefaultInstance() : result_;
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionResult result = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
      */
     @java.lang.Override
-    public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResultOrBuilder getResultOrBuilder() {
-      if (responseCase_ == 1) {
-         return (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult) response_;
-      }
-      return com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult.getDefaultInstance();
+    @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResultOrBuilder getResultOrBuilder() {
+      return result_ == null ? com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult.getDefaultInstance() : result_;
     }
 
     public static final int BACKEND_ERROR_FIELD_NUMBER = 2;
+    private com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError backendError_;
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionError backend_error = 2;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the backendError field is set.
      */
     @java.lang.Override
-    public boolean hasBackendError() {
-      return responseCase_ == 2;
+    @java.lang.Deprecated public boolean hasBackendError() {
+      return ((bitField0_ & 0x00000002) != 0);
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionError backend_error = 2;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
+     * @deprecated
      * @return The backendError.
      */
     @java.lang.Override
-    public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError getBackendError() {
-      if (responseCase_ == 2) {
-         return (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError) response_;
-      }
-      return com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError.getDefaultInstance();
+    @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError getBackendError() {
+      return backendError_ == null ? com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError.getDefaultInstance() : backendError_;
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionError backend_error = 2;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
      */
     @java.lang.Override
-    public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionErrorOrBuilder getBackendErrorOrBuilder() {
-      if (responseCase_ == 2) {
-         return (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError) response_;
-      }
-      return com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError.getDefaultInstance();
+    @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionErrorOrBuilder getBackendErrorOrBuilder() {
+      return backendError_ == null ? com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError.getDefaultInstance() : backendError_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -2778,13 +2860,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (responseCase_ == 1) {
-        output.writeMessage(1, (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult) response_);
+      if (((bitField0_ & 0x00000001) != 0)) {
+        output.writeMessage(1, getResult());
       }
-      if (responseCase_ == 2) {
-        output.writeMessage(2, (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError) response_);
+      if (((bitField0_ & 0x00000002) != 0)) {
+        output.writeMessage(2, getBackendError());
       }
-      unknownFields.writeTo(output);
+      getUnknownFields().writeTo(output);
     }
 
     @java.lang.Override
@@ -2793,15 +2875,15 @@ private static final long serialVersionUID = 0L;
       if (size != -1) return size;
 
       size = 0;
-      if (responseCase_ == 1) {
+      if (((bitField0_ & 0x00000001) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult) response_);
+          .computeMessageSize(1, getResult());
       }
-      if (responseCase_ == 2) {
+      if (((bitField0_ & 0x00000002) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError) response_);
+          .computeMessageSize(2, getBackendError());
       }
-      size += unknownFields.getSerializedSize();
+      size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
     }
@@ -2816,20 +2898,17 @@ private static final long serialVersionUID = 0L;
       }
       com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse other = (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse) obj;
 
-      if (!getResponseCase().equals(other.getResponseCase())) return false;
-      switch (responseCase_) {
-        case 1:
-          if (!getResult()
-              .equals(other.getResult())) return false;
-          break;
-        case 2:
-          if (!getBackendError()
-              .equals(other.getBackendError())) return false;
-          break;
-        case 0:
-        default:
+      if (hasResult() != other.hasResult()) return false;
+      if (hasResult()) {
+        if (!getResult()
+            .equals(other.getResult())) return false;
       }
-      if (!unknownFields.equals(other.unknownFields)) return false;
+      if (hasBackendError() != other.hasBackendError()) return false;
+      if (hasBackendError()) {
+        if (!getBackendError()
+            .equals(other.getBackendError())) return false;
+      }
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
 
@@ -2840,19 +2919,15 @@ private static final long serialVersionUID = 0L;
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      switch (responseCase_) {
-        case 1:
-          hash = (37 * hash) + RESULT_FIELD_NUMBER;
-          hash = (53 * hash) + getResult().hashCode();
-          break;
-        case 2:
-          hash = (37 * hash) + BACKEND_ERROR_FIELD_NUMBER;
-          hash = (53 * hash) + getBackendError().hashCode();
-          break;
-        case 0:
-        default:
+      if (hasResult()) {
+        hash = (37 * hash) + RESULT_FIELD_NUMBER;
+        hash = (53 * hash) + getResult().hashCode();
       }
-      hash = (29 * hash) + unknownFields.hashCode();
+      if (hasBackendError()) {
+        hash = (37 * hash) + BACKEND_ERROR_FIELD_NUMBER;
+        hash = (53 * hash) + getBackendError().hashCode();
+      }
+      hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
     }
@@ -2948,6 +3023,10 @@ private static final long serialVersionUID = 0L;
       return builder;
     }
     /**
+     * <pre>
+     * DEPRECATED Use CompletionAggregateEvent instead
+     * </pre>
+     *
      * Protobuf type {@code android_studio.SmlCompletionEvent.CompletionResponse}
      */
     public static final class Builder extends
@@ -2980,13 +3059,25 @@ private static final long serialVersionUID = 0L;
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessageV3
                 .alwaysUseFieldBuilders) {
+          getResultFieldBuilder();
+          getBackendErrorFieldBuilder();
         }
       }
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        responseCase_ = 0;
-        response_ = null;
+        if (resultBuilder_ == null) {
+          result_ = null;
+        } else {
+          resultBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (backendErrorBuilder_ == null) {
+          backendError_ = null;
+        } else {
+          backendErrorBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -3015,22 +3106,23 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse result = new com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
-        if (responseCase_ == 1) {
+        if (((from_bitField0_ & 0x00000001) != 0)) {
           if (resultBuilder_ == null) {
-            result.response_ = response_;
+            result.result_ = result_;
           } else {
-            result.response_ = resultBuilder_.build();
+            result.result_ = resultBuilder_.build();
           }
+          to_bitField0_ |= 0x00000001;
         }
-        if (responseCase_ == 2) {
+        if (((from_bitField0_ & 0x00000002) != 0)) {
           if (backendErrorBuilder_ == null) {
-            result.response_ = response_;
+            result.backendError_ = backendError_;
           } else {
-            result.response_ = backendErrorBuilder_.build();
+            result.backendError_ = backendErrorBuilder_.build();
           }
+          to_bitField0_ |= 0x00000002;
         }
         result.bitField0_ = to_bitField0_;
-        result.responseCase_ = responseCase_;
         onBuilt();
         return result;
       }
@@ -3079,20 +3171,13 @@ private static final long serialVersionUID = 0L;
 
       public Builder mergeFrom(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse other) {
         if (other == com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse.getDefaultInstance()) return this;
-        switch (other.getResponseCase()) {
-          case RESULT: {
-            mergeResult(other.getResult());
-            break;
-          }
-          case BACKEND_ERROR: {
-            mergeBackendError(other.getBackendError());
-            break;
-          }
-          case RESPONSE_NOT_SET: {
-            break;
-          }
+        if (other.hasResult()) {
+          mergeResult(other.getResult());
         }
-        this.mergeUnknownFields(other.unknownFields);
+        if (other.hasBackendError()) {
+          mergeBackendError(other.getBackendError());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
       }
@@ -3107,315 +3192,361 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse parsedMessage = null;
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
         try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+                input.readMessage(
+                    getResultFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 10
+              case 18: {
+                input.readMessage(
+                    getBackendErrorFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 18
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
+          onChanged();
+        } // finally
         return this;
       }
-      private int responseCase_ = 0;
-      private java.lang.Object response_;
-      public ResponseCase
-          getResponseCase() {
-        return ResponseCase.forNumber(
-            responseCase_);
-      }
-
-      public Builder clearResponse() {
-        responseCase_ = 0;
-        response_ = null;
-        onChanged();
-        return this;
-      }
-
       private int bitField0_;
 
+      private com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult result_;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult.Builder, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResultOrBuilder> resultBuilder_;
       /**
-       * <code>.android_studio.SmlCompletionEvent.CompletionResult result = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
+       * @deprecated
        * @return Whether the result field is set.
        */
-      @java.lang.Override
-      public boolean hasResult() {
-        return responseCase_ == 1;
+      @java.lang.Deprecated public boolean hasResult() {
+        return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>.android_studio.SmlCompletionEvent.CompletionResult result = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
+       * @deprecated
        * @return The result.
        */
-      @java.lang.Override
-      public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult getResult() {
+      @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult getResult() {
         if (resultBuilder_ == null) {
-          if (responseCase_ == 1) {
-            return (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult) response_;
-          }
-          return com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult.getDefaultInstance();
+          return result_ == null ? com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult.getDefaultInstance() : result_;
         } else {
-          if (responseCase_ == 1) {
-            return resultBuilder_.getMessage();
-          }
-          return com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult.getDefaultInstance();
+          return resultBuilder_.getMessage();
         }
       }
       /**
-       * <code>.android_studio.SmlCompletionEvent.CompletionResult result = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
        */
-      public Builder setResult(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult value) {
+      @java.lang.Deprecated public Builder setResult(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult value) {
         if (resultBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          response_ = value;
+          result_ = value;
           onChanged();
         } else {
           resultBuilder_.setMessage(value);
         }
-        responseCase_ = 1;
+        bitField0_ |= 0x00000001;
         return this;
       }
       /**
-       * <code>.android_studio.SmlCompletionEvent.CompletionResult result = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
        */
-      public Builder setResult(
+      @java.lang.Deprecated public Builder setResult(
           com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult.Builder builderForValue) {
         if (resultBuilder_ == null) {
-          response_ = builderForValue.build();
+          result_ = builderForValue.build();
           onChanged();
         } else {
           resultBuilder_.setMessage(builderForValue.build());
         }
-        responseCase_ = 1;
+        bitField0_ |= 0x00000001;
         return this;
       }
       /**
-       * <code>.android_studio.SmlCompletionEvent.CompletionResult result = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
        */
-      public Builder mergeResult(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult value) {
+      @java.lang.Deprecated public Builder mergeResult(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult value) {
         if (resultBuilder_ == null) {
-          if (responseCase_ == 1 &&
-              response_ != com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult.getDefaultInstance()) {
-            response_ = com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult.newBuilder((com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult) response_)
-                .mergeFrom(value).buildPartial();
+          if (((bitField0_ & 0x00000001) != 0) &&
+              result_ != null &&
+              result_ != com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult.getDefaultInstance()) {
+            result_ =
+              com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult.newBuilder(result_).mergeFrom(value).buildPartial();
           } else {
-            response_ = value;
+            result_ = value;
           }
           onChanged();
         } else {
-          if (responseCase_ == 1) {
-            resultBuilder_.mergeFrom(value);
-          }
-          resultBuilder_.setMessage(value);
+          resultBuilder_.mergeFrom(value);
         }
-        responseCase_ = 1;
+        bitField0_ |= 0x00000001;
         return this;
       }
       /**
-       * <code>.android_studio.SmlCompletionEvent.CompletionResult result = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
        */
-      public Builder clearResult() {
+      @java.lang.Deprecated public Builder clearResult() {
         if (resultBuilder_ == null) {
-          if (responseCase_ == 1) {
-            responseCase_ = 0;
-            response_ = null;
-            onChanged();
-          }
+          result_ = null;
+          onChanged();
         } else {
-          if (responseCase_ == 1) {
-            responseCase_ = 0;
-            response_ = null;
-          }
           resultBuilder_.clear();
         }
+        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
       /**
-       * <code>.android_studio.SmlCompletionEvent.CompletionResult result = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
        */
-      public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult.Builder getResultBuilder() {
+      @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult.Builder getResultBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
         return getResultFieldBuilder().getBuilder();
       }
       /**
-       * <code>.android_studio.SmlCompletionEvent.CompletionResult result = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
        */
-      @java.lang.Override
-      public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResultOrBuilder getResultOrBuilder() {
-        if ((responseCase_ == 1) && (resultBuilder_ != null)) {
+      @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResultOrBuilder getResultOrBuilder() {
+        if (resultBuilder_ != null) {
           return resultBuilder_.getMessageOrBuilder();
         } else {
-          if (responseCase_ == 1) {
-            return (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult) response_;
-          }
-          return com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult.getDefaultInstance();
+          return result_ == null ?
+              com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult.getDefaultInstance() : result_;
         }
       }
       /**
-       * <code>.android_studio.SmlCompletionEvent.CompletionResult result = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult.Builder, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResultOrBuilder> 
           getResultFieldBuilder() {
         if (resultBuilder_ == null) {
-          if (!(responseCase_ == 1)) {
-            response_ = com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult.getDefaultInstance();
-          }
           resultBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
               com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult.Builder, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResultOrBuilder>(
-                  (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult) response_,
+                  getResult(),
                   getParentForChildren(),
                   isClean());
-          response_ = null;
+          result_ = null;
         }
-        responseCase_ = 1;
-        onChanged();;
         return resultBuilder_;
       }
 
+      private com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError backendError_;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError.Builder, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionErrorOrBuilder> backendErrorBuilder_;
       /**
-       * <code>.android_studio.SmlCompletionEvent.CompletionError backend_error = 2;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
+       * @deprecated
        * @return Whether the backendError field is set.
        */
-      @java.lang.Override
-      public boolean hasBackendError() {
-        return responseCase_ == 2;
+      @java.lang.Deprecated public boolean hasBackendError() {
+        return ((bitField0_ & 0x00000002) != 0);
       }
       /**
-       * <code>.android_studio.SmlCompletionEvent.CompletionError backend_error = 2;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
+       * @deprecated
        * @return The backendError.
        */
-      @java.lang.Override
-      public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError getBackendError() {
+      @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError getBackendError() {
         if (backendErrorBuilder_ == null) {
-          if (responseCase_ == 2) {
-            return (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError) response_;
-          }
-          return com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError.getDefaultInstance();
+          return backendError_ == null ? com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError.getDefaultInstance() : backendError_;
         } else {
-          if (responseCase_ == 2) {
-            return backendErrorBuilder_.getMessage();
-          }
-          return com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError.getDefaultInstance();
+          return backendErrorBuilder_.getMessage();
         }
       }
       /**
-       * <code>.android_studio.SmlCompletionEvent.CompletionError backend_error = 2;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
        */
-      public Builder setBackendError(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError value) {
+      @java.lang.Deprecated public Builder setBackendError(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError value) {
         if (backendErrorBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          response_ = value;
+          backendError_ = value;
           onChanged();
         } else {
           backendErrorBuilder_.setMessage(value);
         }
-        responseCase_ = 2;
+        bitField0_ |= 0x00000002;
         return this;
       }
       /**
-       * <code>.android_studio.SmlCompletionEvent.CompletionError backend_error = 2;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
        */
-      public Builder setBackendError(
+      @java.lang.Deprecated public Builder setBackendError(
           com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError.Builder builderForValue) {
         if (backendErrorBuilder_ == null) {
-          response_ = builderForValue.build();
+          backendError_ = builderForValue.build();
           onChanged();
         } else {
           backendErrorBuilder_.setMessage(builderForValue.build());
         }
-        responseCase_ = 2;
+        bitField0_ |= 0x00000002;
         return this;
       }
       /**
-       * <code>.android_studio.SmlCompletionEvent.CompletionError backend_error = 2;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
        */
-      public Builder mergeBackendError(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError value) {
+      @java.lang.Deprecated public Builder mergeBackendError(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError value) {
         if (backendErrorBuilder_ == null) {
-          if (responseCase_ == 2 &&
-              response_ != com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError.getDefaultInstance()) {
-            response_ = com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError.newBuilder((com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError) response_)
-                .mergeFrom(value).buildPartial();
+          if (((bitField0_ & 0x00000002) != 0) &&
+              backendError_ != null &&
+              backendError_ != com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError.getDefaultInstance()) {
+            backendError_ =
+              com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError.newBuilder(backendError_).mergeFrom(value).buildPartial();
           } else {
-            response_ = value;
+            backendError_ = value;
           }
           onChanged();
         } else {
-          if (responseCase_ == 2) {
-            backendErrorBuilder_.mergeFrom(value);
-          }
-          backendErrorBuilder_.setMessage(value);
+          backendErrorBuilder_.mergeFrom(value);
         }
-        responseCase_ = 2;
+        bitField0_ |= 0x00000002;
         return this;
       }
       /**
-       * <code>.android_studio.SmlCompletionEvent.CompletionError backend_error = 2;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
        */
-      public Builder clearBackendError() {
+      @java.lang.Deprecated public Builder clearBackendError() {
         if (backendErrorBuilder_ == null) {
-          if (responseCase_ == 2) {
-            responseCase_ = 0;
-            response_ = null;
-            onChanged();
-          }
+          backendError_ = null;
+          onChanged();
         } else {
-          if (responseCase_ == 2) {
-            responseCase_ = 0;
-            response_ = null;
-          }
           backendErrorBuilder_.clear();
         }
+        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
       /**
-       * <code>.android_studio.SmlCompletionEvent.CompletionError backend_error = 2;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
        */
-      public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError.Builder getBackendErrorBuilder() {
+      @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError.Builder getBackendErrorBuilder() {
+        bitField0_ |= 0x00000002;
+        onChanged();
         return getBackendErrorFieldBuilder().getBuilder();
       }
       /**
-       * <code>.android_studio.SmlCompletionEvent.CompletionError backend_error = 2;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
        */
-      @java.lang.Override
-      public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionErrorOrBuilder getBackendErrorOrBuilder() {
-        if ((responseCase_ == 2) && (backendErrorBuilder_ != null)) {
+      @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionErrorOrBuilder getBackendErrorOrBuilder() {
+        if (backendErrorBuilder_ != null) {
           return backendErrorBuilder_.getMessageOrBuilder();
         } else {
-          if (responseCase_ == 2) {
-            return (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError) response_;
-          }
-          return com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError.getDefaultInstance();
+          return backendError_ == null ?
+              com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError.getDefaultInstance() : backendError_;
         }
       }
       /**
-       * <code>.android_studio.SmlCompletionEvent.CompletionError backend_error = 2;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError.Builder, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionErrorOrBuilder> 
           getBackendErrorFieldBuilder() {
         if (backendErrorBuilder_ == null) {
-          if (!(responseCase_ == 2)) {
-            response_ = com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError.getDefaultInstance();
-          }
           backendErrorBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
               com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError.Builder, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionErrorOrBuilder>(
-                  (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError) response_,
+                  getBackendError(),
                   getParentForChildren(),
                   isClean());
-          response_ = null;
+          backendError_ = null;
         }
-        responseCase_ = 2;
-        onChanged();;
         return backendErrorBuilder_;
       }
       @java.lang.Override
@@ -3451,7 +3582,18 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new CompletionResponse(input, extensionRegistry);
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
       }
     };
 
@@ -3471,40 +3613,68 @@ private static final long serialVersionUID = 0L;
 
   }
 
-  public interface CompletionShownOrBuilder extends
+  @java.lang.Deprecated public interface CompletionShownOrBuilder extends
       // @@protoc_insertion_point(interface_extends:android_studio.SmlCompletionEvent.CompletionShown)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the metadata field is set.
      */
-    boolean hasMetadata();
+    @java.lang.Deprecated boolean hasMetadata();
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * @deprecated
      * @return The metadata.
      */
-    com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata();
+    @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata();
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
      */
-    com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder();
+    @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder();
 
     /**
-     * <code>optional int32 shown_suggestion_index = 2;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional int32 shown_suggestion_index = 2 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the shownSuggestionIndex field is set.
      */
-    boolean hasShownSuggestionIndex();
+    @java.lang.Deprecated boolean hasShownSuggestionIndex();
     /**
-     * <code>optional int32 shown_suggestion_index = 2;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional int32 shown_suggestion_index = 2 [deprecated = true];</code>
+     * @deprecated
      * @return The shownSuggestionIndex.
      */
-    int getShownSuggestionIndex();
+    @java.lang.Deprecated int getShownSuggestionIndex();
   }
   /**
+   * <pre>
+   * DEPRECATED Use CompletionAggregateEvent instead
+   * </pre>
+   *
    * Protobuf type {@code android_studio.SmlCompletionEvent.CompletionShown}
    */
-  public static final class CompletionShown extends
+  @java.lang.Deprecated public static final class CompletionShown extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.SmlCompletionEvent.CompletionShown)
       CompletionShownOrBuilder {
@@ -3528,62 +3698,6 @@ private static final long serialVersionUID = 0L;
     getUnknownFields() {
       return this.unknownFields;
     }
-    private CompletionShown(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000001) != 0)) {
-                subBuilder = metadata_.toBuilder();
-              }
-              metadata_ = input.readMessage(com.google.wireless.android.sdk.stats.SmlResponseMetadata.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(metadata_);
-                metadata_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000001;
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              shownSuggestionIndex_ = input.readInt32();
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlCompletionEvent_CompletionShown_descriptor;
@@ -3601,45 +3715,69 @@ private static final long serialVersionUID = 0L;
     public static final int METADATA_FIELD_NUMBER = 1;
     private com.google.wireless.android.sdk.stats.SmlResponseMetadata metadata_;
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the metadata field is set.
      */
     @java.lang.Override
-    public boolean hasMetadata() {
+    @java.lang.Deprecated public boolean hasMetadata() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * @deprecated
      * @return The metadata.
      */
     @java.lang.Override
-    public com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata() {
+    @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata() {
       return metadata_ == null ? com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance() : metadata_;
     }
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
      */
     @java.lang.Override
-    public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
+    @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
       return metadata_ == null ? com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance() : metadata_;
     }
 
     public static final int SHOWN_SUGGESTION_INDEX_FIELD_NUMBER = 2;
     private int shownSuggestionIndex_;
     /**
-     * <code>optional int32 shown_suggestion_index = 2;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional int32 shown_suggestion_index = 2 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the shownSuggestionIndex field is set.
      */
     @java.lang.Override
-    public boolean hasShownSuggestionIndex() {
+    @java.lang.Deprecated public boolean hasShownSuggestionIndex() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
-     * <code>optional int32 shown_suggestion_index = 2;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional int32 shown_suggestion_index = 2 [deprecated = true];</code>
+     * @deprecated
      * @return The shownSuggestionIndex.
      */
     @java.lang.Override
-    public int getShownSuggestionIndex() {
+    @java.lang.Deprecated public int getShownSuggestionIndex() {
       return shownSuggestionIndex_;
     }
 
@@ -3663,7 +3801,7 @@ private static final long serialVersionUID = 0L;
       if (((bitField0_ & 0x00000002) != 0)) {
         output.writeInt32(2, shownSuggestionIndex_);
       }
-      unknownFields.writeTo(output);
+      getUnknownFields().writeTo(output);
     }
 
     @java.lang.Override
@@ -3680,7 +3818,7 @@ private static final long serialVersionUID = 0L;
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(2, shownSuggestionIndex_);
       }
-      size += unknownFields.getSerializedSize();
+      size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
     }
@@ -3705,7 +3843,7 @@ private static final long serialVersionUID = 0L;
         if (getShownSuggestionIndex()
             != other.getShownSuggestionIndex()) return false;
       }
-      if (!unknownFields.equals(other.unknownFields)) return false;
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
 
@@ -3724,7 +3862,7 @@ private static final long serialVersionUID = 0L;
         hash = (37 * hash) + SHOWN_SUGGESTION_INDEX_FIELD_NUMBER;
         hash = (53 * hash) + getShownSuggestionIndex();
       }
-      hash = (29 * hash) + unknownFields.hashCode();
+      hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
     }
@@ -3820,6 +3958,10 @@ private static final long serialVersionUID = 0L;
       return builder;
     }
     /**
+     * <pre>
+     * DEPRECATED Use CompletionAggregateEvent instead
+     * </pre>
+     *
      * Protobuf type {@code android_studio.SmlCompletionEvent.CompletionShown}
      */
     public static final class Builder extends
@@ -3961,7 +4103,7 @@ private static final long serialVersionUID = 0L;
         if (other.hasShownSuggestionIndex()) {
           setShownSuggestionIndex(other.getShownSuggestionIndex());
         }
-        this.mergeUnknownFields(other.unknownFields);
+        this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
       }
@@ -3976,17 +4118,42 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown parsedMessage = null;
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
         try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+                input.readMessage(
+                    getMetadataFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 10
+              case 16: {
+                shownSuggestionIndex_ = input.readInt32();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 16
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
+          onChanged();
+        } // finally
         return this;
       }
       private int bitField0_;
@@ -3995,17 +4162,27 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlResponseMetadata, com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder, com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder> metadataBuilder_;
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * @deprecated
        * @return Whether the metadata field is set.
        */
-      public boolean hasMetadata() {
+      @java.lang.Deprecated public boolean hasMetadata() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * @deprecated
        * @return The metadata.
        */
-      public com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata() {
+      @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata() {
         if (metadataBuilder_ == null) {
           return metadata_ == null ? com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance() : metadata_;
         } else {
@@ -4013,9 +4190,13 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
        */
-      public Builder setMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
+      @java.lang.Deprecated public Builder setMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -4029,9 +4210,13 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
        */
-      public Builder setMetadata(
+      @java.lang.Deprecated public Builder setMetadata(
           com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder builderForValue) {
         if (metadataBuilder_ == null) {
           metadata_ = builderForValue.build();
@@ -4043,9 +4228,13 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
        */
-      public Builder mergeMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
+      @java.lang.Deprecated public Builder mergeMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0) &&
               metadata_ != null &&
@@ -4063,9 +4252,13 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
        */
-      public Builder clearMetadata() {
+      @java.lang.Deprecated public Builder clearMetadata() {
         if (metadataBuilder_ == null) {
           metadata_ = null;
           onChanged();
@@ -4076,17 +4269,25 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
        */
-      public com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder getMetadataBuilder() {
+      @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder getMetadataBuilder() {
         bitField0_ |= 0x00000001;
         onChanged();
         return getMetadataFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
        */
-      public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
+      @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
         if (metadataBuilder_ != null) {
           return metadataBuilder_.getMessageOrBuilder();
         } else {
@@ -4095,7 +4296,11 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlResponseMetadata, com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder, com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder> 
@@ -4113,37 +4318,57 @@ private static final long serialVersionUID = 0L;
 
       private int shownSuggestionIndex_ ;
       /**
-       * <code>optional int32 shown_suggestion_index = 2;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional int32 shown_suggestion_index = 2 [deprecated = true];</code>
+       * @deprecated
        * @return Whether the shownSuggestionIndex field is set.
        */
       @java.lang.Override
-      public boolean hasShownSuggestionIndex() {
+      @java.lang.Deprecated public boolean hasShownSuggestionIndex() {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
-       * <code>optional int32 shown_suggestion_index = 2;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional int32 shown_suggestion_index = 2 [deprecated = true];</code>
+       * @deprecated
        * @return The shownSuggestionIndex.
        */
       @java.lang.Override
-      public int getShownSuggestionIndex() {
+      @java.lang.Deprecated public int getShownSuggestionIndex() {
         return shownSuggestionIndex_;
       }
       /**
-       * <code>optional int32 shown_suggestion_index = 2;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional int32 shown_suggestion_index = 2 [deprecated = true];</code>
+       * @deprecated
        * @param value The shownSuggestionIndex to set.
        * @return This builder for chaining.
        */
-      public Builder setShownSuggestionIndex(int value) {
+      @java.lang.Deprecated public Builder setShownSuggestionIndex(int value) {
         bitField0_ |= 0x00000002;
         shownSuggestionIndex_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 shown_suggestion_index = 2;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional int32 shown_suggestion_index = 2 [deprecated = true];</code>
+       * @deprecated
        * @return This builder for chaining.
        */
-      public Builder clearShownSuggestionIndex() {
+      @java.lang.Deprecated public Builder clearShownSuggestionIndex() {
         bitField0_ = (bitField0_ & ~0x00000002);
         shownSuggestionIndex_ = 0;
         onChanged();
@@ -4182,7 +4407,18 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new CompletionShown(input, extensionRegistry);
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
       }
     };
 
@@ -4202,69 +4438,89 @@ private static final long serialVersionUID = 0L;
 
   }
 
-  public interface CompletionAcceptedOrBuilder extends
+  @java.lang.Deprecated public interface CompletionAcceptedOrBuilder extends
       // @@protoc_insertion_point(interface_extends:android_studio.SmlCompletionEvent.CompletionAccepted)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the metadata field is set.
      */
-    boolean hasMetadata();
+    @java.lang.Deprecated boolean hasMetadata();
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * @deprecated
      * @return The metadata.
      */
-    com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata();
+    @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata();
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
      */
-    com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder();
+    @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder();
 
     /**
      * <pre>
-     * Index of the accepted suggestion from the multiple suggestions in the
-     * response
+     * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional int32 accepted_suggestion_index = 2;</code>
+     * <code>optional int32 accepted_suggestion_index = 2 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the acceptedSuggestionIndex field is set.
      */
-    boolean hasAcceptedSuggestionIndex();
+    @java.lang.Deprecated boolean hasAcceptedSuggestionIndex();
     /**
      * <pre>
-     * Index of the accepted suggestion from the multiple suggestions in the
-     * response
+     * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional int32 accepted_suggestion_index = 2;</code>
+     * <code>optional int32 accepted_suggestion_index = 2 [deprecated = true];</code>
+     * @deprecated
      * @return The acceptedSuggestionIndex.
      */
-    int getAcceptedSuggestionIndex();
+    @java.lang.Deprecated int getAcceptedSuggestionIndex();
 
     /**
      * <pre>
-     * Length (# of chars) of the accepted suggestion
+     * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional int32 accepted_suggestion_length = 3;</code>
+     * <code>optional int32 accepted_suggestion_length = 3 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the acceptedSuggestionLength field is set.
      */
-    boolean hasAcceptedSuggestionLength();
+    @java.lang.Deprecated boolean hasAcceptedSuggestionLength();
     /**
      * <pre>
-     * Length (# of chars) of the accepted suggestion
+     * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional int32 accepted_suggestion_length = 3;</code>
+     * <code>optional int32 accepted_suggestion_length = 3 [deprecated = true];</code>
+     * @deprecated
      * @return The acceptedSuggestionLength.
      */
-    int getAcceptedSuggestionLength();
+    @java.lang.Deprecated int getAcceptedSuggestionLength();
   }
   /**
+   * <pre>
+   * DEPRECATED Use CompletionAggregateEvent instead
+   * </pre>
+   *
    * Protobuf type {@code android_studio.SmlCompletionEvent.CompletionAccepted}
    */
-  public static final class CompletionAccepted extends
+  @java.lang.Deprecated public static final class CompletionAccepted extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.SmlCompletionEvent.CompletionAccepted)
       CompletionAcceptedOrBuilder {
@@ -4288,67 +4544,6 @@ private static final long serialVersionUID = 0L;
     getUnknownFields() {
       return this.unknownFields;
     }
-    private CompletionAccepted(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000001) != 0)) {
-                subBuilder = metadata_.toBuilder();
-              }
-              metadata_ = input.readMessage(com.google.wireless.android.sdk.stats.SmlResponseMetadata.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(metadata_);
-                metadata_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000001;
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              acceptedSuggestionIndex_ = input.readInt32();
-              break;
-            }
-            case 24: {
-              bitField0_ |= 0x00000004;
-              acceptedSuggestionLength_ = input.readInt32();
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlCompletionEvent_CompletionAccepted_descriptor;
@@ -4366,26 +4561,40 @@ private static final long serialVersionUID = 0L;
     public static final int METADATA_FIELD_NUMBER = 1;
     private com.google.wireless.android.sdk.stats.SmlResponseMetadata metadata_;
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the metadata field is set.
      */
     @java.lang.Override
-    public boolean hasMetadata() {
+    @java.lang.Deprecated public boolean hasMetadata() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * @deprecated
      * @return The metadata.
      */
     @java.lang.Override
-    public com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata() {
+    @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata() {
       return metadata_ == null ? com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance() : metadata_;
     }
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
      */
     @java.lang.Override
-    public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
+    @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
       return metadata_ == null ? com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance() : metadata_;
     }
 
@@ -4393,28 +4602,28 @@ private static final long serialVersionUID = 0L;
     private int acceptedSuggestionIndex_;
     /**
      * <pre>
-     * Index of the accepted suggestion from the multiple suggestions in the
-     * response
+     * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional int32 accepted_suggestion_index = 2;</code>
+     * <code>optional int32 accepted_suggestion_index = 2 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the acceptedSuggestionIndex field is set.
      */
     @java.lang.Override
-    public boolean hasAcceptedSuggestionIndex() {
+    @java.lang.Deprecated public boolean hasAcceptedSuggestionIndex() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
      * <pre>
-     * Index of the accepted suggestion from the multiple suggestions in the
-     * response
+     * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional int32 accepted_suggestion_index = 2;</code>
+     * <code>optional int32 accepted_suggestion_index = 2 [deprecated = true];</code>
+     * @deprecated
      * @return The acceptedSuggestionIndex.
      */
     @java.lang.Override
-    public int getAcceptedSuggestionIndex() {
+    @java.lang.Deprecated public int getAcceptedSuggestionIndex() {
       return acceptedSuggestionIndex_;
     }
 
@@ -4422,26 +4631,28 @@ private static final long serialVersionUID = 0L;
     private int acceptedSuggestionLength_;
     /**
      * <pre>
-     * Length (# of chars) of the accepted suggestion
+     * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional int32 accepted_suggestion_length = 3;</code>
+     * <code>optional int32 accepted_suggestion_length = 3 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the acceptedSuggestionLength field is set.
      */
     @java.lang.Override
-    public boolean hasAcceptedSuggestionLength() {
+    @java.lang.Deprecated public boolean hasAcceptedSuggestionLength() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
      * <pre>
-     * Length (# of chars) of the accepted suggestion
+     * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional int32 accepted_suggestion_length = 3;</code>
+     * <code>optional int32 accepted_suggestion_length = 3 [deprecated = true];</code>
+     * @deprecated
      * @return The acceptedSuggestionLength.
      */
     @java.lang.Override
-    public int getAcceptedSuggestionLength() {
+    @java.lang.Deprecated public int getAcceptedSuggestionLength() {
       return acceptedSuggestionLength_;
     }
 
@@ -4468,7 +4679,7 @@ private static final long serialVersionUID = 0L;
       if (((bitField0_ & 0x00000004) != 0)) {
         output.writeInt32(3, acceptedSuggestionLength_);
       }
-      unknownFields.writeTo(output);
+      getUnknownFields().writeTo(output);
     }
 
     @java.lang.Override
@@ -4489,7 +4700,7 @@ private static final long serialVersionUID = 0L;
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(3, acceptedSuggestionLength_);
       }
-      size += unknownFields.getSerializedSize();
+      size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
     }
@@ -4519,7 +4730,7 @@ private static final long serialVersionUID = 0L;
         if (getAcceptedSuggestionLength()
             != other.getAcceptedSuggestionLength()) return false;
       }
-      if (!unknownFields.equals(other.unknownFields)) return false;
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
 
@@ -4542,7 +4753,7 @@ private static final long serialVersionUID = 0L;
         hash = (37 * hash) + ACCEPTED_SUGGESTION_LENGTH_FIELD_NUMBER;
         hash = (53 * hash) + getAcceptedSuggestionLength();
       }
-      hash = (29 * hash) + unknownFields.hashCode();
+      hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
     }
@@ -4638,6 +4849,10 @@ private static final long serialVersionUID = 0L;
       return builder;
     }
     /**
+     * <pre>
+     * DEPRECATED Use CompletionAggregateEvent instead
+     * </pre>
+     *
      * Protobuf type {@code android_studio.SmlCompletionEvent.CompletionAccepted}
      */
     public static final class Builder extends
@@ -4788,7 +5003,7 @@ private static final long serialVersionUID = 0L;
         if (other.hasAcceptedSuggestionLength()) {
           setAcceptedSuggestionLength(other.getAcceptedSuggestionLength());
         }
-        this.mergeUnknownFields(other.unknownFields);
+        this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
       }
@@ -4803,17 +5018,47 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted parsedMessage = null;
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
         try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+                input.readMessage(
+                    getMetadataFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 10
+              case 16: {
+                acceptedSuggestionIndex_ = input.readInt32();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 16
+              case 24: {
+                acceptedSuggestionLength_ = input.readInt32();
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 24
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
+          onChanged();
+        } // finally
         return this;
       }
       private int bitField0_;
@@ -4822,17 +5067,27 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlResponseMetadata, com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder, com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder> metadataBuilder_;
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * @deprecated
        * @return Whether the metadata field is set.
        */
-      public boolean hasMetadata() {
+      @java.lang.Deprecated public boolean hasMetadata() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * @deprecated
        * @return The metadata.
        */
-      public com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata() {
+      @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata() {
         if (metadataBuilder_ == null) {
           return metadata_ == null ? com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance() : metadata_;
         } else {
@@ -4840,9 +5095,13 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
        */
-      public Builder setMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
+      @java.lang.Deprecated public Builder setMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -4856,9 +5115,13 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
        */
-      public Builder setMetadata(
+      @java.lang.Deprecated public Builder setMetadata(
           com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder builderForValue) {
         if (metadataBuilder_ == null) {
           metadata_ = builderForValue.build();
@@ -4870,9 +5133,13 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
        */
-      public Builder mergeMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
+      @java.lang.Deprecated public Builder mergeMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0) &&
               metadata_ != null &&
@@ -4890,9 +5157,13 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
        */
-      public Builder clearMetadata() {
+      @java.lang.Deprecated public Builder clearMetadata() {
         if (metadataBuilder_ == null) {
           metadata_ = null;
           onChanged();
@@ -4903,17 +5174,25 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
        */
-      public com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder getMetadataBuilder() {
+      @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder getMetadataBuilder() {
         bitField0_ |= 0x00000001;
         onChanged();
         return getMetadataFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
        */
-      public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
+      @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
         if (metadataBuilder_ != null) {
           return metadataBuilder_.getMessageOrBuilder();
         } else {
@@ -4922,7 +5201,11 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <pre>
+       * Historical: Not used starting with Android Studio 2023.2.1.11
+       * </pre>
+       *
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlResponseMetadata, com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder, com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder> 
@@ -4941,41 +5224,41 @@ private static final long serialVersionUID = 0L;
       private int acceptedSuggestionIndex_ ;
       /**
        * <pre>
-       * Index of the accepted suggestion from the multiple suggestions in the
-       * response
+       * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional int32 accepted_suggestion_index = 2;</code>
+       * <code>optional int32 accepted_suggestion_index = 2 [deprecated = true];</code>
+       * @deprecated
        * @return Whether the acceptedSuggestionIndex field is set.
        */
       @java.lang.Override
-      public boolean hasAcceptedSuggestionIndex() {
+      @java.lang.Deprecated public boolean hasAcceptedSuggestionIndex() {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
        * <pre>
-       * Index of the accepted suggestion from the multiple suggestions in the
-       * response
+       * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional int32 accepted_suggestion_index = 2;</code>
+       * <code>optional int32 accepted_suggestion_index = 2 [deprecated = true];</code>
+       * @deprecated
        * @return The acceptedSuggestionIndex.
        */
       @java.lang.Override
-      public int getAcceptedSuggestionIndex() {
+      @java.lang.Deprecated public int getAcceptedSuggestionIndex() {
         return acceptedSuggestionIndex_;
       }
       /**
        * <pre>
-       * Index of the accepted suggestion from the multiple suggestions in the
-       * response
+       * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional int32 accepted_suggestion_index = 2;</code>
+       * <code>optional int32 accepted_suggestion_index = 2 [deprecated = true];</code>
+       * @deprecated
        * @param value The acceptedSuggestionIndex to set.
        * @return This builder for chaining.
        */
-      public Builder setAcceptedSuggestionIndex(int value) {
+      @java.lang.Deprecated public Builder setAcceptedSuggestionIndex(int value) {
         bitField0_ |= 0x00000002;
         acceptedSuggestionIndex_ = value;
         onChanged();
@@ -4983,14 +5266,14 @@ private static final long serialVersionUID = 0L;
       }
       /**
        * <pre>
-       * Index of the accepted suggestion from the multiple suggestions in the
-       * response
+       * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional int32 accepted_suggestion_index = 2;</code>
+       * <code>optional int32 accepted_suggestion_index = 2 [deprecated = true];</code>
+       * @deprecated
        * @return This builder for chaining.
        */
-      public Builder clearAcceptedSuggestionIndex() {
+      @java.lang.Deprecated public Builder clearAcceptedSuggestionIndex() {
         bitField0_ = (bitField0_ & ~0x00000002);
         acceptedSuggestionIndex_ = 0;
         onChanged();
@@ -5000,38 +5283,41 @@ private static final long serialVersionUID = 0L;
       private int acceptedSuggestionLength_ ;
       /**
        * <pre>
-       * Length (# of chars) of the accepted suggestion
+       * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional int32 accepted_suggestion_length = 3;</code>
+       * <code>optional int32 accepted_suggestion_length = 3 [deprecated = true];</code>
+       * @deprecated
        * @return Whether the acceptedSuggestionLength field is set.
        */
       @java.lang.Override
-      public boolean hasAcceptedSuggestionLength() {
+      @java.lang.Deprecated public boolean hasAcceptedSuggestionLength() {
         return ((bitField0_ & 0x00000004) != 0);
       }
       /**
        * <pre>
-       * Length (# of chars) of the accepted suggestion
+       * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional int32 accepted_suggestion_length = 3;</code>
+       * <code>optional int32 accepted_suggestion_length = 3 [deprecated = true];</code>
+       * @deprecated
        * @return The acceptedSuggestionLength.
        */
       @java.lang.Override
-      public int getAcceptedSuggestionLength() {
+      @java.lang.Deprecated public int getAcceptedSuggestionLength() {
         return acceptedSuggestionLength_;
       }
       /**
        * <pre>
-       * Length (# of chars) of the accepted suggestion
+       * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional int32 accepted_suggestion_length = 3;</code>
+       * <code>optional int32 accepted_suggestion_length = 3 [deprecated = true];</code>
+       * @deprecated
        * @param value The acceptedSuggestionLength to set.
        * @return This builder for chaining.
        */
-      public Builder setAcceptedSuggestionLength(int value) {
+      @java.lang.Deprecated public Builder setAcceptedSuggestionLength(int value) {
         bitField0_ |= 0x00000004;
         acceptedSuggestionLength_ = value;
         onChanged();
@@ -5039,13 +5325,14 @@ private static final long serialVersionUID = 0L;
       }
       /**
        * <pre>
-       * Length (# of chars) of the accepted suggestion
+       * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional int32 accepted_suggestion_length = 3;</code>
+       * <code>optional int32 accepted_suggestion_length = 3 [deprecated = true];</code>
+       * @deprecated
        * @return This builder for chaining.
        */
-      public Builder clearAcceptedSuggestionLength() {
+      @java.lang.Deprecated public Builder clearAcceptedSuggestionLength() {
         bitField0_ = (bitField0_ & ~0x00000004);
         acceptedSuggestionLength_ = 0;
         onChanged();
@@ -5084,7 +5371,18 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new CompletionAccepted(input, extensionRegistry);
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
       }
     };
 
@@ -5104,16 +5402,1349 @@ private static final long serialVersionUID = 0L;
 
   }
 
+  public interface CompletionAggregateEventOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:android_studio.SmlCompletionEvent.CompletionAggregateEvent)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional string model_id = 1;</code>
+     * @return Whether the modelId field is set.
+     */
+    boolean hasModelId();
+    /**
+     * <code>optional string model_id = 1;</code>
+     * @return The modelId.
+     */
+    java.lang.String getModelId();
+    /**
+     * <code>optional string model_id = 1;</code>
+     * @return The bytes for modelId.
+     */
+    com.google.protobuf.ByteString
+        getModelIdBytes();
+
+    /**
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionAggregateEvent.Trigger trigger = 2;</code>
+     * @return Whether the trigger field is set.
+     */
+    boolean hasTrigger();
+    /**
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionAggregateEvent.Trigger trigger = 2;</code>
+     * @return The trigger.
+     */
+    com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.Trigger getTrigger();
+
+    /**
+     * <code>optional .android_studio.EditorFileType file_type = 3;</code>
+     * @return Whether the fileType field is set.
+     */
+    boolean hasFileType();
+    /**
+     * <code>optional .android_studio.EditorFileType file_type = 3;</code>
+     * @return The fileType.
+     */
+    com.google.wireless.android.sdk.stats.EditorFileType getFileType();
+
+    /**
+     * <code>optional uint32 completions_shown = 4;</code>
+     * @return Whether the completionsShown field is set.
+     */
+    boolean hasCompletionsShown();
+    /**
+     * <code>optional uint32 completions_shown = 4;</code>
+     * @return The completionsShown.
+     */
+    int getCompletionsShown();
+
+    /**
+     * <code>optional uint32 completions_accepted = 5;</code>
+     * @return Whether the completionsAccepted field is set.
+     */
+    boolean hasCompletionsAccepted();
+    /**
+     * <code>optional uint32 completions_accepted = 5;</code>
+     * @return The completionsAccepted.
+     */
+    int getCompletionsAccepted();
+
+    /**
+     * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+     * @return Whether the latenciesMs field is set.
+     */
+    boolean hasLatenciesMs();
+    /**
+     * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+     * @return The latenciesMs.
+     */
+    com.google.wireless.android.sdk.stats.Histogram getLatenciesMs();
+    /**
+     * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+     */
+    com.google.wireless.android.sdk.stats.HistogramOrBuilder getLatenciesMsOrBuilder();
+  }
+  /**
+   * Protobuf type {@code android_studio.SmlCompletionEvent.CompletionAggregateEvent}
+   */
+  public static final class CompletionAggregateEvent extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:android_studio.SmlCompletionEvent.CompletionAggregateEvent)
+      CompletionAggregateEventOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use CompletionAggregateEvent.newBuilder() to construct.
+    private CompletionAggregateEvent(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private CompletionAggregateEvent() {
+      modelId_ = "";
+      trigger_ = 0;
+      fileType_ = 0;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new CompletionAggregateEvent();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlCompletionEvent_CompletionAggregateEvent_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlCompletionEvent_CompletionAggregateEvent_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.class, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.Builder.class);
+    }
+
+    /**
+     * Protobuf enum {@code android_studio.SmlCompletionEvent.CompletionAggregateEvent.Trigger}
+     */
+    public enum Trigger
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>UNKNOWN = 0;</code>
+       */
+      UNKNOWN(0),
+      /**
+       * <pre>
+       * User explicitly triggered completion
+       * </pre>
+       *
+       * <code>USER = 1;</code>
+       */
+      USER(1),
+      /**
+       * <pre>
+       * Completion was automatically triggered
+       * </pre>
+       *
+       * <code>AUTOMATIC = 2;</code>
+       */
+      AUTOMATIC(2),
+      ;
+
+      /**
+       * <code>UNKNOWN = 0;</code>
+       */
+      public static final int UNKNOWN_VALUE = 0;
+      /**
+       * <pre>
+       * User explicitly triggered completion
+       * </pre>
+       *
+       * <code>USER = 1;</code>
+       */
+      public static final int USER_VALUE = 1;
+      /**
+       * <pre>
+       * Completion was automatically triggered
+       * </pre>
+       *
+       * <code>AUTOMATIC = 2;</code>
+       */
+      public static final int AUTOMATIC_VALUE = 2;
+
+
+      public final int getNumber() {
+        return value;
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static Trigger valueOf(int value) {
+        return forNumber(value);
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       */
+      public static Trigger forNumber(int value) {
+        switch (value) {
+          case 0: return UNKNOWN;
+          case 1: return USER;
+          case 2: return AUTOMATIC;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<Trigger>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          Trigger> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<Trigger>() {
+              public Trigger findValueByNumber(int number) {
+                return Trigger.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final Trigger[] VALUES = values();
+
+      public static Trigger valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private Trigger(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:android_studio.SmlCompletionEvent.CompletionAggregateEvent.Trigger)
+    }
+
+    private int bitField0_;
+    public static final int MODEL_ID_FIELD_NUMBER = 1;
+    private volatile java.lang.Object modelId_;
+    /**
+     * <code>optional string model_id = 1;</code>
+     * @return Whether the modelId field is set.
+     */
+    @java.lang.Override
+    public boolean hasModelId() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <code>optional string model_id = 1;</code>
+     * @return The modelId.
+     */
+    @java.lang.Override
+    public java.lang.String getModelId() {
+      java.lang.Object ref = modelId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          modelId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string model_id = 1;</code>
+     * @return The bytes for modelId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getModelIdBytes() {
+      java.lang.Object ref = modelId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        modelId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int TRIGGER_FIELD_NUMBER = 2;
+    private int trigger_;
+    /**
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionAggregateEvent.Trigger trigger = 2;</code>
+     * @return Whether the trigger field is set.
+     */
+    @java.lang.Override public boolean hasTrigger() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionAggregateEvent.Trigger trigger = 2;</code>
+     * @return The trigger.
+     */
+    @java.lang.Override public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.Trigger getTrigger() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.Trigger result = com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.Trigger.valueOf(trigger_);
+      return result == null ? com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.Trigger.UNKNOWN : result;
+    }
+
+    public static final int FILE_TYPE_FIELD_NUMBER = 3;
+    private int fileType_;
+    /**
+     * <code>optional .android_studio.EditorFileType file_type = 3;</code>
+     * @return Whether the fileType field is set.
+     */
+    @java.lang.Override public boolean hasFileType() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <code>optional .android_studio.EditorFileType file_type = 3;</code>
+     * @return The fileType.
+     */
+    @java.lang.Override public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.valueOf(fileType_);
+      return result == null ? com.google.wireless.android.sdk.stats.EditorFileType.UNKNOWN : result;
+    }
+
+    public static final int COMPLETIONS_SHOWN_FIELD_NUMBER = 4;
+    private int completionsShown_;
+    /**
+     * <code>optional uint32 completions_shown = 4;</code>
+     * @return Whether the completionsShown field is set.
+     */
+    @java.lang.Override
+    public boolean hasCompletionsShown() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <code>optional uint32 completions_shown = 4;</code>
+     * @return The completionsShown.
+     */
+    @java.lang.Override
+    public int getCompletionsShown() {
+      return completionsShown_;
+    }
+
+    public static final int COMPLETIONS_ACCEPTED_FIELD_NUMBER = 5;
+    private int completionsAccepted_;
+    /**
+     * <code>optional uint32 completions_accepted = 5;</code>
+     * @return Whether the completionsAccepted field is set.
+     */
+    @java.lang.Override
+    public boolean hasCompletionsAccepted() {
+      return ((bitField0_ & 0x00000010) != 0);
+    }
+    /**
+     * <code>optional uint32 completions_accepted = 5;</code>
+     * @return The completionsAccepted.
+     */
+    @java.lang.Override
+    public int getCompletionsAccepted() {
+      return completionsAccepted_;
+    }
+
+    public static final int LATENCIES_MS_FIELD_NUMBER = 6;
+    private com.google.wireless.android.sdk.stats.Histogram latenciesMs_;
+    /**
+     * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+     * @return Whether the latenciesMs field is set.
+     */
+    @java.lang.Override
+    public boolean hasLatenciesMs() {
+      return ((bitField0_ & 0x00000020) != 0);
+    }
+    /**
+     * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+     * @return The latenciesMs.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.Histogram getLatenciesMs() {
+      return latenciesMs_ == null ? com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance() : latenciesMs_;
+    }
+    /**
+     * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.HistogramOrBuilder getLatenciesMsOrBuilder() {
+      return latenciesMs_ == null ? com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance() : latenciesMs_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, modelId_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        output.writeEnum(2, trigger_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        output.writeEnum(3, fileType_);
+      }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        output.writeUInt32(4, completionsShown_);
+      }
+      if (((bitField0_ & 0x00000010) != 0)) {
+        output.writeUInt32(5, completionsAccepted_);
+      }
+      if (((bitField0_ & 0x00000020) != 0)) {
+        output.writeMessage(6, getLatenciesMs());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, modelId_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(2, trigger_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(3, fileType_);
+      }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(4, completionsShown_);
+      }
+      if (((bitField0_ & 0x00000010) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(5, completionsAccepted_);
+      }
+      if (((bitField0_ & 0x00000020) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(6, getLatenciesMs());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent)) {
+        return super.equals(obj);
+      }
+      com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent other = (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent) obj;
+
+      if (hasModelId() != other.hasModelId()) return false;
+      if (hasModelId()) {
+        if (!getModelId()
+            .equals(other.getModelId())) return false;
+      }
+      if (hasTrigger() != other.hasTrigger()) return false;
+      if (hasTrigger()) {
+        if (trigger_ != other.trigger_) return false;
+      }
+      if (hasFileType() != other.hasFileType()) return false;
+      if (hasFileType()) {
+        if (fileType_ != other.fileType_) return false;
+      }
+      if (hasCompletionsShown() != other.hasCompletionsShown()) return false;
+      if (hasCompletionsShown()) {
+        if (getCompletionsShown()
+            != other.getCompletionsShown()) return false;
+      }
+      if (hasCompletionsAccepted() != other.hasCompletionsAccepted()) return false;
+      if (hasCompletionsAccepted()) {
+        if (getCompletionsAccepted()
+            != other.getCompletionsAccepted()) return false;
+      }
+      if (hasLatenciesMs() != other.hasLatenciesMs()) return false;
+      if (hasLatenciesMs()) {
+        if (!getLatenciesMs()
+            .equals(other.getLatenciesMs())) return false;
+      }
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasModelId()) {
+        hash = (37 * hash) + MODEL_ID_FIELD_NUMBER;
+        hash = (53 * hash) + getModelId().hashCode();
+      }
+      if (hasTrigger()) {
+        hash = (37 * hash) + TRIGGER_FIELD_NUMBER;
+        hash = (53 * hash) + trigger_;
+      }
+      if (hasFileType()) {
+        hash = (37 * hash) + FILE_TYPE_FIELD_NUMBER;
+        hash = (53 * hash) + fileType_;
+      }
+      if (hasCompletionsShown()) {
+        hash = (37 * hash) + COMPLETIONS_SHOWN_FIELD_NUMBER;
+        hash = (53 * hash) + getCompletionsShown();
+      }
+      if (hasCompletionsAccepted()) {
+        hash = (37 * hash) + COMPLETIONS_ACCEPTED_FIELD_NUMBER;
+        hash = (53 * hash) + getCompletionsAccepted();
+      }
+      if (hasLatenciesMs()) {
+        hash = (37 * hash) + LATENCIES_MS_FIELD_NUMBER;
+        hash = (53 * hash) + getLatenciesMs().hashCode();
+      }
+      hash = (29 * hash) + getUnknownFields().hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code android_studio.SmlCompletionEvent.CompletionAggregateEvent}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:android_studio.SmlCompletionEvent.CompletionAggregateEvent)
+        com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEventOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlCompletionEvent_CompletionAggregateEvent_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlCompletionEvent_CompletionAggregateEvent_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.class, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.Builder.class);
+      }
+
+      // Construct using com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getLatenciesMsFieldBuilder();
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        modelId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        trigger_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        fileType_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        completionsShown_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        completionsAccepted_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        if (latenciesMsBuilder_ == null) {
+          latenciesMs_ = null;
+        } else {
+          latenciesMsBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000020);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlCompletionEvent_CompletionAggregateEvent_descriptor;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent getDefaultInstanceForType() {
+        return com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent build() {
+        com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent buildPartial() {
+        com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent result = new com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.modelId_ = modelId_;
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.trigger_ = trigger_;
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.fileType_ = fileType_;
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.completionsShown_ = completionsShown_;
+          to_bitField0_ |= 0x00000008;
+        }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.completionsAccepted_ = completionsAccepted_;
+          to_bitField0_ |= 0x00000010;
+        }
+        if (((from_bitField0_ & 0x00000020) != 0)) {
+          if (latenciesMsBuilder_ == null) {
+            result.latenciesMs_ = latenciesMs_;
+          } else {
+            result.latenciesMs_ = latenciesMsBuilder_.build();
+          }
+          to_bitField0_ |= 0x00000020;
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent) {
+          return mergeFrom((com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent other) {
+        if (other == com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.getDefaultInstance()) return this;
+        if (other.hasModelId()) {
+          bitField0_ |= 0x00000001;
+          modelId_ = other.modelId_;
+          onChanged();
+        }
+        if (other.hasTrigger()) {
+          setTrigger(other.getTrigger());
+        }
+        if (other.hasFileType()) {
+          setFileType(other.getFileType());
+        }
+        if (other.hasCompletionsShown()) {
+          setCompletionsShown(other.getCompletionsShown());
+        }
+        if (other.hasCompletionsAccepted()) {
+          setCompletionsAccepted(other.getCompletionsAccepted());
+        }
+        if (other.hasLatenciesMs()) {
+          mergeLatenciesMs(other.getLatenciesMs());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+                modelId_ = input.readBytes();
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 10
+              case 16: {
+                int tmpRaw = input.readEnum();
+                com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.Trigger tmpValue =
+                    com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.Trigger.forNumber(tmpRaw);
+                if (tmpValue == null) {
+                  mergeUnknownVarintField(2, tmpRaw);
+                } else {
+                  trigger_ = tmpRaw;
+                  bitField0_ |= 0x00000002;
+                }
+                break;
+              } // case 16
+              case 24: {
+                int tmpRaw = input.readEnum();
+                com.google.wireless.android.sdk.stats.EditorFileType tmpValue =
+                    com.google.wireless.android.sdk.stats.EditorFileType.forNumber(tmpRaw);
+                if (tmpValue == null) {
+                  mergeUnknownVarintField(3, tmpRaw);
+                } else {
+                  fileType_ = tmpRaw;
+                  bitField0_ |= 0x00000004;
+                }
+                break;
+              } // case 24
+              case 32: {
+                completionsShown_ = input.readUInt32();
+                bitField0_ |= 0x00000008;
+                break;
+              } // case 32
+              case 40: {
+                completionsAccepted_ = input.readUInt32();
+                bitField0_ |= 0x00000010;
+                break;
+              } // case 40
+              case 50: {
+                input.readMessage(
+                    getLatenciesMsFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bitField0_ |= 0x00000020;
+                break;
+              } // case 50
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.unwrapIOException();
+        } finally {
+          onChanged();
+        } // finally
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object modelId_ = "";
+      /**
+       * <code>optional string model_id = 1;</code>
+       * @return Whether the modelId field is set.
+       */
+      public boolean hasModelId() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <code>optional string model_id = 1;</code>
+       * @return The modelId.
+       */
+      public java.lang.String getModelId() {
+        java.lang.Object ref = modelId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            modelId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string model_id = 1;</code>
+       * @return The bytes for modelId.
+       */
+      public com.google.protobuf.ByteString
+          getModelIdBytes() {
+        java.lang.Object ref = modelId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          modelId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string model_id = 1;</code>
+       * @param value The modelId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setModelId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        modelId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string model_id = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearModelId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        modelId_ = getDefaultInstance().getModelId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string model_id = 1;</code>
+       * @param value The bytes for modelId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setModelIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        modelId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int trigger_ = 0;
+      /**
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionAggregateEvent.Trigger trigger = 2;</code>
+       * @return Whether the trigger field is set.
+       */
+      @java.lang.Override public boolean hasTrigger() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionAggregateEvent.Trigger trigger = 2;</code>
+       * @return The trigger.
+       */
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.Trigger getTrigger() {
+        @SuppressWarnings("deprecation")
+        com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.Trigger result = com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.Trigger.valueOf(trigger_);
+        return result == null ? com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.Trigger.UNKNOWN : result;
+      }
+      /**
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionAggregateEvent.Trigger trigger = 2;</code>
+       * @param value The trigger to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTrigger(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.Trigger value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
+        trigger_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionAggregateEvent.Trigger trigger = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTrigger() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        trigger_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int fileType_ = 0;
+      /**
+       * <code>optional .android_studio.EditorFileType file_type = 3;</code>
+       * @return Whether the fileType field is set.
+       */
+      @java.lang.Override public boolean hasFileType() {
+        return ((bitField0_ & 0x00000004) != 0);
+      }
+      /**
+       * <code>optional .android_studio.EditorFileType file_type = 3;</code>
+       * @return The fileType.
+       */
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
+        @SuppressWarnings("deprecation")
+        com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.valueOf(fileType_);
+        return result == null ? com.google.wireless.android.sdk.stats.EditorFileType.UNKNOWN : result;
+      }
+      /**
+       * <code>optional .android_studio.EditorFileType file_type = 3;</code>
+       * @param value The fileType to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFileType(com.google.wireless.android.sdk.stats.EditorFileType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000004;
+        fileType_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .android_studio.EditorFileType file_type = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearFileType() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        fileType_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int completionsShown_ ;
+      /**
+       * <code>optional uint32 completions_shown = 4;</code>
+       * @return Whether the completionsShown field is set.
+       */
+      @java.lang.Override
+      public boolean hasCompletionsShown() {
+        return ((bitField0_ & 0x00000008) != 0);
+      }
+      /**
+       * <code>optional uint32 completions_shown = 4;</code>
+       * @return The completionsShown.
+       */
+      @java.lang.Override
+      public int getCompletionsShown() {
+        return completionsShown_;
+      }
+      /**
+       * <code>optional uint32 completions_shown = 4;</code>
+       * @param value The completionsShown to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCompletionsShown(int value) {
+        bitField0_ |= 0x00000008;
+        completionsShown_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 completions_shown = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCompletionsShown() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        completionsShown_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int completionsAccepted_ ;
+      /**
+       * <code>optional uint32 completions_accepted = 5;</code>
+       * @return Whether the completionsAccepted field is set.
+       */
+      @java.lang.Override
+      public boolean hasCompletionsAccepted() {
+        return ((bitField0_ & 0x00000010) != 0);
+      }
+      /**
+       * <code>optional uint32 completions_accepted = 5;</code>
+       * @return The completionsAccepted.
+       */
+      @java.lang.Override
+      public int getCompletionsAccepted() {
+        return completionsAccepted_;
+      }
+      /**
+       * <code>optional uint32 completions_accepted = 5;</code>
+       * @param value The completionsAccepted to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCompletionsAccepted(int value) {
+        bitField0_ |= 0x00000010;
+        completionsAccepted_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 completions_accepted = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCompletionsAccepted() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        completionsAccepted_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private com.google.wireless.android.sdk.stats.Histogram latenciesMs_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.wireless.android.sdk.stats.Histogram, com.google.wireless.android.sdk.stats.Histogram.Builder, com.google.wireless.android.sdk.stats.HistogramOrBuilder> latenciesMsBuilder_;
+      /**
+       * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+       * @return Whether the latenciesMs field is set.
+       */
+      public boolean hasLatenciesMs() {
+        return ((bitField0_ & 0x00000020) != 0);
+      }
+      /**
+       * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+       * @return The latenciesMs.
+       */
+      public com.google.wireless.android.sdk.stats.Histogram getLatenciesMs() {
+        if (latenciesMsBuilder_ == null) {
+          return latenciesMs_ == null ? com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance() : latenciesMs_;
+        } else {
+          return latenciesMsBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+       */
+      public Builder setLatenciesMs(com.google.wireless.android.sdk.stats.Histogram value) {
+        if (latenciesMsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          latenciesMs_ = value;
+          onChanged();
+        } else {
+          latenciesMsBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000020;
+        return this;
+      }
+      /**
+       * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+       */
+      public Builder setLatenciesMs(
+          com.google.wireless.android.sdk.stats.Histogram.Builder builderForValue) {
+        if (latenciesMsBuilder_ == null) {
+          latenciesMs_ = builderForValue.build();
+          onChanged();
+        } else {
+          latenciesMsBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000020;
+        return this;
+      }
+      /**
+       * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+       */
+      public Builder mergeLatenciesMs(com.google.wireless.android.sdk.stats.Histogram value) {
+        if (latenciesMsBuilder_ == null) {
+          if (((bitField0_ & 0x00000020) != 0) &&
+              latenciesMs_ != null &&
+              latenciesMs_ != com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance()) {
+            latenciesMs_ =
+              com.google.wireless.android.sdk.stats.Histogram.newBuilder(latenciesMs_).mergeFrom(value).buildPartial();
+          } else {
+            latenciesMs_ = value;
+          }
+          onChanged();
+        } else {
+          latenciesMsBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000020;
+        return this;
+      }
+      /**
+       * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+       */
+      public Builder clearLatenciesMs() {
+        if (latenciesMsBuilder_ == null) {
+          latenciesMs_ = null;
+          onChanged();
+        } else {
+          latenciesMsBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000020);
+        return this;
+      }
+      /**
+       * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+       */
+      public com.google.wireless.android.sdk.stats.Histogram.Builder getLatenciesMsBuilder() {
+        bitField0_ |= 0x00000020;
+        onChanged();
+        return getLatenciesMsFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+       */
+      public com.google.wireless.android.sdk.stats.HistogramOrBuilder getLatenciesMsOrBuilder() {
+        if (latenciesMsBuilder_ != null) {
+          return latenciesMsBuilder_.getMessageOrBuilder();
+        } else {
+          return latenciesMs_ == null ?
+              com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance() : latenciesMs_;
+        }
+      }
+      /**
+       * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.wireless.android.sdk.stats.Histogram, com.google.wireless.android.sdk.stats.Histogram.Builder, com.google.wireless.android.sdk.stats.HistogramOrBuilder> 
+          getLatenciesMsFieldBuilder() {
+        if (latenciesMsBuilder_ == null) {
+          latenciesMsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.google.wireless.android.sdk.stats.Histogram, com.google.wireless.android.sdk.stats.Histogram.Builder, com.google.wireless.android.sdk.stats.HistogramOrBuilder>(
+                  getLatenciesMs(),
+                  getParentForChildren(),
+                  isClean());
+          latenciesMs_ = null;
+        }
+        return latenciesMsBuilder_;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:android_studio.SmlCompletionEvent.CompletionAggregateEvent)
+    }
+
+    // @@protoc_insertion_point(class_scope:android_studio.SmlCompletionEvent.CompletionAggregateEvent)
+    private static final com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent();
+    }
+
+    public static com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<CompletionAggregateEvent>
+        PARSER = new com.google.protobuf.AbstractParser<CompletionAggregateEvent>() {
+      @java.lang.Override
+      public CompletionAggregateEvent parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
+      }
+    };
+
+    public static com.google.protobuf.Parser<CompletionAggregateEvent> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<CompletionAggregateEvent> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private int bitField0_;
   private int completionCase_ = 0;
   private java.lang.Object completion_;
   public enum CompletionCase
       implements com.google.protobuf.Internal.EnumLite,
           com.google.protobuf.AbstractMessage.InternalOneOfEnum {
-    REQUEST(1),
-    RESPONSE(2),
-    SHOWN(3),
-    ACCEPTED(4),
+    @java.lang.Deprecated REQUEST(1),
+    @java.lang.Deprecated RESPONSE(2),
+    @java.lang.Deprecated SHOWN(3),
+    @java.lang.Deprecated ACCEPTED(4),
+    AGGREGATE(5),
     COMPLETION_NOT_SET(0);
     private final int value;
     private CompletionCase(int value) {
@@ -5135,6 +6766,7 @@ private static final long serialVersionUID = 0L;
         case 2: return RESPONSE;
         case 3: return SHOWN;
         case 4: return ACCEPTED;
+        case 5: return AGGREGATE;
         case 0: return COMPLETION_NOT_SET;
         default: return null;
       }
@@ -5152,29 +6784,43 @@ private static final long serialVersionUID = 0L;
 
   public static final int REQUEST_FIELD_NUMBER = 1;
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1;</code>
+   * <pre>
+   * Historical: Not used starting with Android Studio 2023.2.1.11
+   * </pre>
+   *
+   * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the request field is set.
    */
   @java.lang.Override
-  public boolean hasRequest() {
+  @java.lang.Deprecated public boolean hasRequest() {
     return completionCase_ == 1;
   }
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1;</code>
+   * <pre>
+   * Historical: Not used starting with Android Studio 2023.2.1.11
+   * </pre>
+   *
+   * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
+   * @deprecated
    * @return The request.
    */
   @java.lang.Override
-  public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest getRequest() {
+  @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest getRequest() {
     if (completionCase_ == 1) {
        return (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest) completion_;
     }
     return com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.getDefaultInstance();
   }
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1;</code>
+   * <pre>
+   * Historical: Not used starting with Android Studio 2023.2.1.11
+   * </pre>
+   *
+   * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
    */
   @java.lang.Override
-  public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequestOrBuilder getRequestOrBuilder() {
+  @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequestOrBuilder getRequestOrBuilder() {
     if (completionCase_ == 1) {
        return (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest) completion_;
     }
@@ -5183,29 +6829,43 @@ private static final long serialVersionUID = 0L;
 
   public static final int RESPONSE_FIELD_NUMBER = 2;
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2;</code>
+   * <pre>
+   * Historical: Not used starting with Android Studio 2023.2.1.11
+   * </pre>
+   *
+   * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the response field is set.
    */
   @java.lang.Override
-  public boolean hasResponse() {
+  @java.lang.Deprecated public boolean hasResponse() {
     return completionCase_ == 2;
   }
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2;</code>
+   * <pre>
+   * Historical: Not used starting with Android Studio 2023.2.1.11
+   * </pre>
+   *
+   * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
+   * @deprecated
    * @return The response.
    */
   @java.lang.Override
-  public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse getResponse() {
+  @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse getResponse() {
     if (completionCase_ == 2) {
        return (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse) completion_;
     }
     return com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse.getDefaultInstance();
   }
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2;</code>
+   * <pre>
+   * Historical: Not used starting with Android Studio 2023.2.1.11
+   * </pre>
+   *
+   * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
    */
   @java.lang.Override
-  public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponseOrBuilder getResponseOrBuilder() {
+  @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponseOrBuilder getResponseOrBuilder() {
     if (completionCase_ == 2) {
        return (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse) completion_;
     }
@@ -5214,29 +6874,43 @@ private static final long serialVersionUID = 0L;
 
   public static final int SHOWN_FIELD_NUMBER = 3;
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3;</code>
+   * <pre>
+   * Historical: Not used starting with Android Studio 2023.2.1.11
+   * </pre>
+   *
+   * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the shown field is set.
    */
   @java.lang.Override
-  public boolean hasShown() {
+  @java.lang.Deprecated public boolean hasShown() {
     return completionCase_ == 3;
   }
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3;</code>
+   * <pre>
+   * Historical: Not used starting with Android Studio 2023.2.1.11
+   * </pre>
+   *
+   * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
+   * @deprecated
    * @return The shown.
    */
   @java.lang.Override
-  public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown getShown() {
+  @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown getShown() {
     if (completionCase_ == 3) {
        return (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown) completion_;
     }
     return com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown.getDefaultInstance();
   }
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3;</code>
+   * <pre>
+   * Historical: Not used starting with Android Studio 2023.2.1.11
+   * </pre>
+   *
+   * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
    */
   @java.lang.Override
-  public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShownOrBuilder getShownOrBuilder() {
+  @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShownOrBuilder getShownOrBuilder() {
     if (completionCase_ == 3) {
        return (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown) completion_;
     }
@@ -5245,33 +6919,78 @@ private static final long serialVersionUID = 0L;
 
   public static final int ACCEPTED_FIELD_NUMBER = 4;
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4;</code>
+   * <pre>
+   * Historical: Not used starting with Android Studio 2023.2.1.11
+   * </pre>
+   *
+   * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the accepted field is set.
    */
   @java.lang.Override
-  public boolean hasAccepted() {
+  @java.lang.Deprecated public boolean hasAccepted() {
     return completionCase_ == 4;
   }
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4;</code>
+   * <pre>
+   * Historical: Not used starting with Android Studio 2023.2.1.11
+   * </pre>
+   *
+   * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
+   * @deprecated
    * @return The accepted.
    */
   @java.lang.Override
-  public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted getAccepted() {
+  @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted getAccepted() {
     if (completionCase_ == 4) {
        return (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted) completion_;
     }
     return com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted.getDefaultInstance();
   }
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4;</code>
+   * <pre>
+   * Historical: Not used starting with Android Studio 2023.2.1.11
+   * </pre>
+   *
+   * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
    */
   @java.lang.Override
-  public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAcceptedOrBuilder getAcceptedOrBuilder() {
+  @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAcceptedOrBuilder getAcceptedOrBuilder() {
     if (completionCase_ == 4) {
        return (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted) completion_;
     }
     return com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted.getDefaultInstance();
+  }
+
+  public static final int AGGREGATE_FIELD_NUMBER = 5;
+  /**
+   * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+   * @return Whether the aggregate field is set.
+   */
+  @java.lang.Override
+  public boolean hasAggregate() {
+    return completionCase_ == 5;
+  }
+  /**
+   * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+   * @return The aggregate.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent getAggregate() {
+    if (completionCase_ == 5) {
+       return (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent) completion_;
+    }
+    return com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.getDefaultInstance();
+  }
+  /**
+   * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEventOrBuilder getAggregateOrBuilder() {
+    if (completionCase_ == 5) {
+       return (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent) completion_;
+    }
+    return com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.getDefaultInstance();
   }
 
   private byte memoizedIsInitialized = -1;
@@ -5300,7 +7019,10 @@ private static final long serialVersionUID = 0L;
     if (completionCase_ == 4) {
       output.writeMessage(4, (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted) completion_);
     }
-    unknownFields.writeTo(output);
+    if (completionCase_ == 5) {
+      output.writeMessage(5, (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent) completion_);
+    }
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -5325,7 +7047,11 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(4, (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted) completion_);
     }
-    size += unknownFields.getSerializedSize();
+    if (completionCase_ == 5) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(5, (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent) completion_);
+    }
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -5358,10 +7084,14 @@ private static final long serialVersionUID = 0L;
         if (!getAccepted()
             .equals(other.getAccepted())) return false;
         break;
+      case 5:
+        if (!getAggregate()
+            .equals(other.getAggregate())) return false;
+        break;
       case 0:
       default:
     }
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -5389,10 +7119,14 @@ private static final long serialVersionUID = 0L;
         hash = (37 * hash) + ACCEPTED_FIELD_NUMBER;
         hash = (53 * hash) + getAccepted().hashCode();
         break;
+      case 5:
+        hash = (37 * hash) + AGGREGATE_FIELD_NUMBER;
+        hash = (53 * hash) + getAggregate().hashCode();
+        break;
       case 0:
       default:
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -5509,22 +7243,32 @@ private static final long serialVersionUID = 0L;
 
     // Construct using com.google.wireless.android.sdk.stats.SmlCompletionEvent.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessageV3
-              .alwaysUseFieldBuilders) {
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      if (requestBuilder_ != null) {
+        requestBuilder_.clear();
+      }
+      if (responseBuilder_ != null) {
+        responseBuilder_.clear();
+      }
+      if (shownBuilder_ != null) {
+        shownBuilder_.clear();
+      }
+      if (acceptedBuilder_ != null) {
+        acceptedBuilder_.clear();
+      }
+      if (aggregateBuilder_ != null) {
+        aggregateBuilder_.clear();
+      }
       completionCase_ = 0;
       completion_ = null;
       return this;
@@ -5581,6 +7325,13 @@ private static final long serialVersionUID = 0L;
           result.completion_ = completion_;
         } else {
           result.completion_ = acceptedBuilder_.build();
+        }
+      }
+      if (completionCase_ == 5) {
+        if (aggregateBuilder_ == null) {
+          result.completion_ = completion_;
+        } else {
+          result.completion_ = aggregateBuilder_.build();
         }
       }
       result.bitField0_ = to_bitField0_;
@@ -5650,11 +7401,15 @@ private static final long serialVersionUID = 0L;
           mergeAccepted(other.getAccepted());
           break;
         }
+        case AGGREGATE: {
+          mergeAggregate(other.getAggregate());
+          break;
+        }
         case COMPLETION_NOT_SET: {
           break;
         }
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -5669,17 +7424,65 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.google.wireless.android.sdk.stats.SmlCompletionEvent parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              input.readMessage(
+                  getRequestFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              completionCase_ = 1;
+              break;
+            } // case 10
+            case 18: {
+              input.readMessage(
+                  getResponseFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              completionCase_ = 2;
+              break;
+            } // case 18
+            case 26: {
+              input.readMessage(
+                  getShownFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              completionCase_ = 3;
+              break;
+            } // case 26
+            case 34: {
+              input.readMessage(
+                  getAcceptedFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              completionCase_ = 4;
+              break;
+            } // case 34
+            case 42: {
+              input.readMessage(
+                  getAggregateFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              completionCase_ = 5;
+              break;
+            } // case 42
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.google.wireless.android.sdk.stats.SmlCompletionEvent) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
     private int completionCase_ = 0;
@@ -5702,19 +7505,29 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.Builder, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequestOrBuilder> requestBuilder_;
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the request field is set.
      */
     @java.lang.Override
-    public boolean hasRequest() {
+    @java.lang.Deprecated public boolean hasRequest() {
       return completionCase_ == 1;
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
+     * @deprecated
      * @return The request.
      */
     @java.lang.Override
-    public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest getRequest() {
+    @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest getRequest() {
       if (requestBuilder_ == null) {
         if (completionCase_ == 1) {
           return (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest) completion_;
@@ -5728,9 +7541,13 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
      */
-    public Builder setRequest(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest value) {
+    @java.lang.Deprecated public Builder setRequest(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest value) {
       if (requestBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -5744,9 +7561,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
      */
-    public Builder setRequest(
+    @java.lang.Deprecated public Builder setRequest(
         com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.Builder builderForValue) {
       if (requestBuilder_ == null) {
         completion_ = builderForValue.build();
@@ -5758,9 +7579,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
      */
-    public Builder mergeRequest(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest value) {
+    @java.lang.Deprecated public Builder mergeRequest(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest value) {
       if (requestBuilder_ == null) {
         if (completionCase_ == 1 &&
             completion_ != com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.getDefaultInstance()) {
@@ -5780,9 +7605,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
      */
-    public Builder clearRequest() {
+    @java.lang.Deprecated public Builder clearRequest() {
       if (requestBuilder_ == null) {
         if (completionCase_ == 1) {
           completionCase_ = 0;
@@ -5799,16 +7628,24 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
      */
-    public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.Builder getRequestBuilder() {
+    @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.Builder getRequestBuilder() {
       return getRequestFieldBuilder().getBuilder();
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
      */
     @java.lang.Override
-    public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequestOrBuilder getRequestOrBuilder() {
+    @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequestOrBuilder getRequestOrBuilder() {
       if ((completionCase_ == 1) && (requestBuilder_ != null)) {
         return requestBuilder_.getMessageOrBuilder();
       } else {
@@ -5819,7 +7656,11 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.Builder, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequestOrBuilder> 
@@ -5843,19 +7684,29 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse.Builder, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponseOrBuilder> responseBuilder_;
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the response field is set.
      */
     @java.lang.Override
-    public boolean hasResponse() {
+    @java.lang.Deprecated public boolean hasResponse() {
       return completionCase_ == 2;
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
+     * @deprecated
      * @return The response.
      */
     @java.lang.Override
-    public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse getResponse() {
+    @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse getResponse() {
       if (responseBuilder_ == null) {
         if (completionCase_ == 2) {
           return (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse) completion_;
@@ -5869,9 +7720,13 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
      */
-    public Builder setResponse(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse value) {
+    @java.lang.Deprecated public Builder setResponse(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse value) {
       if (responseBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -5885,9 +7740,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
      */
-    public Builder setResponse(
+    @java.lang.Deprecated public Builder setResponse(
         com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse.Builder builderForValue) {
       if (responseBuilder_ == null) {
         completion_ = builderForValue.build();
@@ -5899,9 +7758,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
      */
-    public Builder mergeResponse(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse value) {
+    @java.lang.Deprecated public Builder mergeResponse(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse value) {
       if (responseBuilder_ == null) {
         if (completionCase_ == 2 &&
             completion_ != com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse.getDefaultInstance()) {
@@ -5921,9 +7784,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
      */
-    public Builder clearResponse() {
+    @java.lang.Deprecated public Builder clearResponse() {
       if (responseBuilder_ == null) {
         if (completionCase_ == 2) {
           completionCase_ = 0;
@@ -5940,16 +7807,24 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
      */
-    public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse.Builder getResponseBuilder() {
+    @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse.Builder getResponseBuilder() {
       return getResponseFieldBuilder().getBuilder();
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
      */
     @java.lang.Override
-    public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponseOrBuilder getResponseOrBuilder() {
+    @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponseOrBuilder getResponseOrBuilder() {
       if ((completionCase_ == 2) && (responseBuilder_ != null)) {
         return responseBuilder_.getMessageOrBuilder();
       } else {
@@ -5960,7 +7835,11 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse.Builder, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponseOrBuilder> 
@@ -5984,19 +7863,29 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown.Builder, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShownOrBuilder> shownBuilder_;
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the shown field is set.
      */
     @java.lang.Override
-    public boolean hasShown() {
+    @java.lang.Deprecated public boolean hasShown() {
       return completionCase_ == 3;
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
+     * @deprecated
      * @return The shown.
      */
     @java.lang.Override
-    public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown getShown() {
+    @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown getShown() {
       if (shownBuilder_ == null) {
         if (completionCase_ == 3) {
           return (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown) completion_;
@@ -6010,9 +7899,13 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
      */
-    public Builder setShown(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown value) {
+    @java.lang.Deprecated public Builder setShown(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown value) {
       if (shownBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -6026,9 +7919,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
      */
-    public Builder setShown(
+    @java.lang.Deprecated public Builder setShown(
         com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown.Builder builderForValue) {
       if (shownBuilder_ == null) {
         completion_ = builderForValue.build();
@@ -6040,9 +7937,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
      */
-    public Builder mergeShown(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown value) {
+    @java.lang.Deprecated public Builder mergeShown(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown value) {
       if (shownBuilder_ == null) {
         if (completionCase_ == 3 &&
             completion_ != com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown.getDefaultInstance()) {
@@ -6062,9 +7963,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
      */
-    public Builder clearShown() {
+    @java.lang.Deprecated public Builder clearShown() {
       if (shownBuilder_ == null) {
         if (completionCase_ == 3) {
           completionCase_ = 0;
@@ -6081,16 +7986,24 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
      */
-    public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown.Builder getShownBuilder() {
+    @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown.Builder getShownBuilder() {
       return getShownFieldBuilder().getBuilder();
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
      */
     @java.lang.Override
-    public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShownOrBuilder getShownOrBuilder() {
+    @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShownOrBuilder getShownOrBuilder() {
       if ((completionCase_ == 3) && (shownBuilder_ != null)) {
         return shownBuilder_.getMessageOrBuilder();
       } else {
@@ -6101,7 +8014,11 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown.Builder, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShownOrBuilder> 
@@ -6125,19 +8042,29 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted.Builder, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAcceptedOrBuilder> acceptedBuilder_;
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the accepted field is set.
      */
     @java.lang.Override
-    public boolean hasAccepted() {
+    @java.lang.Deprecated public boolean hasAccepted() {
       return completionCase_ == 4;
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
+     * @deprecated
      * @return The accepted.
      */
     @java.lang.Override
-    public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted getAccepted() {
+    @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted getAccepted() {
       if (acceptedBuilder_ == null) {
         if (completionCase_ == 4) {
           return (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted) completion_;
@@ -6151,9 +8078,13 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
      */
-    public Builder setAccepted(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted value) {
+    @java.lang.Deprecated public Builder setAccepted(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted value) {
       if (acceptedBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -6167,9 +8098,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
      */
-    public Builder setAccepted(
+    @java.lang.Deprecated public Builder setAccepted(
         com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted.Builder builderForValue) {
       if (acceptedBuilder_ == null) {
         completion_ = builderForValue.build();
@@ -6181,9 +8116,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
      */
-    public Builder mergeAccepted(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted value) {
+    @java.lang.Deprecated public Builder mergeAccepted(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted value) {
       if (acceptedBuilder_ == null) {
         if (completionCase_ == 4 &&
             completion_ != com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted.getDefaultInstance()) {
@@ -6203,9 +8142,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
      */
-    public Builder clearAccepted() {
+    @java.lang.Deprecated public Builder clearAccepted() {
       if (acceptedBuilder_ == null) {
         if (completionCase_ == 4) {
           completionCase_ = 0;
@@ -6222,16 +8165,24 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
      */
-    public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted.Builder getAcceptedBuilder() {
+    @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted.Builder getAcceptedBuilder() {
       return getAcceptedFieldBuilder().getBuilder();
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
      */
     @java.lang.Override
-    public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAcceptedOrBuilder getAcceptedOrBuilder() {
+    @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAcceptedOrBuilder getAcceptedOrBuilder() {
       if ((completionCase_ == 4) && (acceptedBuilder_ != null)) {
         return acceptedBuilder_.getMessageOrBuilder();
       } else {
@@ -6242,7 +8193,11 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4;</code>
+     * <pre>
+     * Historical: Not used starting with Android Studio 2023.2.1.11
+     * </pre>
+     *
+     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted.Builder, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAcceptedOrBuilder> 
@@ -6261,6 +8216,147 @@ private static final long serialVersionUID = 0L;
       completionCase_ = 4;
       onChanged();;
       return acceptedBuilder_;
+    }
+
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.Builder, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEventOrBuilder> aggregateBuilder_;
+    /**
+     * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+     * @return Whether the aggregate field is set.
+     */
+    @java.lang.Override
+    public boolean hasAggregate() {
+      return completionCase_ == 5;
+    }
+    /**
+     * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+     * @return The aggregate.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent getAggregate() {
+      if (aggregateBuilder_ == null) {
+        if (completionCase_ == 5) {
+          return (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent) completion_;
+        }
+        return com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.getDefaultInstance();
+      } else {
+        if (completionCase_ == 5) {
+          return aggregateBuilder_.getMessage();
+        }
+        return com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+     */
+    public Builder setAggregate(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent value) {
+      if (aggregateBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        completion_ = value;
+        onChanged();
+      } else {
+        aggregateBuilder_.setMessage(value);
+      }
+      completionCase_ = 5;
+      return this;
+    }
+    /**
+     * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+     */
+    public Builder setAggregate(
+        com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.Builder builderForValue) {
+      if (aggregateBuilder_ == null) {
+        completion_ = builderForValue.build();
+        onChanged();
+      } else {
+        aggregateBuilder_.setMessage(builderForValue.build());
+      }
+      completionCase_ = 5;
+      return this;
+    }
+    /**
+     * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+     */
+    public Builder mergeAggregate(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent value) {
+      if (aggregateBuilder_ == null) {
+        if (completionCase_ == 5 &&
+            completion_ != com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.getDefaultInstance()) {
+          completion_ = com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.newBuilder((com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent) completion_)
+              .mergeFrom(value).buildPartial();
+        } else {
+          completion_ = value;
+        }
+        onChanged();
+      } else {
+        if (completionCase_ == 5) {
+          aggregateBuilder_.mergeFrom(value);
+        }
+        aggregateBuilder_.setMessage(value);
+      }
+      completionCase_ = 5;
+      return this;
+    }
+    /**
+     * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+     */
+    public Builder clearAggregate() {
+      if (aggregateBuilder_ == null) {
+        if (completionCase_ == 5) {
+          completionCase_ = 0;
+          completion_ = null;
+          onChanged();
+        }
+      } else {
+        if (completionCase_ == 5) {
+          completionCase_ = 0;
+          completion_ = null;
+        }
+        aggregateBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+     */
+    public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.Builder getAggregateBuilder() {
+      return getAggregateFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEventOrBuilder getAggregateOrBuilder() {
+      if ((completionCase_ == 5) && (aggregateBuilder_ != null)) {
+        return aggregateBuilder_.getMessageOrBuilder();
+      } else {
+        if (completionCase_ == 5) {
+          return (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent) completion_;
+        }
+        return com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.Builder, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEventOrBuilder> 
+        getAggregateFieldBuilder() {
+      if (aggregateBuilder_ == null) {
+        if (!(completionCase_ == 5)) {
+          completion_ = com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.getDefaultInstance();
+        }
+        aggregateBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.Builder, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEventOrBuilder>(
+                (com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent) completion_,
+                getParentForChildren(),
+                isClean());
+        completion_ = null;
+      }
+      completionCase_ = 5;
+      onChanged();;
+      return aggregateBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(
@@ -6295,7 +8391,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new SmlCompletionEvent(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

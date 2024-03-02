@@ -16,12 +16,14 @@
 
 package com.android.build.gradle.internal.tasks
 
+import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
+import com.android.build.gradle.internal.component.ConsumableCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.Aapt2Input
 import com.android.build.gradle.internal.services.getAapt2Executable
-import com.android.build.gradle.internal.signing.SigningConfigData
+import com.android.build.gradle.internal.signing.SigningConfigDataProvider
 import com.android.build.gradle.internal.tasks.Workers.withThreads
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
@@ -31,7 +33,6 @@ import com.android.bundle.RuntimeEnabledSdkConfigProto
 import com.android.bundle.RuntimeEnabledSdkConfigProto.SdkSplitPropertiesInheritedFromApp
 import com.android.bundle.SdkMetadataOuterClass.SdkMetadata
 import com.android.ide.common.workers.ExecutorServiceAdapter
-import com.android.ide.common.workers.WorkerExecutorFacade
 import com.android.tools.build.bundletool.androidtools.Aapt2Command
 import com.android.tools.build.bundletool.commands.BuildSdkApksForAppCommand
 import com.google.common.util.concurrent.MoreExecutors
@@ -54,7 +55,6 @@ import org.gradle.api.tasks.TaskProvider
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
-import java.util.concurrent.ForkJoinPool
 import java.util.zip.ZipFile
 import kotlin.io.path.nameWithoutExtension
 import kotlin.io.path.pathString
@@ -78,6 +78,7 @@ abstract class AsarsToCompatSplitsTask : NonIncrementalTask() {
     abstract val minSdk: Property<Int>
 
     @get:InputFile
+    @get:Optional
     @get:PathSensitive(PathSensitivity.NAME_ONLY)
     abstract val runtimeConfigFile: RegularFileProperty
 
@@ -86,7 +87,8 @@ abstract class AsarsToCompatSplitsTask : NonIncrementalTask() {
     abstract val sdkArchives: ConfigurableFileCollection
 
     @get:Nested
-    abstract val signingConfigData: Property<SigningConfigData>
+    @get:Optional
+    abstract val signingConfigDataProvider: Property<SigningConfigDataProvider>
 
     @get:Nested
     abstract val aapt2: Aapt2Input
@@ -105,7 +107,8 @@ abstract class AsarsToCompatSplitsTask : NonIncrementalTask() {
         get() = withThreads(path, analyticsService.get())
 
     override fun doTaskAction() {
-        val runtimeConfigs = getRuntimeEnabledConfigMap(runtimeConfigFile.get().asFile)
+        val runtimeConfigs = if (runtimeConfigFile.isPresent)
+            getRuntimeEnabledConfigMap(runtimeConfigFile.get().asFile) else emptyMap()
 
         BuildPrivacySandboxSdkApks.forEachInputFile(
                 inputFiles = sdkArchives.files.map { it.toPath() },
@@ -138,8 +141,12 @@ abstract class AsarsToCompatSplitsTask : NonIncrementalTask() {
                             .toFile()
                             .toPath()))
                     .setExecutorService(MoreExecutors.listeningDecorator(workerFacade.executor))
-                    .setSigningConfiguration(createSigningConfig(signingConfigData.get()))
                     .setOutputFile(apks)
+                    .apply {
+                        signingConfigDataProvider.orNull?.resolve()?.let {
+                            setSigningConfiguration(createSigningConfig(it))
+                        }
+                    }
                     .build()
                     .execute()
         }
@@ -162,8 +169,8 @@ abstract class AsarsToCompatSplitsTask : NonIncrementalTask() {
         }
     }
 
-    class CreationAction(creationConfig: ApplicationCreationConfig) :
-            VariantTaskCreationAction<AsarsToCompatSplitsTask, ApplicationCreationConfig>(creationConfig) {
+    class CreationAction(creationConfig: ConsumableCreationConfig) :
+            VariantTaskCreationAction<AsarsToCompatSplitsTask, ConsumableCreationConfig>(creationConfig) {
 
         override val name: String
             get() = computeTaskName("asarToCompatSplitsFor")
@@ -183,7 +190,9 @@ abstract class AsarsToCompatSplitsTask : NonIncrementalTask() {
             task.tmpDir.set(creationConfig.paths.getIncrementalDir(name))
             task.applicationId.setDisallowChanges(creationConfig.applicationId)
             task.minSdk.setDisallowChanges(creationConfig.minSdk.apiLevel)
-            task.versionCode.setDisallowChanges(creationConfig.outputs.getMainSplit().versionCode)
+            if (creationConfig is ApplicationCreationConfig) {
+                task.versionCode.setDisallowChanges(creationConfig.outputs.getMainSplit().versionCode)
+            }
             creationConfig.services.initializeAapt2Input(task.aapt2)
             task.sdkArchives.setFrom(
                     creationConfig.variantDependencies.getArtifactFileCollection(
@@ -192,14 +201,11 @@ abstract class AsarsToCompatSplitsTask : NonIncrementalTask() {
                             AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_ARCHIVE
                     )
             )
-            val signingConfig = creationConfig.signingConfigImpl ?: throw IllegalStateException(
-                    "No signing config configured for variant " + creationConfig.name
-            )
-            task.signingConfigData.set(
-                    creationConfig.services.provider {
-                        SigningConfigData.fromSigningConfig(signingConfig)
-                    }
-            )
+            if (creationConfig is ApkCreationConfig) {
+                task.signingConfigDataProvider.setDisallowChanges(
+                        SigningConfigDataProvider.create(creationConfig)
+                )
+            }
             task.runtimeConfigFile.set(
                     creationConfig.artifacts.get(
                             InternalArtifactType.PRIVACY_SANDBOX_SDK_RUNTIME_CONFIG_FILE)

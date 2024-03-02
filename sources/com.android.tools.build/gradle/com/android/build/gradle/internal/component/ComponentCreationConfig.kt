@@ -17,15 +17,17 @@
 package com.android.build.gradle.internal.component
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
+import com.android.build.api.component.impl.LifecycleTasksImpl
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.InternalSources
 import com.android.build.api.variant.JavaCompilation
+import com.android.build.api.variant.impl.AndroidResourcesImpl
 import com.android.build.gradle.internal.component.features.AndroidResourcesCreationConfig
-import com.android.build.gradle.internal.component.features.AssetsCreationConfig
 import com.android.build.gradle.internal.component.features.BuildConfigCreationConfig
 import com.android.build.gradle.internal.component.features.InstrumentationCreationConfig
 import com.android.build.gradle.internal.component.features.ManifestPlaceholdersCreationConfig
+import com.android.build.gradle.internal.component.features.PrivacySandboxCreationConfig
 import com.android.build.gradle.internal.component.features.ResValuesCreationConfig
 import com.android.build.gradle.internal.component.legacy.ModelV1LegacySupport
 import com.android.build.gradle.internal.component.legacy.OldVariantApiLegacySupport
@@ -76,12 +78,22 @@ interface ComponentCreationConfig : ComponentIdentity {
     // OPTIONAL FEATURES
     // ---------------------------------------------------------------------------------------------
 
-    val assetsCreationConfig: AssetsCreationConfig?
+    /**
+     * Will be null when corresponding feature processing is turned off for this component.
+     */
     val androidResourcesCreationConfig: AndroidResourcesCreationConfig?
     val resValuesCreationConfig: ResValuesCreationConfig?
     val buildConfigCreationConfig: BuildConfigCreationConfig?
     val instrumentationCreationConfig: InstrumentationCreationConfig?
     val manifestPlaceholdersCreationConfig: ManifestPlaceholdersCreationConfig?
+    val privacySandboxCreationConfig: PrivacySandboxCreationConfig?
+
+    /**
+     * android resources can be null for components like KMP that do not support android resources.
+     * Having a non null instance does not mean that android resources processing is turned on for
+     * this component.
+     */
+    val androidResources: AndroidResourcesImpl?
 
     // ---------------------------------------------------------------------------------------------
     // INTERNAL DELEGATES
@@ -93,6 +105,7 @@ interface ComponentCreationConfig : ComponentIdentity {
     val taskContainer: MutableTaskContainer
     val paths: VariantPathHelper
     val services: TaskCreationServices
+    val lifecycleTasks: LifecycleTasksImpl
 
     /**
      * Access to the global task creation configuration
@@ -102,6 +115,8 @@ interface ComponentCreationConfig : ComponentIdentity {
     // ---------------------------------------------------------------------------------------------
     // INTERNAL HELPERS
     // ---------------------------------------------------------------------------------------------
+
+    fun finalizeAndLock()
 
     /**
      * Get the compile classpath for compiling sources in this component

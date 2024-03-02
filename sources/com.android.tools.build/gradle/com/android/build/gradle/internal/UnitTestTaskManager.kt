@@ -18,8 +18,8 @@ package com.android.build.gradle.internal
 
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.artifact.impl.InternalScopedArtifacts
+import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.component.KmpComponentCreationConfig
-import com.android.build.gradle.internal.component.UnitTestCreationConfig
 import com.android.build.gradle.internal.coverage.JacocoConfigurations
 import com.android.build.gradle.internal.coverage.JacocoOptions
 import com.android.build.gradle.internal.coverage.JacocoReportTask
@@ -45,7 +45,7 @@ import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
 class UnitTestTaskManager(
     project: Project,
     globalConfig: GlobalTaskCreationConfig
-): TaskManager(project, globalConfig) {
+): HostTestTaskManager(project, globalConfig) {
 
     fun createTopLevelTasks() {
         // Create top level unit test tasks.
@@ -61,7 +61,7 @@ class UnitTestTaskManager(
     }
 
     /** Creates the tasks to build unit tests.  */
-    fun createTasks(unitTestCreationConfig: UnitTestCreationConfig) {
+    fun createTasks(unitTestCreationConfig: HostTestCreationConfig) {
         val taskContainer = unitTestCreationConfig.taskContainer
         val testedVariant = unitTestCreationConfig.mainVariant
         val includeAndroidResources = globalConfig.unitTestOptions
@@ -147,6 +147,18 @@ class UnitTestTaskManager(
                     "packageNameOfFinalRClassProvider",
                     testConfigInputs.packageNameOfFinalRClass)
             }
+
+            taskContainer.assembleTask.configure { task: Task ->
+                task.dependsOn(
+                    unitTestCreationConfig.artifacts.get(
+                        InternalArtifactType.APK_FOR_LOCAL_TEST
+                    )
+                )
+            }
+
+            taskFactory.configure(ASSEMBLE_UNIT_TEST) { assembleTest: Task ->
+                assembleTest.dependsOn(unitTestCreationConfig.taskContainer.assembleTask.name)
+            }
         } else {
             if (testedVariant.componentType.isAar && testedVariant.buildFeatures.androidResources) {
                 // With compile classpath R classes, we need to generate a dummy R class for unit
@@ -173,8 +185,10 @@ class UnitTestTaskManager(
         }
         maybeCreateTransformClassesWithAsmTask(unitTestCreationConfig)
 
-        if (unitTestCreationConfig.services.projectOptions.get(LINT_ANALYSIS_PER_COMPONENT)
-            && globalConfig.lintOptions.ignoreTestSources.not()) {
+        if (globalConfig.avoidTaskRegistration.not()
+            && unitTestCreationConfig.services.projectOptions.get(LINT_ANALYSIS_PER_COMPONENT)
+            && globalConfig.lintOptions.ignoreTestSources.not()
+        ) {
             taskFactory.register(
                 AndroidLintAnalysisTask.PerComponentCreationAction(
                     unitTestCreationConfig,
@@ -193,12 +207,9 @@ class UnitTestTaskManager(
 
         // TODO: use merged java res for unit tests (bug 118690729)
         createRunUnitTestTask(unitTestCreationConfig)
-
-        // This hides the assemble unit test task from the task list.
-        taskContainer.assembleTask.configure { task: Task -> task.group = null }
     }
 
-    private fun createRunUnitTestTask(unitTestCreationConfig: UnitTestCreationConfig) {
+    private fun createRunUnitTestTask(unitTestCreationConfig: HostTestCreationConfig) {
         if (unitTestCreationConfig.isUnitTestCoverageEnabled) {
             project.pluginManager.apply(JacocoPlugin::class.java)
         }
@@ -233,7 +244,7 @@ class UnitTestTaskManager(
      *     3. Jacoco DSL: jacoco.toolVersion
      *     4. JacocoOptions.DEFAULT_VERSION
      */
-    private fun getJacocoVersion(unitTestCreationConfig: UnitTestCreationConfig): String {
+    private fun getJacocoVersion(unitTestCreationConfig: HostTestCreationConfig): String {
         val jacocoVersionProjectOption =
             unitTestCreationConfig.services.projectOptions[StringOption.JACOCO_TOOL_VERSION]
         if (!jacocoVersionProjectOption.isNullOrEmpty()) {

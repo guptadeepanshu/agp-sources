@@ -68,7 +68,7 @@ abstract class AbstractAppVariantFactory<VariantBuilderT : VariantBuilder, Varia
 
     override fun preVariantCallback(
         project: Project,
-        dslExtension: CommonExtension<*, *, *, *, *>,
+        dslExtension: CommonExtension<*, *, *, *, *, *>,
         model: VariantInputModel<DefaultConfig, BuildType, ProductFlavor, SigningConfig>
     ) {
         super.preVariantCallback(project, dslExtension, model)

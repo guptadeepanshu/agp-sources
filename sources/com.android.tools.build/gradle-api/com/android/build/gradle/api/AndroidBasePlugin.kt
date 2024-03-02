@@ -27,7 +27,7 @@ import org.gradle.api.Project
  * plugin was applied.
  *
  *
- * This is tied to the 'com.android.base' plugin string.
+ * This is tied to the `com.android.base` plugin ID.
  */
 class AndroidBasePlugin : Plugin<Project> {
     override fun apply(project: Project) {}

@@ -1166,8 +1166,7 @@ private abstract class LintModelReader(
       } else {
         file
       }
-    }
-      ?: emptyList()
+    } ?: emptyList()
   }
 
   protected fun readSourceProvider(tag: String = "sourceProvider"): LintModelSourceProvider {
@@ -1343,9 +1342,9 @@ private class LintModelModuleReader(adapter: LintModelSerializationAdapter) :
       val mavenString = getOptionalAttribute("maven")?.let { LintModelMavenName.parse(it) }
       val agpVersion =
         getOptionalAttribute("agpVersion")?.let { (AgpVersion.tryParse(it)) }
-        // Delete this backward-compatibility alternative when there's not much chance of
-        // finding pre-8.0.0 serialized lint models in the wild.
-        ?: getOptionalAttribute("gradle")?.let { (AgpVersion.tryParse(it)) }
+          // Delete this backward-compatibility alternative when there's not much chance of
+          // finding pre-8.0.0 serialized lint models in the wild.
+          ?: getOptionalAttribute("gradle")?.let { (AgpVersion.tryParse(it)) }
 
       val buildFolder = getRequiredFile("buildFolder")
       val resourcePrefix = getOptionalAttribute("resourcePrefix")
@@ -1445,6 +1444,7 @@ private class LintModelVariantReader(
 ) : LintModelReader(adapter, root, reader) {
   override val path: String
     get() = adapter.file(TargetFile.VARIANT, variantName)?.path ?: "<unknown>"
+
   private val libraryResolverMap = mutableMapOf<String, LintModelLibrary>()
   private val libraryResolver = DefaultLintModelLibraryResolver(libraryResolverMap)
 

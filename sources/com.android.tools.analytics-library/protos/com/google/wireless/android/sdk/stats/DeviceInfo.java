@@ -31,6 +31,8 @@ private static final long serialVersionUID = 0L;
     buildApiLevelFull_ = "";
     mdnsConnectionType_ = 0;
     characteristics_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    deviceProvisionerId_ = "";
+    connectionId_ = "";
   }
 
   @java.lang.Override
@@ -44,139 +46,6 @@ private static final long serialVersionUID = 0L;
   public final com.google.protobuf.UnknownFieldSet
   getUnknownFields() {
     return this.unknownFields;
-  }
-  private DeviceInfo(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    int mutable_bitField0_ = 0;
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 10: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000001;
-            anonymizedSerialNumber_ = bs;
-            break;
-          }
-          case 18: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000002;
-            buildTags_ = bs;
-            break;
-          }
-          case 26: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000004;
-            buildType_ = bs;
-            break;
-          }
-          case 34: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000008;
-            buildVersionRelease_ = bs;
-            break;
-          }
-          case 40: {
-            bitField0_ |= 0x00000010;
-            buildApiLevel_ = input.readInt32();
-            break;
-          }
-          case 48: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface value = com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(6, rawValue);
-            } else {
-              bitField0_ |= 0x00000020;
-              cpuAbi_ = rawValue;
-            }
-            break;
-          }
-          case 58: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000040;
-            manufacturer_ = bs;
-            break;
-          }
-          case 66: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000080;
-            model_ = bs;
-            break;
-          }
-          case 72: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.DeviceInfo.DeviceType value = com.google.wireless.android.sdk.stats.DeviceInfo.DeviceType.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(9, rawValue);
-            } else {
-              bitField0_ |= 0x00000100;
-              deviceType_ = rawValue;
-            }
-            break;
-          }
-          case 82: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000200;
-            buildApiLevelFull_ = bs;
-            break;
-          }
-          case 88: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.DeviceInfo.MdnsConnectionType value = com.google.wireless.android.sdk.stats.DeviceInfo.MdnsConnectionType.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(11, rawValue);
-            } else {
-              bitField0_ |= 0x00000400;
-              mdnsConnectionType_ = rawValue;
-            }
-            break;
-          }
-          case 98: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            if (!((mutable_bitField0_ & 0x00000800) != 0)) {
-              characteristics_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000800;
-            }
-            characteristics_.add(bs);
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      if (((mutable_bitField0_ & 0x00000800) != 0)) {
-        characteristics_ = characteristics_.getUnmodifiableView();
-      }
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
@@ -1236,6 +1105,132 @@ private static final long serialVersionUID = 0L;
     return characteristics_.getByteString(index);
   }
 
+  public static final int DEVICE_PROVISIONER_ID_FIELD_NUMBER = 13;
+  private volatile java.lang.Object deviceProvisionerId_;
+  /**
+   * <pre>
+   * ID of device provisioner plugin that created the device
+   * </pre>
+   *
+   * <code>optional string device_provisioner_id = 13;</code>
+   * @return Whether the deviceProvisionerId field is set.
+   */
+  @java.lang.Override
+  public boolean hasDeviceProvisionerId() {
+    return ((bitField0_ & 0x00000800) != 0);
+  }
+  /**
+   * <pre>
+   * ID of device provisioner plugin that created the device
+   * </pre>
+   *
+   * <code>optional string device_provisioner_id = 13;</code>
+   * @return The deviceProvisionerId.
+   */
+  @java.lang.Override
+  public java.lang.String getDeviceProvisionerId() {
+    java.lang.Object ref = deviceProvisionerId_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      if (bs.isValidUtf8()) {
+        deviceProvisionerId_ = s;
+      }
+      return s;
+    }
+  }
+  /**
+   * <pre>
+   * ID of device provisioner plugin that created the device
+   * </pre>
+   *
+   * <code>optional string device_provisioner_id = 13;</code>
+   * @return The bytes for deviceProvisionerId.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getDeviceProvisionerIdBytes() {
+    java.lang.Object ref = deviceProvisionerId_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      deviceProvisionerId_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int CONNECTION_ID_FIELD_NUMBER = 14;
+  private volatile java.lang.Object connectionId_;
+  /**
+   * <pre>
+   * A unique identifier of the connection session, i.e. a contiguous time
+   * period when the device was connected to Studio. The format and semantic
+   * meaning (if any) of the id is defined by the device provisioner plugin.
+   * </pre>
+   *
+   * <code>optional string connection_id = 14;</code>
+   * @return Whether the connectionId field is set.
+   */
+  @java.lang.Override
+  public boolean hasConnectionId() {
+    return ((bitField0_ & 0x00001000) != 0);
+  }
+  /**
+   * <pre>
+   * A unique identifier of the connection session, i.e. a contiguous time
+   * period when the device was connected to Studio. The format and semantic
+   * meaning (if any) of the id is defined by the device provisioner plugin.
+   * </pre>
+   *
+   * <code>optional string connection_id = 14;</code>
+   * @return The connectionId.
+   */
+  @java.lang.Override
+  public java.lang.String getConnectionId() {
+    java.lang.Object ref = connectionId_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      if (bs.isValidUtf8()) {
+        connectionId_ = s;
+      }
+      return s;
+    }
+  }
+  /**
+   * <pre>
+   * A unique identifier of the connection session, i.e. a contiguous time
+   * period when the device was connected to Studio. The format and semantic
+   * meaning (if any) of the id is defined by the device provisioner plugin.
+   * </pre>
+   *
+   * <code>optional string connection_id = 14;</code>
+   * @return The bytes for connectionId.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getConnectionIdBytes() {
+    java.lang.Object ref = connectionId_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      connectionId_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -1286,7 +1281,13 @@ private static final long serialVersionUID = 0L;
     for (int i = 0; i < characteristics_.size(); i++) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 12, characteristics_.getRaw(i));
     }
-    unknownFields.writeTo(output);
+    if (((bitField0_ & 0x00000800) != 0)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 13, deviceProvisionerId_);
+    }
+    if (((bitField0_ & 0x00001000) != 0)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 14, connectionId_);
+    }
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -1340,7 +1341,13 @@ private static final long serialVersionUID = 0L;
       size += dataSize;
       size += 1 * getCharacteristicsList().size();
     }
-    size += unknownFields.getSerializedSize();
+    if (((bitField0_ & 0x00000800) != 0)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(13, deviceProvisionerId_);
+    }
+    if (((bitField0_ & 0x00001000) != 0)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(14, connectionId_);
+    }
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -1409,7 +1416,17 @@ private static final long serialVersionUID = 0L;
     }
     if (!getCharacteristicsList()
         .equals(other.getCharacteristicsList())) return false;
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (hasDeviceProvisionerId() != other.hasDeviceProvisionerId()) return false;
+    if (hasDeviceProvisionerId()) {
+      if (!getDeviceProvisionerId()
+          .equals(other.getDeviceProvisionerId())) return false;
+    }
+    if (hasConnectionId() != other.hasConnectionId()) return false;
+    if (hasConnectionId()) {
+      if (!getConnectionId()
+          .equals(other.getConnectionId())) return false;
+    }
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -1468,7 +1485,15 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + CHARACTERISTICS_FIELD_NUMBER;
       hash = (53 * hash) + getCharacteristicsList().hashCode();
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    if (hasDeviceProvisionerId()) {
+      hash = (37 * hash) + DEVICE_PROVISIONER_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getDeviceProvisionerId().hashCode();
+    }
+    if (hasConnectionId()) {
+      hash = (37 * hash) + CONNECTION_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getConnectionId().hashCode();
+    }
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -1589,18 +1614,13 @@ private static final long serialVersionUID = 0L;
 
     // Construct using com.google.wireless.android.sdk.stats.DeviceInfo.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessageV3
-              .alwaysUseFieldBuilders) {
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
@@ -1629,6 +1649,10 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000400);
       characteristics_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       bitField0_ = (bitField0_ & ~0x00000800);
+      deviceProvisionerId_ = "";
+      bitField0_ = (bitField0_ & ~0x00001000);
+      connectionId_ = "";
+      bitField0_ = (bitField0_ & ~0x00002000);
       return this;
     }
 
@@ -1706,6 +1730,14 @@ private static final long serialVersionUID = 0L;
         bitField0_ = (bitField0_ & ~0x00000800);
       }
       result.characteristics_ = characteristics_;
+      if (((from_bitField0_ & 0x00001000) != 0)) {
+        to_bitField0_ |= 0x00000800;
+      }
+      result.deviceProvisionerId_ = deviceProvisionerId_;
+      if (((from_bitField0_ & 0x00002000) != 0)) {
+        to_bitField0_ |= 0x00001000;
+      }
+      result.connectionId_ = connectionId_;
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -1812,7 +1844,17 @@ private static final long serialVersionUID = 0L;
         }
         onChanged();
       }
-      this.mergeUnknownFields(other.unknownFields);
+      if (other.hasDeviceProvisionerId()) {
+        bitField0_ |= 0x00001000;
+        deviceProvisionerId_ = other.deviceProvisionerId_;
+        onChanged();
+      }
+      if (other.hasConnectionId()) {
+        bitField0_ |= 0x00002000;
+        connectionId_ = other.connectionId_;
+        onChanged();
+      }
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -1827,17 +1869,122 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.google.wireless.android.sdk.stats.DeviceInfo parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              anonymizedSerialNumber_ = input.readBytes();
+              bitField0_ |= 0x00000001;
+              break;
+            } // case 10
+            case 18: {
+              buildTags_ = input.readBytes();
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 18
+            case 26: {
+              buildType_ = input.readBytes();
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 26
+            case 34: {
+              buildVersionRelease_ = input.readBytes();
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 34
+            case 40: {
+              buildApiLevel_ = input.readInt32();
+              bitField0_ |= 0x00000010;
+              break;
+            } // case 40
+            case 48: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface tmpValue =
+                  com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(6, tmpRaw);
+              } else {
+                cpuAbi_ = tmpRaw;
+                bitField0_ |= 0x00000020;
+              }
+              break;
+            } // case 48
+            case 58: {
+              manufacturer_ = input.readBytes();
+              bitField0_ |= 0x00000040;
+              break;
+            } // case 58
+            case 66: {
+              model_ = input.readBytes();
+              bitField0_ |= 0x00000080;
+              break;
+            } // case 66
+            case 72: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.DeviceInfo.DeviceType tmpValue =
+                  com.google.wireless.android.sdk.stats.DeviceInfo.DeviceType.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(9, tmpRaw);
+              } else {
+                deviceType_ = tmpRaw;
+                bitField0_ |= 0x00000100;
+              }
+              break;
+            } // case 72
+            case 82: {
+              buildApiLevelFull_ = input.readBytes();
+              bitField0_ |= 0x00000200;
+              break;
+            } // case 82
+            case 88: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.DeviceInfo.MdnsConnectionType tmpValue =
+                  com.google.wireless.android.sdk.stats.DeviceInfo.MdnsConnectionType.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(11, tmpRaw);
+              } else {
+                mdnsConnectionType_ = tmpRaw;
+                bitField0_ |= 0x00000400;
+              }
+              break;
+            } // case 88
+            case 98: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              ensureCharacteristicsIsMutable();
+              characteristics_.add(bs);
+              break;
+            } // case 98
+            case 106: {
+              deviceProvisionerId_ = input.readBytes();
+              bitField0_ |= 0x00001000;
+              break;
+            } // case 106
+            case 114: {
+              connectionId_ = input.readBytes();
+              bitField0_ |= 0x00002000;
+              break;
+            } // case 114
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.google.wireless.android.sdk.stats.DeviceInfo) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
     private int bitField0_;
@@ -2990,6 +3137,234 @@ private static final long serialVersionUID = 0L;
       onChanged();
       return this;
     }
+
+    private java.lang.Object deviceProvisionerId_ = "";
+    /**
+     * <pre>
+     * ID of device provisioner plugin that created the device
+     * </pre>
+     *
+     * <code>optional string device_provisioner_id = 13;</code>
+     * @return Whether the deviceProvisionerId field is set.
+     */
+    public boolean hasDeviceProvisionerId() {
+      return ((bitField0_ & 0x00001000) != 0);
+    }
+    /**
+     * <pre>
+     * ID of device provisioner plugin that created the device
+     * </pre>
+     *
+     * <code>optional string device_provisioner_id = 13;</code>
+     * @return The deviceProvisionerId.
+     */
+    public java.lang.String getDeviceProvisionerId() {
+      java.lang.Object ref = deviceProvisionerId_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          deviceProvisionerId_ = s;
+        }
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <pre>
+     * ID of device provisioner plugin that created the device
+     * </pre>
+     *
+     * <code>optional string device_provisioner_id = 13;</code>
+     * @return The bytes for deviceProvisionerId.
+     */
+    public com.google.protobuf.ByteString
+        getDeviceProvisionerIdBytes() {
+      java.lang.Object ref = deviceProvisionerId_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        deviceProvisionerId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <pre>
+     * ID of device provisioner plugin that created the device
+     * </pre>
+     *
+     * <code>optional string device_provisioner_id = 13;</code>
+     * @param value The deviceProvisionerId to set.
+     * @return This builder for chaining.
+     */
+    public Builder setDeviceProvisionerId(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00001000;
+      deviceProvisionerId_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * ID of device provisioner plugin that created the device
+     * </pre>
+     *
+     * <code>optional string device_provisioner_id = 13;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearDeviceProvisionerId() {
+      bitField0_ = (bitField0_ & ~0x00001000);
+      deviceProvisionerId_ = getDefaultInstance().getDeviceProvisionerId();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * ID of device provisioner plugin that created the device
+     * </pre>
+     *
+     * <code>optional string device_provisioner_id = 13;</code>
+     * @param value The bytes for deviceProvisionerId to set.
+     * @return This builder for chaining.
+     */
+    public Builder setDeviceProvisionerIdBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00001000;
+      deviceProvisionerId_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object connectionId_ = "";
+    /**
+     * <pre>
+     * A unique identifier of the connection session, i.e. a contiguous time
+     * period when the device was connected to Studio. The format and semantic
+     * meaning (if any) of the id is defined by the device provisioner plugin.
+     * </pre>
+     *
+     * <code>optional string connection_id = 14;</code>
+     * @return Whether the connectionId field is set.
+     */
+    public boolean hasConnectionId() {
+      return ((bitField0_ & 0x00002000) != 0);
+    }
+    /**
+     * <pre>
+     * A unique identifier of the connection session, i.e. a contiguous time
+     * period when the device was connected to Studio. The format and semantic
+     * meaning (if any) of the id is defined by the device provisioner plugin.
+     * </pre>
+     *
+     * <code>optional string connection_id = 14;</code>
+     * @return The connectionId.
+     */
+    public java.lang.String getConnectionId() {
+      java.lang.Object ref = connectionId_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          connectionId_ = s;
+        }
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <pre>
+     * A unique identifier of the connection session, i.e. a contiguous time
+     * period when the device was connected to Studio. The format and semantic
+     * meaning (if any) of the id is defined by the device provisioner plugin.
+     * </pre>
+     *
+     * <code>optional string connection_id = 14;</code>
+     * @return The bytes for connectionId.
+     */
+    public com.google.protobuf.ByteString
+        getConnectionIdBytes() {
+      java.lang.Object ref = connectionId_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        connectionId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <pre>
+     * A unique identifier of the connection session, i.e. a contiguous time
+     * period when the device was connected to Studio. The format and semantic
+     * meaning (if any) of the id is defined by the device provisioner plugin.
+     * </pre>
+     *
+     * <code>optional string connection_id = 14;</code>
+     * @param value The connectionId to set.
+     * @return This builder for chaining.
+     */
+    public Builder setConnectionId(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00002000;
+      connectionId_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * A unique identifier of the connection session, i.e. a contiguous time
+     * period when the device was connected to Studio. The format and semantic
+     * meaning (if any) of the id is defined by the device provisioner plugin.
+     * </pre>
+     *
+     * <code>optional string connection_id = 14;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearConnectionId() {
+      bitField0_ = (bitField0_ & ~0x00002000);
+      connectionId_ = getDefaultInstance().getConnectionId();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * A unique identifier of the connection session, i.e. a contiguous time
+     * period when the device was connected to Studio. The format and semantic
+     * meaning (if any) of the id is defined by the device provisioner plugin.
+     * </pre>
+     *
+     * <code>optional string connection_id = 14;</code>
+     * @param value The bytes for connectionId to set.
+     * @return This builder for chaining.
+     */
+    public Builder setConnectionIdBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00002000;
+      connectionId_ = value;
+      onChanged();
+      return this;
+    }
     @java.lang.Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -3023,7 +3398,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new DeviceInfo(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

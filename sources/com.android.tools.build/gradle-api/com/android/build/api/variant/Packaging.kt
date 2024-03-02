@@ -17,13 +17,15 @@
 package com.android.build.api.variant
 
 /**
- * Defines a variant's packaging options.
+ * Build-time properties for common packaging inside a [Component].
+ *
+ * This is accessed via [Variant.packaging] or [GeneratesApk.packaging]
  */
 interface Packaging {
 
-    /** PackagingOptions for native libraries. Initialized from the corresponding DSL. */
+    /** Packaging options for native libraries. Initialized from the corresponding DSL. */
     val jniLibs: JniLibsPackaging
 
-    /** PackagingOptions for java resources. Initialized from the corresponding DSL. */
+    /** Packaging options for java resources. Initialized from the corresponding DSL. */
     val resources: ResourcesPackaging
 }

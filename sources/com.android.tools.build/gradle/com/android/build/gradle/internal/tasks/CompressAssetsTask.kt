@@ -19,9 +19,7 @@ import com.android.SdkConstants.DOT_JAR
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.tasks.factory.features.AssetsTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.build.gradle.internal.tasks.factory.features.AssetsTaskCreationActionImpl
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.files.KeyedFileCache
@@ -97,7 +95,7 @@ abstract class CompressAssetsTask: NewIncrementalTask() {
         creationConfig: ApkCreationConfig
     ) : VariantTaskCreationAction<CompressAssetsTask, ApkCreationConfig>(
         creationConfig
-    ), AssetsTaskCreationAction by AssetsTaskCreationActionImpl(creationConfig) {
+    ) {
 
         override val name: String
             get() = computeTaskName("compress", "Assets")
@@ -122,7 +120,7 @@ abstract class CompressAssetsTask: NewIncrementalTask() {
             super.configure(task)
 
             task.inputDirs.set(creationConfig.artifacts.get(SingleArtifact.ASSETS))
-            task.noCompress.setDisallowChanges(assetsCreationConfig.androidResources.noCompress)
+            task.noCompress.setDisallowChanges(creationConfig.androidResources.noCompress)
             task.compressionLevel.setDisallowChanges(
                 if (creationConfig.debuggable) {
                     BEST_SPEED

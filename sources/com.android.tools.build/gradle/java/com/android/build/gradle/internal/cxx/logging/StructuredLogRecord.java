@@ -8,14 +8,17 @@ package com.android.build.gradle.internal.cxx.logging;
  **
  *The C&#92;C++ structured log file format is a series of self-delimited
  *[StructuredLogRecord] message.
+ *
  *The [NewString] message creates a new string with ID equal to one
  *plus the prior ID. The ID itself is not embedded in the message
  *and the caller must keep track of the IDs as they arrive and
  *increment a counter.
+ *
  *The [NewList] message creates a new list with ID equal to one
  *plus the prior ID. The ID itself is not embedded in the message
  *and the caller must keep track of the IDs as they arrive and
  *increment a counter.
+ *
  *The [PayloadHeader] message indicates that a user-defined, delimited payload
  *message is arriving next in the stream.
  * </pre>
@@ -41,90 +44,6 @@ private static final long serialVersionUID = 0L;
     return new StructuredLogRecord();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
-  private StructuredLogRecord(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 10: {
-            com.android.build.gradle.internal.cxx.logging.NewString.Builder subBuilder = null;
-            if (recordCase_ == 1) {
-              subBuilder = ((com.android.build.gradle.internal.cxx.logging.NewString) record_).toBuilder();
-            }
-            record_ =
-                input.readMessage(com.android.build.gradle.internal.cxx.logging.NewString.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom((com.android.build.gradle.internal.cxx.logging.NewString) record_);
-              record_ = subBuilder.buildPartial();
-            }
-            recordCase_ = 1;
-            break;
-          }
-          case 18: {
-            com.android.build.gradle.internal.cxx.logging.NewList.Builder subBuilder = null;
-            if (recordCase_ == 2) {
-              subBuilder = ((com.android.build.gradle.internal.cxx.logging.NewList) record_).toBuilder();
-            }
-            record_ =
-                input.readMessage(com.android.build.gradle.internal.cxx.logging.NewList.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom((com.android.build.gradle.internal.cxx.logging.NewList) record_);
-              record_ = subBuilder.buildPartial();
-            }
-            recordCase_ = 2;
-            break;
-          }
-          case 26: {
-            com.android.build.gradle.internal.cxx.logging.PayloadHeader.Builder subBuilder = null;
-            if (recordCase_ == 3) {
-              subBuilder = ((com.android.build.gradle.internal.cxx.logging.PayloadHeader) record_).toBuilder();
-            }
-            record_ =
-                input.readMessage(com.android.build.gradle.internal.cxx.logging.PayloadHeader.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom((com.android.build.gradle.internal.cxx.logging.PayloadHeader) record_);
-              record_ = subBuilder.buildPartial();
-            }
-            recordCase_ = 3;
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.android.build.gradle.internal.cxx.logging.CxxLogging.internal_static_StructuredLogRecord_descriptor;
@@ -139,6 +58,7 @@ private static final long serialVersionUID = 0L;
   }
 
   private int recordCase_ = 0;
+  @SuppressWarnings("serial")
   private java.lang.Object record_;
   public enum RecordCase
       implements com.google.protobuf.Internal.EnumLite,
@@ -297,7 +217,7 @@ private static final long serialVersionUID = 0L;
     if (recordCase_ == 3) {
       output.writeMessage(3, (com.android.build.gradle.internal.cxx.logging.PayloadHeader) record_);
     }
-    unknownFields.writeTo(output);
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -318,7 +238,7 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(3, (com.android.build.gradle.internal.cxx.logging.PayloadHeader) record_);
     }
-    size += unknownFields.getSerializedSize();
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -350,7 +270,7 @@ private static final long serialVersionUID = 0L;
       case 0:
       default:
     }
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -377,7 +297,7 @@ private static final long serialVersionUID = 0L;
       case 0:
       default:
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -477,14 +397,17 @@ private static final long serialVersionUID = 0L;
    **
    *The C&#92;C++ structured log file format is a series of self-delimited
    *[StructuredLogRecord] message.
+   *
    *The [NewString] message creates a new string with ID equal to one
    *plus the prior ID. The ID itself is not embedded in the message
    *and the caller must keep track of the IDs as they arrive and
    *increment a counter.
+   *
    *The [NewList] message creates a new list with ID equal to one
    *plus the prior ID. The ID itself is not embedded in the message
    *and the caller must keep track of the IDs as they arrive and
    *increment a counter.
+   *
    *The [PayloadHeader] message indicates that a user-defined, delimited payload
    *message is arriving next in the stream.
    * </pre>
@@ -510,22 +433,27 @@ private static final long serialVersionUID = 0L;
 
     // Construct using com.android.build.gradle.internal.cxx.logging.StructuredLogRecord.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessageV3
-              .alwaysUseFieldBuilders) {
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
+      if (newStringBuilder_ != null) {
+        newStringBuilder_.clear();
+      }
+      if (newListBuilder_ != null) {
+        newListBuilder_.clear();
+      }
+      if (payloadHeaderBuilder_ != null) {
+        payloadHeaderBuilder_.clear();
+      }
       recordCase_ = 0;
       record_ = null;
       return this;
@@ -554,64 +482,33 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.android.build.gradle.internal.cxx.logging.StructuredLogRecord buildPartial() {
       com.android.build.gradle.internal.cxx.logging.StructuredLogRecord result = new com.android.build.gradle.internal.cxx.logging.StructuredLogRecord(this);
-      if (recordCase_ == 1) {
-        if (newStringBuilder_ == null) {
-          result.record_ = record_;
-        } else {
-          result.record_ = newStringBuilder_.build();
-        }
-      }
-      if (recordCase_ == 2) {
-        if (newListBuilder_ == null) {
-          result.record_ = record_;
-        } else {
-          result.record_ = newListBuilder_.build();
-        }
-      }
-      if (recordCase_ == 3) {
-        if (payloadHeaderBuilder_ == null) {
-          result.record_ = record_;
-        } else {
-          result.record_ = payloadHeaderBuilder_.build();
-        }
-      }
-      result.recordCase_ = recordCase_;
+      if (bitField0_ != 0) { buildPartial0(result); }
+      buildPartialOneofs(result);
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.android.build.gradle.internal.cxx.logging.StructuredLogRecord result) {
+      int from_bitField0_ = bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
+
+    private void buildPartialOneofs(com.android.build.gradle.internal.cxx.logging.StructuredLogRecord result) {
+      result.recordCase_ = recordCase_;
+      result.record_ = this.record_;
+      if (recordCase_ == 1 &&
+          newStringBuilder_ != null) {
+        result.record_ = newStringBuilder_.build();
+      }
+      if (recordCase_ == 2 &&
+          newListBuilder_ != null) {
+        result.record_ = newListBuilder_.build();
+      }
+      if (recordCase_ == 3 &&
+          payloadHeaderBuilder_ != null) {
+        result.record_ = payloadHeaderBuilder_.build();
+      }
     }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.android.build.gradle.internal.cxx.logging.StructuredLogRecord) {
@@ -641,7 +538,7 @@ private static final long serialVersionUID = 0L;
           break;
         }
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -656,17 +553,51 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.android.build.gradle.internal.cxx.logging.StructuredLogRecord parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              input.readMessage(
+                  getNewStringFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              recordCase_ = 1;
+              break;
+            } // case 10
+            case 18: {
+              input.readMessage(
+                  getNewListFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              recordCase_ = 2;
+              break;
+            } // case 18
+            case 26: {
+              input.readMessage(
+                  getPayloadHeaderFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              recordCase_ = 3;
+              break;
+            } // case 26
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.android.build.gradle.internal.cxx.logging.StructuredLogRecord) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
     private int recordCase_ = 0;
@@ -684,6 +615,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
+    private int bitField0_;
 
     private com.google.protobuf.SingleFieldBuilderV3<
         com.android.build.gradle.internal.cxx.logging.NewString, com.android.build.gradle.internal.cxx.logging.NewString.Builder, com.android.build.gradle.internal.cxx.logging.NewStringOrBuilder> newStringBuilder_;
@@ -759,8 +691,9 @@ private static final long serialVersionUID = 0L;
       } else {
         if (recordCase_ == 1) {
           newStringBuilder_.mergeFrom(value);
+        } else {
+          newStringBuilder_.setMessage(value);
         }
-        newStringBuilder_.setMessage(value);
       }
       recordCase_ = 1;
       return this;
@@ -822,7 +755,7 @@ private static final long serialVersionUID = 0L;
         record_ = null;
       }
       recordCase_ = 1;
-      onChanged();;
+      onChanged();
       return newStringBuilder_;
     }
 
@@ -900,8 +833,9 @@ private static final long serialVersionUID = 0L;
       } else {
         if (recordCase_ == 2) {
           newListBuilder_.mergeFrom(value);
+        } else {
+          newListBuilder_.setMessage(value);
         }
-        newListBuilder_.setMessage(value);
       }
       recordCase_ = 2;
       return this;
@@ -963,7 +897,7 @@ private static final long serialVersionUID = 0L;
         record_ = null;
       }
       recordCase_ = 2;
-      onChanged();;
+      onChanged();
       return newListBuilder_;
     }
 
@@ -1041,8 +975,9 @@ private static final long serialVersionUID = 0L;
       } else {
         if (recordCase_ == 3) {
           payloadHeaderBuilder_.mergeFrom(value);
+        } else {
+          payloadHeaderBuilder_.setMessage(value);
         }
-        payloadHeaderBuilder_.setMessage(value);
       }
       recordCase_ = 3;
       return this;
@@ -1104,7 +1039,7 @@ private static final long serialVersionUID = 0L;
         record_ = null;
       }
       recordCase_ = 3;
-      onChanged();;
+      onChanged();
       return payloadHeaderBuilder_;
     }
     @java.lang.Override
@@ -1140,7 +1075,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new StructuredLogRecord(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

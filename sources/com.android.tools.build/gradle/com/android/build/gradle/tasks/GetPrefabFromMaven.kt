@@ -19,11 +19,10 @@ package com.android.build.gradle.tasks
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.options.ProjectOptions
 import com.android.build.gradle.options.StringOption
-import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.type.ArtifactTypeDefinition
+import org.gradle.api.artifacts.type.ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE
 import org.gradle.api.file.FileCollection
-import org.gradle.api.internal.artifacts.ArtifactAttributes
 
 /**
  * To update:
@@ -61,7 +60,7 @@ private fun getPrefabArtifact(configuration: Configuration): FileCollection =
     configuration.incoming.artifactView { config ->
         config.attributes {
             it.attribute(
-                ArtifactAttributes.ARTIFACT_FORMAT,
+                ARTIFACT_TYPE_ATTRIBUTE,
                 ArtifactTypeDefinition.JAR_TYPE
             )
         }

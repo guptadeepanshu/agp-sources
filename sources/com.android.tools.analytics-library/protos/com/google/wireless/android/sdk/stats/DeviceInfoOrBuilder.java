@@ -334,4 +334,68 @@ public interface DeviceInfoOrBuilder extends
    */
   com.google.protobuf.ByteString
       getCharacteristicsBytes(int index);
+
+  /**
+   * <pre>
+   * ID of device provisioner plugin that created the device
+   * </pre>
+   *
+   * <code>optional string device_provisioner_id = 13;</code>
+   * @return Whether the deviceProvisionerId field is set.
+   */
+  boolean hasDeviceProvisionerId();
+  /**
+   * <pre>
+   * ID of device provisioner plugin that created the device
+   * </pre>
+   *
+   * <code>optional string device_provisioner_id = 13;</code>
+   * @return The deviceProvisionerId.
+   */
+  java.lang.String getDeviceProvisionerId();
+  /**
+   * <pre>
+   * ID of device provisioner plugin that created the device
+   * </pre>
+   *
+   * <code>optional string device_provisioner_id = 13;</code>
+   * @return The bytes for deviceProvisionerId.
+   */
+  com.google.protobuf.ByteString
+      getDeviceProvisionerIdBytes();
+
+  /**
+   * <pre>
+   * A unique identifier of the connection session, i.e. a contiguous time
+   * period when the device was connected to Studio. The format and semantic
+   * meaning (if any) of the id is defined by the device provisioner plugin.
+   * </pre>
+   *
+   * <code>optional string connection_id = 14;</code>
+   * @return Whether the connectionId field is set.
+   */
+  boolean hasConnectionId();
+  /**
+   * <pre>
+   * A unique identifier of the connection session, i.e. a contiguous time
+   * period when the device was connected to Studio. The format and semantic
+   * meaning (if any) of the id is defined by the device provisioner plugin.
+   * </pre>
+   *
+   * <code>optional string connection_id = 14;</code>
+   * @return The connectionId.
+   */
+  java.lang.String getConnectionId();
+  /**
+   * <pre>
+   * A unique identifier of the connection session, i.e. a contiguous time
+   * period when the device was connected to Studio. The format and semantic
+   * meaning (if any) of the id is defined by the device provisioner plugin.
+   * </pre>
+   *
+   * <code>optional string connection_id = 14;</code>
+   * @return The bytes for connectionId.
+   */
+  com.google.protobuf.ByteString
+      getConnectionIdBytes();
 }

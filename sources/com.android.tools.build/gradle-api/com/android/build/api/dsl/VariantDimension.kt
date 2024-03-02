@@ -16,8 +16,8 @@
 
 package com.android.build.api.dsl
 
-import java.io.File
 import org.gradle.api.Incubating
+import java.io.File
 
 /**
  * Shared properties between DSL objects that contribute to a variant.

@@ -16,14 +16,9 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
-import com.android.build.api.artifact.ScopedArtifact
-import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.coverage.JacocoConfigurations
-import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.getDirectories
-import com.android.build.gradle.internal.scope.getRegularFiles
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.tasks.toSerializable

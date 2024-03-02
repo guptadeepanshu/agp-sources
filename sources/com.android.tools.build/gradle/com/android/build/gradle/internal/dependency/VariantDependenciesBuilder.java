@@ -53,7 +53,6 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts;
 import com.android.build.gradle.internal.publishing.ComponentPublishingInfo;
 import com.android.build.gradle.internal.publishing.PublishedConfigSpec;
 import com.android.build.gradle.internal.publishing.VariantPublishingInfo;
-import com.android.build.gradle.internal.services.StringCachingBuildService;
 import com.android.build.gradle.internal.testFixtures.TestFixturesUtil;
 import com.android.build.gradle.options.BooleanOption;
 import com.android.build.gradle.options.ProjectOptions;
@@ -85,7 +84,6 @@ import org.gradle.api.attributes.Usage;
 import org.gradle.api.attributes.java.TargetJvmEnvironment;
 import org.gradle.api.capabilities.Capability;
 import org.gradle.api.model.ObjectFactory;
-import org.gradle.api.provider.Provider;
 
 /**
  * Object that represents the dependencies of variant.
@@ -323,8 +321,7 @@ public class VariantDependenciesBuilder {
                 CATEGORY_ATTRIBUTE, factory.named(Category.class, Category.LIBRARY));
 
         boolean isLibraryConstraintApplied =
-                maybeAddDependencyConstraints(
-                        componentType, dependencies, compileClasspath, runtimeClasspath);
+                maybeAddDependencyConstraints(componentType, compileClasspath, runtimeClasspath);
 
         Configuration globalTestedApks =
                 configurations.findByName(VariantDependencies.CONFIG_NAME_TESTED_APKS);
@@ -698,7 +695,6 @@ public class VariantDependenciesBuilder {
      */
     private boolean maybeAddDependencyConstraints(
             ComponentType componentType,
-            DependencyHandler dependencies,
             Configuration compileClasspath,
             Configuration runtimeClasspath) {
         if (!projectOptions.get(BooleanOption.USE_DEPENDENCY_CONSTRAINTS)) {
@@ -717,22 +713,14 @@ public class VariantDependenciesBuilder {
             return false;
         }
 
-        Provider<StringCachingBuildService> stringCachingService =
-                new StringCachingBuildService.RegistrationAction(project).execute();
         // make compileClasspath match runtimeClasspath
-        ConstraintHandler.alignWith(
-                compileClasspath, runtimeClasspath, dependencies, false, stringCachingService);
+        compileClasspath.shouldResolveConsistentlyWith(runtimeClasspath);
 
         if (componentType.isApk() && testedVariant != null) {
             // if this is a test App, then also synchronize the 2 runtime classpaths
             Configuration testedRuntimeClasspath =
                     testedVariant.getVariantDependencies().getRuntimeClasspath();
-            ConstraintHandler.alignWith(
-                    runtimeClasspath,
-                    testedRuntimeClasspath,
-                    dependencies,
-                    true,
-                    stringCachingService);
+            runtimeClasspath.shouldResolveConsistentlyWith(testedRuntimeClasspath);
 
             if (testedVariant.getComponentType().isApk()) {
                 ConstraintHandler.checkConfigurationAlignments(

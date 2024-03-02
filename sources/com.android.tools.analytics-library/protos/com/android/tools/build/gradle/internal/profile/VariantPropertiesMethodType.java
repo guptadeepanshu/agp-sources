@@ -601,6 +601,34 @@ public enum VariantPropertiesMethodType
    * <code>MISSING_DIMENSION_STRATEGY = 136;</code>
    */
   MISSING_DIMENSION_STRATEGY(136),
+  /**
+   * <code>DEBUGGABLE = 137;</code>
+   */
+  DEBUGGABLE(137),
+  /**
+   * <code>TESTED_APKS = 138;</code>
+   */
+  TESTED_APKS(138),
+  /**
+   * <code>SINGLE_TO_LISTEN_TO = 139;</code>
+   */
+  SINGLE_TO_LISTEN_TO(139),
+  /**
+   * <code>MULTIPLE_TO_LISTEN_TO = 140;</code>
+   */
+  MULTIPLE_TO_LISTEN_TO(140),
+  /**
+   * <code>WIRED_WITH_MULTIPLE = 141;</code>
+   */
+  WIRED_WITH_MULTIPLE(141),
+  /**
+   * <code>LIFECYCLE_TASKS = 142;</code>
+   */
+  LIFECYCLE_TASKS(142),
+  /**
+   * <code>REGISTER_PRE_BUILD = 143;</code>
+   */
+  REGISTER_PRE_BUILD(143),
   UNRECOGNIZED(-1),
   ;
 
@@ -1196,6 +1224,34 @@ public enum VariantPropertiesMethodType
    * <code>MISSING_DIMENSION_STRATEGY = 136;</code>
    */
   public static final int MISSING_DIMENSION_STRATEGY_VALUE = 136;
+  /**
+   * <code>DEBUGGABLE = 137;</code>
+   */
+  public static final int DEBUGGABLE_VALUE = 137;
+  /**
+   * <code>TESTED_APKS = 138;</code>
+   */
+  public static final int TESTED_APKS_VALUE = 138;
+  /**
+   * <code>SINGLE_TO_LISTEN_TO = 139;</code>
+   */
+  public static final int SINGLE_TO_LISTEN_TO_VALUE = 139;
+  /**
+   * <code>MULTIPLE_TO_LISTEN_TO = 140;</code>
+   */
+  public static final int MULTIPLE_TO_LISTEN_TO_VALUE = 140;
+  /**
+   * <code>WIRED_WITH_MULTIPLE = 141;</code>
+   */
+  public static final int WIRED_WITH_MULTIPLE_VALUE = 141;
+  /**
+   * <code>LIFECYCLE_TASKS = 142;</code>
+   */
+  public static final int LIFECYCLE_TASKS_VALUE = 142;
+  /**
+   * <code>REGISTER_PRE_BUILD = 143;</code>
+   */
+  public static final int REGISTER_PRE_BUILD_VALUE = 143;
 
 
   public final int getNumber() {
@@ -1359,6 +1415,13 @@ public enum VariantPropertiesMethodType
       case 134: return SOURCES_BASELINE_PROFILES_ACCESS;
       case 135: return INSTRUMENTATION_RUNNER_ARGUMENTS;
       case 136: return MISSING_DIMENSION_STRATEGY;
+      case 137: return DEBUGGABLE;
+      case 138: return TESTED_APKS;
+      case 139: return SINGLE_TO_LISTEN_TO;
+      case 140: return MULTIPLE_TO_LISTEN_TO;
+      case 141: return WIRED_WITH_MULTIPLE;
+      case 142: return LIFECYCLE_TASKS;
+      case 143: return REGISTER_PRE_BUILD;
       default: return null;
     }
   }

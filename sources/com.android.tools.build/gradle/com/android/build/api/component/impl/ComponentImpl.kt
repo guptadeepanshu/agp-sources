@@ -18,12 +18,12 @@ package com.android.build.api.component.impl
 
 import com.android.SdkConstants
 import com.android.build.api.artifact.impl.ArtifactsImpl
-import com.android.build.api.attributes.ProductFlavorAttr
 import com.android.build.api.component.impl.features.AndroidResourcesCreationConfigImpl
-import com.android.build.api.component.impl.features.AssetsCreationConfigImpl
 import com.android.build.api.component.impl.features.InstrumentationCreationConfigImpl
 import com.android.build.api.component.impl.features.ManifestPlaceholdersCreationConfigImpl
+import com.android.build.api.component.impl.features.PrivacySandboxCreationConfigImpl
 import com.android.build.api.component.impl.features.ResValuesCreationConfigImpl
+import com.android.build.api.dsl.AndroidResources
 import com.android.build.api.instrumentation.AsmClassVisitorFactory
 import com.android.build.api.instrumentation.FramesComputationMode
 import com.android.build.api.instrumentation.InstrumentationParameters
@@ -32,16 +32,16 @@ import com.android.build.api.variant.Component
 import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.Instrumentation
 import com.android.build.api.variant.JavaCompilation
+import com.android.build.api.variant.impl.AndroidResourcesImpl
 import com.android.build.api.variant.impl.FileBasedDirectoryEntryImpl
 import com.android.build.api.variant.impl.FlatSourceDirectoriesImpl
 import com.android.build.api.variant.impl.SourcesImpl
-import com.android.build.gradle.internal.DependencyConfigurator
-import com.android.build.gradle.internal.VariantManager
+import com.android.build.api.variant.impl.initializeAaptOptionsFromDsl
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.features.AndroidResourcesCreationConfig
-import com.android.build.gradle.internal.component.features.AssetsCreationConfig
 import com.android.build.gradle.internal.component.features.InstrumentationCreationConfig
 import com.android.build.gradle.internal.component.features.ManifestPlaceholdersCreationConfig
+import com.android.build.gradle.internal.component.features.PrivacySandboxCreationConfig
 import com.android.build.gradle.internal.component.features.ResValuesCreationConfig
 import com.android.build.gradle.internal.component.legacy.OldVariantApiLegacySupport
 import com.android.build.gradle.internal.core.ProductFlavor
@@ -63,7 +63,6 @@ import com.android.build.gradle.internal.variant.VariantPathHelper
 import com.android.build.gradle.options.OptionalBooleanOption.ENABLE_API_MODELING_AND_GLOBAL_SYNTHETICS
 import com.android.builder.core.ComponentType
 import com.android.utils.appendCapitalized
-import com.google.common.collect.ImmutableMap
 import org.gradle.api.JavaVersion
 import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Provider
@@ -158,6 +157,8 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
     override val annotationProcessorConfiguration =
         variantDependencies.annotationProcessorConfiguration!!
 
+    override val lifecycleTasks = LifecycleTasksImpl()
+
     // ---------------------------------------------------------------------------------------------
     // INTERNAL API
     // ---------------------------------------------------------------------------------------------
@@ -231,13 +232,6 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
             variantSources,
             internalServices
         )
-    }
-
-    override val assetsCreationConfig: AssetsCreationConfig by lazy {
-        AssetsCreationConfigImpl(
-            dslInfo.androidResourcesDsl!!,
-            internalServices
-        ) { androidResourcesCreationConfig }
     }
 
     override val androidResourcesCreationConfig: AndroidResourcesCreationConfig? by lazy {
@@ -324,5 +318,20 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
     private fun isJavaLanguageLevelAbove14(): Boolean {
         return global.compileOptions.sourceCompatibility.isCompatibleWith(JavaVersion.VERSION_14) &&
                 global.compileOptions.targetCompatibility.isCompatibleWith(JavaVersion.VERSION_14)
+    }
+
+    override val androidResources: AndroidResourcesImpl? = null
+
+    internal fun getAndroidResources(androidResources: AndroidResources): AndroidResourcesImpl =
+        initializeAaptOptionsFromDsl(androidResources, internalServices)
+
+    override val privacySandboxCreationConfig: PrivacySandboxCreationConfig? by lazy(LazyThreadSafetyMode.PUBLICATION) {
+        if (dslInfo.privacySandboxDsl.enable) {
+            PrivacySandboxCreationConfigImpl()
+        } else null
+    }
+
+    override fun finalizeAndLock() {
+        artifacts.finalizeAndLock()
     }
 }

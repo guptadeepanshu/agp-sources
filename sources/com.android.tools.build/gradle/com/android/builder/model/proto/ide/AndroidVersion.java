@@ -26,59 +26,6 @@ private static final long serialVersionUID = 0L;
     return new AndroidVersion();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
-  private AndroidVersion(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 8: {
-
-            apiLevel_ = input.readInt32();
-            break;
-          }
-          case 18: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            codename_ = s;
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.android.builder.model.proto.ide.IdeModelsProto.internal_static_AndroidVersion_descriptor;
@@ -93,7 +40,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int API_LEVEL_FIELD_NUMBER = 1;
-  private int apiLevel_;
+  private int apiLevel_ = 0;
   /**
    * <code>int32 api_level = 1;</code>
    * @return The apiLevel.
@@ -104,7 +51,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CODENAME_FIELD_NUMBER = 2;
-  private volatile java.lang.Object codename_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object codename_ = "";
   /**
    * <code>string codename = 2;</code>
    * @return The codename.
@@ -161,7 +109,7 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(codename_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 2, codename_);
     }
-    unknownFields.writeTo(output);
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -177,7 +125,7 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(codename_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, codename_);
     }
-    size += unknownFields.getSerializedSize();
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -196,7 +144,7 @@ private static final long serialVersionUID = 0L;
         != other.getApiLevel()) return false;
     if (!getCodename()
         .equals(other.getCodename())) return false;
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -211,7 +159,7 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getApiLevel();
     hash = (37 * hash) + CODENAME_FIELD_NUMBER;
     hash = (53 * hash) + getCodename().hashCode();
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -328,26 +276,20 @@ private static final long serialVersionUID = 0L;
 
     // Construct using com.android.builder.model.proto.ide.AndroidVersion.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessageV3
-              .alwaysUseFieldBuilders) {
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       apiLevel_ = 0;
-
       codename_ = "";
-
       return this;
     }
 
@@ -374,44 +316,21 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.android.builder.model.proto.ide.AndroidVersion buildPartial() {
       com.android.builder.model.proto.ide.AndroidVersion result = new com.android.builder.model.proto.ide.AndroidVersion(this);
-      result.apiLevel_ = apiLevel_;
-      result.codename_ = codename_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.android.builder.model.proto.ide.AndroidVersion result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.apiLevel_ = apiLevel_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.codename_ = codename_;
+      }
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.android.builder.model.proto.ide.AndroidVersion) {
@@ -429,9 +348,10 @@ private static final long serialVersionUID = 0L;
       }
       if (!other.getCodename().isEmpty()) {
         codename_ = other.codename_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -446,19 +366,43 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.android.builder.model.proto.ide.AndroidVersion parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              apiLevel_ = input.readInt32();
+              bitField0_ |= 0x00000001;
+              break;
+            } // case 8
+            case 18: {
+              codename_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 18
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.android.builder.model.proto.ide.AndroidVersion) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
+    private int bitField0_;
 
     private int apiLevel_ ;
     /**
@@ -475,8 +419,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setApiLevel(int value) {
-      
+
       apiLevel_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -485,7 +430,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearApiLevel() {
-      
+      bitField0_ = (bitField0_ & ~0x00000001);
       apiLevel_ = 0;
       onChanged();
       return this;
@@ -532,11 +477,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setCodename(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       codename_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -545,8 +488,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearCodename() {
-      
       codename_ = getDefaultInstance().getCodename();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -557,12 +500,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setCodenameBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       codename_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -599,7 +540,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new AndroidVersion(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

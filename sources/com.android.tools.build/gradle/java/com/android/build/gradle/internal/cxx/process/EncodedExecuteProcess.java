@@ -30,93 +30,6 @@ private static final long serialVersionUID = 0L;
     return new EncodedExecuteProcess();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
-  private EncodedExecuteProcess(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 8: {
-
-            executableId_ = input.readInt32();
-            break;
-          }
-          case 16: {
-
-            argsId_ = input.readInt32();
-            break;
-          }
-          case 24: {
-
-            descriptionId_ = input.readInt32();
-            break;
-          }
-          case 32: {
-
-            environmentKeysId_ = input.readInt32();
-            break;
-          }
-          case 40: {
-
-            environmentValuesId_ = input.readInt32();
-            break;
-          }
-          case 48: {
-
-            jvmClassPathId_ = input.readInt32();
-            break;
-          }
-          case 56: {
-
-            jvmMainClassId_ = input.readInt32();
-            break;
-          }
-          case 64: {
-
-            jvmArgsId_ = input.readInt32();
-            break;
-          }
-          case 72: {
-
-            exitCode_ = input.readInt32();
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.android.build.gradle.internal.cxx.process.CxxProcess.internal_static_EncodedExecuteProcess_descriptor;
@@ -131,7 +44,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int EXECUTABLE_ID_FIELD_NUMBER = 1;
-  private int executableId_;
+  private int executableId_ = 0;
   /**
    * <code>int32 executable_id = 1;</code>
    * @return The executableId.
@@ -142,7 +55,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ARGS_ID_FIELD_NUMBER = 2;
-  private int argsId_;
+  private int argsId_ = 0;
   /**
    * <code>int32 args_id = 2;</code>
    * @return The argsId.
@@ -153,7 +66,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DESCRIPTION_ID_FIELD_NUMBER = 3;
-  private int descriptionId_;
+  private int descriptionId_ = 0;
   /**
    * <code>int32 description_id = 3;</code>
    * @return The descriptionId.
@@ -164,7 +77,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ENVIRONMENT_KEYS_ID_FIELD_NUMBER = 4;
-  private int environmentKeysId_;
+  private int environmentKeysId_ = 0;
   /**
    * <code>int32 environment_keys_id = 4;</code>
    * @return The environmentKeysId.
@@ -175,7 +88,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ENVIRONMENT_VALUES_ID_FIELD_NUMBER = 5;
-  private int environmentValuesId_;
+  private int environmentValuesId_ = 0;
   /**
    * <code>int32 environment_values_id = 5;</code>
    * @return The environmentValuesId.
@@ -186,7 +99,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int JVM_CLASS_PATH_ID_FIELD_NUMBER = 6;
-  private int jvmClassPathId_;
+  private int jvmClassPathId_ = 0;
   /**
    * <code>int32 jvm_class_path_id = 6;</code>
    * @return The jvmClassPathId.
@@ -197,7 +110,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int JVM_MAIN_CLASS_ID_FIELD_NUMBER = 7;
-  private int jvmMainClassId_;
+  private int jvmMainClassId_ = 0;
   /**
    * <code>int32 jvm_main_class_id = 7;</code>
    * @return The jvmMainClassId.
@@ -208,7 +121,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int JVM_ARGS_ID_FIELD_NUMBER = 8;
-  private int jvmArgsId_;
+  private int jvmArgsId_ = 0;
   /**
    * <code>int32 jvm_args_id = 8;</code>
    * @return The jvmArgsId.
@@ -219,7 +132,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int EXIT_CODE_FIELD_NUMBER = 9;
-  private int exitCode_;
+  private int exitCode_ = 0;
   /**
    * <code>int32 exit_code = 9;</code>
    * @return The exitCode.
@@ -270,7 +183,7 @@ private static final long serialVersionUID = 0L;
     if (exitCode_ != 0) {
       output.writeInt32(9, exitCode_);
     }
-    unknownFields.writeTo(output);
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -315,7 +228,7 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(9, exitCode_);
     }
-    size += unknownFields.getSerializedSize();
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -348,7 +261,7 @@ private static final long serialVersionUID = 0L;
         != other.getJvmArgsId()) return false;
     if (getExitCode()
         != other.getExitCode()) return false;
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -377,7 +290,7 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getJvmArgsId();
     hash = (37 * hash) + EXIT_CODE_FIELD_NUMBER;
     hash = (53 * hash) + getExitCode();
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -499,40 +412,27 @@ private static final long serialVersionUID = 0L;
 
     // Construct using com.android.build.gradle.internal.cxx.process.EncodedExecuteProcess.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessageV3
-              .alwaysUseFieldBuilders) {
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       executableId_ = 0;
-
       argsId_ = 0;
-
       descriptionId_ = 0;
-
       environmentKeysId_ = 0;
-
       environmentValuesId_ = 0;
-
       jvmClassPathId_ = 0;
-
       jvmMainClassId_ = 0;
-
       jvmArgsId_ = 0;
-
       exitCode_ = 0;
-
       return this;
     }
 
@@ -559,51 +459,42 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.android.build.gradle.internal.cxx.process.EncodedExecuteProcess buildPartial() {
       com.android.build.gradle.internal.cxx.process.EncodedExecuteProcess result = new com.android.build.gradle.internal.cxx.process.EncodedExecuteProcess(this);
-      result.executableId_ = executableId_;
-      result.argsId_ = argsId_;
-      result.descriptionId_ = descriptionId_;
-      result.environmentKeysId_ = environmentKeysId_;
-      result.environmentValuesId_ = environmentValuesId_;
-      result.jvmClassPathId_ = jvmClassPathId_;
-      result.jvmMainClassId_ = jvmMainClassId_;
-      result.jvmArgsId_ = jvmArgsId_;
-      result.exitCode_ = exitCode_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.android.build.gradle.internal.cxx.process.EncodedExecuteProcess result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.executableId_ = executableId_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.argsId_ = argsId_;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.descriptionId_ = descriptionId_;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.environmentKeysId_ = environmentKeysId_;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.environmentValuesId_ = environmentValuesId_;
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.jvmClassPathId_ = jvmClassPathId_;
+      }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.jvmMainClassId_ = jvmMainClassId_;
+      }
+      if (((from_bitField0_ & 0x00000080) != 0)) {
+        result.jvmArgsId_ = jvmArgsId_;
+      }
+      if (((from_bitField0_ & 0x00000100) != 0)) {
+        result.exitCode_ = exitCode_;
+      }
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.android.build.gradle.internal.cxx.process.EncodedExecuteProcess) {
@@ -643,7 +534,7 @@ private static final long serialVersionUID = 0L;
       if (other.getExitCode() != 0) {
         setExitCode(other.getExitCode());
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -658,19 +549,78 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.android.build.gradle.internal.cxx.process.EncodedExecuteProcess parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              executableId_ = input.readInt32();
+              bitField0_ |= 0x00000001;
+              break;
+            } // case 8
+            case 16: {
+              argsId_ = input.readInt32();
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 16
+            case 24: {
+              descriptionId_ = input.readInt32();
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 24
+            case 32: {
+              environmentKeysId_ = input.readInt32();
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 32
+            case 40: {
+              environmentValuesId_ = input.readInt32();
+              bitField0_ |= 0x00000010;
+              break;
+            } // case 40
+            case 48: {
+              jvmClassPathId_ = input.readInt32();
+              bitField0_ |= 0x00000020;
+              break;
+            } // case 48
+            case 56: {
+              jvmMainClassId_ = input.readInt32();
+              bitField0_ |= 0x00000040;
+              break;
+            } // case 56
+            case 64: {
+              jvmArgsId_ = input.readInt32();
+              bitField0_ |= 0x00000080;
+              break;
+            } // case 64
+            case 72: {
+              exitCode_ = input.readInt32();
+              bitField0_ |= 0x00000100;
+              break;
+            } // case 72
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.android.build.gradle.internal.cxx.process.EncodedExecuteProcess) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
+    private int bitField0_;
 
     private int executableId_ ;
     /**
@@ -687,8 +637,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setExecutableId(int value) {
-      
+
       executableId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -697,7 +648,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearExecutableId() {
-      
+      bitField0_ = (bitField0_ & ~0x00000001);
       executableId_ = 0;
       onChanged();
       return this;
@@ -718,8 +669,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setArgsId(int value) {
-      
+
       argsId_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -728,7 +680,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearArgsId() {
-      
+      bitField0_ = (bitField0_ & ~0x00000002);
       argsId_ = 0;
       onChanged();
       return this;
@@ -749,8 +701,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDescriptionId(int value) {
-      
+
       descriptionId_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -759,7 +712,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearDescriptionId() {
-      
+      bitField0_ = (bitField0_ & ~0x00000004);
       descriptionId_ = 0;
       onChanged();
       return this;
@@ -780,8 +733,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setEnvironmentKeysId(int value) {
-      
+
       environmentKeysId_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -790,7 +744,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearEnvironmentKeysId() {
-      
+      bitField0_ = (bitField0_ & ~0x00000008);
       environmentKeysId_ = 0;
       onChanged();
       return this;
@@ -811,8 +765,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setEnvironmentValuesId(int value) {
-      
+
       environmentValuesId_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -821,7 +776,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearEnvironmentValuesId() {
-      
+      bitField0_ = (bitField0_ & ~0x00000010);
       environmentValuesId_ = 0;
       onChanged();
       return this;
@@ -842,8 +797,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setJvmClassPathId(int value) {
-      
+
       jvmClassPathId_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -852,7 +808,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearJvmClassPathId() {
-      
+      bitField0_ = (bitField0_ & ~0x00000020);
       jvmClassPathId_ = 0;
       onChanged();
       return this;
@@ -873,8 +829,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setJvmMainClassId(int value) {
-      
+
       jvmMainClassId_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -883,7 +840,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearJvmMainClassId() {
-      
+      bitField0_ = (bitField0_ & ~0x00000040);
       jvmMainClassId_ = 0;
       onChanged();
       return this;
@@ -904,8 +861,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setJvmArgsId(int value) {
-      
+
       jvmArgsId_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -914,7 +872,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearJvmArgsId() {
-      
+      bitField0_ = (bitField0_ & ~0x00000080);
       jvmArgsId_ = 0;
       onChanged();
       return this;
@@ -935,8 +893,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setExitCode(int value) {
-      
+
       exitCode_ = value;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -945,7 +904,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearExitCode() {
-      
+      bitField0_ = (bitField0_ & ~0x00000100);
       exitCode_ = 0;
       onChanged();
       return this;
@@ -983,7 +942,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new EncodedExecuteProcess(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

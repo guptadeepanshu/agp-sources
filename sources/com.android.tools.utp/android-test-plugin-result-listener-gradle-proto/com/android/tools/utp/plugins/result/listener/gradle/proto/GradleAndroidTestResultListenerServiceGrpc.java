@@ -5,14 +5,14 @@ import static io.grpc.MethodDescriptor.generateFullMethodName;
 /**
  */
 @javax.annotation.Generated(
-    value = "by gRPC proto compiler (version 1.45.1)",
+    value = "by gRPC proto compiler (version 1.57.0)",
     comments = "Source: src/main/proto/gradle_android_test_result_listener.proto")
 @io.grpc.stub.annotations.GrpcGenerated
 public final class GradleAndroidTestResultListenerServiceGrpc {
 
   private GradleAndroidTestResultListenerServiceGrpc() {}
 
-  public static final String SERVICE_NAME = "com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerService";
+  public static final java.lang.String SERVICE_NAME = "com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerService";
 
   // Static method descriptors that strictly reflect the proto.
   private static volatile io.grpc.MethodDescriptor<com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent,
@@ -92,7 +92,7 @@ public final class GradleAndroidTestResultListenerServiceGrpc {
 
   /**
    */
-  public static abstract class GradleAndroidTestResultListenerServiceImplBase implements io.grpc.BindableService {
+  public interface AsyncService {
 
     /**
      * <pre>
@@ -100,27 +100,28 @@ public final class GradleAndroidTestResultListenerServiceGrpc {
      * server and UTP calls this RPC to record results in AGP.
      * </pre>
      */
-    public io.grpc.stub.StreamObserver<com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent> recordTestResultEvent(
+    default io.grpc.stub.StreamObserver<com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent> recordTestResultEvent(
         io.grpc.stub.StreamObserver<com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.RecordTestResultEventResponse> responseObserver) {
       return io.grpc.stub.ServerCalls.asyncUnimplementedStreamingCall(getRecordTestResultEventMethod(), responseObserver);
-    }
-
-    @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
-      return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
-          .addMethod(
-            getRecordTestResultEventMethod(),
-            io.grpc.stub.ServerCalls.asyncClientStreamingCall(
-              new MethodHandlers<
-                com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent,
-                com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.RecordTestResultEventResponse>(
-                  this, METHODID_RECORD_TEST_RESULT_EVENT)))
-          .build();
     }
   }
 
   /**
+   * Base class for the server implementation of the service GradleAndroidTestResultListenerService.
    */
-  public static final class GradleAndroidTestResultListenerServiceStub extends io.grpc.stub.AbstractAsyncStub<GradleAndroidTestResultListenerServiceStub> {
+  public static abstract class GradleAndroidTestResultListenerServiceImplBase
+      implements io.grpc.BindableService, AsyncService {
+
+    @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
+      return GradleAndroidTestResultListenerServiceGrpc.bindService(this);
+    }
+  }
+
+  /**
+   * A stub to allow clients to do asynchronous rpc calls to service GradleAndroidTestResultListenerService.
+   */
+  public static final class GradleAndroidTestResultListenerServiceStub
+      extends io.grpc.stub.AbstractAsyncStub<GradleAndroidTestResultListenerServiceStub> {
     private GradleAndroidTestResultListenerServiceStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -146,8 +147,10 @@ public final class GradleAndroidTestResultListenerServiceGrpc {
   }
 
   /**
+   * A stub to allow clients to do synchronous rpc calls to service GradleAndroidTestResultListenerService.
    */
-  public static final class GradleAndroidTestResultListenerServiceBlockingStub extends io.grpc.stub.AbstractBlockingStub<GradleAndroidTestResultListenerServiceBlockingStub> {
+  public static final class GradleAndroidTestResultListenerServiceBlockingStub
+      extends io.grpc.stub.AbstractBlockingStub<GradleAndroidTestResultListenerServiceBlockingStub> {
     private GradleAndroidTestResultListenerServiceBlockingStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -161,8 +164,10 @@ public final class GradleAndroidTestResultListenerServiceGrpc {
   }
 
   /**
+   * A stub to allow clients to do ListenableFuture-style rpc calls to service GradleAndroidTestResultListenerService.
    */
-  public static final class GradleAndroidTestResultListenerServiceFutureStub extends io.grpc.stub.AbstractFutureStub<GradleAndroidTestResultListenerServiceFutureStub> {
+  public static final class GradleAndroidTestResultListenerServiceFutureStub
+      extends io.grpc.stub.AbstractFutureStub<GradleAndroidTestResultListenerServiceFutureStub> {
     private GradleAndroidTestResultListenerServiceFutureStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -182,10 +187,10 @@ public final class GradleAndroidTestResultListenerServiceGrpc {
       io.grpc.stub.ServerCalls.ServerStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.ClientStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.BidiStreamingMethod<Req, Resp> {
-    private final GradleAndroidTestResultListenerServiceImplBase serviceImpl;
+    private final AsyncService serviceImpl;
     private final int methodId;
 
-    MethodHandlers(GradleAndroidTestResultListenerServiceImplBase serviceImpl, int methodId) {
+    MethodHandlers(AsyncService serviceImpl, int methodId) {
       this.serviceImpl = serviceImpl;
       this.methodId = methodId;
     }
@@ -213,6 +218,18 @@ public final class GradleAndroidTestResultListenerServiceGrpc {
     }
   }
 
+  public static final io.grpc.ServerServiceDefinition bindService(AsyncService service) {
+    return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
+        .addMethod(
+          getRecordTestResultEventMethod(),
+          io.grpc.stub.ServerCalls.asyncClientStreamingCall(
+            new MethodHandlers<
+              com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent,
+              com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.RecordTestResultEventResponse>(
+                service, METHODID_RECORD_TEST_RESULT_EVENT)))
+        .build();
+  }
+
   private static abstract class GradleAndroidTestResultListenerServiceBaseDescriptorSupplier
       implements io.grpc.protobuf.ProtoFileDescriptorSupplier, io.grpc.protobuf.ProtoServiceDescriptorSupplier {
     GradleAndroidTestResultListenerServiceBaseDescriptorSupplier() {}
@@ -236,9 +253,9 @@ public final class GradleAndroidTestResultListenerServiceGrpc {
   private static final class GradleAndroidTestResultListenerServiceMethodDescriptorSupplier
       extends GradleAndroidTestResultListenerServiceBaseDescriptorSupplier
       implements io.grpc.protobuf.ProtoMethodDescriptorSupplier {
-    private final String methodName;
+    private final java.lang.String methodName;
 
-    GradleAndroidTestResultListenerServiceMethodDescriptorSupplier(String methodName) {
+    GradleAndroidTestResultListenerServiceMethodDescriptorSupplier(java.lang.String methodName) {
       this.methodName = methodName;
     }
 

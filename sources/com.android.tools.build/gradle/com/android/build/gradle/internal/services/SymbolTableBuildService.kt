@@ -16,9 +16,6 @@
 
 package com.android.build.gradle.internal.services
 
-import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.build.gradle.options.BooleanOption
-import com.android.build.gradle.options.ProjectOptions
 import com.android.ide.common.symbols.Symbol
 import com.android.ide.common.symbols.SymbolIo
 import com.android.ide.common.symbols.SymbolTable
@@ -28,7 +25,6 @@ import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheBuilderSpec
 import com.google.common.cache.CacheLoader
 import com.google.common.cache.LoadingCache
-import com.google.common.collect.ImmutableList
 import com.google.common.collect.Interner
 import com.google.common.collect.Interners
 import java.io.File
@@ -43,7 +39,6 @@ import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
-import org.gradle.api.provider.Property
 import org.gradle.api.services.BuildService
 import org.gradle.api.services.BuildServiceParameters
 

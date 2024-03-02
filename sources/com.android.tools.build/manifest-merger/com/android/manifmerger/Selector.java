@@ -35,12 +35,12 @@ public class Selector {
      */
     public static final String SELECTOR_LOCAL_NAME = "selector";
 
-    @NonNull private final String mPackageName;
-    @NonNull private final List<String> mPackages = new LinkedList<>();
+    @NonNull private final String commaSeparatedPackageNames;
+    @NonNull private final List<String> packages = new LinkedList<>();
 
-    public Selector(@NonNull String packageName) {
-        mPackageName = Preconditions.checkNotNull(packageName);
-        mPackages.addAll(Arrays.asList(mPackageName.split(",")));
+    public Selector(@NonNull String commaSeparatedPackageNames) {
+        this.commaSeparatedPackageNames = Preconditions.checkNotNull(commaSeparatedPackageNames);
+        packages.addAll(Arrays.asList(commaSeparatedPackageNames.split(",")));
     }
 
     /**
@@ -49,14 +49,14 @@ public class Selector {
      */
     boolean appliesTo(@NonNull XmlElement element) {
         Optional<XmlAttribute> packageName = element.getDocument().getPackage();
-        return packageName.isPresent() && mPackageName.contains(packageName.get().getValue());
+        return packageName.isPresent() && packages.contains(packageName.get().getValue());
     }
 
     /**
      * Returns true if the passed resolver can resolve this selector, false otherwise.
      */
     boolean isResolvable(@NonNull KeyResolver<String> resolver) {
-        for (String p : mPackages) {
+        for (String p : packages) {
             if (resolver.resolve(p) == null) return false;
         }
         return true;
@@ -65,6 +65,6 @@ public class Selector {
     @NonNull
     @Override
     public String toString() {
-        return mPackageName;
+        return commaSeparatedPackageNames;
     }
 }

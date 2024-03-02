@@ -391,19 +391,7 @@ class VariantDependencies internal constructor(
     }
 
     companion object {
-
-        const val CONFIG_NAME_COMPILE = "compile"
-        const val CONFIG_NAME_PUBLISH = "publish"
-        const val CONFIG_NAME_APK = "apk"
-        const val CONFIG_NAME_PROVIDED = "provided"
-        const val CONFIG_NAME_WEAR_APP = "wearApp"
         const val CONFIG_NAME_ANDROID_APIS = "androidApis"
-        const val CONFIG_NAME_ANNOTATION_PROCESSOR = "annotationProcessor"
-        const val CONFIG_NAME_API = "api"
-        const val CONFIG_NAME_COMPILE_ONLY = "compileOnly"
-        const val CONFIG_NAME_IMPLEMENTATION = "implementation"
-        const val CONFIG_NAME_RUNTIME_ONLY = "runtimeOnly"
-        const val CONFIG_NAME_APPLICATION = "application"
         const val CONFIG_NAME_LINTCHECKS = "lintChecks"
         const val CONFIG_NAME_LINTPUBLISH = "lintPublish"
         const val CONFIG_NAME_TESTED_APKS = "testedApks"
@@ -424,14 +412,15 @@ class VariantDependencies internal constructor(
             runtimeElements: Configuration?,
             sourcesElements: Configuration?,
             apiPublication: Configuration?,
-            runtimePublication: Configuration?
+            runtimePublication: Configuration?,
+            sourcesPublication: Configuration?,
         ): VariantDependencies {
             val incomingConfigurations = listOf(compileClasspath, runtimeClasspath)
             val outgoingConfigurations = listOfNotNull(
-                apiElements, runtimeElements, sourcesElements, apiPublication, runtimePublication
+                apiElements, runtimeElements, sourcesElements, apiPublication, runtimePublication, sourcesPublication
             )
             val publicationConfigurations = listOfNotNull(
-                apiPublication, runtimePublication
+                apiPublication, runtimePublication, sourcesPublication
             )
 
             // This is set to be able to consume artifacts published with the library plugin.

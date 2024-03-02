@@ -16,6 +16,9 @@
 
 package com.android.build.api.variant
 
+/**
+ * Build-time properties for [Component] that generate AARs.
+ */
 interface GeneratesAar {
 
     /**

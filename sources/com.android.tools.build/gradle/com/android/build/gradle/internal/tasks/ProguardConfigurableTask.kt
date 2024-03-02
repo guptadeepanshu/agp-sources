@@ -18,6 +18,7 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.artifact.SingleArtifact
+import com.android.build.api.artifact.impl.InternalScopedArtifact
 import com.android.build.api.artifact.impl.InternalScopedArtifacts
 import com.android.build.api.variant.ScopedArtifacts.Scope
 import com.android.build.gradle.ProguardFiles
@@ -47,6 +48,7 @@ import com.google.common.base.Preconditions
 import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.artifacts.transform.TransformParameters
 import org.gradle.api.artifacts.transform.TransformSpec
+import org.gradle.api.artifacts.type.ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE
 import org.gradle.api.attributes.Usage
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
@@ -54,7 +56,6 @@ import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.ProjectLayout
 import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.internal.artifacts.ArtifactAttributes
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
@@ -219,9 +220,6 @@ abstract class ProguardConfigurableTask(
         protected val componentType: ComponentType = creationConfig.componentType
         private val testedConfig = (creationConfig as? TestComponentCreationConfig)?.mainVariant
 
-        // Override to make this true in proguard
-        protected open val defaultObfuscate: Boolean = false
-
         // These filters assume a file can't be class and resourcesJar at the same time.
         private val referencedClasses: FileCollection
 
@@ -268,8 +266,13 @@ abstract class ProguardConfigurableTask(
 
             classes = creationConfig.services.fileCollection().also {
                 it.from(
-                    creationConfig.artifacts.forScope(Scope.PROJECT)
-                        .getFinalArtifacts(ScopedArtifact.CLASSES)
+                    if (componentType.isApk) {
+                        creationConfig.artifacts.forScope(Scope.PROJECT)
+                            .getFinalArtifacts(InternalScopedArtifact.FINAL_TRANSFORMED_CLASSES)
+                    } else {
+                        creationConfig.artifacts.forScope(Scope.PROJECT)
+                            .getFinalArtifacts(ScopedArtifact.CLASSES)
+                    }
                 )
                 externalInputScopes.forEach { scope ->
                     it.from(
@@ -381,7 +384,7 @@ abstract class ProguardConfigurableTask(
                 AarToRClassTransform::class.java
             ) { reg: TransformSpec<TransformParameters.None> ->
                 reg.from.attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
+                    ARTIFACT_TYPE_ATTRIBUTE,
                     creationConfig.global.aarOrJarTypeToConsume.aar.type
                 )
                 reg.from.attribute(
@@ -389,7 +392,7 @@ abstract class ProguardConfigurableTask(
                     apiUsage
                 )
                 reg.to.attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
+                    ARTIFACT_TYPE_ATTRIBUTE,
                     AndroidArtifacts.ArtifactType.R_CLASS_JAR.type
                 )
                 reg.to.attribute(
@@ -418,7 +421,12 @@ abstract class ProguardConfigurableTask(
             when {
                 testedConfig != null -> {
                     // This is an androidTest variant inside an app/library.
-                    applyProguardDefaultsForTest()
+                    if (testedConfig.componentType.isAar) {
+                        // only provide option to enable minify in androidTest component in library
+                        applyProguardDefaultsForTest(optimizationCreationConfig.minifiedEnabled)
+                    } else {
+                        applyProguardDefaultsForTest(false)
+                    }
 
                     // All -dontwarn rules for test dependencies should go in here:
                     val configurationFiles = task.project.files(
@@ -429,7 +437,7 @@ abstract class ProguardConfigurableTask(
                 }
                 creationConfig.componentType.isForTesting && !creationConfig.componentType.isTestComponent -> {
                     // This is a test-only module and the app being tested was obfuscated with ProGuard.
-                    applyProguardDefaultsForTest()
+                    applyProguardDefaultsForTest(false)
 
                     // All -dontwarn rules for test dependen]cies should go in here:
                     val configurationFiles = task.project.files(
@@ -447,16 +455,20 @@ abstract class ProguardConfigurableTask(
             }
         }
 
-        private fun applyProguardDefaultsForTest() {
+        private fun applyProguardDefaultsForTest(minifyEnabled: Boolean) {
             // Don't remove any code in tested app.
             // Obfuscate is disabled by default.
-            // It is enabled in Proguard since it would ignore the mapping file otherwise.
-            // R8 does not have that issue, so we disable obfuscation when running R8.
-            setActions(PostprocessingFeatures(false, defaultObfuscate, false))
-            keep("class * {*;}")
-            keep("interface * {*;}")
-            keep("enum * {*;}")
-            keepAttributes()
+            setActions(PostprocessingFeatures(
+                isRemoveUnusedCode = minifyEnabled,
+                isObfuscate = minifyEnabled,
+                isOptimize = minifyEnabled
+            ))
+            if (!minifyEnabled) {
+                keep("class * {*;}")
+                keep("interface * {*;}")
+                keep("enum * {*;}")
+                keepAttributes()
+            }
         }
 
         private fun applyProguardConfigForNonTest(

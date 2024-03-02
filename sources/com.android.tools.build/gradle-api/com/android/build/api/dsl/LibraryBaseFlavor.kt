@@ -16,6 +16,11 @@
 
 package com.android.build.api.dsl
 
+/**
+ * Shared properties between [LibraryProductFlavor] and [LibraryDefaultConfig]
+ *
+ * See [ProductFlavor] and [DefaultConfig] for more information.
+ */
 interface LibraryBaseFlavor :
     BaseFlavor,
     LibraryVariantDimension {

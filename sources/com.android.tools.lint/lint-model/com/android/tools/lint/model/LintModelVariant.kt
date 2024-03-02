@@ -136,7 +136,7 @@ class DefaultLintModelVariant(
   override val mainArtifact: LintModelAndroidArtifact by lazy {
     return@lazy mainArtifactOrNull
       ?: artifact as? LintModelAndroidArtifact
-        ?: DefaultLintModelAndroidArtifact(
+      ?: DefaultLintModelAndroidArtifact(
         applicationId = "",
         generatedResourceFolders = listOf(),
         generatedSourceFolders = listOf(),

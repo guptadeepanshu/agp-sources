@@ -28,7 +28,7 @@ class ClassTestResults extends CompositeTestResults {
 
     private final String name;
     private final PackageTestResults packageResults;
-    private final Set<TestResult> results = new TreeSet<>();
+    final Set<TestResult> results = new TreeSet<>();
 
     public ClassTestResults(String name, PackageTestResults packageResults) {
         super(packageResults);
@@ -78,6 +78,16 @@ class ClassTestResults extends CompositeTestResults {
     public TestResult addTest(String testName, long duration,
                               String device, String project, String flavor) {
         TestResult test = new TestResult(testName, duration, device, project, flavor, this);
+        results.add(test);
+
+        addDevice(device, test);
+        addVariant(project, flavor, test);
+
+        return addTest(test);
+    }
+
+    public TestResult addTest(String testName, long duration, String device, String project, String flavor, ScreenshotTestImages ssImages) {
+        TestResult test = new TestResult(testName, duration, device, project, flavor, ssImages, this);
         results.add(test);
 
         addDevice(device, test);

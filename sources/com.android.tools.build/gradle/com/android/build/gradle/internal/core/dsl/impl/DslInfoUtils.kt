@@ -129,19 +129,36 @@ internal fun <CoreOptionsT, MergedOptionsT : MergedOptions<CoreOptionsT>> comput
 ) {
     mergedOption.reset()
 
-    val defaultOption = defaultConfig.getFlavorOption()
-    if (defaultOption != null) {
-        mergedOption.append(defaultOption)
+    computeMergedOptions(
+            defaultConfig,
+            buildTypeObj,
+            productFlavorList,
+            getFlavorOption,
+            getBuildTypeOption
+    ) {
+        mergedOption.append(it)
+    }
+}
+
+internal fun <CoreOptionsT> computeMergedOptions(
+        defaultConfig: DefaultConfig,
+        buildTypeObj: BuildType,
+        productFlavorList: List<ProductFlavor>,
+        getFlavorOption: VariantDimension.() -> CoreOptionsT?,
+        getBuildTypeOption: BuildType.() -> CoreOptionsT?,
+        mergeAction: (CoreOptionsT) -> Unit,
+) {
+
+    defaultConfig.getFlavorOption()?.let {
+        mergeAction(it)
     }
     // reverse loop for proper order
     for (i in productFlavorList.indices.reversed()) {
-        val flavorOption = productFlavorList[i].getFlavorOption()
-        if (flavorOption != null) {
-            mergedOption.append(flavorOption)
+        productFlavorList[i].getFlavorOption()?.let {
+            mergeAction(it)
         }
     }
-    val buildTypeOption = buildTypeObj.getBuildTypeOption()
-    if (buildTypeOption != null) {
-        mergedOption.append(buildTypeOption)
+    buildTypeObj.getBuildTypeOption()?.let {
+        mergeAction(it)
     }
 }

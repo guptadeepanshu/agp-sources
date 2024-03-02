@@ -21,6 +21,7 @@ import com.android.SdkConstants.FD_NDK_SIDE_BY_SIDE
 import com.android.SdkConstants.NDK_DEFAULT_VERSION
 import com.android.SdkConstants.NDK_DIR_PROPERTY
 import com.android.build.gradle.internal.SdkHandler
+import com.android.build.gradle.internal.SdkLocationSourceSet
 import com.android.build.gradle.internal.SdkLocator
 import com.android.build.gradle.internal.cxx.configure.SdkSourceProperties.Companion.SdkSourceProperty.SDK_PKG_REVISION
 import com.android.build.gradle.internal.cxx.logging.PassThroughPrefixingLoggingEnvironment
@@ -39,6 +40,7 @@ import com.android.utils.cxx.CxxDiagnosticCode.NDK_VERSION_IS_UNMATCHED
 import com.android.utils.cxx.CxxDiagnosticCode.NDK_VERSION_UNSUPPORTED
 import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.InvalidUserDataException
+import org.gradle.api.provider.ProviderFactory
 import java.io.File
 
 /**
@@ -398,8 +400,11 @@ data class NdkLocator(
     private val issueReporter: IssueReporter,
     private val ndkVersionFromDsl: String?,
     private val ndkPathFromDsl: String?,
+    private val ndkPathFromProperties: String?,
     private val projectDir: File,
-    private val sdkHandler: SdkHandler) {
+    private val sdkHandler: SdkHandler,
+    private val sdkLocationSourceSet: SdkLocationSourceSet
+) {
     /**
      * There are three possible physical locations for NDK:
      *
@@ -416,12 +421,11 @@ data class NdkLocator(
      * or it is an error. If no such version is specified then the default version is used.
      */
     fun findNdkPath(downloadOkay: Boolean): NdkLocatorRecord? {
-        val properties = gradleLocalProperties(projectDir)
-        val sdkPath = SdkLocator.getSdkDirectory(projectDir, issueReporter)
+        val sdkPath = SdkLocator.getSdkDirectory(projectDir, issueReporter, sdkLocationSourceSet)
         return findNdkPathImpl(
             ndkVersionFromDsl,
             ndkPathFromDsl,
-            properties.getProperty(NDK_DIR_PROPERTY),
+            ndkPathFromProperties,
             sdkPath,
             getNdkVersionedFolders(File(sdkPath, FD_NDK_SIDE_BY_SIDE)),
             ::getNdkVersionInfo,

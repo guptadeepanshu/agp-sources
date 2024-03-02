@@ -15,7 +15,6 @@
  */
 package com.android.builder.model.v2.ide
 
-import com.android.builder.model.v2.ModelSyncFile
 import java.io.File
 
 /**
@@ -57,16 +56,20 @@ interface AbstractArtifact {
     val generatedSourceFolders: Collection<File>
 
     /**
-     * Returns all the [ModelSyncFile] for this artifact.
+     * Removed: Previously returned model sync files which were never used
      *
-     * @return a list of [ModelSyncFile]
-     * @since 7.1
+     * Method remains temporarily to not break sync if someone syncs and rebuilds AGP without
+     * rebuilding Studio. TODO(b/302301386): Remove this, perhaps after branching AGP 8.3.
      */
-    val modelSyncFiles: Collection<ModelSyncFile>
+    @get:Deprecated("Removed: Previously returned model sync files which were never used. ")
+    val modelSyncFiles: Collection<Void>
 
     /**
      * Generated class paths to include in the model. The name of the library to add is mapped to
      * the generated class file.
      */
     val generatedClassPaths: Map<String, File>
+
+    /** List of bytecode transformations applied to this variant. */
+    val bytecodeTransformations: Collection<BytecodeTransformation>
 }

@@ -155,4 +155,12 @@ sealed class SingleArtifact<T : FileSystemLocation>(
      */
     @Incubating
     object MERGED_NATIVE_LIBS: SingleArtifact<Directory>(DIRECTORY)
+
+    /**
+     * The text symbol output file (R.txt) containing a list of resources and their ids
+     * (including of transitive dependencies).
+     */
+    @Incubating
+    object RUNTIME_SYMBOL_LIST :
+            SingleArtifact<RegularFile>(FILE)
 }

@@ -33,10 +33,9 @@ import javax.xml.bind.annotation.XmlTransient;
 /**
  * A downloadable version of a {@link RepoPackage}, corresponding to a specific version number, and
  * optionally host OS, host bitness, JVM version or JVM bitness. Includes a complete version of the
- * package ({@link Archive.CompleteType}), and optionally binary patches from previous revisions to
- * this one ({@link Archive.PatchType}).
+ * package ({@link Archive.CompleteType}).
  *
- * Primarily a superclass for xjc-generated JAXB-compatible classes.
+ * <p>Primarily a superclass for xjc-generated JAXB-compatible classes.
  */
 @XmlTransient
 public abstract class Archive {
@@ -137,40 +136,6 @@ public abstract class Archive {
      * Sets the required host OS ("windows", "linux", "macosx"), if any.
      */
     public void setHostOs(@Nullable String os) {
-        // Stub
-    }
-
-    /** Returns all the version-to-version patches for this {@code Archive}. */
-    @NonNull
-    public List<PatchType> getAllPatches() {
-        PatchesType patches = getPatches();
-        if (patches == null) {
-            return ImmutableList.of();
-        }
-        return patches.getPatch();
-    }
-
-    @Nullable
-    public PatchType getPatch(Revision fromRevision) {
-        for (PatchType p : getAllPatches()) {
-            if (p.getBasedOn().toRevision().equals(fromRevision)) {
-                return p;
-            }
-        }
-        return null;
-    }
-
-    /** Returns the {@link PatchesType} for this Archive. Probably only needed internally. */
-    @Nullable
-    protected PatchesType getPatches() {
-        // Stub
-        return null;
-    }
-
-    /**
-     * Sets the {@link PatchesType} for this Archive. Probably only needed internally.
-     */
-    protected void setPatches(@Nullable PatchesType patches) {
         // Stub
     }
 
@@ -351,31 +316,37 @@ public abstract class Archive {
     }
 
     /**
-     * A binary diff from a previous package version to this one. TODO: it's too bad that the code
-     * from CompleteType must be duplicated here. Refactor.
+     * Deprecated support for patches
+     *
+     * @deprecated
      */
+    @Deprecated
     @XmlTransient
     public abstract static class PatchType extends ArchiveFile {
 
         /** Returns the source revision for this patch. */
         @NonNull
+        @Deprecated
         public abstract RevisionType getBasedOn();
 
-        /**
-         * Sets the source revision for this patch.
-         */
+        /** Sets the source revision for this patch. */
+        @Deprecated
         public void setBasedOn(@NonNull RevisionType revision) {
             // Stub
         }
     }
 
     /**
-     * A list of {@link PatchType}s. Only used internally.
+     * Deprecated support for patches
+     *
+     * @deprecated
      */
+    @Deprecated
     @XmlTransient
     public abstract static class PatchesType {
 
         @NonNull
+        @Deprecated
         public List<PatchType> getPatch() {
             // Stub
             return ImmutableList.of();

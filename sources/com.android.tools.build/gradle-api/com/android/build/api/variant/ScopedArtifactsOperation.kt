@@ -70,6 +70,10 @@ interface ScopedArtifactsOperation<T: Task> {
      * the transforms are applied is directly set by the order of this method call. First come,
      * first served, last one provides the final version of the artifacts.
      *
+     * IMPORTANT: [Task] will transform many inputs into a single output.
+     * That means task must have merging logic as jars contain similar files and
+     * folders (like META-INF). Merging logic depends on transformation nature.
+     *
      * @param type the [ScopedArtifact] to transform.
      * @param inputJars lambda that returns a [ListProperty] or [RegularFile] that will be used to
      * set all incoming files for this artifact type.

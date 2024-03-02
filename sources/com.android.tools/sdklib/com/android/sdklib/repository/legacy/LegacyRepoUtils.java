@@ -29,6 +29,7 @@ import com.android.repository.impl.meta.TypeDetails;
 import com.android.sdklib.AndroidVersion;
 import com.android.sdklib.AndroidVersionUtils;
 import com.android.sdklib.OptionalLibrary;
+import com.android.sdklib.SystemImageTags;
 import com.android.sdklib.internal.project.ProjectProperties;
 import com.android.sdklib.repository.AndroidSdkHandler;
 import com.android.sdklib.repository.IdDisplay;
@@ -40,7 +41,6 @@ import com.android.sdklib.repository.meta.Library;
 import com.android.sdklib.repository.meta.RepoFactory;
 import com.android.sdklib.repository.meta.SdkCommonFactory;
 import com.android.sdklib.repository.meta.SysImgFactory;
-import com.android.sdklib.repository.targets.SystemImage;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import java.io.File;
@@ -121,7 +121,7 @@ public class LegacyRepoUtils {
                 tag.setDisplay(tagIdDisplay.getDisplay());
                 details.getTags().add(tag);
             } else {
-                details.getTags().add(SystemImage.DEFAULT_TAG);
+                details.getTags().add(SystemImageTags.DEFAULT_TAG);
             }
             IdDisplay vendorIdDisplay = desc.getVendor();
             if (vendorIdDisplay != null) {

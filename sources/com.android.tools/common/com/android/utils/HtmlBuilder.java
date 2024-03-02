@@ -389,16 +389,6 @@ public class HtmlBuilder {
         return this;
     }
 
-    public HtmlBuilder addIcon(@Nullable String src) {
-        if (src != null) {
-            mStringBuilder.append("<img src='");
-            mStringBuilder.append(src);
-            mStringBuilder.append("' width=16 height=16 border=0 />");
-        }
-
-        return this;
-    }
-
     public HtmlBuilder beginTable(@Nullable String tdExtra) {
         mStringBuilder.append("<table>");
         mTableDataExtra = tdExtra;

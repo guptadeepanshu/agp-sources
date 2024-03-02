@@ -20,26 +20,32 @@ import com.android.SdkConstants
 import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.component.impl.features.InstrumentationCreationConfigImpl
+import com.android.build.api.component.impl.features.PrivacySandboxCreationConfigImpl
 import com.android.build.api.dsl.KotlinMultiplatformAndroidCompilation
+import com.android.build.api.variant.AndroidResources
 import com.android.build.api.variant.AndroidVersion
+import com.android.build.api.variant.Component
 import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.Instrumentation
 import com.android.build.api.variant.InternalSources
 import com.android.build.api.variant.JavaCompilation
+import com.android.build.api.variant.ManifestFiles
 import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.api.variant.SourceDirectories
+import com.android.build.api.variant.impl.AndroidResourcesImpl
 import com.android.build.api.variant.impl.FileBasedDirectoryEntryImpl
 import com.android.build.api.variant.impl.FlatSourceDirectoriesImpl
 import com.android.build.api.variant.impl.KotlinMultiplatformFlatSourceDirectoriesImpl
 import com.android.build.api.variant.impl.LayeredSourceDirectoriesImpl
+import com.android.build.api.variant.impl.ManifestFilesImpl
 import com.android.build.api.variant.impl.SourceType
 import com.android.build.api.variant.impl.SourcesImpl
 import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
 import com.android.build.gradle.internal.component.KmpComponentCreationConfig
 import com.android.build.gradle.internal.component.features.AndroidResourcesCreationConfig
-import com.android.build.gradle.internal.component.features.AssetsCreationConfig
 import com.android.build.gradle.internal.component.features.BuildConfigCreationConfig
 import com.android.build.gradle.internal.component.features.ManifestPlaceholdersCreationConfig
+import com.android.build.gradle.internal.component.features.PrivacySandboxCreationConfig
 import com.android.build.gradle.internal.component.features.ResValuesCreationConfig
 import com.android.build.gradle.internal.component.legacy.ModelV1LegacySupport
 import com.android.build.gradle.internal.component.legacy.OldVariantApiLegacySupport
@@ -80,7 +86,7 @@ abstract class KmpComponentImpl<DslInfoT: KmpComponentDslInfo>(
     override val global: GlobalTaskCreationConfig,
     final override val androidKotlinCompilation: KotlinMultiplatformAndroidCompilation,
     manifestFile: File
-): KmpComponentCreationConfig, ComponentIdentity by dslInfo.componentIdentity {
+): Component, KmpComponentCreationConfig, ComponentIdentity by dslInfo.componentIdentity {
 
     final override val withJava: Boolean
         get() = dslInfo.withJava
@@ -112,11 +118,11 @@ abstract class KmpComponentImpl<DslInfoT: KmpComponentDslInfo>(
         )
     }
 
-    val instrumentation: Instrumentation
+    override val instrumentation: Instrumentation
         get() = instrumentationCreationConfig.instrumentation
-    val compileConfiguration: Configuration
+    override val compileConfiguration: Configuration
         get() = variantDependencies.compileClasspath
-    val runtimeConfiguration: Configuration
+    override val runtimeConfiguration: Configuration
         get() = variantDependencies.runtimeClasspath
 
     // DSL delegates
@@ -193,9 +199,11 @@ abstract class KmpComponentImpl<DslInfoT: KmpComponentDslInfo>(
         )
     }
 
+    override val lifecycleTasks = LifecycleTasksImpl()
+
     // Unsupported features
 
-    override val assetsCreationConfig: AssetsCreationConfig? = null
+    override val androidResources: AndroidResourcesImpl? = null
     override val androidResourcesCreationConfig: AndroidResourcesCreationConfig? = null
     override val resValuesCreationConfig: ResValuesCreationConfig? = null
     override val buildConfigCreationConfig: BuildConfigCreationConfig? = null
@@ -216,7 +224,7 @@ abstract class KmpComponentImpl<DslInfoT: KmpComponentDslInfo>(
                     " the kotlin specific options.")
         }
 
-    val annotationProcessorConfiguration: Configuration
+    override val annotationProcessorConfiguration: Configuration
         get() = throw IllegalAccessException("The kotlin multiplatform android plugin doesn't" +
                 " configure annotation processors. To configure annotation processors, use" +
                 " the kapt options.")
@@ -311,6 +319,12 @@ abstract class KmpComponentImpl<DslInfoT: KmpComponentDslInfo>(
         override val sourceProviderNames: List<String> = emptyList()
         override val multiFlavorSourceProvider: DefaultAndroidSourceSet? = null
         override val variantSourceProvider: DefaultAndroidSourceSet? = null
+        override val manifests: ManifestFiles =
+                ManifestFilesImpl(
+                        variantServices
+                ).also { sourceFilesImpl ->
+                    sourceFilesImpl.addSourceFile(manifestFile)
+                }
     }
 
     open fun syncAndroidAndKmpClasspathAndSources() {
@@ -375,4 +389,11 @@ abstract class KmpComponentImpl<DslInfoT: KmpComponentDslInfo>(
             }
         )
     }
+
+    override val privacySandboxCreationConfig: PrivacySandboxCreationConfig?
+        get() = if(dslInfo.privacySandboxDsl.enable) {
+            PrivacySandboxCreationConfigImpl()
+        } else {
+            null
+        }
 }

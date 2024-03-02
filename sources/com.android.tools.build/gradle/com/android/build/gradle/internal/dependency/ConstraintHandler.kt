@@ -17,59 +17,13 @@
 @file:JvmName("ConstraintHandler")
 package com.android.build.gradle.internal.dependency
 
-import com.android.build.gradle.internal.services.StringCachingBuildService
 import com.android.builder.errors.IssueReporter
 import org.gradle.api.artifacts.Configuration
-import org.gradle.api.artifacts.ResolvableDependencies
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.gradle.api.artifacts.component.ModuleComponentSelector
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
-import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.api.artifacts.result.ResolvedDependencyResult
-import org.gradle.api.provider.Provider
 import java.io.File
-
-/**
- * Synchronizes this configuration to the specified one, so they resolve to the same dependencies.
- *
- * It does that by leveraging [ResolvableDependencies.beforeResolve].
- */
-internal fun Configuration.alignWith(
-        srcConfiguration: Configuration,
-        dependencyHandler: DependencyHandler,
-        isTest: Boolean,
-        cachedStringBuildService: Provider<StringCachingBuildService>
-) {
-    incoming.beforeResolve {
-        val srcConfigName = srcConfiguration.name
-
-        val configName = this.name
-        val stringCachingService = cachedStringBuildService.get()
-
-        srcConfiguration.incoming.resolutionResult.allDependencies { dependency ->
-            if (dependency is ResolvedDependencyResult) {
-                val componentIdentifier = dependency.selected.id
-                if (componentIdentifier is ModuleComponentIdentifier) {
-                    // using a repository with a flatDir to stock local AARs will result in an
-                    // external module dependency with no version.
-                    if (!componentIdentifier.version.isNullOrEmpty()) {
-                        if (!isTest || componentIdentifier.module != "listenablefuture" || componentIdentifier.group != "com.google.guava" || componentIdentifier.version != "1.0") {
-                            dependencyHandler.constraints.add(
-                                configName,
-                                "${componentIdentifier.group}:${componentIdentifier.module}:${componentIdentifier.version}"
-                            ) { constraint ->
-                                constraint.because(stringCachingService.cacheString("$srcConfigName uses version ${componentIdentifier.version}"))
-                                constraint.version { versionConstraint ->
-                                    versionConstraint.strictly(componentIdentifier.version)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
 
 internal fun checkConfigurationAlignments(
         destConfiguration: Configuration,

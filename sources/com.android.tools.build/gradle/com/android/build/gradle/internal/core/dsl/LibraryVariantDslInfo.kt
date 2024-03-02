@@ -41,4 +41,6 @@ interface LibraryVariantDslInfo:
     val isDebuggable: Boolean
 
     override val androidResourcesDsl: AndroidResourcesDslInfo
+
+    val isAndroidTestMultiDexEnabled: Boolean?
 }

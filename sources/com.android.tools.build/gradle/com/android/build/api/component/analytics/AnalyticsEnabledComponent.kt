@@ -22,6 +22,7 @@ import com.android.build.api.instrumentation.AsmClassVisitorFactory
 import com.android.build.api.instrumentation.FramesComputationMode
 import com.android.build.api.instrumentation.InstrumentationParameters
 import com.android.build.api.instrumentation.InstrumentationScope
+import com.android.build.api.variant.LifecycleTasks
 import com.android.build.api.variant.Instrumentation
 import com.android.build.api.variant.JavaCompilation
 import com.android.build.api.variant.Sources
@@ -39,6 +40,13 @@ abstract class AnalyticsEnabledComponent(
     val stats: GradleBuildVariant.Builder,
     val objectFactory: ObjectFactory
 ) : Component {
+
+
+    override val debuggable: Boolean
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type = VariantPropertiesMethodType.DEBUGGABLE_VALUE
+            return delegate.debuggable
+        }
 
     override val artifacts: Artifacts
         get() {
@@ -183,4 +191,15 @@ abstract class AnalyticsEnabledComponent(
 
     override val name: String
         get() = delegate.name
+
+    override val lifecycleTasks: LifecycleTasks
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.LIFECYCLE_TASKS_VALUE
+            return objectFactory.newInstance(
+                AnalyticsEnabledLifecycleTasks::class.java,
+                delegate.lifecycleTasks,
+                stats
+            )
+        }
 }

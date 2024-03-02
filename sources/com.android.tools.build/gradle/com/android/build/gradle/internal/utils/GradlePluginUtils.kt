@@ -18,6 +18,14 @@
 
 package com.android.build.gradle.internal.utils
 
+import com.android.build.gradle.internal.services.RunOnceBuildServiceImpl
+import com.android.build.gradle.internal.plugins.AppPlugin
+import com.android.build.gradle.internal.plugins.DynamicFeaturePlugin
+import com.android.build.gradle.internal.plugins.FusedLibraryPlugin
+import com.android.build.gradle.internal.plugins.KotlinMultiplatformAndroidPlugin
+import com.android.build.gradle.internal.plugins.LibraryPlugin
+import com.android.build.gradle.internal.plugins.PrivacySandboxSdkPlugin
+import com.android.build.gradle.internal.plugins.TestPlugin
 import com.android.builder.errors.IssueReporter
 import com.android.ide.common.repository.GradleVersion
 import com.google.common.annotations.VisibleForTesting
@@ -106,11 +114,10 @@ internal data class DependencyInfo(
  */
 fun enforceMinimumVersionsOfPlugins(project: Project, issueReporter: IssueReporter) {
     // Run only once per build
-    val extraProperties = project.rootProject.extensions.extraProperties
-    if (extraProperties.has(AGP_INTERNAL__MIN_PLUGIN_VERSION_CHECK_STARTED)) {
+    if (RunOnceBuildServiceImpl.RegistrationAction(project).execute().get()
+            .getOrSetActionPerformed("enforceMinimumVersionsOfPlugins", "com.android.build.gradle.internal.utils.GradlePluginUtils")) {
         return
     }
-    extraProperties.set(AGP_INTERNAL__MIN_PLUGIN_VERSION_CHECK_STARTED, true)
 
     project.gradle.projectsEvaluated { gradle ->
         val projectsToCheck = mutableSetOf<Project>()
@@ -247,4 +254,14 @@ fun getBuildSrcPlugins(classLoader: ClassLoader): Set<String> {
 }
 
 const val ANDROID_GRADLE_PLUGIN_ID = "com.android.base"
-private const val AGP_INTERNAL__MIN_PLUGIN_VERSION_CHECK_STARTED = "AGP_INTERNAL__MIN_PLUGIN_VERSION_CHECK_STARTED"
+
+/** Android Gradle plugins where no two plugins can be applied together in the same project. */
+val MUTUALLY_EXCLUSIVE_ANDROID_GRADLE_PLUGINS = mapOf(
+    AppPlugin::class.java to "com.android.application",
+    LibraryPlugin::class.java to "com.android.library",
+    DynamicFeaturePlugin::class.java to "com.android.dynamic-feature",
+    TestPlugin::class.java to "com.android.test",
+    KotlinMultiplatformAndroidPlugin::class.java to "com.android.kotlin.multiplatform.library",
+    FusedLibraryPlugin::class.java to "com.android.fused-library",
+    PrivacySandboxSdkPlugin::class.java to "com.android.privacy-sandbox-sdk",
+)

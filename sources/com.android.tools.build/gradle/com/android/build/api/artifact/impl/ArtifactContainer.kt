@@ -19,6 +19,7 @@ package com.android.build.api.artifact.impl
 import com.android.build.api.artifact.Artifact
 import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.file.FileSystemLocation
+import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.TaskProvider
 import java.util.concurrent.atomic.AtomicBoolean
@@ -233,12 +234,15 @@ internal class MultipleArtifactContainer<T: FileSystemLocation>(
         initialTaskProviders.addAll(from.getInitialTaskProviders())
     }
 
-    fun addInitialProvider(taskProvider: TaskProvider<*>?, item: Provider<T>) {
+    fun addInitialProvider(taskProvider: TaskProvider<*>, item: Provider<T>) {
         needInitialProducer().set(false)
         agpProducers.add(item)
-        taskProvider?.let {
-            initialTaskProviders.add(it)
-        }
+        initialTaskProviders.add(taskProvider)
+    }
+
+    fun addInitialProvider(item: Provider<T>) {
+        needInitialProducer().set(false)
+        agpProducers.add(item)
     }
 
     /**

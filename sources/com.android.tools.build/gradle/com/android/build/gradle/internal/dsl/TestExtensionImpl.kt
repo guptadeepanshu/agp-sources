@@ -20,9 +20,8 @@ import com.android.build.api.dsl.TestAndroidResources
 import com.android.build.api.dsl.TestBuildFeatures
 import com.android.build.api.dsl.TestBuildType
 import com.android.build.api.dsl.TestDefaultConfig
+import com.android.build.api.dsl.TestInstallation
 import com.android.build.api.dsl.TestProductFlavor
-import com.android.build.api.variant.TestVariant
-import com.android.build.api.variant.TestVariantBuilder
 import com.android.build.gradle.internal.plugins.DslContainerProvider
 import com.android.build.gradle.internal.services.DslServices
 import javax.inject.Inject
@@ -40,7 +39,8 @@ abstract class TestExtensionImpl @Inject constructor(
             TestBuildType,
             TestDefaultConfig,
             TestProductFlavor,
-            TestAndroidResources>(
+            TestAndroidResources,
+            TestInstallation>(
         dslServices,
         dslContainers
     ),
@@ -52,5 +52,8 @@ abstract class TestExtensionImpl @Inject constructor(
     override var targetProjectPath: String? = null
 
     override val androidResources: TestAndroidResources
-            = dslServices.newDecoratedInstance(TestAndroidResourcesImpl::class.java, dslServices)
+        = dslServices.newDecoratedInstance(TestAndroidResourcesImpl::class.java, dslServices)
+
+    override val installation: TestInstallation
+        = dslServices.newDecoratedInstance(TestInstallationImpl::class.java, dslServices)
 }

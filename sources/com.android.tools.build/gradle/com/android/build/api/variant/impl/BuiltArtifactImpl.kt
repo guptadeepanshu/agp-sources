@@ -24,6 +24,8 @@ import com.android.build.api.variant.VariantOutputConfiguration.OutputType
 import com.android.build.gradle.internal.api.artifact.toArtifactType
 import com.android.ide.common.build.CommonBuiltArtifact
 import com.android.ide.common.build.CommonBuiltArtifactTypeAdapter
+import com.android.ide.common.build.GenericBuiltArtifact
+import com.android.ide.common.build.GenericFilterConfiguration
 import com.android.utils.FileUtils
 import com.google.common.collect.ImmutableList
 import com.google.gson.TypeAdapter
@@ -39,37 +41,45 @@ data class BuiltArtifactImpl private constructor(
     override val versionCode: Int?,
     override val versionName: String?,
     val variantOutputConfiguration: VariantOutputConfiguration = VariantOutputConfigurationImpl(),
-    val attributes: Map<String, String> = mapOf()
+    val attributes: Map<String, String> = mapOf(),
 ) : BuiltArtifact, CommonBuiltArtifact, Serializable, VariantOutputConfiguration by variantOutputConfiguration {
 
-    fun newOutput(newOutputFile: Path): BuiltArtifactImpl {
-        return make(
-            outputFile = newOutputFile.toString(),
-            versionCode = versionCode,
-            versionName = versionName,
-            variantOutputConfiguration = variantOutputConfiguration,
-            attributes = attributes
-        )
-    }
+    fun newOutput(newOutputFile: Path): BuiltArtifactImpl =
+        copy(outputFile = newOutputFile.toFile().invariantSeparatorsPath)
 
     fun getFilter(filterType: FilterConfiguration.FilterType): FilterConfiguration? =
         filters.firstOrNull { it.filterType == filterType }
 
+    fun toGenericBuiltArtifact() = GenericBuiltArtifact(
+        outputType = outputType.toString(),
+        filters = filters.map { filterConfiguration ->
+            GenericFilterConfiguration(
+                filterConfiguration.filterType.toString(),
+                filterConfiguration.identifier
+            )
+        },
+        attributes = attributes,
+        versionCode = versionCode,
+        versionName = versionName,
+        outputFile = outputFile,
+    )
+
     companion object {
 
+        @JvmOverloads
         @JvmStatic
         fun make(
             outputFile: String,
             versionCode: Int? = null,
             versionName: String? = null,
             variantOutputConfiguration: VariantOutputConfiguration = VariantOutputConfigurationImpl(),
-            attributes: Map<String, String> = mapOf()
+            attributes: Map<String, String> = mapOf(),
         )
                     = BuiltArtifactImpl(FileUtils.toSystemIndependentPath(outputFile),
                 versionCode,
                 versionName,
                 variantOutputConfiguration,
-                attributes
+                attributes,
         )
 
     }
@@ -102,12 +112,14 @@ internal object BuiltArtifactTypeAdapter: CommonBuiltArtifactTypeAdapter<BuiltAr
         var outputType: String? = null
         val filters = ImmutableList.Builder<FilterConfigurationImpl>()
         val attributes = mutableMapOf<String, String>()
+        var minSdkVersionForDexing: Int? = null
         return super.read(reader,
             { attributeName: String ->
                 when(attributeName) {
                     "type" -> outputType = reader.nextString()
                     "filters" -> readFilters(reader, filters)
                     "attributes" -> readAttributes(reader, attributes)
+                    "minSdkVersionForDexing" -> minSdkVersionForDexing = reader.nextInt()
                 }
             },
             { outputFile: String,
@@ -122,7 +134,7 @@ internal object BuiltArtifactTypeAdapter: CommonBuiltArtifactTypeAdapter<BuiltAr
                         isUniversal = OutputType.UNIVERSAL.name == outputType,
                         filters = filters.build()
                     ),
-                    attributes = attributes
+                    attributes = attributes,
                 )
             })
     }

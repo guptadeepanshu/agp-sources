@@ -19,7 +19,9 @@ package com.android.build.api.variant
 import org.gradle.api.provider.SetProperty
 
 /**
- * Defines a variant's packaging options for native library (.so) files.
+ * Build-time properties for packaging native libraries (.so) inside a [Component].
+ *
+ * This is accessed via [Packaging.jniLibs]
  */
 interface JniLibsPackaging {
 

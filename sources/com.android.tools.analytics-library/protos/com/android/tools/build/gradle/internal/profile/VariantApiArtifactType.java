@@ -64,6 +64,10 @@ public enum VariantApiArtifactType
    * <code>MERGED_NATIVE_LIBS = 12;</code>
    */
   MERGED_NATIVE_LIBS(12),
+  /**
+   * <code>RUNTIME_SYMBOL_LIST = 13;</code>
+   */
+  RUNTIME_SYMBOL_LIST(13),
   UNRECOGNIZED(-1),
   ;
 
@@ -123,6 +127,10 @@ public enum VariantApiArtifactType
    * <code>MERGED_NATIVE_LIBS = 12;</code>
    */
   public static final int MERGED_NATIVE_LIBS_VALUE = 12;
+  /**
+   * <code>RUNTIME_SYMBOL_LIST = 13;</code>
+   */
+  public static final int RUNTIME_SYMBOL_LIST_VALUE = 13;
 
 
   public final int getNumber() {
@@ -162,6 +170,7 @@ public enum VariantApiArtifactType
       case 10: return APK_FROM_BUNDLE;
       case 11: return PROJECT_CLASSES;
       case 12: return MERGED_NATIVE_LIBS;
+      case 13: return RUNTIME_SYMBOL_LIST;
       default: return null;
     }
   }

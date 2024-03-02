@@ -17,9 +17,11 @@
 package com.android.build.gradle.internal.manifest
 
 import com.android.build.gradle.internal.services.ProjectServices
+import com.android.builder.errors.EvalIssueException
+import com.android.builder.errors.IssueReporter
 import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Provider
-import java.util.function.BooleanSupplier
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * a lazy manifest parser that can create a `Provider<ManifestData>`
@@ -27,29 +29,52 @@ import java.util.function.BooleanSupplier
 class LazyManifestParser(
     private val manifestFile: Provider<RegularFile>,
     private val manifestFileRequired: Boolean,
-    private val projectServices: ProjectServices,
-    private val manifestParsingAllowed: BooleanSupplier
+    private val manifestParsingAllowed: Provider<Boolean>,
+    projectServices: ProjectServices,
 ): ManifestDataProvider {
 
-     override val manifestData: Provider<ManifestData> by lazy {
-        // using map will allow us to keep task dependency should the manifest be generated or
-        // transformed via a task
-        val provider = manifestFile.map {
-            parseManifest(
-                it.asFile,
-                manifestFileRequired,
-                manifestParsingAllowed,
-                projectServices.issueReporter
-            )
-        }
+    val logger = projectServices.logger
+    var rawManifestData: ManifestData? = null
+    val manifestDataCalculated = AtomicBoolean(false)
+    val issueReporter: IssueReporter =
+        // if we are in standard mode, use the logger directly as projectServices.issueReporter
+        // is not compatible with configuration cache.
+        if (projectServices.issueReporter.isInStandardEvaluationMode()) {
+            object : IssueReporter() {
+                val issues = mutableSetOf<Type>()
+                override fun reportIssue(
+                    type: Type,
+                    severity: Severity,
+                    exception: EvalIssueException
+                ) {
+                    issues.add(type)
+                    if (severity == Severity.ERROR) {
+                        logger.error(exception.message)
+                    } else {
+                        logger.warn(exception.message)
+                    }
+                }
 
-        // wrap the provider in a property to allow memoization
-        projectServices.objectFactory.property(ManifestData::class.java).also {
-            it.set(provider)
-            it.finalizeValueOnRead()
-            // TODO disable early get
+                override fun hasIssue(type: Type): Boolean = issues.contains(type)
+            }
+        } else projectServices.issueReporter
+
+    override val manifestData: Provider<ManifestData> =
+        projectServices.providerFactory.of(ManifestValueSource::class.java) {
+             it.parameters.manifestFile.set(manifestFile)
+        }.map {
+            if (!manifestDataCalculated.get()) {
+                manifestDataCalculated.set(true)
+                rawManifestData = parseManifest(
+                    it,
+                    manifestFile.get().asFile.absolutePath,
+                    manifestFileRequired,
+                    manifestParsingAllowed,
+                    issueReporter,
+                )
+            }
+            rawManifestData?: ManifestData("fake.package.name.for.sync")
         }
-    }
 
     override val manifestLocation: String
         get() = manifestFile.get().asFile.absolutePath

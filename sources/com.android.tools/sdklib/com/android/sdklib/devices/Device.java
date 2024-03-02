@@ -21,7 +21,7 @@ import com.android.annotations.Nullable;
 import com.android.dvlib.DeviceSchema;
 import com.android.resources.ScreenOrientation;
 import com.android.resources.ScreenRound;
-import com.android.sdklib.repository.targets.SystemImage;
+import com.android.sdklib.SystemImageTags;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -374,7 +374,7 @@ public final class Device {
 
         public void setTagId(@Nullable String tagId) {
             mTagId = tagId;
-            if (SystemImage.WEAR_TAG.getId().equals(mTagId)) {
+            if (SystemImageTags.WEAR_TAG.getId().equals(mTagId)) {
                 // All Wear devices are compatible with Play Store
                 mHasPlayStore = true;
             }
@@ -390,7 +390,7 @@ public final class Device {
 
         public void setPlayStore(boolean hasPlayStore) {
             mHasPlayStore = hasPlayStore;
-            if (SystemImage.WEAR_TAG.getId().equals(mTagId)) {
+            if (SystemImageTags.WEAR_TAG.getId().equals(mTagId)) {
                 // All Wear devices are compatible with Play Store
                 mHasPlayStore = true;
             }

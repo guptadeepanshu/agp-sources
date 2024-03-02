@@ -64,8 +64,8 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
     abstract val manifestOutputFile: RegularFileProperty
 
     @get:PathSensitive(PathSensitivity.RELATIVE)
-    @get:InputFiles
-    abstract val manifestOverlays: ListProperty<File>
+    @get:InputFiles // Note: The files may not exist
+    abstract val manifestOverlayFilePaths: ListProperty<File>
 
     @get:Optional
     @get:Input
@@ -108,7 +108,7 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
                         createTempLibraryManifest(tmpDir.get().asFile, namespace.orNull)
                     }
             )
-            it.manifestOverlays.set(manifestOverlays)
+            it.manifestOverlays.set(manifestOverlayFilePaths.get().filter(File::isFile))
             it.namespace.set(namespace)
             it.minSdkVersion.set(minSdkVersion)
             it.targetSdkVersion.set(targetSdkVersion)
@@ -296,8 +296,7 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
             }
             task.mainManifest.fileProvider(creationConfig.sources.manifestFile)
             task.mainManifest.disallowChanges()
-            task.manifestOverlays.setDisallowChanges(
-                creationConfig.sources.manifestOverlayFiles.map { it.filter(File::isFile) })
+            task.manifestOverlayFilePaths.setDisallowChanges(creationConfig.sources.manifestOverlayFiles)
             task.namespace.setDisallowChanges(creationConfig.namespace)
             task.tmpDir.setDisallowChanges(creationConfig.paths.intermediatesDir(
                     "tmp",

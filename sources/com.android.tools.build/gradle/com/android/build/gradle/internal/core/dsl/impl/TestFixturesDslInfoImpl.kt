@@ -42,7 +42,7 @@ internal class TestFixturesDslInfoImpl(
     override val mainVariantDslInfo: TestedVariantDslInfo,
     services: VariantServices,
     buildDirectory: DirectoryProperty,
-    extension: CommonExtension<*, *, *, *, *>
+    extension: CommonExtension<*, *, *, *, *, *>
 ) : ComponentDslInfoImpl(
     componentIdentity,
     componentType,

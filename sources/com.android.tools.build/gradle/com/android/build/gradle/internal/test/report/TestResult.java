@@ -33,6 +33,7 @@ class TestResult extends TestResultModel implements Comparable<TestResult> {
     final List<TestFailure> failures = new ArrayList<>();
     final String name;
     private boolean ignored;
+    private ScreenshotTestImages screenshotImages;
 
     public TestResult(String name, long duration, String device, String project, String flavor,
                       ClassTestResults classResults) {
@@ -41,6 +42,16 @@ class TestResult extends TestResultModel implements Comparable<TestResult> {
         this.device = device;
         this.project = project;
         this.flavor = flavor;
+        this.classResults = classResults;
+    }
+
+    public TestResult(String name, long duration, String device, String project, String flavor, ScreenshotTestImages ssImages, ClassTestResults classResults) {
+        this.name = name;
+        this.duration = duration;
+        this.device = device;
+        this.project = project;
+        this.flavor = flavor;
+        this.screenshotImages = ssImages;
         this.classResults = classResults;
     }
 
@@ -75,6 +86,10 @@ class TestResult extends TestResultModel implements Comparable<TestResult> {
             return ResultType.SKIPPED;
         }
         return failures.isEmpty() ? ResultType.SUCCESS : ResultType.FAILURE;
+    }
+
+    public ScreenshotTestImages getScreenshotshotImages() {
+        return screenshotImages;
     }
 
     @Override

@@ -44,176 +44,6 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private GradleBuildProfile(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    int mutable_bitField0_ = 0;
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 18: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000001;
-            gradleVersion_ = bs;
-            break;
-          }
-          case 50: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000002;
-            osName_ = bs;
-            break;
-          }
-          case 58: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000004;
-            osVersion_ = bs;
-            break;
-          }
-          case 66: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000008;
-            javaVersion_ = bs;
-            break;
-          }
-          case 74: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000010;
-            javaVmVersion_ = bs;
-            break;
-          }
-          case 80: {
-            bitField0_ |= 0x00000020;
-            maxMemory_ = input.readInt64();
-            break;
-          }
-          case 88: {
-            bitField0_ |= 0x00000040;
-            buildTime_ = input.readInt64();
-            break;
-          }
-          case 96: {
-            bitField0_ |= 0x00000080;
-            gcCount_ = input.readInt64();
-            break;
-          }
-          case 104: {
-            bitField0_ |= 0x00000100;
-            gcTime_ = input.readInt64();
-            break;
-          }
-          case 114: {
-            if (!((mutable_bitField0_ & 0x00000200) != 0)) {
-              project_ = new java.util.ArrayList<com.google.wireless.android.sdk.stats.GradleBuildProject>();
-              mutable_bitField0_ |= 0x00000200;
-            }
-            project_.add(
-                input.readMessage(com.google.wireless.android.sdk.stats.GradleBuildProject.PARSER, extensionRegistry));
-            break;
-          }
-          case 122: {
-            if (!((mutable_bitField0_ & 0x00000400) != 0)) {
-              memorySample_ = new java.util.ArrayList<com.google.wireless.android.sdk.stats.GradleBuildMemorySample>();
-              mutable_bitField0_ |= 0x00000400;
-            }
-            memorySample_.add(
-                input.readMessage(com.google.wireless.android.sdk.stats.GradleBuildMemorySample.PARSER, extensionRegistry));
-            break;
-          }
-          case 130: {
-            if (!((mutable_bitField0_ & 0x00000800) != 0)) {
-              span_ = new java.util.ArrayList<com.google.wireless.android.sdk.stats.GradleBuildProfileSpan>();
-              mutable_bitField0_ |= 0x00000800;
-            }
-            span_.add(
-                input.readMessage(com.google.wireless.android.sdk.stats.GradleBuildProfileSpan.PARSER, extensionRegistry));
-            break;
-          }
-          case 138: {
-            com.google.wireless.android.sdk.stats.InstantRunStatus.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000200) != 0)) {
-              subBuilder = instantRunStatus_.toBuilder();
-            }
-            instantRunStatus_ = input.readMessage(com.google.wireless.android.sdk.stats.InstantRunStatus.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(instantRunStatus_);
-              instantRunStatus_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000200;
-            break;
-          }
-          case 146: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000400;
-            projectId_ = bs;
-            break;
-          }
-          case 154: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            if (!((mutable_bitField0_ & 0x00004000) != 0)) {
-              rawProjectId_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00004000;
-            }
-            rawProjectId_.add(bs);
-            break;
-          }
-          case 160: {
-            bitField0_ |= 0x00000800;
-            composeEnabled_ = input.readBool();
-            break;
-          }
-          case 168: {
-            bitField0_ |= 0x00001000;
-            configurationCachingEnabled_ = input.readBool();
-            break;
-          }
-          case 176: {
-            bitField0_ |= 0x00002000;
-            parallelTaskExecution_ = input.readBool();
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      if (((mutable_bitField0_ & 0x00000200) != 0)) {
-        project_ = java.util.Collections.unmodifiableList(project_);
-      }
-      if (((mutable_bitField0_ & 0x00000400) != 0)) {
-        memorySample_ = java.util.Collections.unmodifiableList(memorySample_);
-      }
-      if (((mutable_bitField0_ & 0x00000800) != 0)) {
-        span_ = java.util.Collections.unmodifiableList(span_);
-      }
-      if (((mutable_bitField0_ & 0x00004000) != 0)) {
-        rawProjectId_ = rawProjectId_.getUnmodifiableView();
-      }
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleBuildProfile_descriptor;
@@ -1176,7 +1006,7 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00002000) != 0)) {
       output.writeBool(22, parallelTaskExecution_);
     }
-    unknownFields.writeTo(output);
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -1255,7 +1085,7 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeBoolSize(22, parallelTaskExecution_);
     }
-    size += unknownFields.getSerializedSize();
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -1348,7 +1178,7 @@ private static final long serialVersionUID = 0L;
       if (getParallelTaskExecution()
           != other.getParallelTaskExecution()) return false;
     }
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -1438,7 +1268,7 @@ private static final long serialVersionUID = 0L;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getParallelTaskExecution());
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -1599,22 +1429,25 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000100);
       if (projectBuilder_ == null) {
         project_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000200);
       } else {
+        project_ = null;
         projectBuilder_.clear();
       }
+      bitField0_ = (bitField0_ & ~0x00000200);
       if (memorySampleBuilder_ == null) {
         memorySample_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000400);
       } else {
+        memorySample_ = null;
         memorySampleBuilder_.clear();
       }
+      bitField0_ = (bitField0_ & ~0x00000400);
       if (spanBuilder_ == null) {
         span_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000800);
       } else {
+        span_ = null;
         spanBuilder_.clear();
       }
+      bitField0_ = (bitField0_ & ~0x00000800);
       if (instantRunStatusBuilder_ == null) {
         instantRunStatus_ = null;
       } else {
@@ -1942,7 +1775,7 @@ private static final long serialVersionUID = 0L;
       if (other.hasParallelTaskExecution()) {
         setParallelTaskExecution(other.getParallelTaskExecution());
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -1957,17 +1790,147 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.google.wireless.android.sdk.stats.GradleBuildProfile parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 18: {
+              gradleVersion_ = input.readBytes();
+              bitField0_ |= 0x00000001;
+              break;
+            } // case 18
+            case 50: {
+              osName_ = input.readBytes();
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 50
+            case 58: {
+              osVersion_ = input.readBytes();
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 58
+            case 66: {
+              javaVersion_ = input.readBytes();
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 66
+            case 74: {
+              javaVmVersion_ = input.readBytes();
+              bitField0_ |= 0x00000010;
+              break;
+            } // case 74
+            case 80: {
+              maxMemory_ = input.readInt64();
+              bitField0_ |= 0x00000020;
+              break;
+            } // case 80
+            case 88: {
+              buildTime_ = input.readInt64();
+              bitField0_ |= 0x00000040;
+              break;
+            } // case 88
+            case 96: {
+              gcCount_ = input.readInt64();
+              bitField0_ |= 0x00000080;
+              break;
+            } // case 96
+            case 104: {
+              gcTime_ = input.readInt64();
+              bitField0_ |= 0x00000100;
+              break;
+            } // case 104
+            case 114: {
+              com.google.wireless.android.sdk.stats.GradleBuildProject m =
+                  input.readMessage(
+                      com.google.wireless.android.sdk.stats.GradleBuildProject.PARSER,
+                      extensionRegistry);
+              if (projectBuilder_ == null) {
+                ensureProjectIsMutable();
+                project_.add(m);
+              } else {
+                projectBuilder_.addMessage(m);
+              }
+              break;
+            } // case 114
+            case 122: {
+              com.google.wireless.android.sdk.stats.GradleBuildMemorySample m =
+                  input.readMessage(
+                      com.google.wireless.android.sdk.stats.GradleBuildMemorySample.PARSER,
+                      extensionRegistry);
+              if (memorySampleBuilder_ == null) {
+                ensureMemorySampleIsMutable();
+                memorySample_.add(m);
+              } else {
+                memorySampleBuilder_.addMessage(m);
+              }
+              break;
+            } // case 122
+            case 130: {
+              com.google.wireless.android.sdk.stats.GradleBuildProfileSpan m =
+                  input.readMessage(
+                      com.google.wireless.android.sdk.stats.GradleBuildProfileSpan.PARSER,
+                      extensionRegistry);
+              if (spanBuilder_ == null) {
+                ensureSpanIsMutable();
+                span_.add(m);
+              } else {
+                spanBuilder_.addMessage(m);
+              }
+              break;
+            } // case 130
+            case 138: {
+              input.readMessage(
+                  getInstantRunStatusFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00001000;
+              break;
+            } // case 138
+            case 146: {
+              projectId_ = input.readBytes();
+              bitField0_ |= 0x00002000;
+              break;
+            } // case 146
+            case 154: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              ensureRawProjectIdIsMutable();
+              rawProjectId_.add(bs);
+              break;
+            } // case 154
+            case 160: {
+              composeEnabled_ = input.readBool();
+              bitField0_ |= 0x00008000;
+              break;
+            } // case 160
+            case 168: {
+              configurationCachingEnabled_ = input.readBool();
+              bitField0_ |= 0x00010000;
+              break;
+            } // case 168
+            case 176: {
+              parallelTaskExecution_ = input.readBool();
+              bitField0_ |= 0x00020000;
+              break;
+            } // case 176
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.google.wireless.android.sdk.stats.GradleBuildProfile) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
     private int bitField0_;
@@ -4403,7 +4366,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new GradleBuildProfile(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

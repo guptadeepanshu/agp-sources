@@ -79,7 +79,7 @@ abstract class TestOptions @Inject constructor(
             _execution = Preconditions.checkNotNull(
                 executionConverter.convert(value),
                 "The value of `execution` cannot be null."
-            )!!
+            )
         }
 
     @Incubating

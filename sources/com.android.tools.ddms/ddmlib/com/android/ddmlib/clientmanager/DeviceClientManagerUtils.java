@@ -16,11 +16,8 @@
 package com.android.ddmlib.clientmanager;
 
 import com.android.annotations.NonNull;
-import com.android.annotations.concurrency.WorkerThread;
 import com.android.ddmlib.AndroidDebugBridge;
-import com.android.ddmlib.Client;
 import com.android.ddmlib.IDevice;
-import org.jetbrains.annotations.NotNull;
 
 public class DeviceClientManagerUtils {
 
@@ -39,79 +36,6 @@ public class DeviceClientManagerUtils {
                     "AndroidDebugBridge does not have a ClientManager configured");
         }
 
-        // Listener that notifies AndroidDebugBridge of changes to processes (clients)
-        DeviceClientManagerListener listener =
-                new DeviceClientManagerListener() {
-                    @Override
-                    @WorkerThread
-                    public void processListUpdated(
-                            @NotNull AndroidDebugBridge bridge,
-                            @NotNull DeviceClientManager deviceClientManager) {
-                        if (bridge == AndroidDebugBridge.getBridge()) {
-                            AndroidDebugBridge.deviceChanged(
-                                    deviceClientManager.getDevice(), IDevice.CHANGE_CLIENT_LIST);
-                        }
-                    }
-
-                    @Override
-                    @WorkerThread
-                    public void profileableProcessListUpdated(
-                            @NotNull AndroidDebugBridge bridge,
-                            @NotNull DeviceClientManager deviceClientManager) {
-                        if (bridge == AndroidDebugBridge.getBridge()) {
-                            AndroidDebugBridge.deviceChanged(
-                                    deviceClientManager.getDevice(),
-                                    IDevice.CHANGE_PROFILEABLE_CLIENT_LIST);
-                        }
-                    }
-
-                    @Override
-                    @WorkerThread
-                    public void processNameUpdated(
-                            @NotNull AndroidDebugBridge bridge,
-                            @NotNull DeviceClientManager deviceClientManager,
-                            @NotNull Client client) {
-                        if (bridge == AndroidDebugBridge.getBridge()) {
-                            AndroidDebugBridge.clientChanged(client, Client.CHANGE_NAME);
-                        }
-                    }
-
-                    @Override
-                    @WorkerThread
-                    public void processDebuggerStatusUpdated(
-                            @NotNull AndroidDebugBridge bridge,
-                            @NotNull DeviceClientManager deviceClientManager,
-                            @NotNull Client client) {
-                        if (bridge == AndroidDebugBridge.getBridge()) {
-                            AndroidDebugBridge.clientChanged(client, Client.CHANGE_DEBUGGER_STATUS);
-                        }
-                    }
-
-                    @Override
-                    @WorkerThread
-                    public void processHeapAllocationsUpdated(
-                            @NotNull AndroidDebugBridge bridge,
-                            @NotNull DeviceClientManager deviceClientManager,
-                            @NotNull Client client) {
-                        if (bridge == AndroidDebugBridge.getBridge()) {
-                            AndroidDebugBridge.clientChanged(
-                                    client, Client.CHANGE_HEAP_ALLOCATIONS);
-                        }
-                    }
-
-                    @Override
-                    @WorkerThread
-                    public void processMethodProfilingStatusUpdated(
-                            @NotNull AndroidDebugBridge bridge,
-                            @NotNull DeviceClientManager deviceClientManager,
-                            @NotNull Client client) {
-                        if (bridge == AndroidDebugBridge.getBridge()) {
-                            AndroidDebugBridge.clientChanged(
-                                    client, Client.CHANGE_METHOD_PROFILING_STATUS);
-                        }
-                    }
-                };
-
-        return bridge.getClientManager().createDeviceClientManager(bridge, device, listener);
+        return bridge.getClientManager().createDeviceClientManager(bridge, device);
     }
 }

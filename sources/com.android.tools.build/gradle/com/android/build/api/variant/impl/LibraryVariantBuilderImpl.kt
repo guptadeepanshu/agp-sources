@@ -17,6 +17,7 @@
 package com.android.build.api.variant.impl
 
 import com.android.build.api.component.analytics.AnalyticsEnabledLibraryVariantBuilder
+import com.android.build.api.variant.AndroidTestBuilder
 import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.LibraryVariantBuilder
 import com.android.build.api.variant.VariantBuilder
@@ -40,12 +41,16 @@ open class LibraryVariantBuilderImpl @Inject constructor(
 ), LibraryVariantBuilder {
 
     override var androidTestEnabled: Boolean
-        get() = enableAndroidTest
+        get() = androidTest.enable
         set(value) {
-            enableAndroidTest = value
+            androidTest.enable = value
         }
 
-    override var enableAndroidTest: Boolean = true
+    override var enableAndroidTest: Boolean
+        get() = androidTest.enable
+        set(value) {
+            androidTest.enable = value
+        }
 
     override var enableTestFixtures: Boolean = dslInfo.testFixtures?.enable ?: false
 
@@ -86,4 +91,9 @@ open class LibraryVariantBuilderImpl @Inject constructor(
     override var isMinifyEnabled: Boolean =
         dslInfo.optimizationDslInfo.postProcessingOptions.codeShrinkerEnabled()
         set(value) = setMinificationIfPossible("minifyEnabled", value) { field = it }
+
+    override val androidTest: AndroidTestBuilder = AndroidTestBuilderImpl(
+        variantBuilderServices,
+        dslInfo.isAndroidTestMultiDexEnabled
+    )
 }

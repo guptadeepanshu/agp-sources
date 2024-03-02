@@ -42,7 +42,7 @@ open class SdkComponentsImpl @Inject constructor(
         dslServices.sdkComponents.flatMap {
             it.versionedNdkHandler(
                 ndkVersion = ndkVersion.get(),
-                ndkPath = ndkPath.get()
+                ndkPathFromDsl = ndkPath.get()
             ).ndkDirectoryProvider
         }
     }

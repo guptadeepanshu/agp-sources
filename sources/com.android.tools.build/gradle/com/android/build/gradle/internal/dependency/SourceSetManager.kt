@@ -17,6 +17,8 @@
 package com.android.build.gradle.internal.dependency
 
 import com.android.build.gradle.api.AndroidSourceSet
+import com.android.build.gradle.internal.api.AndroidSourceSetName
+import com.android.build.gradle.internal.api.LazyAndroidSourceSet
 import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.dsl.AndroidSourceSetFactory
 import com.android.build.gradle.internal.scope.DelayedActionsExecutor
@@ -31,7 +33,7 @@ import org.gradle.api.logging.Logging
 
 class SourceSetManager(
         project: Project,
-        private val publishPackage: Boolean,
+        publishPackage: Boolean,
         private val dslServices : DslServices,
         private val buildArtifactActions: DelayedActionsExecutor) {
     val sourceSetsContainer: NamedDomainObjectContainer<AndroidSourceSet> = project.container(
@@ -42,51 +44,55 @@ class SourceSetManager(
 
     private val configuredSourceSets = mutableSetOf<String>()
 
-    fun setUpTestSourceSet(name: String): AndroidSourceSet {
+    fun setUpTestSourceSet(name: String): LazyAndroidSourceSet {
         return setUpSourceSet(name, true)
     }
 
     @JvmOverloads
-    fun setUpSourceSet(name: String, isTestComponent: Boolean = false): AndroidSourceSet {
-        val sourceSet = sourceSetsContainer.maybeCreate(name)
+    fun setUpSourceSet(name: String, isTestComponent: Boolean = false): LazyAndroidSourceSet {
         if (!configuredSourceSets.contains(name)) {
-            createConfigurationsForSourceSet(sourceSet, isTestComponent)
+            createConfigurationsForSourceSet(name, isTestComponent)
             configuredSourceSets.add(name)
         }
-        return sourceSet
+        return LazyAndroidSourceSet(
+            sourceSetsContainer,
+            name
+        )
     }
 
-    private fun createConfigurationsForSourceSet(
-            sourceSet: AndroidSourceSet, isTestComponent: Boolean) {
-        val apiName = sourceSet.apiConfigurationName
-        val implementationName = sourceSet.implementationConfigurationName
-        val runtimeOnlyName = sourceSet.runtimeOnlyConfigurationName
-        val compileOnlyName = sourceSet.compileOnlyConfigurationName
+    private fun createConfigurationsForSourceSet(name: String, isTestComponent: Boolean) {
+        val sourceSetName = AndroidSourceSetName(name)
+        val apiName = sourceSetName.apiConfigurationName
+        val implementationName = sourceSetName.implementationConfigurationName
+        val runtimeOnlyName = sourceSetName.runtimeOnlyConfigurationName
+        val compileOnlyName = sourceSetName.compileOnlyConfigurationName
 
         val api = if (!isTestComponent) {
-            createConfiguration(apiName, getConfigDesc("API", sourceSet.name))
+            createConfiguration(apiName, getConfigDesc("API", name))
         } else {
             null
         }
 
         val implementation = createConfiguration(
                 implementationName,
-                getConfigDesc("Implementation only", sourceSet.name))
+                getConfigDesc("Implementation only", name))
         api?.let {
             implementation.extendsFrom(it)
         }
 
-        createConfiguration(runtimeOnlyName, getConfigDesc("Runtime only", sourceSet.name))
-        createConfiguration(compileOnlyName, getConfigDesc("Compile only", sourceSet.name))
+        createConfiguration(runtimeOnlyName, getConfigDesc("Runtime only", name))
+        createConfiguration(compileOnlyName, getConfigDesc("Compile only", name))
 
         // then the secondary configurations.
         createConfiguration(
-                sourceSet.wearAppConfigurationName,
-                "Link to a wear app to embed for object '" + sourceSet.name + "'.")
+            sourceSetName.wearAppConfigurationName,
+            "Link to a wear app to embed for object '$name'."
+        )
 
         createConfiguration(
-                sourceSet.annotationProcessorConfigurationName,
-                "Classpath for the annotation processor for '" + sourceSet.name + "'.")
+            sourceSetName.annotationProcessorConfigurationName,
+            "Classpath for the annotation processor for '$name'."
+        )
     }
 
     /**

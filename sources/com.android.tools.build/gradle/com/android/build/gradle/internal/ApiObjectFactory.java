@@ -18,8 +18,8 @@ package com.android.build.gradle.internal;
 
 import com.android.annotations.NonNull;
 import com.android.build.VariantOutput;
-import com.android.build.api.variant.impl.HasAndroidTest;
-import com.android.build.api.variant.impl.HasUnitTest;
+import com.android.build.api.variant.impl.HasDeviceTests;
+import com.android.build.api.variant.impl.HasHostTests;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.TestedAndroidConfig;
 import com.android.build.gradle.internal.api.ApkVariantOutputImpl;
@@ -31,7 +31,7 @@ import com.android.build.gradle.internal.api.TestedVariant;
 import com.android.build.gradle.internal.api.UnitTestVariantImpl;
 import com.android.build.gradle.internal.component.AndroidTestCreationConfig;
 import com.android.build.gradle.internal.component.ComponentCreationConfig;
-import com.android.build.gradle.internal.component.UnitTestCreationConfig;
+import com.android.build.gradle.internal.component.HostTestCreationConfig;
 import com.android.build.gradle.internal.component.VariantCreationConfig;
 import com.android.build.gradle.internal.crash.ExternalApiUsageException;
 import com.android.build.gradle.internal.dsl.VariantOutputFactory;
@@ -72,8 +72,8 @@ public class ApiObjectFactory {
 
             AndroidTestCreationConfig androidTestVariantProperties = null;
 
-            if (variant instanceof HasAndroidTest) {
-                androidTestVariantProperties = ((HasAndroidTest) variant).getAndroidTest();
+            if (variant instanceof HasDeviceTests) {
+                androidTestVariantProperties = ((HasDeviceTests) variant).getAndroidTest();
             }
 
             if (androidTestVariantProperties != null) {
@@ -94,10 +94,10 @@ public class ApiObjectFactory {
                 ((TestedVariant) variantApi).setTestVariant(androidTestVariant);
             }
 
-            UnitTestCreationConfig unitTestVariantProperties = null;
+            HostTestCreationConfig unitTestVariantProperties = null;
 
-            if (variant instanceof HasUnitTest) {
-                unitTestVariantProperties = ((HasUnitTest) variant).getUnitTest();
+            if (variant instanceof HasHostTests) {
+                unitTestVariantProperties = ((HasHostTests) variant).getUnitTest();
             }
 
             if (unitTestVariantProperties != null) {

@@ -81,6 +81,7 @@ import java.io.File
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Path
+import com.android.build.gradle.internal.cxx.json.lint
 
 const val ANDROID_GRADLE_BUILD_VERSION = "2"
 
@@ -297,6 +298,12 @@ abstract class ExternalNativeJsonGenerator internal constructor(
                                 abi.predictableRepublishFolder.resolve(abi.compileCommandsJsonFile.name)
                             )
                         }
+
+                        // Lint the final environment
+                        miniconfig.lint(
+                            abi.miniConfigFile,
+                            abi.variant.module.ndkDefaultAbiList,
+                            abi.variant.module.ndkSupportedAbiList);
 
                         // Record the outcome. JSON was built.
                         variantStats.outcome = GenerationOutcome.SUCCESS_BUILT

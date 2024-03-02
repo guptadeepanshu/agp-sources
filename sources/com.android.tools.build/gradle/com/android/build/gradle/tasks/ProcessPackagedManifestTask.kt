@@ -76,10 +76,6 @@ abstract class ProcessPackagedManifestTask @Inject constructor(
     @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val mergedManifests: DirectoryProperty
 
-    @get:PathSensitive(PathSensitivity.RELATIVE)
-    @get:Optional
-    @get:InputFiles
-    abstract val privacySandboxSdkManifestSnippets: ConfigurableFileCollection
 
     @get:Internal
     abstract val transformationRequest: Property<ArtifactTransformationRequest<ProcessPackagedManifestTask>>
@@ -92,7 +88,6 @@ abstract class ProcessPackagedManifestTask @Inject constructor(
         workersProperty.set(workers)
     }
 
-    @TaskAction
     override fun doTaskAction() {
 
         transformationRequest.get().submit(this,
@@ -101,7 +96,6 @@ abstract class ProcessPackagedManifestTask @Inject constructor(
             { builtArtifact: BuiltArtifact, directory: Directory, parameters: WorkItemParameters ->
 
                 parameters.inputXmlFile.set(File(builtArtifact.outputFile))
-                parameters.privacySandboxSdkManifestSnippets.set(privacySandboxSdkManifestSnippets)
                 parameters.outputXmlFile.set(
                     File(directory.asFile,
                         FileUtils.join(
@@ -115,7 +109,6 @@ abstract class ProcessPackagedManifestTask @Inject constructor(
     interface WorkItemParameters: DecoratedWorkParameters {
         val inputXmlFile: RegularFileProperty
         val outputXmlFile: RegularFileProperty
-        val privacySandboxSdkManifestSnippets: ListProperty<File>
     }
 
     abstract class WorkItem@Inject constructor(private val workItemParameters: WorkItemParameters)
@@ -124,44 +117,14 @@ abstract class ProcessPackagedManifestTask @Inject constructor(
 
         override fun doExecute() {
             val inputFile = workItemParameters.inputXmlFile.get().asFile
-            val manifestSnippets = workItemParameters.privacySandboxSdkManifestSnippets.get()
 
             val outputFile = workItemParameters.outputXmlFile.get().asFile
             outputFile.parentFile.mkdirs()
 
-            val xmlDocument = if (manifestSnippets.isNotEmpty()) {
-                mergeManifests(
-                    mainManifest = inputFile,
-                    manifestOverlays = emptyList(),
-                    dependencies = manifestSnippets.map { ManifestProviderImpl(it, it.name) },
-                    navigationJsons = emptyList(),
-                    featureName = null,
-                    packageOverride = null,
-                    namespace = "",
-                    profileable = false,
-                    versionCode = null,
-                    versionName = null,
-                    minSdkVersion = null,
-                    targetSdkVersion = null,
-                    maxSdkVersion = null,
-                    testOnly = false,
-                    extractNativeLibs = null,
-                    outMergedManifestLocation = outputFile.path,
-                    outAaptSafeManifestLocation = null,
-                    mergeType = ManifestMerger2.MergeType.APPLICATION,
-                    placeHolders = emptyMap(),
-                    optionalFeatures = emptyList(),
-                    dependencyFeatureNames = emptyList(),
-                    generatedLocaleConfigAttribute = null,
-                    reportFile = null,
-                    logger = LoggerWrapper.getLogger(ProcessPackagedManifestTask::class.java),
-                    checkIfPackageInMainManifest = false
-                ).getMergedXmlDocument(MergingReport.MergedManifestKind.MERGED)!!.xml
-            } else {
+            val xmlDocument =
                 BufferedInputStream(FileInputStream(inputFile)).use {
                     PositionXmlParser.parse(it)
                 }
-            }
             removeSplitNames(document = xmlDocument)
 
             outputFile.writeText(XmlDocument.prettyPrint(xmlDocument))
@@ -195,17 +158,6 @@ abstract class ProcessPackagedManifestTask @Inject constructor(
             super.configure(task)
             task.workersProperty.disallowChanges()
             task.transformationRequest.setDisallowChanges(transformationRequest)
-            if (creationConfig.services.projectOptions[BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT] && creationConfig.componentType.isBaseModule) {
-                task.privacySandboxSdkManifestSnippets.fromDisallowChanges(
-                    creationConfig.variantDependencies.getArtifactFileCollection(
-                        AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
-                        AndroidArtifacts.ArtifactScope.ALL,
-                        AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_USES_SDK_LIBRARY_MANIFEST_SNIPPET
-                    )
-                )
-            } else {
-                task.privacySandboxSdkManifestSnippets.disallowChanges()
-            }
         }
     }
 }

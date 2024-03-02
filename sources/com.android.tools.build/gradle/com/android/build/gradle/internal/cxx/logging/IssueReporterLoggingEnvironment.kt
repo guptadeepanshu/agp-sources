@@ -21,6 +21,7 @@ import com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel
 import com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.ERROR
 import com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.INFO
 import com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.LIFECYCLE
+import com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.UNRECOGNIZED
 import com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.WARN
 import com.android.build.gradle.internal.cxx.model.CxxVariantModel
 import com.android.build.gradle.internal.cxx.string.StringEncoder
@@ -129,6 +130,7 @@ class IssueReporterLoggingEnvironment private constructor(
                 )
                 logger.error(sb.toString())
             }
+            UNRECOGNIZED -> {}
         }
     }
 

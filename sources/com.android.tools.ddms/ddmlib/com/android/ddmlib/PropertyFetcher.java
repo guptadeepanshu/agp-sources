@@ -206,7 +206,7 @@ public final class PropertyFetcher {
             public void run() {
                 try {
                     GetPropReceiver propReceiver = new GetPropReceiver();
-                    mDevice.executeShellCommand(GETPROP_COMMAND, propReceiver, GETPROP_TIMEOUT_SEC,
+                    mDevice.executeShellCommand(GETPROP_COMMAND, propReceiver, getTimeout(),
                             TimeUnit.SECONDS);
                     populateCache(propReceiver.getCollectedProperties());
                 } catch (Throwable e) {
@@ -216,6 +216,15 @@ public final class PropertyFetcher {
         };
         propThread.setDaemon(true);
         propThread.start();
+    }
+
+    private int getTimeout() {
+        try {
+            return Integer.parseInt(System.getProperty("ddmlib.getprop.timeout.sec"));
+        }
+        catch (NumberFormatException e) {
+            return GETPROP_TIMEOUT_SEC;
+        }
     }
 
     private synchronized void populateCache(@NonNull Map<String, String> props) {

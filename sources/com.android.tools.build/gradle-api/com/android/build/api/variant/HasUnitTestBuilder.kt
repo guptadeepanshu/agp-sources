@@ -17,7 +17,9 @@
 package com.android.build.api.variant
 
 /**
- * Interface that mark the potential existence of unit tests associated with a variant.
+ * Interface that marks the potential existence of [UnitTest] component on a [Variant].
+ *
+ * This is implemented by select subtypes of [VariantBuilder].
  */
 interface HasUnitTestBuilder {
     /**

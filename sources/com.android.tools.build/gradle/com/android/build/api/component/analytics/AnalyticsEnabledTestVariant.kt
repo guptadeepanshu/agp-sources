@@ -21,10 +21,12 @@ import com.android.build.api.variant.AndroidResources
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.GeneratesApk
 import com.android.build.api.variant.ApkPackaging
+import com.android.build.api.variant.Dexing
 import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.TestVariant
 import com.android.tools.build.gradle.internal.profile.VariantPropertiesMethodType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
+import org.gradle.api.file.Directory
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
@@ -49,6 +51,13 @@ open class AnalyticsEnabledTestVariant @Inject constructor(
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.TESTED_APPLICATION_ID_VALUE
             return delegate.testedApplicationId
+        }
+
+    override val testedApks: Provider<Directory>
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.TESTED_APKS_VALUE
+            return delegate.testedApks
         }
 
     override val instrumentationRunner: Property<String>
@@ -88,7 +97,7 @@ open class AnalyticsEnabledTestVariant @Inject constructor(
 
     override val unitTest: UnitTest? = null
 
-    private val generatesApk: GeneratesApk by lazy {
+    private val generatesApk: GeneratesApk by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
         AnalyticsEnabledGeneratesApk(
                 delegate,
                 stats,
@@ -107,4 +116,6 @@ open class AnalyticsEnabledTestVariant @Inject constructor(
 
     override val targetSdk: AndroidVersion
         get() = generatesApk.targetSdk
+    override val dexing: Dexing
+        get() = generatesApk.dexing
 }

@@ -8,64 +8,135 @@ public interface SmlCompletionEventOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1;</code>
+   * <pre>
+   * Historical: Not used starting with Android Studio 2023.2.1.11
+   * </pre>
+   *
+   * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the request field is set.
    */
-  boolean hasRequest();
+  @java.lang.Deprecated boolean hasRequest();
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1;</code>
+   * <pre>
+   * Historical: Not used starting with Android Studio 2023.2.1.11
+   * </pre>
+   *
+   * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
+   * @deprecated
    * @return The request.
    */
-  com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest getRequest();
+  @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest getRequest();
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1;</code>
+   * <pre>
+   * Historical: Not used starting with Android Studio 2023.2.1.11
+   * </pre>
+   *
+   * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
    */
-  com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequestOrBuilder getRequestOrBuilder();
+  @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequestOrBuilder getRequestOrBuilder();
 
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2;</code>
+   * <pre>
+   * Historical: Not used starting with Android Studio 2023.2.1.11
+   * </pre>
+   *
+   * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the response field is set.
    */
-  boolean hasResponse();
+  @java.lang.Deprecated boolean hasResponse();
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2;</code>
+   * <pre>
+   * Historical: Not used starting with Android Studio 2023.2.1.11
+   * </pre>
+   *
+   * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
+   * @deprecated
    * @return The response.
    */
-  com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse getResponse();
+  @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse getResponse();
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2;</code>
+   * <pre>
+   * Historical: Not used starting with Android Studio 2023.2.1.11
+   * </pre>
+   *
+   * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
    */
-  com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponseOrBuilder getResponseOrBuilder();
+  @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponseOrBuilder getResponseOrBuilder();
 
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3;</code>
+   * <pre>
+   * Historical: Not used starting with Android Studio 2023.2.1.11
+   * </pre>
+   *
+   * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the shown field is set.
    */
-  boolean hasShown();
+  @java.lang.Deprecated boolean hasShown();
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3;</code>
+   * <pre>
+   * Historical: Not used starting with Android Studio 2023.2.1.11
+   * </pre>
+   *
+   * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
+   * @deprecated
    * @return The shown.
    */
-  com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown getShown();
+  @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown getShown();
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3;</code>
+   * <pre>
+   * Historical: Not used starting with Android Studio 2023.2.1.11
+   * </pre>
+   *
+   * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
    */
-  com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShownOrBuilder getShownOrBuilder();
+  @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShownOrBuilder getShownOrBuilder();
 
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4;</code>
+   * <pre>
+   * Historical: Not used starting with Android Studio 2023.2.1.11
+   * </pre>
+   *
+   * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
+   * @deprecated
    * @return Whether the accepted field is set.
    */
-  boolean hasAccepted();
+  @java.lang.Deprecated boolean hasAccepted();
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4;</code>
+   * <pre>
+   * Historical: Not used starting with Android Studio 2023.2.1.11
+   * </pre>
+   *
+   * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
+   * @deprecated
    * @return The accepted.
    */
-  com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted getAccepted();
+  @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted getAccepted();
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4;</code>
+   * <pre>
+   * Historical: Not used starting with Android Studio 2023.2.1.11
+   * </pre>
+   *
+   * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
    */
-  com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAcceptedOrBuilder getAcceptedOrBuilder();
+  @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAcceptedOrBuilder getAcceptedOrBuilder();
+
+  /**
+   * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+   * @return Whether the aggregate field is set.
+   */
+  boolean hasAggregate();
+  /**
+   * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+   * @return The aggregate.
+   */
+  com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent getAggregate();
+  /**
+   * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+   */
+  com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEventOrBuilder getAggregateOrBuilder();
 
   public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionCase getCompletionCase();
 }

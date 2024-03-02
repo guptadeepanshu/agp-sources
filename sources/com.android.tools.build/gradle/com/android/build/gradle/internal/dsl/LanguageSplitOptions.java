@@ -33,6 +33,7 @@ import java.util.Set;
  * configuration APKs</a> for <a
  * href="https://developer.android.com/topic/instant-apps/index.html">Android Instant Apps</a>.
  */
+@Deprecated(since = "Will be removed in v9.0")
 public class LanguageSplitOptions {
 
     private boolean enable = false;

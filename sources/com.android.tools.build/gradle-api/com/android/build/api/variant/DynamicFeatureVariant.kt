@@ -15,6 +15,11 @@
  */
 package com.android.build.api.variant
 
+/**
+ * Model for dynamic feature components that only contains build-time properties.
+ *
+ * See [Component] and [Variant] for more information.
+ */
 interface DynamicFeatureVariant : Variant,
     GeneratesApk,
     HasAndroidTest,

@@ -17,6 +17,7 @@
 package com.android.build.gradle.internal.profile
 
 import com.android.build.gradle.internal.LoggerWrapper
+import com.android.build.gradle.internal.projectIsolationRequested
 import com.android.build.gradle.internal.services.ServiceRegistrationAction
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.builder.profile.Recorder
@@ -132,8 +133,12 @@ abstract class AnalyticsConfiguratorService : BuildService<AnalyticsConfigurator
         } else {
             project.gradle.taskGraph.whenReady {
                 resourcesManager.recordGlobalProperties(project)
-                resourcesManager.collectTaskMetadata(it)
-                resourcesManager.recordTaskNames(it)
+                if (!projectIsolationRequested(project.providers)) {
+                    // Accessing all tasks is not supported in project isolation mode
+                    resourcesManager.collectTaskMetadata(it)
+                    resourcesManager.recordTaskNames(it)
+                }
+
                 resourcesManager.configureAnalyticsService(parameters)
                 instantiateAnalyticsService(project)
                 registry.onTaskCompletion(

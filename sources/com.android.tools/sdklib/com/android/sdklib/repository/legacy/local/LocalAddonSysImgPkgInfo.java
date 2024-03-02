@@ -21,13 +21,12 @@ import com.android.annotations.Nullable;
 import com.android.repository.Revision;
 import com.android.repository.api.RepoManager;
 import com.android.sdklib.AndroidVersion;
+import com.android.sdklib.SystemImageTags;
 import com.android.sdklib.repository.AndroidSdkHandler;
+import com.android.sdklib.repository.IdDisplay;
 import com.android.sdklib.repository.PkgProps;
 import com.android.sdklib.repository.legacy.descriptors.IPkgDesc;
 import com.android.sdklib.repository.legacy.descriptors.PkgDesc;
-import com.android.sdklib.repository.IdDisplay;
-import com.android.sdklib.repository.targets.SystemImage;
-
 import java.io.File;
 import java.util.Properties;
 
@@ -59,7 +58,7 @@ class LocalAddonSysImgPkgInfo extends LocalPkgInfo {
         String id = sourceProps.getProperty(PkgProps.SYS_IMG_TAG_ID);
         IdDisplay tag;
         if (id == null) {
-            tag = SystemImage.DEFAULT_TAG;
+            tag = SystemImageTags.DEFAULT_TAG;
         }
         else {
             String display = sourceProps.getProperty(PkgProps.SYS_IMG_TAG_DISPLAY);

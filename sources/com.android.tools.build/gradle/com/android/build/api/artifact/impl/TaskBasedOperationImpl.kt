@@ -18,6 +18,7 @@ package com.android.build.api.artifact.impl
 
 import com.android.build.api.artifact.CombiningOperationRequest
 import com.android.build.api.artifact.InAndOutFileOperationRequest
+import com.android.build.api.artifact.MultipleArtifactTypeOutOperationRequest
 import com.android.build.api.artifact.OutOperationRequest
 import com.android.build.api.artifact.TaskBasedOperation
 import org.gradle.api.Task
@@ -42,6 +43,15 @@ class TaskBasedOperationImpl<TaskT: Task>(
             artifacts.addRequest(it)
             closeRequest()
         }
+
+    override fun <FileTypeT : FileSystemLocation> wiredWithMultiple(
+        taskInput: (TaskT) -> ListProperty<FileTypeT>
+    ): MultipleArtifactTypeOutOperationRequest<FileTypeT> =
+        MultipleArtifactTypeOutOperationRequestImpl(artifacts, taskProvider, taskInput).also {
+            artifacts.addRequest(it)
+            closeRequest()
+        }
+
 
     override fun wiredWithFiles(
         taskInput: (TaskT) -> RegularFileProperty,

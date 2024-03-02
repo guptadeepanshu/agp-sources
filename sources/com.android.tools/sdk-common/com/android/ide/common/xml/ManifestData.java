@@ -329,6 +329,7 @@ public final class ManifestData {
         }
 
         @Override
+        @SuppressWarnings("BoxedPrimitiveEquality")
         public boolean equals(Object obj) {
             if (obj instanceof SupportsScreens) {
                 SupportsScreens support = (SupportsScreens) obj;
@@ -367,6 +368,7 @@ public final class ManifestData {
          * @param support the other instance to compare to.
          * @return true if the two instances support the same screen sizes.
          */
+        @SuppressWarnings("BoxedPrimitiveEquality")
         public boolean hasSameScreenSupportAs(SupportsScreens support) {
             // since all the fields are guaranteed to be either Boolean.TRUE or Boolean.FALSE
             // (or null), we can simply check they are identical and not bother with

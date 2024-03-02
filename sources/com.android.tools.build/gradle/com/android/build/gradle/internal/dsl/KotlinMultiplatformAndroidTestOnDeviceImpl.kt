@@ -101,16 +101,16 @@ abstract class KotlinMultiplatformAndroidTestOnDeviceImpl @Inject constructor(
         action.execute(emulatorSnapshots)
     }
 
-    var signingConfig = dslServices.newDecoratedInstance(
+    override val signing = dslServices.newDecoratedInstance(
         SigningConfig::class.java, BuilderConstants.DEBUG, dslServices
     )
 
     override fun signing(action: ApkSigningConfig.() -> Unit) {
-        action.invoke(signingConfig)
+        action.invoke(signing)
     }
 
     fun signing(action: Action<ApkSigningConfig>) {
-        action.execute(signingConfig)
+        action.execute(signing)
     }
 
     override val multidex: MultiDexConfigImpl = dslServices.newDecoratedInstance(

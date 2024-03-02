@@ -19,7 +19,9 @@ package com.android.build.api.variant
 import org.gradle.api.Incubating
 
 /**
- * Interface that mark the potential existence of test fixtures associated with a variant.
+ * Interface that marks the potential existence of [TestFixtures] component on a [Variant].
+ *
+ * This is implemented by select subtypes of [VariantBuilder].
  */
 @Incubating
 interface HasTestFixturesBuilder {

@@ -25,62 +25,6 @@ private static final long serialVersionUID = 0L;
     return new AndroidSourceSet();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
-  private AndroidSourceSet(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    int mutable_bitField0_ = 0;
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 10: {
-            com.android.kotlin.multiplatform.models.SourceProvider.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000001) != 0)) {
-              subBuilder = sourceProvider_.toBuilder();
-            }
-            sourceProvider_ = input.readMessage(com.android.kotlin.multiplatform.models.SourceProvider.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(sourceProvider_);
-              sourceProvider_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000001;
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.android.kotlin.multiplatform.models.KotlinMultiplatformAndroidModelsProto.internal_static_AndroidSourceSet_descriptor;
@@ -138,7 +82,7 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000001) != 0)) {
       output.writeMessage(1, getSourceProvider());
     }
-    unknownFields.writeTo(output);
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -151,7 +95,7 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(1, getSourceProvider());
     }
-    size += unknownFields.getSerializedSize();
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -171,7 +115,7 @@ private static final long serialVersionUID = 0L;
       if (!getSourceProvider()
           .equals(other.getSourceProvider())) return false;
     }
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -186,7 +130,7 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + SOURCE_PROVIDER_FIELD_NUMBER;
       hash = (53 * hash) + getSourceProvider().hashCode();
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -320,12 +264,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      if (sourceProviderBuilder_ == null) {
-        sourceProvider_ = null;
-      } else {
-        sourceProviderBuilder_.clear();
+      bitField0_ = 0;
+      sourceProvider_ = null;
+      if (sourceProviderBuilder_ != null) {
+        sourceProviderBuilder_.dispose();
+        sourceProviderBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000001);
       return this;
     }
 
@@ -352,53 +296,23 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.android.kotlin.multiplatform.models.AndroidSourceSet buildPartial() {
       com.android.kotlin.multiplatform.models.AndroidSourceSet result = new com.android.kotlin.multiplatform.models.AndroidSourceSet(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        if (sourceProviderBuilder_ == null) {
-          result.sourceProvider_ = sourceProvider_;
-        } else {
-          result.sourceProvider_ = sourceProviderBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000001;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.android.kotlin.multiplatform.models.AndroidSourceSet result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.sourceProvider_ = sourceProviderBuilder_ == null
+            ? sourceProvider_
+            : sourceProviderBuilder_.build();
+        to_bitField0_ |= 0x00000001;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.android.kotlin.multiplatform.models.AndroidSourceSet) {
@@ -414,7 +328,7 @@ private static final long serialVersionUID = 0L;
       if (other.hasSourceProvider()) {
         mergeSourceProvider(other.getSourceProvider());
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -429,17 +343,37 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.android.kotlin.multiplatform.models.AndroidSourceSet parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              input.readMessage(
+                  getSourceProviderFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000001;
+              break;
+            } // case 10
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.android.kotlin.multiplatform.models.AndroidSourceSet) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
     private int bitField0_;
@@ -474,11 +408,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         sourceProvider_ = value;
-        onChanged();
       } else {
         sourceProviderBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -488,11 +422,11 @@ private static final long serialVersionUID = 0L;
         com.android.kotlin.multiplatform.models.SourceProvider.Builder builderForValue) {
       if (sourceProviderBuilder_ == null) {
         sourceProvider_ = builderForValue.build();
-        onChanged();
       } else {
         sourceProviderBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -501,31 +435,30 @@ private static final long serialVersionUID = 0L;
     public Builder mergeSourceProvider(com.android.kotlin.multiplatform.models.SourceProvider value) {
       if (sourceProviderBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0) &&
-            sourceProvider_ != null &&
-            sourceProvider_ != com.android.kotlin.multiplatform.models.SourceProvider.getDefaultInstance()) {
-          sourceProvider_ =
-            com.android.kotlin.multiplatform.models.SourceProvider.newBuilder(sourceProvider_).mergeFrom(value).buildPartial();
+          sourceProvider_ != null &&
+          sourceProvider_ != com.android.kotlin.multiplatform.models.SourceProvider.getDefaultInstance()) {
+          getSourceProviderBuilder().mergeFrom(value);
         } else {
           sourceProvider_ = value;
         }
-        onChanged();
       } else {
         sourceProviderBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
      * <code>optional .SourceProvider source_provider = 1;</code>
      */
     public Builder clearSourceProvider() {
-      if (sourceProviderBuilder_ == null) {
-        sourceProvider_ = null;
-        onChanged();
-      } else {
-        sourceProviderBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000001);
+      sourceProvider_ = null;
+      if (sourceProviderBuilder_ != null) {
+        sourceProviderBuilder_.dispose();
+        sourceProviderBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -596,7 +529,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new AndroidSourceSet(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

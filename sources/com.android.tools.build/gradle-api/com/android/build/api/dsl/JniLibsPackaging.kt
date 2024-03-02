@@ -17,7 +17,19 @@
 package com.android.build.api.dsl
 
 
-/** Packaging options for native library (.so) files */
+/**
+ * Packaging options for native library (.so) files in the Android DSL
+ *
+ * ```kotlin
+ * android {
+ *     packaging {
+ *         jniLibs {
+ *             excludes += ...
+ *         }
+ *     }
+ * }
+ * ```
+ */
 interface JniLibsPackaging {
     /**
      * Whether to use the legacy convention of compressing all .so files in the APK. If null, .so

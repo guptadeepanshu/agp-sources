@@ -29,7 +29,7 @@ import com.android.build.gradle.internal.api.DefaultAndroidSourceDirectorySet
 import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
-import com.android.build.gradle.internal.component.UnitTestCreationConfig
+import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.builder.compiling.BuildConfigType
@@ -157,7 +157,7 @@ class DefaultSourcesProviderImpl(
             )
         }
         if (buildFeatures.dataBinding || buildFeatures.viewBinding) {
-            if (this !is UnitTestCreationConfig) {
+            if (this !is HostTestCreationConfig) {
                 sourceSets.add(
                     TaskProviderBasedDirectoryEntryImpl(
                         "databinding_generated",

@@ -16,11 +16,16 @@
 
 package com.android.build.gradle.internal.tasks
 
+import com.android.build.gradle.internal.api.BaselineProfiles
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.features.DexingTaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.features.DexingTaskCreationActionImpl
 import com.android.build.gradle.internal.utils.fromDisallowChanges
+import com.android.build.gradle.internal.utils.getDesugaredDesugarLib
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.dexing.ClassBucket
 import com.android.builder.dexing.DirectoryBucketGroup
@@ -55,6 +60,14 @@ abstract class ExpandArtProfileWildcardsTask: NonIncrementalTask() {
     @get: OutputFile
     abstract val expandedArtProfile: RegularFileProperty
 
+    @get:Classpath
+    @get:Optional
+    abstract val fullBootClasspath: ConfigurableFileCollection
+
+    @get:Classpath
+    @get:Optional
+    abstract val desugaredDesugarLibJar: ConfigurableFileCollection
+
     override fun doTaskAction() {
         if (!mergedArtProfile.isPresent || !mergedArtProfile.get().asFile.exists()) return
 
@@ -63,6 +76,7 @@ abstract class ExpandArtProfileWildcardsTask: NonIncrementalTask() {
             it.mergedArtProfile.set(mergedArtProfile)
             it.projectClasses.from(projectClasses)
             it.expandedArtProfile.set(expandedArtProfile)
+            it.desugaredDesugarLibJar.from(desugaredDesugarLibJar)
         }
     }
 
@@ -72,6 +86,7 @@ abstract class ExpandArtProfileWildcardsTask: NonIncrementalTask() {
             abstract val mergedArtProfile: RegularFileProperty
             abstract val projectClasses: ConfigurableFileCollection
             abstract val expandedArtProfile: RegularFileProperty
+            abstract val desugaredDesugarLibJar: ConfigurableFileCollection
         }
 
         override fun run() {
@@ -79,31 +94,43 @@ abstract class ExpandArtProfileWildcardsTask: NonIncrementalTask() {
                 throw RuntimeException("Error parsing baseline-prof.txt : $error")
             }
 
-            val (directoryInputs, jarInputs) =
-                parameters.projectClasses
-                    .filter { it.exists() }
-                    .partition { it.isDirectory }
+            if (parameters.desugaredDesugarLibJar.isEmpty) {
+                val (directoryInputs, jarInputs) =
+                    parameters.projectClasses
+                        .filter { it.exists() }
+                        .partition { it.isDirectory }
 
-            val classesFilePaths: MutableList<String> = jarInputs.map { it.path }.toMutableList()
+                val classesFilePaths: MutableList<String> =
+                    jarInputs.map { it.path }.toMutableList()
 
-            if (directoryInputs.isNotEmpty()) {
-                val classBucket = ClassBucket(
-                    DirectoryBucketGroup(directoryInputs.toList(), 1), 0)
-                Closer.create().use { closer ->
-                    val filter: (File, String) -> Boolean = { _, _ -> true }
-                    classBucket.getClassFiles(filter, closer).use { stream ->
-                        stream.forEach {
-                            classesFilePaths.add(it.input.path.pathString + ":" + it.relativePath)
+                if (directoryInputs.isNotEmpty()) {
+                    val classBucket = ClassBucket(
+                        DirectoryBucketGroup(directoryInputs.toList(), 1), 0
+                    )
+                    Closer.create().use { closer ->
+                        val filter: (File, String) -> Boolean = { _, _ -> true }
+                        classBucket.getClassFiles(filter, closer).use { stream ->
+                            stream.forEach {
+                                classesFilePaths.add(it.input.path.pathString + ":" + it.relativePath)
+                            }
                         }
                     }
                 }
-            }
 
-            expandWildcards(
-                parameters.mergedArtProfile.get().asFile.path,
-                parameters.expandedArtProfile.get().asFile.path,
-                classesFilePaths,
-                diagnostics)
+                expandWildcards(
+                    parameters.mergedArtProfile.get().asFile.path,
+                    parameters.expandedArtProfile.get().asFile.path,
+                    classesFilePaths,
+                    diagnostics
+                )
+            } else {
+                expandWildcards(
+                    parameters.mergedArtProfile.get().asFile.path,
+                    parameters.expandedArtProfile.get().asFile.path,
+                    parameters.desugaredDesugarLibJar.asFileTree.files.map { it.absolutePath },
+                    diagnostics
+                )
+            }
         }
     }
 
@@ -119,10 +146,11 @@ abstract class ExpandArtProfileWildcardsTask: NonIncrementalTask() {
 
         override fun handleProvider(taskProvider: TaskProvider<ExpandArtProfileWildcardsTask>) {
             super.handleProvider(taskProvider)
-            creationConfig.artifacts.use(taskProvider).wiredWithFiles(
-                ExpandArtProfileWildcardsTask::mergedArtProfile,
+            creationConfig.artifacts.setInitialProvider(
+                taskProvider,
                 ExpandArtProfileWildcardsTask::expandedArtProfile
-            ).toTransform(InternalArtifactType.MERGED_ART_PROFILE)
+            ).withName(BaselineProfiles.BaselineProfileFileName)
+                .on(InternalArtifactType.R8_ART_PROFILE)
         }
 
         override fun configure(task: ExpandArtProfileWildcardsTask) {
@@ -134,6 +162,42 @@ abstract class ExpandArtProfileWildcardsTask: NonIncrementalTask() {
                 classesClasspathUtils.mixedScopeClasses +
                 classesClasspathUtils.externalLibraryClasses
             )
+
+            task.mergedArtProfile.setDisallowChanges(
+                creationConfig.artifacts.get(InternalArtifactType.MERGED_ART_PROFILE))
+        }
+    }
+
+    class ExpandL8ArtProfileCreationAction(
+        creationConfig: ApkCreationConfig
+    ): VariantTaskCreationAction<ExpandArtProfileWildcardsTask, ApkCreationConfig>(
+        creationConfig
+    ), DexingTaskCreationAction by DexingTaskCreationActionImpl(
+        creationConfig
+    ) {
+        override val name: String
+            get() = creationConfig.computeTaskName("expand", "L8ArtProfileWildcards")
+        override val type: Class<ExpandArtProfileWildcardsTask>
+            get() = ExpandArtProfileWildcardsTask::class.java
+
+        override fun handleProvider(taskProvider: TaskProvider<ExpandArtProfileWildcardsTask>) {
+            super.handleProvider(taskProvider)
+            creationConfig.artifacts.setInitialProvider(
+                taskProvider,
+                ExpandArtProfileWildcardsTask::expandedArtProfile
+            ).withName(BaselineProfiles.BaselineProfileFileName)
+                .on(InternalArtifactType.L8_ART_PROFILE)
+        }
+
+        override fun configure(task: ExpandArtProfileWildcardsTask) {
+            super.configure(task)
+
+            task.fullBootClasspath.from(creationConfig.global.fullBootClasspath)
+
+            task.desugaredDesugarLibJar.fromDisallowChanges(getDesugaredDesugarLib(creationConfig))
+
+            task.mergedArtProfile.setDisallowChanges(
+                creationConfig.artifacts.get(InternalArtifactType.MERGED_ART_PROFILE))
         }
     }
 }

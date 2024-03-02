@@ -16,18 +16,17 @@
 
 package com.android.build.gradle.internal.core.dsl.impl.features
 
-import com.android.build.gradle.internal.utils.createTargetSdkVersion
-import com.android.build.gradle.internal.core.dsl.features.AndroidTestOptionsDslInfo
-
 
 import com.android.build.api.dsl.EmulatorControl
 import com.android.build.api.dsl.EmulatorSnapshots
 import com.android.build.api.dsl.ManagedDevices
 import com.android.build.api.variant.AndroidVersion
+import com.android.build.gradle.internal.core.dsl.features.AndroidTestOptionsDslInfo
 import com.android.build.gradle.internal.dsl.CommonExtensionImpl
+import com.android.build.gradle.internal.utils.createTargetSdkVersion
 
 internal class AndroidTestOptionsDslInfoImpl(
-    private val extension: CommonExtensionImpl<*, *, *, *, *>,
+    private val extension: CommonExtensionImpl<*, *, *, *, *, *>,
 ): AndroidTestOptionsDslInfo {
     override val animationsDisabled: Boolean
         get() = extension.testOptions.animationsDisabled

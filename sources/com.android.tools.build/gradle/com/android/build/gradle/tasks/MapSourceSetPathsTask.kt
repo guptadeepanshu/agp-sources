@@ -6,8 +6,8 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
-import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationActionImpl
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
@@ -15,8 +15,8 @@ import com.android.ide.common.resources.writeIdentifiedSourceSetsFile
 import com.android.utils.FileUtils
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
+import org.gradle.api.file.FileSystemLocationProperty
 import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.internal.file.DefaultFilePropertyFactory
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
@@ -152,7 +152,7 @@ abstract class MapSourceSetPathsTask : NonIncrementalTask() {
             )
             task.mergeResourcesOutputDir.setDisallowChanges(
                 (creationConfig.artifacts.get(InternalArtifactType.MERGED_RES)
-                        as DefaultFilePropertyFactory.DefaultDirectoryVar).locationOnly.map {
+                        as FileSystemLocationProperty).locationOnly.map {
                     it.asFile.absolutePath
                 }
             )
@@ -173,13 +173,13 @@ abstract class MapSourceSetPathsTask : NonIncrementalTask() {
 
             task.incrementalMergedDir.setDisallowChanges(
                 (creationConfig.artifacts.get(InternalArtifactType.MERGED_RES_INCREMENTAL_FOLDER)
-                        as DefaultFilePropertyFactory.DefaultDirectoryVar).locationOnly.map {
+                        as FileSystemLocationProperty).locationOnly.map {
                     it.asFile.absolutePath
                 }
             )
             task.mergedNotCompiledDir.setDisallowChanges(
                     (creationConfig.artifacts.get(InternalArtifactType.MERGED_NOT_COMPILED_RES)
-                            as DefaultFilePropertyFactory.DefaultDirectoryVar).locationOnly.map {
+                            as FileSystemLocationProperty).locationOnly.map {
                         it.asFile.absolutePath
                     }
             )
@@ -220,7 +220,7 @@ abstract class MapSourceSetPathsTask : NonIncrementalTask() {
             if (androidResourcesCreationConfig.vectorDrawables.useSupportLibrary == false) {
                 task.generatedPngsOutputDir.setDisallowChanges(
                     (creationConfig.artifacts.get(InternalArtifactType.GENERATED_PNGS_RES)
-                            as DefaultFilePropertyFactory.DefaultDirectoryVar).locationOnly.map {
+                            as FileSystemLocationProperty).locationOnly.map {
                         it.asFile.absolutePath
                     }
                 )

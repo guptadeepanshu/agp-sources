@@ -17,8 +17,11 @@
 package com.android.build.gradle.internal.component
 
 import com.android.build.api.variant.Component
+import com.android.build.gradle.internal.dsl.ModulePropertyKey.OptionalBoolean
+import com.android.build.gradle.options.BooleanOption
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.provider.MapProperty
+import org.gradle.api.provider.Provider
 
 interface VariantCreationConfig: ConsumableCreationConfig {
     val maxSdk: Int?
@@ -30,4 +33,16 @@ interface VariantCreationConfig: ConsumableCreationConfig {
     fun <T: Component> createUserVisibleVariantObject(
         stats: GradleBuildVariant.Builder?
     ): T
+
+    /**
+     * Whether to use K2 UAST when running lint for this component or its nested components.
+     */
+    val useK2Uast: Provider<Boolean>
+        get() =
+            experimentalProperties.zip(
+                services.projectOptions.getProvider(BooleanOption.LINT_USE_K2_UAST)
+            ) { experimentalProperties, lintUseK2UastBooleanOption ->
+                OptionalBoolean.LINT_USE_K2_UAST.getValue(experimentalProperties)
+                    ?: lintUseK2UastBooleanOption
+            }
 }

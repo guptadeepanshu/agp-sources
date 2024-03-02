@@ -43,183 +43,6 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private GradleSyncStats(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    int mutable_bitField0_ = 0;
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 8: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.GradleSyncStats.Trigger value = com.google.wireless.android.sdk.stats.GradleSyncStats.Trigger.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(1, rawValue);
-            } else {
-              bitField0_ |= 0x00000001;
-              trigger_ = rawValue;
-            }
-            break;
-          }
-          case 16: {
-            bitField0_ |= 0x00000002;
-            totalTimeMs_ = input.readInt64();
-            break;
-          }
-          case 24: {
-            bitField0_ |= 0x00000004;
-            gradleTimeMs_ = input.readInt64();
-            break;
-          }
-          case 32: {
-            bitField0_ |= 0x00000008;
-            ideTimeMs_ = input.readInt64();
-            break;
-          }
-          case 40: {
-            bitField0_ |= 0x00000010;
-            embeddedRepoEnabled_ = input.readBool();
-            break;
-          }
-          case 48: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType value = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(6, rawValue);
-            } else {
-              bitField0_ |= 0x00000020;
-              syncType_ = rawValue;
-            }
-            break;
-          }
-          case 56: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType value = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(7, rawValue);
-            } else {
-              bitField0_ |= 0x00000040;
-              actualSyncType_ = rawValue;
-            }
-            break;
-          }
-          case 66: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000080;
-            lastKnownAndroidGradlePluginVersion_ = bs;
-            break;
-          }
-          case 74: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000100;
-            androidGradlePluginVersion_ = bs;
-            break;
-          }
-          case 80: {
-            bitField0_ |= 0x00000200;
-            usesBuildGradle_ = input.readBool();
-            break;
-          }
-          case 88: {
-            bitField0_ |= 0x00000400;
-            usesBuildGradleKts_ = input.readBool();
-            break;
-          }
-          case 96: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType value = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(12, rawValue);
-            } else {
-              bitField0_ |= 0x00000800;
-              syncExecutionType_ = rawValue;
-            }
-            break;
-          }
-          case 104: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.GradleSyncStats.UserRequestedExecution value = com.google.wireless.android.sdk.stats.GradleSyncStats.UserRequestedExecution.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(13, rawValue);
-            } else {
-              bitField0_ |= 0x00001000;
-              userRequestedSyncType_ = rawValue;
-            }
-            break;
-          }
-          case 112: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution value = com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(14, rawValue);
-            } else {
-              bitField0_ |= 0x00002000;
-              studioRequestedSyncType_ = rawValue;
-            }
-            break;
-          }
-          case 122: {
-            com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.Builder subBuilder = null;
-            if (((bitField0_ & 0x00004000) != 0)) {
-              subBuilder = downloadsData_.toBuilder();
-            }
-            downloadsData_ = input.readMessage(com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(downloadsData_);
-              downloadsData_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00004000;
-            break;
-          }
-          case 128: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State value = com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(16, rawValue);
-            } else {
-              bitField0_ |= 0x00008000;
-              versionCatalogDetectorState_ = rawValue;
-            }
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleSyncStats_descriptor;
@@ -605,6 +428,22 @@ private static final long serialVersionUID = 0L;
      * <code>TRIGGER_QF_SIGNING_CONFIG_SELECTED = 428;</code>
      */
     TRIGGER_QF_SIGNING_CONFIG_SELECTED(428),
+    /**
+     * <pre>
+     * Remove unsupported modules from a quickfix
+     * </pre>
+     *
+     * <code>TRIGGER_QF_REMOVE_UNSUPPORTED_MODULES = 429;</code>
+     */
+    TRIGGER_QF_REMOVE_UNSUPPORTED_MODULES(429),
+    /**
+     * <pre>
+     * minCompileSdk version is updated using a quickfix
+     * </pre>
+     *
+     * <code>TRIGGER_QF_MIN_COMPILE_SDK_UPDATED = 430;</code>
+     */
+    TRIGGER_QF_MIN_COMPILE_SDK_UPDATED(430),
     /**
      * <pre>
      * Last marker for syncs caused by quickfixes
@@ -1532,6 +1371,22 @@ private static final long serialVersionUID = 0L;
     public static final int TRIGGER_QF_SIGNING_CONFIG_SELECTED_VALUE = 428;
     /**
      * <pre>
+     * Remove unsupported modules from a quickfix
+     * </pre>
+     *
+     * <code>TRIGGER_QF_REMOVE_UNSUPPORTED_MODULES = 429;</code>
+     */
+    public static final int TRIGGER_QF_REMOVE_UNSUPPORTED_MODULES_VALUE = 429;
+    /**
+     * <pre>
+     * minCompileSdk version is updated using a quickfix
+     * </pre>
+     *
+     * <code>TRIGGER_QF_MIN_COMPILE_SDK_UPDATED = 430;</code>
+     */
+    public static final int TRIGGER_QF_MIN_COMPILE_SDK_UPDATED_VALUE = 430;
+    /**
+     * <pre>
      * Last marker for syncs caused by quickfixes
      * </pre>
      *
@@ -2157,6 +2012,8 @@ private static final long serialVersionUID = 0L;
         case 426: return TRIGGER_QF_GRADLEJVM_TO_USE_PROJECT_JDK;
         case 427: return TRIGGER_QF_REMOVE_JCENTER_FROM_REPOSITORIES;
         case 428: return TRIGGER_QF_SIGNING_CONFIG_SELECTED;
+        case 429: return TRIGGER_QF_REMOVE_UNSUPPORTED_MODULES;
+        case 430: return TRIGGER_QF_MIN_COMPILE_SDK_UPDATED;
         case 999: return TRIGGER_QF_LAST_MARKER;
         case 1200: return TRIGGER_REFACTOR_FIRST_MARKER;
         case 1201: return TRIGGER_REFACTOR_MIGRATE_TO_ANDROIDX;
@@ -3406,7 +3263,7 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00008000) != 0)) {
       output.writeEnum(16, versionCatalogDetectorState_);
     }
-    unknownFields.writeTo(output);
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -3477,7 +3334,7 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(16, versionCatalogDetectorState_);
     }
-    size += unknownFields.getSerializedSize();
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -3565,7 +3422,7 @@ private static final long serialVersionUID = 0L;
     if (hasVersionCatalogDetectorState()) {
       if (versionCatalogDetectorState_ != other.versionCatalogDetectorState_) return false;
     }
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -3646,7 +3503,7 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + VERSION_CATALOG_DETECTOR_STATE_FIELD_NUMBER;
       hash = (53 * hash) + versionCatalogDetectorState_;
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -4017,7 +3874,7 @@ private static final long serialVersionUID = 0L;
       if (other.hasVersionCatalogDetectorState()) {
         setVersionCatalogDetectorState(other.getVersionCatalogDetectorState());
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -4032,17 +3889,161 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.google.wireless.android.sdk.stats.GradleSyncStats parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.GradleSyncStats.Trigger tmpValue =
+                  com.google.wireless.android.sdk.stats.GradleSyncStats.Trigger.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(1, tmpRaw);
+              } else {
+                trigger_ = tmpRaw;
+                bitField0_ |= 0x00000001;
+              }
+              break;
+            } // case 8
+            case 16: {
+              totalTimeMs_ = input.readInt64();
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 16
+            case 24: {
+              gradleTimeMs_ = input.readInt64();
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 24
+            case 32: {
+              ideTimeMs_ = input.readInt64();
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 32
+            case 40: {
+              embeddedRepoEnabled_ = input.readBool();
+              bitField0_ |= 0x00000010;
+              break;
+            } // case 40
+            case 48: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType tmpValue =
+                  com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(6, tmpRaw);
+              } else {
+                syncType_ = tmpRaw;
+                bitField0_ |= 0x00000020;
+              }
+              break;
+            } // case 48
+            case 56: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType tmpValue =
+                  com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(7, tmpRaw);
+              } else {
+                actualSyncType_ = tmpRaw;
+                bitField0_ |= 0x00000040;
+              }
+              break;
+            } // case 56
+            case 66: {
+              lastKnownAndroidGradlePluginVersion_ = input.readBytes();
+              bitField0_ |= 0x00000080;
+              break;
+            } // case 66
+            case 74: {
+              androidGradlePluginVersion_ = input.readBytes();
+              bitField0_ |= 0x00000100;
+              break;
+            } // case 74
+            case 80: {
+              usesBuildGradle_ = input.readBool();
+              bitField0_ |= 0x00000200;
+              break;
+            } // case 80
+            case 88: {
+              usesBuildGradleKts_ = input.readBool();
+              bitField0_ |= 0x00000400;
+              break;
+            } // case 88
+            case 96: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType tmpValue =
+                  com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(12, tmpRaw);
+              } else {
+                syncExecutionType_ = tmpRaw;
+                bitField0_ |= 0x00000800;
+              }
+              break;
+            } // case 96
+            case 104: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.GradleSyncStats.UserRequestedExecution tmpValue =
+                  com.google.wireless.android.sdk.stats.GradleSyncStats.UserRequestedExecution.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(13, tmpRaw);
+              } else {
+                userRequestedSyncType_ = tmpRaw;
+                bitField0_ |= 0x00001000;
+              }
+              break;
+            } // case 104
+            case 112: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution tmpValue =
+                  com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(14, tmpRaw);
+              } else {
+                studioRequestedSyncType_ = tmpRaw;
+                bitField0_ |= 0x00002000;
+              }
+              break;
+            } // case 112
+            case 122: {
+              input.readMessage(
+                  getDownloadsDataFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00004000;
+              break;
+            } // case 122
+            case 128: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State tmpValue =
+                  com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(16, tmpRaw);
+              } else {
+                versionCatalogDetectorState_ = tmpRaw;
+                bitField0_ |= 0x00008000;
+              }
+              break;
+            } // case 128
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.google.wireless.android.sdk.stats.GradleSyncStats) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
     private int bitField0_;
@@ -5224,7 +5225,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new GradleSyncStats(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

@@ -207,7 +207,13 @@ public class Svg2Vector {
         // Get <svg> elements.
         NodeList svgNodes = doc.getElementsByTagName("svg");
         if (svgNodes.getLength() != 1) {
-            throw new IllegalStateException("Not a proper SVG file");
+            String message;
+            if (svgNodes.getLength() == 0) {
+                message = "No <svg> tags found.";
+            } else {
+                message = "Multiple <svg> tags are not supported.";
+            }
+            throw new IllegalStateException(message);
         }
         Element rootElement = (Element) svgNodes.item(0);
         svgTree.parseDimension(rootElement);

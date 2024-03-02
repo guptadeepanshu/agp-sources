@@ -85,11 +85,12 @@ object GenericBuiltArtifactsLoader {
                 if (it.peek() == JsonToken.BEGIN_ARRAY) {
                     it.beginArray()
                     while (it.hasNext()) {
-                        buildOutputs.add(GenericBuiltArtifactsTypeAdapter.read(it))
+                        buildOutputs.add(
+                            GenericBuiltArtifactsTypeAdapter(relativePathToUse).read(it))
                     }
                     it.endArray()
                 } else {
-                    buildOutputs.add(GenericBuiltArtifactsTypeAdapter.read(it))
+                    buildOutputs.add(GenericBuiltArtifactsTypeAdapter(relativePathToUse).read(it))
                 }
 
             } catch (e: Exception) {

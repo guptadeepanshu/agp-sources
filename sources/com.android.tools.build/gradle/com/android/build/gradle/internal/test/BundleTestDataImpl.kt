@@ -24,6 +24,7 @@ import com.android.builder.testing.api.DeviceConfigProvider
 import com.google.common.collect.ImmutableList
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
+import org.gradle.api.file.FileTree
 import org.gradle.api.logging.Logging
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
@@ -51,13 +52,16 @@ internal class BundleTestDataImpl constructor(
     @get:PathSensitive(PathSensitivity.RELATIVE)
     @get:Optional
     val apkBundle: FileCollection,
-    privacySandboxSdkApks: FileCollection?
+    privacySandboxSdkApks: FileCollection?,
+    privacySandboxCompatSdkApks: Provider<Directory>?
 ) : AbstractTestDataImpl(
     namespace,
     creationConfig,
     testApkDir,
     null,
-    privacySandboxSdkApks
+    privacySandboxSdkApks,
+    privacySandboxCompatSdkApks,
+    null
 ) {
 
     override val libraryType = creationConfig.services.provider { false }

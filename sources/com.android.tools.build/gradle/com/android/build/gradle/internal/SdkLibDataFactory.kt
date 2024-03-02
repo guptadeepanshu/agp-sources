@@ -75,14 +75,6 @@ class SdkLibDataFactory(
                 // Default, doesn't allow to set force HTTP.
             }
 
-            override fun getDisableSdkPatches(): Boolean {
-                return true
-            }
-
-            override fun setDisableSdkPatches(disable: Boolean) {
-                // Default, doesn't allow to enable SDK patches, since this is an IDEA thing.
-            }
-
             override fun getChannel(): Channel? {
                 return Channel.create(androidSdkChannel ?: Channel.DEFAULT_ID)
             }

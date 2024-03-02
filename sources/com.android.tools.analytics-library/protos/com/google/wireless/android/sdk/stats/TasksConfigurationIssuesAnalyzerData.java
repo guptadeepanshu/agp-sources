@@ -35,56 +35,6 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private TasksConfigurationIssuesAnalyzerData(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    int mutable_bitField0_ = 0;
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 10: {
-            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-              tasksSharingOutputData_ = new java.util.ArrayList<com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData.TasksSharingOutputData>();
-              mutable_bitField0_ |= 0x00000001;
-            }
-            tasksSharingOutputData_.add(
-                input.readMessage(com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData.TasksSharingOutputData.PARSER, extensionRegistry));
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      if (((mutable_bitField0_ & 0x00000001) != 0)) {
-        tasksSharingOutputData_ = java.util.Collections.unmodifiableList(tasksSharingOutputData_);
-      }
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TasksConfigurationIssuesAnalyzerData_descriptor;
@@ -227,68 +177,6 @@ private static final long serialVersionUID = 0L;
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
-    }
-    private TasksSharingOutputData(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-                pluginsCreatedSharingOutputTasks_ = new java.util.ArrayList<com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier>();
-                mutable_bitField0_ |= 0x00000001;
-              }
-              pluginsCreatedSharingOutputTasks_.add(
-                  input.readMessage(com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.PARSER, extensionRegistry));
-              break;
-            }
-            case 18: {
-              if (!((mutable_bitField0_ & 0x00000002) != 0)) {
-                tasksSharingOutput_ = new java.util.ArrayList<com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifier>();
-                mutable_bitField0_ |= 0x00000002;
-              }
-              tasksSharingOutput_.add(
-                  input.readMessage(com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifier.PARSER, extensionRegistry));
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        if (((mutable_bitField0_ & 0x00000001) != 0)) {
-          pluginsCreatedSharingOutputTasks_ = java.util.Collections.unmodifiableList(pluginsCreatedSharingOutputTasks_);
-        }
-        if (((mutable_bitField0_ & 0x00000002) != 0)) {
-          tasksSharingOutput_ = java.util.Collections.unmodifiableList(tasksSharingOutput_);
-        }
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
@@ -448,7 +336,7 @@ private static final long serialVersionUID = 0L;
       for (int i = 0; i < tasksSharingOutput_.size(); i++) {
         output.writeMessage(2, tasksSharingOutput_.get(i));
       }
-      unknownFields.writeTo(output);
+      getUnknownFields().writeTo(output);
     }
 
     @java.lang.Override
@@ -465,7 +353,7 @@ private static final long serialVersionUID = 0L;
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, tasksSharingOutput_.get(i));
       }
-      size += unknownFields.getSerializedSize();
+      size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
     }
@@ -484,7 +372,7 @@ private static final long serialVersionUID = 0L;
           .equals(other.getPluginsCreatedSharingOutputTasksList())) return false;
       if (!getTasksSharingOutputList()
           .equals(other.getTasksSharingOutputList())) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
 
@@ -503,7 +391,7 @@ private static final long serialVersionUID = 0L;
         hash = (37 * hash) + TASKS_SHARING_OUTPUT_FIELD_NUMBER;
         hash = (53 * hash) + getTasksSharingOutputList().hashCode();
       }
-      hash = (29 * hash) + unknownFields.hashCode();
+      hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
     }
@@ -624,36 +512,31 @@ private static final long serialVersionUID = 0L;
 
       // Construct using com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData.TasksSharingOutputData.newBuilder()
       private Builder() {
-        maybeForceBuilderInitialization();
+
       }
 
       private Builder(
           com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-          getPluginsCreatedSharingOutputTasksFieldBuilder();
-          getTasksSharingOutputFieldBuilder();
-        }
+
       }
       @java.lang.Override
       public Builder clear() {
         super.clear();
         if (pluginsCreatedSharingOutputTasksBuilder_ == null) {
           pluginsCreatedSharingOutputTasks_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
         } else {
+          pluginsCreatedSharingOutputTasks_ = null;
           pluginsCreatedSharingOutputTasksBuilder_.clear();
         }
+        bitField0_ = (bitField0_ & ~0x00000001);
         if (tasksSharingOutputBuilder_ == null) {
           tasksSharingOutput_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000002);
         } else {
+          tasksSharingOutput_ = null;
           tasksSharingOutputBuilder_.clear();
         }
+        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -799,7 +682,7 @@ private static final long serialVersionUID = 0L;
             }
           }
         }
-        this.mergeUnknownFields(other.unknownFields);
+        this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
       }
@@ -814,17 +697,56 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData.TasksSharingOutputData parsedMessage = null;
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
         try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+                com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier m =
+                    input.readMessage(
+                        com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.PARSER,
+                        extensionRegistry);
+                if (pluginsCreatedSharingOutputTasksBuilder_ == null) {
+                  ensurePluginsCreatedSharingOutputTasksIsMutable();
+                  pluginsCreatedSharingOutputTasks_.add(m);
+                } else {
+                  pluginsCreatedSharingOutputTasksBuilder_.addMessage(m);
+                }
+                break;
+              } // case 10
+              case 18: {
+                com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifier m =
+                    input.readMessage(
+                        com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifier.PARSER,
+                        extensionRegistry);
+                if (tasksSharingOutputBuilder_ == null) {
+                  ensureTasksSharingOutputIsMutable();
+                  tasksSharingOutput_.add(m);
+                } else {
+                  tasksSharingOutputBuilder_.addMessage(m);
+                }
+                break;
+              } // case 18
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData.TasksSharingOutputData) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
+          onChanged();
+        } // finally
         return this;
       }
       private int bitField0_;
@@ -1503,7 +1425,18 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new TasksSharingOutputData(input, extensionRegistry);
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
       }
     };
 
@@ -1600,7 +1533,7 @@ private static final long serialVersionUID = 0L;
     for (int i = 0; i < tasksSharingOutputData_.size(); i++) {
       output.writeMessage(1, tasksSharingOutputData_.get(i));
     }
-    unknownFields.writeTo(output);
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -1613,7 +1546,7 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(1, tasksSharingOutputData_.get(i));
     }
-    size += unknownFields.getSerializedSize();
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -1630,7 +1563,7 @@ private static final long serialVersionUID = 0L;
 
     if (!getTasksSharingOutputDataList()
         .equals(other.getTasksSharingOutputDataList())) return false;
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -1645,7 +1578,7 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + TASKS_SHARING_OUTPUT_DATA_FIELD_NUMBER;
       hash = (53 * hash) + getTasksSharingOutputDataList().hashCode();
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -1766,29 +1699,24 @@ private static final long serialVersionUID = 0L;
 
     // Construct using com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessageV3
-              .alwaysUseFieldBuilders) {
-        getTasksSharingOutputDataFieldBuilder();
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
       super.clear();
       if (tasksSharingOutputDataBuilder_ == null) {
         tasksSharingOutputData_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000001);
       } else {
+        tasksSharingOutputData_ = null;
         tasksSharingOutputDataBuilder_.clear();
       }
+      bitField0_ = (bitField0_ & ~0x00000001);
       return this;
     }
 
@@ -1899,7 +1827,7 @@ private static final long serialVersionUID = 0L;
           }
         }
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -1914,17 +1842,43 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData.TasksSharingOutputData m =
+                  input.readMessage(
+                      com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData.TasksSharingOutputData.PARSER,
+                      extensionRegistry);
+              if (tasksSharingOutputDataBuilder_ == null) {
+                ensureTasksSharingOutputDataIsMutable();
+                tasksSharingOutputData_.add(m);
+              } else {
+                tasksSharingOutputDataBuilder_.addMessage(m);
+              }
+              break;
+            } // case 10
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
     private int bitField0_;
@@ -2273,7 +2227,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new TasksConfigurationIssuesAnalyzerData(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

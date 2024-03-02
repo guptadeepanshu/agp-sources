@@ -37,6 +37,7 @@ import com.android.build.gradle.internal.dependency.AsmClassesTransform.Companio
 import com.android.build.gradle.internal.dependency.ClassesDirToClassesTransform
 import com.android.build.gradle.internal.dependency.CollectClassesTransform
 import com.android.build.gradle.internal.dependency.CollectResourceSymbolsTransform
+import com.android.build.gradle.internal.dependency.DexingRegistration
 import com.android.build.gradle.internal.dependency.EnumerateClassesTransform
 import com.android.build.gradle.internal.dependency.ExtractAarTransform
 import com.android.build.gradle.internal.dependency.ExtractCompileSdkShimTransform
@@ -57,7 +58,6 @@ import com.android.build.gradle.internal.dependency.PlatformAttrTransform
 import com.android.build.gradle.internal.dependency.RecalculateStackFramesTransform.Companion.registerGlobalRecalculateStackFramesTransform
 import com.android.build.gradle.internal.dependency.RecalculateStackFramesTransform.Companion.registerRecalculateStackFramesTransformForComponent
 import com.android.build.gradle.internal.dependency.VersionedCodeShrinker
-import com.android.build.gradle.internal.dependency.getDexingArtifactConfigurations
 import com.android.build.gradle.internal.dependency.registerDexingOutputSplitTransform
 import com.android.build.gradle.internal.dsl.BaseFlavor
 import com.android.build.gradle.internal.dsl.BuildType
@@ -66,16 +66,16 @@ import com.android.build.gradle.internal.dsl.ModulePropertyKey
 import com.android.build.gradle.internal.dsl.ProductFlavor
 import com.android.build.gradle.internal.dsl.SigningConfig
 import com.android.build.gradle.internal.packaging.getDefaultDebugKeystoreSigningConfig
-import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AarOrJarTypeToConsume
+import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.res.namespaced.AutoNamespacePreProcessTransform
 import com.android.build.gradle.internal.res.namespaced.AutoNamespaceTransform
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.AndroidLocationsBuildService
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.internal.signing.SigningConfigData
 import com.android.build.gradle.internal.tasks.AsarToApksTransform
-import com.android.build.gradle.internal.tasks.AsarToManifestSnippetTransform
 import com.android.build.gradle.internal.tasks.AsarTransform
 import com.android.build.gradle.internal.tasks.factory.BootClasspathConfig
 import com.android.build.gradle.internal.utils.ATTR_ENABLE_CORE_LIBRARY_DESUGARING
@@ -98,13 +98,13 @@ import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.api.artifacts.transform.TransformAction
-import org.gradle.api.artifacts.transform.TransformParameters
 import org.gradle.api.artifacts.transform.TransformSpec
 import org.gradle.api.artifacts.type.ArtifactTypeDefinition
+import org.gradle.api.artifacts.type.ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE
 import org.gradle.api.attributes.AttributesSchema
 import org.gradle.api.attributes.Category
 import org.gradle.api.attributes.Usage
-import org.gradle.api.internal.artifacts.ArtifactAttributes
+import org.gradle.api.provider.Provider
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
 import java.lang.Boolean.FALSE
 import java.lang.Boolean.TRUE
@@ -212,7 +212,7 @@ class DependencyConfigurator(
             spec.parameters.projectName.set(project.name)
             spec.parameters.returnDefaultValues.set(true)
             spec.from.attribute(
-                ArtifactAttributes.ARTIFACT_FORMAT,
+                ARTIFACT_TYPE_ATTRIBUTE,
                 AndroidArtifacts.ArtifactType.JAR.type
             )
             spec.from.attribute(
@@ -220,7 +220,7 @@ class DependencyConfigurator(
                 true
             )
             spec.to.attribute(
-                ArtifactAttributes.ARTIFACT_FORMAT,
+                ARTIFACT_TYPE_ATTRIBUTE,
                 AndroidArtifacts.TYPE_MOCKABLE_JAR
             )
             spec.to.attribute(
@@ -235,7 +235,7 @@ class DependencyConfigurator(
             spec.parameters.projectName.set(project.name)
             spec.parameters.returnDefaultValues.set(false)
             spec.from.attribute(
-                ArtifactAttributes.ARTIFACT_FORMAT,
+                ARTIFACT_TYPE_ATTRIBUTE,
                 AndroidArtifacts.ArtifactType.JAR.type
             )
             spec.from.attribute(
@@ -243,7 +243,7 @@ class DependencyConfigurator(
                 false
             )
             spec.to.attribute(
-                ArtifactAttributes.ARTIFACT_FORMAT,
+                ARTIFACT_TYPE_ATTRIBUTE,
                 AndroidArtifacts.TYPE_MOCKABLE_JAR
             )
             spec.to.attribute(
@@ -292,7 +292,7 @@ class DependencyConfigurator(
             AarToClassTransform::class.java
         ) { reg: TransformSpec<AarToClassTransform.Params> ->
             reg.from.attribute(
-                ArtifactAttributes.ARTIFACT_FORMAT,
+                ARTIFACT_TYPE_ATTRIBUTE,
                 aarOrJarTypeToConsume.aar.type
             )
             reg.from.attribute(
@@ -300,7 +300,7 @@ class DependencyConfigurator(
                 apiUsage
             )
             reg.to.attribute(
-                ArtifactAttributes.ARTIFACT_FORMAT,
+                ARTIFACT_TYPE_ATTRIBUTE,
                 AndroidArtifacts.ArtifactType.CLASSES_JAR.type
             )
             reg.to.attribute(
@@ -319,7 +319,7 @@ class DependencyConfigurator(
             AarToClassTransform::class.java
         ) { reg: TransformSpec<AarToClassTransform.Params> ->
             reg.from.attribute(
-                ArtifactAttributes.ARTIFACT_FORMAT,
+                ARTIFACT_TYPE_ATTRIBUTE,
                 aarOrJarTypeToConsume.aar.type
             )
             reg.from.attribute(
@@ -327,7 +327,7 @@ class DependencyConfigurator(
                 runtimeUsage
             )
             reg.to.attribute(
-                ArtifactAttributes.ARTIFACT_FORMAT,
+                ARTIFACT_TYPE_ATTRIBUTE,
                 AndroidArtifacts.ArtifactType.CLASSES_JAR.type
             )
             reg.to.attribute(
@@ -402,7 +402,7 @@ class DependencyConfigurator(
                 configuration
                     .attributes
                     .attribute(
-                        ArtifactAttributes.ARTIFACT_FORMAT,
+                        ARTIFACT_TYPE_ATTRIBUTE,
                         aarOrJarTypeToConsume.jar.type
                     )
             }
@@ -462,41 +462,16 @@ class DependencyConfigurator(
     }
 
     fun configurePrivacySandboxSdkConsumerTransforms(): DependencyConfigurator {
-        if (projectServices.projectOptions.get(BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT)) {
-            val defaultDebugSigning = getBuildService(
-                    projectServices.buildServiceRegistry,
-                    AndroidLocationsBuildService::class.java
-            ).map { it.getDefaultDebugKeystoreSigningConfig() }
+        for (from in AsarTransform.supportedAsarTransformTypes) {
             registerTransform(
-                    AsarToApksTransform::class.java,
+                    AsarTransform::class.java,
                     AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_ARCHIVE,
-                    AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_APKS
-            ) { params ->
-                projectServices.initializeAapt2Input(params.aapt2)
-
-                params.signingConfigData.set(defaultDebugSigning)
-                params.signingConfigValidationResultDir.set(
-                        ArtifactsImpl(project,
-                                "global").get(InternalArtifactType.VALIDATE_SIGNING_CONFIG)
-                )
-            }
-            registerTransform(
-                    AsarToManifestSnippetTransform::class.java,
-                    AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_ARCHIVE,
-                    AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_USES_SDK_LIBRARY_MANIFEST_SNIPPET
+                    from
             ) {
-                it.signingConfigData.set(defaultDebugSigning)
-            }
-            for (from in AsarTransform.supportedAsarTransformTypes) {
-                registerTransform(
-                        AsarTransform::class.java,
-                        AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_ARCHIVE,
-                        from
-                ) {
-                    it.targetType.set(from)
-                }
+                it.targetType.set(from)
             }
         }
+
         return this
     }
 
@@ -506,19 +481,12 @@ class DependencyConfigurator(
         buildToolsRevision: Revision,
         bootstrapCreationConfig: BootClasspathConfig
     ): DependencyConfigurator {
-        if (!projectServices.projectOptions.get(BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT)) {
-            return this
-        }
-
-        fun configureExtractSdkShimTransforms(variant: VariantCreationConfig) {
+        fun configureExtractSdkShimTransforms(experimentalProperties: Map<String, Any>) {
             val extractSdkShimTransformParamConfig =
                     { reg: TransformSpec<ExtractSdkShimTransform.Parameters> ->
-                        val experimentalProperties = variant.experimentalProperties
-                        experimentalProperties.finalizeValue()
-
                         val experimentalPropertiesApiGenerator: Dependency? =
                                 ModulePropertyKey.Dependencies.ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR
-                                        .getValue(experimentalProperties.get())?.single()
+                                        .getValue(experimentalProperties)?.single()
                         val apigeneratorArtifact: Dependency =
                                 experimentalPropertiesApiGenerator
                                         ?: project.dependencies.create(
@@ -527,7 +495,7 @@ class DependencyConfigurator(
                                         ) as Dependency
 
                         val experimentalPropertiesRuntimeApigeneratorDependencies =
-                                ModulePropertyKey.Dependencies.ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR_GENERATED_RUNTIME_DEPENDENCIES.getValue(experimentalProperties.get())
+                                ModulePropertyKey.Dependencies.ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR_GENERATED_RUNTIME_DEPENDENCIES.getValue(experimentalProperties)
                         val runtimeDependenciesForShimSdk: List<Dependency> =
                                 experimentalPropertiesRuntimeApigeneratorDependencies
                                         ?: (projectServices.projectOptions
@@ -586,7 +554,7 @@ class DependencyConfigurator(
                 ) { reg ->
                     val usageObj: Usage = project.objects.named(Usage::class.java, usage)
                     reg.from.attribute(
-                            ArtifactAttributes.ARTIFACT_FORMAT,
+                            ARTIFACT_TYPE_ATTRIBUTE,
                             AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_INTERFACE_DESCRIPTOR.type
                     )
                     reg.from.attribute(
@@ -594,7 +562,7 @@ class DependencyConfigurator(
                             usageObj
                     )
                     reg.to.attribute(
-                            ArtifactAttributes.ARTIFACT_FORMAT,
+                            ARTIFACT_TYPE_ATTRIBUTE,
                             AndroidArtifacts.ArtifactType.CLASSES_JAR.type
                     )
                     reg.to.attribute(
@@ -608,9 +576,68 @@ class DependencyConfigurator(
             registerExtractSdkShimTransform(Usage.JAVA_RUNTIME)
         }
 
-        for (variant in variants) {
-            configureExtractSdkShimTransforms(variant)
+        val properties = variants.map { variant ->
+            variant.experimentalProperties.also { it.disallowChanges() }.get().filterKeys {
+                it == ModulePropertyKey.Dependencies.ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR_GENERATED_RUNTIME_DEPENDENCIES.key ||
+                        it == ModulePropertyKey.Dependencies.ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR.key
+            }
+        }.distinct()
+
+        when(properties.size) {
+            0 -> {} // No variants, problem will be reported elsewhere.
+            1 -> configureExtractSdkShimTransforms(properties.single())
+            else -> error("It is not possible to override Privacy Sandbox experimental properties per variant.\n" +
+                    "Properties with different values defined across multiple variants: ${properties.joinToString()} ")
         }
+
+        fun registerAsarToApksTransform(variants: List<VariantCreationConfig>) {
+            // For signing privacy sandbox artifacts we allow per project signing configuration
+            // by the use of experimental properties. To reduce the expense of registering per
+            // variant we set a limit of one signing config in all variants, then register the
+            // AsarToApksTransform once. To maintain the semantic, the build file must explicitly
+            // declare the same signing config for all variants.
+            val variantSigningConfigs = variants.map { variant ->
+                val experimentalProps = variant.experimentalProperties
+                experimentalProps.finalizeValue()
+                SigningConfigData.fromExperimentalPropertiesSigningConfig(variant.experimentalProperties)
+            }.distinct()
+
+            val signingConfigProvider: Provider<SigningConfigData> =
+                    when (variantSigningConfigs.count()) {
+                        0 -> return // No variants
+                        1 -> if (variantSigningConfigs.singleOrNull() != null) {
+                            // An identical signing config is set in all variants by experimental properties.
+                            variants.first().services.provider {
+                                variantSigningConfigs.singleOrNull()
+                            }
+                        } else {
+                            // No experimental properties are set, use the default.
+                            getBuildService(
+                                    variants.first().services.buildServiceRegistry,
+                                    AndroidLocationsBuildService::class.java
+                            ).map(AndroidLocationsBuildService::getDefaultDebugKeystoreSigningConfig)
+                        }
+
+                        else -> throw UnsupportedOperationException(
+                                "It is not possible to override Privacy Sandbox experimental properties per variant.\n" +
+                                        "Set the same signing config using experimental properties in each variant explicitly.")
+                    }
+            registerTransform(
+                    AsarToApksTransform::class.java,
+                    AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_ARCHIVE,
+                    AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_APKS
+            ) { params ->
+                projectServices.initializeAapt2Input(params.aapt2)
+
+                params.signingConfigData.set(signingConfigProvider)
+                params.signingConfigValidationResultDir.set(
+                        ArtifactsImpl(project,
+                                "global").get(InternalArtifactType.VALIDATE_SIGNING_CONFIG)
+                )
+            }
+        }
+        registerAsarToApksTransform(variants)
+
         return this
     }
 
@@ -681,22 +708,23 @@ class DependencyConfigurator(
         project.dependencies.registerTransform(
             transformClass
         ) { spec: TransformSpec<T> ->
-            spec.from.attribute(ArtifactAttributes.ARTIFACT_FORMAT, fromArtifactType)
-            spec.to.attribute(ArtifactAttributes.ARTIFACT_FORMAT, toArtifactType)
+            spec.from.attribute(ARTIFACT_TYPE_ATTRIBUTE, fromArtifactType)
+            spec.to.attribute(ARTIFACT_TYPE_ATTRIBUTE, toArtifactType)
             spec.parameters.projectName.setDisallowChanges(project.name)
             parametersSetter?.let { it(spec.parameters) }
         }
     }
 
     fun configureAttributeMatchingStrategies(
-            variantInputModel: VariantInputModel<DefaultConfig, BuildType, ProductFlavor, SigningConfig>
+            variantInputModel: VariantInputModel<DefaultConfig, BuildType, ProductFlavor, SigningConfig>,
+            supportPrivacySandbox: Boolean
     ): DependencyConfigurator {
         val schema = project.dependencies.attributesSchema
 
         // custom strategy for build-type and product-flavor.
         setBuildTypeStrategy(schema, variantInputModel)
         setupFlavorStrategy(schema, variantInputModel)
-        setupModelStrategy(schema)
+        setupModelStrategy(schema, supportPrivacySandbox)
         setUpAgpVersionStrategy(schema)
 
         return this
@@ -779,8 +807,8 @@ class DependencyConfigurator(
         }
     }
 
-    private fun setupModelStrategy(attributesSchema: AttributesSchema) {
-        setUp(attributesSchema)
+    private fun setupModelStrategy(attributesSchema: AttributesSchema, supportPrivacySandbox: Boolean) {
+        setUp(attributesSchema, supportPrivacySandbox)
     }
 
     /** This is to enforce AGP version across a single or composite build. */
@@ -830,23 +858,20 @@ class DependencyConfigurator(
         if (allComponents.isNotEmpty()) {
             val bootClasspath = project.files(bootClasspathConfig.bootClasspath)
             val services = allComponents.first().services
-            if (projectOptions[BooleanOption.ENABLE_DEXING_ARTIFACT_TRANSFORM]) {
-                // Disable incremental dexing for main and androidTest components in dynamic
-                // feature module (b/246326007)
-                val disableIncrementalDexing = allComponents.any { it.componentType.isDynamicFeature }
-                for (artifactConfiguration in getDexingArtifactConfigurations(
-                        allComponents
-                )) {
-                    artifactConfiguration.registerTransform(
-                        project.name,
-                        dependencies,
-                        bootClasspath,
-                        getDesugarLibConfig(services),
-                        SyncOptions.getErrorFormatMode(projectOptions),
-                        disableIncrementalDexing = disableIncrementalDexing
-                    )
-                }
-            }
+            DexingRegistration.registerTransforms(
+                allComponents,
+                DexingRegistration.ComponentAgnosticParameters(
+                    projectName = project.name,
+                    dependencyHandler = dependencies,
+                    bootClasspath = bootClasspath,
+                    libConfiguration = getDesugarLibConfig(services),
+                    errorFormat = SyncOptions.getErrorFormatMode(projectOptions),
+                    // Disable incremental dexing for main and androidTest components in dynamic
+                    // feature module (b/246326007)
+                    disableIncrementalDexing = allComponents.any { it.componentType.isDynamicFeature },
+                    components = allComponents
+                )
+            )
 
             val d8Version = Version.getVersionString()
 
@@ -859,9 +884,9 @@ class DependencyConfigurator(
                     parameters.coreLibDesugarConfig.set(getDesugarLibConfig(services))
                     parameters.bootclasspath.from(bootClasspath)
                 }
-                spec.from.attribute(ArtifactAttributes.ARTIFACT_FORMAT, ArtifactTypeDefinition.JAR_TYPE)
+                spec.from.attribute(ARTIFACT_TYPE_ATTRIBUTE, ArtifactTypeDefinition.JAR_TYPE)
                 spec.from.attribute(ATTR_ENABLE_CORE_LIBRARY_DESUGARING, TRUE.toString())
-                spec.to.attribute(ArtifactAttributes.ARTIFACT_FORMAT, D8_DESUGAR_METHODS)
+                spec.to.attribute(ARTIFACT_TYPE_ATTRIBUTE, D8_DESUGAR_METHODS)
                 spec.to.attribute(ATTR_ENABLE_CORE_LIBRARY_DESUGARING, TRUE.toString())
             }
 
@@ -872,9 +897,9 @@ class DependencyConfigurator(
                 spec.parameters { parameters ->
                     parameters.d8Version.set(d8Version)
                 }
-                spec.from.attribute(ArtifactAttributes.ARTIFACT_FORMAT, ArtifactTypeDefinition.JAR_TYPE)
+                spec.from.attribute(ARTIFACT_TYPE_ATTRIBUTE, ArtifactTypeDefinition.JAR_TYPE)
                 spec.from.attribute(ATTR_ENABLE_CORE_LIBRARY_DESUGARING, FALSE.toString())
-                spec.to.attribute(ArtifactAttributes.ARTIFACT_FORMAT, D8_DESUGAR_METHODS)
+                spec.to.attribute(ARTIFACT_TYPE_ATTRIBUTE, D8_DESUGAR_METHODS)
                 spec.to.attribute(ATTR_ENABLE_CORE_LIBRARY_DESUGARING, FALSE.toString())
             }
         }
@@ -888,12 +913,12 @@ class DependencyConfigurator(
             ) { reg: TransformSpec<FilterShrinkerRulesTransform.Parameters> ->
                 reg.from
                         .attribute(
-                                ArtifactAttributes.ARTIFACT_FORMAT,
+                                ARTIFACT_TYPE_ATTRIBUTE,
                                 AndroidArtifacts.ArtifactType.UNFILTERED_PROGUARD_RULES.type
                         )
                 reg.to
                         .attribute(
-                                ArtifactAttributes.ARTIFACT_FORMAT,
+                                ARTIFACT_TYPE_ATTRIBUTE,
                                 AndroidArtifacts.ArtifactType.FILTERED_PROGUARD_RULES.type
                         )
                 reg.parameters { params: FilterShrinkerRulesTransform.Parameters ->

@@ -20,11 +20,9 @@ import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.component.analytics.AnalyticsEnabledDynamicFeatureVariant
 import com.android.build.api.component.impl.AndroidTestImpl
 import com.android.build.api.component.impl.TestFixturesImpl
-import com.android.build.api.component.impl.features.DexingCreationConfigImpl
+import com.android.build.api.component.impl.features.DexingImpl
 import com.android.build.api.component.impl.features.OptimizationCreationConfigImpl
-import com.android.build.api.component.impl.getAndroidResources
 import com.android.build.api.component.impl.isTestApk
-import com.android.build.api.variant.AndroidResources
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.ApkPackaging
 import com.android.build.api.variant.Component
@@ -80,7 +78,7 @@ open class DynamicFeatureVariantImpl @Inject constructor(
     internalServices,
     taskCreationServices,
     globalTaskCreationConfig
-), DynamicFeatureVariant, DynamicFeatureCreationConfig, HasAndroidTest, HasTestFixtures {
+), DynamicFeatureVariant, DynamicFeatureCreationConfig, HasDeviceTests, HasTestFixtures {
 
     init {
         // TODO: Should be removed once we stop implementing all build type interfaces in one class
@@ -108,8 +106,8 @@ open class DynamicFeatureVariantImpl @Inject constructor(
     override val applicationId: Provider<String> =
         internalServices.providerOf(String::class.java, baseModuleMetadata.map { it.applicationId })
 
-    override val androidResources: AndroidResources by lazy {
-        getAndroidResources()
+    override val androidResources: AndroidResourcesImpl by lazy {
+        getAndroidResources(dslInfo.androidResourcesDsl.androidResources)
     }
 
     override val packaging: ApkPackaging by lazy {
@@ -128,17 +126,20 @@ open class DynamicFeatureVariantImpl @Inject constructor(
         renderscriptCreationConfig?.renderscript
     }
 
+    override val dexing: DexingCreationConfig by lazy(LazyThreadSafetyMode.NONE) {
+        DexingImpl(
+            this,
+            variantBuilder._enableMultiDex,
+            dslInfo.dexingDslInfo.multiDexKeepProguard,
+            dslInfo.dexingDslInfo.multiDexKeepFile,
+            internalServices,
+        )
+    }
+
     // ---------------------------------------------------------------------------------------------
     // INTERNAL API
     // ---------------------------------------------------------------------------------------------
 
-    override val dexingCreationConfig: DexingCreationConfig by lazy(LazyThreadSafetyMode.NONE) {
-        DexingCreationConfigImpl(
-            this,
-            dslInfo.dexingDslInfo,
-            internalServices
-        )
-    }
     override val targetSdk: AndroidVersion  by lazy(LazyThreadSafetyMode.NONE) {
         variantBuilder.targetSdkVersion
     }
@@ -191,7 +192,7 @@ open class DynamicFeatureVariantImpl @Inject constructor(
             ) ?: emptyList()
         }
 
-    override val signingConfigImpl: SigningConfigImpl? = null
+    override val signingConfig: SigningConfigImpl? = null
 
     override val useJacocoTransformInstrumentation: Boolean
         get() = isAndroidTestCoverageEnabled
@@ -294,4 +295,9 @@ open class DynamicFeatureVariantImpl @Inject constructor(
 
     override val enableGlobalSynthetics: Boolean
         get() = isGlobalSyntheticsEnabled()
+
+    override fun finalizeAndLock() {
+        super.finalizeAndLock()
+        dexing.finalizeAndLock()
+    }
 }

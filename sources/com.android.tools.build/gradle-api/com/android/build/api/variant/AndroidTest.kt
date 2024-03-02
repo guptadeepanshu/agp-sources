@@ -24,7 +24,14 @@ import org.gradle.api.provider.Provider
 import java.io.Serializable
 
 /**
- * Properties for the android test Variant of a module.
+ * Model for Android Test components that contains build-time properties
+ *
+ * This object is accessible on subtypes of [Variant] that implement [HasAndroidTest], via
+ * [HasAndroidTest.androidTest]. It is also part of [Variant.nestedComponents].
+ *
+ * The presence of this component in a variant is controlled by
+ * [HasAndroidTestBuilder.androidTest.enable] which is accessible on subtypes of [VariantBuilder]
+ * that implement [HasAndroidTestBuilder]
  */
 interface AndroidTest : GeneratesTestApk, TestComponent, HasAndroidResources {
 

@@ -21,6 +21,7 @@ import com.android.build.api.variant.AnnotationProcessor
 import com.android.build.gradle.api.AnnotationProcessorOptions
 import com.android.build.gradle.internal.dsl.decorator.LockableList
 import com.android.build.gradle.internal.services.VariantServices
+import com.android.build.gradle.internal.tasks.databinding.DataBindingCompilerArguments
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Provider
@@ -99,6 +100,7 @@ class AnnotationProcessorImpl(
 
                 // second, we check if it is provided from the [argumentProviders]
                 val argumentProvidersAsString = argumentProviders
+                    .filter { provider -> provider !is DataBindingCompilerArguments }
                     .map(CommandLineArgumentProvider::asArguments)
                     .flatten()
                     .joinToString()

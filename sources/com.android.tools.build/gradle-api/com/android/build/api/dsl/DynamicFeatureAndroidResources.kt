@@ -16,4 +16,9 @@
 
 package com.android.build.api.dsl
 
+/**
+ * DSL object for configuring Android resource options for Dynamic Feature plugins.
+ *
+ * This is accessed via [DynamicFeatureExtension.androidResources]
+ */
 interface DynamicFeatureAndroidResources : AndroidResources

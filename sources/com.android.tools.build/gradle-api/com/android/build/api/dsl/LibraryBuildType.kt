@@ -38,4 +38,10 @@ interface LibraryBuildType :
     LibraryVariantDimension {
     /** Whether this build type should be selected in Studio by default  */
     var isDefault: Boolean
+
+    @get:Incubating
+    val androidTest: AndroidTest
+
+    @Incubating
+    fun androidTest(action: AndroidTest.() -> Unit)
 }

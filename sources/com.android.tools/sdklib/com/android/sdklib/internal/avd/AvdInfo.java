@@ -22,6 +22,7 @@ import com.android.annotations.Nullable;
 import com.android.io.CancellableFileIo;
 import com.android.sdklib.AndroidVersion;
 import com.android.sdklib.ISystemImage;
+import com.android.sdklib.SystemImageTags;
 import com.android.sdklib.devices.Device;
 import com.android.sdklib.repository.IdDisplay;
 import com.android.sdklib.repository.targets.SystemImage;
@@ -146,7 +147,7 @@ public final class AvdInfo {
     public IdDisplay getTag() {
         String id = getProperties().get(AvdManager.AVD_INI_TAG_ID);
         if (id == null) {
-            return SystemImage.DEFAULT_TAG;
+            return SystemImageTags.DEFAULT_TAG;
         }
         String display = getProperties().get(AvdManager.AVD_INI_TAG_DISPLAY);
         return IdDisplay.create(id, display == null ? id : display);
@@ -346,7 +347,9 @@ public final class AvdInfo {
             case ERROR_IMAGE_MISSING:
                 return String.format(
                         "Missing system image for %s%s %s.",
-                        SystemImage.DEFAULT_TAG.equals(getTag()) ? "" : (getTag().getDisplay() + " "),
+                        SystemImageTags.DEFAULT_TAG.equals(getTag())
+                                ? ""
+                                : (getTag().getDisplay() + " "),
                         getAbiType(),
                         mName);
             case ERROR_DEVICE_CHANGED:

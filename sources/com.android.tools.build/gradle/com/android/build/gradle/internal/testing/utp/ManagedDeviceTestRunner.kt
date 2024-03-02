@@ -39,6 +39,7 @@ import java.nio.file.Path
 class ManagedDeviceTestRunner(
     private val workerExecutor: WorkerExecutor,
     private val utpDependencies: UtpDependencies,
+    private val utpJvmExecutable: File,
     private val versionedSdkLoader: SdkComponentsBuildService.VersionedSdkLoader,
     private val emulatorControlConfig: EmulatorControlConfig,
     private val retentionConfig: RetentionConfig,
@@ -158,6 +159,7 @@ class ManagedDeviceTestRunner(
                         }
                     runnerConfigs.add(
                         UtpRunnerConfig(
+                            utpJvmExecutable,
                             shardedManagedDevice.deviceName,
                             shardedManagedDevice.id,
                             utpOutputDir,

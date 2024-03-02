@@ -103,9 +103,8 @@ class PathVariables {
           fullPath.length > root.path.length && fullPath[root.path.length] == File.separatorChar
         ) {
           val relative = fullPath.substring(root.path.length)
-          return "\$${prefix.removeSuffix(CANONICALIZED)}$relative".let {
-            if (unix) it.replace('\\', '/') else it
-          }
+          return "\$${prefix.removeSuffix(CANONICALIZED)}$relative"
+            .let { if (unix) it.replace('\\', '/') else it }
         }
       }
     }

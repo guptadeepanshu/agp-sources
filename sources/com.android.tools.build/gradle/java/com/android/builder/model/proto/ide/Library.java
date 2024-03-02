@@ -31,165 +31,6 @@ private static final long serialVersionUID = 0L;
     return new Library();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
-  private Library(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    int mutable_bitField0_ = 0;
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 10: {
-            java.lang.String s = input.readStringRequireUtf8();
-            bitField0_ |= 0x00000001;
-            key_ = s;
-            break;
-          }
-          case 16: {
-            int rawValue = input.readEnum();
-            bitField0_ |= 0x00000002;
-            type_ = rawValue;
-            break;
-          }
-          case 26: {
-            com.android.builder.model.proto.ide.ProjectInfo.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000004) != 0)) {
-              subBuilder = projectInfo_.toBuilder();
-            }
-            projectInfo_ = input.readMessage(com.android.builder.model.proto.ide.ProjectInfo.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(projectInfo_);
-              projectInfo_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000004;
-            break;
-          }
-          case 34: {
-            com.android.builder.model.proto.ide.LibraryInfo.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000008) != 0)) {
-              subBuilder = libraryInfo_.toBuilder();
-            }
-            libraryInfo_ = input.readMessage(com.android.builder.model.proto.ide.LibraryInfo.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(libraryInfo_);
-              libraryInfo_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000008;
-            break;
-          }
-          case 42: {
-            com.android.builder.model.proto.ide.File.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000010) != 0)) {
-              subBuilder = artifact_.toBuilder();
-            }
-            artifact_ = input.readMessage(com.android.builder.model.proto.ide.File.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(artifact_);
-              artifact_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000010;
-            break;
-          }
-          case 50: {
-            com.android.builder.model.proto.ide.File.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000020) != 0)) {
-              subBuilder = lintJar_.toBuilder();
-            }
-            lintJar_ = input.readMessage(com.android.builder.model.proto.ide.File.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(lintJar_);
-              lintJar_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000020;
-            break;
-          }
-          case 58: {
-            com.android.builder.model.proto.ide.File.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000040) != 0)) {
-              subBuilder = srcJar_.toBuilder();
-            }
-            srcJar_ = input.readMessage(com.android.builder.model.proto.ide.File.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(srcJar_);
-              srcJar_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000040;
-            break;
-          }
-          case 66: {
-            com.android.builder.model.proto.ide.File.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000080) != 0)) {
-              subBuilder = docJar_.toBuilder();
-            }
-            docJar_ = input.readMessage(com.android.builder.model.proto.ide.File.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(docJar_);
-              docJar_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000080;
-            break;
-          }
-          case 74: {
-            com.android.builder.model.proto.ide.File.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000100) != 0)) {
-              subBuilder = samplesJar_.toBuilder();
-            }
-            samplesJar_ = input.readMessage(com.android.builder.model.proto.ide.File.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(samplesJar_);
-              samplesJar_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000100;
-            break;
-          }
-          case 82: {
-            com.android.builder.model.proto.ide.AndroidLibraryData.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000200) != 0)) {
-              subBuilder = androidLibraryData_.toBuilder();
-            }
-            androidLibraryData_ = input.readMessage(com.android.builder.model.proto.ide.AndroidLibraryData.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(androidLibraryData_);
-              androidLibraryData_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000200;
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.android.builder.model.proto.ide.IdeModelsProto.internal_static_Library_descriptor;
@@ -205,7 +46,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int KEY_FIELD_NUMBER = 1;
-  private volatile java.lang.Object key_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object key_ = "";
   /**
    * <pre>
    * A Unique key representing the library, and allowing to match it with [GraphItem] instances
@@ -263,7 +105,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TYPE_FIELD_NUMBER = 2;
-  private int type_;
+  private int type_ = 0;
   /**
    * <pre>
    * The type of the dependency.
@@ -295,8 +137,7 @@ private static final long serialVersionUID = 0L;
    * @return The type.
    */
   @java.lang.Override public com.android.builder.model.proto.ide.LibraryType getType() {
-    @SuppressWarnings("deprecation")
-    com.android.builder.model.proto.ide.LibraryType result = com.android.builder.model.proto.ide.LibraryType.valueOf(type_);
+    com.android.builder.model.proto.ide.LibraryType result = com.android.builder.model.proto.ide.LibraryType.forNumber(type_);
     return result == null ? com.android.builder.model.proto.ide.LibraryType.UNRECOGNIZED : result;
   }
 
@@ -305,6 +146,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * Returns the project info to uniquely identify it (and its variant)
+   *
    * Only valid for instances where [type] is [LibraryType.PROJECT]. It is null in other cases.
    * </pre>
    *
@@ -318,6 +160,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * Returns the project info to uniquely identify it (and its variant)
+   *
    * Only valid for instances where [type] is [LibraryType.PROJECT]. It is null in other cases.
    * </pre>
    *
@@ -331,6 +174,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * Returns the project info to uniquely identify it (and its variant)
+   *
    * Only valid for instances where [type] is [LibraryType.PROJECT]. It is null in other cases.
    * </pre>
    *
@@ -346,6 +190,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * Returns the external library info to uniquely identify it (and its variant)
+   *
    * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY], or
    * [LibraryType.JAVA_LIBRARY]. It is null in other cases.
    * </pre>
@@ -360,6 +205,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * Returns the external library info to uniquely identify it (and its variant)
+   *
    * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY], or
    * [LibraryType.JAVA_LIBRARY]. It is null in other cases.
    * </pre>
@@ -374,6 +220,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * Returns the external library info to uniquely identify it (and its variant)
+   *
    * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY], or
    * [LibraryType.JAVA_LIBRARY]. It is null in other cases.
    * </pre>
@@ -390,6 +237,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The artifact location.
+   *
    * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
    * [LibraryType.ANDROID_LIBRARY]
    * </pre>
@@ -404,6 +252,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The artifact location.
+   *
    * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
    * [LibraryType.ANDROID_LIBRARY]
    * </pre>
@@ -418,6 +267,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The artifact location.
+   *
    * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
    * [LibraryType.ANDROID_LIBRARY]
    * </pre>
@@ -435,7 +285,9 @@ private static final long serialVersionUID = 0L;
    * <pre>
    * The jar containing custom lint checks for consumers to use. This is filled by the
    * lintPublish configuration.
+   *
    * The file may not exist.
+   *
    * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY]
    * </pre>
    *
@@ -450,7 +302,9 @@ private static final long serialVersionUID = 0L;
    * <pre>
    * The jar containing custom lint checks for consumers to use. This is filled by the
    * lintPublish configuration.
+   *
    * The file may not exist.
+   *
    * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY]
    * </pre>
    *
@@ -465,7 +319,9 @@ private static final long serialVersionUID = 0L;
    * <pre>
    * The jar containing custom lint checks for consumers to use. This is filled by the
    * lintPublish configuration.
+   *
    * The file may not exist.
+   *
    * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY]
    * </pre>
    *
@@ -481,6 +337,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The jar containing the sources for the [artifact]
+   *
    * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
    * [LibraryType.ANDROID_LIBRARY]
    * </pre>
@@ -495,6 +352,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The jar containing the sources for the [artifact]
+   *
    * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
    * [LibraryType.ANDROID_LIBRARY]
    * </pre>
@@ -509,6 +367,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The jar containing the sources for the [artifact]
+   *
    * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
    * [LibraryType.ANDROID_LIBRARY]
    * </pre>
@@ -525,6 +384,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The jar containing the documentation for the [artifact]
+   *
    * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
    * [LibraryType.ANDROID_LIBRARY]
    * </pre>
@@ -539,6 +399,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The jar containing the documentation for the [artifact]
+   *
    * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
    * [LibraryType.ANDROID_LIBRARY]
    * </pre>
@@ -553,6 +414,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The jar containing the documentation for the [artifact]
+   *
    * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
    * [LibraryType.ANDROID_LIBRARY]
    * </pre>
@@ -569,6 +431,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The jar containing samples for the [artifact]
+   *
    * Only valid for instance where [type] is [LibraryType.JAVA_LIBRARY] or
    * [LibraryType.ANDROID_LIBRARY]
    * </pre>
@@ -583,6 +446,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The jar containing samples for the [artifact]
+   *
    * Only valid for instance where [type] is [LibraryType.JAVA_LIBRARY] or
    * [LibraryType.ANDROID_LIBRARY]
    * </pre>
@@ -597,6 +461,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The jar containing samples for the [artifact]
+   *
    * Only valid for instance where [type] is [LibraryType.JAVA_LIBRARY] or
    * [LibraryType.ANDROID_LIBRARY]
    * </pre>
@@ -690,7 +555,7 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000200) != 0)) {
       output.writeMessage(10, getAndroidLibraryData());
     }
-    unknownFields.writeTo(output);
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -738,7 +603,7 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(10, getAndroidLibraryData());
     }
-    size += unknownFields.getSerializedSize();
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -802,7 +667,7 @@ private static final long serialVersionUID = 0L;
       if (!getAndroidLibraryData()
           .equals(other.getAndroidLibraryData())) return false;
     }
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -853,7 +718,7 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + ANDROID_LIBRARY_DATA_FIELD_NUMBER;
       hash = (53 * hash) + getAndroidLibraryData().hashCode();
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -998,58 +863,49 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       key_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       type_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
-      if (projectInfoBuilder_ == null) {
-        projectInfo_ = null;
-      } else {
-        projectInfoBuilder_.clear();
+      projectInfo_ = null;
+      if (projectInfoBuilder_ != null) {
+        projectInfoBuilder_.dispose();
+        projectInfoBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000004);
-      if (libraryInfoBuilder_ == null) {
-        libraryInfo_ = null;
-      } else {
-        libraryInfoBuilder_.clear();
+      libraryInfo_ = null;
+      if (libraryInfoBuilder_ != null) {
+        libraryInfoBuilder_.dispose();
+        libraryInfoBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000008);
-      if (artifactBuilder_ == null) {
-        artifact_ = null;
-      } else {
-        artifactBuilder_.clear();
+      artifact_ = null;
+      if (artifactBuilder_ != null) {
+        artifactBuilder_.dispose();
+        artifactBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000010);
-      if (lintJarBuilder_ == null) {
-        lintJar_ = null;
-      } else {
-        lintJarBuilder_.clear();
+      lintJar_ = null;
+      if (lintJarBuilder_ != null) {
+        lintJarBuilder_.dispose();
+        lintJarBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000020);
-      if (srcJarBuilder_ == null) {
-        srcJar_ = null;
-      } else {
-        srcJarBuilder_.clear();
+      srcJar_ = null;
+      if (srcJarBuilder_ != null) {
+        srcJarBuilder_.dispose();
+        srcJarBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000040);
-      if (docJarBuilder_ == null) {
-        docJar_ = null;
-      } else {
-        docJarBuilder_.clear();
+      docJar_ = null;
+      if (docJarBuilder_ != null) {
+        docJarBuilder_.dispose();
+        docJarBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000080);
-      if (samplesJarBuilder_ == null) {
-        samplesJar_ = null;
-      } else {
-        samplesJarBuilder_.clear();
+      samplesJar_ = null;
+      if (samplesJarBuilder_ != null) {
+        samplesJarBuilder_.dispose();
+        samplesJarBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000100);
-      if (androidLibraryDataBuilder_ == null) {
-        androidLibraryData_ = null;
-      } else {
-        androidLibraryDataBuilder_.clear();
+      androidLibraryData_ = null;
+      if (androidLibraryDataBuilder_ != null) {
+        androidLibraryDataBuilder_.dispose();
+        androidLibraryDataBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000200);
       return this;
     }
 
@@ -1076,117 +932,73 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.android.builder.model.proto.ide.Library buildPartial() {
       com.android.builder.model.proto.ide.Library result = new com.android.builder.model.proto.ide.Library(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.key_ = key_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.type_ = type_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        if (projectInfoBuilder_ == null) {
-          result.projectInfo_ = projectInfo_;
-        } else {
-          result.projectInfo_ = projectInfoBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000004;
-      }
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        if (libraryInfoBuilder_ == null) {
-          result.libraryInfo_ = libraryInfo_;
-        } else {
-          result.libraryInfo_ = libraryInfoBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000008;
-      }
-      if (((from_bitField0_ & 0x00000010) != 0)) {
-        if (artifactBuilder_ == null) {
-          result.artifact_ = artifact_;
-        } else {
-          result.artifact_ = artifactBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000010;
-      }
-      if (((from_bitField0_ & 0x00000020) != 0)) {
-        if (lintJarBuilder_ == null) {
-          result.lintJar_ = lintJar_;
-        } else {
-          result.lintJar_ = lintJarBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000020;
-      }
-      if (((from_bitField0_ & 0x00000040) != 0)) {
-        if (srcJarBuilder_ == null) {
-          result.srcJar_ = srcJar_;
-        } else {
-          result.srcJar_ = srcJarBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000040;
-      }
-      if (((from_bitField0_ & 0x00000080) != 0)) {
-        if (docJarBuilder_ == null) {
-          result.docJar_ = docJar_;
-        } else {
-          result.docJar_ = docJarBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000080;
-      }
-      if (((from_bitField0_ & 0x00000100) != 0)) {
-        if (samplesJarBuilder_ == null) {
-          result.samplesJar_ = samplesJar_;
-        } else {
-          result.samplesJar_ = samplesJarBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000100;
-      }
-      if (((from_bitField0_ & 0x00000200) != 0)) {
-        if (androidLibraryDataBuilder_ == null) {
-          result.androidLibraryData_ = androidLibraryData_;
-        } else {
-          result.androidLibraryData_ = androidLibraryDataBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000200;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.android.builder.model.proto.ide.Library result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.key_ = key_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.type_ = type_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.projectInfo_ = projectInfoBuilder_ == null
+            ? projectInfo_
+            : projectInfoBuilder_.build();
+        to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.libraryInfo_ = libraryInfoBuilder_ == null
+            ? libraryInfo_
+            : libraryInfoBuilder_.build();
+        to_bitField0_ |= 0x00000008;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.artifact_ = artifactBuilder_ == null
+            ? artifact_
+            : artifactBuilder_.build();
+        to_bitField0_ |= 0x00000010;
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.lintJar_ = lintJarBuilder_ == null
+            ? lintJar_
+            : lintJarBuilder_.build();
+        to_bitField0_ |= 0x00000020;
+      }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.srcJar_ = srcJarBuilder_ == null
+            ? srcJar_
+            : srcJarBuilder_.build();
+        to_bitField0_ |= 0x00000040;
+      }
+      if (((from_bitField0_ & 0x00000080) != 0)) {
+        result.docJar_ = docJarBuilder_ == null
+            ? docJar_
+            : docJarBuilder_.build();
+        to_bitField0_ |= 0x00000080;
+      }
+      if (((from_bitField0_ & 0x00000100) != 0)) {
+        result.samplesJar_ = samplesJarBuilder_ == null
+            ? samplesJar_
+            : samplesJarBuilder_.build();
+        to_bitField0_ |= 0x00000100;
+      }
+      if (((from_bitField0_ & 0x00000200) != 0)) {
+        result.androidLibraryData_ = androidLibraryDataBuilder_ == null
+            ? androidLibraryData_
+            : androidLibraryDataBuilder_.build();
+        to_bitField0_ |= 0x00000200;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.android.builder.model.proto.ide.Library) {
@@ -1200,8 +1012,8 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.android.builder.model.proto.ide.Library other) {
       if (other == com.android.builder.model.proto.ide.Library.getDefaultInstance()) return this;
       if (other.hasKey()) {
-        bitField0_ |= 0x00000001;
         key_ = other.key_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasType()) {
@@ -1231,7 +1043,7 @@ private static final long serialVersionUID = 0L;
       if (other.hasAndroidLibraryData()) {
         mergeAndroidLibraryData(other.getAndroidLibraryData());
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -1246,17 +1058,96 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.android.builder.model.proto.ide.Library parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              key_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000001;
+              break;
+            } // case 10
+            case 16: {
+              type_ = input.readEnum();
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 16
+            case 26: {
+              input.readMessage(
+                  getProjectInfoFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 26
+            case 34: {
+              input.readMessage(
+                  getLibraryInfoFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 34
+            case 42: {
+              input.readMessage(
+                  getArtifactFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000010;
+              break;
+            } // case 42
+            case 50: {
+              input.readMessage(
+                  getLintJarFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000020;
+              break;
+            } // case 50
+            case 58: {
+              input.readMessage(
+                  getSrcJarFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000040;
+              break;
+            } // case 58
+            case 66: {
+              input.readMessage(
+                  getDocJarFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000080;
+              break;
+            } // case 66
+            case 74: {
+              input.readMessage(
+                  getSamplesJarFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000100;
+              break;
+            } // case 74
+            case 82: {
+              input.readMessage(
+                  getAndroidLibraryDataFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000200;
+              break;
+            } // case 82
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.android.builder.model.proto.ide.Library) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
     private int bitField0_;
@@ -1325,11 +1216,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setKey(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       key_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1342,8 +1231,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearKey() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       key_ = getDefaultInstance().getKey();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -1358,12 +1247,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setKeyBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       key_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1401,8 +1288,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTypeValue(int value) {
-      bitField0_ |= 0x00000002;
       type_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1416,8 +1303,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.android.builder.model.proto.ide.LibraryType getType() {
-      @SuppressWarnings("deprecation")
-      com.android.builder.model.proto.ide.LibraryType result = com.android.builder.model.proto.ide.LibraryType.valueOf(type_);
+      com.android.builder.model.proto.ide.LibraryType result = com.android.builder.model.proto.ide.LibraryType.forNumber(type_);
       return result == null ? com.android.builder.model.proto.ide.LibraryType.UNRECOGNIZED : result;
     }
     /**
@@ -1459,6 +1345,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Returns the project info to uniquely identify it (and its variant)
+     *
      * Only valid for instances where [type] is [LibraryType.PROJECT]. It is null in other cases.
      * </pre>
      *
@@ -1471,6 +1358,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Returns the project info to uniquely identify it (and its variant)
+     *
      * Only valid for instances where [type] is [LibraryType.PROJECT]. It is null in other cases.
      * </pre>
      *
@@ -1487,6 +1375,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Returns the project info to uniquely identify it (and its variant)
+     *
      * Only valid for instances where [type] is [LibraryType.PROJECT]. It is null in other cases.
      * </pre>
      *
@@ -1498,16 +1387,17 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         projectInfo_ = value;
-        onChanged();
       } else {
         projectInfoBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * Returns the project info to uniquely identify it (and its variant)
+     *
      * Only valid for instances where [type] is [LibraryType.PROJECT]. It is null in other cases.
      * </pre>
      *
@@ -1517,16 +1407,17 @@ private static final long serialVersionUID = 0L;
         com.android.builder.model.proto.ide.ProjectInfo.Builder builderForValue) {
       if (projectInfoBuilder_ == null) {
         projectInfo_ = builderForValue.build();
-        onChanged();
       } else {
         projectInfoBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * Returns the project info to uniquely identify it (and its variant)
+     *
      * Only valid for instances where [type] is [LibraryType.PROJECT]. It is null in other cases.
      * </pre>
      *
@@ -1535,41 +1426,42 @@ private static final long serialVersionUID = 0L;
     public Builder mergeProjectInfo(com.android.builder.model.proto.ide.ProjectInfo value) {
       if (projectInfoBuilder_ == null) {
         if (((bitField0_ & 0x00000004) != 0) &&
-            projectInfo_ != null &&
-            projectInfo_ != com.android.builder.model.proto.ide.ProjectInfo.getDefaultInstance()) {
-          projectInfo_ =
-            com.android.builder.model.proto.ide.ProjectInfo.newBuilder(projectInfo_).mergeFrom(value).buildPartial();
+          projectInfo_ != null &&
+          projectInfo_ != com.android.builder.model.proto.ide.ProjectInfo.getDefaultInstance()) {
+          getProjectInfoBuilder().mergeFrom(value);
         } else {
           projectInfo_ = value;
         }
-        onChanged();
       } else {
         projectInfoBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * Returns the project info to uniquely identify it (and its variant)
+     *
      * Only valid for instances where [type] is [LibraryType.PROJECT]. It is null in other cases.
      * </pre>
      *
      * <code>optional .ProjectInfo project_info = 3;</code>
      */
     public Builder clearProjectInfo() {
-      if (projectInfoBuilder_ == null) {
-        projectInfo_ = null;
-        onChanged();
-      } else {
-        projectInfoBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000004);
+      projectInfo_ = null;
+      if (projectInfoBuilder_ != null) {
+        projectInfoBuilder_.dispose();
+        projectInfoBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * Returns the project info to uniquely identify it (and its variant)
+     *
      * Only valid for instances where [type] is [LibraryType.PROJECT]. It is null in other cases.
      * </pre>
      *
@@ -1583,6 +1475,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Returns the project info to uniquely identify it (and its variant)
+     *
      * Only valid for instances where [type] is [LibraryType.PROJECT]. It is null in other cases.
      * </pre>
      *
@@ -1599,6 +1492,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Returns the project info to uniquely identify it (and its variant)
+     *
      * Only valid for instances where [type] is [LibraryType.PROJECT]. It is null in other cases.
      * </pre>
      *
@@ -1624,6 +1518,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Returns the external library info to uniquely identify it (and its variant)
+     *
      * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY], or
      * [LibraryType.JAVA_LIBRARY]. It is null in other cases.
      * </pre>
@@ -1637,6 +1532,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Returns the external library info to uniquely identify it (and its variant)
+     *
      * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY], or
      * [LibraryType.JAVA_LIBRARY]. It is null in other cases.
      * </pre>
@@ -1654,6 +1550,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Returns the external library info to uniquely identify it (and its variant)
+     *
      * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY], or
      * [LibraryType.JAVA_LIBRARY]. It is null in other cases.
      * </pre>
@@ -1666,16 +1563,17 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         libraryInfo_ = value;
-        onChanged();
       } else {
         libraryInfoBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * Returns the external library info to uniquely identify it (and its variant)
+     *
      * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY], or
      * [LibraryType.JAVA_LIBRARY]. It is null in other cases.
      * </pre>
@@ -1686,16 +1584,17 @@ private static final long serialVersionUID = 0L;
         com.android.builder.model.proto.ide.LibraryInfo.Builder builderForValue) {
       if (libraryInfoBuilder_ == null) {
         libraryInfo_ = builderForValue.build();
-        onChanged();
       } else {
         libraryInfoBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * Returns the external library info to uniquely identify it (and its variant)
+     *
      * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY], or
      * [LibraryType.JAVA_LIBRARY]. It is null in other cases.
      * </pre>
@@ -1705,23 +1604,23 @@ private static final long serialVersionUID = 0L;
     public Builder mergeLibraryInfo(com.android.builder.model.proto.ide.LibraryInfo value) {
       if (libraryInfoBuilder_ == null) {
         if (((bitField0_ & 0x00000008) != 0) &&
-            libraryInfo_ != null &&
-            libraryInfo_ != com.android.builder.model.proto.ide.LibraryInfo.getDefaultInstance()) {
-          libraryInfo_ =
-            com.android.builder.model.proto.ide.LibraryInfo.newBuilder(libraryInfo_).mergeFrom(value).buildPartial();
+          libraryInfo_ != null &&
+          libraryInfo_ != com.android.builder.model.proto.ide.LibraryInfo.getDefaultInstance()) {
+          getLibraryInfoBuilder().mergeFrom(value);
         } else {
           libraryInfo_ = value;
         }
-        onChanged();
       } else {
         libraryInfoBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * Returns the external library info to uniquely identify it (and its variant)
+     *
      * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY], or
      * [LibraryType.JAVA_LIBRARY]. It is null in other cases.
      * </pre>
@@ -1729,18 +1628,19 @@ private static final long serialVersionUID = 0L;
      * <code>optional .LibraryInfo library_info = 4;</code>
      */
     public Builder clearLibraryInfo() {
-      if (libraryInfoBuilder_ == null) {
-        libraryInfo_ = null;
-        onChanged();
-      } else {
-        libraryInfoBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000008);
+      libraryInfo_ = null;
+      if (libraryInfoBuilder_ != null) {
+        libraryInfoBuilder_.dispose();
+        libraryInfoBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * Returns the external library info to uniquely identify it (and its variant)
+     *
      * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY], or
      * [LibraryType.JAVA_LIBRARY]. It is null in other cases.
      * </pre>
@@ -1755,6 +1655,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Returns the external library info to uniquely identify it (and its variant)
+     *
      * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY], or
      * [LibraryType.JAVA_LIBRARY]. It is null in other cases.
      * </pre>
@@ -1772,6 +1673,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * Returns the external library info to uniquely identify it (and its variant)
+     *
      * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY], or
      * [LibraryType.JAVA_LIBRARY]. It is null in other cases.
      * </pre>
@@ -1798,6 +1700,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The artifact location.
+     *
      * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -1811,6 +1714,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The artifact location.
+     *
      * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -1828,6 +1732,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The artifact location.
+     *
      * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -1840,16 +1745,17 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         artifact_ = value;
-        onChanged();
       } else {
         artifactBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The artifact location.
+     *
      * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -1860,16 +1766,17 @@ private static final long serialVersionUID = 0L;
         com.android.builder.model.proto.ide.File.Builder builderForValue) {
       if (artifactBuilder_ == null) {
         artifact_ = builderForValue.build();
-        onChanged();
       } else {
         artifactBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The artifact location.
+     *
      * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -1879,23 +1786,23 @@ private static final long serialVersionUID = 0L;
     public Builder mergeArtifact(com.android.builder.model.proto.ide.File value) {
       if (artifactBuilder_ == null) {
         if (((bitField0_ & 0x00000010) != 0) &&
-            artifact_ != null &&
-            artifact_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
-          artifact_ =
-            com.android.builder.model.proto.ide.File.newBuilder(artifact_).mergeFrom(value).buildPartial();
+          artifact_ != null &&
+          artifact_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
+          getArtifactBuilder().mergeFrom(value);
         } else {
           artifact_ = value;
         }
-        onChanged();
       } else {
         artifactBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The artifact location.
+     *
      * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -1903,18 +1810,19 @@ private static final long serialVersionUID = 0L;
      * <code>optional .File artifact = 5;</code>
      */
     public Builder clearArtifact() {
-      if (artifactBuilder_ == null) {
-        artifact_ = null;
-        onChanged();
-      } else {
-        artifactBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000010);
+      artifact_ = null;
+      if (artifactBuilder_ != null) {
+        artifactBuilder_.dispose();
+        artifactBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The artifact location.
+     *
      * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -1929,6 +1837,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The artifact location.
+     *
      * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -1946,6 +1855,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The artifact location.
+     *
      * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -1973,7 +1883,9 @@ private static final long serialVersionUID = 0L;
      * <pre>
      * The jar containing custom lint checks for consumers to use. This is filled by the
      * lintPublish configuration.
+     *
      * The file may not exist.
+     *
      * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY]
      * </pre>
      *
@@ -1987,7 +1899,9 @@ private static final long serialVersionUID = 0L;
      * <pre>
      * The jar containing custom lint checks for consumers to use. This is filled by the
      * lintPublish configuration.
+     *
      * The file may not exist.
+     *
      * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY]
      * </pre>
      *
@@ -2005,7 +1919,9 @@ private static final long serialVersionUID = 0L;
      * <pre>
      * The jar containing custom lint checks for consumers to use. This is filled by the
      * lintPublish configuration.
+     *
      * The file may not exist.
+     *
      * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY]
      * </pre>
      *
@@ -2017,18 +1933,20 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         lintJar_ = value;
-        onChanged();
       } else {
         lintJarBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The jar containing custom lint checks for consumers to use. This is filled by the
      * lintPublish configuration.
+     *
      * The file may not exist.
+     *
      * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY]
      * </pre>
      *
@@ -2038,18 +1956,20 @@ private static final long serialVersionUID = 0L;
         com.android.builder.model.proto.ide.File.Builder builderForValue) {
       if (lintJarBuilder_ == null) {
         lintJar_ = builderForValue.build();
-        onChanged();
       } else {
         lintJarBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The jar containing custom lint checks for consumers to use. This is filled by the
      * lintPublish configuration.
+     *
      * The file may not exist.
+     *
      * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY]
      * </pre>
      *
@@ -2058,45 +1978,48 @@ private static final long serialVersionUID = 0L;
     public Builder mergeLintJar(com.android.builder.model.proto.ide.File value) {
       if (lintJarBuilder_ == null) {
         if (((bitField0_ & 0x00000020) != 0) &&
-            lintJar_ != null &&
-            lintJar_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
-          lintJar_ =
-            com.android.builder.model.proto.ide.File.newBuilder(lintJar_).mergeFrom(value).buildPartial();
+          lintJar_ != null &&
+          lintJar_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
+          getLintJarBuilder().mergeFrom(value);
         } else {
           lintJar_ = value;
         }
-        onChanged();
       } else {
         lintJarBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The jar containing custom lint checks for consumers to use. This is filled by the
      * lintPublish configuration.
+     *
      * The file may not exist.
+     *
      * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY]
      * </pre>
      *
      * <code>optional .File lint_jar = 6;</code>
      */
     public Builder clearLintJar() {
-      if (lintJarBuilder_ == null) {
-        lintJar_ = null;
-        onChanged();
-      } else {
-        lintJarBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000020);
+      lintJar_ = null;
+      if (lintJarBuilder_ != null) {
+        lintJarBuilder_.dispose();
+        lintJarBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The jar containing custom lint checks for consumers to use. This is filled by the
      * lintPublish configuration.
+     *
      * The file may not exist.
+     *
      * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY]
      * </pre>
      *
@@ -2111,7 +2034,9 @@ private static final long serialVersionUID = 0L;
      * <pre>
      * The jar containing custom lint checks for consumers to use. This is filled by the
      * lintPublish configuration.
+     *
      * The file may not exist.
+     *
      * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY]
      * </pre>
      *
@@ -2129,7 +2054,9 @@ private static final long serialVersionUID = 0L;
      * <pre>
      * The jar containing custom lint checks for consumers to use. This is filled by the
      * lintPublish configuration.
+     *
      * The file may not exist.
+     *
      * Only valid for instances where [type] is [LibraryType.ANDROID_LIBRARY]
      * </pre>
      *
@@ -2155,6 +2082,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The jar containing the sources for the [artifact]
+     *
      * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -2168,6 +2096,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The jar containing the sources for the [artifact]
+     *
      * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -2185,6 +2114,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The jar containing the sources for the [artifact]
+     *
      * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -2197,16 +2127,17 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         srcJar_ = value;
-        onChanged();
       } else {
         srcJarBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The jar containing the sources for the [artifact]
+     *
      * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -2217,16 +2148,17 @@ private static final long serialVersionUID = 0L;
         com.android.builder.model.proto.ide.File.Builder builderForValue) {
       if (srcJarBuilder_ == null) {
         srcJar_ = builderForValue.build();
-        onChanged();
       } else {
         srcJarBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The jar containing the sources for the [artifact]
+     *
      * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -2236,23 +2168,23 @@ private static final long serialVersionUID = 0L;
     public Builder mergeSrcJar(com.android.builder.model.proto.ide.File value) {
       if (srcJarBuilder_ == null) {
         if (((bitField0_ & 0x00000040) != 0) &&
-            srcJar_ != null &&
-            srcJar_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
-          srcJar_ =
-            com.android.builder.model.proto.ide.File.newBuilder(srcJar_).mergeFrom(value).buildPartial();
+          srcJar_ != null &&
+          srcJar_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
+          getSrcJarBuilder().mergeFrom(value);
         } else {
           srcJar_ = value;
         }
-        onChanged();
       } else {
         srcJarBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The jar containing the sources for the [artifact]
+     *
      * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -2260,18 +2192,19 @@ private static final long serialVersionUID = 0L;
      * <code>optional .File src_jar = 7;</code>
      */
     public Builder clearSrcJar() {
-      if (srcJarBuilder_ == null) {
-        srcJar_ = null;
-        onChanged();
-      } else {
-        srcJarBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000040);
+      srcJar_ = null;
+      if (srcJarBuilder_ != null) {
+        srcJarBuilder_.dispose();
+        srcJarBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The jar containing the sources for the [artifact]
+     *
      * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -2286,6 +2219,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The jar containing the sources for the [artifact]
+     *
      * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -2303,6 +2237,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The jar containing the sources for the [artifact]
+     *
      * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -2329,6 +2264,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The jar containing the documentation for the [artifact]
+     *
      * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -2342,6 +2278,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The jar containing the documentation for the [artifact]
+     *
      * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -2359,6 +2296,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The jar containing the documentation for the [artifact]
+     *
      * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -2371,16 +2309,17 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         docJar_ = value;
-        onChanged();
       } else {
         docJarBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000080;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The jar containing the documentation for the [artifact]
+     *
      * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -2391,16 +2330,17 @@ private static final long serialVersionUID = 0L;
         com.android.builder.model.proto.ide.File.Builder builderForValue) {
       if (docJarBuilder_ == null) {
         docJar_ = builderForValue.build();
-        onChanged();
       } else {
         docJarBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000080;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The jar containing the documentation for the [artifact]
+     *
      * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -2410,23 +2350,23 @@ private static final long serialVersionUID = 0L;
     public Builder mergeDocJar(com.android.builder.model.proto.ide.File value) {
       if (docJarBuilder_ == null) {
         if (((bitField0_ & 0x00000080) != 0) &&
-            docJar_ != null &&
-            docJar_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
-          docJar_ =
-            com.android.builder.model.proto.ide.File.newBuilder(docJar_).mergeFrom(value).buildPartial();
+          docJar_ != null &&
+          docJar_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
+          getDocJarBuilder().mergeFrom(value);
         } else {
           docJar_ = value;
         }
-        onChanged();
       } else {
         docJarBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000080;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The jar containing the documentation for the [artifact]
+     *
      * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -2434,18 +2374,19 @@ private static final long serialVersionUID = 0L;
      * <code>optional .File doc_jar = 8;</code>
      */
     public Builder clearDocJar() {
-      if (docJarBuilder_ == null) {
-        docJar_ = null;
-        onChanged();
-      } else {
-        docJarBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000080);
+      docJar_ = null;
+      if (docJarBuilder_ != null) {
+        docJarBuilder_.dispose();
+        docJarBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The jar containing the documentation for the [artifact]
+     *
      * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -2460,6 +2401,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The jar containing the documentation for the [artifact]
+     *
      * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -2477,6 +2419,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The jar containing the documentation for the [artifact]
+     *
      * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -2503,6 +2446,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The jar containing samples for the [artifact]
+     *
      * Only valid for instance where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -2516,6 +2460,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The jar containing samples for the [artifact]
+     *
      * Only valid for instance where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -2533,6 +2478,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The jar containing samples for the [artifact]
+     *
      * Only valid for instance where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -2545,16 +2491,17 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         samplesJar_ = value;
-        onChanged();
       } else {
         samplesJarBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000100;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The jar containing samples for the [artifact]
+     *
      * Only valid for instance where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -2565,16 +2512,17 @@ private static final long serialVersionUID = 0L;
         com.android.builder.model.proto.ide.File.Builder builderForValue) {
       if (samplesJarBuilder_ == null) {
         samplesJar_ = builderForValue.build();
-        onChanged();
       } else {
         samplesJarBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000100;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The jar containing samples for the [artifact]
+     *
      * Only valid for instance where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -2584,23 +2532,23 @@ private static final long serialVersionUID = 0L;
     public Builder mergeSamplesJar(com.android.builder.model.proto.ide.File value) {
       if (samplesJarBuilder_ == null) {
         if (((bitField0_ & 0x00000100) != 0) &&
-            samplesJar_ != null &&
-            samplesJar_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
-          samplesJar_ =
-            com.android.builder.model.proto.ide.File.newBuilder(samplesJar_).mergeFrom(value).buildPartial();
+          samplesJar_ != null &&
+          samplesJar_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
+          getSamplesJarBuilder().mergeFrom(value);
         } else {
           samplesJar_ = value;
         }
-        onChanged();
       } else {
         samplesJarBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000100;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The jar containing samples for the [artifact]
+     *
      * Only valid for instance where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -2608,18 +2556,19 @@ private static final long serialVersionUID = 0L;
      * <code>optional .File samples_jar = 9;</code>
      */
     public Builder clearSamplesJar() {
-      if (samplesJarBuilder_ == null) {
-        samplesJar_ = null;
-        onChanged();
-      } else {
-        samplesJarBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000100);
+      samplesJar_ = null;
+      if (samplesJarBuilder_ != null) {
+        samplesJarBuilder_.dispose();
+        samplesJarBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The jar containing samples for the [artifact]
+     *
      * Only valid for instance where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -2634,6 +2583,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The jar containing samples for the [artifact]
+     *
      * Only valid for instance where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -2651,6 +2601,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The jar containing samples for the [artifact]
+     *
      * Only valid for instance where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      * </pre>
@@ -2713,11 +2664,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         androidLibraryData_ = value;
-        onChanged();
       } else {
         androidLibraryDataBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000200;
+      onChanged();
       return this;
     }
     /**
@@ -2731,11 +2682,11 @@ private static final long serialVersionUID = 0L;
         com.android.builder.model.proto.ide.AndroidLibraryData.Builder builderForValue) {
       if (androidLibraryDataBuilder_ == null) {
         androidLibraryData_ = builderForValue.build();
-        onChanged();
       } else {
         androidLibraryDataBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000200;
+      onChanged();
       return this;
     }
     /**
@@ -2748,18 +2699,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeAndroidLibraryData(com.android.builder.model.proto.ide.AndroidLibraryData value) {
       if (androidLibraryDataBuilder_ == null) {
         if (((bitField0_ & 0x00000200) != 0) &&
-            androidLibraryData_ != null &&
-            androidLibraryData_ != com.android.builder.model.proto.ide.AndroidLibraryData.getDefaultInstance()) {
-          androidLibraryData_ =
-            com.android.builder.model.proto.ide.AndroidLibraryData.newBuilder(androidLibraryData_).mergeFrom(value).buildPartial();
+          androidLibraryData_ != null &&
+          androidLibraryData_ != com.android.builder.model.proto.ide.AndroidLibraryData.getDefaultInstance()) {
+          getAndroidLibraryDataBuilder().mergeFrom(value);
         } else {
           androidLibraryData_ = value;
         }
-        onChanged();
       } else {
         androidLibraryDataBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000200;
+      onChanged();
       return this;
     }
     /**
@@ -2770,13 +2720,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .AndroidLibraryData android_library_data = 10;</code>
      */
     public Builder clearAndroidLibraryData() {
-      if (androidLibraryDataBuilder_ == null) {
-        androidLibraryData_ = null;
-        onChanged();
-      } else {
-        androidLibraryDataBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000200);
+      androidLibraryData_ = null;
+      if (androidLibraryDataBuilder_ != null) {
+        androidLibraryDataBuilder_.dispose();
+        androidLibraryDataBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -2859,7 +2809,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new Library(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

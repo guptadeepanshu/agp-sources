@@ -22,15 +22,12 @@ import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
 import org.gradle.api.artifacts.result.ResolvedArtifactResult
 import java.io.File
-import java.lang.StringBuilder
 
-internal data class ProjectKey(val buildId: String, val projectPath: String, val variantName: String?) {
+internal data class ProjectKey(val buildTreePath: String, val variantName: String?) {
 
     override fun toString(): String {
         return StringBuilder().apply {
-            append(buildId)
-            append(" ")
-            append(projectPath)
+            append(buildTreePath)
             if (variantName != null) {
                 append(" (").append(variantName).append(")")
             }
@@ -40,7 +37,7 @@ internal data class ProjectKey(val buildId: String, val projectPath: String, val
 
 internal fun asProjectKey(artifact: ResolvedArtifactResult): ProjectKey {
     val id = artifact.id.componentIdentifier as ProjectComponentIdentifier
-    return ProjectKey(id.build.buildPath, id.projectPath, artifact.getVariantName())
+    return ProjectKey(id.buildTreePath, artifact.getVariantName())
 }
 
 internal fun ArtifactCollection.asProjectKeyedMap(): Map<ProjectKey, File> {
@@ -54,17 +51,14 @@ internal fun ArtifactCollection.asProjectKeyedMap(): Map<ProjectKey, File> {
  * TODO: Remove when the non checkDependencies code path is removed.
  */
 internal data class ProjectSourceSetKey(
-    val buildId: String,
-    val projectPath: String,
+    val buildTreePath: String,
     val variantName: String?,
     val isTestFixtures: Boolean = false
 ) {
 
     override fun toString(): String {
         return StringBuilder().apply {
-            append(buildId)
-            append(" ")
-            append(projectPath)
+            append(buildTreePath)
             if (isTestFixtures) {
                 append(" (testFixtures)")
             }
@@ -78,8 +72,7 @@ internal data class ProjectSourceSetKey(
 internal fun asProjectSourceSetKey(artifact: ResolvedArtifactResult): ProjectSourceSetKey {
     val id = artifact.id.componentIdentifier as ProjectComponentIdentifier
     return ProjectSourceSetKey(
-        id.build.buildPath,
-        id.projectPath,
+        id.buildTreePath,
         artifact.getVariantName(),
         artifact.hasProjectTestFixturesCapability()
     )

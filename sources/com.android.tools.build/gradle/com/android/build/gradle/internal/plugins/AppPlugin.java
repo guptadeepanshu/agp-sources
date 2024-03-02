@@ -22,6 +22,7 @@ import com.android.build.api.dsl.ApplicationBuildFeatures;
 import com.android.build.api.dsl.ApplicationBuildType;
 import com.android.build.api.dsl.ApplicationDefaultConfig;
 import com.android.build.api.dsl.ApplicationExtension;
+import com.android.build.api.dsl.ApplicationInstallation;
 import com.android.build.api.dsl.ApplicationProductFlavor;
 import com.android.build.api.dsl.SdkComponents;
 import com.android.build.api.extension.impl.ApplicationAndroidComponentsExtensionImpl;
@@ -32,7 +33,6 @@ import com.android.build.api.variant.ApplicationVariant;
 import com.android.build.api.variant.ApplicationVariantBuilder;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.api.BaseVariantOutput;
-import com.android.build.gradle.internal.AppModelBuilder;
 import com.android.build.gradle.internal.ExtraModelInfo;
 import com.android.build.gradle.internal.component.ApplicationCreationConfig;
 import com.android.build.gradle.internal.component.TestComponentCreationConfig;
@@ -75,6 +75,7 @@ public class AppPlugin
                 ApplicationDefaultConfig,
                 ApplicationProductFlavor,
                 ApplicationAndroidResources,
+                ApplicationInstallation,
                 com.android.build.api.dsl.ApplicationExtension,
                 ApplicationAndroidComponentsExtension,
                 ApplicationVariantBuilder,
@@ -93,18 +94,6 @@ public class AppPlugin
     protected void pluginSpecificApply(@NonNull Project project) {
     }
 
-    @Override
-    protected void registerModelBuilder(
-            @NonNull Project project,
-            @NonNull ToolingModelBuilderRegistry registry,
-            @NonNull VariantModel variantModel,
-            @NonNull BaseExtension extension,
-            @NonNull ExtraModelInfo extraModelInfo) {
-        registry.register(
-                new AppModelBuilder(
-                        project, variantModel, (BaseAppModuleExtension) extension, extraModelInfo));
-    }
-
     @NonNull
     @Override
     protected ExtensionData<
@@ -113,6 +102,7 @@ public class AppPlugin
                     ApplicationDefaultConfig,
                     ApplicationProductFlavor,
                     ApplicationAndroidResources,
+                    ApplicationInstallation,
                     ApplicationExtension>
             createExtension(
                     @NonNull DslServices dslServices,

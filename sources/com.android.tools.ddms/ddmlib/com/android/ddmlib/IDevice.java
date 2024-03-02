@@ -17,6 +17,7 @@ package com.android.ddmlib;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.annotations.concurrency.Slow;
 import com.android.ddmlib.clientmanager.DeviceClientManager;
 import com.android.ddmlib.log.LogReceiver;
 import com.android.sdklib.AndroidVersion;
@@ -34,9 +35,10 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 /** A Device. It can be a physical device or an emulator. */
-public interface IDevice extends IShellEnabledDevice {
+public interface IDevice extends IShellEnabledDevice, IUserDataMap {
     String UNKNOWN_PACKAGE = "";
     /** Emulator Serial Number regexp. */
     String RE_EMULATOR_SN = "emulator-(\\d+)"; //$NON-NLS-1$
@@ -304,10 +306,10 @@ public interface IDevice extends IShellEnabledDevice {
     /** Returns whether this device supports the given hardware feature. */
     boolean supportsFeature(@NonNull HardwareFeature feature);
 
-    /**
-     * Returns a map of running services (key is service name) to [ServiceInfo] (value).
-     */
-    Map<String, ServiceInfo> services();
+    /** Returns a map of running services (key is service name) to [ServiceInfo] (value). */
+    default Map<String, ServiceInfo> services() {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * Returns a mount point.
@@ -494,7 +496,23 @@ public interface IDevice extends IShellEnabledDevice {
             @Nullable InputStream is)
             throws TimeoutException, AdbCommandRejectedException, ShellCommandUnresponsiveException,
                     IOException {
-        throw new UnsupportedOperationException();
+        if (supportsFeature(Feature.ABB_EXEC)) {
+            executeRemoteCommand(
+                    AdbHelper.AdbService.ABB_EXEC,
+                    String.join("\u0000", parameters),
+                    receiver,
+                    0L,
+                    maxTimeToOutputResponse,
+                    maxTimeUnits,
+                    is);
+        } else {
+            executeShellCommand(
+                    "cmd " + String.join(" ", parameters),
+                    receiver,
+                    maxTimeToOutputResponse,
+                    maxTimeUnits,
+                    is);
+        }
     }
 
     /**
@@ -655,6 +673,22 @@ public interface IDevice extends IShellEnabledDevice {
      */
     void pullFile(String remote, String local)
             throws IOException, AdbCommandRejectedException, TimeoutException, SyncException;
+
+    /**
+     * Stat a file on the device.
+     *
+     * <p>Returns stat info about the file, or null if file is not found.
+     *
+     * @param remote the full path to the remote file
+     * @throws IOException in case of an IO exception.
+     * @throws AdbCommandRejectedException if adb rejects the command
+     * @throws TimeoutException in case of a timeout reading responses from the device
+     */
+    @Nullable
+    default SyncService.FileStat statFile(String remote)
+            throws IOException, AdbCommandRejectedException, TimeoutException {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * Installs an Android application on device. This is a helper method that combines the
@@ -1031,6 +1065,138 @@ public interface IDevice extends IShellEnabledDevice {
     AndroidVersion getVersion();
 
     /**
+     * Executes a shell command on the device and retrieve the output. The output is handed to
+     * <var>rcvr</var> as it arrives.
+     *
+     * @param command the shell command to execute
+     * @param rcvr the {@link IShellOutputReceiver} that will receives the output of the shell
+     *     command
+     * @param maxTimeout max time for the command to return. A value of 0 means no max timeout will
+     *     be applied.
+     * @param maxTimeToOutputResponse max time between command output. If more time passes between
+     *     command output, the method will throw {@link ShellCommandUnresponsiveException}. A value
+     *     of 0 means the method will wait forever for command output and never throw.
+     * @param maxTimeUnits Units for non-zero {@code maxTimeout} and {@code maxTimeToOutputResponse}
+     *     values.
+     * @throws TimeoutException in case of timeout on the connection when sending the command.
+     * @throws AdbCommandRejectedException if adb rejects the command
+     * @throws ShellCommandUnresponsiveException in case the shell command doesn't send any output
+     *     for a period longer than <var>maxTimeToOutputResponse</var>.
+     * @throws IOException in case of I/O error on the connection.
+     * @see DdmPreferences#getTimeOut()
+     */
+    default void executeRemoteCommand(
+            @NonNull String command,
+            @NonNull IShellOutputReceiver rcvr,
+            long maxTimeout,
+            long maxTimeToOutputResponse,
+            @NonNull TimeUnit maxTimeUnits)
+            throws TimeoutException, AdbCommandRejectedException, ShellCommandUnresponsiveException,
+                    IOException {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Executes a shell command on the device and retrieve the output. The output is handed to
+     * <var>rcvr</var> as it arrives.
+     *
+     * @param command the shell command to execute
+     * @param rcvr the {@link IShellOutputReceiver} that will receives the output of the shell
+     *     command
+     * @param maxTimeToOutputResponse max time between command output. If more time passes between
+     *     command output, the method will throw {@link ShellCommandUnresponsiveException}. A value
+     *     of 0 means the method will wait forever for command output and never throw.
+     * @param maxTimeUnits Units for non-zero {@code maxTimeToOutputResponse} values.
+     * @throws TimeoutException in case of timeout on the connection when sending the command.
+     * @throws AdbCommandRejectedException if adb rejects the command
+     * @throws ShellCommandUnresponsiveException in case the shell command doesn't send any output
+     *     for a period longer than <var>maxTimeToOutputResponse</var>.
+     * @throws IOException in case of I/O error on the connection.
+     * @see DdmPreferences#getTimeOut()
+     */
+    default void executeRemoteCommand(
+            @NonNull String command,
+            @NonNull IShellOutputReceiver rcvr,
+            long maxTimeToOutputResponse,
+            @NonNull TimeUnit maxTimeUnits)
+            throws TimeoutException, AdbCommandRejectedException, ShellCommandUnresponsiveException,
+                    IOException {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Executes a remote command on the device and retrieve the output. The output is handed to
+     * <var>rcvr</var> as it arrives. The command is execute by the remote service identified by the
+     * adbService parameter.
+     *
+     * @param adbService the {@link AdbHelper.AdbService} to use to run the command.
+     * @param command the shell command to execute
+     * @param rcvr the {@link IShellOutputReceiver} that will receives the output of the shell
+     *     command
+     * @param maxTimeToOutputResponse max time between command output. If more time passes between
+     *     command output, the method will throw {@link ShellCommandUnresponsiveException}. A value
+     *     of 0 means the method will wait forever for command output and never throw.
+     * @param maxTimeUnits Units for non-zero {@code maxTimeToOutputResponse} values.
+     * @param is a optional {@link InputStream} to be streamed up after invoking the command and
+     *     before retrieving the response.
+     * @throws TimeoutException in case of timeout on the connection when sending the command.
+     * @throws AdbCommandRejectedException if adb rejects the command
+     * @throws ShellCommandUnresponsiveException in case the shell command doesn't send any output
+     *     for a period longer than <var>maxTimeToOutputResponse</var>.
+     * @throws IOException in case of I/O error on the connection.
+     * @see DdmPreferences#getTimeOut()
+     */
+    default void executeRemoteCommand(
+            @NonNull AdbHelper.AdbService adbService,
+            @NonNull String command,
+            @NonNull IShellOutputReceiver rcvr,
+            long maxTimeToOutputResponse,
+            @NonNull TimeUnit maxTimeUnits,
+            @Nullable InputStream is)
+            throws TimeoutException, AdbCommandRejectedException, ShellCommandUnresponsiveException,
+                    IOException {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Executes a remote command on the device and retrieve the output. The output is handed to
+     * <var>rcvr</var> as it arrives. The command is execute by the remote service identified by the
+     * adbService parameter.
+     *
+     * @param adbService the {@link AdbHelper.AdbService} to use to run the command.
+     * @param command the shell command to execute
+     * @param rcvr the {@link IShellOutputReceiver} that will receives the output of the shell
+     *     command
+     * @param maxTimeout max timeout for the full command to execute. A value of 0 means no timeout.
+     * @param maxTimeToOutputResponse max time between command output. If more time passes between
+     *     command output, the method will throw {@link ShellCommandUnresponsiveException}. A value
+     *     of 0 means the method will wait forever for command output and never throw.
+     * @param maxTimeUnits Units for non-zero {@code maxTimeout} and {@code maxTimeToOutputResponse}
+     *     values.
+     * @param is a optional {@link InputStream} to be streamed up after invoking the command and
+     *     before retrieving the response.
+     * @throws TimeoutException in case of timeout on the connection when sending the command.
+     * @throws AdbCommandRejectedException if adb rejects the command
+     * @throws ShellCommandUnresponsiveException in case the shell command doesn't send any output
+     *     for a period longer than <var>maxTimeToOutputResponse</var>.
+     * @throws IOException in case of I/O error on the connection.
+     * @see DdmPreferences#getTimeOut()
+     */
+    @Slow
+    default void executeRemoteCommand(
+            @NonNull AdbHelper.AdbService adbService,
+            @NonNull String command,
+            @NonNull IShellOutputReceiver rcvr,
+            long maxTimeout,
+            long maxTimeToOutputResponse,
+            @NonNull TimeUnit maxTimeUnits,
+            @Nullable InputStream is)
+            throws TimeoutException, AdbCommandRejectedException, ShellCommandUnresponsiveException,
+                    IOException {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
      * Invoke the host:exec service on a remote device. Return a socket channel that is connected to
      * the executing process. Note that exec service does not differentiate stdout and stderr so
      * whatever is read from the socket can come from either output and be interleaved.
@@ -1041,6 +1207,11 @@ public interface IDevice extends IShellEnabledDevice {
      * @return A SocketChannel connected to the executing process on the device. after use.
      */
     default SocketChannel rawExec(String executable, String[] parameters)
+            throws AdbCommandRejectedException, TimeoutException, IOException {
+        throw new UnsupportedOperationException();
+    }
+
+    default SimpleConnectedSocket rawExec2(String executable, String[] parameters)
             throws AdbCommandRejectedException, TimeoutException, IOException {
         throw new UnsupportedOperationException();
     }
@@ -1069,5 +1240,21 @@ public interface IDevice extends IShellEnabledDevice {
         }
 
         return Sets.newHashSet(Splitter.on(',').split(characteristics));
+    }
+
+    @Override
+    default <T> @NonNull T computeUserDataIfAbsent(
+            @NonNull Key<T> key, @NonNull Function<Key<T>, T> mappingFunction) {
+        throw new UnsupportedOperationException("Operation is not supported on this instance");
+    }
+
+    @Override
+    default <T> @Nullable T getUserDataOrNull(@NonNull Key<T> key) {
+        throw new UnsupportedOperationException("Operation is not supported on this instance");
+    }
+
+    @Override
+    default <T> @Nullable T removeUserData(@NonNull Key<T> key) {
+        throw new UnsupportedOperationException("Operation is not supported on this instance");
     }
 }

@@ -36,6 +36,7 @@ import com.android.sdklib.AndroidVersion;
 import com.android.sdklib.IAndroidTarget;
 import com.android.sdklib.ISystemImage;
 import com.android.sdklib.PathFileWrapper;
+import com.android.sdklib.SystemImageTags;
 import com.android.sdklib.devices.Abi;
 import com.android.sdklib.devices.Device;
 import com.android.sdklib.devices.DeviceManager;
@@ -45,7 +46,6 @@ import com.android.sdklib.internal.project.ProjectProperties;
 import com.android.sdklib.repository.AndroidSdkHandler;
 import com.android.sdklib.repository.IdDisplay;
 import com.android.sdklib.repository.LoggerProgressIndicatorWrapper;
-import com.android.sdklib.repository.targets.SystemImage;
 import com.android.utils.FileUtils;
 import com.android.utils.GrabProcessOutput;
 import com.android.utils.GrabProcessOutput.IProcessOutput;
@@ -919,7 +919,8 @@ public class AvdManager {
             configValues.put(AVD_INI_TAG_DISPLAY, tag.getDisplay());
             configValues.put(AVD_INI_ABI_TYPE, systemImage.getAbiType());
             configValues.put(AVD_INI_PLAYSTORE_ENABLED, Boolean.toString(deviceHasPlayStore && systemImage.hasPlayStore()));
-            configValues.put(AVD_INI_ARC, Boolean.toString(SystemImage.CHROMEOS_TAG.equals(tag)));
+            configValues.put(
+                    AVD_INI_ARC, Boolean.toString(SystemImageTags.CHROMEOS_TAG.equals(tag)));
 
             createAvdSkin(skinFolder, skinName, configValues);
             createAvdSdCard(sdcard, editExisting, configValues, avdFolder);
@@ -1983,7 +1984,7 @@ public class AvdManager {
             // it is x86. We have to set it x86_64 to let it boot
             // under android emulator.
             if (arch.equals(SdkConstants.CPU_ARCH_INTEL_ATOM)
-                    && SystemImage.CHROMEOS_TAG.equals(systemImage.getTag())) {
+                    && SystemImageTags.CHROMEOS_TAG.equals(systemImage.getTag())) {
                 arch = SdkConstants.CPU_ARCH_INTEL_ATOM64;
             }
             values.put(AVD_INI_CPU_ARCH, arch);

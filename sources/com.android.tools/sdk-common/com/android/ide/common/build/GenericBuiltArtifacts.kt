@@ -52,5 +52,10 @@ data class GenericBuiltArtifacts(
      *  Type of file stored in [elements], can be "File" or "Directory", or null if there are
      *  no elements or for outputs of older Android Gradle plugins (version 4.1.0).
      */
-    val elementType: String?
+    val elementType: String?,
+
+    override val baselineProfiles: List<BaselineProfileDetails>?,
+
+    override val minSdkVersionForDexing: Int?
+
 ): CommonBuiltArtifacts

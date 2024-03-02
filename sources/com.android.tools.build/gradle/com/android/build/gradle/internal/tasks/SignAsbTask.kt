@@ -19,6 +19,7 @@ package com.android.build.gradle.internal.tasks
 import com.android.build.gradle.internal.dsl.isPresent
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInternalArtifactType
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
+import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.signing.SigningConfigData
 import com.android.build.gradle.internal.signing.SigningConfigDataProvider
 import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
@@ -27,7 +28,6 @@ import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.internal.packaging.AabFlinger
 import com.android.ide.common.signing.KeystoreHelper
 import com.android.utils.FileUtils
-import org.gradle.api.DefaultTask
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.InputFiles
@@ -35,7 +35,6 @@ import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
-import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.work.DisableCachingByDefault
 import java.util.Locale
@@ -43,7 +42,7 @@ import java.util.zip.Deflater
 
 @DisableCachingByDefault
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.BUNDLE_PACKAGING)
-abstract class SignAsbTask : DefaultTask() {
+abstract class SignAsbTask : NonIncrementalGlobalTask() {
 
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.NAME_ONLY)
@@ -55,8 +54,7 @@ abstract class SignAsbTask : DefaultTask() {
     @get:OutputFile
     abstract val outputSignedAsb: RegularFileProperty
 
-    @TaskAction
-    fun doTaskAction() {
+    override fun doTaskAction() {
         signingConfig.get().let {
             it.signingConfigData.orNull?.let { signingConfig ->
                 val certificateInfo = KeystoreHelper.getCertificateInfo(
@@ -98,6 +96,7 @@ abstract class SignAsbTask : DefaultTask() {
         }
 
         override fun configure(task: SignAsbTask) {
+            task.analyticsService.set(getBuildService(creationConfig.services.buildServiceRegistry))
             task.signingConfig.setDisallowChanges(
                     SigningConfigDataProvider(
                             signingConfigData = creationConfig.services.provider {

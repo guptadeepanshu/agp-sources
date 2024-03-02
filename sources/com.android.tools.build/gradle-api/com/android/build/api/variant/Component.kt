@@ -26,6 +26,41 @@ import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Provider
 
+/**
+ * Model for components that only contains build-time properties
+ *
+ * Components can be APKs, AARs, test APKs, unit tests, test fixtures, ...
+ *
+ * This is the parent interface for all components. From there, there is a first fork, via
+ * [Variant] which are production build output (APKs, AARs), and [TestComponent] that are test
+ * components. [TestFixtures] is another separate component. See these types for more information.
+ *
+ * See [Variant] for more information on accessing instances of this type.
+ *
+ * The properties exposed by this object do not impact the build flow. They are directly set on
+ * tasks via [org.gradle.api.provider.Property] linking.
+ *
+ * For example:
+ * ```kotlin
+ * tasks.register(...) {
+ *   input.set(myComponent.someProperty)
+ * * }
+ * ```
+ *
+ * Because links between [org.gradle.api.provider.Property] objects are lazy, they are ordering-safe
+ * and any plugins can set new values or link them into their own tasks in any order.
+ *
+ * However, calling [org.gradle.api.provider.Property.get] during configuration on these properties
+ * is not safe as the values could be linked to task output (that requires the task to run).
+ *
+ * The object also exposes read-only version of the properties exposed by [ComponentBuilder]. These
+ * will contain the final values set after all [AndroidComponentsExtension.beforeVariants] callbacks
+ * have been executed. It is safe to read these values during configuration time.
+ *
+ * See [here](https://developer.android.com/build/extend-agp#variant-api-artifacts-tasks) for
+ * more information
+ *
+ */
 interface Component: ComponentIdentity {
 
     /**
@@ -65,6 +100,9 @@ interface Component: ComponentIdentity {
      */
     val namespace: Provider<String>
 
+    /** Whether the produced artifacts will be debuggable */
+    val debuggable: Boolean
+
     /**
      * Access to the variant's compile classpath.
      *
@@ -96,4 +134,10 @@ interface Component: ComponentIdentity {
      * The returned [Configuration] should not be resolved until execution time.
      */
     val annotationProcessorConfiguration: Configuration
+
+    /**
+     * Provides access to the [LifecycleTasks] created for this component.
+     */
+    @get:Incubating
+    val lifecycleTasks: LifecycleTasks
 }

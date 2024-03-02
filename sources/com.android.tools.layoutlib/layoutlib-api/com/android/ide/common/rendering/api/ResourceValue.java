@@ -42,7 +42,10 @@ public interface ResourceValue extends Serializable {
     /** Returns true if the resource is user defined. */
     boolean isUserDefined();
 
-    boolean isFramework();
+    default boolean isFramework() {
+        // When transferring this across the wire, the instance check won't be correct.
+        return getNamespace().equals(ResourceNamespace.ANDROID);
+    }
 
     /**
      * Returns the value of the resource, as defined in the XML. This can be null, for example for
@@ -92,13 +95,6 @@ public interface ResourceValue extends Serializable {
     default String getRawXmlValue() {
         return getValue();
     }
-
-    /**
-     * Sets the value of the resource.
-     *
-     * @param value the new value
-     */
-    void setValue(@Nullable String value);
 
     /**
      * Returns the namespace resolver that can be used to resolve any name prefixes in the string

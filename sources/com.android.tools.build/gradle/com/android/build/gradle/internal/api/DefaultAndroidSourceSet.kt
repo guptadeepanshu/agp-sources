@@ -21,36 +21,25 @@ import com.android.build.gradle.api.AndroidSourceDirectorySet
 import com.android.build.gradle.api.AndroidSourceFile
 import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.internal.api.artifact.SourceArtifactType
-import com.android.build.gradle.internal.dependency.VariantDependencies.Companion.CONFIG_NAME_ANNOTATION_PROCESSOR
-import com.android.build.gradle.internal.dependency.VariantDependencies.Companion.CONFIG_NAME_API
-import com.android.build.gradle.internal.dependency.VariantDependencies.Companion.CONFIG_NAME_APK
-import com.android.build.gradle.internal.dependency.VariantDependencies.Companion.CONFIG_NAME_COMPILE
-import com.android.build.gradle.internal.dependency.VariantDependencies.Companion.CONFIG_NAME_COMPILE_ONLY
-import com.android.build.gradle.internal.dependency.VariantDependencies.Companion.CONFIG_NAME_IMPLEMENTATION
-import com.android.build.gradle.internal.dependency.VariantDependencies.Companion.CONFIG_NAME_PROVIDED
-import com.android.build.gradle.internal.dependency.VariantDependencies.Companion.CONFIG_NAME_PUBLISH
-import com.android.build.gradle.internal.dependency.VariantDependencies.Companion.CONFIG_NAME_RUNTIME_ONLY
-import com.android.build.gradle.internal.dependency.VariantDependencies.Companion.CONFIG_NAME_WEAR_APP
 import com.android.build.gradle.internal.ide.CustomSourceDirectoryImpl
 import com.android.builder.model.v2.CustomSourceDirectory
 import com.android.builder.model.SourceProvider
-import com.android.utils.appendCapitalized
 import com.google.common.base.CaseFormat
 import groovy.lang.Closure
 import org.gradle.api.Action
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.NamedDomainObjectFactory
 import org.gradle.api.Project
-import org.gradle.api.tasks.SourceSet
 import java.io.File
 import javax.inject.Inject
 
 open class DefaultAndroidSourceSet @Inject constructor(
-    private val name: String,
+    name: String,
     // Avoid using, this is needed only to allow applying Closure(s).
     private val project: Project,
     private val publishPackage: Boolean
 ) : AndroidSourceSet, SourceProvider {
+    private val sourceSetName = AndroidSourceSetName(name)
 
     final override val java: AndroidSourceDirectorySet
     final override val kotlin: com.android.build.api.dsl.AndroidSourceDirectorySet
@@ -135,59 +124,45 @@ open class DefaultAndroidSourceSet @Inject constructor(
             displayName, "ML models", project, SourceArtifactType.ML_MODELS
         )
 
-        initRoot("src/$name")
+        initRoot("src/${sourceSetName.name}")
     }
 
     override fun getName(): String {
-        return name
+        return sourceSetName.name
     }
 
     override fun toString(): String {
         return "source set $displayName"
     }
 
-    private fun getName(config: String): String {
-        return if (name == SourceSet.MAIN_SOURCE_SET_NAME) {
-            config
-        } else {
-            name.appendCapitalized(config)
-        }
-    }
+    override val apiConfigurationName = sourceSetName.apiConfigurationName
 
-    override val apiConfigurationName: String
-        get() = getName(CONFIG_NAME_API)
+    override val compileOnlyConfigurationName = sourceSetName.compileOnlyConfigurationName
 
-    override val compileOnlyConfigurationName: String
-        get() = getName(CONFIG_NAME_COMPILE_ONLY)
+    override val implementationConfigurationName = sourceSetName.implementationConfigurationName
 
-    override val implementationConfigurationName: String
-        get() = getName(CONFIG_NAME_IMPLEMENTATION)
-
-    override val runtimeOnlyConfigurationName: String
-        get() = getName(CONFIG_NAME_RUNTIME_ONLY)
+    override val runtimeOnlyConfigurationName = sourceSetName.runtimeOnlyConfigurationName
 
     @Suppress("OverridingDeprecatedMember")
-    override val compileConfigurationName: String
-        get() = getName(CONFIG_NAME_COMPILE)
+    override val compileConfigurationName = sourceSetName.compileConfigurationName
 
     @Suppress("OverridingDeprecatedMember")
     override val packageConfigurationName: String
         get() {
-        if (publishPackage) {
-            return getName(CONFIG_NAME_PUBLISH)
+            return if (publishPackage) {
+                sourceSetName.publishedPackageConfigurationName
+            } else {
+                sourceSetName.packageConfigurationName
+            }
         }
 
-        return getName(CONFIG_NAME_APK)
-    }
-
     @Suppress("OverridingDeprecatedMember")
-    override val providedConfigurationName = getName(CONFIG_NAME_PROVIDED)
+    override val providedConfigurationName = sourceSetName.providedConfigurationName
 
-    override val wearAppConfigurationName = getName(CONFIG_NAME_WEAR_APP)
+    override val wearAppConfigurationName = sourceSetName.wearAppConfigurationName
 
-    override val annotationProcessorConfigurationName
-    get()
-            = getName(CONFIG_NAME_ANNOTATION_PROCESSOR)
+    override val annotationProcessorConfigurationName =
+        sourceSetName.annotationProcessorConfigurationName
 
     override fun manifest(action: com.android.build.api.dsl.AndroidSourceFile.() -> Unit) {
         action.invoke(manifest)
@@ -403,7 +378,7 @@ open class DefaultAndroidSourceSet @Inject constructor(
     internal val extras: NamedDomainObjectContainer<DefaultAndroidSourceDirectorySet> =
         project.objects.domainObjectContainer(
             DefaultAndroidSourceDirectorySet::class.java,
-            AndroidSourceDirectorySetFactory(project, displayName, name)
+            AndroidSourceDirectorySetFactory(project, displayName, sourceSetName.name)
         )
 
     class AndroidSourceDirectorySetFactory(
@@ -425,6 +400,6 @@ open class DefaultAndroidSourceSet @Inject constructor(
 
     /** Converts name to display name e.g. "fooDebug" (camel case) to "foo debug". */
     private fun convertNameToDisplayName(): String {
-        return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, name).replace("-", " ")
+        return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, sourceSetName.name).replace("-", " ")
     }
 }

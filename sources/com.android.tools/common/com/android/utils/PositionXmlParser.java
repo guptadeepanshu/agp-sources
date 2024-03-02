@@ -695,11 +695,21 @@ public class PositionXmlParser {
                         offset++;
                         column++;
 
-                        if (node instanceof CDATASection
-                            && contents.regionMatches(
-                                    offset, CDATA_PREFIX, 0, CDATA_PREFIX_LENGTH)) {
-                            offset += CDATA_PREFIX_LENGTH;
-                            column += CDATA_PREFIX_LENGTH;
+                        if (node instanceof CDATASection) {
+                            c = contents.charAt(offset);
+                            while (Character.isWhitespace(c) || c == '\n') {
+                                if (c == '\n') {
+                                    line++;
+                                    column = 0;
+                                }
+                                offset++;
+                                c = contents.charAt(offset);
+                            }
+
+                            if (contents.regionMatches(offset, CDATA_PREFIX, 0, CDATA_PREFIX_LENGTH)) {
+                                offset += CDATA_PREFIX_LENGTH;
+                                column += CDATA_PREFIX_LENGTH;
+                            }
                         }
 
                         String text = node.getNodeValue();

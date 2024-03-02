@@ -27,75 +27,6 @@ private static final long serialVersionUID = 0L;
     return new EncodedSynchronizeFile();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
-  private EncodedSynchronizeFile(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 8: {
-
-            workingDirectoryId_ = input.readInt32();
-            break;
-          }
-          case 16: {
-
-            sourceFileId_ = input.readInt32();
-            break;
-          }
-          case 24: {
-
-            destinationFileId_ = input.readInt32();
-            break;
-          }
-          case 32: {
-            int rawValue = input.readEnum();
-
-            initialFileComparison_ = rawValue;
-            break;
-          }
-          case 40: {
-            int rawValue = input.readEnum();
-
-            outcome_ = rawValue;
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.android.build.gradle.internal.cxx.io.CxxIo.internal_static_EncodedSynchronizeFile_descriptor;
@@ -110,7 +41,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int WORKING_DIRECTORY_ID_FIELD_NUMBER = 1;
-  private int workingDirectoryId_;
+  private int workingDirectoryId_ = 0;
   /**
    * <code>int32 working_directory_id = 1;</code>
    * @return The workingDirectoryId.
@@ -121,7 +52,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SOURCE_FILE_ID_FIELD_NUMBER = 2;
-  private int sourceFileId_;
+  private int sourceFileId_ = 0;
   /**
    * <code>int32 source_file_id = 2;</code>
    * @return The sourceFileId.
@@ -132,7 +63,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DESTINATION_FILE_ID_FIELD_NUMBER = 3;
-  private int destinationFileId_;
+  private int destinationFileId_ = 0;
   /**
    * <code>int32 destination_file_id = 3;</code>
    * @return The destinationFileId.
@@ -143,7 +74,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int INITIAL_FILE_COMPARISON_FIELD_NUMBER = 4;
-  private int initialFileComparison_;
+  private int initialFileComparison_ = 0;
   /**
    * <code>.SynchronizeFile.Comparison initial_file_comparison = 4;</code>
    * @return The enum numeric value on the wire for initialFileComparison.
@@ -156,13 +87,12 @@ private static final long serialVersionUID = 0L;
    * @return The initialFileComparison.
    */
   @java.lang.Override public com.android.build.gradle.internal.cxx.io.SynchronizeFile.Comparison getInitialFileComparison() {
-    @SuppressWarnings("deprecation")
-    com.android.build.gradle.internal.cxx.io.SynchronizeFile.Comparison result = com.android.build.gradle.internal.cxx.io.SynchronizeFile.Comparison.valueOf(initialFileComparison_);
+    com.android.build.gradle.internal.cxx.io.SynchronizeFile.Comparison result = com.android.build.gradle.internal.cxx.io.SynchronizeFile.Comparison.forNumber(initialFileComparison_);
     return result == null ? com.android.build.gradle.internal.cxx.io.SynchronizeFile.Comparison.UNRECOGNIZED : result;
   }
 
   public static final int OUTCOME_FIELD_NUMBER = 5;
-  private int outcome_;
+  private int outcome_ = 0;
   /**
    * <code>.SynchronizeFile.Outcome outcome = 5;</code>
    * @return The enum numeric value on the wire for outcome.
@@ -175,8 +105,7 @@ private static final long serialVersionUID = 0L;
    * @return The outcome.
    */
   @java.lang.Override public com.android.build.gradle.internal.cxx.io.SynchronizeFile.Outcome getOutcome() {
-    @SuppressWarnings("deprecation")
-    com.android.build.gradle.internal.cxx.io.SynchronizeFile.Outcome result = com.android.build.gradle.internal.cxx.io.SynchronizeFile.Outcome.valueOf(outcome_);
+    com.android.build.gradle.internal.cxx.io.SynchronizeFile.Outcome result = com.android.build.gradle.internal.cxx.io.SynchronizeFile.Outcome.forNumber(outcome_);
     return result == null ? com.android.build.gradle.internal.cxx.io.SynchronizeFile.Outcome.UNRECOGNIZED : result;
   }
 
@@ -209,7 +138,7 @@ private static final long serialVersionUID = 0L;
     if (outcome_ != com.android.build.gradle.internal.cxx.io.SynchronizeFile.Outcome.UNKNOWN_OUTCOME.getNumber()) {
       output.writeEnum(5, outcome_);
     }
-    unknownFields.writeTo(output);
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -238,7 +167,7 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(5, outcome_);
     }
-    size += unknownFields.getSerializedSize();
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -261,7 +190,7 @@ private static final long serialVersionUID = 0L;
         != other.getDestinationFileId()) return false;
     if (initialFileComparison_ != other.initialFileComparison_) return false;
     if (outcome_ != other.outcome_) return false;
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -282,7 +211,7 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + initialFileComparison_;
     hash = (37 * hash) + OUTCOME_FIELD_NUMBER;
     hash = (53 * hash) + outcome_;
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -399,32 +328,23 @@ private static final long serialVersionUID = 0L;
 
     // Construct using com.android.build.gradle.internal.cxx.io.EncodedSynchronizeFile.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessageV3
-              .alwaysUseFieldBuilders) {
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       workingDirectoryId_ = 0;
-
       sourceFileId_ = 0;
-
       destinationFileId_ = 0;
-
       initialFileComparison_ = 0;
-
       outcome_ = 0;
-
       return this;
     }
 
@@ -451,47 +371,30 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.android.build.gradle.internal.cxx.io.EncodedSynchronizeFile buildPartial() {
       com.android.build.gradle.internal.cxx.io.EncodedSynchronizeFile result = new com.android.build.gradle.internal.cxx.io.EncodedSynchronizeFile(this);
-      result.workingDirectoryId_ = workingDirectoryId_;
-      result.sourceFileId_ = sourceFileId_;
-      result.destinationFileId_ = destinationFileId_;
-      result.initialFileComparison_ = initialFileComparison_;
-      result.outcome_ = outcome_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.android.build.gradle.internal.cxx.io.EncodedSynchronizeFile result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.workingDirectoryId_ = workingDirectoryId_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.sourceFileId_ = sourceFileId_;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.destinationFileId_ = destinationFileId_;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.initialFileComparison_ = initialFileComparison_;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.outcome_ = outcome_;
+      }
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.android.build.gradle.internal.cxx.io.EncodedSynchronizeFile) {
@@ -519,7 +422,7 @@ private static final long serialVersionUID = 0L;
       if (other.outcome_ != 0) {
         setOutcomeValue(other.getOutcomeValue());
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -534,19 +437,58 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.android.build.gradle.internal.cxx.io.EncodedSynchronizeFile parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              workingDirectoryId_ = input.readInt32();
+              bitField0_ |= 0x00000001;
+              break;
+            } // case 8
+            case 16: {
+              sourceFileId_ = input.readInt32();
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 16
+            case 24: {
+              destinationFileId_ = input.readInt32();
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 24
+            case 32: {
+              initialFileComparison_ = input.readEnum();
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 32
+            case 40: {
+              outcome_ = input.readEnum();
+              bitField0_ |= 0x00000010;
+              break;
+            } // case 40
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.android.build.gradle.internal.cxx.io.EncodedSynchronizeFile) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
+    private int bitField0_;
 
     private int workingDirectoryId_ ;
     /**
@@ -563,8 +505,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setWorkingDirectoryId(int value) {
-      
+
       workingDirectoryId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -573,7 +516,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearWorkingDirectoryId() {
-      
+      bitField0_ = (bitField0_ & ~0x00000001);
       workingDirectoryId_ = 0;
       onChanged();
       return this;
@@ -594,8 +537,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setSourceFileId(int value) {
-      
+
       sourceFileId_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -604,7 +548,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearSourceFileId() {
-      
+      bitField0_ = (bitField0_ & ~0x00000002);
       sourceFileId_ = 0;
       onChanged();
       return this;
@@ -625,8 +569,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDestinationFileId(int value) {
-      
+
       destinationFileId_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -635,7 +580,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearDestinationFileId() {
-      
+      bitField0_ = (bitField0_ & ~0x00000004);
       destinationFileId_ = 0;
       onChanged();
       return this;
@@ -655,8 +600,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setInitialFileComparisonValue(int value) {
-      
       initialFileComparison_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -666,8 +611,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.android.build.gradle.internal.cxx.io.SynchronizeFile.Comparison getInitialFileComparison() {
-      @SuppressWarnings("deprecation")
-      com.android.build.gradle.internal.cxx.io.SynchronizeFile.Comparison result = com.android.build.gradle.internal.cxx.io.SynchronizeFile.Comparison.valueOf(initialFileComparison_);
+      com.android.build.gradle.internal.cxx.io.SynchronizeFile.Comparison result = com.android.build.gradle.internal.cxx.io.SynchronizeFile.Comparison.forNumber(initialFileComparison_);
       return result == null ? com.android.build.gradle.internal.cxx.io.SynchronizeFile.Comparison.UNRECOGNIZED : result;
     }
     /**
@@ -679,7 +623,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
         throw new NullPointerException();
       }
-      
+      bitField0_ |= 0x00000008;
       initialFileComparison_ = value.getNumber();
       onChanged();
       return this;
@@ -689,7 +633,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearInitialFileComparison() {
-      
+      bitField0_ = (bitField0_ & ~0x00000008);
       initialFileComparison_ = 0;
       onChanged();
       return this;
@@ -709,8 +653,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setOutcomeValue(int value) {
-      
       outcome_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -720,8 +664,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.android.build.gradle.internal.cxx.io.SynchronizeFile.Outcome getOutcome() {
-      @SuppressWarnings("deprecation")
-      com.android.build.gradle.internal.cxx.io.SynchronizeFile.Outcome result = com.android.build.gradle.internal.cxx.io.SynchronizeFile.Outcome.valueOf(outcome_);
+      com.android.build.gradle.internal.cxx.io.SynchronizeFile.Outcome result = com.android.build.gradle.internal.cxx.io.SynchronizeFile.Outcome.forNumber(outcome_);
       return result == null ? com.android.build.gradle.internal.cxx.io.SynchronizeFile.Outcome.UNRECOGNIZED : result;
     }
     /**
@@ -733,7 +676,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
         throw new NullPointerException();
       }
-      
+      bitField0_ |= 0x00000010;
       outcome_ = value.getNumber();
       onChanged();
       return this;
@@ -743,7 +686,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearOutcome() {
-      
+      bitField0_ = (bitField0_ & ~0x00000010);
       outcome_ = 0;
       onChanged();
       return this;
@@ -781,7 +724,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new EncodedSynchronizeFile(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

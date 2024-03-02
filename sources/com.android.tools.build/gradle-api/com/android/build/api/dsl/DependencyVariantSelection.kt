@@ -29,6 +29,9 @@ interface DependencyVariantSelection {
     /**
      * Specifies a list of build types that the plugin should try to use when a
      * direct variant match with a dependency is not possible.
+     *
+     * If the list is left empty, the default variant for the dependencies being
+     * consumed will be of build type "debug"
      */
     @get:Incubating
     val buildTypes: ListProperty<String>

@@ -18,6 +18,11 @@ package com.android.build.api.dsl
 
 import org.gradle.api.Incubating
 
+/**
+ * DSL object for configuring Android resource options for Application plugins.
+ *
+ * This is accessed via [ApplicationExtension.androidResources]
+ */
 interface ApplicationAndroidResources : AndroidResources {
     /**
      * Property that automatically generates locale config when enabled.

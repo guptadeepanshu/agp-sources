@@ -54,7 +54,6 @@ import java.lang.reflect.Method;
 import java.util.Locale;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
-import org.gradle.api.logging.Logging;
 
 /**
  * Utilities to map internal representations of types to analytics.
@@ -359,11 +358,6 @@ public class AnalyticsUtil {
         Descriptors.EnumValueDescriptor value =
                 GradleBuildProject.GradlePlugin.getDescriptor().findValueByName(enumName);
         if (value == null) {
-            Logging.getLogger(AnalyticsUtil.class)
-                    .info(
-                            "Analytics other plugin to proto: Unknown plugin type {} expected enum {}",
-                            pluginClassName,
-                            enumName);
             return GradleBuildProject.GradlePlugin.UNKNOWN_GRADLE_PLUGIN;
         }
         return GradleBuildProject.GradlePlugin.valueOf(value);

@@ -64,14 +64,14 @@ public interface InstrumentedTestInfoOrBuilder extends
   /**
    * <code>map&lt;string, string&gt; test_instrumentation_runner_arguments = 3;</code>
    */
-
-  java.lang.String getTestInstrumentationRunnerArgumentsOrDefault(
+  /* nullable */
+java.lang.String getTestInstrumentationRunnerArgumentsOrDefault(
       java.lang.String key,
-      java.lang.String defaultValue);
+      /* nullable */
+java.lang.String defaultValue);
   /**
    * <code>map&lt;string, string&gt; test_instrumentation_runner_arguments = 3;</code>
    */
-
   java.lang.String getTestInstrumentationRunnerArgumentsOrThrow(
       java.lang.String key);
 

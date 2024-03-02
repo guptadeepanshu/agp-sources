@@ -56,9 +56,11 @@ import com.android.utils.FileUtils
 import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.GradleException
 import org.gradle.api.InvalidUserDataException
+import org.gradle.api.JavaVersion
 import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.logging.Logging
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.provider.ListProperty
@@ -88,8 +90,13 @@ import java.util.logging.Level
 abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), AndroidTestTask {
 
     abstract class TestRunnerFactory {
-        @get: Input
-        abstract val customManagedDevice: Property<Boolean>
+
+        /** Java runtime environment to run UTP in */
+        @get:Internal
+        abstract val jvmExecutable: RegularFileProperty
+
+        @get:Input
+        abstract val javaVersion: Property<JavaVersion>
 
         @get: Input
         abstract val executionEnum: Property<TestOptions.Execution>
@@ -155,6 +162,7 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
             return ManagedDeviceTestRunner(
                 workerExecutor,
                 utpDependencies,
+                jvmExecutable.get().asFile,
                 sdkBuildService.get().sdkLoader(compileSdkVersion, buildToolsRevision),
                 emulatorControlConfig.get(),
                 retentionConfig.get(),
@@ -386,6 +394,13 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
 
             task.enableEmulatorDisplay.convention(false)
 
+            task.testRunnerFactory.jvmExecutable.apply {
+                set(File(System.getProperty("java.home"), "bin/java"))
+                disallowChanges()
+            }
+
+            task.testRunnerFactory.javaVersion.setDisallowChanges(JavaVersion.current())
+
             task.testRunnerFactory.enableEmulatorDisplay.set(
                 task.enableEmulatorDisplay
             )
@@ -453,10 +468,6 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
                     .resolveDependencies(task.project.configurations)
             task.testRunnerFactory.getTargetIsSplitApk.setDisallowChanges(
                     testedConfig?.componentType?.isDynamicFeature ?: false
-            )
-            task.testRunnerFactory.customManagedDevice.setDisallowChanges(
-                globalConfig.services.projectOptions[
-                        BooleanOption.GRADLE_MANAGED_DEVICE_CUSTOM_DEVICE]
             )
 
             task.testRunnerFactory.getKeepInstalledApks.setDisallowChanges(
@@ -532,11 +543,7 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
             }
             task.rClasses.disallowChanges()
 
-            if(creationConfig
-                            .services
-                            .projectOptions
-                            .get(BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT)
-                    && testedConfig != null) {
+            if(creationConfig.privacySandboxCreationConfig != null && testedConfig != null) {
                 task.getPrivacySandboxSdkApksFiles()
                     .setFrom(
                         testedConfig

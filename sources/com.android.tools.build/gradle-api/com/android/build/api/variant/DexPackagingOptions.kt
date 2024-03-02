@@ -19,7 +19,9 @@ package com.android.build.api.variant
 import org.gradle.api.provider.Property
 
 /**
- * Defines an APK variant's packaging options for dex files.
+ * Build-time properties for packaging dex files inside an APK [Component].
+ *
+ * This is accessed via [ApkPackaging.dex]
  */
 interface DexPackagingOptions {
 

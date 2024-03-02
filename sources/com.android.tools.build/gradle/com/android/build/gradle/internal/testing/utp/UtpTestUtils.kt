@@ -16,11 +16,8 @@
 
 package com.android.build.gradle.internal.testing.utp
 
-import com.android.build.api.dsl.TestOptions
 import com.android.build.gradle.internal.testing.CustomTestRunListener
 import com.android.build.gradle.internal.testing.utp.worker.RunUtpWorkAction
-import com.android.build.gradle.options.BooleanOption
-import com.android.build.gradle.options.ProjectOptions
 import com.android.builder.testing.api.DeviceConnector
 import com.android.prefs.AndroidLocationsSingleton
 import com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto
@@ -31,7 +28,6 @@ import com.google.testing.platform.proto.api.core.ErrorDetailProto
 import com.google.testing.platform.proto.api.core.TestStatusProto.TestStatus
 import com.google.testing.platform.proto.api.core.TestSuiteResultProto
 import com.google.testing.platform.proto.api.service.ServerConfigProto
-import org.gradle.api.logging.Logging
 import org.gradle.workers.WorkQueue
 import org.gradle.workers.WorkerExecutor
 import java.io.File
@@ -48,6 +44,7 @@ private const val UNKNOWN_PLATFORM_ERROR_MESSAGE =
 /**
  * Encapsulates necessary information to run tests using Unified Test Platform.
  *
+ * @property jvm the JAVA environment to run UTP on.
  * @property deviceName a displayable device name
  * @property deviceId an identifier for a device
  * @property utpOutputDir a path to the directory to store results from UTP
@@ -56,6 +53,7 @@ private const val UNKNOWN_PLATFORM_ERROR_MESSAGE =
  * @property shardConfig an information about test sharding, or null if sharding is not enabled
  */
 data class UtpRunnerConfig(
+    val jvm: File,
     val deviceName: String,
     val deviceId: String,
     val utpOutputDir: File,
@@ -227,14 +225,16 @@ private fun runUtpTestSuite(
     }
     val loggingPropertiesFile = createUtpTempFile("logging", "properties").also { file ->
         Files.asCharSink(file, Charsets.UTF_8).write("""
-                .level=${config.utpLoggingLevel.getName()}
+                .level=${config.utpLoggingLevel.name}
                 .handlers=java.util.logging.ConsoleHandler
-                java.util.logging.ConsoleHandler.level=${config.utpLoggingLevel.getName()}
+                java.util.logging.ConsoleHandler.level=${config.utpLoggingLevel.name}
+                java.util.logging.SimpleFormatter.format=%4${'$'}s: %5${'$'}s%n
             """.trimIndent())
     }
     workQueue.submit(RunUtpWorkAction::class.java) { params ->
-        params.launcherJar.set(utpDependencies.launcher.singleFile)
-        params.coreJar.set(utpDependencies.core.singleFile)
+        params.jvm.set(config.jvm)
+        params.launcherJar.setFrom(utpDependencies.launcher.files)
+        params.coreJar.setFrom(utpDependencies.core.files)
         params.runnerConfig.set(runnerConfigProtoFile)
         params.serverConfig.set(serverConfigProtoFile)
         params.loggingProperties.set(loggingPropertiesFile)

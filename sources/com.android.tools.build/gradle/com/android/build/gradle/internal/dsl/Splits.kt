@@ -33,6 +33,7 @@ abstract class Splits @Inject constructor(dslServices: DslServices) :
      * [building configuration APKs](https://developer.android.com/topic/instant-apps/guides/config-splits.html)
      * for [Android Instant Apps](https://developer.android.com/topic/instant-apps/index.html).
      */
+    @Deprecated("Language attribute does nothing and will be removed from DSL in v9.0.")
     val language: LanguageSplitOptions =
         dslServices.newInstance(LanguageSplitOptions::class.java)
 
@@ -47,6 +48,7 @@ abstract class Splits @Inject constructor(dslServices: DslServices) :
      * For more information about the properties you can configure in this block, see
      * [LanguageSplitOptions].
      */
+    @Deprecated("Language does nothing and will be removed from DSL in v9.0.")
     fun language(action: Action<LanguageSplitOptions>) {
         action.execute(language)
     }
@@ -65,6 +67,7 @@ abstract class Splits @Inject constructor(dslServices: DslServices) :
      *
      * @return a set of languages (or locales).
      */
+    @Deprecated("Will be removed from DSL in v9.0.")
     val languageFilters: Set<String>
         get() = language.applicationFilters
 }

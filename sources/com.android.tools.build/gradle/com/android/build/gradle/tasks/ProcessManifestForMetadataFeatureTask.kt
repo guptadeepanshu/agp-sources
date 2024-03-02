@@ -60,7 +60,6 @@ abstract class ProcessManifestForMetadataFeatureTask : NonIncrementalTask() {
     @get:Input
     abstract val namespace: Property<String>
 
-    @TaskAction
     override fun doTaskAction() {
 
         val inputFile = bundleManifest.get().asFile

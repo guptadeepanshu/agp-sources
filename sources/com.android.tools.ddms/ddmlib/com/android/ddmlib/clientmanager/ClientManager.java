@@ -34,10 +34,24 @@ public interface ClientManager {
      *
      * <p>The returned {@link DeviceClientManager} instance should be discarded when the {@link
      * IDevice} instance is invalidated, e.g. when the device becomes offline.
+     *
+     * <p>This method is used only in tests
      */
     @NonNull
     DeviceClientManager createDeviceClientManager(
             @NonNull AndroidDebugBridge bridge,
             @NonNull IDevice device,
             @NonNull DeviceClientManagerListener listener);
+
+    /**
+     * Creates a {@link DeviceClientManager} instance for the given {@link IDevice}, where the
+     * default {@link DeviceClientManagerListener} callback is used when events related to {@link
+     * Client processes} occur.
+     *
+     * <p>The returned {@link DeviceClientManager} instance should be discarded when the {@link
+     * IDevice} instance is invalidated, e.g. when the device becomes offline.
+     */
+    @NonNull
+    DeviceClientManager createDeviceClientManager(
+            @NonNull AndroidDebugBridge bridge, @NonNull IDevice device);
 }

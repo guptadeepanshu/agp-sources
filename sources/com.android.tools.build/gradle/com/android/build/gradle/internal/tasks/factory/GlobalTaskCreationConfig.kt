@@ -156,4 +156,15 @@ interface GlobalTaskCreationConfig: BootClasspathConfig {
     val targetDeployApiFromIDE: Int?
 
     val taskNames: GlobalTaskNames
+
+    /**
+     * If AGP should try to avoid registering tasks. This helps reducing configuration time and
+     * memory usage.
+     *
+     * As of Oct 2023, the only known usage is during Gradle sync. If the IDE does
+     * not require registering all tasks, it will ask AGP to do so. Note: it is not possible
+     * to avoid registering all tasks as some task outputs are queried during model building (e.g.
+     * location of javac/kotlinc outputs, or test tasks).
+     */
+    val avoidTaskRegistration: Boolean
 }

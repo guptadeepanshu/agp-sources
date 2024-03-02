@@ -20,7 +20,6 @@ import android.databinding.tool.LayoutXmlProcessor.OriginalFileLookup
 import android.databinding.tool.util.RelativizableFile
 import android.databinding.tool.writer.JavaFileWriter
 import com.android.SdkConstants
-import com.android.build.api.variant.impl.LayeredSourceDirectoriesImpl
 import com.android.build.gradle.internal.DependencyResourcesComputer
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.TaskManager
@@ -44,8 +43,8 @@ import com.android.build.gradle.internal.tasks.Blocks
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NewIncrementalTask
 import com.android.build.gradle.internal.tasks.Workers.withGradleWorkers
-import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationActionImpl
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
@@ -80,7 +79,6 @@ import org.gradle.api.GradleException
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.logging.Logger
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.CacheableTask
@@ -98,7 +96,6 @@ import org.gradle.work.FileChange
 import org.gradle.work.InputChanges
 import java.io.File
 import java.io.IOException
-import java.nio.file.Files
 import java.util.Locale
 import java.util.function.Supplier
 import java.util.stream.Collectors
@@ -317,8 +314,6 @@ abstract class MergeResources : NewIncrementalTask() {
     }
 
     override fun doTaskAction(inputChanges: InputChanges) {
-        verifyNestedResources()
-
         if (!inputChanges.isIncremental) {
             try {
                 logger.info("[MergeResources] Inputs are non-incremental full task action.")
@@ -447,35 +442,6 @@ abstract class MergeResources : NewIncrementalTask() {
             }
         } finally {
             cleanup()
-        }
-    }
-
-    /**
-     * Method checks if any resource folders are nested inside others. For example folder a and a/b.
-     * Warning will be shown once we find such situation.
-     * There may be duplicates in warnings, but this was a deliberate choice in favour of
-     * simplicity and avoiding false negatives.
-     */
-    private fun verifyNestedResources() {
-        val fileCollection = resourcesComputer.resources.get().values.map { it.sourceDirectories }
-        val dirs = fileCollection.flatten()
-            .map {
-                if (Files.isSymbolicLink(it.toPath()))
-                    Files.readSymbolicLink(it.toPath()).toFile()
-                else
-                    it
-            }
-        for (dirA in dirs) {
-            for (dirB in dirs) {
-                if (!FileUtils.isSameFile(dirA, dirB) && FileUtils.isFileInDirectory(dirA, dirB)) {
-                    val rootDir = projectRootDir.get().asFile
-                    val pivotRelative =
-                        if (FileUtils.isFileInDirectory(dirB, rootDir)) dirB.relativeTo(rootDir) else dirB
-                    val nestedRelative =
-                        if (FileUtils.isFileInDirectory(dirA, rootDir)) dirA.relativeTo(rootDir) else dirA
-                    logger.warn("Nested resource detected in task $name: $nestedRelative is in $pivotRelative")
-                }
-            }
         }
     }
 

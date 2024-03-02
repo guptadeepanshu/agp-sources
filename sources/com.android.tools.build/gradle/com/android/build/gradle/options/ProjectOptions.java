@@ -19,8 +19,7 @@ package com.android.build.gradle.options;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.annotations.concurrency.Immutable;
-import com.android.build.gradle.internal.LoggerWrapper;
-import com.android.tools.analytics.AnalyticsSettings;
+import com.android.build.gradle.internal.utils.AnalyticsSettingsUtils;
 import com.android.utils.Environment;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -177,29 +176,12 @@ public final class ProjectOptions {
     }
 
     public boolean isAnalyticsEnabled() {
-        if (!needToInitializeAnalytics()) {
-            return false;
-        }
-        AnalyticsSettings.initialize(
-                LoggerWrapper.getLogger(ProjectOptions.class),
-                null,
-                com.android.tools.analytics.Environment.getSYSTEM());
-
-        return AnalyticsSettings.getOptedIn()
-                || get(BooleanOption.ENABLE_PROFILE_JSON)
-                || get(StringOption.PROFILE_OUTPUT_DIR) != null;
-    }
-
-    /**
-     * If the analytics.settings file doesn't exist, which means the user has never used studio or
-     * has manually deleted that file, AGP doesn't need to create that file and check if analytics
-     * is opted in. In that case, it is considered as not opted in. This will also help us avoid
-     * the configuration cache miss caused by file creation in configuration phase for CI users.
-     */
-    private boolean needToInitializeAnalytics() {
-        return AnalyticsSettings.settingsFileExists()
-                || get(BooleanOption.ENABLE_PROFILE_JSON)
-                || get(StringOption.PROFILE_OUTPUT_DIR) != null;
+        Provider<Boolean> analyticsEnabledProvider =
+                AnalyticsSettingsUtils.analyticsEnabledProvider(
+                        providerFactory,
+                        get(BooleanOption.ENABLE_PROFILE_JSON)
+                                || get(StringOption.PROFILE_OUTPUT_DIR) != null);
+        return analyticsEnabledProvider.get();
     }
 
     public <OptionT extends Option<ValueT>, ValueT>

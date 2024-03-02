@@ -19,7 +19,7 @@ package com.android.build.gradle
 import org.gradle.api.Project
 
 /**
- * The plugin applied with 'com.android.library'
+ * The plugin applied with `com.android.library`
  */
 class LibraryPlugin: BasePlugin() {
     override fun apply(project: Project) {

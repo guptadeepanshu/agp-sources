@@ -92,9 +92,14 @@ class OptimizationCreationConfigImpl(
     override val minifiedEnabled: Boolean
         get() {
             return if (component is AndroidTestCreationConfig) {
+                val hasPostprocessingOptions =
+                    dslInfo.postProcessingOptions.hasPostProcessingConfiguration()
                 when {
-                    component.mainVariant.componentType.isAar -> false
-                    !dslInfo.postProcessingOptions.hasPostProcessingConfiguration() ->
+                    // Enable minify for android test is not supported via the postProcessing block
+                    component.mainVariant.componentType.isAar ->
+                        !hasPostprocessingOptions &&
+                                dslInfo.postProcessingOptions.codeShrinkerEnabled()
+                    !hasPostprocessingOptions ->
                         component.mainVariant.optimizationCreationConfig.minifiedEnabled
                     else -> dslInfo.postProcessingOptions.codeShrinkerEnabled()
                 }

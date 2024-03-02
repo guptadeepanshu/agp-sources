@@ -26,12 +26,25 @@ import org.gradle.api.Incubating
  * Each component has a type, like application or library and will have a dedicated extension with
  * methods that are related to the particular component type.
  *
+ * This can be used via
+ * ```kotlin
+ * androidComponents {
+ * }
+ * ```
+ *
+ * In a plugin this can be queried via
+ * ```kotlin
+ * project.plugins.withType(AppPlugin::class.java) {
+ *   val androidComponents = project.extensions.getByType(ApplicationAndroidComponentsExtension::class.java)
+ * }
+ * ````
+ *
  * @param DslExtensionT the type of the DSL to be used in [DslLifecycle.finalizeDsl]
  * @param VariantBuilderT the [ComponentBuilder] type produced by this variant.
  * @param VariantT the [Variant] type produced by this variant.
  */
 interface AndroidComponentsExtension<
-        DslExtensionT: CommonExtension<*, *, *, *, *>,
+        DslExtensionT: CommonExtension<*, *, *, *, *, *>,
         VariantBuilderT: VariantBuilder,
         VariantT: Variant>
     : DslLifecycle<DslExtensionT>, AndroidComponents {
@@ -60,11 +73,16 @@ interface AndroidComponentsExtension<
      * At this stage, access to the DSL objects is disallowed, use [finalizeDsl] method to
      * programmatically access the DSL objects before the [VariantBuilderT] object is built.
      *
+     * The goal of this callback is to make changes before the variants and components are created.
+     * This includes enabling/disabling components and making decisions on properties that can
+     * impact task creation and build flow. This guarantees that the matching [onVariants] callback
+     * does not have to deal with changing configuration and can focus on updating task inputs.
+     * See [ComponentBuilder] for more information.
+     *
      * Example without selection:
      * ```kotlin
      *  androidComponents {
      *      beforeVariants {
-     *          println("Called with variant : ${'$'}name")
      *      }
      *  }
      * ```
@@ -74,12 +92,14 @@ interface AndroidComponentsExtension<
      *  androidComponents {
      *      val debug = selector().withBuildType("debug")
      *      beforeVariants(debug) {
-     *          println("Called with variant : ${'$'}name")
      *      }
      *  }
      * ```
      *
-     * @param selector [VariantSelector] instance to select which instance of [VariantBuilderT] are
+     * See [here](https://developer.android.com/build/extend-agp#variant-api-artifacts-tasks) for
+     * more information
+     *
+     * @param selector [VariantSelector] to select which instance of [VariantBuilderT] are
      * of interest. By default, all instances are of interest.
      * @param callback lambda to be called with each instance of [VariantBuilderT] of interest.
      */
@@ -101,15 +121,42 @@ interface AndroidComponentsExtension<
      * At this stage, access to the DSL objects is disallowed and access to the [VariantBuilderT]
      * instance is limited to read-only access.
      *
-     * Because the list of artifacts (including private ones) is final, one cannot change the build
-     * flow anymore as [org.gradle.api.Task]s are now expecting those artifacts as inputs. However
-     * users can modify such artifacts by replacing or transforming them, see [com.android.build.api.artifact.Artifacts]
-     * for details.
+     * At this stage, the build flow is final, with the callback for [beforeVariants] having
+     * modified properties that can impact which tasks are created and how they are configured.
+     * The ability to query or modify the build intermediate files between tasks, including adding
+     * additional new steps between existing tasks must be done via the [Component.artifacts] API.
+     * See [com.android.build.api.artifact.Artifacts] for details.
      *
-     * Code executing in the [callback] also has access to the [VariantT] information which is used
-     * to configure [org.gradle.api.Task] inputs (for example, the buildConfigFields). Such
-     * information represented as [org.gradle.api.provider.Property] can still be modified ensuring
-     * that all [org.gradle.api.Task]s created by the Android Gradle Plugin use the updated value.
+     * The [VariantT] object exposes many [org.gradle.api.provider.Property] that are then used as
+     * task inputs. It is safe to set new values on the properties, including using
+     * [org.gradle.api.provider.Provider] with or without task dependencies.
+     * When reading values, these [org.gradle.api.provider.Property] must be lazily linked to
+     * properties used as task inputs. It is not safe to call [org.gradle.api.provider.Property.get]
+     * during build configuration.
+     *
+     * Example without selection:
+     * ```kotlin
+     *  androidComponents {
+     *      onVariants {
+     *      }
+     *  }
+     * ```
+     *
+     * Example with selection:
+     * ```kotlin
+     *  androidComponents {
+     *      val debug = selector().withBuildType("debug")
+     *      onVariants(debug) {
+     *      }
+     *  }
+     * ```
+     *
+     * See [here](https://developer.android.com/build/extend-agp#variant-api-artifacts-tasks) for
+     * more information
+     *
+     * @param selector [VariantSelector] to select which instance of [VariantBuilderT] are
+     * of interest. By default, all instances are of interest.
+     * @param callback lambda to be called with each instance of [VariantT] of interest.
      */
     fun onVariants(
             selector: VariantSelector = selector().all(),

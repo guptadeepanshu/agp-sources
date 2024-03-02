@@ -21,7 +21,7 @@ import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.DependenciesInfo
 
 class GlobalVariantBuilderConfigImpl(
-    private val extension: CommonExtension<*, *, *, *, *>
+    private val extension: CommonExtension<*, *, *, *, *, *>
 ) : GlobalVariantBuilderConfig {
 
     override val dependenciesInfo: DependenciesInfo

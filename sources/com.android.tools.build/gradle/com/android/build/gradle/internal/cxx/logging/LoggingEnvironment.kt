@@ -21,9 +21,11 @@ import com.android.utils.cxx.CxxDiagnosticCode
 import com.android.utils.cxx.CxxBugDiagnosticCode
 import com.google.protobuf.GeneratedMessageV3
 import org.gradle.api.logging.Logging
+import com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.BUG
 import com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.ERROR
 import com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.INFO
 import com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.LIFECYCLE
+import com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.UNRECOGNIZED
 import com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.WARN
 import com.android.build.gradle.internal.cxx.string.StringEncoder
 
@@ -174,6 +176,7 @@ abstract class ThreadLoggingEnvironment : LoggingEnvironment {
                     WARN -> logger.warn(message.text())
                     LIFECYCLE -> logger.lifecycle(message.text())
                     INFO -> logger.info(message.text())
+                    BUG, UNRECOGNIZED -> {}
                 }
             }
 

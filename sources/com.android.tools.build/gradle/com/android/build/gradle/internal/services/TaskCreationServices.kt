@@ -17,8 +17,10 @@
 package com.android.build.gradle.internal.services
 
 import com.android.build.gradle.internal.lint.LintFromMaven
+import com.android.build.gradle.internal.transforms.LayoutlibFromMaven
 import org.gradle.api.Action
 import org.gradle.api.Named
+import org.gradle.api.Task
 import org.gradle.api.artifacts.ConfigurationContainer
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.api.file.ConfigurableFileCollection
@@ -31,6 +33,7 @@ import org.gradle.api.provider.Provider
 import org.gradle.api.provider.ValueSource
 import org.gradle.api.provider.ValueSourceParameters
 import org.gradle.api.provider.ValueSourceSpec
+import org.gradle.api.tasks.TaskProvider
 import java.io.File
 
 /**
@@ -54,6 +57,8 @@ interface TaskCreationServices: BaseServices {
 
     fun <T> provider(callable: () -> T?): Provider<T>
 
+    fun createEmptyTask(name: String): TaskProvider<*>
+
     @Suppress("UnstableApiUsage")
     fun <T, P : ValueSourceParameters> providerOf(
         valueSourceType: Class<out ValueSource<T, P>>,
@@ -63,6 +68,7 @@ interface TaskCreationServices: BaseServices {
     fun <T : Named> named(type: Class<T>, name: String): T
 
     val lintFromMaven: LintFromMaven
+    val layoutlibFromMaven: LayoutlibFromMaven
 
     val configurations: ConfigurationContainer
     val dependencies: DependencyHandler

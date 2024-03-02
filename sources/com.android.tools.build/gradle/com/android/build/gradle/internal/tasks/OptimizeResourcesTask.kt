@@ -84,7 +84,6 @@ abstract class OptimizeResourcesTask : NonIncrementalTask() {
     @get:OutputDirectory
     abstract val optimizedProcessedRes: DirectoryProperty
 
-    @TaskAction
     override fun doTaskAction() {
         transformationRequest.get().submit(
                 this,

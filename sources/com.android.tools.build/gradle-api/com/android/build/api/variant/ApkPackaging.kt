@@ -17,7 +17,9 @@
 package com.android.build.api.variant
 
 /**
- * Defines an APK variant's packaging options.
+ * Build-time properties for APK packaging inside a [Component].
+ *
+ * This is accessed via [GeneratesApk.packaging]
  */
 interface ApkPackaging : Packaging {
 

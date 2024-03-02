@@ -25,7 +25,7 @@ import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
 import com.android.build.gradle.internal.component.NestedComponentCreationConfig
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig
-import com.android.build.gradle.internal.component.UnitTestCreationConfig
+import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
@@ -328,6 +328,7 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
                 )
             )
             task.desugaredMethodsFiles.disallowChanges()
+            task.useK2Uast.setDisallowChanges(variant.main.useK2Uast)
         }
     }
 
@@ -355,7 +356,7 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
         override fun handleProvider(taskProvider: TaskProvider<AndroidLintAnalysisTask>) {
             val artifactType =
                 when (creationConfig) {
-                    is UnitTestCreationConfig -> UNIT_TEST_LINT_PARTIAL_RESULTS
+                    is HostTestCreationConfig -> UNIT_TEST_LINT_PARTIAL_RESULTS
                     is AndroidTestCreationConfig -> ANDROID_TEST_LINT_PARTIAL_RESULTS
                     is TestFixturesCreationConfig -> TEST_FIXTURES_LINT_PARTIAL_RESULTS
                     else -> if (fatalOnly) {
@@ -418,7 +419,7 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
             task.projectInputs.initialize(mainVariant, LintMode.ANALYSIS)
             task.variantInputs.initialize(
                 mainVariant,
-                creationConfig as? UnitTestCreationConfig,
+                creationConfig as? HostTestCreationConfig,
                 creationConfig as? AndroidTestCreationConfig,
                 creationConfig as? TestFixturesCreationConfig,
                 creationConfig.services,
@@ -443,6 +444,7 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
                 )
             )
             task.desugaredMethodsFiles.disallowChanges()
+            task.useK2Uast.setDisallowChanges(mainVariant.useK2Uast)
         }
     }
 
@@ -486,9 +488,6 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
         }
         systemPropertyInputs.initialize(project.providers, LintMode.ANALYSIS)
         environmentVariableInputs.initialize(project.providers, LintMode.ANALYSIS)
-        useK2Uast.setDisallowChanges(
-            services.projectOptions.getProvider(BooleanOption.LINT_USE_K2_UAST)
-        )
         this.usesService(
             services.buildServiceRegistry.getLintParallelBuildService(services.projectOptions)
         )
@@ -540,6 +539,10 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
         this.lintModelDirectory
             .setDisallowChanges(
                 project.layout.buildDirectory.dir("intermediates/${this.name}/android-lint-model")
+            )
+        this.useK2Uast
+            .setDisallowChanges(
+                taskCreationServices.projectOptions.getProvider(BooleanOption.LINT_USE_K2_UAST)
             )
     }
 

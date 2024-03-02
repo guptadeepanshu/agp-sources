@@ -36,7 +36,7 @@ internal class AndroidResourcesDslInfoImpl(
     private val buildTypeObj: BuildType,
     private val productFlavorList: List<ProductFlavor>,
     private val mergedFlavor: MergedFlavor,
-    private val extension: CommonExtension<*, *, *, *, *>
+    private val extension: CommonExtension<*, *, *, *, *, *>
 ): AndroidResourcesDslInfo {
     override val androidResources: AndroidResources
         get() = extension.androidResources

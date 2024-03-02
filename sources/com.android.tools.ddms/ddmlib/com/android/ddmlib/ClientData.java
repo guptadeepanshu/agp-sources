@@ -162,9 +162,6 @@ public class ClientData {
     // Java VM identification string
     private String mVmIdentifier;
 
-    // client's underlying package name (R+ only)
-    private String mPackageName = DeviceImpl.UNKNOWN_PACKAGE;
-
     // client's self-description
     private Names mClientNames = UNINITIALIZED;
 

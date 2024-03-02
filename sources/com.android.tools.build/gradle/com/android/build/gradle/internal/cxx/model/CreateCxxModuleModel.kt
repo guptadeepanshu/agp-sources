@@ -16,13 +16,10 @@
 
 package com.android.build.gradle.internal.cxx.model
 
-import com.android.SdkConstants.CMAKE_DIR_PROPERTY
-import com.android.SdkConstants.NDK_SYMLINK_DIR
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.cxx.configure.NdkAbiFile
 import com.android.build.gradle.internal.cxx.configure.NdkMetaPlatforms
 import com.android.build.gradle.internal.cxx.configure.computeNdkSymLinkFolder
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import com.android.build.gradle.internal.cxx.configure.ndkMetaAbisFile
 import com.android.build.gradle.internal.cxx.gradle.generator.CxxConfigurationParameters
 import com.android.build.gradle.internal.cxx.settings.Macro
@@ -40,21 +37,15 @@ fun createCxxModuleModel(
     sdkComponents : SdkComponentsBuildService,
     configurationParameters: CxxConfigurationParameters,
 ) : CxxModuleModel {
-
     val cxxFolder = configurationParameters.cxxFolder
-    fun localPropertyFile(property : String) : File? {
-        val path = gradleLocalProperties(configurationParameters.rootDir)
-            .getProperty(property) ?: return null
-        return File(path)
-    }
     val ndk = sdkComponents.versionedNdkHandler(
         ndkVersion = configurationParameters.ndkVersion,
-        ndkPath = configurationParameters.ndkPath
+        ndkPathFromDsl = configurationParameters.ndkPathFromDsl,
     ).ndkPlatform.getOrThrow()
     val ndkSymlinkFolder = computeNdkSymLinkFolder(
             ndk.ndkDirectory,
             cxxFolder,
-            localPropertyFile(NDK_SYMLINK_DIR))
+            sdkComponents.ndkSymlinkDirFromProperties?.let { File(it) })
     val finalNdkFolder = ndkSymlinkFolder ?: ndk.ndkDirectory
     val ndkMetaPlatformsFile = NdkMetaPlatforms.jsonFile(ndk.ndkDirectory)
     val ndkMetaPlatforms = if (ndkMetaPlatformsFile.isFile) {
@@ -88,7 +79,7 @@ fun createCxxModuleModel(
     val ndkMetaAbiList = NdkAbiFile(ndkMetaAbisFile(ndk.ndkDirectory)).abiInfoList
     val cmake = if (configurationParameters.buildSystem == CMAKE) {
         CxxCmakeModuleModel(
-            cmakeDirFromPropertiesFile = localPropertyFile(CMAKE_DIR_PROPERTY),
+            cmakeDirFromPropertiesFile = sdkComponents.cmakeDirFromProperties?.let { File(it) },
             cmakeVersionFromDsl = configurationParameters.cmakeVersion,
             cmakeExe = File(NDK_MODULE_CMAKE_EXECUTABLE.configurationPlaceholder)
         )

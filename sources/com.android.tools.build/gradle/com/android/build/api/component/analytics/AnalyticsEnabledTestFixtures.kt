@@ -34,7 +34,7 @@ open class AnalyticsEnabledTestFixtures @Inject constructor(
 ) : AnalyticsEnabledComponent(
     delegate, stats, objectFactory
 ), TestFixtures {
-    private val userVisibleAarMetadata: AarMetadata by lazy {
+    private val userVisibleAarMetadata: AarMetadata by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
         objectFactory.newInstance(
             AnalyticsEnabledAarMetadata::class.java,
             delegate.aarMetadata,

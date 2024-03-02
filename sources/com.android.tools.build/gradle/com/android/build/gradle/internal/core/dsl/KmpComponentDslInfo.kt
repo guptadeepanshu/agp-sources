@@ -18,7 +18,6 @@ package com.android.build.gradle.internal.core.dsl
 
 import com.android.build.gradle.api.JavaCompileOptions
 import com.android.build.gradle.internal.core.dsl.features.AndroidResourcesDslInfo
-import org.gradle.api.provider.ListProperty
 
 /**
  * Represents the dsl info for a component that is part of the kotlin multiplatform android plugin,
@@ -29,7 +28,7 @@ import org.gradle.api.provider.ListProperty
  * @see [com.android.build.gradle.internal.component.KmpComponentCreationConfig]
  */
 interface KmpComponentDslInfo: ComponentDslInfo {
-    val buildTypeMatchingFallbacks: ListProperty<String>
+    val buildTypeMatchingFallbacks: List<String>
 
     // KMP doesn't support android resources
     override val androidResourcesDsl: AndroidResourcesDslInfo?

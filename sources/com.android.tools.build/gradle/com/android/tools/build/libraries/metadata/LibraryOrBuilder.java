@@ -67,5 +67,5 @@ public interface LibraryOrBuilder extends
    */
   com.google.protobuf.Int32ValueOrBuilder getRepoIndexOrBuilder();
 
-  public com.android.tools.build.libraries.metadata.Library.LibraryOneofCase getLibraryOneofCase();
+  com.android.tools.build.libraries.metadata.Library.LibraryOneofCase getLibraryOneofCase();
 }

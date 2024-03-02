@@ -23,7 +23,7 @@ import com.android.build.gradle.internal.utils.createTargetSdkVersion
 import org.gradle.api.tasks.testing.Test
 
 internal class UnitTestOptionsDslInfoImpl(
-    private val extension: CommonExtensionImpl<*, *, *, *, *>,
+    private val extension: CommonExtensionImpl<*, *, *, *, *, *>,
 ): UnitTestOptionsDslInfo {
     override val isIncludeAndroidResources: Boolean
         get() = extension.testOptions.unitTests.isIncludeAndroidResources

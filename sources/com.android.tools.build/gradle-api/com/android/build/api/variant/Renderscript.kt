@@ -18,6 +18,11 @@ package com.android.build.api.variant
 
 import org.gradle.api.provider.Property
 
+/**
+ * Build-time properties for renderscript inside a [Component].
+ *
+ * This is accessed via [GeneratesApk.renderscript] or [LibraryVariant.renderscript]
+ */
 interface Renderscript {
     /** Returns the renderscript support mode.  */
     val supportModeEnabled: Property<Boolean>

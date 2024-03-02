@@ -20,8 +20,8 @@ import com.android.build.api.dsl.LibraryAndroidResources
 import com.android.build.api.dsl.LibraryBuildFeatures
 import com.android.build.api.dsl.LibraryBuildType
 import com.android.build.api.dsl.LibraryDefaultConfig
+import com.android.build.api.dsl.LibraryInstallation
 import com.android.build.api.dsl.LibraryProductFlavor
-import com.android.build.api.dsl.Lint
 import com.android.build.api.dsl.Prefab
 import com.android.build.gradle.internal.plugins.DslContainerProvider
 import com.android.build.gradle.internal.services.DslServices
@@ -42,7 +42,8 @@ abstract class LibraryExtensionImpl @Inject constructor(
             LibraryBuildType,
             LibraryDefaultConfig,
             LibraryProductFlavor,
-            LibraryAndroidResources>(
+            LibraryAndroidResources,
+            LibraryInstallation>(
         dslServices,
         dslContainers
     ),
@@ -72,5 +73,8 @@ abstract class LibraryExtensionImpl @Inject constructor(
         )
 
     override val androidResources: LibraryAndroidResources
-     = dslServices.newDecoratedInstance(LibraryAndroidResourcesImpl::class.java, dslServices)
+        = dslServices.newDecoratedInstance(LibraryAndroidResourcesImpl::class.java, dslServices)
+
+    override val installation: LibraryInstallation
+        = dslServices.newDecoratedInstance(LibraryInstallationImpl::class.java, dslServices)
 }

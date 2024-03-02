@@ -17,7 +17,7 @@
 package com.android.build.gradle.internal.core.dsl
 
 import com.android.build.gradle.internal.core.dsl.features.DexingDslInfo
-import com.android.build.gradle.internal.dsl.SigningConfig
+import com.android.build.gradle.internal.core.dsl.impl.SigningConfigResolver
 import com.android.build.gradle.options.ProjectOptions
 
 /**
@@ -30,8 +30,9 @@ interface ApkProducingComponentDslInfo: ConsumableComponentDslInfo {
 
     val isDebuggable: Boolean
 
-    /** Holds all SigningConfig information from the DSL and/or [ProjectOptions].  */
-    val signingConfig: SigningConfig?
-
-    val isSigningReady: Boolean
+    /**
+     * Holds all SigningConfig information from the DSL and/or [ProjectOptions].
+     * Will resolve config as soon as all changes been done and variant is created.
+     */
+    val signingConfigResolver: SigningConfigResolver?
 }

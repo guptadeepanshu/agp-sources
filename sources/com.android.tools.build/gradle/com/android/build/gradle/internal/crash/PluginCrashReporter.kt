@@ -17,7 +17,6 @@
 package com.android.build.gradle.internal.crash
 
 import com.google.common.annotations.VisibleForTesting
-import com.android.build.gradle.internal.LoggerWrapper
 import com.android.Version
 import com.android.tools.analytics.AnalyticsSettings
 import com.android.tools.analytics.crash.CrashReporter
@@ -49,7 +48,6 @@ object PluginCrashReporter {
     }
 
     private fun getCrashReporter(forTest: Boolean = false): CrashReporter? {
-        AnalyticsSettings.initialize(LoggerWrapper.getLogger(PluginCrashReporter::class.java))
         return if (AnalyticsSettings.optedIn) {
             val isDebugBuild = Version.ANDROID_GRADLE_PLUGIN_VERSION.endsWith("-dev")
             GoogleCrashReporter(false, isDebugBuild || forTest)

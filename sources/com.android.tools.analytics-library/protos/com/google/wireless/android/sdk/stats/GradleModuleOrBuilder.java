@@ -47,7 +47,7 @@ public interface GradleModuleOrBuilder extends
 
   /**
    * <pre>
-   * Number of library modules in this app..
+   * Number of library modules in this app.
    * </pre>
    *
    * <code>optional int64 lib_module_count = 3;</code>
@@ -56,11 +56,68 @@ public interface GradleModuleOrBuilder extends
   boolean hasLibModuleCount();
   /**
    * <pre>
-   * Number of library modules in this app..
+   * Number of library modules in this app.
    * </pre>
    *
    * <code>optional int64 lib_module_count = 3;</code>
    * @return The libModuleCount.
    */
   long getLibModuleCount();
+
+  /**
+   * <pre>
+   * Number of dynamic feature modules in this app.
+   * </pre>
+   *
+   * <code>optional int64 dynamic_feature_module_count = 4;</code>
+   * @return Whether the dynamicFeatureModuleCount field is set.
+   */
+  boolean hasDynamicFeatureModuleCount();
+  /**
+   * <pre>
+   * Number of dynamic feature modules in this app.
+   * </pre>
+   *
+   * <code>optional int64 dynamic_feature_module_count = 4;</code>
+   * @return The dynamicFeatureModuleCount.
+   */
+  long getDynamicFeatureModuleCount();
+
+  /**
+   * <pre>
+   * Number of android test modules in this app.
+   * </pre>
+   *
+   * <code>optional int64 test_module_count = 5;</code>
+   * @return Whether the testModuleCount field is set.
+   */
+  boolean hasTestModuleCount();
+  /**
+   * <pre>
+   * Number of android test modules in this app.
+   * </pre>
+   *
+   * <code>optional int64 test_module_count = 5;</code>
+   * @return The testModuleCount.
+   */
+  long getTestModuleCount();
+
+  /**
+   * <pre>
+   * Number of kotlin multiplatform modules in this app.
+   * </pre>
+   *
+   * <code>optional int64 kotlin_multiplatform_module_count = 6;</code>
+   * @return Whether the kotlinMultiplatformModuleCount field is set.
+   */
+  boolean hasKotlinMultiplatformModuleCount();
+  /**
+   * <pre>
+   * Number of kotlin multiplatform modules in this app.
+   * </pre>
+   *
+   * <code>optional int64 kotlin_multiplatform_module_count = 6;</code>
+   * @return The kotlinMultiplatformModuleCount.
+   */
+  long getKotlinMultiplatformModuleCount();
 }

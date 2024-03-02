@@ -168,15 +168,10 @@ abstract class FusedLibraryManifestMergerTask : ManifestProcessorTask() {
                     taskProvider,
                     FusedLibraryManifestMergerTask::reportFile
             ).atLocation(
-                    FileUtils.join(
-                            creationConfig.layout.projectDirectory.asFile,
-                            "build",
-                            SdkConstants.FD_OUTPUTS,
-                            SdkConstants.FD_LOGS
-                    ).absolutePath
+                    creationConfig.layout.buildDirectory
+                            .dir("${SdkConstants.FD_OUTPUTS}/${SdkConstants.FD_LOGS}")
             ).withName("manifest-merger-$name-report.txt")
                     .on(FusedLibraryInternalArtifactType.MANIFEST_MERGE_REPORT)
-            SdkConstants.FD_OUTPUT
         }
 
         override fun configure(task: FusedLibraryManifestMergerTask) {

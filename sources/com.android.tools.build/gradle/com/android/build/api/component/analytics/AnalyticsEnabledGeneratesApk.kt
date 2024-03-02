@@ -20,6 +20,7 @@ import com.android.build.api.variant.AndroidResources
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.GeneratesApk
 import com.android.build.api.variant.ApkPackaging
+import com.android.build.api.variant.Dexing
 import com.android.build.api.variant.Renderscript
 import com.android.tools.build.gradle.internal.profile.VariantPropertiesMethodType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
@@ -39,7 +40,7 @@ open class AnalyticsEnabledGeneratesApk(
             return delegate.applicationId
         }
 
-    private val userVisibleRenderscript: Renderscript? by lazy {
+    private val userVisibleRenderscript: Renderscript? by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
         delegate.renderscript?.let {
             objectFactory.newInstance(
                     AnalyticsEnabledRenderscript::class.java,
@@ -65,7 +66,7 @@ open class AnalyticsEnabledGeneratesApk(
             return delegate.androidResources
         }
 
-    private val userVisibleApkPackaging: ApkPackaging by lazy {
+    private val userVisibleApkPackaging: ApkPackaging by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
         objectFactory.newInstance(
                 AnalyticsEnabledApkPackaging::class.java,
                 delegate.packaging,
@@ -92,5 +93,12 @@ open class AnalyticsEnabledGeneratesApk(
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.TARGET_SDK_VERSION_VALUE
             return delegate.targetSdkVersion
+        }
+
+    override val dexing: Dexing
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.DEXING_VALUE
+            return delegate.dexing
         }
 }

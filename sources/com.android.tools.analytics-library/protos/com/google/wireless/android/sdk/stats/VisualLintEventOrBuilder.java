@@ -44,4 +44,61 @@ public interface VisualLintEventOrBuilder extends
    * @return The issueEvent.
    */
   com.google.wireless.android.sdk.stats.VisualLintEvent.IssueEvent getIssueEvent();
+
+  /**
+   * <pre>
+   * The origin that triggered the visual lint event
+   * </pre>
+   *
+   * <code>optional .android_studio.VisualLintEvent.EventOrigin event_origin = 3;</code>
+   * @return Whether the eventOrigin field is set.
+   */
+  boolean hasEventOrigin();
+  /**
+   * <pre>
+   * The origin that triggered the visual lint event
+   * </pre>
+   *
+   * <code>optional .android_studio.VisualLintEvent.EventOrigin event_origin = 3;</code>
+   * @return The eventOrigin.
+   */
+  com.google.wireless.android.sdk.stats.VisualLintEvent.EventOrigin getEventOrigin();
+
+  /**
+   * <pre>
+   * The time it took for UI Check mode to start in ms
+   * </pre>
+   *
+   * <code>optional int64 ui_check_start_time_ms = 4;</code>
+   * @return Whether the uiCheckStartTimeMs field is set.
+   */
+  boolean hasUiCheckStartTimeMs();
+  /**
+   * <pre>
+   * The time it took for UI Check mode to start in ms
+   * </pre>
+   *
+   * <code>optional int64 ui_check_start_time_ms = 4;</code>
+   * @return The uiCheckStartTimeMs.
+   */
+  long getUiCheckStartTimeMs();
+
+  /**
+   * <pre>
+   * The number of visible previews in UI Check
+   * </pre>
+   *
+   * <code>optional int32 visible_previews_number = 5;</code>
+   * @return Whether the visiblePreviewsNumber field is set.
+   */
+  boolean hasVisiblePreviewsNumber();
+  /**
+   * <pre>
+   * The number of visible previews in UI Check
+   * </pre>
+   *
+   * <code>optional int32 visible_previews_number = 5;</code>
+   * @return The visiblePreviewsNumber.
+   */
+  int getVisiblePreviewsNumber();
 }

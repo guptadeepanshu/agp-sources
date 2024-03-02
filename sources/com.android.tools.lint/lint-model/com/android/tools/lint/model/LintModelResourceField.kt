@@ -22,7 +22,9 @@ interface LintModelResourceField {
   val value: String
 
   operator fun component1(): String = type
+
   operator fun component2(): String = name
+
   operator fun component3(): String = value
 }
 

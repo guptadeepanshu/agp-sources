@@ -16,12 +16,10 @@
 
 package com.android.build.api.component.impl.features
 
-import com.android.build.api.variant.AndroidResources
-import com.android.build.api.variant.impl.initializeAaptOptionsFromDsl
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
-import com.android.build.gradle.internal.component.UnitTestCreationConfig
+import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.component.features.AndroidResourcesCreationConfig
 import com.android.build.gradle.internal.core.dsl.ComponentDslInfo
 import com.android.build.gradle.internal.core.dsl.features.AndroidResourcesDslInfo
@@ -47,9 +45,6 @@ class AndroidResourcesCreationConfigImpl(
     private val internalServices: VariantServices,
 ): AndroidResourcesCreationConfig {
 
-    override val androidResources: AndroidResources by lazy {
-        initializeAaptOptionsFromDsl(androidResourcesDsl.androidResources, internalServices)
-    }
     override val pseudoLocalesEnabled: Property<Boolean> by lazy {
         internalServices.newPropertyBackingDeprecatedApi(
             Boolean::class.java,
@@ -159,10 +154,10 @@ class AndroidResourcesCreationConfigImpl(
 
     private fun getRJarForUnitTests(): Provider<RegularFile> {
         Preconditions.checkState(
-            component.componentType === ComponentTypeImpl.UNIT_TEST && component is UnitTestCreationConfig,
+            component.componentType === ComponentTypeImpl.UNIT_TEST && component is HostTestCreationConfig,
             "Expected unit test type but found: ${component.componentType}"
         )
-        val mainVariant = (component as UnitTestCreationConfig).mainVariant
+        val mainVariant = (component as HostTestCreationConfig).mainVariant
         return if (mainVariant.componentType.isAar) {
             component.artifacts.get(COMPILE_AND_RUNTIME_NOT_NAMESPACED_R_CLASS_JAR)
         } else {

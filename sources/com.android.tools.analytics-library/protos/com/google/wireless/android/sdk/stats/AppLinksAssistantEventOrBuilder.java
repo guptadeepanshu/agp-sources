@@ -296,4 +296,31 @@ public interface AppLinksAssistantEventOrBuilder extends
    * @return The linkFilterOption.
    */
   com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinkFilterOption getLinkFilterOption();
+
+  /**
+   * <pre>
+   * The information of an interacted link collected for impact tracking.
+   * </pre>
+   *
+   * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord links_record = 14;</code>
+   * @return Whether the linksRecord field is set.
+   */
+  boolean hasLinksRecord();
+  /**
+   * <pre>
+   * The information of an interacted link collected for impact tracking.
+   * </pre>
+   *
+   * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord links_record = 14;</code>
+   * @return The linksRecord.
+   */
+  com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord getLinksRecord();
+  /**
+   * <pre>
+   * The information of an interacted link collected for impact tracking.
+   * </pre>
+   *
+   * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord links_record = 14;</code>
+   */
+  com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecordOrBuilder getLinksRecordOrBuilder();
 }

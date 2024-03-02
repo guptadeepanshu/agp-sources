@@ -17,7 +17,6 @@
 package com.android.build.api.dsl
 
 import org.gradle.api.Incubating
-import org.gradle.api.tasks.testing.Test
 
 @Incubating
 interface KotlinMultiplatformAndroidTestOnJvm {
@@ -70,14 +69,6 @@ interface KotlinMultiplatformAndroidTestOnJvm {
     @get:Incubating
     @set:Incubating
     var isIncludeAndroidResources: Boolean
-
-    /**
-     * Configures all unit testing tasks.
-     * See [Test] for available options.
-     * Inside the closure you can check the name of the task to configure only some test tasks
-     */
-    @Incubating
-    fun all(configAction: (Test) -> Unit)
 
     /**
      * Specifies unit test code coverage data collection by configuring the JacocoPlugin.

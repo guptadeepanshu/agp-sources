@@ -16,50 +16,45 @@
 
 package com.android.build.gradle.tasks
 
+import com.android.build.gradle.internal.api.BaselineProfiles
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
-import com.android.build.gradle.internal.tasks.NonIncrementalTask
+import com.android.build.gradle.internal.tasks.MergeFileTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.tools.profgen.HumanReadableProfile
-import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.tasks.InputFiles
-import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
-import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.work.DisableCachingByDefault
-import java.lang.RuntimeException
 
 /**
  * Task that processes profiles files for library.
- *
- * As of now, we do not merge any files while building an aar, this is a potential future
- * enhancement.
  */
 @DisableCachingByDefault
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.ART_PROFILE)
-abstract class ProcessLibraryArtProfileTask: NonIncrementalTask() {
+abstract class ProcessLibraryArtProfileTask: MergeFileTask() {
 
-    // Use InputFiles rather than InputFile to allow the file not to exist
-    @get:[InputFiles PathSensitive(PathSensitivity.NAME_ONLY)]
-    abstract val profileSource: RegularFileProperty
+    @get: [InputFiles PathSensitive(PathSensitivity.RELATIVE)]
+    abstract val baselineProfileSources: ConfigurableFileCollection
 
-    @get:OutputFile
-    abstract val outputFile: RegularFileProperty
-
-    @TaskAction
     override fun doTaskAction() {
-        val sourceFile = profileSource.get().asFile
-        if (sourceFile.isFile) {
-            // verify the human readable profile is valid so we error early if necessary
-            HumanReadableProfile(sourceFile) {
-                throw RuntimeException("Error while parsing ${sourceFile.absolutePath} : $it")
+        if (!baselineProfileSources.isEmpty) {
+            val baselineProfiles = baselineProfileSources.files.filter { it.isFile }
+
+            baselineProfiles.forEach { baselineProfile ->
+                // verify the human-readable profile is valid so we error early if necessary
+                HumanReadableProfile(baselineProfile) {
+                    throw RuntimeException(
+                        "Error while parsing ${outputFile.get().asFile.absolutePath} : $it")
+                }
             }
-            // all good, copy to target area.
-            sourceFile.copyTo(outputFile.get().asFile, true)
+
+            mergeFiles(baselineProfiles, outputFile.get().asFile)
         }
     }
 
@@ -76,17 +71,28 @@ abstract class ProcessLibraryArtProfileTask: NonIncrementalTask() {
         override fun handleProvider(taskProvider: TaskProvider<ProcessLibraryArtProfileTask>) {
             super.handleProvider(taskProvider)
             creationConfig.artifacts.setInitialProvider(
-                    taskProvider,
-                    ProcessLibraryArtProfileTask::outputFile
+                taskProvider,
+                ProcessLibraryArtProfileTask::outputFile
             ).on(InternalArtifactType.LIBRARY_ART_PROFILE)
         }
 
         override fun configure(task: ProcessLibraryArtProfileTask) {
             super.configure(task)
+
+            // for backwards compat we need to keep reading the old location for baseline profile
             creationConfig.sources.artProfile?.let { artProfile ->
-                task.profileSource.fileProvider(artProfile)
+                task.baselineProfileSources.from(artProfile)
             }
-            task.profileSource.disallowChanges()
+
+            creationConfig.sources.baselineProfiles {
+                task.baselineProfileSources.fromDisallowChanges(
+                    it.all.map { directories ->
+                        directories.map {directory ->
+                            directory.file(BaselineProfiles.BaselineProfileFileName)
+                        }
+                    }
+                )
+            }
         }
     }
 }

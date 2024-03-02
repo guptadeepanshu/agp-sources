@@ -18,39 +18,12 @@ package com.android.build.gradle.internal.dsl
 
 import com.android.build.api.dsl.KotlinMultiplatformAndroidTestOnJvm
 import com.android.build.gradle.internal.services.DslServices
-import org.gradle.api.Action
-import org.gradle.api.tasks.testing.Test
 import javax.inject.Inject
 
 abstract class KotlinMultiplatformAndroidTestOnJvmImpl @Inject constructor(
     val dslServices: DslServices,
 ): KotlinMultiplatformAndroidTestOnJvm {
-    // Used by testTasks.all below, DSL docs generator can't handle diamond operator.
-    private val testTasks = dslServices.domainObjectSet(Test::class.java)
-
     override var isReturnDefaultValues: Boolean = false
     override var isIncludeAndroidResources: Boolean = false
     override var enableCoverage: Boolean = false
-
-    override fun all(configAction: (Test) -> Unit) {
-        testTasks.all(configAction)
-    }
-
-    fun all(configAction: Action<Test>) {
-        testTasks.all(configAction)
-    }
-
-    /**
-     * Configures a given test task. The configuration closures that were passed to {@link
-     * #all(Closure)} will be applied to it.
-     *
-     * <p>Not meant to be called from build scripts. The reason it exists is that tasks are
-     * created after the build scripts are evaluated, so users have to "register" their
-     * configuration closures first and we can only apply them later.
-     *
-     * @since 1.2.0
-     */
-    fun applyConfiguration(task: Test) {
-        testTasks.add(task)
-    }
 }

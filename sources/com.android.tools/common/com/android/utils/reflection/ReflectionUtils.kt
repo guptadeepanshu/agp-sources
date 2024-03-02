@@ -23,7 +23,6 @@ import kotlin.reflect.KProperty
  *
  * Can be used for creating instances of `Key` or `Logger` that should know their own name:
  *
- * `val MY_KEY: Key<Boolean> = Key.create(::MY_KEY.qualifiedName)`.
+ * `val MY_KEY: Key<Boolean> = Key.create(::MY_KEY.qualifiedName<T>())`.
  */
-val KProperty<*>.qualifiedName: String get() = "${javaClass.name}.$name"
-
+inline fun <reified T>  KProperty<*>.qualifiedName(): String = T::class.java.name + "." + this.name

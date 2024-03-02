@@ -20,7 +20,9 @@ import org.gradle.api.Incubating
 import org.gradle.api.provider.ListProperty
 
 /**
- * Defines a variant's aapt options.
+ * Build-time properties for Android Resources inside a [Component].
+ *
+ * This is accessed via [GeneratesApk.androidResources]
  */
 interface AndroidResources {
 

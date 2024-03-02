@@ -29,12 +29,12 @@ interface ComponentIdentity {
     val name: String
 
     /**
-     * Build type name, might be replaced with access to locked DSL object once ready.
+     * Build type name.
      */
     val buildType: String?
 
     /**
-     * List of flavor names, might be replaced with access to locked DSL objects once ready.
+     * List of flavor names.
      *
      * The order is properly sorted based on the associated dimension order.
      */

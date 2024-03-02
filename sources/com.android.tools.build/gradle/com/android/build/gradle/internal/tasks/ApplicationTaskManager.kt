@@ -41,14 +41,10 @@ import com.android.build.gradle.internal.tasks.factory.TaskProviderCallback
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.android.build.gradle.internal.tasks.featuresplit.FeatureSetMetadataWriterTask
 import com.android.build.gradle.internal.variant.ComponentInfo
-import com.android.build.gradle.internal.variant.VariantModel
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.tasks.BuildPrivacySandboxSdkApks
 import com.android.build.gradle.tasks.ExtractSupportedLocalesTask
 import com.android.build.gradle.tasks.GenerateLocaleConfigTask
-import com.android.build.gradle.tasks.sync.AppIdListTask
-import com.android.build.gradle.tasks.sync.ApplicationVariantModelTask
-import com.android.builder.core.ComponentType
 import com.android.builder.errors.IssueReporter
 import com.android.builder.internal.aapt.AaptUtils
 import org.gradle.api.Action
@@ -78,18 +74,6 @@ class ApplicationTaskManager(
     extension,
 ) {
 
-    override fun createTopLevelTasks(componentType: ComponentType, variantModel: VariantModel) {
-        super.createTopLevelTasks(componentType, variantModel)
-        taskFactory.register(
-            AppIdListTask.CreationAction(
-                globalConfig,
-                variants.associate {
-                    it.variant.name to it.variant.applicationId
-                }
-            )
-        )
-    }
-
     override fun doCreateTasksForVariant(
         variantInfo: ComponentInfo<ApplicationVariantBuilder, ApplicationCreationConfig>
     ) {
@@ -98,8 +82,6 @@ class ApplicationTaskManager(
         val variant = variantInfo.variant
 
         createBundleTask(variant)
-
-        taskFactory.register(ApplicationVariantModelTask.CreationAction(variant))
 
         // Base feature specific tasks.
         taskFactory.register(FeatureSetMetadataWriterTask.CreationAction(variant))
@@ -118,6 +100,13 @@ class ApplicationTaskManager(
         }
 
         taskFactory.register(MergeArtProfileTask.CreationAction(variant))
+        // The [ExpandArtProfileTask] should only run when the R8 task also runs, and this
+        // conditional should match the R8 registration conditional in
+        // [TaskManager#maybeCreateJavaCodeShrinkerTask]
+        if (variant.optimizationCreationConfig.minifiedEnabled) {
+            val classpathUtils = getClassPathUtils(variant)
+            taskFactory.register(ExpandArtProfileWildcardsTask.CreationAction(variant, classpathUtils))
+        }
         taskFactory.register(CompileArtProfileTask.CreationAction(variant))
 
         if (variant.generateLocaleConfig) {
@@ -153,7 +142,9 @@ class ApplicationTaskManager(
 
         handleMicroApp(variant)
 
-        if (variant.services.projectOptions[BooleanOption.ENABLE_VCS_INFO]) {
+        // This should match the implementation in [PackageAndroidArtifact] configure: vcsTaskRan
+        if ((variant.includeVcsInfo == null && !variantInfo.variantBuilder.debuggable) ||
+            variant.includeVcsInfo == true) {
             taskFactory.register(ExtractVersionControlInfoTask.CreationAction(variant))
         }
 
@@ -321,9 +312,11 @@ class ApplicationTaskManager(
                 }
             }
             taskFactory.register(FinalizeBundleTask.CreationAction(variant))
-            if (variant.services.projectOptions[BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT]) {
+            if (variant.privacySandboxCreationConfig != null) {
                 taskFactory.register(
                         GeneratePrivacySandboxSdkRuntimeConfigFile.CreationAction(variant))
+                taskFactory.register(
+                        GenerateRuntimeEnabledSdkTableTask.CreationAction(variant))
                 variant
                     .artifacts
                     .forScope(ScopedArtifacts.Scope.PROJECT)
@@ -332,6 +325,8 @@ class ApplicationTaskManager(
                         variant.artifacts,
                         InternalArtifactType.PRIVACY_SANDBOX_SDK_R_PACKAGE_JAR
                     )
+                taskFactory.register(GenerateAdditionalApkSplitForDeploymentViaApk.CreationAction(variant))
+                taskFactory.register(ExtractPrivacySandboxCompatApks.CreationAction(variant))
             }
 
             taskFactory.register(BundleIdeModelProducerTask.CreationAction(variant))
@@ -346,7 +341,7 @@ class ApplicationTaskManager(
             taskFactory.register(BundleToApkTask.CreationAction(variant))
             taskFactory.register(BundleToStandaloneApkTask.CreationAction(variant))
             taskFactory.register(ExtractApksTask.CreationAction(variant))
-            taskFactory.register(ExtractPrivacySandboxCompatApks.CreationAction(variant))
+
             taskFactory.register(
                 ListingFileRedirectTask.CreationAction(
                     variant,
@@ -381,8 +376,8 @@ class ApplicationTaskManager(
     }
 
     override fun createInstallTask(creationConfig: ApkCreationConfig) {
-        if ( globalConfig.services.projectOptions[BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT] && !creationConfig.componentType.isForTesting) {
-            taskFactory.register(BuildPrivacySandboxSdkApks.CreationAction(creationConfig))
+        if (creationConfig.privacySandboxCreationConfig != null && !creationConfig.componentType.isForTesting) {
+            taskFactory.register(BuildPrivacySandboxSdkApks.CreationAction(creationConfig as ApplicationCreationConfig))
         }
         if (!globalConfig.hasDynamicFeatures ||
             creationConfig is AndroidTestCreationConfig

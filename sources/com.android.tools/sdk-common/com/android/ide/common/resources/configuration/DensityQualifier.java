@@ -19,14 +19,9 @@ package com.android.ide.common.resources.configuration;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.resources.Density;
-import com.android.resources.ResourceEnum;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-/**
- * Resource Qualifier for Screen Pixel Density.
- */
-public final class DensityQualifier extends EnumBasedResourceQualifier {
+/** Resource Qualifier for Screen Pixel Density. */
+public final class DensityQualifier extends ResourceQualifier {
 
     public static final String NAME = "Density";
 
@@ -36,13 +31,11 @@ public final class DensityQualifier extends EnumBasedResourceQualifier {
      */
     private static final DensityQualifier NULL_QUALIFIER = new DensityQualifier(true);
 
-    /**
-     * null iff <code>this == {@link #NULL_QUALIFIER}</code>
-     */
-    @Nullable
-    private final Density mValue;
+    /** null iff <code>this == {@link #NULL_QUALIFIER}</code> */
+    @Nullable private final Density mValue;
 
-    private static final Pattern sDensityLegacyPattern = Pattern.compile("^(\\d+)dpi$");
+    /** The dpi value of the density. */
+    private final int mDpi;
 
     public DensityQualifier() {
         this(Density.MEDIUM);
@@ -51,22 +44,28 @@ public final class DensityQualifier extends EnumBasedResourceQualifier {
     public DensityQualifier(@NonNull Density value) {
         // value is marked as NonNull so that no usages from outside this method use a null value.
         mValue = value;
+        mDpi = value.getDpiValue();
     }
 
     private DensityQualifier(@SuppressWarnings("UnusedParameters") boolean ignored) {
         mValue = null;
+        mDpi = 0;
     }
 
     // Not marking as NonNull or Nullable because it can technically return null (for
     // NULL_QUALIFIER) but usually won't. So, no need to keep checking for null.
-    @SuppressWarnings("NullableProblems")
+    @SuppressWarnings("NullableProblem")
     public Density getValue() {
         return mValue;
     }
 
+    public int getDpiValue() {
+        return mDpi;
+    }
+
     @Override
-    public ResourceEnum getEnumValue() {
-        return mValue;
+    public boolean hasFakeValue() {
+        return false;
     }
 
     @Override
@@ -80,35 +79,63 @@ public final class DensityQualifier extends EnumBasedResourceQualifier {
     }
 
     @Override
+    public String getFolderSegment() {
+        if (mValue != null) {
+            return mValue.getResourceValue();
+        } else if (mDpi > 0) {
+            return mDpi + "dpi";
+        }
+        return ""; //$NON-NLS-1$
+    }
+
+    @Override
+    public String getShortDisplayValue() {
+        if (mValue != null) {
+            return mValue.getShortDisplayValue();
+        } else if (mDpi > 0) {
+            return mDpi + "dpi";
+        }
+        return ""; //$NON-NLS-1$
+    }
+
+    @Override
+    public String getLongDisplayValue() {
+        if (mValue != null) {
+            return mValue.getLongDisplayValue();
+        } else if (mDpi > 0) {
+            return mDpi + "dpi";
+        }
+        return ""; //$NON-NLS-1$
+    }
+
+    @Override
+    public boolean equals(Object qualifier) {
+        return qualifier != null
+                && qualifier.getClass() == DensityQualifier.class
+                && mValue == ((DensityQualifier) qualifier).mValue
+                && mDpi == ((DensityQualifier) qualifier).mDpi;
+    }
+
+    @Override
+    public int hashCode() {
+        if (mValue != null) {
+            return mValue.hashCode();
+        }
+        return mDpi;
+    }
+
+    @Override
     public int since() {
         return 4;
     }
 
     @Override
     public boolean checkAndSet(String value, FolderConfiguration config) {
-        Density density = Density.getEnum(value);
-        if (density == null) {
-
-            // attempt to read a legacy value.
-            Matcher m = sDensityLegacyPattern.matcher(value);
-            if (m.matches()) {
-                String v = m.group(1);
-
-                try {
-                    density = Density.getEnum(Integer.parseInt(v));
-                } catch (NumberFormatException e) {
-                    // looks like the string we extracted wasn't a valid number
-                    // which really shouldn't happen since the regexp would have failed.
-                    throw new AssertionError(e);
-                }
-            }
-        }
-
+        Density density = Density.create(value);
         if (density != null) {
             config.setDensityQualifier(new DensityQualifier(density));
             return true;
         }
-
         return false;
     }
 

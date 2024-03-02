@@ -41,157 +41,6 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private EmulatorAvdInfo(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    int mutable_bitField0_ = 0;
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 10: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000001;
-            name_ = bs;
-            break;
-          }
-          case 16: {
-            bitField0_ |= 0x00000002;
-            apiLevel_ = input.readInt64();
-            break;
-          }
-          case 24: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture value = com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(3, rawValue);
-            } else {
-              bitField0_ |= 0x00000004;
-              arch_ = rawValue;
-            }
-            break;
-          }
-          case 32: {
-            bitField0_ |= 0x00000008;
-            creationTimestamp_ = input.readInt64();
-            break;
-          }
-          case 42: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000010;
-            buildId_ = bs;
-            break;
-          }
-          case 48: {
-            bitField0_ |= 0x00000020;
-            buildTimestamp_ = input.readInt64();
-            break;
-          }
-          case 56: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdImageKind value = com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdImageKind.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(7, rawValue);
-            } else {
-              bitField0_ |= 0x00000040;
-              imageKind_ = rawValue;
-            }
-            break;
-          }
-          case 66: {
-            if (!((mutable_bitField0_ & 0x00000080) != 0)) {
-              files_ = new java.util.ArrayList<com.google.wireless.android.sdk.stats.EmulatorAvdFile>();
-              mutable_bitField0_ |= 0x00000080;
-            }
-            files_.add(
-                input.readMessage(com.google.wireless.android.sdk.stats.EmulatorAvdFile.PARSER, extensionRegistry));
-            break;
-          }
-          case 72: {
-            int rawValue = input.readEnum();
-            @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdProperty value = com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdProperty.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(9, rawValue);
-            } else {
-              if (!((mutable_bitField0_ & 0x00000100) != 0)) {
-                properties_ = new java.util.ArrayList<java.lang.Integer>();
-                mutable_bitField0_ |= 0x00000100;
-              }
-              properties_.add(rawValue);
-            }
-            break;
-          }
-          case 74: {
-            int length = input.readRawVarint32();
-            int oldLimit = input.pushLimit(length);
-            while(input.getBytesUntilLimit() > 0) {
-              int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-              com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdProperty value = com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdProperty.valueOf(rawValue);
-              if (value == null) {
-                unknownFields.mergeVarintField(9, rawValue);
-              } else {
-                if (!((mutable_bitField0_ & 0x00000100) != 0)) {
-                  properties_ = new java.util.ArrayList<java.lang.Integer>();
-                  mutable_bitField0_ |= 0x00000100;
-                }
-                properties_.add(rawValue);
-              }
-            }
-            input.popLimit(oldLimit);
-            break;
-          }
-          case 80: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorDeviceName value = com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorDeviceName.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(10, rawValue);
-            } else {
-              bitField0_ |= 0x00000080;
-              deviceName_ = rawValue;
-            }
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      if (((mutable_bitField0_ & 0x00000080) != 0)) {
-        files_ = java.util.Collections.unmodifiableList(files_);
-      }
-      if (((mutable_bitField0_ & 0x00000100) != 0)) {
-        properties_ = java.util.Collections.unmodifiableList(properties_);
-      }
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EmulatorAvdInfo_descriptor;
@@ -679,6 +528,18 @@ private static final long serialVersionUID = 0L;
      * <code>WEAROS_SQUARE = 36;</code>
      */
     WEAROS_SQUARE(36),
+    /**
+     * <code>PIXEL_7A = 37;</code>
+     */
+    PIXEL_7A(37),
+    /**
+     * <code>PIXEL_8 = 38;</code>
+     */
+    PIXEL_8(38),
+    /**
+     * <code>PIXEL_8_PRO = 39;</code>
+     */
+    PIXEL_8_PRO(39),
     ;
 
     /**
@@ -829,6 +690,18 @@ private static final long serialVersionUID = 0L;
      * <code>WEAROS_SQUARE = 36;</code>
      */
     public static final int WEAROS_SQUARE_VALUE = 36;
+    /**
+     * <code>PIXEL_7A = 37;</code>
+     */
+    public static final int PIXEL_7A_VALUE = 37;
+    /**
+     * <code>PIXEL_8 = 38;</code>
+     */
+    public static final int PIXEL_8_VALUE = 38;
+    /**
+     * <code>PIXEL_8_PRO = 39;</code>
+     */
+    public static final int PIXEL_8_PRO_VALUE = 39;
 
 
     public final int getNumber() {
@@ -888,6 +761,9 @@ private static final long serialVersionUID = 0L;
         case 34: return WEAROS_SMALL_ROUND;
         case 35: return WEAROS_RECT;
         case 36: return WEAROS_SQUARE;
+        case 37: return PIXEL_7A;
+        case 38: return PIXEL_8;
+        case 39: return PIXEL_8_PRO;
         default: return null;
       }
     }
@@ -1389,7 +1265,7 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000080) != 0)) {
       output.writeEnum(10, deviceName_);
     }
-    unknownFields.writeTo(output);
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -1441,7 +1317,7 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(10, deviceName_);
     }
-    size += unknownFields.getSerializedSize();
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -1496,7 +1372,7 @@ private static final long serialVersionUID = 0L;
     if (hasDeviceName()) {
       if (deviceName_ != other.deviceName_) return false;
     }
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -1550,7 +1426,7 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + DEVICE_NAME_FIELD_NUMBER;
       hash = (53 * hash) + deviceName_;
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -1671,19 +1547,13 @@ private static final long serialVersionUID = 0L;
 
     // Construct using com.google.wireless.android.sdk.stats.EmulatorAvdInfo.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessageV3
-              .alwaysUseFieldBuilders) {
-        getFilesFieldBuilder();
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
@@ -1704,10 +1574,11 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000040);
       if (filesBuilder_ == null) {
         files_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000080);
       } else {
+        files_ = null;
         filesBuilder_.clear();
       }
+      bitField0_ = (bitField0_ & ~0x00000080);
       properties_ = java.util.Collections.emptyList();
       bitField0_ = (bitField0_ & ~0x00000100);
       deviceName_ = 0;
@@ -1899,7 +1770,7 @@ private static final long serialVersionUID = 0L;
       if (other.hasDeviceName()) {
         setDeviceName(other.getDeviceName());
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -1914,17 +1785,133 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.google.wireless.android.sdk.stats.EmulatorAvdInfo parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              name_ = input.readBytes();
+              bitField0_ |= 0x00000001;
+              break;
+            } // case 10
+            case 16: {
+              apiLevel_ = input.readInt64();
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 16
+            case 24: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture tmpValue =
+                  com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(3, tmpRaw);
+              } else {
+                arch_ = tmpRaw;
+                bitField0_ |= 0x00000004;
+              }
+              break;
+            } // case 24
+            case 32: {
+              creationTimestamp_ = input.readInt64();
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 32
+            case 42: {
+              buildId_ = input.readBytes();
+              bitField0_ |= 0x00000010;
+              break;
+            } // case 42
+            case 48: {
+              buildTimestamp_ = input.readInt64();
+              bitField0_ |= 0x00000020;
+              break;
+            } // case 48
+            case 56: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdImageKind tmpValue =
+                  com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdImageKind.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(7, tmpRaw);
+              } else {
+                imageKind_ = tmpRaw;
+                bitField0_ |= 0x00000040;
+              }
+              break;
+            } // case 56
+            case 66: {
+              com.google.wireless.android.sdk.stats.EmulatorAvdFile m =
+                  input.readMessage(
+                      com.google.wireless.android.sdk.stats.EmulatorAvdFile.PARSER,
+                      extensionRegistry);
+              if (filesBuilder_ == null) {
+                ensureFilesIsMutable();
+                files_.add(m);
+              } else {
+                filesBuilder_.addMessage(m);
+              }
+              break;
+            } // case 66
+            case 72: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdProperty tmpValue =
+                  com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdProperty.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(9, tmpRaw);
+              } else {
+                ensurePropertiesIsMutable();
+                properties_.add(tmpRaw);
+              }
+              break;
+            } // case 72
+            case 74: {
+              int length = input.readRawVarint32();
+              int oldLimit = input.pushLimit(length);
+              while(input.getBytesUntilLimit() > 0) {
+                int tmpRaw = input.readEnum();
+                com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdProperty tmpValue =
+                    com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdProperty.forNumber(tmpRaw);
+                if (tmpValue == null) {
+                  mergeUnknownVarintField(9, tmpRaw);
+                } else {
+                  ensurePropertiesIsMutable();
+                  properties_.add(tmpRaw);
+                }
+              }
+              input.popLimit(oldLimit);
+              break;
+            } // case 74
+            case 80: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorDeviceName tmpValue =
+                  com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorDeviceName.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(10, tmpRaw);
+              } else {
+                deviceName_ = tmpRaw;
+                bitField0_ |= 0x00000200;
+              }
+              break;
+            } // case 80
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.google.wireless.android.sdk.stats.EmulatorAvdInfo) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
     private int bitField0_;
@@ -2982,7 +2969,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new EmulatorAvdInfo(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

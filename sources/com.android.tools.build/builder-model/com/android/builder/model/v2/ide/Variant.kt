@@ -60,6 +60,11 @@ interface Variant: AndroidModel {
     val testedTargetVariant: TestedTargetVariant?
 
     /**
+     *  True when "android.experimental.self-instrumenting" experimental flag is enabled.
+     */
+    val runTestInSeparateProcess: Boolean
+
+    /**
      * Whether the variant is instant app compatible.
      *
      * Only application modules and dynamic feature modules will set this property.

@@ -136,7 +136,7 @@ class LibraryVariantFactory(
         }
     }
 
-    override fun createUnitTestBuildFeatureValues(
+    override fun createHostTestBuildFeatureValues(
         buildFeatures: BuildFeatures,
         dataBinding: DataBinding,
         projectOptions: ProjectOptions,
@@ -190,7 +190,7 @@ class LibraryVariantFactory(
     /** * Prevent customization of applicationId or applicationIdSuffix.  */
     override fun preVariantCallback(
         project: Project,
-        dslExtension: CommonExtension<*, *, *, *, *>,
+        dslExtension: CommonExtension<*, *, *, *, *, *>,
         model: VariantInputModel<DefaultConfig, BuildType, ProductFlavor, SigningConfig>
     ) {
         super.preVariantCallback(project, dslExtension, model)

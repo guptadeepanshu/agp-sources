@@ -69,7 +69,7 @@ final class ProductFlavorContainerImpl implements ProductFlavorContainer, Serial
 
         if (includeAndroidTest) {
             DefaultAndroidSourceSet sourceSet =
-                    variantDimensionData.getTestSourceSet(ComponentTypeImpl.ANDROID_TEST);
+                    variantDimensionData.getSourceSet(ComponentTypeImpl.ANDROID_TEST);
             if (sourceSet != null) {
                 clonedContainers.add(
                         SourceProviderContainerImpl.create(
@@ -79,7 +79,7 @@ final class ProductFlavorContainerImpl implements ProductFlavorContainer, Serial
 
         if (includeUnitTest) {
             DefaultAndroidSourceSet sourceSet =
-                    variantDimensionData.getTestSourceSet(ComponentTypeImpl.UNIT_TEST);
+                    variantDimensionData.getSourceSet(ComponentTypeImpl.UNIT_TEST);
             if (sourceSet != null) {
                 clonedContainers.add(
                         SourceProviderContainerImpl.create(

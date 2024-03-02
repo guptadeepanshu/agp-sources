@@ -407,10 +407,12 @@ enum class ArtProfileSerializer(
                     }
                     // Useful to determine the size of the method bitmap size with BOOT profiles.
                     // We have an alternate way of determining the size of the bitmap storage size.
-                    src.readUInt16() // ignore method flags
+                    val methodFlags = src.readUInt16()
                     val dexFileData = dexFileDataArray[dexProfileIdx]
-                    val methodBitMapSize = getMethodBitmapStorageSize(dexFileData.numMethodIds)
-                    src.readMethodBitmap(dexFileData)
+                    val methodBitMapSize = getMethodBitmapStorageSizeV015S(
+                            methodFlags, dexFileData.numMethodIds
+                    )
+                    src.readMethodBitmapV015S(methodFlags, dexFileData)
                     // followingDataSize includes the method flag which is a UINT_16
                     dexFileData.hotMethodRegionSize =
                         followingDataSize.toInt() - (UINT_16_SIZE + methodBitMapSize)
@@ -429,7 +431,7 @@ enum class ArtProfileSerializer(
                     // Method Flags
                     val methodFlags = computeMethodFlags(entry)
                     // Bitmap Region
-                    val bitmapContents = createMethodBitmapRegion(entry)
+                    val bitmapContents = createMethodBitmapRegion(methodFlags, entry)
                     // Methods with Inline Caches
                     val methodRegionContents = createMethodsWithInlineCaches(entry)
                     // Profile Index
@@ -460,13 +462,14 @@ enum class ArtProfileSerializer(
         }
 
         private fun createMethodBitmapRegion(
+            methodFlags: Int,
             entry: Map.Entry<DexFile, DexFileData>,
         ): ByteArray {
             val dexFile = entry.key
             val dexFileData = entry.value
             val out = ByteArrayOutputStream()
             out.use {
-                out.writeMethodBitmap(dexFile, dexFileData)
+                out.writeMethodBitmapV015S(methodFlags, dexFile, dexFileData)
             }
             return out.toByteArray()
         }
@@ -1531,6 +1534,50 @@ enum class ArtProfileSerializer(
     }
 
     /**
+     * Writes the methods flags as a bitmap to the output stream for Android S+ Profile formats.
+     *
+     * @param methodFlags the combined method flags.
+     * @param dexFile the dex file to which the data belongs
+     * @param dexFileData the dex data that should be serialized
+     */
+    internal fun OutputStream.writeMethodBitmapV015S(
+            methodFlags: Int,
+            dexFile: DexFile,
+            dexFileData: DexFileData,
+    ) {
+        val lastFlag = MethodFlags.LAST_FLAG_REGULAR
+        val numMethodIds = dexFile.header.methodIds.size
+        val methodBitmapStorageSize = getMethodBitmapStorageSizeV015S(
+                methodFlags, numMethodIds
+        )
+        val bitmap = ByteArray(methodBitmapStorageSize)
+        for ((methodIndex, methodData) in dexFileData.methods) {
+            var offset = 0
+            var flag = MethodFlags.FIRST_FLAG
+            while (flag <= lastFlag) {
+                if (flag == MethodFlags.HOT) {
+                    flag = flag shl 1
+                    continue
+                }
+                if (flag and methodFlags == 0) {
+                    flag = flag shl 1
+                    continue
+                }
+                if (methodData.isFlagSet(flag)) {
+                    // We use offsets to compute the bitmap indexes unlike the P format
+                    val bitIndex = methodIndex + offset * numMethodIds
+                    val bitmapIndex = bitIndex / Byte.SIZE_BITS
+                    val value = bitmap[bitmapIndex] or (1 shl (bitIndex % Byte.SIZE_BITS)).toByte()
+                    bitmap[bitmapIndex] = value
+                }
+                flag = flag shl 1
+                offset += 1
+            }
+        }
+        write(bitmap)
+    }
+
+    /**
      * Returns the size necessary to encode the region of methods with inline caches.
      */
     internal fun getHotMethodRegionSize(dexFileData: DexFileData): Int {
@@ -1551,10 +1598,20 @@ enum class ArtProfileSerializer(
     }
 
     /**
+     * Returns the size needed for the method bitmap storage of the given dex file
+     * for Android S+ profile formats.
+     */
+    internal fun getMethodBitmapStorageSizeV015S(methodFlags: Int, numMethodIds: Int): Int {
+        val bits = Integer.bitCount(methodFlags and MethodFlags.HOT.inv())
+        val methodBitmapBits = bits * numMethodIds
+        return roundUpUsingAPowerOf2(methodBitmapBits, java.lang.Byte.SIZE) / java.lang.Byte.SIZE
+    }
+
+    /**
      * Sets the bit corresponding to the {@param isStartup} flag in the method bitmap.
      *
      * @param bitmap the method bitmap
-     * @param flag whether or not this is the startup bit
+     * @param flag whether this is the startup bit or not
      * @param methodIndex the method index in the dex file
      * @param dexFile the method dex file
      */
@@ -1667,6 +1724,35 @@ enum class ArtProfileSerializer(
         }
     }
 
+    internal fun InputStream.readMethodBitmapV015S(methodFlags: Int, data: MutableDexFileData) {
+        val methodBitmapStorageSize = getMethodBitmapStorageSizeV015S(
+                methodFlags, data.numMethodIds
+        )
+        val methodBitmap = read(methodBitmapStorageSize)
+        val bs = BitSet.valueOf(methodBitmap)
+        val lastFlag = MethodFlags.LAST_FLAG_REGULAR
+        var offset = 0
+        var flag = MethodFlags.FIRST_FLAG
+        while (flag <= lastFlag) {
+            if (flag == MethodFlags.HOT) {
+                flag = flag shl 1
+                continue
+            }
+            if (flag and methodFlags == 0) {
+                flag = flag shl 1
+                continue
+            }
+            for (methodIndex in 0 until data.numMethodIds) {
+                if (bs.get(methodIndex + offset * data.numMethodIds)) {
+                    val methodData = data.methods.computeIfAbsent(methodIndex) { MethodData(0) }
+                    methodData.flags = methodData.flags or flag
+                }
+            }
+            flag = flag shl 1
+            offset += 1
+        }
+    }
+
     /** Reads all the method flags for a given method from a bit set. This is only relevant for P. */
     private fun BitSet.readFlagsFromBitmap(
             methodIndex: Int,
@@ -1677,6 +1763,32 @@ enum class ArtProfileSerializer(
         var flag = MethodFlags.FIRST_FLAG
         while (flag <= lastFlag) {
             if (flag == MethodFlags.HOT) {
+                flag = flag shl 1
+                continue
+            }
+            val bitmapIndex = methodFlagBitmapIndex(flag, methodIndex, numMethodIds)
+            if (this[bitmapIndex]) {
+                result = result or flag
+            }
+            flag = flag shl 1
+        }
+        return result
+    }
+
+    private fun BitSet.readFlagsFromBitmapV015S(
+            methodFlags: Int,
+            methodIndex: Int,
+            numMethodIds: Int,
+    ): Int {
+        var result = 0
+        val lastFlag = MethodFlags.LAST_FLAG_REGULAR
+        var flag = MethodFlags.FIRST_FLAG
+        while (flag <= lastFlag) {
+            if (flag == MethodFlags.HOT) {
+                flag = flag shl 1
+                continue
+            }
+            if (flag and methodFlags == 0) {
                 flag = flag shl 1
                 continue
             }

@@ -20,7 +20,9 @@ import org.gradle.api.Incubating
 import org.gradle.api.provider.Property
 
 /**
- * Variant object for configuring AAR metadata.
+ * Build-time properties for AAR Metadata inside a [Component]
+ *
+ * This is accessed via [GeneratesAar.aarMetadata]
  */
 interface AarMetadata {
 

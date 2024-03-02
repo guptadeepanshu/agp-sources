@@ -29,7 +29,8 @@ interface TestExtension :
             TestBuildType,
             TestDefaultConfig,
             TestProductFlavor,
-            TestAndroidResources> {
+            TestAndroidResources,
+            TestInstallation> {
     // TODO(b/140406102)
     /**
      * The Gradle path of the project that this test project tests.

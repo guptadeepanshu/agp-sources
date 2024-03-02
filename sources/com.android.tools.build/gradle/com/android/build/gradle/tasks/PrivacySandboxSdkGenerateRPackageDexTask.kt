@@ -80,7 +80,7 @@ abstract class PrivacySandboxSdkGenerateRPackageDexTask: NonIncrementalTask() {
                 addClassProgramData(bytes, Origin.unknown())
                 disableDesugaring = true
                 includeClassesChecksum = false
-                minApiLevel = 32 // This class is always removed for backward compat anyway
+                minApiLevel = 14 // Minimum version supported by Android Jetpack
                 mode = CompilationMode.RELEASE
                 setOutput(outputDirectory.toPath(), OutputMode.DexIndexed)
                 setIntermediate(false)

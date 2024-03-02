@@ -116,7 +116,7 @@ abstract class ProcessJavaResTask @Inject constructor(
             ).forEach {
                 javaRes.from(
                     it.filter { file ->
-                        !file.isFile || !file.name.endsWith(DOT_JAR)
+                        !file.name.endsWith(DOT_JAR)
                     }
                 )
             }
@@ -138,7 +138,7 @@ abstract class ProcessJavaResTask @Inject constructor(
             ).forEach {
                 from(
                     it.filter { file ->
-                        file.isFile && file.name.endsWith(DOT_JAR)
+                        file.name.endsWith(DOT_JAR)
                     }.elements.map { jars ->
                         jars.map { jar ->
                             zipTree(jar.asFile).matching(

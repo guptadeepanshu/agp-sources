@@ -16,10 +16,11 @@
 
 package com.android.build.api.variant
 
+import org.gradle.api.Incubating
 import org.gradle.api.provider.Provider
 
 /**
- * Cross cutting interface for [Component] subtypes that are producing APK files.
+ * Build-time properties for [Component] that produce APKs.
  */
 interface GeneratesApk {
 
@@ -52,5 +53,11 @@ interface GeneratesApk {
 
     @Deprecated(message = "Replaced with targetSdk, will be removed in 9.0", replaceWith = ReplaceWith("targetSdk"))
     val targetSdkVersion: AndroidVersion
+
+    /**
+     * Variant's specific dexing options
+     */
+    @get:Incubating
+    val dexing: Dexing
 
 }

@@ -55,13 +55,15 @@ import java.util.zip.Deflater.NO_COMPRESSION
  * that is true for clean builds, but not incremental builds. Instead, if deterministicEntryOrder is
  * true, the resulting APK will be deterministic given the same initial APK and the same calls to
  * [writeZip], [writeFile], and [deleteFile].
+ * @param pageSize the page size to use for page alignment
  */
 class ApkFlinger(
     creationData: ApkCreatorFactory.CreationData,
     private val compressionLevel: Int,
     deterministicEntryOrder: Boolean = true,
     enableV3Signing: Boolean = false,
-    enableV4Signing: Boolean = false
+    enableV4Signing: Boolean = false,
+    private val pageSize: Long = PAGE_SIZE_16K
 ) : ApkCreator {
 
     /**
@@ -179,7 +181,7 @@ class ApkFlinger(
                 }
             // newAlignment is the entry's alignment in the destination archive.
             val newAlignment =
-                getNewAlignment(entry, newName, newCompressionLevel, pageAlignPredicate)
+                getNewAlignment(entry, newName, newCompressionLevel, pageAlignPredicate, pageSize)
             zipSource.select(entry.name, newName, newCompressionLevel, newAlignment)
         }
         archive.add(zipSource)
@@ -206,7 +208,7 @@ class ApkFlinger(
                     val source = Sources.from(inputFile, apkPath, if (mayCompress) compressionLevel else NO_COMPRESSION)
                     if (!mayCompress) {
                         if (pageAlignPredicate.apply(apkPath)) {
-                            source.align(PAGE_ALIGNMENT)
+                            source.align(pageSize)
                         } else {
                             // by default all uncompressed entries are aligned at 4 byte boundaries.
                             source.align(DEFAULT_ALIGNMENT)
@@ -254,12 +256,14 @@ class ApkFlinger(
          * @param newName the new name of the entry in the destination archive
          * @param newCompressionLevel the compression level of the entry in the destination archive
          * @param pageAlignPredicate the predicate defining which files should be page aligned
+         * @param pageSize the page size to use for page alignment
          */
         private fun getNewAlignment(
             entry: Entry,
             newName: String,
             newCompressionLevel: Int,
-            pageAlignPredicate: Predicate<String>
+            pageAlignPredicate: Predicate<String>,
+            pageSize: Long
         ): Long {
             val isNewEntryCompressed =
                 when (newCompressionLevel) {
@@ -274,15 +278,18 @@ class ApkFlinger(
             // For uncompressed entries, use PAGE_ALIGNMENT when required, otherwise use
             // DEFAULT_ALIGNMENT
             return if (pageAlignPredicate.apply(newName)) {
-                PAGE_ALIGNMENT
+                pageSize
             } else {
                 DEFAULT_ALIGNMENT
             }
         }
+
+        const val PAGE_SIZE_4K = 4*1024L
+        const val PAGE_SIZE_16K = 16*1024L
+        const val PAGE_SIZE_64K = 64*1024L
     }
 }
 
 private const val DEFAULT_ALIGNMENT = 4L
-private const val PAGE_ALIGNMENT = 4096L
 
 private const val DEFAULT_CREATED_BY = "Generated-by-ADT"

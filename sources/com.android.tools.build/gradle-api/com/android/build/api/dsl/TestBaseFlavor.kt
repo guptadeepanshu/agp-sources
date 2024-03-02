@@ -16,6 +16,11 @@
 
 package com.android.build.api.dsl
 
+/**
+ * Shared properties between [TestProductFlavor] and [TestDefaultConfig]
+ *
+ * See [ProductFlavor] and [DefaultConfig] for more information.
+ */
 interface TestBaseFlavor :
     BaseFlavor,
     TestVariantDimension {

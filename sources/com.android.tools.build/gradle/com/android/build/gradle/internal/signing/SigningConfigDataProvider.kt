@@ -47,7 +47,7 @@ class SigningConfigDataProvider(
     /** When not `null`, the signing config information can be obtained directly in memory. */
     @get:Nested
     @get:Optional
-    val signingConfigData: Provider<SigningConfigData?>,
+    val signingConfigData: Provider<out SigningConfigData?>,
 
     /** When not `null`, the signing config information can be obtained from a file. */
     @get:InputFiles
@@ -98,9 +98,9 @@ class SigningConfigDataProvider(
                     // encapsulate in a Provider to avoid these resolutions at configuration
                     // time
                     creationConfig.services.provider {
-                        creationConfig.signingConfigImpl?.let {
+                        creationConfig.signingConfig?.let {
                             if (it.hasConfig()) {
-                                SigningConfigData.fromSigningConfig(creationConfig.signingConfigImpl!!)
+                                SigningConfigData.fromSigningConfig(it)
                             } else {
                                 null
                             }

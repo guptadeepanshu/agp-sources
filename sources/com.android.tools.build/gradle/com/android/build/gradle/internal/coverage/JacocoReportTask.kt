@@ -16,7 +16,7 @@
 package com.android.build.gradle.internal.coverage
 
 import com.android.Version
-import com.android.build.api.artifact.impl.InternalScopedArtifact
+import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
@@ -190,7 +190,7 @@ abstract class JacocoReportTask : NonIncrementalTask() {
             task.classFileCollection.fromDisallowChanges(
                 creationConfig.mainVariant.artifacts
                     .forScope(ScopedArtifacts.Scope.PROJECT)
-                    .getScopedArtifactsContainer(InternalScopedArtifact.PRE_JACOCO_TRANSFORMED_CLASSES)
+                    .getScopedArtifactsContainer(ScopedArtifact.CLASSES)
                     .finalScopedContent
             )
         }

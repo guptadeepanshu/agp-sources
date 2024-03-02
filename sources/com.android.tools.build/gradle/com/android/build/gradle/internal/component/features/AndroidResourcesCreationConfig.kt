@@ -33,7 +33,6 @@ import org.gradle.api.provider.Provider
  * [com.android.build.gradle.internal.component.ComponentCreationConfig.androidResourcesCreationConfig].
  */
 interface AndroidResourcesCreationConfig {
-    val androidResources: AndroidResources
     val pseudoLocalesEnabled: Property<Boolean>
     val isCrunchPngs: Boolean
     val isPrecompileDependenciesResourcesEnabled: Boolean

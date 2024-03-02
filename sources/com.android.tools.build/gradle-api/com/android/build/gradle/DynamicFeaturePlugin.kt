@@ -19,7 +19,7 @@ package com.android.build.gradle
 import org.gradle.api.Project
 
 /**
- * The plugin applied with `com.android.dynamic-feature'
+ * The plugin applied with `com.android.dynamic-feature`
  */
 class DynamicFeaturePlugin: BasePlugin() {
     override fun apply(project: Project) {

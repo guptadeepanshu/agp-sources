@@ -16,7 +16,9 @@
 
 package com.android.build.api.component.analytics
 
+import com.android.build.api.variant.AndroidTestBuilder
 import com.android.build.api.variant.DynamicFeatureVariantBuilder
+import com.android.build.api.variant.PropertyAccessNotAllowedException
 import com.android.tools.build.gradle.internal.profile.VariantMethodType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import javax.inject.Inject
@@ -25,23 +27,23 @@ import javax.inject.Inject
  * Shim object for [DynamicFeatureVariantBuilder] that records all mutating accesses to the analytics.
  */
 open class AnalyticsEnabledDynamicFeatureVariantBuilder @Inject constructor(
-    override val delegate: DynamicFeatureVariantBuilder,
+    final override val delegate: DynamicFeatureVariantBuilder,
     stats: GradleBuildVariant.Builder
 ) : AnalyticsEnabledVariantBuilder(delegate, stats),
     DynamicFeatureVariantBuilder {
 
     override var androidTestEnabled: Boolean
-        get() = delegate.enableAndroidTest
+        get() = delegate.androidTest.enable
         set(value) {
             stats.variantApiAccessBuilder.addVariantAccessBuilder().type = VariantMethodType.ANDROID_TEST_ENABLED_VALUE
-            delegate.enableAndroidTest = value
+            delegate.androidTest.enable = value
         }
 
     override var enableAndroidTest: Boolean
-        get() = delegate.enableAndroidTest
+        get() = delegate.androidTest.enable
         set(value) {
             stats.variantApiAccessBuilder.addVariantAccessBuilder().type = VariantMethodType.ANDROID_TEST_ENABLED_VALUE
-            delegate.enableAndroidTest = value
+            delegate.androidTest.enable = value
         }
 
     override var enableTestFixtures: Boolean
@@ -49,5 +51,25 @@ open class AnalyticsEnabledDynamicFeatureVariantBuilder @Inject constructor(
         set(value) {
             stats.variantApiAccessBuilder.addVariantAccessBuilder().type = VariantMethodType.TEST_FIXTURES_ENABLED_VALUE
             delegate.enableTestFixtures = value
+        }
+
+    override var enableMultiDex: Boolean?
+        get() = throw PropertyAccessNotAllowedException("enableMultiDex", "DynamicFeatureVariantBuilder")
+        set(value) {
+            stats.variantApiAccessBuilder.addVariantAccessBuilder().type = VariantMethodType.ENABLE_MULTI_DEX_VALUE
+            delegate.enableMultiDex = value
+        }
+
+    private val _androidTest =
+        AnalyticsEnabledAndroidTestBuilder(
+                delegate.androidTest,
+                stats
+        )
+
+    override val androidTest: AndroidTestBuilder
+        get() {
+            stats.variantApiAccessBuilder.addVariantAccessBuilder().type =
+                VariantMethodType.ANDROID_TEST_BUILDER_VALUE
+            return _androidTest
         }
 }

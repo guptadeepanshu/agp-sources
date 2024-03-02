@@ -17,7 +17,7 @@
 package com.android.build.gradle.internal.utils
 
 import com.android.build.gradle.internal.component.ApkCreationConfig
-import com.android.build.gradle.internal.dependency.getDexingArtifactConfiguration
+import com.android.build.gradle.internal.dependency.DexingRegistration
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.DexMergingAction
@@ -34,7 +34,7 @@ fun getGlobalSyntheticsInput(
     }
 
     val globals = creationConfig.services.fileCollection()
-    val attributes = getDexingArtifactConfiguration(creationConfig).getAttributes()
+    val attributes = DexingRegistration.ComponentSpecificParameters(creationConfig).getAttributes()
 
     globals.from(
         creationConfig.artifacts.get(InternalArtifactType.GLOBAL_SYNTHETICS_PROJECT),

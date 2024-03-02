@@ -201,6 +201,7 @@ fun architectureFromString(cpuArchName: String?): CpuArchitecture =
         cpuArchName.equals("amd64", ignoreCase = true) -> CpuArchitecture.X86_64
         cpuArchName.equals("x86", ignoreCase = true) -> CpuArchitecture.X86
         cpuArchName.equals("aarch64", ignoreCase = true) -> CpuArchitecture.ARM
+        cpuArchName.equals("arm64", ignoreCase = true) -> CpuArchitecture.ARM
         // Any variation of iX86 is x86 (i386, i486, etc.)
         cpuArchName.length == 4
                 && cpuArchName[0] == 'i'

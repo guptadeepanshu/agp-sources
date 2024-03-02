@@ -52,5 +52,5 @@ public interface StructuredLogRecordOrBuilder extends
    */
   com.android.build.gradle.internal.cxx.logging.PayloadHeaderOrBuilder getPayloadHeaderOrBuilder();
 
-  public com.android.build.gradle.internal.cxx.logging.StructuredLogRecord.RecordCase getRecordCase();
+  com.android.build.gradle.internal.cxx.logging.StructuredLogRecord.RecordCase getRecordCase();
 }

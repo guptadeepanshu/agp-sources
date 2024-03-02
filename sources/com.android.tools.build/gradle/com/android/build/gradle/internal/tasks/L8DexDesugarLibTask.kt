@@ -16,14 +16,12 @@
 
 package com.android.build.gradle.internal.tasks
 
-import com.android.build.api.variant.impl.getFeatureLevel
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalMultipleArtifactType
-import com.android.build.gradle.internal.scope.Java8LangSupport
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.features.DexingTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.features.DexingTaskCreationActionImpl
@@ -93,12 +91,19 @@ abstract class L8DexDesugarLibTask : NonIncrementalTask() {
     @get:PathSensitive(PathSensitivity.NONE)
     abstract val dexFiles: ConfigurableFileCollection
 
+    @get: [InputFiles Optional PathSensitive(PathSensitivity.NAME_ONLY)]
+    abstract val inputArtProfile: RegularFileProperty
+
     @get:OutputDirectory
     abstract val desugarLibDex: DirectoryProperty
 
     @get:OutputFile
     @get:Optional
     abstract val keepRules: RegularFileProperty
+
+    @get:OutputFile
+    @get:Optional
+    abstract val outputArtProfile: RegularFileProperty
 
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(
@@ -115,6 +120,8 @@ abstract class L8DexDesugarLibTask : NonIncrementalTask() {
             it.desugaredDesugarLib.from(desugaredDesugarLibJar)
             it.dexFiles.from(dexFiles)
             it.outputKeepRules.set(keepRules)
+            it.inputArtProfile.set(inputArtProfile)
+            it.outputArtProfile.set(outputArtProfile)
         }
     }
 
@@ -135,6 +142,10 @@ abstract class L8DexDesugarLibTask : NonIncrementalTask() {
             creationConfig.artifacts
                 .setInitialProvider(taskProvider, L8DexDesugarLibTask::desugarLibDex)
                 .on(InternalArtifactType.DESUGAR_LIB_DEX)
+            creationConfig.artifacts.use(taskProvider).wiredWithFiles(
+                L8DexDesugarLibTask::inputArtProfile,
+                L8DexDesugarLibTask::outputArtProfile
+            ).toTransform(InternalArtifactType.L8_ART_PROFILE)
             if (dexingCreationConfig.needsShrinkDesugarLibrary) {
                 creationConfig.artifacts
                     .setInitialProvider(taskProvider, L8DexDesugarLibTask::keepRules)
@@ -149,18 +160,17 @@ abstract class L8DexDesugarLibTask : NonIncrementalTask() {
             super.configure(task)
             task.libConfiguration.set(getDesugarLibConfig(creationConfig.services))
             task.desugarLibJar.from(getDesugarLibJarFromMaven(creationConfig.services))
-            task.minSdkVersion.set(dexingCreationConfig.minSdkVersionForDexing.getFeatureLevel())
+            task.minSdkVersion.set(dexingCreationConfig.minSdkVersionForDexing)
             task.debuggable.set(creationConfig.debuggable)
             task.fullBootClasspath.from(creationConfig.global.fullBootClasspath)
 
             if (dexingCreationConfig.needsShrinkDesugarLibrary) {
-                task.desugaredDesugarLibJar.from(getDesugaredDesugarLib(
-                    creationConfig.services,
-                    dexingCreationConfig.minSdkVersionForDexing.getFeatureLevel(),
-                    task.fullBootClasspath),
-                )
-                // desugar library is shrunk to reduce apk but not obfuscated or optimized
-                task.keepRulesConfigurations.set(listOf("-dontobfuscate", "-dontoptimize"))
+                task.desugaredDesugarLibJar.from(getDesugaredDesugarLib(creationConfig))
+                // when app is using D8, desugar library is shrunk to reduce apk but not obfuscated
+                // or optimized
+                if (!creationConfig.optimizationCreationConfig.minifiedEnabled) {
+                    task.keepRulesConfigurations.set(listOf("-dontobfuscate", "-dontoptimize"))
+                }
 
                 if (creationConfig is ApplicationCreationConfig && creationConfig.consumesFeatureJars) {
                     task.dexFiles.from(creationConfig.artifacts.get(InternalArtifactType.BASE_DEX))
@@ -170,7 +180,7 @@ abstract class L8DexDesugarLibTask : NonIncrementalTask() {
                 // For feature dex, it is produced by d8/r8 in feature module and published to
                 // application(not for androidTest component). The reason why we don't use
                 //  consumesFeatureJars is because that API is only for minified build.
-                if (creationConfig is ApplicationCreationConfig &&
+                if (!creationConfig.componentType.isForTesting &&
                     creationConfig.global.hasDynamicFeatures) {
                     task.dexFiles.from(
                         creationConfig.variantDependencies.getArtifactFileCollection(
@@ -197,6 +207,8 @@ abstract class L8DexWorkAction : ProfileAwareWorkAction<L8DexWorkAction.Params>(
         abstract val desugaredDesugarLib: ConfigurableFileCollection
         abstract val dexFiles: ConfigurableFileCollection
         abstract val outputKeepRules: RegularFileProperty
+        abstract val inputArtProfile: RegularFileProperty
+        abstract val outputArtProfile: RegularFileProperty
     }
 
     override fun run() {
@@ -223,7 +235,9 @@ abstract class L8DexWorkAction : ProfileAwareWorkAction<L8DexWorkAction.Params>(
             parameters.minSdkVersion.get(),
             keepRulesConfig,
             parameters.debuggable.get(),
-            OutputMode.DexIndexed
+            OutputMode.DexIndexed,
+            parameters.inputArtProfile.orNull?.asFile?.toPath(),
+            parameters.outputArtProfile.orNull?.asFile?.toPath()
         )
     }
 }

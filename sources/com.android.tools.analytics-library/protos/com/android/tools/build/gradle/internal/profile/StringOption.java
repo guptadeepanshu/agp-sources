@@ -190,6 +190,10 @@ public enum StringOption
    */
   LINT_RESERVED_MEMORY_PER_TASK(44),
   /**
+   * <code>NDK_SUPPRESS_MIN_SDK_VERSION_ERROR = 45;</code>
+   */
+  NDK_SUPPRESS_MIN_SDK_VERSION_ERROR(45),
+  /**
    * <code>JACOCO_TOOL_VERSION = 46;</code>
    */
   JACOCO_TOOL_VERSION(46),
@@ -377,6 +381,10 @@ public enum StringOption
    */
   public static final int LINT_RESERVED_MEMORY_PER_TASK_VALUE = 44;
   /**
+   * <code>NDK_SUPPRESS_MIN_SDK_VERSION_ERROR = 45;</code>
+   */
+  public static final int NDK_SUPPRESS_MIN_SDK_VERSION_ERROR_VALUE = 45;
+  /**
    * <code>JACOCO_TOOL_VERSION = 46;</code>
    */
   public static final int JACOCO_TOOL_VERSION_VALUE = 46;
@@ -451,6 +459,7 @@ public enum StringOption
       case 42: return ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR_GENERATED_RUNTIME_DEPENDENCIES;
       case 43: return ANDROID_PRIVACY_SANDBOX_SDK_API_PACKAGER;
       case 44: return LINT_RESERVED_MEMORY_PER_TASK;
+      case 45: return NDK_SUPPRESS_MIN_SDK_VERSION_ERROR;
       case 46: return JACOCO_TOOL_VERSION;
       default: return null;
     }

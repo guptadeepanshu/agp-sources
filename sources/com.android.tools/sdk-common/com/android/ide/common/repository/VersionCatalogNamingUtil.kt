@@ -169,9 +169,9 @@ private fun getGroupPrefix(dependency: Dependency): String {
 
 private fun String.isCommonDomain() = this == "com" || this == "org" || this == "io"
 
-private fun cutDomainPrefix(group:String):String{
+private fun cutDomainPrefix(group: String): String {
     val groupPrefix = group.substringBefore('.').toSafeKey()
-    if (groupPrefix.isCommonDomain()) {
+    if (groupPrefix.isCommonDomain() || groupPrefix == "androidx") {
         return group.substringAfter('.').toSafeKey()
     }
     return groupPrefix.toSafeKey()
@@ -181,9 +181,12 @@ private fun cutDomainPrefix(group:String):String{
  * Variable name generator takes artifact id as a base. It analyses reserved
  * aliases and chose same notation. This can be a lower camel, lower hyphen,
  * lower camel with Version suffix. Alias will have hyphen, and to lower camel
- * notation otherwise. Picking variable happens in steps. Each step generates
- * some name around updated artifact id and check whether it's reserved with
- * case-insensitive set. If yes, jumping to the next step.
+ * notation otherwise. Lower camel is preferable - if no reserved, algorithm
+ * will pick lower camel.
+ *
+ * Picking variable name happens in steps. Each step generates
+ * some name around  artifact id with hyphen and transform to camel case if it is the style.
+ * Then check whether it's reserved with case-insensitive set. If yes, jumping to the next step.
  * Steps defined as follows:
  * - use artifactId + "Version" suffix if this is the style;
  * - use artifactId as variable name;
@@ -199,22 +202,22 @@ private fun cutDomainPrefix(group:String):String{
     val reserved = TreeSet(String.CASE_INSENSITIVE_ORDER)
     reserved.addAll(caseSensitiveReserved)
 
-    if (reserved.isEmpty()) {
-        return artifact
-    }
-
     // Use a case-insensitive set when checking for clashes, such that
     // we don't for example pick a new variable named "appcompat" if "appCompat"
     // is already in the map.
     val (haveCamelCase, haveHyphen) = getAliasStyle(reserved)
+    val camelCaseOutput = haveCamelCase || !haveHyphen
 
-    val artifactCamel =
-        if (artifact.contains('-')) CaseFormat.LOWER_HYPHEN.to(CaseFormat.LOWER_CAMEL, artifact)
-        else artifact
-    val artifactName = if (haveCamelCase) artifactCamel else artifact
+    fun transform(version: String): String =
+        if (camelCaseOutput) CaseFormat.LOWER_HYPHEN.to(CaseFormat.LOWER_CAMEL, version) else version
+
+
+    if (reserved.isEmpty()) {
+        return transform(artifact)
+    }
 
     if (reserved.isNotEmpty() && reserved.first().endsWith("Version")) {
-        val withVersion = "${artifactCamel}Version"
+        val withVersion = "${transform(artifact)}Version"
         if (!reserved.contains(withVersion)) {
             return withVersion
         }
@@ -222,25 +225,26 @@ private fun cutDomainPrefix(group:String):String{
 
     // Default convention listed in https://docs.gradle.org/current/userguide/platforms.html seems to
     // be to just use the artifact name
+    val artifactName = transform(artifact)
     if (!reserved.contains(artifactName)) {
         return artifactName
     }
 
-    if (!haveHyphen) {
-        val withVersion = "${artifactCamel}Version"
+    if (camelCaseOutput) {
+        val withVersion = "${artifactName}Version"
         if (!reserved.contains(withVersion)) {
             return withVersion
         }
     }
 
     val groupPrefix = getGroupPrefix(dependency)
-    val withGroupIdPrefix = "$groupPrefix-$artifactName"
+    val withGroupIdPrefix = transform("$groupPrefix-$artifact")
     if (!reserved.contains(withGroupIdPrefix)) {
         return withGroupIdPrefix
     }
 
-    if (!haveHyphen) {
-        val withGroupIdPrefixVersion = "$groupPrefix-${artifactCamel}Version"
+    if (camelCaseOutput) {
+        val withGroupIdPrefixVersion = transform("$groupPrefix-${artifact}") + "Version"
         if (!reserved.contains(withGroupIdPrefixVersion)) {
             return withGroupIdPrefixVersion
         }
@@ -248,7 +252,7 @@ private fun cutDomainPrefix(group:String):String{
 
     // With full group
     val groupId = dependency.group?.toSafeKey() ?: "nogroup"
-    val withGroupId = "$groupId-$artifactName"
+    val withGroupId = transform("$groupId-$artifact")
     if (!reserved.contains(withGroupId)) {
         return withGroupId
     }
@@ -345,4 +349,25 @@ fun pickPluginVersionVariableName(
     }
 
     return generateWithSuffix(fullName, reserved)
+}
+
+fun keysMatch(s1: String?, s2: String): Boolean {
+    s1 ?: return false
+    if (s1.length != s2.length) {
+        return false
+    }
+    for (i in s1.indices) {
+        if (s1[i].normalize() != s2[i].normalize()) {
+            return false
+        }
+    }
+    return true
+}
+
+// Gradle converts dashed-keys or dashed_keys into dashed.keys
+private fun Char.normalize(): Char {
+    if (this == '-' || this == '_') {
+        return '.'
+    }
+    return this
 }

@@ -16,4 +16,9 @@
 
 package com.android.build.api.dsl
 
+/**
+ * DSL object for configuring Android resource options for Test plugins.
+ *
+ * This is accessed via [TestExtension.androidResources]
+ */
 interface TestAndroidResources : AndroidResources

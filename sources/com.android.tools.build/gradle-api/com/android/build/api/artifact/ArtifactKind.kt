@@ -29,12 +29,19 @@ import kotlin.reflect.KClass
  * are supported.
  */
 sealed class ArtifactKind<T: FileSystemLocation>(): Serializable {
+
+    /**
+     * A Type of artifact that is a [RegularFile]
+     */
     object FILE : ArtifactKind<RegularFile>() {
         override fun dataType(): KClass<RegularFile> {
             return RegularFile::class
         }
     }
 
+    /**
+     * A type of artifact file that is a [Directory]
+     */
     object DIRECTORY : ArtifactKind<Directory>() {
         override fun dataType(): KClass<Directory> {
             return Directory::class

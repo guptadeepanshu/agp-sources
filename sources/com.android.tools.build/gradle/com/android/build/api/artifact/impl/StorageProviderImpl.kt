@@ -23,6 +23,7 @@ import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.file.RegularFile
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
+import org.gradle.api.tasks.TaskProvider
 import java.lang.RuntimeException
 
 class StorageProviderImpl {
@@ -78,11 +79,15 @@ class TypedStorageProvider<T :FileSystemLocation>(private val propertyAllocator:
     internal fun add(
             objects: ObjectFactory,
             type: Artifact.Multiple<T>,
-            artifact: T) {
+            artifact: T,
+            prepareTask: TaskProvider<*>) {
         val property = propertyAllocator(objects)
         property.set(artifact)
+        val mappedValue = prepareTask.map {
+            property.get()
+        }
         val container = getArtifact(objects, type)
-        container.addInitialProvider(null, property)
+        container.addInitialProvider(prepareTask, mappedValue)
     }
 
     internal fun copy(type: Artifact.Single<T>,

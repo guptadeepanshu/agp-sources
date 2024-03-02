@@ -19,6 +19,9 @@ package com.android.build.api.variant
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 
+/**
+ * Build-time properties for [Component] that produce test APKs.
+ */
 interface GeneratesTestApk: GeneratesApk {
 
     /**

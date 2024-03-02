@@ -23,9 +23,10 @@ import com.android.utils.FileUtils
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
 import org.gradle.api.artifacts.ArtifactCollection
-import org.gradle.api.artifacts.Configuration
+import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.component.ComponentIdentifier
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
+import org.gradle.api.artifacts.result.ResolvedComponentResult
 import org.gradle.api.tasks.diagnostics.internal.graph.nodes.RenderableDependency
 import org.gradle.api.tasks.diagnostics.internal.graph.nodes.RenderableModuleResult
 import java.io.File
@@ -52,7 +53,7 @@ class DependencyUsageFinder(
 /** Find required dependencies that are being included indirectly and would be unreachable if
  *  we remove unused direct dependencies. */
 class DependencyGraphAnalyzer(
-    private val configuration: Configuration,
+    private val resolvedComponentResult: ResolvedComponentResult,
     private val depsUsageFinder: DependencyUsageFinder) {
 
     // Keep a map from dependencyId to the correspondent RenderableDependency
@@ -105,7 +106,7 @@ class DependencyGraphAnalyzer(
     }
 
     private fun mapIdsToRenderableDependencies(): Map<String, RenderableDependency> {
-        val dependencyGraph = configuration.incoming.resolutionResult.root
+        val dependencyGraph = resolvedComponentResult
         val renderableGraph = RenderableModuleResult(dependencyGraph)
         val renderableDependencies = mutableMapOf<String, RenderableDependency>()
 
@@ -275,11 +276,14 @@ class DependencyUsageReporter(
     }
 
     fun writeMisconfiguredDependencies(destinationFile: File) {
-        val apiDependencies = variantClasses.getPublicClasses()
-            .mapNotNull { classFinder.find(it) }
-            .intersect(variantDependencies.api)
+        val apiDependencies = variantDependencies.api?.let {
+            variantClasses.getPublicClasses()
+                    .mapNotNull { classFinder.find(it) }
+                    .intersect(it)
+        }
 
-        val misconfiguredDependencies = variantDependencies.api.minus(apiDependencies)
+        val misconfiguredDependencies =
+                variantDependencies.api?.minus(apiDependencies) ?: emptySet()
 
         writeToFile(misconfiguredDependencies, destinationFile)
     }
@@ -289,3 +293,14 @@ class DependencyUsageReporter(
         FileUtils.writeToFile(destinationFile, gson.toJson(output))
     }
 }
+
+internal fun extractBuildId(dependency: Dependency) =
+        if (dependency.group != null) {
+            if (dependency.version != null) {
+                "${dependency.group}:${dependency.name}:${dependency.version}"
+            } else {
+                "${dependency.group}:${dependency.name}"
+            }
+        } else {
+            null
+        }

@@ -16,6 +16,7 @@
 
 package com.android.build.api.artifact
 
+import org.gradle.api.Incubating
 import org.gradle.api.Task
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileSystemLocation
@@ -28,6 +29,7 @@ import org.gradle.api.provider.ListProperty
  * [Task] is not consuming existing version of the target [SingleArtifact].
  */
 interface OutOperationRequest<FileTypeT: FileSystemLocation> {
+
     /**
      * Initiates an append request to a [Artifact.Multiple] artifact type.
      *
@@ -68,8 +70,8 @@ interface OutOperationRequest<FileTypeT: FileSystemLocation> {
      * ```
      */
     fun <ArtifactTypeT> toAppendTo(type: ArtifactTypeT)
-        where ArtifactTypeT : Artifact.Multiple<FileTypeT>,
-              ArtifactTypeT : Artifact.Appendable
+            where ArtifactTypeT : Artifact.Multiple<FileTypeT>,
+                  ArtifactTypeT : Artifact.Appendable
 
     /**
      * Initiates a creation request for a single [Artifact.Replaceable] artifact type.
@@ -79,7 +81,7 @@ interface OutOperationRequest<FileTypeT: FileSystemLocation> {
      * The artifact type must be [Artifact.Replaceable]
      *
      * A creation request does not care about the existing producer, since it replaces the existing
-     * producer. Therefore the existing producer task will not execute (unless it produces other
+     * producer. Therefore, the existing producer task will not execute (unless it produces other
      * outputs). Please note that when such replace requests are made, the [Task] will replace
      * initial AGP providers.
      *
@@ -117,8 +119,99 @@ interface OutOperationRequest<FileTypeT: FileSystemLocation> {
      * ```
      */
     fun <ArtifactTypeT> toCreate(type: ArtifactTypeT)
-        where ArtifactTypeT : Artifact.Single<FileTypeT>,
-              ArtifactTypeT : Artifact.Replaceable
+            where ArtifactTypeT : Artifact.Single<FileTypeT>,
+                  ArtifactTypeT : Artifact.Replaceable
+
+    /**
+     * Initiates a reactive request where the [Task] used in the [Artifacts.use] method will be
+     * executed once the final version of the [type] artifact has been produced.
+     *
+     * The final version artifact will be injected in the [Task].
+     *
+     * Remember that an artifact is not always produced, for instance, an artifact related to
+     * minification will not be produced unless minification is turned on.
+     *
+     * When an artifact is not produced in the current build flow, the [Task] will NOT be
+     * invoked.
+     *
+     * For example, let's take a [Task] that wants to listen to the merged manifest file production :
+     *
+     * ```kotlin
+     *     abstract class MyTask: DefaultTask() {
+     *          @get:InputFile abstract val mergedManifestFile: RegularFileProperty
+     *
+     *          @TaskAction fun taskAction() {
+     *              ... verify that manifest is correct ...
+     *          }
+     *     }
+     *
+     * You can register a transform to the collection of [org.gradle.api.file.RegularFile]:
+     *
+     * ```kotlin
+     *     val taskProvider= projects.tasks.register(MyTask::class.java, "verifyManifestTask")
+     *     artifacts.use(taskProvider)
+     *      .wiredWith(MyTask::mergedManifestFile)
+     *      .toListenTo(SingleArtifact.MERGED_MANIFEST)
+     * ```
+     *
+     * [Task] will be registered as a finalizer task for the final producer of the [type]
+     * artifact using Gradle's [Task.finalizedBy] API.
+     *
+     * @param type the [Artifact.Single] artifact identifier.
+     */
+    @Incubating
+    fun <ArtifactTypeT> toListenTo(type: ArtifactTypeT)
+            where ArtifactTypeT : Artifact.Single<FileTypeT>
+}
+
+/**
+ * Read-only Operations performed by a [Task] with a multiple [RegularFile] or [Directory] output.
+ *
+ * All APIs will use a [Artifact.Multiple] as a target type and must use a [ListProperty] of
+ * [FileTypeT] to retrieve the artifacts.
+ */
+@Incubating
+interface MultipleArtifactTypeOutOperationRequest<FileTypeT: FileSystemLocation> {
+
+    /**
+     * Initiates a reactive request where the [Task] used in the [Artifacts.use] method will be
+     * executed once the final version of the [type] artifact has been produced.
+     *
+     * The final version artifact will be injected in the [Task].
+     *
+     * Remember that an artifact is not always produced, for instance, an artifact related to
+     * minification will not be produced unless minification is turned on.
+     *
+     * When an artifact is not produced in the current build flow, the [Task] will NOT be
+     * invoked.
+     *
+     * For example, let's take a [Task] that wants to listen to the merged manifest file production :
+     *
+     * ```kotlin
+     *     abstract class MyTask: DefaultTask() {
+     *          @get:InputFile abstract val proguardFiles: ListProperty<RegularFile>
+     *
+     *          @TaskAction fun taskAction() {
+     *              ... verify that those proguard files are correct ...
+     *          }
+     *     }
+     *
+     * You can register a transform to the collection of [org.gradle.api.file.RegularFile]:
+     *
+     * ```kotlin
+     *     val taskProvider= projects.tasks.register(MyTask::class.java, "verifyKeepProguardTask")
+     *     artifacts.use(taskProvider)
+     *      .wiredWithMultiple(MyTask::proguardFiles)
+     *      .toListenTo(MultipleArtifact.MULTIDEX_KEEP_PROGUARD)
+     * ```
+     *
+     * [Task] will be registered as a finalizer task for the final producer of the [type]
+     * artifact using Gradle's [Task.finalizedBy] API.
+     *
+     * @param type the [Artifact.Multiple] artifact identifier.
+     */
+    fun <ArtifactTypeT> toListenTo(type: ArtifactTypeT)
+            where ArtifactTypeT : Artifact.Multiple<FileTypeT>
 }
 
 /**

@@ -19,7 +19,7 @@ package com.android.build.api.dsl
 import org.gradle.api.Incubating
 
 /**
- * Options for the adb tool.
+ * Local installation options for the adb tool.
  */
 interface Installation {
     /** The time out used for all adb operations. */

@@ -112,7 +112,6 @@ abstract class ProductFlavor @Inject constructor(name: String, dslServices: DslS
         }
         super._initWith(that)
         if (that is ProductFlavor) {
-            isDefault = that.isDefault
             signingConfig = that.signingConfig
             setMatchingFallbacks(that.matchingFallbacks)
         }

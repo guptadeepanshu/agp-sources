@@ -351,18 +351,17 @@ public class ManifestModel implements DocumentModel<ManifestModel.NodeTypes> {
         CATEGORY(MergeType.MERGE, DEFAULT_NAME_ATTRIBUTE_RESOLVER),
 
         /**
-         * Compatible-screens (contained in manifest)
-         * <br>
-         * <b>See also : </b>
-         * {@link <a href=http://developer.android.com/guide/topics/manifest/compatible-screens-element.html>
-         *     Category Xml documentation</a>}
+         * Compatible-screens (contained in manifest) <br>
+         * <b>See also : </b> {@link <a
+         * href=http://developer.android.com/guide/topics/manifest/compatible-screens-element.html>
+         * Compatible-screens Xml documentation</a>}
          */
         COMPATIBLE_SCREENS(MergeType.MERGE, DEFAULT_NO_KEY_NODE_RESOLVER),
 
         /**
          * Data (contained in intent-filter, intent) <br>
          * <b>See also : </b> {@link <a
-         * href=http://developer.android.com/guide/topics/manifest/data-element.html>Category Xml
+         * href=http://developer.android.com/guide/topics/manifest/data-element.html>Data Xml
          * documentation</a>}
          */
         DATA(MergeType.MERGE, DEFAULT_NO_KEY_NODE_RESOLVER),
@@ -540,6 +539,17 @@ public class ManifestModel implements DocumentModel<ManifestModel.NodeTypes> {
                         .setMergingPolicy(AttributeModel.NO_MERGING_POLICY)),
 
         /**
+         * Property <br>
+         * <b>See also : </b> {@link <a
+         * href=http://developer.android.com/guide/topics/manifest/property-element.html>Property
+         * Xml documentation</a>}
+         */
+        PROPERTY(
+                MergeType.MERGE,
+                DEFAULT_NAME_ATTRIBUTE_RESOLVER,
+                AttributeModel.newModel(SdkConstants.ATTR_NAME).setIsPackageDependent()),
+
+        /**
          * Provider (contained in application or queries) <br>
          * <b>See also : </b> {@link <a
          * href=http://developer.android.com/guide/topics/manifest/provider-element.html>Provider
@@ -578,6 +588,19 @@ public class ManifestModel implements DocumentModel<ManifestModel.NodeTypes> {
         SCREEN(MergeType.MERGE, new TwoAttributesBasedKeyResolver(
                 new AttributeBasedNodeKeyResolver(ANDROID_URI, "screenSize"),
                 new AttributeBasedNodeKeyResolver(ANDROID_URI, "screenDensity"))),
+
+        /**
+         * Sdk-library (contained in application) <br>
+         * <b>See also : </b> {@link <a
+         * href=http://developer.android.com/guide/topics/manifest/sdk-library-element.html>Sdk
+         * library Xml documentation</a>}
+         */
+        SDK_LIBRARY(
+                MergeType.MERGE,
+                new TwoAttributesBasedKeyResolver(
+                        new AttributeBasedNodeKeyResolver(ANDROID_URI, SdkConstants.ATTR_NAME),
+                        new AttributeBasedNodeKeyResolver(ANDROID_URI, "versionMajor")),
+                AttributeModel.newModel(SdkConstants.ATTR_NAME).setIsPackageDependent()),
 
         /**
          * Service (contained in application)
@@ -716,6 +739,17 @@ public class ManifestModel implements DocumentModel<ManifestModel.NodeTypes> {
                 AttributeModel.newModel("targetSdkVersion")
                         .setMergingPolicy(AttributeModel.NO_MERGING_POLICY)
         ),
+
+        /**
+         * Use-sdk-library (contained in application) <br>
+         * <b>See also : </b> {@link <a
+         * href=http://developer.android.com/guide/topics/manifest/uses-sdk-library-element.html>
+         * Uses-sdk-library Xml documentation</a>}
+         */
+        USES_SDK_LIBRARY(
+                MergeType.MERGE,
+                DEFAULT_NAME_ATTRIBUTE_RESOLVER,
+                AttributeModel.newModel(SdkConstants.ATTR_NAME).setIsPackageDependent()),
 
         /** attribution (contained in manifest) */
         ATTRIBUTION(MergeType.MERGE, new AttributeBasedNodeKeyResolver(ANDROID_URI, ATTR_TAG)),

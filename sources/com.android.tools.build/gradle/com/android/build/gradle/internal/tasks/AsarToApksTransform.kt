@@ -83,6 +83,7 @@ abstract class AsarToApksTransform: TransformAction<AsarToApksTransform.AsarToAp
                     .setAapt2Command(Aapt2Command.createFromExecutablePath(aapt2Executable))
                     .setSigningConfiguration(signingConfigData)
                     .setVersionCode(1) //TODO(b/235469089): What should this be?
+                    .setMinSdkVersion(33)
             command.build().execute()
         } finally {
             PathUtils.deleteRecursivelyIfExists(tempDir)

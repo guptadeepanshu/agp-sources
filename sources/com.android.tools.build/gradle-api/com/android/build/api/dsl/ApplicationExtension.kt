@@ -29,7 +29,8 @@ interface ApplicationExtension :
             ApplicationBuildType,
             ApplicationDefaultConfig,
             ApplicationProductFlavor,
-            ApplicationAndroidResources>,
+            ApplicationAndroidResources,
+            ApplicationInstallation>,
     ApkExtension,
     TestedExtension {
     // TODO(b/140406102)
@@ -66,4 +67,10 @@ interface ApplicationExtension :
     fun publishing(action: ApplicationPublishing.() -> Unit)
 
     override val androidResources: ApplicationAndroidResources
+
+    override val installation: ApplicationInstallation
+
+    /** Options related to the consumption of privacy sandbox libraries */
+    val privacySandbox: PrivacySandbox
+    fun privacySandbox(action: PrivacySandbox.() -> Unit)
 }

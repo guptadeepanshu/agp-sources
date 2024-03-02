@@ -16,7 +16,6 @@
 
 package com.android.build.gradle.internal.tasks
 
-import com.android.build.api.variant.impl.getFeatureLevel
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.dependency.AsmClassesTransform
 import com.android.build.gradle.internal.errors.MessageReceiverImpl
@@ -29,11 +28,11 @@ import com.android.build.gradle.internal.tasks.factory.features.DexingTaskCreati
 import com.android.build.gradle.internal.utils.getDesugarLibConfig
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.SyncOptions
+import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.dexing.ClassFileInputs
 import com.android.builder.dexing.DexArchiveBuilder
 import com.android.builder.dexing.DexParameters
 import com.android.builder.dexing.r8.ClassFileProviderFactory
-import com.android.buildanalyzer.common.TaskCategory
 import com.android.sdklib.AndroidVersion
 import com.google.common.io.Closer
 import org.gradle.api.file.ConfigurableFileCollection
@@ -217,7 +216,7 @@ abstract class DexFileDependenciesTask: NonIncrementalTask() {
                     }
                 )
             ).disallowChanges()
-            val minSdkVersionForDexing = dexingCreationConfig.minSdkVersionForDexing.getFeatureLevel()
+            val minSdkVersionForDexing = dexingCreationConfig.minSdkVersionForDexing
             task.minSdkVersion.setDisallowChanges(minSdkVersionForDexing)
 
             // If min sdk version for dexing is >= N(24) then we can avoid adding extra classes to

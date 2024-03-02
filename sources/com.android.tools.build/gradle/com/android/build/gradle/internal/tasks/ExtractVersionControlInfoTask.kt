@@ -16,10 +16,10 @@
 
 package com.android.build.gradle.internal.tasks
 
-import com.android.build.gradle.internal.component.ApkCreationConfig
+import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.build.gradle.options.BooleanOption
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.internal.packaging.IncrementalPackager.VERSION_CONTROL_INFO_FILE_NAME
 import com.android.tools.idea.insights.proto.BuildStamp
@@ -29,6 +29,8 @@ import com.android.utils.FileUtils
 import com.google.protobuf.TextFormat
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.Property
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputFile
@@ -54,10 +56,31 @@ abstract class ExtractVersionControlInfoTask: NonIncrementalTask() {
     @get:OutputFile
     abstract val vcInfoFile: RegularFileProperty
 
+    @get:Input
+    abstract val enabledByDefault: Property<Boolean>
+
     override fun doTaskAction() {
+        if (!gitHeadFile.get().asFile.parentFile.exists()) {
+            val gitMissingMessage = "When VCS tagging is enabled (which is by default in " +
+                "release builds), the root project must be initialized with Git. " +
+                "Currently, Git is the only supported VCS for this feature."
+            if (enabledByDefault.get()) {
+                logger.debug(gitMissingMessage)
+                writeErrorInOutput(BuildStamp.GenerateErrorReason.NO_SUPPORTED_VCS_FOUND)
+                return
+            }
+            throw RuntimeException(gitMissingMessage)
+        }
+
         if (!gitHeadFile.get().asFile.exists()) {
             val headFileMissing = missingGitFileMessage("HEAD")
-            throw RuntimeException(headFileMissing)
+            if (enabledByDefault.get()) {
+                logger.debug(headFileMissing)
+                writeErrorInOutput(BuildStamp.GenerateErrorReason.NO_VALID_GIT_FOUND)
+                return
+            } else {
+                throw RuntimeException(headFileMissing)
+            }
         }
 
         val headFileContents = gitHeadFile.get().asFile.readText().trim()
@@ -69,7 +92,13 @@ abstract class ExtractVersionControlInfoTask: NonIncrementalTask() {
             val branchFile = FileUtils.join(gitRefsDir.get().asFile, branchName)
             if (branchFile == null || !branchFile.exists()) {
                 val branchFileMissing = missingGitFileMessage("refs/heads/$branchName")
-                throw RuntimeException(branchFileMissing)
+                if (enabledByDefault.get()) {
+                    logger.debug(branchFileMissing)
+                    writeErrorInOutput(BuildStamp.GenerateErrorReason.NO_VALID_GIT_FOUND)
+                    return
+                } else {
+                    throw RuntimeException(branchFileMissing)
+                }
             }
             branchFile.readText().trim()
         } else {
@@ -89,13 +118,24 @@ abstract class ExtractVersionControlInfoTask: NonIncrementalTask() {
             TextFormat.printer().printToString(versionControlInfoBuilder.build()))
     }
 
+    private fun writeErrorInOutput(reason: BuildStamp.GenerateErrorReason) {
+        val versionControlInfoBuilder =
+            BuildStamp.newBuilder().apply {
+                generateErrorReason = reason
+            }
+        vcInfoFile.get().asFile.writeText(
+            TextFormat.printer().printToString(versionControlInfoBuilder.build()))
+    }
+
     private fun missingGitFileMessage(filePath: String) =
-        "When setting ${BooleanOption.ENABLE_VCS_INFO.propertyName} to true, the project " +
+        "When VCS tagging is enabled (which is by default in release builds), the project " +
         "must be initialized with Git. The file '.git/$filePath' in the project root is " +
         "missing, so the version control metadata cannot be included in the APK."
 
-    class CreationAction(creationConfig: ApkCreationConfig):
-        VariantTaskCreationAction<ExtractVersionControlInfoTask, ApkCreationConfig>(creationConfig) {
+    class CreationAction(creationConfig: ApplicationCreationConfig):
+        VariantTaskCreationAction<ExtractVersionControlInfoTask, ApplicationCreationConfig>(
+            creationConfig
+        ) {
 
         override val name: String
             get() = creationConfig.computeTaskName("extract", "VersionControlInfo")
@@ -120,6 +160,7 @@ abstract class ExtractVersionControlInfoTask: NonIncrementalTask() {
             // Note: whenever any branch has a commit, this will cause a "dirty" state for the task
             task.gitRefsDir.set(FileUtils.join(rootDir, ".git", "refs", "heads"))
             task.gitRefsDir.disallowChanges()
+            task.enabledByDefault.setDisallowChanges(creationConfig.includeVcsInfo == null)
         }
     }
 }

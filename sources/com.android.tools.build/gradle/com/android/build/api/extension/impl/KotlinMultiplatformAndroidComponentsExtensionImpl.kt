@@ -30,7 +30,7 @@ open class KotlinMultiplatformAndroidComponentsExtensionImpl(
     private val variantApiOperations: MultiplatformVariantApiOperationsRegistrar,
 ): KotlinMultiplatformAndroidComponentsExtension {
     override val pluginVersion: AndroidPluginVersion
-        get() = CURRENT_AGP_VERSION
+        get() = CurrentAndroidGradlePluginVersion.CURRENT_AGP_VERSION
 
     override fun finalizeDsl(callback: (KotlinMultiplatformAndroidExtension) -> Unit) {
         variantApiOperations.add {

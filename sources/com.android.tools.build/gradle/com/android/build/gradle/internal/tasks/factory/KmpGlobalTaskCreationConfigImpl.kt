@@ -211,6 +211,8 @@ internal class KmpGlobalTaskCreationConfigImpl(
 
     override val taskNames: GlobalTaskNames = KmpAndroidGlobalTaskNamesImpl
 
+    override val avoidTaskRegistration: Boolean = false
+
     // Unsupported properties
     // TODO: Refactor the parent interface so that we don't have to override these values to avoid
     //  accidental calls.

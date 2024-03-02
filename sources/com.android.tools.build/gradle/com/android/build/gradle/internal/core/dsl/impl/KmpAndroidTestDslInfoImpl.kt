@@ -75,10 +75,10 @@ class KmpAndroidTestDslInfoImpl(
     override val isDebuggable: Boolean
         get() = true
 
-    override val signingConfig: SigningConfig by lazy {
+    override val signingConfigResolver: SigningConfigResolver? by lazy {
         val dslSigningConfig =
             (extension as KotlinMultiplatformAndroidExtensionImpl).signingConfig
-        signingConfigOverride?.let {
+        val overrideConfig = signingConfigOverride?.let {
             // use enableV1 and enableV2 from the DSL if the override values are null
             if (it.enableV1Signing == null) {
                 it.enableV1Signing = dslSigningConfig.enableV1Signing
@@ -90,10 +90,10 @@ class KmpAndroidTestDslInfoImpl(
             it.enableV3Signing = dslSigningConfig.enableV3Signing
             it.enableV4Signing = dslSigningConfig.enableV4Signing
             it
-        } ?: dslSigningConfig
+        }
+
+        SigningConfigResolver(dslSigningConfig, overrideConfig, null, services)
     }
-    override val isSigningReady: Boolean
-        get() = signingConfig.isSigningReady
 
     override val androidResourcesDsl = object: AndroidResourcesDslInfo {
         override val androidResources = dslServices.newDecoratedInstance(

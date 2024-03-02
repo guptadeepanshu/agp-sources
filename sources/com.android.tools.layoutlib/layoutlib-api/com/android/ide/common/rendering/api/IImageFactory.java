@@ -22,18 +22,18 @@ import java.awt.image.BufferedImage;
 /**
  * Image Factory Interface.
  *
- * An Image factory's task is to create the {@link BufferedImage} into which the scene will be
+ * <p>An Image factory's task is to create the {@link BufferedImage} into which the scene will be
  * rendered. The goal is to let the layoutlib caller create an image that's optimized for its use
- * case.
+ * case. The image created must however be of type {@link BufferedImage#TYPE_INT_ARGB_PRE}.
  *
- * If no factory is passed in {@link RenderParams#setImageFactory(IImageFactory)}, then a default
- * {@link BufferedImage} of type {@link BufferedImage#TYPE_INT_ARGB} is created.
- *
+ * <p>If no factory is passed in {@link RenderParams#setImageFactory(IImageFactory)}, then a default
+ * {@link BufferedImage} of type {@link BufferedImage#TYPE_INT_ARGB_PRE} is created.
  */
 public interface IImageFactory {
 
     /**
-     * Creates a buffered image with the given size.
+     * Creates a buffered image with the given size. This image must be of type {@link
+     * BufferedImage#TYPE_INT_ARGB_PRE}.
      *
      * @param width the width of the image
      * @param height the height of the image

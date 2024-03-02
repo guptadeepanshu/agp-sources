@@ -20,7 +20,9 @@ import org.gradle.api.Incubating
 import org.gradle.api.provider.Property
 
 /**
- * Properties for the main Variant of an application.
+ * Model for application components that only contains build-time properties.
+ *
+ * See [Component] and [Variant] for more information.
  */
 interface ApplicationVariant : GeneratesApk,
     Variant,

@@ -274,9 +274,19 @@ fun computeJavaSourceWithoutDependencies(creationConfig: ComponentCreationConfig
     }.asFileTree.matching(javaSourcesFilter)
 }
 
-fun computeJavaSource(creationConfig: ComponentCreationConfig): FileTree {
-    // Include only java sources, otherwise we hit b/144249620.
+/**
+ * Compute the java sources as a [FileTree]
+ *
+ * @param creationConfig the variant information
+ * @param includeKotlinSources whether or not the kotlin sources should be included.
+ * For compilation, include only java sources, otherwise we hit b/144249620.
+ */
+fun computeJavaSource(creationConfig: ComponentCreationConfig, includeKotlinSources : Boolean = false): FileTree {
+
     val javaSourcesFilter = PatternSet().include("**/*.java")
+    if (includeKotlinSources) {
+        javaSourcesFilter.include("**/*.kt")
+    }
     return creationConfig.services.fileCollection().also { fileCollection ->
         // do not resolve the provider before execution phase, b/117161463.
         creationConfig.sources.java { javaSources ->

@@ -73,20 +73,6 @@ internal class ApplicationVariantDslInfoImpl(
             val fromProfilingModeOption = ProfilingMode.getProfilingModeType(
                 services.projectOptions[StringOption.PROFILING_MODE]
             ).isProfileable
-            // When profileable is enabled from the profilingMode option, it ensures profileable
-            // features are supported, therefore the compileSdk => 29.
-            val minProfileableSdk = 29
-            val compileSdk = extension.compileSdk ?: minProfileableSdk
-            if ((fromProfilingModeOption == true || applicationBuildType.isProfileable) &&
-                compileSdk < minProfileableSdk
-            ) {
-                services.issueReporter.reportError(
-                    IssueReporter.Type.COMPILE_SDK_VERSION_TOO_LOW,
-                    """'profileable' is enabled with compile SDK less than API 29.
-                        Recommended action: If possible, upgrade compileSdk from $compileSdk to at least API 29."""
-                        .trimIndent()
-                )
-            }
             return when {
                 fromProfilingModeOption != null -> {
                     fromProfilingModeOption
@@ -106,18 +92,9 @@ internal class ApplicationVariantDslInfoImpl(
             }
         }
 
-    override val signingConfig: SigningConfig? by lazy {
-        getSigningConfig(
-            buildTypeObj,
-            mergedFlavor,
-            signingConfigOverride,
-            extension,
-            services
-        )
+    override val signingConfigResolver: SigningConfigResolver? by lazy {
+        SigningConfigResolver.create(buildTypeObj, mergedFlavor, signingConfigOverride, extension, services)
     }
-
-    override val isSigningReady: Boolean
-        get() = signingConfig?.isSigningReady == true
 
     override val versionName: Provider<String?> by lazy {
         // If the version name from the flavors is null, then we read from the manifest and combine
@@ -130,21 +107,22 @@ internal class ApplicationVariantDslInfoImpl(
                 .map { it.versionName }
                 .firstOrNull { it != null }
                 ?: defaultConfig.versionName
-
+        val versionNameSuffix = computeVersionNameSuffix()
         if (versionNameFromFlavors == null) {
             // rely on manifest value
             // using map will allow us to keep task dependency should the manifest be generated or
             // transformed via a task.
             dataProvider.manifestData.map {
                 it.versionName?.let { versionName ->
-                    "$versionName${computeVersionNameSuffix()}"
+                    "$versionName$versionNameSuffix"
                 }
             }
         } else {
             // use value from flavors
-            services.provider { "$versionNameFromFlavors${computeVersionNameSuffix()}" }
+            services.provider { "$versionNameFromFlavors$versionNameSuffix" }
         }
     }
+
     override val versionCode: Provider<Int?> by lazy {
         // If the version code from the flavors is null, then we read from the manifest and combine
         // with suffixes, unless it's a test at which point we just return.
@@ -181,6 +159,12 @@ internal class ApplicationVariantDslInfoImpl(
     override val generateLocaleConfig: Boolean by lazy {
         extension.androidResources.generateLocaleConfig
     }
+
+    override val includeVcsInfo: Boolean?
+        get() = applicationBuildType.vcsInfo.include
+
+    override val compileSdk: Int?
+        get() = extension.compileSdk
 
     private fun computeVersionNameSuffix(): String {
         // for the suffix we combine the suffix from all the flavors. However, we're going to

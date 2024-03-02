@@ -136,6 +136,16 @@ public final class AndroidApkInstallerConfigProto {
      */
     com.google.protobuf.ByteString
         getApksPackageNameBytes(int index);
+
+    /**
+     * <pre>
+     * If true, the incompatible APKs will be reinstalled before installing test APKs
+     * </pre>
+     *
+     * <code>bool force_reinstall_before_test = 5;</code>
+     * @return The forceReinstallBeforeTest.
+     */
+    boolean getForceReinstallBeforeTest();
   }
   /**
    * <pre>
@@ -169,86 +179,6 @@ public final class AndroidApkInstallerConfigProto {
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
-    }
-    private InstallableApk(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              java.lang.String s = input.readStringRequireUtf8();
-              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-                apkPaths_ = new com.google.protobuf.LazyStringArrayList();
-                mutable_bitField0_ |= 0x00000001;
-              }
-              apkPaths_.add(s);
-              break;
-            }
-            case 18: {
-              com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.Builder subBuilder = null;
-              if (installOptions_ != null) {
-                subBuilder = installOptions_.toBuilder();
-              }
-              installOptions_ = input.readMessage(com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(installOptions_);
-                installOptions_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            case 24: {
-
-              uninstallAfterTest_ = input.readBool();
-              break;
-            }
-            case 34: {
-              java.lang.String s = input.readStringRequireUtf8();
-              if (!((mutable_bitField0_ & 0x00000002) != 0)) {
-                apksPackageName_ = new com.google.protobuf.LazyStringArrayList();
-                mutable_bitField0_ |= 0x00000002;
-              }
-              apksPackageName_.add(s);
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        if (((mutable_bitField0_ & 0x00000001) != 0)) {
-          apkPaths_ = apkPaths_.getUnmodifiableView();
-        }
-        if (((mutable_bitField0_ & 0x00000002) != 0)) {
-          apksPackageName_ = apksPackageName_.getUnmodifiableView();
-        }
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
@@ -373,71 +303,6 @@ public final class AndroidApkInstallerConfigProto {
       public final com.google.protobuf.UnknownFieldSet
       getUnknownFields() {
         return this.unknownFields;
-      }
-      private InstallOption(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        this();
-        if (extensionRegistry == null) {
-          throw new java.lang.NullPointerException();
-        }
-        int mutable_bitField0_ = 0;
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-            com.google.protobuf.UnknownFieldSet.newBuilder();
-        try {
-          boolean done = false;
-          while (!done) {
-            int tag = input.readTag();
-            switch (tag) {
-              case 0:
-                done = true;
-                break;
-              case 10: {
-                java.lang.String s = input.readStringRequireUtf8();
-                if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-                  commandLineParameter_ = new com.google.protobuf.LazyStringArrayList();
-                  mutable_bitField0_ |= 0x00000001;
-                }
-                commandLineParameter_.add(s);
-                break;
-              }
-              case 16: {
-
-                installAsSplitApk_ = input.readBool();
-                break;
-              }
-              case 24: {
-
-                installApkTimeout_ = input.readInt32();
-                break;
-              }
-              case 32: {
-
-                installAsTestService_ = input.readBool();
-                break;
-              }
-              default: {
-                if (!parseUnknownField(
-                    input, unknownFields, extensionRegistry, tag)) {
-                  done = true;
-                }
-                break;
-              }
-            }
-          }
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          throw e.setUnfinishedMessage(this);
-        } catch (java.io.IOException e) {
-          throw new com.google.protobuf.InvalidProtocolBufferException(
-              e).setUnfinishedMessage(this);
-        } finally {
-          if (((mutable_bitField0_ & 0x00000001) != 0)) {
-            commandLineParameter_ = commandLineParameter_.getUnmodifiableView();
-          }
-          this.unknownFields = unknownFields.build();
-          makeExtensionsImmutable();
-        }
       }
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
@@ -578,7 +443,7 @@ public final class AndroidApkInstallerConfigProto {
         if (installAsTestService_ != false) {
           output.writeBool(4, installAsTestService_);
         }
-        unknownFields.writeTo(output);
+        getUnknownFields().writeTo(output);
       }
 
       @java.lang.Override
@@ -607,7 +472,7 @@ public final class AndroidApkInstallerConfigProto {
           size += com.google.protobuf.CodedOutputStream
             .computeBoolSize(4, installAsTestService_);
         }
-        size += unknownFields.getSerializedSize();
+        size += getUnknownFields().getSerializedSize();
         memoizedSize = size;
         return size;
       }
@@ -630,7 +495,7 @@ public final class AndroidApkInstallerConfigProto {
             != other.getInstallApkTimeout()) return false;
         if (getInstallAsTestService()
             != other.getInstallAsTestService()) return false;
-        if (!unknownFields.equals(other.unknownFields)) return false;
+        if (!getUnknownFields().equals(other.getUnknownFields())) return false;
         return true;
       }
 
@@ -653,7 +518,7 @@ public final class AndroidApkInstallerConfigProto {
         hash = (37 * hash) + INSTALL_AS_TEST_SERVICE_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
             getInstallAsTestService());
-        hash = (29 * hash) + unknownFields.hashCode();
+        hash = (29 * hash) + getUnknownFields().hashCode();
         memoizedHashCode = hash;
         return hash;
       }
@@ -774,18 +639,13 @@ public final class AndroidApkInstallerConfigProto {
 
         // Construct using com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.newBuilder()
         private Builder() {
-          maybeForceBuilderInitialization();
+
         }
 
         private Builder(
             com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
           super(parent);
-          maybeForceBuilderInitialization();
-        }
-        private void maybeForceBuilderInitialization() {
-          if (com.google.protobuf.GeneratedMessageV3
-                  .alwaysUseFieldBuilders) {
-          }
+
         }
         @java.lang.Override
         public Builder clear() {
@@ -900,7 +760,7 @@ public final class AndroidApkInstallerConfigProto {
           if (other.getInstallAsTestService() != false) {
             setInstallAsTestService(other.getInstallAsTestService());
           }
-          this.mergeUnknownFields(other.unknownFields);
+          this.mergeUnknownFields(other.getUnknownFields());
           onChanged();
           return this;
         }
@@ -915,17 +775,51 @@ public final class AndroidApkInstallerConfigProto {
             com.google.protobuf.CodedInputStream input,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws java.io.IOException {
-          com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption parsedMessage = null;
+          if (extensionRegistry == null) {
+            throw new java.lang.NullPointerException();
+          }
           try {
-            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            boolean done = false;
+            while (!done) {
+              int tag = input.readTag();
+              switch (tag) {
+                case 0:
+                  done = true;
+                  break;
+                case 10: {
+                  java.lang.String s = input.readStringRequireUtf8();
+                  ensureCommandLineParameterIsMutable();
+                  commandLineParameter_.add(s);
+                  break;
+                } // case 10
+                case 16: {
+                  installAsSplitApk_ = input.readBool();
+
+                  break;
+                } // case 16
+                case 24: {
+                  installApkTimeout_ = input.readInt32();
+
+                  break;
+                } // case 24
+                case 32: {
+                  installAsTestService_ = input.readBool();
+
+                  break;
+                } // case 32
+                default: {
+                  if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                    done = true; // was an endgroup tag
+                  }
+                  break;
+                } // default:
+              } // switch (tag)
+            } // while (!done)
           } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-            parsedMessage = (com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption) e.getUnfinishedMessage();
             throw e.unwrapIOException();
           } finally {
-            if (parsedMessage != null) {
-              mergeFrom(parsedMessage);
-            }
-          }
+            onChanged();
+          } // finally
           return this;
         }
         private int bitField0_;
@@ -1249,7 +1143,18 @@ public final class AndroidApkInstallerConfigProto {
             com.google.protobuf.CodedInputStream input,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws com.google.protobuf.InvalidProtocolBufferException {
-          return new InstallOption(input, extensionRegistry);
+          Builder builder = newBuilder();
+          try {
+            builder.mergeFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw e.setUnfinishedMessage(builder.buildPartial());
+          } catch (com.google.protobuf.UninitializedMessageException e) {
+            throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+          } catch (java.io.IOException e) {
+            throw new com.google.protobuf.InvalidProtocolBufferException(e)
+                .setUnfinishedMessage(builder.buildPartial());
+          }
+          return builder.buildPartial();
         }
       };
 
@@ -1424,6 +1329,21 @@ public final class AndroidApkInstallerConfigProto {
       return apksPackageName_.getByteString(index);
     }
 
+    public static final int FORCE_REINSTALL_BEFORE_TEST_FIELD_NUMBER = 5;
+    private boolean forceReinstallBeforeTest_;
+    /**
+     * <pre>
+     * If true, the incompatible APKs will be reinstalled before installing test APKs
+     * </pre>
+     *
+     * <code>bool force_reinstall_before_test = 5;</code>
+     * @return The forceReinstallBeforeTest.
+     */
+    @java.lang.Override
+    public boolean getForceReinstallBeforeTest() {
+      return forceReinstallBeforeTest_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -1450,7 +1370,10 @@ public final class AndroidApkInstallerConfigProto {
       for (int i = 0; i < apksPackageName_.size(); i++) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 4, apksPackageName_.getRaw(i));
       }
-      unknownFields.writeTo(output);
+      if (forceReinstallBeforeTest_ != false) {
+        output.writeBool(5, forceReinstallBeforeTest_);
+      }
+      getUnknownFields().writeTo(output);
     }
 
     @java.lang.Override
@@ -1483,7 +1406,11 @@ public final class AndroidApkInstallerConfigProto {
         size += dataSize;
         size += 1 * getApksPackageNameList().size();
       }
-      size += unknownFields.getSerializedSize();
+      if (forceReinstallBeforeTest_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(5, forceReinstallBeforeTest_);
+      }
+      size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
     }
@@ -1509,7 +1436,9 @@ public final class AndroidApkInstallerConfigProto {
           != other.getUninstallAfterTest()) return false;
       if (!getApksPackageNameList()
           .equals(other.getApksPackageNameList())) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
+      if (getForceReinstallBeforeTest()
+          != other.getForceReinstallBeforeTest()) return false;
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
 
@@ -1535,7 +1464,10 @@ public final class AndroidApkInstallerConfigProto {
         hash = (37 * hash) + APKS_PACKAGE_NAME_FIELD_NUMBER;
         hash = (53 * hash) + getApksPackageNameList().hashCode();
       }
-      hash = (29 * hash) + unknownFields.hashCode();
+      hash = (37 * hash) + FORCE_REINSTALL_BEFORE_TEST_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getForceReinstallBeforeTest());
+      hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
     }
@@ -1656,18 +1588,13 @@ public final class AndroidApkInstallerConfigProto {
 
       // Construct using com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.newBuilder()
       private Builder() {
-        maybeForceBuilderInitialization();
+
       }
 
       private Builder(
           com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
+
       }
       @java.lang.Override
       public Builder clear() {
@@ -1684,6 +1611,8 @@ public final class AndroidApkInstallerConfigProto {
 
         apksPackageName_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000002);
+        forceReinstallBeforeTest_ = false;
+
         return this;
       }
 
@@ -1727,6 +1656,7 @@ public final class AndroidApkInstallerConfigProto {
           bitField0_ = (bitField0_ & ~0x00000002);
         }
         result.apksPackageName_ = apksPackageName_;
+        result.forceReinstallBeforeTest_ = forceReinstallBeforeTest_;
         onBuilt();
         return result;
       }
@@ -1801,7 +1731,10 @@ public final class AndroidApkInstallerConfigProto {
           }
           onChanged();
         }
-        this.mergeUnknownFields(other.unknownFields);
+        if (other.getForceReinstallBeforeTest() != false) {
+          setForceReinstallBeforeTest(other.getForceReinstallBeforeTest());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
       }
@@ -1816,17 +1749,59 @@ public final class AndroidApkInstallerConfigProto {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk parsedMessage = null;
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
         try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+                java.lang.String s = input.readStringRequireUtf8();
+                ensureApkPathsIsMutable();
+                apkPaths_.add(s);
+                break;
+              } // case 10
+              case 18: {
+                input.readMessage(
+                    getInstallOptionsFieldBuilder().getBuilder(),
+                    extensionRegistry);
+
+                break;
+              } // case 18
+              case 24: {
+                uninstallAfterTest_ = input.readBool();
+
+                break;
+              } // case 24
+              case 34: {
+                java.lang.String s = input.readStringRequireUtf8();
+                ensureApksPackageNameIsMutable();
+                apksPackageName_.add(s);
+                break;
+              } // case 34
+              case 40: {
+                forceReinstallBeforeTest_ = input.readBool();
+
+                break;
+              } // case 40
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
+          onChanged();
+        } // finally
         return this;
       }
       private int bitField0_;
@@ -2320,6 +2295,49 @@ public final class AndroidApkInstallerConfigProto {
         onChanged();
         return this;
       }
+
+      private boolean forceReinstallBeforeTest_ ;
+      /**
+       * <pre>
+       * If true, the incompatible APKs will be reinstalled before installing test APKs
+       * </pre>
+       *
+       * <code>bool force_reinstall_before_test = 5;</code>
+       * @return The forceReinstallBeforeTest.
+       */
+      @java.lang.Override
+      public boolean getForceReinstallBeforeTest() {
+        return forceReinstallBeforeTest_;
+      }
+      /**
+       * <pre>
+       * If true, the incompatible APKs will be reinstalled before installing test APKs
+       * </pre>
+       *
+       * <code>bool force_reinstall_before_test = 5;</code>
+       * @param value The forceReinstallBeforeTest to set.
+       * @return This builder for chaining.
+       */
+      public Builder setForceReinstallBeforeTest(boolean value) {
+        
+        forceReinstallBeforeTest_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * If true, the incompatible APKs will be reinstalled before installing test APKs
+       * </pre>
+       *
+       * <code>bool force_reinstall_before_test = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearForceReinstallBeforeTest() {
+        
+        forceReinstallBeforeTest_ = false;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -2353,7 +2371,18 @@ public final class AndroidApkInstallerConfigProto {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new InstallableApk(input, extensionRegistry);
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
       }
     };
 
@@ -2429,56 +2458,6 @@ public final class AndroidApkInstallerConfigProto {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private AndroidApkInstallerConfig(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-                apksToInstall_ = new java.util.ArrayList<com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk>();
-                mutable_bitField0_ |= 0x00000001;
-              }
-              apksToInstall_.add(
-                  input.readMessage(com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.parser(), extensionRegistry));
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        if (((mutable_bitField0_ & 0x00000001) != 0)) {
-          apksToInstall_ = java.util.Collections.unmodifiableList(apksToInstall_);
-        }
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.internal_static_com_android_tools_utp_plugins_host_apkinstaller_proto_AndroidApkInstallerConfig_descriptor;
@@ -2549,7 +2528,7 @@ public final class AndroidApkInstallerConfigProto {
       for (int i = 0; i < apksToInstall_.size(); i++) {
         output.writeMessage(1, apksToInstall_.get(i));
       }
-      unknownFields.writeTo(output);
+      getUnknownFields().writeTo(output);
     }
 
     @java.lang.Override
@@ -2562,7 +2541,7 @@ public final class AndroidApkInstallerConfigProto {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, apksToInstall_.get(i));
       }
-      size += unknownFields.getSerializedSize();
+      size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
     }
@@ -2579,7 +2558,7 @@ public final class AndroidApkInstallerConfigProto {
 
       if (!getApksToInstallList()
           .equals(other.getApksToInstallList())) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
 
@@ -2594,7 +2573,7 @@ public final class AndroidApkInstallerConfigProto {
         hash = (37 * hash) + APKS_TO_INSTALL_FIELD_NUMBER;
         hash = (53 * hash) + getApksToInstallList().hashCode();
       }
-      hash = (29 * hash) + unknownFields.hashCode();
+      hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
     }
@@ -2711,29 +2690,24 @@ public final class AndroidApkInstallerConfigProto {
 
       // Construct using com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.AndroidApkInstallerConfig.newBuilder()
       private Builder() {
-        maybeForceBuilderInitialization();
+
       }
 
       private Builder(
           com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-          getApksToInstallFieldBuilder();
-        }
+
       }
       @java.lang.Override
       public Builder clear() {
         super.clear();
         if (apksToInstallBuilder_ == null) {
           apksToInstall_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
         } else {
+          apksToInstall_ = null;
           apksToInstallBuilder_.clear();
         }
+        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
 
@@ -2844,7 +2818,7 @@ public final class AndroidApkInstallerConfigProto {
             }
           }
         }
-        this.mergeUnknownFields(other.unknownFields);
+        this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
       }
@@ -2859,17 +2833,43 @@ public final class AndroidApkInstallerConfigProto {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.AndroidApkInstallerConfig parsedMessage = null;
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
         try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+                com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk m =
+                    input.readMessage(
+                        com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.parser(),
+                        extensionRegistry);
+                if (apksToInstallBuilder_ == null) {
+                  ensureApksToInstallIsMutable();
+                  apksToInstall_.add(m);
+                } else {
+                  apksToInstallBuilder_.addMessage(m);
+                }
+                break;
+              } // case 10
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.AndroidApkInstallerConfig) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
+          onChanged();
+        } // finally
         return this;
       }
       private int bitField0_;
@@ -3146,7 +3146,18 @@ public final class AndroidApkInstallerConfigProto {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new AndroidApkInstallerConfig(input, extensionRegistry);
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
       }
     };
 
@@ -3192,21 +3203,22 @@ public final class AndroidApkInstallerConfigProto {
     java.lang.String[] descriptorData = {
       "\n1src/main/proto/android_apk_installer_c" +
       "onfig.proto\0225com.android.tools.utp.plugi" +
-      "ns.host.apkinstaller.proto\"\330\002\n\016Installab" +
+      "ns.host.apkinstaller.proto\"\375\002\n\016Installab" +
       "leApk\022\021\n\tapk_paths\030\001 \003(\t\022l\n\017install_opti" +
       "ons\030\002 \001(\0132S.com.android.tools.utp.plugin" +
       "s.host.apkinstaller.proto.InstallableApk" +
       ".InstallOption\022\034\n\024uninstall_after_test\030\003" +
-      " \001(\010\022\031\n\021apks_package_name\030\004 \003(\t\032\213\001\n\rInst" +
-      "allOption\022\036\n\026command_line_parameter\030\001 \003(" +
-      "\t\022\034\n\024install_as_split_apk\030\002 \001(\010\022\033\n\023insta" +
-      "ll_apk_timeout\030\003 \001(\005\022\037\n\027install_as_test_" +
-      "service\030\004 \001(\010\"{\n\031AndroidApkInstallerConf" +
-      "ig\022^\n\017apks_to_install\030\001 \003(\0132E.com.androi" +
-      "d.tools.utp.plugins.host.apkinstaller.pr" +
-      "oto.InstallableApkBW\n5com.android.tools." +
-      "utp.plugins.host.apkinstaller.protoB\036And" +
-      "roidApkInstallerConfigProtob\006proto3"
+      " \001(\010\022\031\n\021apks_package_name\030\004 \003(\t\022#\n\033force" +
+      "_reinstall_before_test\030\005 \001(\010\032\213\001\n\rInstall" +
+      "Option\022\036\n\026command_line_parameter\030\001 \003(\t\022\034" +
+      "\n\024install_as_split_apk\030\002 \001(\010\022\033\n\023install_" +
+      "apk_timeout\030\003 \001(\005\022\037\n\027install_as_test_ser" +
+      "vice\030\004 \001(\010\"{\n\031AndroidApkInstallerConfig\022" +
+      "^\n\017apks_to_install\030\001 \003(\0132E.com.android.t" +
+      "ools.utp.plugins.host.apkinstaller.proto" +
+      ".InstallableApkBW\n5com.android.tools.utp" +
+      ".plugins.host.apkinstaller.protoB\036Androi" +
+      "dApkInstallerConfigProtob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -3217,7 +3229,7 @@ public final class AndroidApkInstallerConfigProto {
     internal_static_com_android_tools_utp_plugins_host_apkinstaller_proto_InstallableApk_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_android_tools_utp_plugins_host_apkinstaller_proto_InstallableApk_descriptor,
-        new java.lang.String[] { "ApkPaths", "InstallOptions", "UninstallAfterTest", "ApksPackageName", });
+        new java.lang.String[] { "ApkPaths", "InstallOptions", "UninstallAfterTest", "ApksPackageName", "ForceReinstallBeforeTest", });
     internal_static_com_android_tools_utp_plugins_host_apkinstaller_proto_InstallableApk_InstallOption_descriptor =
       internal_static_com_android_tools_utp_plugins_host_apkinstaller_proto_InstallableApk_descriptor.getNestedTypes().get(0);
     internal_static_com_android_tools_utp_plugins_host_apkinstaller_proto_InstallableApk_InstallOption_fieldAccessorTable = new

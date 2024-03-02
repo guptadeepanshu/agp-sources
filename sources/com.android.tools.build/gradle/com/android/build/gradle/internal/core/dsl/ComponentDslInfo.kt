@@ -20,6 +20,7 @@ import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.impl.MutableAndroidVersion
 import com.android.build.gradle.api.JavaCompileOptions
 import com.android.build.gradle.internal.core.dsl.features.AndroidResourcesDslInfo
+import com.android.build.gradle.internal.core.dsl.features.PrivacySandboxDslInfo
 import com.android.builder.core.AbstractProductFlavor
 import com.android.builder.core.ComponentType
 import org.gradle.api.provider.Property
@@ -67,4 +68,6 @@ interface ComponentDslInfo {
     val javaCompileOptionsSetInDSL: JavaCompileOptions
 
     val androidResourcesDsl: AndroidResourcesDslInfo?
+
+    val privacySandboxDsl: PrivacySandboxDslInfo
 }

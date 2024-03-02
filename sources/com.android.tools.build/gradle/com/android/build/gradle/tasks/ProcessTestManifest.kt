@@ -248,7 +248,7 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
                     ManifestMerger2.MergeType.APPLICATION
                 )
                     .setPlaceHolderValues(manifestPlaceholders)
-                    .addFlavorAndBuildTypeManifests(*manifestOverlays.get().toTypedArray())
+                    .addFlavorAndBuildTypeManifests(*manifestOverlayFilePaths.get().filter(File::isFile).toTypedArray())
                     .addLibraryManifest(generatedTestManifest)
                     .addAllowedNonUniqueNamespace(namespace)
                     .setOverride(ManifestSystemProperty.Document.PACKAGE, testApplicationId)
@@ -260,7 +260,7 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
                         ManifestMerger2.Invoker.Feature.CHECK_IF_PACKAGE_IN_MAIN_MANIFEST
                     )
 
-                instrumentationRunner?.let {
+                instrumentationRunner.let {
                     intermediateInvoker.setPlaceHolderValue(
                         PlaceholderHandler.INSTRUMENTATION_RUNNER,
                         it)
@@ -419,8 +419,8 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
     abstract val debuggable: Property<Boolean>
 
     @get:PathSensitive(PathSensitivity.RELATIVE)
-    @get:InputFiles
-    abstract val manifestOverlays: ListProperty<File>
+    @get:InputFiles // Note: The files may not exist
+    abstract val manifestOverlayFilePaths: ListProperty<File>
 
     @get:Input
     @get:Optional
@@ -480,8 +480,7 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
             task.testManifestFile
                 .fileProvider(creationConfig.sources.manifestFile)
             task.testManifestFile.disallowChanges()
-            task.manifestOverlays.setDisallowChanges(
-                creationConfig.sources.manifestOverlayFiles.map { it.filter(File::isFile) })
+            task.manifestOverlayFilePaths.setDisallowChanges(creationConfig.sources.manifestOverlayFiles)
             task.componentType.setDisallowChanges(creationConfig.componentType.toString())
             task.tmpDir.setDisallowChanges(
                 creationConfig.paths.intermediatesDir(

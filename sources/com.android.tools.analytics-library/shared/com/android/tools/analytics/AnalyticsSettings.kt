@@ -299,6 +299,13 @@ object AnalyticsSettings {
         return createNewAnalyticsSettingsData(logger)
     }
 
+    fun resetUserId() {
+        runIfAnalyticsSettingsUsable(Unit) {
+            instance?.userId = UUID.randomUUID().toString()
+            saveSettings()
+        }
+    }
+
     /**
      * Creates a new settings object and writes it to disk. Will try to load uid.txt for maintaining
      * the same uid with previous metrics reporting.
@@ -415,14 +422,6 @@ object AnalyticsSettings {
     internal val settingsFile: File
         get() = Paths.get(AnalyticsPaths.getAndEnsureAndroidSettingsHome(), ANALYTICS_SETTINGS)
             .toFile()
-
-    /**
-     * Check if the [ANALYTICS_SETTINGS] file exists without creating parent directories
-     */
-    @JvmStatic
-    fun settingsFileExists(): Boolean {
-        return File(AnalyticsPaths.getAndroidSettingsHome(), ANALYTICS_SETTINGS).exists()
-    }
 
     /**
      * Gets a binary blob to ensure per user anonymization. Gets automatically rotated every 28

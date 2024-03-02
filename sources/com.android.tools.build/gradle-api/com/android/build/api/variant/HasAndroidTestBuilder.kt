@@ -16,8 +16,12 @@
 
 package com.android.build.api.variant
 
+import org.gradle.api.Incubating
+
 /**
- * Interface that mark the potential existence of android tests associated with a variant.
+ * Interface that marks the potential existence of [AndroidTest] component on a [Variant].
+ *
+ * This is implemented by select subtypes of [VariantBuilder].
  */
 interface HasAndroidTestBuilder {
 
@@ -25,12 +29,20 @@ interface HasAndroidTestBuilder {
      * Set to `true` if the variant's has any android tests, false otherwise.
      * Value is [Boolean#True] by default.
      */
-    @Deprecated("replaced with enableAndroidTest", ReplaceWith("enableAndroidTest"))
+    @Deprecated("replaced with enableAndroidTest", ReplaceWith("androidTest.enable"))
     var androidTestEnabled: Boolean
 
     /**
      * Set to `true` if the variant's has any android tests, false otherwise.
      * Value is [Boolean#True] by default.
      */
+    @Deprecated("replaced with enableAndroidTest", ReplaceWith("androidTest.enable"))
     var enableAndroidTest: Boolean
+
+    /**
+     * Variant's [AndroidTestBuilder] configuration to turn on or off android tests and set
+     * other android test related settings.
+     */
+    @get:Incubating
+    val androidTest: AndroidTestBuilder
 }

@@ -15,6 +15,7 @@
  */
 package com.android.ide.common.fonts
 
+import com.android.ide.common.util.parseIntOrDefault
 import org.xml.sax.Attributes
 import org.xml.sax.SAXException
 import org.xml.sax.helpers.DefaultHandler
@@ -49,8 +50,8 @@ internal class DirectoryHandler(private val provider: FontProvider) : DefaultHan
             }
             FONT -> {
                 val font = MutableFontDetail()
-                font.weight = parseInt(attributes.getValue(ATTR_WEIGHT), DEFAULT_WEIGHT)
-                font.width = parseInt(attributes.getValue(ATTR_WIDTH), DEFAULT_WIDTH)
+                font.weight = attributes.getValue(ATTR_WEIGHT).parseIntOrDefault(DEFAULT_WEIGHT)
+                font.width = attributes.getValue(ATTR_WIDTH).parseIntOrDefault(DEFAULT_WIDTH)
                 font.italics = parseItalics(attributes.getValue(ATTR_ITALIC))
                 font.fontUrl = addProtocol(attributes.getValue(ATTR_FONT_URL))
                 font.styleName = attributes.getValue(ATTR_STYLE_NAME) ?: ""
@@ -67,17 +68,6 @@ internal class DirectoryHandler(private val provider: FontProvider) : DefaultHan
                 fontFamilies.add(FontFamily(provider, FontSource.DOWNLOADABLE, fontName, fontMenu, fontMenuName, fontDetails))
             }
             fontDetails.clear()
-        }
-    }
-
-    private fun parseInt(intAsString: String?, defaultValue: Int): Int {
-        if (intAsString == null) {
-            return defaultValue
-        }
-        return try {
-            Math.round(java.lang.Float.parseFloat(intAsString))
-        } catch (ex: NumberFormatException) {
-            defaultValue
         }
     }
 

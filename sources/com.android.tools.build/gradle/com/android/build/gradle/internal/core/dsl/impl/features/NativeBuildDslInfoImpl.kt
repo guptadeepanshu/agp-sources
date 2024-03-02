@@ -35,7 +35,7 @@ class NativeBuildDslInfoImpl(
     private val defaultConfig: DefaultConfig,
     private val buildTypeObj: BuildType,
     private val productFlavorList: List<ProductFlavor>,
-    private val extension: CommonExtension<*, *, *, *, *>
+    private val extension: CommonExtension<*, *, *, *, *, *>
 ): NativeBuildDslInfo {
 
     override val ndkConfig: MergedNdkConfig = MergedNdkConfig()

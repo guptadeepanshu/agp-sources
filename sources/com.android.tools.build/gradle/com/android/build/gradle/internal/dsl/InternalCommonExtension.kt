@@ -17,10 +17,8 @@
 package com.android.build.gradle.internal.dsl
 
 
-import com.android.build.api.dsl.AndroidResources
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.ComposeOptions
-import com.android.build.api.dsl.Installation
 import com.android.build.api.dsl.Lint
 import com.android.build.api.dsl.Packaging
 import com.android.build.api.dsl.TestCoverage
@@ -47,13 +45,15 @@ interface InternalCommonExtension<
         BuildTypeT : com.android.build.api.dsl.BuildType,
         DefaultConfigT : com.android.build.api.dsl.DefaultConfig,
         ProductFlavorT : com.android.build.api.dsl.ProductFlavor,
-        AndroidResourcesT : com.android.build.api.dsl.AndroidResources> :
+        AndroidResourcesT : com.android.build.api.dsl.AndroidResources,
+        InstallationT : com.android.build.api.dsl.Installation> :
     CommonExtension<
         BuildFeaturesT,
         BuildTypeT,
         DefaultConfigT,
         ProductFlavorT,
-        AndroidResourcesT>, Lockable {
+        AndroidResourcesT,
+        InstallationT>, Lockable {
 
     override val aaptOptions: AaptOptionsImpl
 
@@ -86,7 +86,7 @@ interface InternalCommonExtension<
     fun dataBinding(action: Action<DataBindingOptionsImpl>)
     fun viewBinding(action: Action<ViewBindingOptionsImpl>)
     fun externalNativeBuild(action: Action<ExternalNativeBuildImpl>)
-    fun installation(action: Action<Installation>)
+    fun installation(action: Action<InstallationT>)
     fun jacoco(action: Action<JacocoOptionsImpl>)
     fun lint(action: Action<Lint>)
     fun lintOptions(action: Action<LintOptionsImpl>)

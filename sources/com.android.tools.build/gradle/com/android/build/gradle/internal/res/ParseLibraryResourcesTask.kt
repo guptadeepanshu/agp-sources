@@ -17,8 +17,8 @@
 package com.android.build.gradle.internal.res
 
 import com.android.SdkConstants
-import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.component.ComponentCreationConfig
+import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NewIncrementalTask
@@ -291,7 +291,7 @@ internal fun doIncrementalRDefTaskAction(
  * SymbolTable and written to a R def file.
  */
 internal fun doIncrementalPartialRTaskAction(
-        parseResourcesParams: ParseLibraryResourcesTask.ParseResourcesParams) {
+        parseResourcesParams: ParseLibraryResourcesTask.ParseResourcesParams): Boolean {
     val partialRDir = parseResourcesParams.partialRDir.asFile.orNull
         ?: throw IOException("No partial r.txt directory found.")
     val platformSymbols = getAndroidAttrSymbols(parseResourcesParams.platformAttrsRTxt.asFile.get())
@@ -324,10 +324,8 @@ internal fun doIncrementalPartialRTaskAction(
                         parseResourcesParams.validateResources.get())
                 // Only update changed partial R file if the contents are not the same as the
                 // previously saved file.
-                val updateChangedFile: Boolean =
-                        !changedFileExists ||
-                                maybeExistingPartialRFile.readLines().toString() !=
-                                createdPartialRFile.contents
+                val updateChangedFile: Boolean = !changedFileExists ||
+                        maybeExistingPartialRFile.readText().trim() != createdPartialRFile.contents.trim()
                 if (updateChangedFile) {
                     val fileToAdd =
                             File(partialRDir, createdPartialRFile.name)
@@ -348,6 +346,7 @@ internal fun doIncrementalPartialRTaskAction(
     if (updateLibrarySymbolsFile) {
         writeRDefFromPartialRDirectory(partialRDir, parseResourcesParams.librarySymbolsFile.asFile.get())
     }
+    return updateLibrarySymbolsFile
 }
 
 internal fun canGenerateSymbols(type: ResourceFolderType, file: File) =

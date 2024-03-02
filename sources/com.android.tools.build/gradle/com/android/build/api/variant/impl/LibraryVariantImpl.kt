@@ -70,7 +70,7 @@ open class LibraryVariantImpl @Inject constructor(
     internalServices,
     taskCreationServices,
     globalTaskCreationConfig,
-), LibraryVariant, LibraryCreationConfig, HasAndroidTest, HasTestFixtures {
+), LibraryVariant, LibraryCreationConfig, HasDeviceTests, HasTestFixtures {
 
     // ---------------------------------------------------------------------------------------------
     // PUBLIC API
@@ -113,6 +113,9 @@ open class LibraryVariantImpl @Inject constructor(
 
     override val isMinifyEnabled: Boolean
         get() = variantBuilder.isMinifyEnabled
+
+    override val androidResources: AndroidResourcesImpl =
+        getAndroidResources(dslInfo.androidResourcesDsl.androidResources)
 
     // ---------------------------------------------------------------------------------------------
     // INTERNAL API

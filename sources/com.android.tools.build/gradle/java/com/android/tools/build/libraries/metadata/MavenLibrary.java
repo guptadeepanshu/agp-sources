@@ -30,78 +30,6 @@ private static final long serialVersionUID = 0L;
     return new MavenLibrary();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
-  private MavenLibrary(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 10: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            groupId_ = s;
-            break;
-          }
-          case 18: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            artifactId_ = s;
-            break;
-          }
-          case 26: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            packaging_ = s;
-            break;
-          }
-          case 34: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            classifier_ = s;
-            break;
-          }
-          case 42: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            version_ = s;
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.android.tools.build.libraries.metadata.AppBundleDependenciesMetadata.internal_static_MavenLibrary_descriptor;
@@ -116,7 +44,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GROUPID_FIELD_NUMBER = 1;
-  private volatile java.lang.Object groupId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object groupId_ = "";
   /**
    * <code>string groupId = 1;</code>
    * @return The groupId.
@@ -154,7 +83,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ARTIFACTID_FIELD_NUMBER = 2;
-  private volatile java.lang.Object artifactId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object artifactId_ = "";
   /**
    * <code>string artifactId = 2;</code>
    * @return The artifactId.
@@ -192,7 +122,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PACKAGING_FIELD_NUMBER = 3;
-  private volatile java.lang.Object packaging_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object packaging_ = "";
   /**
    * <code>string packaging = 3;</code>
    * @return The packaging.
@@ -230,7 +161,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CLASSIFIER_FIELD_NUMBER = 4;
-  private volatile java.lang.Object classifier_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object classifier_ = "";
   /**
    * <code>string classifier = 4;</code>
    * @return The classifier.
@@ -268,7 +200,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int VERSION_FIELD_NUMBER = 5;
-  private volatile java.lang.Object version_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object version_ = "";
   /**
    * <code>string version = 5;</code>
    * @return The version.
@@ -334,7 +267,7 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(version_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 5, version_);
     }
-    unknownFields.writeTo(output);
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -358,7 +291,7 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(version_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, version_);
     }
-    size += unknownFields.getSerializedSize();
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -383,7 +316,7 @@ private static final long serialVersionUID = 0L;
         .equals(other.getClassifier())) return false;
     if (!getVersion()
         .equals(other.getVersion())) return false;
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -404,7 +337,7 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getClassifier().hashCode();
     hash = (37 * hash) + VERSION_FIELD_NUMBER;
     hash = (53 * hash) + getVersion().hashCode();
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -521,32 +454,23 @@ private static final long serialVersionUID = 0L;
 
     // Construct using com.android.tools.build.libraries.metadata.MavenLibrary.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessageV3
-              .alwaysUseFieldBuilders) {
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       groupId_ = "";
-
       artifactId_ = "";
-
       packaging_ = "";
-
       classifier_ = "";
-
       version_ = "";
-
       return this;
     }
 
@@ -573,47 +497,30 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.android.tools.build.libraries.metadata.MavenLibrary buildPartial() {
       com.android.tools.build.libraries.metadata.MavenLibrary result = new com.android.tools.build.libraries.metadata.MavenLibrary(this);
-      result.groupId_ = groupId_;
-      result.artifactId_ = artifactId_;
-      result.packaging_ = packaging_;
-      result.classifier_ = classifier_;
-      result.version_ = version_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.android.tools.build.libraries.metadata.MavenLibrary result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.groupId_ = groupId_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.artifactId_ = artifactId_;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.packaging_ = packaging_;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.classifier_ = classifier_;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.version_ = version_;
+      }
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.android.tools.build.libraries.metadata.MavenLibrary) {
@@ -628,25 +535,30 @@ private static final long serialVersionUID = 0L;
       if (other == com.android.tools.build.libraries.metadata.MavenLibrary.getDefaultInstance()) return this;
       if (!other.getGroupId().isEmpty()) {
         groupId_ = other.groupId_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (!other.getArtifactId().isEmpty()) {
         artifactId_ = other.artifactId_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (!other.getPackaging().isEmpty()) {
         packaging_ = other.packaging_;
+        bitField0_ |= 0x00000004;
         onChanged();
       }
       if (!other.getClassifier().isEmpty()) {
         classifier_ = other.classifier_;
+        bitField0_ |= 0x00000008;
         onChanged();
       }
       if (!other.getVersion().isEmpty()) {
         version_ = other.version_;
+        bitField0_ |= 0x00000010;
         onChanged();
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -661,19 +573,58 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.android.tools.build.libraries.metadata.MavenLibrary parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              groupId_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000001;
+              break;
+            } // case 10
+            case 18: {
+              artifactId_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 18
+            case 26: {
+              packaging_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 26
+            case 34: {
+              classifier_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 34
+            case 42: {
+              version_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000010;
+              break;
+            } // case 42
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.android.tools.build.libraries.metadata.MavenLibrary) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
+    private int bitField0_;
 
     private java.lang.Object groupId_ = "";
     /**
@@ -716,11 +667,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setGroupId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       groupId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -729,8 +678,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearGroupId() {
-      
       groupId_ = getDefaultInstance().getGroupId();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -741,12 +690,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setGroupIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       groupId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -792,11 +739,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setArtifactId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       artifactId_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -805,8 +750,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearArtifactId() {
-      
       artifactId_ = getDefaultInstance().getArtifactId();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -817,12 +762,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setArtifactIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       artifactId_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -868,11 +811,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setPackaging(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       packaging_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -881,8 +822,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearPackaging() {
-      
       packaging_ = getDefaultInstance().getPackaging();
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
@@ -893,12 +834,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setPackagingBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       packaging_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -944,11 +883,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setClassifier(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       classifier_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -957,8 +894,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearClassifier() {
-      
       classifier_ = getDefaultInstance().getClassifier();
+      bitField0_ = (bitField0_ & ~0x00000008);
       onChanged();
       return this;
     }
@@ -969,12 +906,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setClassifierBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       classifier_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1020,11 +955,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       version_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1033,8 +966,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearVersion() {
-      
       version_ = getDefaultInstance().getVersion();
+      bitField0_ = (bitField0_ & ~0x00000010);
       onChanged();
       return this;
     }
@@ -1045,12 +978,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       version_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1087,7 +1018,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new MavenLibrary(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

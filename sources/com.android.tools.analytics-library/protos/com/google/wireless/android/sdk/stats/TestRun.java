@@ -38,127 +38,6 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private TestRun(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    int mutable_bitField0_ = 0;
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 8: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.TestRun.TestInvocationType value = com.google.wireless.android.sdk.stats.TestRun.TestInvocationType.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(1, rawValue);
-            } else {
-              bitField0_ |= 0x00000001;
-              testInvocationType_ = rawValue;
-            }
-            break;
-          }
-          case 16: {
-            bitField0_ |= 0x00000002;
-            numberOfTestsExecuted_ = input.readInt32();
-            break;
-          }
-          case 24: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.TestRun.TestKind value = com.google.wireless.android.sdk.stats.TestRun.TestKind.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(3, rawValue);
-            } else {
-              bitField0_ |= 0x00000004;
-              testKind_ = rawValue;
-            }
-            break;
-          }
-          case 32: {
-            bitField0_ |= 0x00000008;
-            crashed_ = input.readBool();
-            break;
-          }
-          case 42: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000010;
-            gradleVersion_ = bs;
-            break;
-          }
-          case 48: {
-            bitField0_ |= 0x00000020;
-            codeCoverageEnabled_ = input.readBool();
-            break;
-          }
-          case 58: {
-            com.google.wireless.android.sdk.stats.TestLibraries.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000040) != 0)) {
-              subBuilder = testLibraries_.toBuilder();
-            }
-            testLibraries_ = input.readMessage(com.google.wireless.android.sdk.stats.TestLibraries.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(testLibraries_);
-              testLibraries_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000040;
-            break;
-          }
-          case 64: {
-            int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-            com.google.wireless.android.sdk.stats.TestRun.TestExecution value = com.google.wireless.android.sdk.stats.TestRun.TestExecution.valueOf(rawValue);
-            if (value == null) {
-              unknownFields.mergeVarintField(8, rawValue);
-            } else {
-              bitField0_ |= 0x00000080;
-              testExecution_ = rawValue;
-            }
-            break;
-          }
-          case 74: {
-            com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000100) != 0)) {
-              subBuilder = automaticSnapshotOnFailure_.toBuilder();
-            }
-            automaticSnapshotOnFailure_ = input.readMessage(com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(automaticSnapshotOnFailure_);
-              automaticSnapshotOnFailure_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000100;
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TestRun_descriptor;
@@ -335,6 +214,10 @@ private static final long serialVersionUID = 0L;
      * <code>INSTRUMENTATION_TEST = 2;</code>
      */
     INSTRUMENTATION_TEST(2),
+    /**
+     * <code>PREVIEW_SCREENSHOT_TEST = 3;</code>
+     */
+    PREVIEW_SCREENSHOT_TEST(3),
     ;
 
     /**
@@ -349,6 +232,10 @@ private static final long serialVersionUID = 0L;
      * <code>INSTRUMENTATION_TEST = 2;</code>
      */
     public static final int INSTRUMENTATION_TEST_VALUE = 2;
+    /**
+     * <code>PREVIEW_SCREENSHOT_TEST = 3;</code>
+     */
+    public static final int PREVIEW_SCREENSHOT_TEST_VALUE = 3;
 
 
     public final int getNumber() {
@@ -374,6 +261,7 @@ private static final long serialVersionUID = 0L;
         case 0: return UNKNOWN_TEST_KIND;
         case 1: return UNIT_TEST;
         case 2: return INSTRUMENTATION_TEST;
+        case 3: return PREVIEW_SCREENSHOT_TEST;
         default: return null;
       }
     }
@@ -588,56 +476,6 @@ private static final long serialVersionUID = 0L;
     getUnknownFields() {
       return this.unknownFields;
     }
-    private AutomaticSnapshotOnFailure(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 8: {
-              int rawValue = input.readEnum();
-                @SuppressWarnings("deprecation")
-              com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled value = com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled.valueOf(rawValue);
-              if (value == null) {
-                unknownFields.mergeVarintField(1, rawValue);
-              } else {
-                bitField0_ |= 0x00000001;
-                enabled_ = rawValue;
-              }
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TestRun_AutomaticSnapshotOnFailure_descriptor;
@@ -830,7 +668,7 @@ private static final long serialVersionUID = 0L;
       if (((bitField0_ & 0x00000001) != 0)) {
         output.writeEnum(1, enabled_);
       }
-      unknownFields.writeTo(output);
+      getUnknownFields().writeTo(output);
     }
 
     @java.lang.Override
@@ -843,7 +681,7 @@ private static final long serialVersionUID = 0L;
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(1, enabled_);
       }
-      size += unknownFields.getSerializedSize();
+      size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
     }
@@ -862,7 +700,7 @@ private static final long serialVersionUID = 0L;
       if (hasEnabled()) {
         if (enabled_ != other.enabled_) return false;
       }
-      if (!unknownFields.equals(other.unknownFields)) return false;
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
 
@@ -877,7 +715,7 @@ private static final long serialVersionUID = 0L;
         hash = (37 * hash) + ENABLED_FIELD_NUMBER;
         hash = (53 * hash) + enabled_;
       }
-      hash = (29 * hash) + unknownFields.hashCode();
+      hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
     }
@@ -998,18 +836,13 @@ private static final long serialVersionUID = 0L;
 
       // Construct using com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.newBuilder()
       private Builder() {
-        maybeForceBuilderInitialization();
+
       }
 
       private Builder(
           com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
+
       }
       @java.lang.Override
       public Builder clear() {
@@ -1100,7 +933,7 @@ private static final long serialVersionUID = 0L;
         if (other.hasEnabled()) {
           setEnabled(other.getEnabled());
         }
-        this.mergeUnknownFields(other.unknownFields);
+        this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
       }
@@ -1115,17 +948,42 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure parsedMessage = null;
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
         try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 8: {
+                int tmpRaw = input.readEnum();
+                com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled tmpValue =
+                    com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled.forNumber(tmpRaw);
+                if (tmpValue == null) {
+                  mergeUnknownVarintField(1, tmpRaw);
+                } else {
+                  enabled_ = tmpRaw;
+                  bitField0_ |= 0x00000001;
+                }
+                break;
+              } // case 8
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
+          onChanged();
+        } // finally
         return this;
       }
       private int bitField0_;
@@ -1205,7 +1063,18 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new AutomaticSnapshotOnFailure(input, extensionRegistry);
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
       }
     };
 
@@ -1220,6 +1089,970 @@ private static final long serialVersionUID = 0L;
 
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface PreviewScreenshotRunOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:android_studio.TestRun.PreviewScreenshotRun)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * The number of screenshot that was attempted to render.
+     * This value and TestRun.number_of_tests_executed might be
+     * different because this value only counts attempted screenshot
+     * renderings whereas TestRun.number_of_tests_executed counts
+     * skipped test cases.
+     * </pre>
+     *
+     * <code>optional int32 screenshot_count = 1;</code>
+     * @return Whether the screenshotCount field is set.
+     */
+    boolean hasScreenshotCount();
+    /**
+     * <pre>
+     * The number of screenshot that was attempted to render.
+     * This value and TestRun.number_of_tests_executed might be
+     * different because this value only counts attempted screenshot
+     * renderings whereas TestRun.number_of_tests_executed counts
+     * skipped test cases.
+     * </pre>
+     *
+     * <code>optional int32 screenshot_count = 1;</code>
+     * @return The screenshotCount.
+     */
+    int getScreenshotCount();
+
+    /**
+     * <pre>
+     * Total run time including preview discovery and rendering.
+     * </pre>
+     *
+     * <code>optional int64 total_run_time_ms = 2;</code>
+     * @return Whether the totalRunTimeMs field is set.
+     */
+    boolean hasTotalRunTimeMs();
+    /**
+     * <pre>
+     * Total run time including preview discovery and rendering.
+     * </pre>
+     *
+     * <code>optional int64 total_run_time_ms = 2;</code>
+     * @return The totalRunTimeMs.
+     */
+    long getTotalRunTimeMs();
+
+    /**
+     * <pre>
+     * Run time for preview discovery.
+     * </pre>
+     *
+     * <code>optional int64 discovery_run_time_ms = 3;</code>
+     * @return Whether the discoveryRunTimeMs field is set.
+     */
+    boolean hasDiscoveryRunTimeMs();
+    /**
+     * <pre>
+     * Run time for preview discovery.
+     * </pre>
+     *
+     * <code>optional int64 discovery_run_time_ms = 3;</code>
+     * @return The discoveryRunTimeMs.
+     */
+    long getDiscoveryRunTimeMs();
+
+    /**
+     * <pre>
+     * Run time for rendering.
+     * </pre>
+     *
+     * <code>optional int64 rendering_run_time_ms = 4;</code>
+     * @return Whether the renderingRunTimeMs field is set.
+     */
+    boolean hasRenderingRunTimeMs();
+    /**
+     * <pre>
+     * Run time for rendering.
+     * </pre>
+     *
+     * <code>optional int64 rendering_run_time_ms = 4;</code>
+     * @return The renderingRunTimeMs.
+     */
+    long getRenderingRunTimeMs();
+  }
+  /**
+   * Protobuf type {@code android_studio.TestRun.PreviewScreenshotRun}
+   */
+  public static final class PreviewScreenshotRun extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:android_studio.TestRun.PreviewScreenshotRun)
+      PreviewScreenshotRunOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use PreviewScreenshotRun.newBuilder() to construct.
+    private PreviewScreenshotRun(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private PreviewScreenshotRun() {
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new PreviewScreenshotRun();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TestRun_PreviewScreenshotRun_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TestRun_PreviewScreenshotRun_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun.class, com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int SCREENSHOT_COUNT_FIELD_NUMBER = 1;
+    private int screenshotCount_;
+    /**
+     * <pre>
+     * The number of screenshot that was attempted to render.
+     * This value and TestRun.number_of_tests_executed might be
+     * different because this value only counts attempted screenshot
+     * renderings whereas TestRun.number_of_tests_executed counts
+     * skipped test cases.
+     * </pre>
+     *
+     * <code>optional int32 screenshot_count = 1;</code>
+     * @return Whether the screenshotCount field is set.
+     */
+    @java.lang.Override
+    public boolean hasScreenshotCount() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <pre>
+     * The number of screenshot that was attempted to render.
+     * This value and TestRun.number_of_tests_executed might be
+     * different because this value only counts attempted screenshot
+     * renderings whereas TestRun.number_of_tests_executed counts
+     * skipped test cases.
+     * </pre>
+     *
+     * <code>optional int32 screenshot_count = 1;</code>
+     * @return The screenshotCount.
+     */
+    @java.lang.Override
+    public int getScreenshotCount() {
+      return screenshotCount_;
+    }
+
+    public static final int TOTAL_RUN_TIME_MS_FIELD_NUMBER = 2;
+    private long totalRunTimeMs_;
+    /**
+     * <pre>
+     * Total run time including preview discovery and rendering.
+     * </pre>
+     *
+     * <code>optional int64 total_run_time_ms = 2;</code>
+     * @return Whether the totalRunTimeMs field is set.
+     */
+    @java.lang.Override
+    public boolean hasTotalRunTimeMs() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <pre>
+     * Total run time including preview discovery and rendering.
+     * </pre>
+     *
+     * <code>optional int64 total_run_time_ms = 2;</code>
+     * @return The totalRunTimeMs.
+     */
+    @java.lang.Override
+    public long getTotalRunTimeMs() {
+      return totalRunTimeMs_;
+    }
+
+    public static final int DISCOVERY_RUN_TIME_MS_FIELD_NUMBER = 3;
+    private long discoveryRunTimeMs_;
+    /**
+     * <pre>
+     * Run time for preview discovery.
+     * </pre>
+     *
+     * <code>optional int64 discovery_run_time_ms = 3;</code>
+     * @return Whether the discoveryRunTimeMs field is set.
+     */
+    @java.lang.Override
+    public boolean hasDiscoveryRunTimeMs() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <pre>
+     * Run time for preview discovery.
+     * </pre>
+     *
+     * <code>optional int64 discovery_run_time_ms = 3;</code>
+     * @return The discoveryRunTimeMs.
+     */
+    @java.lang.Override
+    public long getDiscoveryRunTimeMs() {
+      return discoveryRunTimeMs_;
+    }
+
+    public static final int RENDERING_RUN_TIME_MS_FIELD_NUMBER = 4;
+    private long renderingRunTimeMs_;
+    /**
+     * <pre>
+     * Run time for rendering.
+     * </pre>
+     *
+     * <code>optional int64 rendering_run_time_ms = 4;</code>
+     * @return Whether the renderingRunTimeMs field is set.
+     */
+    @java.lang.Override
+    public boolean hasRenderingRunTimeMs() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <pre>
+     * Run time for rendering.
+     * </pre>
+     *
+     * <code>optional int64 rendering_run_time_ms = 4;</code>
+     * @return The renderingRunTimeMs.
+     */
+    @java.lang.Override
+    public long getRenderingRunTimeMs() {
+      return renderingRunTimeMs_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        output.writeInt32(1, screenshotCount_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        output.writeInt64(2, totalRunTimeMs_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        output.writeInt64(3, discoveryRunTimeMs_);
+      }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        output.writeInt64(4, renderingRunTimeMs_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, screenshotCount_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(2, totalRunTimeMs_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(3, discoveryRunTimeMs_);
+      }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(4, renderingRunTimeMs_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun)) {
+        return super.equals(obj);
+      }
+      com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun other = (com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun) obj;
+
+      if (hasScreenshotCount() != other.hasScreenshotCount()) return false;
+      if (hasScreenshotCount()) {
+        if (getScreenshotCount()
+            != other.getScreenshotCount()) return false;
+      }
+      if (hasTotalRunTimeMs() != other.hasTotalRunTimeMs()) return false;
+      if (hasTotalRunTimeMs()) {
+        if (getTotalRunTimeMs()
+            != other.getTotalRunTimeMs()) return false;
+      }
+      if (hasDiscoveryRunTimeMs() != other.hasDiscoveryRunTimeMs()) return false;
+      if (hasDiscoveryRunTimeMs()) {
+        if (getDiscoveryRunTimeMs()
+            != other.getDiscoveryRunTimeMs()) return false;
+      }
+      if (hasRenderingRunTimeMs() != other.hasRenderingRunTimeMs()) return false;
+      if (hasRenderingRunTimeMs()) {
+        if (getRenderingRunTimeMs()
+            != other.getRenderingRunTimeMs()) return false;
+      }
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasScreenshotCount()) {
+        hash = (37 * hash) + SCREENSHOT_COUNT_FIELD_NUMBER;
+        hash = (53 * hash) + getScreenshotCount();
+      }
+      if (hasTotalRunTimeMs()) {
+        hash = (37 * hash) + TOTAL_RUN_TIME_MS_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getTotalRunTimeMs());
+      }
+      if (hasDiscoveryRunTimeMs()) {
+        hash = (37 * hash) + DISCOVERY_RUN_TIME_MS_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getDiscoveryRunTimeMs());
+      }
+      if (hasRenderingRunTimeMs()) {
+        hash = (37 * hash) + RENDERING_RUN_TIME_MS_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getRenderingRunTimeMs());
+      }
+      hash = (29 * hash) + getUnknownFields().hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code android_studio.TestRun.PreviewScreenshotRun}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:android_studio.TestRun.PreviewScreenshotRun)
+        com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRunOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TestRun_PreviewScreenshotRun_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TestRun_PreviewScreenshotRun_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun.class, com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun.Builder.class);
+      }
+
+      // Construct using com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun.newBuilder()
+      private Builder() {
+
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        screenshotCount_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        totalRunTimeMs_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        discoveryRunTimeMs_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        renderingRunTimeMs_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TestRun_PreviewScreenshotRun_descriptor;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun getDefaultInstanceForType() {
+        return com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun build() {
+        com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun buildPartial() {
+        com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun result = new com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.screenshotCount_ = screenshotCount_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.totalRunTimeMs_ = totalRunTimeMs_;
+          to_bitField0_ |= 0x00000002;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.discoveryRunTimeMs_ = discoveryRunTimeMs_;
+          to_bitField0_ |= 0x00000004;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.renderingRunTimeMs_ = renderingRunTimeMs_;
+          to_bitField0_ |= 0x00000008;
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun) {
+          return mergeFrom((com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun other) {
+        if (other == com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun.getDefaultInstance()) return this;
+        if (other.hasScreenshotCount()) {
+          setScreenshotCount(other.getScreenshotCount());
+        }
+        if (other.hasTotalRunTimeMs()) {
+          setTotalRunTimeMs(other.getTotalRunTimeMs());
+        }
+        if (other.hasDiscoveryRunTimeMs()) {
+          setDiscoveryRunTimeMs(other.getDiscoveryRunTimeMs());
+        }
+        if (other.hasRenderingRunTimeMs()) {
+          setRenderingRunTimeMs(other.getRenderingRunTimeMs());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 8: {
+                screenshotCount_ = input.readInt32();
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 8
+              case 16: {
+                totalRunTimeMs_ = input.readInt64();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 16
+              case 24: {
+                discoveryRunTimeMs_ = input.readInt64();
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 24
+              case 32: {
+                renderingRunTimeMs_ = input.readInt64();
+                bitField0_ |= 0x00000008;
+                break;
+              } // case 32
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.unwrapIOException();
+        } finally {
+          onChanged();
+        } // finally
+        return this;
+      }
+      private int bitField0_;
+
+      private int screenshotCount_ ;
+      /**
+       * <pre>
+       * The number of screenshot that was attempted to render.
+       * This value and TestRun.number_of_tests_executed might be
+       * different because this value only counts attempted screenshot
+       * renderings whereas TestRun.number_of_tests_executed counts
+       * skipped test cases.
+       * </pre>
+       *
+       * <code>optional int32 screenshot_count = 1;</code>
+       * @return Whether the screenshotCount field is set.
+       */
+      @java.lang.Override
+      public boolean hasScreenshotCount() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <pre>
+       * The number of screenshot that was attempted to render.
+       * This value and TestRun.number_of_tests_executed might be
+       * different because this value only counts attempted screenshot
+       * renderings whereas TestRun.number_of_tests_executed counts
+       * skipped test cases.
+       * </pre>
+       *
+       * <code>optional int32 screenshot_count = 1;</code>
+       * @return The screenshotCount.
+       */
+      @java.lang.Override
+      public int getScreenshotCount() {
+        return screenshotCount_;
+      }
+      /**
+       * <pre>
+       * The number of screenshot that was attempted to render.
+       * This value and TestRun.number_of_tests_executed might be
+       * different because this value only counts attempted screenshot
+       * renderings whereas TestRun.number_of_tests_executed counts
+       * skipped test cases.
+       * </pre>
+       *
+       * <code>optional int32 screenshot_count = 1;</code>
+       * @param value The screenshotCount to set.
+       * @return This builder for chaining.
+       */
+      public Builder setScreenshotCount(int value) {
+        bitField0_ |= 0x00000001;
+        screenshotCount_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The number of screenshot that was attempted to render.
+       * This value and TestRun.number_of_tests_executed might be
+       * different because this value only counts attempted screenshot
+       * renderings whereas TestRun.number_of_tests_executed counts
+       * skipped test cases.
+       * </pre>
+       *
+       * <code>optional int32 screenshot_count = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearScreenshotCount() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        screenshotCount_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private long totalRunTimeMs_ ;
+      /**
+       * <pre>
+       * Total run time including preview discovery and rendering.
+       * </pre>
+       *
+       * <code>optional int64 total_run_time_ms = 2;</code>
+       * @return Whether the totalRunTimeMs field is set.
+       */
+      @java.lang.Override
+      public boolean hasTotalRunTimeMs() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <pre>
+       * Total run time including preview discovery and rendering.
+       * </pre>
+       *
+       * <code>optional int64 total_run_time_ms = 2;</code>
+       * @return The totalRunTimeMs.
+       */
+      @java.lang.Override
+      public long getTotalRunTimeMs() {
+        return totalRunTimeMs_;
+      }
+      /**
+       * <pre>
+       * Total run time including preview discovery and rendering.
+       * </pre>
+       *
+       * <code>optional int64 total_run_time_ms = 2;</code>
+       * @param value The totalRunTimeMs to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTotalRunTimeMs(long value) {
+        bitField0_ |= 0x00000002;
+        totalRunTimeMs_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Total run time including preview discovery and rendering.
+       * </pre>
+       *
+       * <code>optional int64 total_run_time_ms = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTotalRunTimeMs() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        totalRunTimeMs_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long discoveryRunTimeMs_ ;
+      /**
+       * <pre>
+       * Run time for preview discovery.
+       * </pre>
+       *
+       * <code>optional int64 discovery_run_time_ms = 3;</code>
+       * @return Whether the discoveryRunTimeMs field is set.
+       */
+      @java.lang.Override
+      public boolean hasDiscoveryRunTimeMs() {
+        return ((bitField0_ & 0x00000004) != 0);
+      }
+      /**
+       * <pre>
+       * Run time for preview discovery.
+       * </pre>
+       *
+       * <code>optional int64 discovery_run_time_ms = 3;</code>
+       * @return The discoveryRunTimeMs.
+       */
+      @java.lang.Override
+      public long getDiscoveryRunTimeMs() {
+        return discoveryRunTimeMs_;
+      }
+      /**
+       * <pre>
+       * Run time for preview discovery.
+       * </pre>
+       *
+       * <code>optional int64 discovery_run_time_ms = 3;</code>
+       * @param value The discoveryRunTimeMs to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDiscoveryRunTimeMs(long value) {
+        bitField0_ |= 0x00000004;
+        discoveryRunTimeMs_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Run time for preview discovery.
+       * </pre>
+       *
+       * <code>optional int64 discovery_run_time_ms = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDiscoveryRunTimeMs() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        discoveryRunTimeMs_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long renderingRunTimeMs_ ;
+      /**
+       * <pre>
+       * Run time for rendering.
+       * </pre>
+       *
+       * <code>optional int64 rendering_run_time_ms = 4;</code>
+       * @return Whether the renderingRunTimeMs field is set.
+       */
+      @java.lang.Override
+      public boolean hasRenderingRunTimeMs() {
+        return ((bitField0_ & 0x00000008) != 0);
+      }
+      /**
+       * <pre>
+       * Run time for rendering.
+       * </pre>
+       *
+       * <code>optional int64 rendering_run_time_ms = 4;</code>
+       * @return The renderingRunTimeMs.
+       */
+      @java.lang.Override
+      public long getRenderingRunTimeMs() {
+        return renderingRunTimeMs_;
+      }
+      /**
+       * <pre>
+       * Run time for rendering.
+       * </pre>
+       *
+       * <code>optional int64 rendering_run_time_ms = 4;</code>
+       * @param value The renderingRunTimeMs to set.
+       * @return This builder for chaining.
+       */
+      public Builder setRenderingRunTimeMs(long value) {
+        bitField0_ |= 0x00000008;
+        renderingRunTimeMs_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Run time for rendering.
+       * </pre>
+       *
+       * <code>optional int64 rendering_run_time_ms = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearRenderingRunTimeMs() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        renderingRunTimeMs_ = 0L;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:android_studio.TestRun.PreviewScreenshotRun)
+    }
+
+    // @@protoc_insertion_point(class_scope:android_studio.TestRun.PreviewScreenshotRun)
+    private static final com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun();
+    }
+
+    public static com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<PreviewScreenshotRun>
+        PARSER = new com.google.protobuf.AbstractParser<PreviewScreenshotRun>() {
+      @java.lang.Override
+      public PreviewScreenshotRun parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
+      }
+    };
+
+    public static com.google.protobuf.Parser<PreviewScreenshotRun> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<PreviewScreenshotRun> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -1532,6 +2365,44 @@ private static final long serialVersionUID = 0L;
     return automaticSnapshotOnFailure_ == null ? com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.getDefaultInstance() : automaticSnapshotOnFailure_;
   }
 
+  public static final int PREVIEW_SCREENSHOT_RUN_FIELD_NUMBER = 10;
+  private com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun previewScreenshotRun_;
+  /**
+   * <pre>
+   * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
+   * </pre>
+   *
+   * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+   * @return Whether the previewScreenshotRun field is set.
+   */
+  @java.lang.Override
+  public boolean hasPreviewScreenshotRun() {
+    return ((bitField0_ & 0x00000200) != 0);
+  }
+  /**
+   * <pre>
+   * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
+   * </pre>
+   *
+   * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+   * @return The previewScreenshotRun.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun getPreviewScreenshotRun() {
+    return previewScreenshotRun_ == null ? com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun.getDefaultInstance() : previewScreenshotRun_;
+  }
+  /**
+   * <pre>
+   * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
+   * </pre>
+   *
+   * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRunOrBuilder getPreviewScreenshotRunOrBuilder() {
+    return previewScreenshotRun_ == null ? com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun.getDefaultInstance() : previewScreenshotRun_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -1573,7 +2444,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000100) != 0)) {
       output.writeMessage(9, getAutomaticSnapshotOnFailure());
     }
-    unknownFields.writeTo(output);
+    if (((bitField0_ & 0x00000200) != 0)) {
+      output.writeMessage(10, getPreviewScreenshotRun());
+    }
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -1617,7 +2491,11 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(9, getAutomaticSnapshotOnFailure());
     }
-    size += unknownFields.getSerializedSize();
+    if (((bitField0_ & 0x00000200) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(10, getPreviewScreenshotRun());
+    }
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -1674,7 +2552,12 @@ private static final long serialVersionUID = 0L;
       if (!getAutomaticSnapshotOnFailure()
           .equals(other.getAutomaticSnapshotOnFailure())) return false;
     }
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (hasPreviewScreenshotRun() != other.hasPreviewScreenshotRun()) return false;
+    if (hasPreviewScreenshotRun()) {
+      if (!getPreviewScreenshotRun()
+          .equals(other.getPreviewScreenshotRun())) return false;
+    }
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -1723,7 +2606,11 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + AUTOMATIC_SNAPSHOT_ON_FAILURE_FIELD_NUMBER;
       hash = (53 * hash) + getAutomaticSnapshotOnFailure().hashCode();
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    if (hasPreviewScreenshotRun()) {
+      hash = (37 * hash) + PREVIEW_SCREENSHOT_RUN_FIELD_NUMBER;
+      hash = (53 * hash) + getPreviewScreenshotRun().hashCode();
+    }
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -1857,6 +2744,7 @@ private static final long serialVersionUID = 0L;
               .alwaysUseFieldBuilders) {
         getTestLibrariesFieldBuilder();
         getAutomaticSnapshotOnFailureFieldBuilder();
+        getPreviewScreenshotRunFieldBuilder();
       }
     }
     @java.lang.Override
@@ -1888,6 +2776,12 @@ private static final long serialVersionUID = 0L;
         automaticSnapshotOnFailureBuilder_.clear();
       }
       bitField0_ = (bitField0_ & ~0x00000100);
+      if (previewScreenshotRunBuilder_ == null) {
+        previewScreenshotRun_ = null;
+      } else {
+        previewScreenshotRunBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000200);
       return this;
     }
 
@@ -1959,6 +2853,14 @@ private static final long serialVersionUID = 0L;
           result.automaticSnapshotOnFailure_ = automaticSnapshotOnFailureBuilder_.build();
         }
         to_bitField0_ |= 0x00000100;
+      }
+      if (((from_bitField0_ & 0x00000200) != 0)) {
+        if (previewScreenshotRunBuilder_ == null) {
+          result.previewScreenshotRun_ = previewScreenshotRun_;
+        } else {
+          result.previewScreenshotRun_ = previewScreenshotRunBuilder_.build();
+        }
+        to_bitField0_ |= 0x00000200;
       }
       result.bitField0_ = to_bitField0_;
       onBuilt();
@@ -2038,7 +2940,10 @@ private static final long serialVersionUID = 0L;
       if (other.hasAutomaticSnapshotOnFailure()) {
         mergeAutomaticSnapshotOnFailure(other.getAutomaticSnapshotOnFailure());
       }
-      this.mergeUnknownFields(other.unknownFields);
+      if (other.hasPreviewScreenshotRun()) {
+        mergePreviewScreenshotRun(other.getPreviewScreenshotRun());
+      }
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -2053,17 +2958,107 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.google.wireless.android.sdk.stats.TestRun parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.TestRun.TestInvocationType tmpValue =
+                  com.google.wireless.android.sdk.stats.TestRun.TestInvocationType.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(1, tmpRaw);
+              } else {
+                testInvocationType_ = tmpRaw;
+                bitField0_ |= 0x00000001;
+              }
+              break;
+            } // case 8
+            case 16: {
+              numberOfTestsExecuted_ = input.readInt32();
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 16
+            case 24: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.TestRun.TestKind tmpValue =
+                  com.google.wireless.android.sdk.stats.TestRun.TestKind.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(3, tmpRaw);
+              } else {
+                testKind_ = tmpRaw;
+                bitField0_ |= 0x00000004;
+              }
+              break;
+            } // case 24
+            case 32: {
+              crashed_ = input.readBool();
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 32
+            case 42: {
+              gradleVersion_ = input.readBytes();
+              bitField0_ |= 0x00000010;
+              break;
+            } // case 42
+            case 48: {
+              codeCoverageEnabled_ = input.readBool();
+              bitField0_ |= 0x00000020;
+              break;
+            } // case 48
+            case 58: {
+              input.readMessage(
+                  getTestLibrariesFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000040;
+              break;
+            } // case 58
+            case 64: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.TestRun.TestExecution tmpValue =
+                  com.google.wireless.android.sdk.stats.TestRun.TestExecution.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(8, tmpRaw);
+              } else {
+                testExecution_ = tmpRaw;
+                bitField0_ |= 0x00000080;
+              }
+              break;
+            } // case 64
+            case 74: {
+              input.readMessage(
+                  getAutomaticSnapshotOnFailureFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000100;
+              break;
+            } // case 74
+            case 82: {
+              input.readMessage(
+                  getPreviewScreenshotRunFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000200;
+              break;
+            } // case 82
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.google.wireless.android.sdk.stats.TestRun) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
     private int bitField0_;
@@ -2851,6 +3846,162 @@ private static final long serialVersionUID = 0L;
       }
       return automaticSnapshotOnFailureBuilder_;
     }
+
+    private com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun previewScreenshotRun_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun, com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun.Builder, com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRunOrBuilder> previewScreenshotRunBuilder_;
+    /**
+     * <pre>
+     * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
+     * </pre>
+     *
+     * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+     * @return Whether the previewScreenshotRun field is set.
+     */
+    public boolean hasPreviewScreenshotRun() {
+      return ((bitField0_ & 0x00000200) != 0);
+    }
+    /**
+     * <pre>
+     * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
+     * </pre>
+     *
+     * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+     * @return The previewScreenshotRun.
+     */
+    public com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun getPreviewScreenshotRun() {
+      if (previewScreenshotRunBuilder_ == null) {
+        return previewScreenshotRun_ == null ? com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun.getDefaultInstance() : previewScreenshotRun_;
+      } else {
+        return previewScreenshotRunBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
+     * </pre>
+     *
+     * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+     */
+    public Builder setPreviewScreenshotRun(com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun value) {
+      if (previewScreenshotRunBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        previewScreenshotRun_ = value;
+        onChanged();
+      } else {
+        previewScreenshotRunBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00000200;
+      return this;
+    }
+    /**
+     * <pre>
+     * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
+     * </pre>
+     *
+     * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+     */
+    public Builder setPreviewScreenshotRun(
+        com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun.Builder builderForValue) {
+      if (previewScreenshotRunBuilder_ == null) {
+        previewScreenshotRun_ = builderForValue.build();
+        onChanged();
+      } else {
+        previewScreenshotRunBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00000200;
+      return this;
+    }
+    /**
+     * <pre>
+     * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
+     * </pre>
+     *
+     * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+     */
+    public Builder mergePreviewScreenshotRun(com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun value) {
+      if (previewScreenshotRunBuilder_ == null) {
+        if (((bitField0_ & 0x00000200) != 0) &&
+            previewScreenshotRun_ != null &&
+            previewScreenshotRun_ != com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun.getDefaultInstance()) {
+          previewScreenshotRun_ =
+            com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun.newBuilder(previewScreenshotRun_).mergeFrom(value).buildPartial();
+        } else {
+          previewScreenshotRun_ = value;
+        }
+        onChanged();
+      } else {
+        previewScreenshotRunBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00000200;
+      return this;
+    }
+    /**
+     * <pre>
+     * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
+     * </pre>
+     *
+     * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+     */
+    public Builder clearPreviewScreenshotRun() {
+      if (previewScreenshotRunBuilder_ == null) {
+        previewScreenshotRun_ = null;
+        onChanged();
+      } else {
+        previewScreenshotRunBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000200);
+      return this;
+    }
+    /**
+     * <pre>
+     * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
+     * </pre>
+     *
+     * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+     */
+    public com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun.Builder getPreviewScreenshotRunBuilder() {
+      bitField0_ |= 0x00000200;
+      onChanged();
+      return getPreviewScreenshotRunFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
+     * </pre>
+     *
+     * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+     */
+    public com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRunOrBuilder getPreviewScreenshotRunOrBuilder() {
+      if (previewScreenshotRunBuilder_ != null) {
+        return previewScreenshotRunBuilder_.getMessageOrBuilder();
+      } else {
+        return previewScreenshotRun_ == null ?
+            com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun.getDefaultInstance() : previewScreenshotRun_;
+      }
+    }
+    /**
+     * <pre>
+     * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
+     * </pre>
+     *
+     * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun, com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun.Builder, com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRunOrBuilder> 
+        getPreviewScreenshotRunFieldBuilder() {
+      if (previewScreenshotRunBuilder_ == null) {
+        previewScreenshotRunBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun, com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun.Builder, com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRunOrBuilder>(
+                getPreviewScreenshotRun(),
+                getParentForChildren(),
+                isClean());
+        previewScreenshotRun_ = null;
+      }
+      return previewScreenshotRunBuilder_;
+    }
     @java.lang.Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -2884,7 +4035,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new TestRun(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

@@ -20,8 +20,9 @@ import com.android.build.api.artifact.Artifact
 import org.gradle.api.file.RegularFile
 
 sealed class InternalScopedArtifact: Artifact.Single<RegularFile>(FILE, Category.INTERMEDIATES) {
-
-    object PRE_JACOCO_TRANSFORMED_CLASSES: InternalScopedArtifact()
-
-    object JACOCO_TRANSFORMED_CLASSES: InternalScopedArtifact()
+    /**
+     * Represents classes after all transformations (including user and Jacoco) to be used by R8
+     * and dexing tasks.
+     */
+    object FINAL_TRANSFORMED_CLASSES: InternalScopedArtifact()
 }

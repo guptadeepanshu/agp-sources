@@ -125,6 +125,7 @@ public interface AndroidLibraryDataOrBuilder extends
   /**
    * <pre>
    * The android resource folder.
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -135,6 +136,7 @@ public interface AndroidLibraryDataOrBuilder extends
   /**
    * <pre>
    * The android resource folder.
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -145,6 +147,7 @@ public interface AndroidLibraryDataOrBuilder extends
   /**
    * <pre>
    * The android resource folder.
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -182,6 +185,7 @@ public interface AndroidLibraryDataOrBuilder extends
   /**
    * <pre>
    * The assets folder.
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -192,6 +196,7 @@ public interface AndroidLibraryDataOrBuilder extends
   /**
    * <pre>
    * The assets folder.
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -202,6 +207,7 @@ public interface AndroidLibraryDataOrBuilder extends
   /**
    * <pre>
    * The assets folder.
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -212,6 +218,7 @@ public interface AndroidLibraryDataOrBuilder extends
   /**
    * <pre>
    * The jni libraries folder.
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -222,6 +229,7 @@ public interface AndroidLibraryDataOrBuilder extends
   /**
    * <pre>
    * The jni libraries folder.
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -232,6 +240,7 @@ public interface AndroidLibraryDataOrBuilder extends
   /**
    * <pre>
    * The jni libraries folder.
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -242,6 +251,7 @@ public interface AndroidLibraryDataOrBuilder extends
   /**
    * <pre>
    * The AIDL import folder
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -252,6 +262,7 @@ public interface AndroidLibraryDataOrBuilder extends
   /**
    * <pre>
    * The AIDL import folder
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -262,6 +273,7 @@ public interface AndroidLibraryDataOrBuilder extends
   /**
    * <pre>
    * The AIDL import folder
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -272,6 +284,7 @@ public interface AndroidLibraryDataOrBuilder extends
   /**
    * <pre>
    * The RenderScript import folder
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -282,6 +295,7 @@ public interface AndroidLibraryDataOrBuilder extends
   /**
    * <pre>
    * The RenderScript import folder
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -292,6 +306,7 @@ public interface AndroidLibraryDataOrBuilder extends
   /**
    * <pre>
    * The RenderScript import folder
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -302,6 +317,7 @@ public interface AndroidLibraryDataOrBuilder extends
   /**
    * <pre>
    * The proguard file rule.
+   *
    * The file may not exist.
    * </pre>
    *
@@ -312,6 +328,7 @@ public interface AndroidLibraryDataOrBuilder extends
   /**
    * <pre>
    * The proguard file rule.
+   *
    * The file may not exist.
    * </pre>
    *
@@ -322,6 +339,7 @@ public interface AndroidLibraryDataOrBuilder extends
   /**
    * <pre>
    * The proguard file rule.
+   *
    * The file may not exist.
    * </pre>
    *
@@ -332,6 +350,7 @@ public interface AndroidLibraryDataOrBuilder extends
   /**
    * <pre>
    * the zip file with external annotations
+   *
    * The file may not exist.
    * </pre>
    *
@@ -342,6 +361,7 @@ public interface AndroidLibraryDataOrBuilder extends
   /**
    * <pre>
    * the zip file with external annotations
+   *
    * The file may not exist.
    * </pre>
    *
@@ -352,6 +372,7 @@ public interface AndroidLibraryDataOrBuilder extends
   /**
    * <pre>
    * the zip file with external annotations
+   *
    * The file may not exist.
    * </pre>
    *
@@ -362,6 +383,7 @@ public interface AndroidLibraryDataOrBuilder extends
   /**
    * <pre>
    * The file listing the public resources
+   *
    * The file may not exist.
    * </pre>
    *
@@ -372,6 +394,7 @@ public interface AndroidLibraryDataOrBuilder extends
   /**
    * <pre>
    * The file listing the public resources
+   *
    * The file may not exist.
    * </pre>
    *
@@ -382,6 +405,7 @@ public interface AndroidLibraryDataOrBuilder extends
   /**
    * <pre>
    * The file listing the public resources
+   *
    * The file may not exist.
    * </pre>
    *
@@ -392,6 +416,7 @@ public interface AndroidLibraryDataOrBuilder extends
   /**
    * <pre>
    * The symbol list file
+   *
    * The file may not exist.
    * </pre>
    *
@@ -402,6 +427,7 @@ public interface AndroidLibraryDataOrBuilder extends
   /**
    * <pre>
    * The symbol list file
+   *
    * The file may not exist.
    * </pre>
    *
@@ -412,6 +438,7 @@ public interface AndroidLibraryDataOrBuilder extends
   /**
    * <pre>
    * The symbol list file
+   *
    * The file may not exist.
    * </pre>
    *

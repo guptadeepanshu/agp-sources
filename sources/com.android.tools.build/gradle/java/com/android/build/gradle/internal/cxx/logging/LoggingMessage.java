@@ -34,77 +34,6 @@ private static final long serialVersionUID = 0L;
     return new LoggingMessage();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
-  private LoggingMessage(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 8: {
-            int rawValue = input.readEnum();
-
-            level_ = rawValue;
-            break;
-          }
-          case 18: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            message_ = s;
-            break;
-          }
-          case 26: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            file_ = s;
-            break;
-          }
-          case 34: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            tag_ = s;
-            break;
-          }
-          case 40: {
-
-            diagnosticCode_ = input.readInt32();
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.android.build.gradle.internal.cxx.logging.CxxLogging.internal_static_LoggingMessage_descriptor;
@@ -254,7 +183,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LEVEL_FIELD_NUMBER = 1;
-  private int level_;
+  private int level_ = 0;
   /**
    * <code>.LoggingMessage.LoggingLevel level = 1;</code>
    * @return The enum numeric value on the wire for level.
@@ -267,13 +196,13 @@ private static final long serialVersionUID = 0L;
    * @return The level.
    */
   @java.lang.Override public com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel getLevel() {
-    @SuppressWarnings("deprecation")
-    com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel result = com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.valueOf(level_);
+    com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel result = com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.forNumber(level_);
     return result == null ? com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.UNRECOGNIZED : result;
   }
 
   public static final int MESSAGE_FIELD_NUMBER = 2;
-  private volatile java.lang.Object message_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object message_ = "";
   /**
    * <code>string message = 2;</code>
    * @return The message.
@@ -311,7 +240,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FILE_FIELD_NUMBER = 3;
-  private volatile java.lang.Object file_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object file_ = "";
   /**
    * <code>string file = 3;</code>
    * @return The file.
@@ -349,7 +279,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TAG_FIELD_NUMBER = 4;
-  private volatile java.lang.Object tag_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object tag_ = "";
   /**
    * <code>string tag = 4;</code>
    * @return The tag.
@@ -387,7 +318,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DIAGNOSTIC_CODE_FIELD_NUMBER = 5;
-  private int diagnosticCode_;
+  private int diagnosticCode_ = 0;
   /**
    * <code>int32 diagnostic_code = 5;</code>
    * @return The diagnosticCode.
@@ -426,7 +357,7 @@ private static final long serialVersionUID = 0L;
     if (diagnosticCode_ != 0) {
       output.writeInt32(5, diagnosticCode_);
     }
-    unknownFields.writeTo(output);
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -452,7 +383,7 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(5, diagnosticCode_);
     }
-    size += unknownFields.getSerializedSize();
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -476,7 +407,7 @@ private static final long serialVersionUID = 0L;
         .equals(other.getTag())) return false;
     if (getDiagnosticCode()
         != other.getDiagnosticCode()) return false;
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -497,7 +428,7 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getTag().hashCode();
     hash = (37 * hash) + DIAGNOSTIC_CODE_FIELD_NUMBER;
     hash = (53 * hash) + getDiagnosticCode();
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -619,32 +550,23 @@ private static final long serialVersionUID = 0L;
 
     // Construct using com.android.build.gradle.internal.cxx.logging.LoggingMessage.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessageV3
-              .alwaysUseFieldBuilders) {
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       level_ = 0;
-
       message_ = "";
-
       file_ = "";
-
       tag_ = "";
-
       diagnosticCode_ = 0;
-
       return this;
     }
 
@@ -671,47 +593,30 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.android.build.gradle.internal.cxx.logging.LoggingMessage buildPartial() {
       com.android.build.gradle.internal.cxx.logging.LoggingMessage result = new com.android.build.gradle.internal.cxx.logging.LoggingMessage(this);
-      result.level_ = level_;
-      result.message_ = message_;
-      result.file_ = file_;
-      result.tag_ = tag_;
-      result.diagnosticCode_ = diagnosticCode_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.android.build.gradle.internal.cxx.logging.LoggingMessage result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.level_ = level_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.message_ = message_;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.file_ = file_;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.tag_ = tag_;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.diagnosticCode_ = diagnosticCode_;
+      }
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.android.build.gradle.internal.cxx.logging.LoggingMessage) {
@@ -729,20 +634,23 @@ private static final long serialVersionUID = 0L;
       }
       if (!other.getMessage().isEmpty()) {
         message_ = other.message_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (!other.getFile().isEmpty()) {
         file_ = other.file_;
+        bitField0_ |= 0x00000004;
         onChanged();
       }
       if (!other.getTag().isEmpty()) {
         tag_ = other.tag_;
+        bitField0_ |= 0x00000008;
         onChanged();
       }
       if (other.getDiagnosticCode() != 0) {
         setDiagnosticCode(other.getDiagnosticCode());
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -757,19 +665,58 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.android.build.gradle.internal.cxx.logging.LoggingMessage parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              level_ = input.readEnum();
+              bitField0_ |= 0x00000001;
+              break;
+            } // case 8
+            case 18: {
+              message_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 18
+            case 26: {
+              file_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 26
+            case 34: {
+              tag_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 34
+            case 40: {
+              diagnosticCode_ = input.readInt32();
+              bitField0_ |= 0x00000010;
+              break;
+            } // case 40
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.android.build.gradle.internal.cxx.logging.LoggingMessage) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
+    private int bitField0_;
 
     private int level_ = 0;
     /**
@@ -785,8 +732,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setLevelValue(int value) {
-      
       level_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -796,8 +743,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel getLevel() {
-      @SuppressWarnings("deprecation")
-      com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel result = com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.valueOf(level_);
+      com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel result = com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.forNumber(level_);
       return result == null ? com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.UNRECOGNIZED : result;
     }
     /**
@@ -809,7 +755,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
         throw new NullPointerException();
       }
-      
+      bitField0_ |= 0x00000001;
       level_ = value.getNumber();
       onChanged();
       return this;
@@ -819,7 +765,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearLevel() {
-      
+      bitField0_ = (bitField0_ & ~0x00000001);
       level_ = 0;
       onChanged();
       return this;
@@ -866,11 +812,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setMessage(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       message_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -879,8 +823,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearMessage() {
-      
       message_ = getDefaultInstance().getMessage();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -891,12 +835,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setMessageBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       message_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -942,11 +884,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setFile(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       file_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -955,8 +895,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearFile() {
-      
       file_ = getDefaultInstance().getFile();
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
@@ -967,12 +907,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setFileBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       file_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1018,11 +956,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setTag(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       tag_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1031,8 +967,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearTag() {
-      
       tag_ = getDefaultInstance().getTag();
+      bitField0_ = (bitField0_ & ~0x00000008);
       onChanged();
       return this;
     }
@@ -1043,12 +979,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setTagBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       tag_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1068,8 +1002,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDiagnosticCode(int value) {
-      
+
       diagnosticCode_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1078,7 +1013,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearDiagnosticCode() {
-      
+      bitField0_ = (bitField0_ & ~0x00000010);
       diagnosticCode_ = 0;
       onChanged();
       return this;
@@ -1116,7 +1051,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new LoggingMessage(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

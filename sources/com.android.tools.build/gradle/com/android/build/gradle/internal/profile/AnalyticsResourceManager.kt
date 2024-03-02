@@ -16,7 +16,6 @@
 
 package com.android.build.gradle.internal.profile
 
-import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.projectIsolationRequested
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.VariantAwareTask
@@ -61,7 +60,6 @@ import org.gradle.tooling.events.task.TaskOperationResult
 import org.gradle.tooling.events.task.TaskSkippedResult
 import org.gradle.tooling.events.task.TaskSuccessResult
 import java.io.File
-import java.io.IOException
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.io.Serializable
@@ -441,13 +439,7 @@ class AnalyticsResourceManager constructor(
             .setGcCount(endMemorySample.gcCount - initialMemorySample.gcCount)
             .setGcTime(endMemorySample.gcTimeMs - initialMemorySample.gcTimeMs)
 
-        val anonymizedProjectId =
-            try {
-                Anonymizer.anonymizeUtf8(
-                    LoggerWrapper.getLogger(AnalyticsResourceManager::class.java), rootProjectPath)
-            } catch (e: IOException) {
-                "*ANONYMIZATION_ERROR*"
-            }
+        val anonymizedProjectId = Anonymizer.anonymize(rootProjectPath) ?: "*ANONYMIZATION_ERROR*"
 
         applicationIds?.let {
             profileBuilder.addAllRawProjectId(it.get().sorted())

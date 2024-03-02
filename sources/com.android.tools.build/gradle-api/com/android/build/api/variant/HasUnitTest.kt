@@ -17,7 +17,7 @@
 package com.android.build.api.variant
 
 /**
- * Variants that optionally have unit test component
+ * [Variant] that optionally have [UnitTest] component.
  */
 interface HasUnitTest {
     /**

@@ -24,6 +24,7 @@ import com.android.ide.common.util.PathString
 import com.android.ide.common.util.toPathString
 import com.android.resources.ResourceType
 import com.android.utils.SdkUtils
+import java.awt.Color
 import java.io.File
 import java.util.Collections
 import java.util.IdentityHashMap
@@ -178,4 +179,64 @@ fun stripPrefixFromId(id: String): String {
     id.startsWith(SdkConstants.ID_PREFIX) -> id.substring(SdkConstants.ID_PREFIX.length)
     else -> id
   }
+}
+
+/**
+ * Converts a color to hex-string representation: #AARRGGBB, including alpha channel.
+ * If alpha is FF then the output is #RRGGBB with no alpha component.
+ */
+fun colorToString(color: Color): String {
+  var longColor = (color.red shl 16 or (color.green shl 8) or color.blue).toLong()
+  if (color.alpha != 0xFF) {
+    longColor = longColor or (color.alpha.toLong() shl 24)
+    return String.format("#%08X", longColor)
+  }
+  return String.format("#%06X", longColor)
+}
+
+/**
+ * Converts a color to Java/Kotlin hex-string representation: 0xAARRGGBB, including alpha channel.
+ *
+ * The alpha channel is always included for this format.
+ */
+fun colorToStringWithAlpha(color: Color): String {
+  return String.format("0x%08X", (color.red shl 16 or (color.green shl 8) or color.blue).toLong() or (color.alpha.toLong() shl 24))
+}
+
+/**
+ * Converts the supported color formats (#rgb, #argb, #rrggbb, #aarrggbb to a Color
+ * http://developer.android.com/guide/topics/resources/more-resources.html#Color
+ */
+fun parseColor(s: String?): Color? {
+  val trimmed = s?.trim() ?: return null
+  if (trimmed.isEmpty()) {
+    return null
+  }
+
+  if (trimmed[0] == '#') {
+    var longColor = trimmed.substring(1).toLongOrNull(16) ?: return null
+
+    if (trimmed.length == 4 || trimmed.length == 5) {
+      val a = if (trimmed.length == 4) 0xff else extend(longColor and 0xf000 shr 12)
+      val r = extend(longColor and 0xf00 shr 8)
+      val g = extend(longColor and 0x0f0 shr 4)
+      val b = extend(longColor and 0x00f)
+      longColor = a shl 24 or (r shl 16) or (g shl 8) or b
+      return Color(longColor.toInt(), true)
+    }
+
+    if (trimmed.length == 7) {
+      longColor = longColor or -0x1000000
+    }
+    else if (trimmed.length != 9) {
+      return null
+    }
+    return Color(longColor.toInt(), true)
+  }
+
+  return null
+}
+
+private fun extend(nibble: Long): Long {
+  return nibble or (nibble shl 4)
 }

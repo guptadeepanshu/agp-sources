@@ -32,6 +32,7 @@ import com.google.common.util.concurrent.MoreExecutors
 import java.nio.file.Path
 import java.util.logging.Level
 import java.util.logging.Logger
+import kotlin.io.path.exists
 
 // Starting index to make sure output dex files' names differ from classes.dex
 internal const val START_CLASSES_DEX_INDEX = 1000
@@ -52,7 +53,9 @@ fun runL8(
     minSdkVersion: Int,
     keepRules: KeepRulesConfig,
     isDebuggable: Boolean,
-    outputMode: OutputMode
+    outputMode: OutputMode,
+    inputArtProfile: Path? = null,
+    outputArtProfile: Path? = null
 ) {
     val logger: Logger = Logger.getLogger("L8")
     if (logger.isLoggable(Level.FINE)) {
@@ -68,7 +71,6 @@ fun runL8(
         logger.fine("Output mode: $outputMode")
     }
     FileUtils.cleanOutputDir(output.toFile())
-
 
     val programConsumer =
             when (outputMode) {
@@ -98,9 +100,15 @@ fun runL8(
             }
 
     val l8CommandBuilder = L8Command.builder()
-        .addProgramFiles(inputClasses)
-        .addSpecialLibraryConfiguration(libConfiguration)
-        .addLibraryFiles(libraries)
+            .addProgramFiles(inputClasses)
+            .addSpecialLibraryConfiguration(libConfiguration)
+            .addLibraryFiles(libraries)
+
+    if (inputArtProfile != null && inputArtProfile.exists() && outputArtProfile != null) {
+        wireArtProfileRewriting(l8CommandBuilder, inputArtProfile, outputArtProfile)
+    }
+
+    l8CommandBuilder
         .setMinApiLevel(minSdkVersion)
         .setMode(if (isDebuggable) CompilationMode.DEBUG else CompilationMode.RELEASE)
         .setProgramConsumer(programConsumer)

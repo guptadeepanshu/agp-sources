@@ -64,6 +64,12 @@ public class TestReport {
         return model;
     }
 
+    public CompositeTestResults generateScreenshotTestReport(boolean isRecordGolden) {
+        AllTestResults model = loadModel();
+        generateFilesForScreenshotTest(model, isRecordGolden);
+        return model;
+    }
+
     private AllTestResults loadModel() {
         AllTestResults model = new AllTestResults();
         for (File resultDir : resultDirs) {
@@ -111,11 +117,48 @@ public class TestReport {
                 Element testCase = (Element) testCases.item(i);
                 String className = testCase.getAttribute("classname");
                 String testName = testCase.getAttribute("name");
-                BigDecimal duration = parse(testCase.getAttribute("time"));
+                String timeString = testCase.getAttribute("time");
+                BigDecimal duration = !timeString.isBlank()? parse(timeString) : BigDecimal.valueOf(0);
                 duration = duration.multiply(BigDecimal.valueOf(1000));
                 NodeList failures = testCase.getElementsByTagName("failure");
-                TestResult testResult = model.addTest(className, testName, duration.longValue(),
+
+                // block to parse screenshot test images/texts
+                ScreenshotTestImages ssImages = null;
+                NodeList images = testCase.getElementsByTagName("images");
+                for (int j = 0; j < images.getLength(); j++) {
+                    Element image = (Element) images.item(j);
+                    Image goldenImage = null, actualImage = null, diffImage = null;
+                    NodeList goldens = image.getElementsByTagName("golden");
+                    NodeList actuals = image.getElementsByTagName("actual");
+                    NodeList diffs = image.getElementsByTagName("diff");
+                    for (int k = 0; k < goldens.getLength(); k++) {
+                        Element golden = (Element) goldens.item(k);
+                        String path = golden.getAttribute("path");
+                        String message = golden.getAttribute("message");
+                        goldenImage = new Image(path, message);
+                    }
+                    for (int k = 0; k < actuals.getLength(); k++) {
+                        Element golden = (Element) actuals.item(k);
+                        String path = golden.getAttribute("path");
+                        String message = golden.getAttribute("message");
+                        actualImage = new Image(path, message);
+                    }
+                    for (int k = 0; k < diffs.getLength(); k++) {
+                        Element golden = (Element) diffs.item(k);
+                        String path = golden.getAttribute("path");
+                        String message = golden.getAttribute("message");
+                        diffImage = new Image(path, message);
+                    }
+                    ssImages = new ScreenshotTestImages(goldenImage, actualImage, diffImage);
+                }
+                TestResult testResult;
+                if (ssImages != null)
+                    testResult = model.addTest(className, testName, duration.longValue(),
+                            deviceName, projectName, flavorName, ssImages);
+                else
+                    testResult = model.addTest(className,testName,duration.longValue(),
                         deviceName, projectName, flavorName);
+
                 for (int j = 0; j < failures.getLength(); j++) {
                     Element failure = (Element) failures.item(j);
                     testResult.addFailure(
@@ -176,6 +219,23 @@ public class TestReport {
                         new File(reportDir, packageResults.getFilename(reportType) + ".html"));
                 for (ClassTestResults classResults : packageResults.getClasses()) {
                     generatePage(classResults, new ClassPageRenderer(reportType),
+                            new File(reportDir, classResults.getFilename(reportType) + ".html"));
+                }
+            }
+        } catch (Exception e) {
+            throw new GradleException(
+                    String.format("Could not generate test report to '%s'.", reportDir), e);
+        }
+    }
+
+    private void generateFilesForScreenshotTest(AllTestResults model, boolean isRecordGolden) {
+        try {
+            generatePage(model, new OverviewPageRenderer(reportType), new File(reportDir, "index.html"));
+            for (PackageTestResults packageResults : model.getPackages()) {
+                generatePage(packageResults, new PackagePageRenderer(reportType),
+                        new File(reportDir, packageResults.getFilename(reportType) + ".html"));
+                for (ClassTestResults classResults : packageResults.getClasses()) {
+                    generatePage(classResults, new ScreenshotClassPageRenderer(reportType, isRecordGolden),
                             new File(reportDir, classResults.getFilename(reportType) + ".html"));
                 }
             }

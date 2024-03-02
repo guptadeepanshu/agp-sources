@@ -56,7 +56,7 @@ public interface BuildStampOrBuilder extends
    * Build system data.
    * </pre>
    *
-   * <code>.BuildInfo build_info = 2;</code>
+   * <code>optional .BuildInfo build_info = 2;</code>
    * @return Whether the buildInfo field is set.
    */
   boolean hasBuildInfo();
@@ -65,7 +65,7 @@ public interface BuildStampOrBuilder extends
    * Build system data.
    * </pre>
    *
-   * <code>.BuildInfo build_info = 2;</code>
+   * <code>optional .BuildInfo build_info = 2;</code>
    * @return The buildInfo.
    */
   com.android.tools.idea.insights.proto.BuildInfo getBuildInfo();
@@ -74,7 +74,35 @@ public interface BuildStampOrBuilder extends
    * Build system data.
    * </pre>
    *
-   * <code>.BuildInfo build_info = 2;</code>
+   * <code>optional .BuildInfo build_info = 2;</code>
    */
   com.android.tools.idea.insights.proto.BuildInfoOrBuilder getBuildInfoOrBuilder();
+
+  /**
+   * <pre>
+   * Extra debug info which will help users identify issues
+   * </pre>
+   *
+   * <code>optional .BuildStamp.GenerateErrorReason generate_error_reason = 3;</code>
+   * @return Whether the generateErrorReason field is set.
+   */
+  boolean hasGenerateErrorReason();
+  /**
+   * <pre>
+   * Extra debug info which will help users identify issues
+   * </pre>
+   *
+   * <code>optional .BuildStamp.GenerateErrorReason generate_error_reason = 3;</code>
+   * @return The enum numeric value on the wire for generateErrorReason.
+   */
+  int getGenerateErrorReasonValue();
+  /**
+   * <pre>
+   * Extra debug info which will help users identify issues
+   * </pre>
+   *
+   * <code>optional .BuildStamp.GenerateErrorReason generate_error_reason = 3;</code>
+   * @return The generateErrorReason.
+   */
+  com.android.tools.idea.insights.proto.BuildStamp.GenerateErrorReason getGenerateErrorReason();
 }

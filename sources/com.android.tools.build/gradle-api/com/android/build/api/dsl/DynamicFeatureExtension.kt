@@ -29,7 +29,11 @@ interface DynamicFeatureExtension :
             DynamicFeatureBuildType,
             DynamicFeatureDefaultConfig,
             DynamicFeatureProductFlavor,
-            DynamicFeatureAndroidResources>,
+            DynamicFeatureAndroidResources,
+            DynamicFeatureInstallation>,
     ApkExtension,
     TestedExtension {
+
+    val privacySandbox: PrivacySandbox
+    fun privacySandbox(action: PrivacySandbox.() -> Unit)
 }

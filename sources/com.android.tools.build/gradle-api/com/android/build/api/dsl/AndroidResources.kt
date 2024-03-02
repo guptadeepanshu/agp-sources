@@ -18,7 +18,11 @@ package com.android.build.api.dsl
 
 import org.gradle.api.Incubating
 
-/** DSL object for configuring aapt options. */
+/**
+ * DSL object for configuring Android resource options.
+ *
+ * This is accessed via [CommonExtension.androidResources]
+ */
 interface AndroidResources {
     /**
      * Pattern describing assets to be ignored.

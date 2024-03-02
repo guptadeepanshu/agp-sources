@@ -201,7 +201,7 @@ abstract class BundleToApkTask : NonIncrementalTask() {
                 InternalArtifactType.INTERMEDIARY_BUNDLE, task.bundle
             )
             creationConfig.services.initializeAapt2Input(task.aapt2)
-            if (creationConfig.services.projectOptions[BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT]) {
+            if (creationConfig.privacySandboxCreationConfig != null) {
                 task.androidPrivacySandboxSdkArchives.fromDisallowChanges(
                         creationConfig.variantDependencies.getArtifactFileCollection(
                                 AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,

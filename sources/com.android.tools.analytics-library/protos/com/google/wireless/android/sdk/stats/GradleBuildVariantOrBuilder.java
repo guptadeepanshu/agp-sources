@@ -818,4 +818,31 @@ public interface GradleBuildVariantOrBuilder extends
    * @return The hasTestFixtures.
    */
   boolean getHasTestFixtures();
+
+  /**
+   * <pre>
+   * information about the privacy sandbox SDKs this project consumes
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33;</code>
+   * @return Whether the privacySandboxDependenciesInfo field is set.
+   */
+  boolean hasPrivacySandboxDependenciesInfo();
+  /**
+   * <pre>
+   * information about the privacy sandbox SDKs this project consumes
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33;</code>
+   * @return The privacySandboxDependenciesInfo.
+   */
+  com.google.wireless.android.sdk.stats.GradleBuildVariant.PrivacySandboxDependenciesInfo getPrivacySandboxDependenciesInfo();
+  /**
+   * <pre>
+   * information about the privacy sandbox SDKs this project consumes
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33;</code>
+   */
+  com.google.wireless.android.sdk.stats.GradleBuildVariant.PrivacySandboxDependenciesInfoOrBuilder getPrivacySandboxDependenciesInfoOrBuilder();
 }

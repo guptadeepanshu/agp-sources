@@ -360,4 +360,31 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * @return The productType.
    */
   com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsProductType getProductType();
+
+  /**
+   * <pre>
+   * set when type = PERFORMANCE_STATS
+   * </pre>
+   *
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15;</code>
+   * @return Whether the performanceStats field is set.
+   */
+  boolean hasPerformanceStats();
+  /**
+   * <pre>
+   * set when type = PERFORMANCE_STATS
+   * </pre>
+   *
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15;</code>
+   * @return The performanceStats.
+   */
+  com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStats getPerformanceStats();
+  /**
+   * <pre>
+   * set when type = PERFORMANCE_STATS
+   * </pre>
+   *
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15;</code>
+   */
+  com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStatsOrBuilder getPerformanceStatsOrBuilder();
 }

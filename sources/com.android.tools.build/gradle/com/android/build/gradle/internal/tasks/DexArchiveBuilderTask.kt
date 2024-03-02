@@ -17,7 +17,6 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
-import com.android.build.api.variant.impl.getFeatureLevel
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.dependency.BaseDexingTransform
 import com.android.build.gradle.internal.dependency.computeGlobalSyntheticsDirName
@@ -30,7 +29,6 @@ import com.android.build.gradle.internal.tasks.factory.features.DexingTaskCreati
 import com.android.build.gradle.internal.tasks.factory.features.DexingTaskCreationActionImpl
 import com.android.build.gradle.internal.utils.getDesugarLibConfig
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.IntegerOption
 import com.android.build.gradle.options.SyncOptions
 import com.android.buildanalyzer.common.TaskCategory
@@ -329,7 +327,7 @@ abstract class DexArchiveBuilderTask : NewIncrementalTask() {
             task.subProjectClasses.from(subProjectsClasses)
             task.mixedScopeClasses.from(mixedScopeClasses)
 
-            val minSdkVersionForDexing = dexingCreationConfig.minSdkVersionForDexing.getFeatureLevel()
+            val minSdkVersionForDexing = dexingCreationConfig.minSdkVersionForDexing
             task.dexParams.minSdkVersion.set(minSdkVersionForDexing)
             val languageDesugaring =
                 dexingCreationConfig.java8LangSupportType == Java8LangSupport.D8

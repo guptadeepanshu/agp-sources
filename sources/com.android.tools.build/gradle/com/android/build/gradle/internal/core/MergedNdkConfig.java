@@ -19,8 +19,6 @@ package com.android.build.gradle.internal.core;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.build.gradle.internal.dsl.CoreNdkOptions;
-import com.android.build.gradle.internal.dsl.NdkOptions;
-import com.android.build.gradle.internal.dsl.NdkOptions.DebugSymbolLevel;
 import com.google.common.collect.Lists;
 import java.util.HashSet;
 import java.util.List;

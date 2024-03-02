@@ -63,7 +63,7 @@ fun computeAvdName(
 }
 
 fun sanitizeProfileName(hardwareProfile: String) =
-    hardwareProfile.replace(Regex("[() ]"), "_")
+    hardwareProfile.replace(Regex("[() \"]"), "_")
 
 fun setupTaskName(device: Device): String = "${device.name}Setup"
 

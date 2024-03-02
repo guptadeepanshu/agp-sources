@@ -236,4 +236,10 @@ interface BuildType : Named, VariantDimension, ExtensionAware {
 
     @Deprecated("Changing the value of isZipAlignEnabled no longer has any effect")
     var isZipAlignEnabled: Boolean
+
+    @get:Incubating
+    val vcsInfo: VcsInfo
+
+    @Incubating
+    fun vcsInfo(action: VcsInfo.() -> Unit)
 }

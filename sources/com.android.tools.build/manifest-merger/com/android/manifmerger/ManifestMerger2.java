@@ -1181,7 +1181,8 @@ public class ManifestMerger2 {
                             !mOptionalFeatures.contains(
                                     Invoker.Feature.NO_IMPLICIT_PERMISSION_ADDITION),
                             mOptionalFeatures.contains(Invoker.Feature.DISABLE_MINSDKLIBRARY_CHECK),
-                            mOptionalFeatures.contains(Invoker.Feature.KEEP_GOING_AFTER_ERRORS));
+                            mOptionalFeatures.contains(Invoker.Feature.KEEP_GOING_AFTER_ERRORS),
+                            mProcessCancellationChecker);
         } else {
             // exhaustiveSearch is true in recordAddedNodeAction() below because some of this
             // manifest's nodes might have already been recorded from the loading of
@@ -1851,8 +1852,7 @@ public class ManifestMerger2 {
          */
         @NonNull
         public Invoker addLibraryManifest(@NonNull File file) {
-            addLibraryManifest(file.getName(), file);
-            return this;
+            return addLibraryManifest(file.getName(), file);
         }
 
         /**
@@ -1873,24 +1873,6 @@ public class ManifestMerger2 {
         }
 
         /**
-         * Sets library dependencies for this merging activity.
-         * @param namesAndFiles the list of library dependencies.
-         * @return itself.
-         *
-         * @deprecated use addLibraryManifest or addAndroidBundleManifests
-         */
-        @NonNull
-        @Deprecated
-        public Invoker addBundleManifests(@NonNull List<Pair<String, File>> namesAndFiles) {
-            if (mMergeType == MergeType.LIBRARY && !namesAndFiles.isEmpty()) {
-                throw new IllegalStateException(
-                        "Cannot add library dependencies manifests when creating a library");
-            }
-            mLibraryFilesBuilder.addAll(namesAndFiles);
-            return this;
-        }
-
-        /**
          * Sets manifest providers for this merging activity.
          * @param providers the list of manifest providers.
          * @return itself.
@@ -1904,9 +1886,10 @@ public class ManifestMerger2 {
         }
 
         /**
-         * Add several library file manifests at then end of the list which will make them the
-         * lowest priority manifest files. The relative priority between all the files passed as
-         * parameters will be respected.
+         * Add several library file manifests at the end of the list which will make them the lowest
+         * priority manifest files. The relative priority between all the files passed as parameters
+         * will be respected.
+         *
          * @param files library manifest files to add last.
          * @return itself.
          */

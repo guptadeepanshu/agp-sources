@@ -30,6 +30,7 @@ import com.android.build.gradle.internal.lint.LintModelWriterTask
 import com.android.build.gradle.internal.plugins.LINT_PLUGIN_ID
 import com.android.build.gradle.internal.profile.AnalyticsConfiguratorService
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
+import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.AndroidReportTask
 import com.android.build.gradle.internal.tasks.AppClasspathCheckTask
@@ -40,7 +41,9 @@ import com.android.build.gradle.internal.tasks.JacocoTask
 import com.android.build.gradle.internal.tasks.ManagedDeviceCleanTask
 import com.android.build.gradle.internal.tasks.ManagedDeviceInstrumentationTestSetupTask
 import com.android.build.gradle.internal.tasks.ManagedDeviceSetupTask
-import com.android.build.gradle.internal.tasks.PreviewScreenshotTestTask
+import com.android.build.gradle.internal.tasks.PreviewScreenshotRenderTask
+import com.android.build.gradle.internal.tasks.PreviewScreenshotUpdateTask
+import com.android.build.gradle.internal.tasks.PreviewScreenshotValidationTask
 import com.android.build.gradle.internal.tasks.SigningConfigVersionsWriterTask
 import com.android.build.gradle.internal.tasks.SigningConfigWriterTask
 import com.android.build.gradle.internal.tasks.StripDebugSymbolsTask
@@ -226,7 +229,10 @@ class AndroidTestTaskManager(
                     && androidTestProperties.services.projectOptions.get(LINT_ANALYSIS_PER_COMPONENT)
         val isPerComponentLintAnalysis =
             isKmpPerComponentLintAnalysis || isNonKmpPerComponentLintAnalysis
-        if (isPerComponentLintAnalysis && globalConfig.lintOptions.ignoreTestSources.not()) {
+        if (globalConfig.avoidTaskRegistration.not()
+            && isPerComponentLintAnalysis
+            && globalConfig.lintOptions.ignoreTestSources.not()
+        ) {
             taskFactory.register(
                 AndroidLintAnalysisTask.PerComponentCreationAction(
                     androidTestProperties,
@@ -250,15 +256,18 @@ class AndroidTestTaskManager(
         val testedVariant = androidTestProperties.mainVariant
         val isLibrary = testedVariant.componentType.isAar
 
-        val privacySandboxSdkApks = if (androidTestProperties.services.projectOptions
-                        .get(BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT))
-                testedVariant
-                .variantDependencies
-                .getArtifactFileCollection(
-                    AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
-                    AndroidArtifacts.ArtifactScope.ALL,
-                    AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_APKS)
-        else null
+        val privacySandboxSdkApks = androidTestProperties.privacySandboxCreationConfig?.let {
+            testedVariant
+                    .variantDependencies
+                    .getArtifactFileCollection(
+                            AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
+                            AndroidArtifacts.ArtifactScope.ALL,
+                            AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_APKS)
+        }
+
+        val privacySandboxCompatSdkApks = androidTestProperties.privacySandboxCreationConfig?.let {
+            testedVariant.artifacts.get(InternalArtifactType.EXTRACTED_SDK_APKS)
+        }
 
         val testData: AbstractTestDataImpl = if (testedVariant.componentType.isDynamicFeature) {
             BundleTestDataImpl(
@@ -272,16 +281,18 @@ class AndroidTestTaskManager(
                         AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                         AndroidArtifacts.ArtifactScope.PROJECT,
                         AndroidArtifacts.ArtifactType.APKS_FROM_BUNDLE),
-                privacySandboxSdkApks)
+                privacySandboxSdkApks,
+                privacySandboxCompatSdkApks)
         } else {
-            val testedApkFileCollection =
-                project.files(testedVariant.artifacts.get(SingleArtifact.APK))
             TestDataImpl(
                 androidTestProperties.namespace,
                 androidTestProperties,
                 androidTestProperties.artifacts.get(SingleArtifact.APK),
-                if (isLibrary) null else testedApkFileCollection,
-                privacySandboxSdkApks)
+                if (isLibrary) null else testedVariant.artifacts.get(SingleArtifact.APK),
+                privacySandboxSdkApks,
+                privacySandboxCompatSdkApks,
+                testedVariant.artifacts.get(InternalArtifactType.USES_SDK_LIBRARY_SPLIT_FOR_LOCAL_DEPLOYMENT)
+            )
         }
         configureTestData(androidTestProperties, testData)
         val connectedCheckSerials: Provider<List<String>> =
@@ -349,7 +360,7 @@ class AndroidTestTaskManager(
             testData,
             androidTestProperties.mainVariant.name
         )
-        createScreenshotTestTask(
+        createScreenshotTestTasks(
             androidTestProperties,
             testData,
             androidTestProperties.mainVariant.name
@@ -482,7 +493,7 @@ class AndroidTestTaskManager(
         super.createVariantPreBuildTask(creationConfig)
     }
 
-    private fun createScreenshotTestTask(
+    private fun createScreenshotTestTasks(
             creationConfig: AndroidTestCreationConfig,
             testData: AbstractTestDataImpl,
             variantName: String,
@@ -507,10 +518,7 @@ class AndroidTestTaskManager(
         val flavorDir = if (flavor.isNullOrEmpty()) "" else "${BuilderConstants.FD_FLAVORS}/$flavor"
         val resultsDir =
                 File(resultsRootDir, "${BuilderConstants.SCREENSHOT}/$buildTarget/$flavorDir")
-
-        val ideExtractionDir =
-                creationConfig.paths.intermediatesDir(
-                        "${BuilderConstants.SCREENSHOT}/$buildTarget/$flavorDir").get().asFile
+        val goldenImagesDir = File("${project.projectDir.absolutePath}/src/androidTest/${BuilderConstants.SCREENSHOT}/$buildTarget/$flavorDir")
 
         val lintModelDir =
                 creationConfig.paths.getIncrementalDir(
@@ -518,16 +526,40 @@ class AndroidTestTaskManager(
         val lintCacheDir =
                 creationConfig.paths.intermediatesDir(
                         "${BuilderConstants.LINT}-cache").get().asFile
+        val compileAppClassesJar =
+                creationConfig.paths.intermediatesDir(
+                        "compile_app_classes_jar/${variantName}/").get().asFile.absolutePath
+        val additionalDependencyPaths = mutableListOf<String>()
+        //compileAppClassesJar jar needed for rendering; and lint does not include in its dependency lists. This will not be required in new cli tool
+        additionalDependencyPaths.add("$compileAppClassesJar/classes.jar")
 
-        val previewScreenshotTestTask = taskFactory.register(
-                PreviewScreenshotTestTask.CreationAction(
+        val previewScreenshotRenderTask = taskFactory.register(
+            PreviewScreenshotRenderTask.CreationAction(
+                creationConfig,
+                creationConfig.services.layoutlibFromMaven.layoutlibDirectory,
+                lintModelDir,
+                lintCacheDir,
+                additionalDependencyPaths
+            )
+        )
+
+
+        val previewScreenshotValidationTask = taskFactory.register(
+                PreviewScreenshotValidationTask.CreationAction(
                         creationConfig,
                         resultsDir,
-                        ideExtractionDir,
-                        lintModelDir,
-                        lintCacheDir,
+                        goldenImagesDir
                 ))
 
-        previewScreenshotTestTask.dependsOn("lint")
+        val previewScreenshotUpdateTask = taskFactory.register(
+                PreviewScreenshotUpdateTask.CreationAction(
+                        creationConfig,
+                        goldenImagesDir
+                ))
+
+        previewScreenshotRenderTask.dependsOn("lint")
+        previewScreenshotValidationTask.dependsOn(previewScreenshotRenderTask)
+        previewScreenshotUpdateTask.dependsOn(previewScreenshotRenderTask)
+
     }
 }

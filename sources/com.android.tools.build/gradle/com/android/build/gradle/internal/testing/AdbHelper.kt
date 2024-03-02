@@ -23,7 +23,6 @@ import java.io.File
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
-import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import java.util.concurrent.TimeoutException
 
@@ -53,7 +52,7 @@ class AdbHelper(
      */
     fun isBootCompleted(emulatorSerial: String, logger: ILogger): Boolean {
         val bootCompleted = AtomicBoolean(false)
-        getDeviceProperty("sys.boot_completed", emulatorSerial) {
+        getDeviceProperty("sys.boot_completed", emulatorSerial, logger) {
             if (it.toIntOrNull() == 1) {
                 logger.info("sys.boot_completed=1")
                 bootCompleted.set(true)
@@ -63,7 +62,7 @@ class AdbHelper(
             return true
         }
 
-        getDeviceProperty("dev.bootcomplete", emulatorSerial) {
+        getDeviceProperty("dev.bootcomplete", emulatorSerial, logger) {
             if (it.toIntOrNull() == 1) {
                 logger.info("dev.bootcomplete=1")
                 bootCompleted.set(true)
@@ -75,9 +74,9 @@ class AdbHelper(
     /**
      * Checks whether the package manager has started for the given device.
      */
-    fun isPackageManagerStarted (emulatorSerial: String): Boolean {
+    fun isPackageManagerStarted (emulatorSerial: String, logger: ILogger): Boolean {
         val result = AtomicBoolean(false)
-        runAdbShell(emulatorSerial, listOf("/system/bin/pm", "path", "android")) {
+        runAdbShell(emulatorSerial, listOf("/system/bin/pm", "path", "android"), logger) {
             if (it.contains("package:")) {
                 result.set(true)
             }
@@ -109,8 +108,10 @@ class AdbHelper(
                 return serial
             }
         }
-        error("Failed to find serial for device id: $idValue")
+        throw DeviceNotFoundException("Failed to find serial for device id: $idValue")
     }
+
+    class DeviceNotFoundException(errorMessage: String) : RuntimeException(errorMessage)
 
     /**
      * Returns the list of all emulator serials whose id value starts with [idPrefix]
@@ -236,10 +237,12 @@ class AdbHelper(
     private fun getDeviceProperty(
         propertyName: String,
         emulatorSerial: String,
+        logger: ILogger,
         stdoutTextProcessor: (String)->Unit) {
         runAdbShell(
             emulatorSerial,
             listOf("getprop", propertyName),
+            logger,
             stdoutTextProcessor
         )
     }
@@ -247,28 +250,36 @@ class AdbHelper(
     private fun runAdbShell(
         emulatorSerial: String,
         shellCommandArgs: List<String>,
+        logger: ILogger,
         stdoutTextProcessor: (String)->Unit) {
-        val getPropProcess = processFactory(
-            listOf(
+        val command = listOf(
                 adbExecutable.absolutePath,
                 "-s",
                 emulatorSerial,
                 "shell",
-            ) + shellCommandArgs
-        ).start()
+        ) + shellCommandArgs
 
-        GrabProcessOutput.grabProcessOutput(
-            getPropProcess,
-            GrabProcessOutput.Wait.WAIT_FOR_READERS,
-            object : GrabProcessOutput.IProcessOutput {
-                override fun out(line: String?) {
-                    line ?: return
-                    stdoutTextProcessor(line.trim())
-                }
+        val adbShellCommandProcess = processFactory(command).start()
 
-                override fun err(line: String?) {}
+        try {
+            runWithTimeout(ADB_TIMEOUT_SEC) {
+                GrabProcessOutput.grabProcessOutput(
+                        adbShellCommandProcess,
+                        GrabProcessOutput.Wait.WAIT_FOR_READERS,
+                        object : GrabProcessOutput.IProcessOutput {
+                            override fun out(line: String?) {
+                                line ?: return
+                                stdoutTextProcessor(line.trim())
+                            }
+
+                            override fun err(line: String?) {}
+                        }
+                )
             }
-        )
+        } catch (e: TimeoutException) {
+            logger.warning("adb shell command timed out. ${command.joinToString(" ")}")
+            adbShellCommandProcess.destroy()
+        }
     }
 
     private fun <T> runWithTimeout(timeoutSeconds: Long, function: () -> T): T {

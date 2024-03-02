@@ -176,7 +176,7 @@ internal object GenericBuiltArtifactTypeAdapter: CommonBuiltArtifactTypeAdapter<
                     outputFile = outputFile,
                     versionCode = versionCode,
                     versionName = versionName,
-                    attributes = attributes
+                    attributes = attributes,
                 )
             })
     }

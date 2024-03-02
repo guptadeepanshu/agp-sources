@@ -76,6 +76,18 @@ public enum VariantMethodType
    * <code>SHRINK_RESOURCES_VALUE = 15;</code>
    */
   SHRINK_RESOURCES_VALUE(15),
+  /**
+   * <code>ENABLE_MULTI_DEX = 16;</code>
+   */
+  ENABLE_MULTI_DEX(16),
+  /**
+   * <code>ANDROID_TEST_BUILDER = 17;</code>
+   */
+  ANDROID_TEST_BUILDER(17),
+  /**
+   * <code>PROFILEABLE_ENABLED = 18;</code>
+   */
+  PROFILEABLE_ENABLED(18),
   UNRECOGNIZED(-1),
   ;
 
@@ -147,6 +159,18 @@ public enum VariantMethodType
    * <code>SHRINK_RESOURCES_VALUE = 15;</code>
    */
   public static final int SHRINK_RESOURCES_VALUE_VALUE = 15;
+  /**
+   * <code>ENABLE_MULTI_DEX = 16;</code>
+   */
+  public static final int ENABLE_MULTI_DEX_VALUE = 16;
+  /**
+   * <code>ANDROID_TEST_BUILDER = 17;</code>
+   */
+  public static final int ANDROID_TEST_BUILDER_VALUE = 17;
+  /**
+   * <code>PROFILEABLE_ENABLED = 18;</code>
+   */
+  public static final int PROFILEABLE_ENABLED_VALUE = 18;
 
 
   public final int getNumber() {
@@ -189,6 +213,9 @@ public enum VariantMethodType
       case 13: return TEST_FIXTURES_ENABLED;
       case 14: return CODE_MINIFICATION_VALUE;
       case 15: return SHRINK_RESOURCES_VALUE;
+      case 16: return ENABLE_MULTI_DEX;
+      case 17: return ANDROID_TEST_BUILDER;
+      case 18: return PROFILEABLE_ENABLED;
       default: return null;
     }
   }

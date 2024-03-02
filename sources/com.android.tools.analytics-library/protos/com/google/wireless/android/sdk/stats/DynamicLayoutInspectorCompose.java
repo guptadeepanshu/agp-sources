@@ -35,119 +35,6 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private DynamicLayoutInspectorCompose(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    int mutable_bitField0_ = 0;
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 8: {
-            bitField0_ |= 0x00000001;
-            kotlinReflectionAvailable_ = input.readBool();
-            break;
-          }
-          case 16: {
-            bitField0_ |= 0x00000002;
-            imageClicks_ = input.readUInt32();
-            break;
-          }
-          case 24: {
-            bitField0_ |= 0x00000004;
-            componentTreeClicks_ = input.readUInt32();
-            break;
-          }
-          case 32: {
-            bitField0_ |= 0x00000008;
-            goToSourceFromPropertyValueClicks_ = input.readUInt32();
-            break;
-          }
-          case 40: {
-            bitField0_ |= 0x00000010;
-            maxRecompositionCount_ = input.readUInt32();
-            break;
-          }
-          case 48: {
-            bitField0_ |= 0x00000020;
-            maxRecompositionSkips_ = input.readUInt32();
-            break;
-          }
-          case 61: {
-            bitField0_ |= 0x00000040;
-            maxRecompositionHighlight_ = input.readFloat();
-            break;
-          }
-          case 64: {
-            bitField0_ |= 0x00000080;
-            recompositionResetClicks_ = input.readUInt32();
-            break;
-          }
-          case 72: {
-            bitField0_ |= 0x00000100;
-            framesWithRecompositionCountsOn_ = input.readUInt32();
-            break;
-          }
-          case 80: {
-            bitField0_ |= 0x00000200;
-            framesWithRecompositionColorRed_ = input.readUInt32();
-            break;
-          }
-          case 88: {
-            bitField0_ |= 0x00000400;
-            framesWithRecompositionColorBlue_ = input.readUInt32();
-            break;
-          }
-          case 96: {
-            bitField0_ |= 0x00000800;
-            framesWithRecompositionColorGreen_ = input.readUInt32();
-            break;
-          }
-          case 104: {
-            bitField0_ |= 0x00001000;
-            framesWithRecompositionColorYellow_ = input.readUInt32();
-            break;
-          }
-          case 112: {
-            bitField0_ |= 0x00002000;
-            framesWithRecompositionColorPurple_ = input.readUInt32();
-            break;
-          }
-          case 120: {
-            bitField0_ |= 0x00004000;
-            framesWithRecompositionColorOrange_ = input.readUInt32();
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DynamicLayoutInspectorCompose_descriptor;
@@ -626,7 +513,7 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00004000) != 0)) {
       output.writeUInt32(15, framesWithRecompositionColorOrange_);
     }
-    unknownFields.writeTo(output);
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -695,7 +582,7 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeUInt32Size(15, framesWithRecompositionColorOrange_);
     }
-    size += unknownFields.getSerializedSize();
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -786,7 +673,7 @@ private static final long serialVersionUID = 0L;
       if (getFramesWithRecompositionColorOrange()
           != other.getFramesWithRecompositionColorOrange()) return false;
     }
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -859,7 +746,7 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + FRAMES_WITH_RECOMPOSITION_COLOR_ORANGE_FIELD_NUMBER;
       hash = (53 * hash) + getFramesWithRecompositionColorOrange();
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -981,18 +868,13 @@ private static final long serialVersionUID = 0L;
 
     // Construct using com.google.wireless.android.sdk.stats.DynamicLayoutInspectorCompose.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessageV3
-              .alwaysUseFieldBuilders) {
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
@@ -1209,7 +1091,7 @@ private static final long serialVersionUID = 0L;
       if (other.hasFramesWithRecompositionColorOrange()) {
         setFramesWithRecompositionColorOrange(other.getFramesWithRecompositionColorOrange());
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -1224,17 +1106,105 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.google.wireless.android.sdk.stats.DynamicLayoutInspectorCompose parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              kotlinReflectionAvailable_ = input.readBool();
+              bitField0_ |= 0x00000001;
+              break;
+            } // case 8
+            case 16: {
+              imageClicks_ = input.readUInt32();
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 16
+            case 24: {
+              componentTreeClicks_ = input.readUInt32();
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 24
+            case 32: {
+              goToSourceFromPropertyValueClicks_ = input.readUInt32();
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 32
+            case 40: {
+              maxRecompositionCount_ = input.readUInt32();
+              bitField0_ |= 0x00000010;
+              break;
+            } // case 40
+            case 48: {
+              maxRecompositionSkips_ = input.readUInt32();
+              bitField0_ |= 0x00000020;
+              break;
+            } // case 48
+            case 61: {
+              maxRecompositionHighlight_ = input.readFloat();
+              bitField0_ |= 0x00000040;
+              break;
+            } // case 61
+            case 64: {
+              recompositionResetClicks_ = input.readUInt32();
+              bitField0_ |= 0x00000080;
+              break;
+            } // case 64
+            case 72: {
+              framesWithRecompositionCountsOn_ = input.readUInt32();
+              bitField0_ |= 0x00000100;
+              break;
+            } // case 72
+            case 80: {
+              framesWithRecompositionColorRed_ = input.readUInt32();
+              bitField0_ |= 0x00000200;
+              break;
+            } // case 80
+            case 88: {
+              framesWithRecompositionColorBlue_ = input.readUInt32();
+              bitField0_ |= 0x00000400;
+              break;
+            } // case 88
+            case 96: {
+              framesWithRecompositionColorGreen_ = input.readUInt32();
+              bitField0_ |= 0x00000800;
+              break;
+            } // case 96
+            case 104: {
+              framesWithRecompositionColorYellow_ = input.readUInt32();
+              bitField0_ |= 0x00001000;
+              break;
+            } // case 104
+            case 112: {
+              framesWithRecompositionColorPurple_ = input.readUInt32();
+              bitField0_ |= 0x00002000;
+              break;
+            } // case 112
+            case 120: {
+              framesWithRecompositionColorOrange_ = input.readUInt32();
+              bitField0_ |= 0x00004000;
+              break;
+            } // case 120
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.google.wireless.android.sdk.stats.DynamicLayoutInspectorCompose) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
     private int bitField0_;
@@ -2096,7 +2066,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new DynamicLayoutInspectorCompose(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

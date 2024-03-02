@@ -18,7 +18,9 @@ package com.android.build.gradle.internal.dsl.decorator
 
 import com.android.build.api.dsl.AarMetadata
 import com.android.build.api.dsl.AbiSplit
+import com.android.build.api.dsl.AndroidTest
 import com.android.build.api.dsl.AnnotationProcessorOptions
+import com.android.build.api.dsl.ApplicationInstallation
 import com.android.build.api.dsl.ApplicationPublishing
 import com.android.build.api.dsl.AssetPackBundleExtension
 import com.android.build.api.dsl.BaselineProfile
@@ -53,15 +55,18 @@ import com.android.build.api.dsl.MultiDexConfig
 import com.android.build.api.dsl.NdkBuild
 import com.android.build.api.dsl.Optimization
 import com.android.build.api.dsl.Packaging
+import com.android.build.api.dsl.PrivacySandbox
 import com.android.build.api.dsl.PrivacySandboxSdkBundle
 import com.android.build.api.dsl.PrivacySandboxSdkExtension
 import com.android.build.api.dsl.ResourcesPackaging
 import com.android.build.api.dsl.SigningConfig
 import com.android.build.api.dsl.Split
 import com.android.build.api.dsl.Splits
+import com.android.build.api.dsl.VcsInfo
 import com.android.build.api.dsl.ViewBinding
 import com.android.build.gradle.internal.dsl.AarMetadataImpl
 import com.android.build.gradle.internal.dsl.AbiSplitOptions
+import com.android.build.gradle.internal.dsl.AndroidTestImpl
 import com.android.build.gradle.internal.dsl.ApplicationPublishingImpl
 import com.android.build.gradle.internal.dsl.AssetPackBundleExtensionImpl
 import com.android.build.gradle.internal.dsl.BundleOptions
@@ -89,10 +94,12 @@ import com.android.build.gradle.internal.dsl.LibraryPublishingImpl
 import com.android.build.gradle.internal.dsl.LintImpl
 import com.android.build.gradle.internal.dsl.MultiDexConfigImpl
 import com.android.build.gradle.internal.dsl.NdkBuildOptions
+import com.android.build.gradle.internal.dsl.PrivacySandboxImpl
 import com.android.build.gradle.internal.dsl.PrivacySandboxSdkBundleImpl
 import com.android.build.gradle.internal.dsl.PrivacySandboxSdkExtensionImpl
 import com.android.build.gradle.internal.dsl.ResourcesPackagingImpl
 import com.android.build.gradle.internal.dsl.SplitOptions
+import com.android.build.gradle.internal.dsl.VcsInfoImpl
 import com.android.build.gradle.internal.dsl.ViewBindingOptionsImpl
 import org.gradle.api.JavaVersion
 import com.android.build.gradle.internal.dsl.AnnotationProcessorOptions as AnnotationProcessorOptionsImpl
@@ -115,6 +122,7 @@ val AGP_SUPPORTED_PROPERTY_TYPES: List<SupportedPropertyType> = listOf(
 
     SupportedPropertyType.Block(AarMetadata::class.java, AarMetadataImpl::class.java),
     SupportedPropertyType.Block(AbiSplit::class.java, AbiSplitOptions::class.java),
+    SupportedPropertyType.Block(AndroidTest::class.java, AndroidTestImpl::class.java),
     SupportedPropertyType.Block(AnnotationProcessorOptions::class.java, AnnotationProcessorOptionsImpl::class.java),
     SupportedPropertyType.Block(ApplicationPublishing::class.java, ApplicationPublishingImpl::class.java),
     SupportedPropertyType.Block(AssetPackBundleExtension::class.java, AssetPackBundleExtensionImpl::class.java),
@@ -142,6 +150,7 @@ val AGP_SUPPORTED_PROPERTY_TYPES: List<SupportedPropertyType> = listOf(
     SupportedPropertyType.Block(LibraryPublishing::class.java, LibraryPublishingImpl::class.java),
     SupportedPropertyType.Block(NdkBuild::class.java, NdkBuildOptions::class.java),
     SupportedPropertyType.Block(Packaging::class.java, com.android.build.gradle.internal.dsl.PackagingOptions::class.java),
+    SupportedPropertyType.Block(PrivacySandbox::class.java, PrivacySandboxImpl::class.java),
     SupportedPropertyType.Block(Optimization::class.java, com.android.build.gradle.internal.dsl.OptimizationImpl::class.java),
     SupportedPropertyType.Block(ResourcesPackaging::class.java, ResourcesPackagingImpl::class.java),
     SupportedPropertyType.Block(SigningConfig::class.java, com.android.build.gradle.internal.dsl.SigningConfigImpl::class.java),
@@ -154,6 +163,7 @@ val AGP_SUPPORTED_PROPERTY_TYPES: List<SupportedPropertyType> = listOf(
     SupportedPropertyType.Block(LibraryKeepRules::class.java, LibraryKeepRulesImpl::class.java),
     SupportedPropertyType.Block(DependencyVariantSelection::class.java, DependencyVariantSelectionImpl::class.java),
     SupportedPropertyType.Block(MultiDexConfig::class.java, MultiDexConfigImpl::class.java),
+    SupportedPropertyType.Block(VcsInfo::class.java, VcsInfoImpl::class.java),
 
     // FusedLibrary Extensions.
     SupportedPropertyType.Block(FusedLibraryExtension::class.java, FusedLibraryExtensionImpl::class.java),

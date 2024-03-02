@@ -97,5 +97,50 @@ public interface SmlChatBotEventOrBuilder extends
    */
   com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotInvokedOrBuilder getBotInvokedOrBuilder();
 
+  /**
+   * <code>.android_studio.SmlChatBotEvent.SlashAction slash_action = 7;</code>
+   * @return Whether the slashAction field is set.
+   */
+  boolean hasSlashAction();
+  /**
+   * <code>.android_studio.SmlChatBotEvent.SlashAction slash_action = 7;</code>
+   * @return The slashAction.
+   */
+  com.google.wireless.android.sdk.stats.SmlChatBotEvent.SlashAction getSlashAction();
+  /**
+   * <code>.android_studio.SmlChatBotEvent.SlashAction slash_action = 7;</code>
+   */
+  com.google.wireless.android.sdk.stats.SmlChatBotEvent.SlashActionOrBuilder getSlashActionOrBuilder();
+
+  /**
+   * <code>.android_studio.SmlChatBotEvent.DependencySuggestion dependency_suggestion = 8;</code>
+   * @return Whether the dependencySuggestion field is set.
+   */
+  boolean hasDependencySuggestion();
+  /**
+   * <code>.android_studio.SmlChatBotEvent.DependencySuggestion dependency_suggestion = 8;</code>
+   * @return The dependencySuggestion.
+   */
+  com.google.wireless.android.sdk.stats.SmlChatBotEvent.DependencySuggestion getDependencySuggestion();
+  /**
+   * <code>.android_studio.SmlChatBotEvent.DependencySuggestion dependency_suggestion = 8;</code>
+   */
+  com.google.wireless.android.sdk.stats.SmlChatBotEvent.DependencySuggestionOrBuilder getDependencySuggestionOrBuilder();
+
+  /**
+   * <code>.android_studio.SmlChatBotEvent.HallucinationDetectorResult hallucination_detector_result = 9;</code>
+   * @return Whether the hallucinationDetectorResult field is set.
+   */
+  boolean hasHallucinationDetectorResult();
+  /**
+   * <code>.android_studio.SmlChatBotEvent.HallucinationDetectorResult hallucination_detector_result = 9;</code>
+   * @return The hallucinationDetectorResult.
+   */
+  com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationDetectorResult getHallucinationDetectorResult();
+  /**
+   * <code>.android_studio.SmlChatBotEvent.HallucinationDetectorResult hallucination_detector_result = 9;</code>
+   */
+  com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationDetectorResultOrBuilder getHallucinationDetectorResultOrBuilder();
+
   public com.google.wireless.android.sdk.stats.SmlChatBotEvent.ContentCase getContentCase();
 }

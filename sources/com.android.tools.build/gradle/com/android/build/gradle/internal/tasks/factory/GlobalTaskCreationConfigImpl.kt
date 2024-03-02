@@ -42,8 +42,8 @@ import com.android.build.gradle.internal.dsl.CommonExtensionImpl
 import com.android.build.gradle.internal.dsl.LanguageSplitOptions
 import com.android.build.gradle.internal.instrumentation.ASM_API_VERSION_FOR_INSTRUMENTATION
 import com.android.build.gradle.internal.lint.getLocalCustomLintChecks
-import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AarOrJarTypeToConsume
+import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.getAarOrJarTypeToConsume
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.BaseServices
@@ -69,7 +69,7 @@ import org.gradle.api.provider.Provider
 class GlobalTaskCreationConfigImpl(
     project: Project,
     private val oldExtension: BaseExtension,
-    private val extension: CommonExtensionImpl<*, *, *, *, *>,
+    private val extension: CommonExtensionImpl<*, *, *, *, *, *>,
     override val services: BaseServices,
     private val versionedSdkLoaderService: VersionedSdkLoaderService,
     bootClasspathConfig: BootClasspathConfigImpl,
@@ -156,7 +156,8 @@ class GlobalTaskCreationConfigImpl(
         get() = extension.externalNativeBuild
 
     override val installationOptions: Installation
-        get() = extension.installation
+        get() = (extension as? ApplicationExtension)?.installation
+            ?: extension.installation
 
     override val libraryRequests: Collection<LibraryRequest>
         get() = extension.libraryRequests
@@ -264,4 +265,10 @@ class GlobalTaskCreationConfigImpl(
 
     override val aarOrJarTypeToConsume: AarOrJarTypeToConsume
         get() = getAarOrJarTypeToConsume(services.projectOptions, namespacedAndroidResources)
+
+    override val avoidTaskRegistration: Boolean = services.projectOptions.run {
+        get(BooleanOption.IDE_AVOID_TASK_REGISTRATION) &&
+                (get(BooleanOption.IDE_BUILD_MODEL_ONLY) || get(BooleanOption.IDE_BUILD_MODEL_ONLY_V2)
+                        )
+    }
 }

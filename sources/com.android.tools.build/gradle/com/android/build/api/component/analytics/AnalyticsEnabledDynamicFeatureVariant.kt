@@ -21,6 +21,7 @@ import com.android.build.api.variant.AndroidTest
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.GeneratesApk
 import com.android.build.api.variant.ApkPackaging
+import com.android.build.api.variant.Dexing
 import com.android.build.api.variant.DynamicFeatureVariant
 import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.TestFixtures
@@ -36,7 +37,7 @@ open class AnalyticsEnabledDynamicFeatureVariant @Inject constructor(
     objectFactory: ObjectFactory
 ) : AnalyticsEnabledVariant(delegate, stats, objectFactory), DynamicFeatureVariant {
 
-    private val userVisibleAndroidTest: AnalyticsEnabledAndroidTest? by lazy {
+    private val userVisibleAndroidTest: AnalyticsEnabledAndroidTest? by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
         delegate.androidTest?.let {
             objectFactory.newInstance(
                 AnalyticsEnabledAndroidTest::class.java,
@@ -53,7 +54,7 @@ open class AnalyticsEnabledDynamicFeatureVariant @Inject constructor(
             return userVisibleAndroidTest
         }
 
-    private val userVisibleTestFixtures: TestFixtures? by lazy {
+    private val userVisibleTestFixtures: TestFixtures? by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
         delegate.testFixtures?.let {
             objectFactory.newInstance(
                 AnalyticsEnabledTestFixtures::class.java,
@@ -70,7 +71,10 @@ open class AnalyticsEnabledDynamicFeatureVariant @Inject constructor(
             return userVisibleTestFixtures
         }
 
-    private val generatesApk: GeneratesApk by lazy {
+    override val dexing: Dexing
+        get() = generatesApk.dexing
+
+    private val generatesApk: GeneratesApk by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
         AnalyticsEnabledGeneratesApk(
                 delegate,
                 stats,

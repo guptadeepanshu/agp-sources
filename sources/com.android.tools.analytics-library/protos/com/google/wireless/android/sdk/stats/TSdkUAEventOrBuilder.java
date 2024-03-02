@@ -37,5 +37,20 @@ public interface TSdkUAEventOrBuilder extends
    */
   com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRunOrBuilder getFilterRunOrBuilder();
 
+  /**
+   * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3;</code>
+   * @return Whether the userMotion field is set.
+   */
+  boolean hasUserMotion();
+  /**
+   * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3;</code>
+   * @return The userMotion.
+   */
+  com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion getUserMotion();
+  /**
+   * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3;</code>
+   */
+  com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotionOrBuilder getUserMotionOrBuilder();
+
   public com.google.wireless.android.sdk.stats.TSdkUAEvent.ContentCase getContentCase();
 }

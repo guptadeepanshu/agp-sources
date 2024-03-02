@@ -28,4 +28,42 @@ public interface DeviceMirroringSessionOrBuilder extends
    * @return The durationSec.
    */
   long getDurationSec();
+
+  /**
+   * <pre>
+   * Time it took to push the Screen Sharing Agent to the device.
+   * </pre>
+   *
+   * <code>optional int64 agent_push_time_millis = 3;</code>
+   * @return Whether the agentPushTimeMillis field is set.
+   */
+  boolean hasAgentPushTimeMillis();
+  /**
+   * <pre>
+   * Time it took to push the Screen Sharing Agent to the device.
+   * </pre>
+   *
+   * <code>optional int64 agent_push_time_millis = 3;</code>
+   * @return The agentPushTimeMillis.
+   */
+  long getAgentPushTimeMillis();
+
+  /**
+   * <pre>
+   * Time between the end of agent push and the arrival of the first frame.
+   * </pre>
+   *
+   * <code>optional int64 first_frame_delay_millis = 4;</code>
+   * @return Whether the firstFrameDelayMillis field is set.
+   */
+  boolean hasFirstFrameDelayMillis();
+  /**
+   * <pre>
+   * Time between the end of agent push and the arrival of the first frame.
+   * </pre>
+   *
+   * <code>optional int64 first_frame_delay_millis = 4;</code>
+   * @return The firstFrameDelayMillis.
+   */
+  long getFirstFrameDelayMillis();
 }

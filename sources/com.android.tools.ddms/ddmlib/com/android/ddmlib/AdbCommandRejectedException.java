@@ -25,13 +25,13 @@ public class AdbCommandRejectedException extends Exception {
     private final boolean mIsDeviceOffline;
     private final boolean mErrorDuringDeviceSelection;
 
-    AdbCommandRejectedException(String message) {
+    public AdbCommandRejectedException(String message) {
         super(message);
         mIsDeviceOffline = "device offline".equals(message);
         mErrorDuringDeviceSelection = false;
     }
 
-    AdbCommandRejectedException(String message, boolean errorDuringDeviceSelection) {
+    public AdbCommandRejectedException(String message, boolean errorDuringDeviceSelection) {
         super(message);
         mErrorDuringDeviceSelection = errorDuringDeviceSelection;
         mIsDeviceOffline = "device offline".equals(message);

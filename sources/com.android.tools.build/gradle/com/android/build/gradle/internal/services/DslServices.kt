@@ -26,7 +26,6 @@ import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.logging.Logger
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
-import java.io.File
 
 /**
  * Services for the DSL objects.
@@ -37,15 +36,6 @@ import java.io.File
  * plugin will use different services objects.
  */
 interface DslServices: BaseServices {
-
-   /* enum class ProjectType {
-        APPLICATION,
-        LIBRARY,
-        DYNAMIC_FEATURE,
-        TEST,
-        FUSED_LIBRARIES,
-        LINT_STANDALONE
-    }*/
 
     val logger: Logger
     val buildDirectory: DirectoryProperty

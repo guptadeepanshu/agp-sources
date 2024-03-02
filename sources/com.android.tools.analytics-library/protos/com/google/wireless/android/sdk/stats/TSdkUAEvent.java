@@ -30,72 +30,6 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private TSdkUAEvent(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    int mutable_bitField0_ = 0;
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 10: {
-            com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate.Builder subBuilder = null;
-            if (contentCase_ == 1) {
-              subBuilder = ((com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate) content_).toBuilder();
-            }
-            content_ =
-                input.readMessage(com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom((com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate) content_);
-              content_ = subBuilder.buildPartial();
-            }
-            contentCase_ = 1;
-            break;
-          }
-          case 18: {
-            com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Builder subBuilder = null;
-            if (contentCase_ == 2) {
-              subBuilder = ((com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun) content_).toBuilder();
-            }
-            content_ =
-                input.readMessage(com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.PARSER, extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom((com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun) content_);
-              content_ = subBuilder.buildPartial();
-            }
-            contentCase_ = 2;
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TSdkUAEvent_descriptor;
@@ -161,6 +95,25 @@ private static final long serialVersionUID = 0L;
      * @return The activeSteps.
      */
     com.google.protobuf.ByteString getActiveSteps();
+
+    /**
+     * <pre>
+     * The type of state update this entry is
+     * </pre>
+     *
+     * <code>optional .android_studio.TSdkUAEvent.StateUpdate.Type type = 4;</code>
+     * @return Whether the type field is set.
+     */
+    boolean hasType();
+    /**
+     * <pre>
+     * The type of state update this entry is
+     * </pre>
+     *
+     * <code>optional .android_studio.TSdkUAEvent.StateUpdate.Type type = 4;</code>
+     * @return The type.
+     */
+    com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate.Type getType();
   }
   /**
    * Protobuf type {@code android_studio.TSdkUAEvent.StateUpdate}
@@ -176,6 +129,7 @@ private static final long serialVersionUID = 0L;
     }
     private StateUpdate() {
       activeSteps_ = com.google.protobuf.ByteString.EMPTY;
+      type_ = 0;
     }
 
     @java.lang.Override
@@ -190,59 +144,6 @@ private static final long serialVersionUID = 0L;
     getUnknownFields() {
       return this.unknownFields;
     }
-    private StateUpdate(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 8: {
-              bitField0_ |= 0x00000001;
-              timestampMs_ = input.readUInt64();
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              mappingVersion_ = input.readUInt32();
-              break;
-            }
-            case 26: {
-              bitField0_ |= 0x00000004;
-              activeSteps_ = input.readBytes();
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TSdkUAEvent_StateUpdate_descriptor;
@@ -254,6 +155,131 @@ private static final long serialVersionUID = 0L;
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TSdkUAEvent_StateUpdate_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate.class, com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate.Builder.class);
+    }
+
+    /**
+     * <pre>
+     * What does this state update describe?
+     * </pre>
+     *
+     * Protobuf enum {@code android_studio.TSdkUAEvent.StateUpdate.Type}
+     */
+    public enum Type
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>UNSPECIFIED_TYPE = 0;</code>
+       */
+      UNSPECIFIED_TYPE(0),
+      /**
+       * <pre>
+       * The finalized initial state
+       * </pre>
+       *
+       * <code>INIT = 1;</code>
+       */
+      INIT(1),
+      /**
+       * <pre>
+       * A post-init step completion change
+       * </pre>
+       *
+       * <code>DELTA = 2;</code>
+       */
+      DELTA(2),
+      ;
+
+      /**
+       * <code>UNSPECIFIED_TYPE = 0;</code>
+       */
+      public static final int UNSPECIFIED_TYPE_VALUE = 0;
+      /**
+       * <pre>
+       * The finalized initial state
+       * </pre>
+       *
+       * <code>INIT = 1;</code>
+       */
+      public static final int INIT_VALUE = 1;
+      /**
+       * <pre>
+       * A post-init step completion change
+       * </pre>
+       *
+       * <code>DELTA = 2;</code>
+       */
+      public static final int DELTA_VALUE = 2;
+
+
+      public final int getNumber() {
+        return value;
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static Type valueOf(int value) {
+        return forNumber(value);
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       */
+      public static Type forNumber(int value) {
+        switch (value) {
+          case 0: return UNSPECIFIED_TYPE;
+          case 1: return INIT;
+          case 2: return DELTA;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<Type>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          Type> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<Type>() {
+              public Type findValueByNumber(int number) {
+                return Type.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final Type[] VALUES = values();
+
+      public static Type valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private Type(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:android_studio.TSdkUAEvent.StateUpdate.Type)
     }
 
     private int bitField0_;
@@ -330,6 +356,33 @@ private static final long serialVersionUID = 0L;
       return activeSteps_;
     }
 
+    public static final int TYPE_FIELD_NUMBER = 4;
+    private int type_;
+    /**
+     * <pre>
+     * The type of state update this entry is
+     * </pre>
+     *
+     * <code>optional .android_studio.TSdkUAEvent.StateUpdate.Type type = 4;</code>
+     * @return Whether the type field is set.
+     */
+    @java.lang.Override public boolean hasType() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <pre>
+     * The type of state update this entry is
+     * </pre>
+     *
+     * <code>optional .android_studio.TSdkUAEvent.StateUpdate.Type type = 4;</code>
+     * @return The type.
+     */
+    @java.lang.Override public com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate.Type getType() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate.Type result = com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate.Type.valueOf(type_);
+      return result == null ? com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate.Type.UNSPECIFIED_TYPE : result;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -353,7 +406,10 @@ private static final long serialVersionUID = 0L;
       if (((bitField0_ & 0x00000004) != 0)) {
         output.writeBytes(3, activeSteps_);
       }
-      unknownFields.writeTo(output);
+      if (((bitField0_ & 0x00000008) != 0)) {
+        output.writeEnum(4, type_);
+      }
+      getUnknownFields().writeTo(output);
     }
 
     @java.lang.Override
@@ -374,7 +430,11 @@ private static final long serialVersionUID = 0L;
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(3, activeSteps_);
       }
-      size += unknownFields.getSerializedSize();
+      if (((bitField0_ & 0x00000008) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(4, type_);
+      }
+      size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
     }
@@ -404,7 +464,11 @@ private static final long serialVersionUID = 0L;
         if (!getActiveSteps()
             .equals(other.getActiveSteps())) return false;
       }
-      if (!unknownFields.equals(other.unknownFields)) return false;
+      if (hasType() != other.hasType()) return false;
+      if (hasType()) {
+        if (type_ != other.type_) return false;
+      }
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
 
@@ -428,7 +492,11 @@ private static final long serialVersionUID = 0L;
         hash = (37 * hash) + ACTIVE_STEPS_FIELD_NUMBER;
         hash = (53 * hash) + getActiveSteps().hashCode();
       }
-      hash = (29 * hash) + unknownFields.hashCode();
+      if (hasType()) {
+        hash = (37 * hash) + TYPE_FIELD_NUMBER;
+        hash = (53 * hash) + type_;
+      }
+      hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
     }
@@ -545,18 +613,13 @@ private static final long serialVersionUID = 0L;
 
       // Construct using com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate.newBuilder()
       private Builder() {
-        maybeForceBuilderInitialization();
+
       }
 
       private Builder(
           com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
+
       }
       @java.lang.Override
       public Builder clear() {
@@ -567,6 +630,8 @@ private static final long serialVersionUID = 0L;
         bitField0_ = (bitField0_ & ~0x00000002);
         activeSteps_ = com.google.protobuf.ByteString.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000004);
+        type_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -607,6 +672,10 @@ private static final long serialVersionUID = 0L;
           to_bitField0_ |= 0x00000004;
         }
         result.activeSteps_ = activeSteps_;
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.type_ = type_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -665,7 +734,10 @@ private static final long serialVersionUID = 0L;
         if (other.hasActiveSteps()) {
           setActiveSteps(other.getActiveSteps());
         }
-        this.mergeUnknownFields(other.unknownFields);
+        if (other.hasType()) {
+          setType(other.getType());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
       }
@@ -680,17 +752,57 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate parsedMessage = null;
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
         try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 8: {
+                timestampMs_ = input.readUInt64();
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 8
+              case 16: {
+                mappingVersion_ = input.readUInt32();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 16
+              case 26: {
+                activeSteps_ = input.readBytes();
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 26
+              case 32: {
+                int tmpRaw = input.readEnum();
+                com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate.Type tmpValue =
+                    com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate.Type.forNumber(tmpRaw);
+                if (tmpValue == null) {
+                  mergeUnknownVarintField(4, tmpRaw);
+                } else {
+                  type_ = tmpRaw;
+                  bitField0_ |= 0x00000008;
+                }
+                break;
+              } // case 32
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
+          onChanged();
+        } // finally
         return this;
       }
       private int bitField0_;
@@ -846,6 +958,65 @@ private static final long serialVersionUID = 0L;
         onChanged();
         return this;
       }
+
+      private int type_ = 0;
+      /**
+       * <pre>
+       * The type of state update this entry is
+       * </pre>
+       *
+       * <code>optional .android_studio.TSdkUAEvent.StateUpdate.Type type = 4;</code>
+       * @return Whether the type field is set.
+       */
+      @java.lang.Override public boolean hasType() {
+        return ((bitField0_ & 0x00000008) != 0);
+      }
+      /**
+       * <pre>
+       * The type of state update this entry is
+       * </pre>
+       *
+       * <code>optional .android_studio.TSdkUAEvent.StateUpdate.Type type = 4;</code>
+       * @return The type.
+       */
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate.Type getType() {
+        @SuppressWarnings("deprecation")
+        com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate.Type result = com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate.Type.valueOf(type_);
+        return result == null ? com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate.Type.UNSPECIFIED_TYPE : result;
+      }
+      /**
+       * <pre>
+       * The type of state update this entry is
+       * </pre>
+       *
+       * <code>optional .android_studio.TSdkUAEvent.StateUpdate.Type type = 4;</code>
+       * @param value The type to set.
+       * @return This builder for chaining.
+       */
+      public Builder setType(com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate.Type value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000008;
+        type_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The type of state update this entry is
+       * </pre>
+       *
+       * <code>optional .android_studio.TSdkUAEvent.StateUpdate.Type type = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearType() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        type_ = 0;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -879,7 +1050,18 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new StateUpdate(input, extensionRegistry);
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
       }
     };
 
@@ -958,6 +1140,17 @@ private static final long serialVersionUID = 0L;
      */
     com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Problem getProblem();
 
+    /**
+     * <code>optional .android_studio.TSdkUAEvent.FilterRun.Origin origin = 6;</code>
+     * @return Whether the origin field is set.
+     */
+    boolean hasOrigin();
+    /**
+     * <code>optional .android_studio.TSdkUAEvent.FilterRun.Origin origin = 6;</code>
+     * @return The origin.
+     */
+    com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Origin getOrigin();
+
     public com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.ResultCase getResultCase();
   }
   /**
@@ -973,6 +1166,7 @@ private static final long serialVersionUID = 0L;
       super(builder);
     }
     private FilterRun() {
+      origin_ = 0;
     }
 
     @java.lang.Override
@@ -986,76 +1180,6 @@ private static final long serialVersionUID = 0L;
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
-    }
-    private FilterRun(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 8: {
-              bitField0_ |= 0x00000001;
-              filterId_ = input.readUInt32();
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              filterVersion_ = input.readUInt32();
-              break;
-            }
-            case 24: {
-              bitField0_ |= 0x00000004;
-              elapsedMs_ = input.readUInt32();
-              break;
-            }
-            case 32: {
-              result_ = input.readUInt32();
-              resultCase_ = 4;
-              break;
-            }
-            case 40: {
-              int rawValue = input.readEnum();
-              @SuppressWarnings("deprecation")
-              com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Problem value = com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Problem.valueOf(rawValue);
-              if (value == null) {
-                unknownFields.mergeVarintField(5, rawValue);
-              } else {
-                resultCase_ = 5;
-                result_ = rawValue;
-              }
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
@@ -1076,9 +1200,9 @@ private static final long serialVersionUID = 0L;
     public enum Problem
         implements com.google.protobuf.ProtocolMessageEnum {
       /**
-       * <code>UNSPECIFIED = 0;</code>
+       * <code>UNSPECIFIED_PROBLEM = 0;</code>
        */
-      UNSPECIFIED(0),
+      UNSPECIFIED_PROBLEM(0),
       /**
        * <code>TIMEOUT = 1;</code>
        */
@@ -1090,9 +1214,9 @@ private static final long serialVersionUID = 0L;
       ;
 
       /**
-       * <code>UNSPECIFIED = 0;</code>
+       * <code>UNSPECIFIED_PROBLEM = 0;</code>
        */
-      public static final int UNSPECIFIED_VALUE = 0;
+      public static final int UNSPECIFIED_PROBLEM_VALUE = 0;
       /**
        * <code>TIMEOUT = 1;</code>
        */
@@ -1123,7 +1247,7 @@ private static final long serialVersionUID = 0L;
        */
       public static Problem forNumber(int value) {
         switch (value) {
-          case 0: return UNSPECIFIED;
+          case 0: return UNSPECIFIED_PROBLEM;
           case 1: return TIMEOUT;
           case 2: return ERROR;
           default: return null;
@@ -1173,6 +1297,131 @@ private static final long serialVersionUID = 0L;
       }
 
       // @@protoc_insertion_point(enum_scope:android_studio.TSdkUAEvent.FilterRun.Problem)
+    }
+
+    /**
+     * <pre>
+     * What kicked off this filter run?
+     * </pre>
+     *
+     * Protobuf enum {@code android_studio.TSdkUAEvent.FilterRun.Origin}
+     */
+    public enum Origin
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>UNSPECIFIED_ORIGIN = 0;</code>
+       */
+      UNSPECIFIED_ORIGIN(0),
+      /**
+       * <pre>
+       * The "run all filters at assistant open" behavior
+       * </pre>
+       *
+       * <code>RUN_ON_START = 1;</code>
+       */
+      RUN_ON_START(1),
+      /**
+       * <pre>
+       * The user pressed a "rerun filter" button
+       * </pre>
+       *
+       * <code>RERUN_BUTTON = 2;</code>
+       */
+      RERUN_BUTTON(2),
+      ;
+
+      /**
+       * <code>UNSPECIFIED_ORIGIN = 0;</code>
+       */
+      public static final int UNSPECIFIED_ORIGIN_VALUE = 0;
+      /**
+       * <pre>
+       * The "run all filters at assistant open" behavior
+       * </pre>
+       *
+       * <code>RUN_ON_START = 1;</code>
+       */
+      public static final int RUN_ON_START_VALUE = 1;
+      /**
+       * <pre>
+       * The user pressed a "rerun filter" button
+       * </pre>
+       *
+       * <code>RERUN_BUTTON = 2;</code>
+       */
+      public static final int RERUN_BUTTON_VALUE = 2;
+
+
+      public final int getNumber() {
+        return value;
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static Origin valueOf(int value) {
+        return forNumber(value);
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       */
+      public static Origin forNumber(int value) {
+        switch (value) {
+          case 0: return UNSPECIFIED_ORIGIN;
+          case 1: return RUN_ON_START;
+          case 2: return RERUN_BUTTON;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<Origin>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          Origin> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<Origin>() {
+              public Origin findValueByNumber(int number) {
+                return Origin.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.getDescriptor().getEnumTypes().get(1);
+      }
+
+      private static final Origin[] VALUES = values();
+
+      public static Origin valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private Origin(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:android_studio.TSdkUAEvent.FilterRun.Origin)
     }
 
     private int bitField0_;
@@ -1312,9 +1561,28 @@ private static final long serialVersionUID = 0L;
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Problem result = com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Problem.valueOf(
             (java.lang.Integer) result_);
-        return result == null ? com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Problem.UNSPECIFIED : result;
+        return result == null ? com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Problem.UNSPECIFIED_PROBLEM : result;
       }
-      return com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Problem.UNSPECIFIED;
+      return com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Problem.UNSPECIFIED_PROBLEM;
+    }
+
+    public static final int ORIGIN_FIELD_NUMBER = 6;
+    private int origin_;
+    /**
+     * <code>optional .android_studio.TSdkUAEvent.FilterRun.Origin origin = 6;</code>
+     * @return Whether the origin field is set.
+     */
+    @java.lang.Override public boolean hasOrigin() {
+      return ((bitField0_ & 0x00000020) != 0);
+    }
+    /**
+     * <code>optional .android_studio.TSdkUAEvent.FilterRun.Origin origin = 6;</code>
+     * @return The origin.
+     */
+    @java.lang.Override public com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Origin getOrigin() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Origin result = com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Origin.valueOf(origin_);
+      return result == null ? com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Origin.UNSPECIFIED_ORIGIN : result;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -1347,7 +1615,10 @@ private static final long serialVersionUID = 0L;
       if (resultCase_ == 5) {
         output.writeEnum(5, ((java.lang.Integer) result_));
       }
-      unknownFields.writeTo(output);
+      if (((bitField0_ & 0x00000020) != 0)) {
+        output.writeEnum(6, origin_);
+      }
+      getUnknownFields().writeTo(output);
     }
 
     @java.lang.Override
@@ -1377,7 +1648,11 @@ private static final long serialVersionUID = 0L;
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(5, ((java.lang.Integer) result_));
       }
-      size += unknownFields.getSerializedSize();
+      if (((bitField0_ & 0x00000020) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(6, origin_);
+      }
+      size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
     }
@@ -1407,6 +1682,10 @@ private static final long serialVersionUID = 0L;
         if (getElapsedMs()
             != other.getElapsedMs()) return false;
       }
+      if (hasOrigin() != other.hasOrigin()) return false;
+      if (hasOrigin()) {
+        if (origin_ != other.origin_) return false;
+      }
       if (!getResultCase().equals(other.getResultCase())) return false;
       switch (resultCase_) {
         case 4:
@@ -1420,7 +1699,7 @@ private static final long serialVersionUID = 0L;
         case 0:
         default:
       }
-      if (!unknownFields.equals(other.unknownFields)) return false;
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
 
@@ -1443,6 +1722,10 @@ private static final long serialVersionUID = 0L;
         hash = (37 * hash) + ELAPSED_MS_FIELD_NUMBER;
         hash = (53 * hash) + getElapsedMs();
       }
+      if (hasOrigin()) {
+        hash = (37 * hash) + ORIGIN_FIELD_NUMBER;
+        hash = (53 * hash) + origin_;
+      }
       switch (resultCase_) {
         case 4:
           hash = (37 * hash) + COUNT_FIELD_NUMBER;
@@ -1455,7 +1738,7 @@ private static final long serialVersionUID = 0L;
         case 0:
         default:
       }
-      hash = (29 * hash) + unknownFields.hashCode();
+      hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
     }
@@ -1572,18 +1855,13 @@ private static final long serialVersionUID = 0L;
 
       // Construct using com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.newBuilder()
       private Builder() {
-        maybeForceBuilderInitialization();
+
       }
 
       private Builder(
           com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
+
       }
       @java.lang.Override
       public Builder clear() {
@@ -1594,6 +1872,8 @@ private static final long serialVersionUID = 0L;
         bitField0_ = (bitField0_ & ~0x00000002);
         elapsedMs_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
+        origin_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000020);
         resultCase_ = 0;
         result_ = null;
         return this;
@@ -1642,6 +1922,10 @@ private static final long serialVersionUID = 0L;
         if (resultCase_ == 5) {
           result.result_ = result_;
         }
+        if (((from_bitField0_ & 0x00000020) != 0)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.origin_ = origin_;
         result.bitField0_ = to_bitField0_;
         result.resultCase_ = resultCase_;
         onBuilt();
@@ -1701,6 +1985,9 @@ private static final long serialVersionUID = 0L;
         if (other.hasElapsedMs()) {
           setElapsedMs(other.getElapsedMs());
         }
+        if (other.hasOrigin()) {
+          setOrigin(other.getOrigin());
+        }
         switch (other.getResultCase()) {
           case COUNT: {
             setCount(other.getCount());
@@ -1714,7 +2001,7 @@ private static final long serialVersionUID = 0L;
             break;
           }
         }
-        this.mergeUnknownFields(other.unknownFields);
+        this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
       }
@@ -1729,17 +2016,74 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun parsedMessage = null;
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
         try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 8: {
+                filterId_ = input.readUInt32();
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 8
+              case 16: {
+                filterVersion_ = input.readUInt32();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 16
+              case 24: {
+                elapsedMs_ = input.readUInt32();
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 24
+              case 32: {
+                result_ = input.readUInt32();
+                resultCase_ = 4;
+                break;
+              } // case 32
+              case 40: {
+                int rawValue = input.readEnum();
+                com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Problem value =
+                    com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Problem.forNumber(rawValue);
+                if (value == null) {
+                  mergeUnknownVarintField(5, rawValue);
+                } else {
+                  resultCase_ = 5;
+                  result_ = rawValue;
+                }
+                break;
+              } // case 40
+              case 48: {
+                int tmpRaw = input.readEnum();
+                com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Origin tmpValue =
+                    com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Origin.forNumber(tmpRaw);
+                if (tmpValue == null) {
+                  mergeUnknownVarintField(6, tmpRaw);
+                } else {
+                  origin_ = tmpRaw;
+                  bitField0_ |= 0x00000020;
+                }
+                break;
+              } // case 48
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
+          onChanged();
+        } // finally
         return this;
       }
       private int resultCase_ = 0;
@@ -1935,9 +2279,9 @@ private static final long serialVersionUID = 0L;
           @SuppressWarnings("deprecation")
           com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Problem result = com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Problem.valueOf(
               (java.lang.Integer) result_);
-          return result == null ? com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Problem.UNSPECIFIED : result;
+          return result == null ? com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Problem.UNSPECIFIED_PROBLEM : result;
         }
-        return com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Problem.UNSPECIFIED;
+        return com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Problem.UNSPECIFIED_PROBLEM;
       }
       /**
        * <code>.android_studio.TSdkUAEvent.FilterRun.Problem problem = 5;</code>
@@ -1963,6 +2307,49 @@ private static final long serialVersionUID = 0L;
           result_ = null;
           onChanged();
         }
+        return this;
+      }
+
+      private int origin_ = 0;
+      /**
+       * <code>optional .android_studio.TSdkUAEvent.FilterRun.Origin origin = 6;</code>
+       * @return Whether the origin field is set.
+       */
+      @java.lang.Override public boolean hasOrigin() {
+        return ((bitField0_ & 0x00000020) != 0);
+      }
+      /**
+       * <code>optional .android_studio.TSdkUAEvent.FilterRun.Origin origin = 6;</code>
+       * @return The origin.
+       */
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Origin getOrigin() {
+        @SuppressWarnings("deprecation")
+        com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Origin result = com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Origin.valueOf(origin_);
+        return result == null ? com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Origin.UNSPECIFIED_ORIGIN : result;
+      }
+      /**
+       * <code>optional .android_studio.TSdkUAEvent.FilterRun.Origin origin = 6;</code>
+       * @param value The origin to set.
+       * @return This builder for chaining.
+       */
+      public Builder setOrigin(com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Origin value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000020;
+        origin_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .android_studio.TSdkUAEvent.FilterRun.Origin origin = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearOrigin() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        origin_ = 0;
+        onChanged();
         return this;
       }
       @java.lang.Override
@@ -1998,7 +2385,18 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new FilterRun(input, extensionRegistry);
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
       }
     };
 
@@ -2018,6 +2416,2228 @@ private static final long serialVersionUID = 0L;
 
   }
 
+  public interface UserMotionOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:android_studio.TSdkUAEvent.UserMotion)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+     * @return Whether the opened field is set.
+     */
+    boolean hasOpened();
+    /**
+     * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+     * @return The opened.
+     */
+    com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened getOpened();
+    /**
+     * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+     */
+    com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.OpenedOrBuilder getOpenedOrBuilder();
+
+    /**
+     * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+     * @return Whether the closed field is set.
+     */
+    boolean hasClosed();
+    /**
+     * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+     * @return The closed.
+     */
+    com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed getClosed();
+    /**
+     * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+     */
+    com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.ClosedOrBuilder getClosedOrBuilder();
+
+    public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.MotionCase getMotionCase();
+  }
+  /**
+   * <pre>
+   * Tracking user movement through the assistant
+   * </pre>
+   *
+   * Protobuf type {@code android_studio.TSdkUAEvent.UserMotion}
+   */
+  public static final class UserMotion extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:android_studio.TSdkUAEvent.UserMotion)
+      UserMotionOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use UserMotion.newBuilder() to construct.
+    private UserMotion(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private UserMotion() {
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new UserMotion();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TSdkUAEvent_UserMotion_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TSdkUAEvent_UserMotion_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.class, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Builder.class);
+    }
+
+    public interface OpenedOrBuilder extends
+        // @@protoc_insertion_point(interface_extends:android_studio.TSdkUAEvent.UserMotion.Opened)
+        com.google.protobuf.MessageOrBuilder {
+
+      /**
+       * <code>optional string block_id = 1;</code>
+       * @return Whether the blockId field is set.
+       */
+      boolean hasBlockId();
+      /**
+       * <code>optional string block_id = 1;</code>
+       * @return The blockId.
+       */
+      java.lang.String getBlockId();
+      /**
+       * <code>optional string block_id = 1;</code>
+       * @return The bytes for blockId.
+       */
+      com.google.protobuf.ByteString
+          getBlockIdBytes();
+    }
+    /**
+     * <pre>
+     * User opened part of the assistant
+     * </pre>
+     *
+     * Protobuf type {@code android_studio.TSdkUAEvent.UserMotion.Opened}
+     */
+    public static final class Opened extends
+        com.google.protobuf.GeneratedMessageV3 implements
+        // @@protoc_insertion_point(message_implements:android_studio.TSdkUAEvent.UserMotion.Opened)
+        OpenedOrBuilder {
+    private static final long serialVersionUID = 0L;
+      // Use Opened.newBuilder() to construct.
+      private Opened(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+      }
+      private Opened() {
+        blockId_ = "";
+      }
+
+      @java.lang.Override
+      @SuppressWarnings({"unused"})
+      protected java.lang.Object newInstance(
+          UnusedPrivateParameter unused) {
+        return new Opened();
+      }
+
+      @java.lang.Override
+      public final com.google.protobuf.UnknownFieldSet
+      getUnknownFields() {
+        return this.unknownFields;
+      }
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TSdkUAEvent_UserMotion_Opened_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TSdkUAEvent_UserMotion_Opened_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened.class, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened.Builder.class);
+      }
+
+      private int bitField0_;
+      public static final int BLOCK_ID_FIELD_NUMBER = 1;
+      private volatile java.lang.Object blockId_;
+      /**
+       * <code>optional string block_id = 1;</code>
+       * @return Whether the blockId field is set.
+       */
+      @java.lang.Override
+      public boolean hasBlockId() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <code>optional string block_id = 1;</code>
+       * @return The blockId.
+       */
+      @java.lang.Override
+      public java.lang.String getBlockId() {
+        java.lang.Object ref = blockId_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            blockId_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string block_id = 1;</code>
+       * @return The bytes for blockId.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getBlockIdBytes() {
+        java.lang.Object ref = blockId_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          blockId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      private byte memoizedIsInitialized = -1;
+      @java.lang.Override
+      public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (isInitialized == 1) return true;
+        if (isInitialized == 0) return false;
+
+        memoizedIsInitialized = 1;
+        return true;
+      }
+
+      @java.lang.Override
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        if (((bitField0_ & 0x00000001) != 0)) {
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 1, blockId_);
+        }
+        getUnknownFields().writeTo(output);
+      }
+
+      @java.lang.Override
+      public int getSerializedSize() {
+        int size = memoizedSize;
+        if (size != -1) return size;
+
+        size = 0;
+        if (((bitField0_ & 0x00000001) != 0)) {
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, blockId_);
+        }
+        size += getUnknownFields().getSerializedSize();
+        memoizedSize = size;
+        return size;
+      }
+
+      @java.lang.Override
+      public boolean equals(final java.lang.Object obj) {
+        if (obj == this) {
+         return true;
+        }
+        if (!(obj instanceof com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened)) {
+          return super.equals(obj);
+        }
+        com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened other = (com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened) obj;
+
+        if (hasBlockId() != other.hasBlockId()) return false;
+        if (hasBlockId()) {
+          if (!getBlockId()
+              .equals(other.getBlockId())) return false;
+        }
+        if (!getUnknownFields().equals(other.getUnknownFields())) return false;
+        return true;
+      }
+
+      @java.lang.Override
+      public int hashCode() {
+        if (memoizedHashCode != 0) {
+          return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        if (hasBlockId()) {
+          hash = (37 * hash) + BLOCK_ID_FIELD_NUMBER;
+          hash = (53 * hash) + getBlockId().hashCode();
+        }
+        hash = (29 * hash) + getUnknownFields().hashCode();
+        memoizedHashCode = hash;
+        return hash;
+      }
+
+      public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened parseFrom(
+          java.nio.ByteBuffer data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened parseFrom(
+          java.nio.ByteBuffer data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input);
+      }
+      public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+
+      @java.lang.Override
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+      }
+      public static Builder newBuilder(com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+      }
+      @java.lang.Override
+      public Builder toBuilder() {
+        return this == DEFAULT_INSTANCE
+            ? new Builder() : new Builder().mergeFrom(this);
+      }
+
+      @java.lang.Override
+      protected Builder newBuilderForType(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+      }
+      /**
+       * <pre>
+       * User opened part of the assistant
+       * </pre>
+       *
+       * Protobuf type {@code android_studio.TSdkUAEvent.UserMotion.Opened}
+       */
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+          // @@protoc_insertion_point(builder_implements:android_studio.TSdkUAEvent.UserMotion.Opened)
+          com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.OpenedOrBuilder {
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TSdkUAEvent_UserMotion_Opened_descriptor;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TSdkUAEvent_UserMotion_Opened_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened.class, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened.Builder.class);
+        }
+
+        // Construct using com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened.newBuilder()
+        private Builder() {
+
+        }
+
+        private Builder(
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+          super(parent);
+
+        }
+        @java.lang.Override
+        public Builder clear() {
+          super.clear();
+          blockId_ = "";
+          bitField0_ = (bitField0_ & ~0x00000001);
+          return this;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor
+            getDescriptorForType() {
+          return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TSdkUAEvent_UserMotion_Opened_descriptor;
+        }
+
+        @java.lang.Override
+        public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened getDefaultInstanceForType() {
+          return com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened.getDefaultInstance();
+        }
+
+        @java.lang.Override
+        public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened build() {
+          com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened result = buildPartial();
+          if (!result.isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return result;
+        }
+
+        @java.lang.Override
+        public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened buildPartial() {
+          com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened result = new com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened(this);
+          int from_bitField0_ = bitField0_;
+          int to_bitField0_ = 0;
+          if (((from_bitField0_ & 0x00000001) != 0)) {
+            to_bitField0_ |= 0x00000001;
+          }
+          result.blockId_ = blockId_;
+          result.bitField0_ = to_bitField0_;
+          onBuilt();
+          return result;
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+          return super.clone();
+        }
+        @java.lang.Override
+        public Builder setField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return super.setField(field, value);
+        }
+        @java.lang.Override
+        public Builder clearField(
+            com.google.protobuf.Descriptors.FieldDescriptor field) {
+          return super.clearField(field);
+        }
+        @java.lang.Override
+        public Builder clearOneof(
+            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+          return super.clearOneof(oneof);
+        }
+        @java.lang.Override
+        public Builder setRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            int index, java.lang.Object value) {
+          return super.setRepeatedField(field, index, value);
+        }
+        @java.lang.Override
+        public Builder addRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return super.addRepeatedField(field, value);
+        }
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+          if (other instanceof com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened) {
+            return mergeFrom((com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened)other);
+          } else {
+            super.mergeFrom(other);
+            return this;
+          }
+        }
+
+        public Builder mergeFrom(com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened other) {
+          if (other == com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened.getDefaultInstance()) return this;
+          if (other.hasBlockId()) {
+            bitField0_ |= 0x00000001;
+            blockId_ = other.blockId_;
+            onChanged();
+          }
+          this.mergeUnknownFields(other.getUnknownFields());
+          onChanged();
+          return this;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+          return true;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          if (extensionRegistry == null) {
+            throw new java.lang.NullPointerException();
+          }
+          try {
+            boolean done = false;
+            while (!done) {
+              int tag = input.readTag();
+              switch (tag) {
+                case 0:
+                  done = true;
+                  break;
+                case 10: {
+                  blockId_ = input.readBytes();
+                  bitField0_ |= 0x00000001;
+                  break;
+                } // case 10
+                default: {
+                  if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                    done = true; // was an endgroup tag
+                  }
+                  break;
+                } // default:
+              } // switch (tag)
+            } // while (!done)
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw e.unwrapIOException();
+          } finally {
+            onChanged();
+          } // finally
+          return this;
+        }
+        private int bitField0_;
+
+        private java.lang.Object blockId_ = "";
+        /**
+         * <code>optional string block_id = 1;</code>
+         * @return Whether the blockId field is set.
+         */
+        public boolean hasBlockId() {
+          return ((bitField0_ & 0x00000001) != 0);
+        }
+        /**
+         * <code>optional string block_id = 1;</code>
+         * @return The blockId.
+         */
+        public java.lang.String getBlockId() {
+          java.lang.Object ref = blockId_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              blockId_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string block_id = 1;</code>
+         * @return The bytes for blockId.
+         */
+        public com.google.protobuf.ByteString
+            getBlockIdBytes() {
+          java.lang.Object ref = blockId_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            blockId_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string block_id = 1;</code>
+         * @param value The blockId to set.
+         * @return This builder for chaining.
+         */
+        public Builder setBlockId(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+          blockId_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string block_id = 1;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearBlockId() {
+          bitField0_ = (bitField0_ & ~0x00000001);
+          blockId_ = getDefaultInstance().getBlockId();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string block_id = 1;</code>
+         * @param value The bytes for blockId to set.
+         * @return This builder for chaining.
+         */
+        public Builder setBlockIdBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+          blockId_ = value;
+          onChanged();
+          return this;
+        }
+        @java.lang.Override
+        public final Builder setUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.setUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.mergeUnknownFields(unknownFields);
+        }
+
+
+        // @@protoc_insertion_point(builder_scope:android_studio.TSdkUAEvent.UserMotion.Opened)
+      }
+
+      // @@protoc_insertion_point(class_scope:android_studio.TSdkUAEvent.UserMotion.Opened)
+      private static final com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened DEFAULT_INSTANCE;
+      static {
+        DEFAULT_INSTANCE = new com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened();
+      }
+
+      public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+      }
+
+      @java.lang.Deprecated public static final com.google.protobuf.Parser<Opened>
+          PARSER = new com.google.protobuf.AbstractParser<Opened>() {
+        @java.lang.Override
+        public Opened parsePartialFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          Builder builder = newBuilder();
+          try {
+            builder.mergeFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw e.setUnfinishedMessage(builder.buildPartial());
+          } catch (com.google.protobuf.UninitializedMessageException e) {
+            throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+          } catch (java.io.IOException e) {
+            throw new com.google.protobuf.InvalidProtocolBufferException(e)
+                .setUnfinishedMessage(builder.buildPartial());
+          }
+          return builder.buildPartial();
+        }
+      };
+
+      public static com.google.protobuf.Parser<Opened> parser() {
+        return PARSER;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Parser<Opened> getParserForType() {
+        return PARSER;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+      }
+
+    }
+
+    public interface ClosedOrBuilder extends
+        // @@protoc_insertion_point(interface_extends:android_studio.TSdkUAEvent.UserMotion.Closed)
+        com.google.protobuf.MessageOrBuilder {
+
+      /**
+       * <code>optional string block_id = 1;</code>
+       * @return Whether the blockId field is set.
+       */
+      boolean hasBlockId();
+      /**
+       * <code>optional string block_id = 1;</code>
+       * @return The blockId.
+       */
+      java.lang.String getBlockId();
+      /**
+       * <code>optional string block_id = 1;</code>
+       * @return The bytes for blockId.
+       */
+      com.google.protobuf.ByteString
+          getBlockIdBytes();
+
+      /**
+       * <code>optional uint64 elapsed_ms = 2;</code>
+       * @return Whether the elapsedMs field is set.
+       */
+      boolean hasElapsedMs();
+      /**
+       * <code>optional uint64 elapsed_ms = 2;</code>
+       * @return The elapsedMs.
+       */
+      long getElapsedMs();
+    }
+    /**
+     * <pre>
+     * User closed part of the assistant w/ how long they were there
+     * </pre>
+     *
+     * Protobuf type {@code android_studio.TSdkUAEvent.UserMotion.Closed}
+     */
+    public static final class Closed extends
+        com.google.protobuf.GeneratedMessageV3 implements
+        // @@protoc_insertion_point(message_implements:android_studio.TSdkUAEvent.UserMotion.Closed)
+        ClosedOrBuilder {
+    private static final long serialVersionUID = 0L;
+      // Use Closed.newBuilder() to construct.
+      private Closed(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+      }
+      private Closed() {
+        blockId_ = "";
+      }
+
+      @java.lang.Override
+      @SuppressWarnings({"unused"})
+      protected java.lang.Object newInstance(
+          UnusedPrivateParameter unused) {
+        return new Closed();
+      }
+
+      @java.lang.Override
+      public final com.google.protobuf.UnknownFieldSet
+      getUnknownFields() {
+        return this.unknownFields;
+      }
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TSdkUAEvent_UserMotion_Closed_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TSdkUAEvent_UserMotion_Closed_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed.class, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed.Builder.class);
+      }
+
+      private int bitField0_;
+      public static final int BLOCK_ID_FIELD_NUMBER = 1;
+      private volatile java.lang.Object blockId_;
+      /**
+       * <code>optional string block_id = 1;</code>
+       * @return Whether the blockId field is set.
+       */
+      @java.lang.Override
+      public boolean hasBlockId() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <code>optional string block_id = 1;</code>
+       * @return The blockId.
+       */
+      @java.lang.Override
+      public java.lang.String getBlockId() {
+        java.lang.Object ref = blockId_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            blockId_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string block_id = 1;</code>
+       * @return The bytes for blockId.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getBlockIdBytes() {
+        java.lang.Object ref = blockId_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          blockId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int ELAPSED_MS_FIELD_NUMBER = 2;
+      private long elapsedMs_;
+      /**
+       * <code>optional uint64 elapsed_ms = 2;</code>
+       * @return Whether the elapsedMs field is set.
+       */
+      @java.lang.Override
+      public boolean hasElapsedMs() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <code>optional uint64 elapsed_ms = 2;</code>
+       * @return The elapsedMs.
+       */
+      @java.lang.Override
+      public long getElapsedMs() {
+        return elapsedMs_;
+      }
+
+      private byte memoizedIsInitialized = -1;
+      @java.lang.Override
+      public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (isInitialized == 1) return true;
+        if (isInitialized == 0) return false;
+
+        memoizedIsInitialized = 1;
+        return true;
+      }
+
+      @java.lang.Override
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        if (((bitField0_ & 0x00000001) != 0)) {
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 1, blockId_);
+        }
+        if (((bitField0_ & 0x00000002) != 0)) {
+          output.writeUInt64(2, elapsedMs_);
+        }
+        getUnknownFields().writeTo(output);
+      }
+
+      @java.lang.Override
+      public int getSerializedSize() {
+        int size = memoizedSize;
+        if (size != -1) return size;
+
+        size = 0;
+        if (((bitField0_ & 0x00000001) != 0)) {
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, blockId_);
+        }
+        if (((bitField0_ & 0x00000002) != 0)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeUInt64Size(2, elapsedMs_);
+        }
+        size += getUnknownFields().getSerializedSize();
+        memoizedSize = size;
+        return size;
+      }
+
+      @java.lang.Override
+      public boolean equals(final java.lang.Object obj) {
+        if (obj == this) {
+         return true;
+        }
+        if (!(obj instanceof com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed)) {
+          return super.equals(obj);
+        }
+        com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed other = (com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed) obj;
+
+        if (hasBlockId() != other.hasBlockId()) return false;
+        if (hasBlockId()) {
+          if (!getBlockId()
+              .equals(other.getBlockId())) return false;
+        }
+        if (hasElapsedMs() != other.hasElapsedMs()) return false;
+        if (hasElapsedMs()) {
+          if (getElapsedMs()
+              != other.getElapsedMs()) return false;
+        }
+        if (!getUnknownFields().equals(other.getUnknownFields())) return false;
+        return true;
+      }
+
+      @java.lang.Override
+      public int hashCode() {
+        if (memoizedHashCode != 0) {
+          return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        if (hasBlockId()) {
+          hash = (37 * hash) + BLOCK_ID_FIELD_NUMBER;
+          hash = (53 * hash) + getBlockId().hashCode();
+        }
+        if (hasElapsedMs()) {
+          hash = (37 * hash) + ELAPSED_MS_FIELD_NUMBER;
+          hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+              getElapsedMs());
+        }
+        hash = (29 * hash) + getUnknownFields().hashCode();
+        memoizedHashCode = hash;
+        return hash;
+      }
+
+      public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed parseFrom(
+          java.nio.ByteBuffer data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed parseFrom(
+          java.nio.ByteBuffer data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input);
+      }
+      public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+
+      @java.lang.Override
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+      }
+      public static Builder newBuilder(com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+      }
+      @java.lang.Override
+      public Builder toBuilder() {
+        return this == DEFAULT_INSTANCE
+            ? new Builder() : new Builder().mergeFrom(this);
+      }
+
+      @java.lang.Override
+      protected Builder newBuilderForType(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+      }
+      /**
+       * <pre>
+       * User closed part of the assistant w/ how long they were there
+       * </pre>
+       *
+       * Protobuf type {@code android_studio.TSdkUAEvent.UserMotion.Closed}
+       */
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+          // @@protoc_insertion_point(builder_implements:android_studio.TSdkUAEvent.UserMotion.Closed)
+          com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.ClosedOrBuilder {
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TSdkUAEvent_UserMotion_Closed_descriptor;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TSdkUAEvent_UserMotion_Closed_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed.class, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed.Builder.class);
+        }
+
+        // Construct using com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed.newBuilder()
+        private Builder() {
+
+        }
+
+        private Builder(
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+          super(parent);
+
+        }
+        @java.lang.Override
+        public Builder clear() {
+          super.clear();
+          blockId_ = "";
+          bitField0_ = (bitField0_ & ~0x00000001);
+          elapsedMs_ = 0L;
+          bitField0_ = (bitField0_ & ~0x00000002);
+          return this;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor
+            getDescriptorForType() {
+          return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TSdkUAEvent_UserMotion_Closed_descriptor;
+        }
+
+        @java.lang.Override
+        public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed getDefaultInstanceForType() {
+          return com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed.getDefaultInstance();
+        }
+
+        @java.lang.Override
+        public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed build() {
+          com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed result = buildPartial();
+          if (!result.isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return result;
+        }
+
+        @java.lang.Override
+        public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed buildPartial() {
+          com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed result = new com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed(this);
+          int from_bitField0_ = bitField0_;
+          int to_bitField0_ = 0;
+          if (((from_bitField0_ & 0x00000001) != 0)) {
+            to_bitField0_ |= 0x00000001;
+          }
+          result.blockId_ = blockId_;
+          if (((from_bitField0_ & 0x00000002) != 0)) {
+            result.elapsedMs_ = elapsedMs_;
+            to_bitField0_ |= 0x00000002;
+          }
+          result.bitField0_ = to_bitField0_;
+          onBuilt();
+          return result;
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+          return super.clone();
+        }
+        @java.lang.Override
+        public Builder setField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return super.setField(field, value);
+        }
+        @java.lang.Override
+        public Builder clearField(
+            com.google.protobuf.Descriptors.FieldDescriptor field) {
+          return super.clearField(field);
+        }
+        @java.lang.Override
+        public Builder clearOneof(
+            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+          return super.clearOneof(oneof);
+        }
+        @java.lang.Override
+        public Builder setRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            int index, java.lang.Object value) {
+          return super.setRepeatedField(field, index, value);
+        }
+        @java.lang.Override
+        public Builder addRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return super.addRepeatedField(field, value);
+        }
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+          if (other instanceof com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed) {
+            return mergeFrom((com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed)other);
+          } else {
+            super.mergeFrom(other);
+            return this;
+          }
+        }
+
+        public Builder mergeFrom(com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed other) {
+          if (other == com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed.getDefaultInstance()) return this;
+          if (other.hasBlockId()) {
+            bitField0_ |= 0x00000001;
+            blockId_ = other.blockId_;
+            onChanged();
+          }
+          if (other.hasElapsedMs()) {
+            setElapsedMs(other.getElapsedMs());
+          }
+          this.mergeUnknownFields(other.getUnknownFields());
+          onChanged();
+          return this;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+          return true;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          if (extensionRegistry == null) {
+            throw new java.lang.NullPointerException();
+          }
+          try {
+            boolean done = false;
+            while (!done) {
+              int tag = input.readTag();
+              switch (tag) {
+                case 0:
+                  done = true;
+                  break;
+                case 10: {
+                  blockId_ = input.readBytes();
+                  bitField0_ |= 0x00000001;
+                  break;
+                } // case 10
+                case 16: {
+                  elapsedMs_ = input.readUInt64();
+                  bitField0_ |= 0x00000002;
+                  break;
+                } // case 16
+                default: {
+                  if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                    done = true; // was an endgroup tag
+                  }
+                  break;
+                } // default:
+              } // switch (tag)
+            } // while (!done)
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw e.unwrapIOException();
+          } finally {
+            onChanged();
+          } // finally
+          return this;
+        }
+        private int bitField0_;
+
+        private java.lang.Object blockId_ = "";
+        /**
+         * <code>optional string block_id = 1;</code>
+         * @return Whether the blockId field is set.
+         */
+        public boolean hasBlockId() {
+          return ((bitField0_ & 0x00000001) != 0);
+        }
+        /**
+         * <code>optional string block_id = 1;</code>
+         * @return The blockId.
+         */
+        public java.lang.String getBlockId() {
+          java.lang.Object ref = blockId_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              blockId_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string block_id = 1;</code>
+         * @return The bytes for blockId.
+         */
+        public com.google.protobuf.ByteString
+            getBlockIdBytes() {
+          java.lang.Object ref = blockId_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            blockId_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string block_id = 1;</code>
+         * @param value The blockId to set.
+         * @return This builder for chaining.
+         */
+        public Builder setBlockId(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+          blockId_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string block_id = 1;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearBlockId() {
+          bitField0_ = (bitField0_ & ~0x00000001);
+          blockId_ = getDefaultInstance().getBlockId();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string block_id = 1;</code>
+         * @param value The bytes for blockId to set.
+         * @return This builder for chaining.
+         */
+        public Builder setBlockIdBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+          blockId_ = value;
+          onChanged();
+          return this;
+        }
+
+        private long elapsedMs_ ;
+        /**
+         * <code>optional uint64 elapsed_ms = 2;</code>
+         * @return Whether the elapsedMs field is set.
+         */
+        @java.lang.Override
+        public boolean hasElapsedMs() {
+          return ((bitField0_ & 0x00000002) != 0);
+        }
+        /**
+         * <code>optional uint64 elapsed_ms = 2;</code>
+         * @return The elapsedMs.
+         */
+        @java.lang.Override
+        public long getElapsedMs() {
+          return elapsedMs_;
+        }
+        /**
+         * <code>optional uint64 elapsed_ms = 2;</code>
+         * @param value The elapsedMs to set.
+         * @return This builder for chaining.
+         */
+        public Builder setElapsedMs(long value) {
+          bitField0_ |= 0x00000002;
+          elapsedMs_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional uint64 elapsed_ms = 2;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearElapsedMs() {
+          bitField0_ = (bitField0_ & ~0x00000002);
+          elapsedMs_ = 0L;
+          onChanged();
+          return this;
+        }
+        @java.lang.Override
+        public final Builder setUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.setUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.mergeUnknownFields(unknownFields);
+        }
+
+
+        // @@protoc_insertion_point(builder_scope:android_studio.TSdkUAEvent.UserMotion.Closed)
+      }
+
+      // @@protoc_insertion_point(class_scope:android_studio.TSdkUAEvent.UserMotion.Closed)
+      private static final com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed DEFAULT_INSTANCE;
+      static {
+        DEFAULT_INSTANCE = new com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed();
+      }
+
+      public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+      }
+
+      @java.lang.Deprecated public static final com.google.protobuf.Parser<Closed>
+          PARSER = new com.google.protobuf.AbstractParser<Closed>() {
+        @java.lang.Override
+        public Closed parsePartialFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          Builder builder = newBuilder();
+          try {
+            builder.mergeFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw e.setUnfinishedMessage(builder.buildPartial());
+          } catch (com.google.protobuf.UninitializedMessageException e) {
+            throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+          } catch (java.io.IOException e) {
+            throw new com.google.protobuf.InvalidProtocolBufferException(e)
+                .setUnfinishedMessage(builder.buildPartial());
+          }
+          return builder.buildPartial();
+        }
+      };
+
+      public static com.google.protobuf.Parser<Closed> parser() {
+        return PARSER;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Parser<Closed> getParserForType() {
+        return PARSER;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+      }
+
+    }
+
+    private int bitField0_;
+    private int motionCase_ = 0;
+    private java.lang.Object motion_;
+    public enum MotionCase
+        implements com.google.protobuf.Internal.EnumLite,
+            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
+      OPENED(1),
+      CLOSED(2),
+      MOTION_NOT_SET(0);
+      private final int value;
+      private MotionCase(int value) {
+        this.value = value;
+      }
+      /**
+       * @param value The number of the enum to look for.
+       * @return The enum associated with the given number.
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static MotionCase valueOf(int value) {
+        return forNumber(value);
+      }
+
+      public static MotionCase forNumber(int value) {
+        switch (value) {
+          case 1: return OPENED;
+          case 2: return CLOSED;
+          case 0: return MOTION_NOT_SET;
+          default: return null;
+        }
+      }
+      public int getNumber() {
+        return this.value;
+      }
+    };
+
+    public MotionCase
+    getMotionCase() {
+      return MotionCase.forNumber(
+          motionCase_);
+    }
+
+    public static final int OPENED_FIELD_NUMBER = 1;
+    /**
+     * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+     * @return Whether the opened field is set.
+     */
+    @java.lang.Override
+    public boolean hasOpened() {
+      return motionCase_ == 1;
+    }
+    /**
+     * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+     * @return The opened.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened getOpened() {
+      if (motionCase_ == 1) {
+         return (com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened) motion_;
+      }
+      return com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened.getDefaultInstance();
+    }
+    /**
+     * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.OpenedOrBuilder getOpenedOrBuilder() {
+      if (motionCase_ == 1) {
+         return (com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened) motion_;
+      }
+      return com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened.getDefaultInstance();
+    }
+
+    public static final int CLOSED_FIELD_NUMBER = 2;
+    /**
+     * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+     * @return Whether the closed field is set.
+     */
+    @java.lang.Override
+    public boolean hasClosed() {
+      return motionCase_ == 2;
+    }
+    /**
+     * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+     * @return The closed.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed getClosed() {
+      if (motionCase_ == 2) {
+         return (com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed) motion_;
+      }
+      return com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed.getDefaultInstance();
+    }
+    /**
+     * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.ClosedOrBuilder getClosedOrBuilder() {
+      if (motionCase_ == 2) {
+         return (com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed) motion_;
+      }
+      return com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed.getDefaultInstance();
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (motionCase_ == 1) {
+        output.writeMessage(1, (com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened) motion_);
+      }
+      if (motionCase_ == 2) {
+        output.writeMessage(2, (com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed) motion_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (motionCase_ == 1) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, (com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened) motion_);
+      }
+      if (motionCase_ == 2) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, (com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed) motion_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion)) {
+        return super.equals(obj);
+      }
+      com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion other = (com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion) obj;
+
+      if (!getMotionCase().equals(other.getMotionCase())) return false;
+      switch (motionCase_) {
+        case 1:
+          if (!getOpened()
+              .equals(other.getOpened())) return false;
+          break;
+        case 2:
+          if (!getClosed()
+              .equals(other.getClosed())) return false;
+          break;
+        case 0:
+        default:
+      }
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      switch (motionCase_) {
+        case 1:
+          hash = (37 * hash) + OPENED_FIELD_NUMBER;
+          hash = (53 * hash) + getOpened().hashCode();
+          break;
+        case 2:
+          hash = (37 * hash) + CLOSED_FIELD_NUMBER;
+          hash = (53 * hash) + getClosed().hashCode();
+          break;
+        case 0:
+        default:
+      }
+      hash = (29 * hash) + getUnknownFields().hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * Tracking user movement through the assistant
+     * </pre>
+     *
+     * Protobuf type {@code android_studio.TSdkUAEvent.UserMotion}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:android_studio.TSdkUAEvent.UserMotion)
+        com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotionOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TSdkUAEvent_UserMotion_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TSdkUAEvent_UserMotion_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.class, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Builder.class);
+      }
+
+      // Construct using com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.newBuilder()
+      private Builder() {
+
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        if (openedBuilder_ != null) {
+          openedBuilder_.clear();
+        }
+        if (closedBuilder_ != null) {
+          closedBuilder_.clear();
+        }
+        motionCase_ = 0;
+        motion_ = null;
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TSdkUAEvent_UserMotion_descriptor;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion getDefaultInstanceForType() {
+        return com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion build() {
+        com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion buildPartial() {
+        com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion result = new com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (motionCase_ == 1) {
+          if (openedBuilder_ == null) {
+            result.motion_ = motion_;
+          } else {
+            result.motion_ = openedBuilder_.build();
+          }
+        }
+        if (motionCase_ == 2) {
+          if (closedBuilder_ == null) {
+            result.motion_ = motion_;
+          } else {
+            result.motion_ = closedBuilder_.build();
+          }
+        }
+        result.bitField0_ = to_bitField0_;
+        result.motionCase_ = motionCase_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion) {
+          return mergeFrom((com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion other) {
+        if (other == com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.getDefaultInstance()) return this;
+        switch (other.getMotionCase()) {
+          case OPENED: {
+            mergeOpened(other.getOpened());
+            break;
+          }
+          case CLOSED: {
+            mergeClosed(other.getClosed());
+            break;
+          }
+          case MOTION_NOT_SET: {
+            break;
+          }
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+                input.readMessage(
+                    getOpenedFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                motionCase_ = 1;
+                break;
+              } // case 10
+              case 18: {
+                input.readMessage(
+                    getClosedFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                motionCase_ = 2;
+                break;
+              } // case 18
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.unwrapIOException();
+        } finally {
+          onChanged();
+        } // finally
+        return this;
+      }
+      private int motionCase_ = 0;
+      private java.lang.Object motion_;
+      public MotionCase
+          getMotionCase() {
+        return MotionCase.forNumber(
+            motionCase_);
+      }
+
+      public Builder clearMotion() {
+        motionCase_ = 0;
+        motion_ = null;
+        onChanged();
+        return this;
+      }
+
+      private int bitField0_;
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened.Builder, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.OpenedOrBuilder> openedBuilder_;
+      /**
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+       * @return Whether the opened field is set.
+       */
+      @java.lang.Override
+      public boolean hasOpened() {
+        return motionCase_ == 1;
+      }
+      /**
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+       * @return The opened.
+       */
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened getOpened() {
+        if (openedBuilder_ == null) {
+          if (motionCase_ == 1) {
+            return (com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened) motion_;
+          }
+          return com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened.getDefaultInstance();
+        } else {
+          if (motionCase_ == 1) {
+            return openedBuilder_.getMessage();
+          }
+          return com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+       */
+      public Builder setOpened(com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened value) {
+        if (openedBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          motion_ = value;
+          onChanged();
+        } else {
+          openedBuilder_.setMessage(value);
+        }
+        motionCase_ = 1;
+        return this;
+      }
+      /**
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+       */
+      public Builder setOpened(
+          com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened.Builder builderForValue) {
+        if (openedBuilder_ == null) {
+          motion_ = builderForValue.build();
+          onChanged();
+        } else {
+          openedBuilder_.setMessage(builderForValue.build());
+        }
+        motionCase_ = 1;
+        return this;
+      }
+      /**
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+       */
+      public Builder mergeOpened(com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened value) {
+        if (openedBuilder_ == null) {
+          if (motionCase_ == 1 &&
+              motion_ != com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened.getDefaultInstance()) {
+            motion_ = com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened.newBuilder((com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened) motion_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            motion_ = value;
+          }
+          onChanged();
+        } else {
+          if (motionCase_ == 1) {
+            openedBuilder_.mergeFrom(value);
+          }
+          openedBuilder_.setMessage(value);
+        }
+        motionCase_ = 1;
+        return this;
+      }
+      /**
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+       */
+      public Builder clearOpened() {
+        if (openedBuilder_ == null) {
+          if (motionCase_ == 1) {
+            motionCase_ = 0;
+            motion_ = null;
+            onChanged();
+          }
+        } else {
+          if (motionCase_ == 1) {
+            motionCase_ = 0;
+            motion_ = null;
+          }
+          openedBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+       */
+      public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened.Builder getOpenedBuilder() {
+        return getOpenedFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+       */
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.OpenedOrBuilder getOpenedOrBuilder() {
+        if ((motionCase_ == 1) && (openedBuilder_ != null)) {
+          return openedBuilder_.getMessageOrBuilder();
+        } else {
+          if (motionCase_ == 1) {
+            return (com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened) motion_;
+          }
+          return com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened.Builder, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.OpenedOrBuilder> 
+          getOpenedFieldBuilder() {
+        if (openedBuilder_ == null) {
+          if (!(motionCase_ == 1)) {
+            motion_ = com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened.getDefaultInstance();
+          }
+          openedBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened.Builder, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.OpenedOrBuilder>(
+                  (com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened) motion_,
+                  getParentForChildren(),
+                  isClean());
+          motion_ = null;
+        }
+        motionCase_ = 1;
+        onChanged();;
+        return openedBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed.Builder, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.ClosedOrBuilder> closedBuilder_;
+      /**
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+       * @return Whether the closed field is set.
+       */
+      @java.lang.Override
+      public boolean hasClosed() {
+        return motionCase_ == 2;
+      }
+      /**
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+       * @return The closed.
+       */
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed getClosed() {
+        if (closedBuilder_ == null) {
+          if (motionCase_ == 2) {
+            return (com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed) motion_;
+          }
+          return com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed.getDefaultInstance();
+        } else {
+          if (motionCase_ == 2) {
+            return closedBuilder_.getMessage();
+          }
+          return com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+       */
+      public Builder setClosed(com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed value) {
+        if (closedBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          motion_ = value;
+          onChanged();
+        } else {
+          closedBuilder_.setMessage(value);
+        }
+        motionCase_ = 2;
+        return this;
+      }
+      /**
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+       */
+      public Builder setClosed(
+          com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed.Builder builderForValue) {
+        if (closedBuilder_ == null) {
+          motion_ = builderForValue.build();
+          onChanged();
+        } else {
+          closedBuilder_.setMessage(builderForValue.build());
+        }
+        motionCase_ = 2;
+        return this;
+      }
+      /**
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+       */
+      public Builder mergeClosed(com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed value) {
+        if (closedBuilder_ == null) {
+          if (motionCase_ == 2 &&
+              motion_ != com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed.getDefaultInstance()) {
+            motion_ = com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed.newBuilder((com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed) motion_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            motion_ = value;
+          }
+          onChanged();
+        } else {
+          if (motionCase_ == 2) {
+            closedBuilder_.mergeFrom(value);
+          }
+          closedBuilder_.setMessage(value);
+        }
+        motionCase_ = 2;
+        return this;
+      }
+      /**
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+       */
+      public Builder clearClosed() {
+        if (closedBuilder_ == null) {
+          if (motionCase_ == 2) {
+            motionCase_ = 0;
+            motion_ = null;
+            onChanged();
+          }
+        } else {
+          if (motionCase_ == 2) {
+            motionCase_ = 0;
+            motion_ = null;
+          }
+          closedBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+       */
+      public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed.Builder getClosedBuilder() {
+        return getClosedFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+       */
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.ClosedOrBuilder getClosedOrBuilder() {
+        if ((motionCase_ == 2) && (closedBuilder_ != null)) {
+          return closedBuilder_.getMessageOrBuilder();
+        } else {
+          if (motionCase_ == 2) {
+            return (com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed) motion_;
+          }
+          return com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed.Builder, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.ClosedOrBuilder> 
+          getClosedFieldBuilder() {
+        if (closedBuilder_ == null) {
+          if (!(motionCase_ == 2)) {
+            motion_ = com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed.getDefaultInstance();
+          }
+          closedBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed.Builder, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.ClosedOrBuilder>(
+                  (com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed) motion_,
+                  getParentForChildren(),
+                  isClean());
+          motion_ = null;
+        }
+        motionCase_ = 2;
+        onChanged();;
+        return closedBuilder_;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:android_studio.TSdkUAEvent.UserMotion)
+    }
+
+    // @@protoc_insertion_point(class_scope:android_studio.TSdkUAEvent.UserMotion)
+    private static final com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion();
+    }
+
+    public static com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<UserMotion>
+        PARSER = new com.google.protobuf.AbstractParser<UserMotion>() {
+      @java.lang.Override
+      public UserMotion parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
+      }
+    };
+
+    public static com.google.protobuf.Parser<UserMotion> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<UserMotion> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private int bitField0_;
   private int contentCase_ = 0;
   private java.lang.Object content_;
@@ -2026,6 +4646,7 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.AbstractMessage.InternalOneOfEnum {
     STATE_UPDATE(1),
     FILTER_RUN(2),
+    USER_MOTION(3),
     CONTENT_NOT_SET(0);
     private final int value;
     private ContentCase(int value) {
@@ -2045,6 +4666,7 @@ private static final long serialVersionUID = 0L;
       switch (value) {
         case 1: return STATE_UPDATE;
         case 2: return FILTER_RUN;
+        case 3: return USER_MOTION;
         case 0: return CONTENT_NOT_SET;
         default: return null;
       }
@@ -2122,6 +4744,37 @@ private static final long serialVersionUID = 0L;
     return com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.getDefaultInstance();
   }
 
+  public static final int USER_MOTION_FIELD_NUMBER = 3;
+  /**
+   * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3;</code>
+   * @return Whether the userMotion field is set.
+   */
+  @java.lang.Override
+  public boolean hasUserMotion() {
+    return contentCase_ == 3;
+  }
+  /**
+   * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3;</code>
+   * @return The userMotion.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion getUserMotion() {
+    if (contentCase_ == 3) {
+       return (com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion) content_;
+    }
+    return com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.getDefaultInstance();
+  }
+  /**
+   * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotionOrBuilder getUserMotionOrBuilder() {
+    if (contentCase_ == 3) {
+       return (com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion) content_;
+    }
+    return com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.getDefaultInstance();
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -2142,7 +4795,10 @@ private static final long serialVersionUID = 0L;
     if (contentCase_ == 2) {
       output.writeMessage(2, (com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun) content_);
     }
-    unknownFields.writeTo(output);
+    if (contentCase_ == 3) {
+      output.writeMessage(3, (com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion) content_);
+    }
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -2159,7 +4815,11 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(2, (com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun) content_);
     }
-    size += unknownFields.getSerializedSize();
+    if (contentCase_ == 3) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(3, (com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion) content_);
+    }
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -2184,10 +4844,14 @@ private static final long serialVersionUID = 0L;
         if (!getFilterRun()
             .equals(other.getFilterRun())) return false;
         break;
+      case 3:
+        if (!getUserMotion()
+            .equals(other.getUserMotion())) return false;
+        break;
       case 0:
       default:
     }
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -2207,10 +4871,14 @@ private static final long serialVersionUID = 0L;
         hash = (37 * hash) + FILTER_RUN_FIELD_NUMBER;
         hash = (53 * hash) + getFilterRun().hashCode();
         break;
+      case 3:
+        hash = (37 * hash) + USER_MOTION_FIELD_NUMBER;
+        hash = (53 * hash) + getUserMotion().hashCode();
+        break;
       case 0:
       default:
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -2327,22 +4995,26 @@ private static final long serialVersionUID = 0L;
 
     // Construct using com.google.wireless.android.sdk.stats.TSdkUAEvent.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessageV3
-              .alwaysUseFieldBuilders) {
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      if (stateUpdateBuilder_ != null) {
+        stateUpdateBuilder_.clear();
+      }
+      if (filterRunBuilder_ != null) {
+        filterRunBuilder_.clear();
+      }
+      if (userMotionBuilder_ != null) {
+        userMotionBuilder_.clear();
+      }
       contentCase_ = 0;
       content_ = null;
       return this;
@@ -2385,6 +5057,13 @@ private static final long serialVersionUID = 0L;
           result.content_ = content_;
         } else {
           result.content_ = filterRunBuilder_.build();
+        }
+      }
+      if (contentCase_ == 3) {
+        if (userMotionBuilder_ == null) {
+          result.content_ = content_;
+        } else {
+          result.content_ = userMotionBuilder_.build();
         }
       }
       result.bitField0_ = to_bitField0_;
@@ -2446,11 +5125,15 @@ private static final long serialVersionUID = 0L;
           mergeFilterRun(other.getFilterRun());
           break;
         }
+        case USER_MOTION: {
+          mergeUserMotion(other.getUserMotion());
+          break;
+        }
         case CONTENT_NOT_SET: {
           break;
         }
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -2465,17 +5148,51 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.google.wireless.android.sdk.stats.TSdkUAEvent parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              input.readMessage(
+                  getStateUpdateFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              contentCase_ = 1;
+              break;
+            } // case 10
+            case 18: {
+              input.readMessage(
+                  getFilterRunFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              contentCase_ = 2;
+              break;
+            } // case 18
+            case 26: {
+              input.readMessage(
+                  getUserMotionFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              contentCase_ = 3;
+              break;
+            } // case 26
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.google.wireless.android.sdk.stats.TSdkUAEvent) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
     private int contentCase_ = 0;
@@ -2776,6 +5493,147 @@ private static final long serialVersionUID = 0L;
       onChanged();;
       return filterRunBuilder_;
     }
+
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Builder, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotionOrBuilder> userMotionBuilder_;
+    /**
+     * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3;</code>
+     * @return Whether the userMotion field is set.
+     */
+    @java.lang.Override
+    public boolean hasUserMotion() {
+      return contentCase_ == 3;
+    }
+    /**
+     * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3;</code>
+     * @return The userMotion.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion getUserMotion() {
+      if (userMotionBuilder_ == null) {
+        if (contentCase_ == 3) {
+          return (com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion) content_;
+        }
+        return com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.getDefaultInstance();
+      } else {
+        if (contentCase_ == 3) {
+          return userMotionBuilder_.getMessage();
+        }
+        return com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3;</code>
+     */
+    public Builder setUserMotion(com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion value) {
+      if (userMotionBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        content_ = value;
+        onChanged();
+      } else {
+        userMotionBuilder_.setMessage(value);
+      }
+      contentCase_ = 3;
+      return this;
+    }
+    /**
+     * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3;</code>
+     */
+    public Builder setUserMotion(
+        com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Builder builderForValue) {
+      if (userMotionBuilder_ == null) {
+        content_ = builderForValue.build();
+        onChanged();
+      } else {
+        userMotionBuilder_.setMessage(builderForValue.build());
+      }
+      contentCase_ = 3;
+      return this;
+    }
+    /**
+     * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3;</code>
+     */
+    public Builder mergeUserMotion(com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion value) {
+      if (userMotionBuilder_ == null) {
+        if (contentCase_ == 3 &&
+            content_ != com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.getDefaultInstance()) {
+          content_ = com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.newBuilder((com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion) content_)
+              .mergeFrom(value).buildPartial();
+        } else {
+          content_ = value;
+        }
+        onChanged();
+      } else {
+        if (contentCase_ == 3) {
+          userMotionBuilder_.mergeFrom(value);
+        }
+        userMotionBuilder_.setMessage(value);
+      }
+      contentCase_ = 3;
+      return this;
+    }
+    /**
+     * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3;</code>
+     */
+    public Builder clearUserMotion() {
+      if (userMotionBuilder_ == null) {
+        if (contentCase_ == 3) {
+          contentCase_ = 0;
+          content_ = null;
+          onChanged();
+        }
+      } else {
+        if (contentCase_ == 3) {
+          contentCase_ = 0;
+          content_ = null;
+        }
+        userMotionBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3;</code>
+     */
+    public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Builder getUserMotionBuilder() {
+      return getUserMotionFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3;</code>
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotionOrBuilder getUserMotionOrBuilder() {
+      if ((contentCase_ == 3) && (userMotionBuilder_ != null)) {
+        return userMotionBuilder_.getMessageOrBuilder();
+      } else {
+        if (contentCase_ == 3) {
+          return (com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion) content_;
+        }
+        return com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Builder, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotionOrBuilder> 
+        getUserMotionFieldBuilder() {
+      if (userMotionBuilder_ == null) {
+        if (!(contentCase_ == 3)) {
+          content_ = com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.getDefaultInstance();
+        }
+        userMotionBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Builder, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotionOrBuilder>(
+                (com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion) content_,
+                getParentForChildren(),
+                isClean());
+        content_ = null;
+      }
+      contentCase_ = 3;
+      onChanged();;
+      return userMotionBuilder_;
+    }
     @java.lang.Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -2809,7 +5667,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new TSdkUAEvent(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

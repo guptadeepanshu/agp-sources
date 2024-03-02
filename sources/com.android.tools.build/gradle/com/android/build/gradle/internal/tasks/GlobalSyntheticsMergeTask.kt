@@ -16,7 +16,6 @@
 
 package com.android.build.gradle.internal.tasks
 
-import com.android.build.api.variant.impl.getFeatureLevel
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
@@ -91,7 +90,7 @@ abstract class GlobalSyntheticsMergeTask : NonIncrementalTask() {
             task.sharedParams.apply {
                 dexingType.setDisallowChanges(DexingType.NATIVE_MULTIDEX)
                 minSdkVersion.setDisallowChanges(
-                        creationConfig.dexingCreationConfig.minSdkVersionForDexing.getFeatureLevel())
+                    creationConfig.dexing.minSdkVersionForDexing)
                 debuggable.setDisallowChanges(creationConfig.debuggable)
                 errorFormatMode.setDisallowChanges(SyncOptions.ErrorFormatMode.HUMAN_READABLE)
             }

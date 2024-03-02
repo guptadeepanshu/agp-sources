@@ -31,6 +31,7 @@ import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
@@ -49,14 +50,22 @@ abstract class AbstractTestDataImpl(
     val namespace: Provider<String>,
     creationConfig: InstrumentedTestCreationConfig,
     override val testApkDir: Provider<Directory>,
-    @get:InputFiles
+    @get:InputDirectory
     @get:PathSensitive(PathSensitivity.RELATIVE)
     @get:Optional
-    val testedApksDir: FileCollection?,
+    val testedApksDir: Provider<Directory>?,
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.NONE)
     @get:Optional
-    val privacySandboxSdkApks: FileCollection?
+    val privacySandboxSdkApks: FileCollection?,
+    @get:InputDirectory
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:Optional
+    val privacySandboxCompatSdkApks: Provider<Directory>?,
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.NONE)
+    @get:Optional
+    val additionalSdkSupportedSplitApks: Provider<Directory>?
 ) : TestData {
 
     private var extraInstrumentationTestRunnerArgs: Map<String, String> = mutableMapOf()

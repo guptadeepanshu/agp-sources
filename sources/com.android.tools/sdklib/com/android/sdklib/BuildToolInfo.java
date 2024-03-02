@@ -68,13 +68,19 @@ import com.android.annotations.Nullable;
 import com.android.io.CancellableFileIo;
 import com.android.repository.Revision;
 import com.android.repository.api.LocalPackage;
+import com.android.sdklib.repository.PkgProps;
 import com.android.utils.ILogger;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Maps;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -407,6 +413,28 @@ public class BuildToolInfo {
      * @return True if the build-tool folder contains all the expected tools.
      */
     public boolean isValid(@Nullable ILogger log) {
+        Path sourceProperties = mPath.resolve("source.properties");
+        try (InputStream is = new BufferedInputStream(Files.newInputStream(sourceProperties))) {
+            Properties properties = new Properties();
+            properties.load(is);
+            String revision = properties.getProperty(PkgProps.PKG_REVISION);
+            if (!mRevision.equals(Revision.parseRevision(revision))) {
+                if (log != null) {
+                    log.warning(
+                            "Build-tool %1$s has inconsistent revision, expected %1$s but got %2$s in %3$s", //$NON-NLS-1$
+                            mRevision.toString(), revision, mPath);
+                }
+                return false;
+            }
+        } catch (IOException | NumberFormatException e) {
+            if (log != null) {
+                log.warning(
+                        "Build-tool %1$s has corrupt source.properties at %2$s", //$NON-NLS-1$
+                        mRevision.toString(), mPath);
+            }
+            return false;
+        }
+
         for (Map.Entry<PathId, String> entry : mPaths.entrySet()) {
             File f = new File(entry.getValue());
             // check if file is missing. It's only ok if the revision of the build-tools

@@ -17,8 +17,8 @@
 package com.android.build.gradle.tasks
 
 import com.android.SdkConstants
-import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.artifact.ScopedArtifact
+import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
@@ -27,16 +27,20 @@ import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.core.ComponentTypeImpl
-import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.artifacts.ArtifactCollection
-import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.Dependency
+import org.gradle.api.artifacts.result.ResolvedComponentResult
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.Property
+import org.gradle.api.provider.SetProperty
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Optional
@@ -78,16 +82,26 @@ abstract class AnalyzeDependenciesTask : NonIncrementalTask() {
 
     private lateinit var resourceSymbolsArtifactCollection: ArtifactCollection
     private lateinit var classListArtifactCollection : ArtifactCollection
-    // Don't need to be marked as input as they are represented in externalArtifacts
-    private var apiDirectDependenciesConfiguration: Configuration? = null
-    private lateinit var allDirectDependencies: Collection<Dependency>
 
-    private var isVariantLibrary: Boolean? = null
+    @get:Input
+    abstract val apiDirectDependenciesConfiguration: SetProperty<String>
+
+    @get:Input
+    abstract val allDirectDependencies: SetProperty<String>
+
+    @get:Input
+    abstract val variantLibrary: Property<Boolean>
+
+    @get:Input
+    abstract val configurationCanBeResolved: Property<Boolean>
+
+    @get:Input
+    abstract val compileClasspathResolvedComponentResult: Property<ResolvedComponentResult>
 
     override fun doTaskAction() {
         val variantDepsHolder = VariantDependenciesHolder(
-                allDirectDependencies,
-                apiDirectDependenciesConfiguration?.allDependencies)
+                allDirectDependencies.get(),
+                apiDirectDependenciesConfiguration.get())
         val variantClassHolder = VariantClassesHolder(variantArtifact)
         val classFinder = ClassFinder(classListArtifactCollection)
         val resourcesFinder = ResourcesFinder(
@@ -98,9 +112,9 @@ abstract class AnalyzeDependenciesTask : NonIncrementalTask() {
         val depsUsageFinder =
             DependencyUsageFinder(classFinder, variantClassHolder, variantDepsHolder)
 
-        val compileClasspathConfig = project.configurations.getAt("${variantName}CompileClasspath")
-        if (compileClasspathConfig.isCanBeResolved) {
-            val graphAnalyzer = DependencyGraphAnalyzer(compileClasspathConfig, depsUsageFinder)
+        if (configurationCanBeResolved.get()) {
+            val graphAnalyzer = DependencyGraphAnalyzer(
+                    compileClasspathResolvedComponentResult.get(), depsUsageFinder)
 
             val reporter = DependencyUsageReporter(
                 variantClassHolder,
@@ -114,38 +128,14 @@ abstract class AnalyzeDependenciesTask : NonIncrementalTask() {
                 File(outputDirectory.asFile.get(), "dependenciesReport.json"))
 
             // Report misconfigured dependencies only for library modules
-            if (isVariantLibrary == true) {
+            if (variantLibrary.get()) {
                 reporter.writeMisconfiguredDependencies(
                     File(outputDirectory.asFile.get(), "apiToImplementation.json")
                 )
             }
         }
     }
-
-    class VariantDependenciesHolder(
-        _directAllDependencies: Collection<Dependency>,
-        _directApiDependencies: Collection<Dependency>?) {
-
-        val all = getDependenciesIds(_directAllDependencies)
-        val api = getDependenciesIds(_directApiDependencies)
-
-        private fun getDependenciesIds(dependencies: Collection<Dependency>?) =
-            dependencies?.mapNotNull { buildDependencyId(it) }?.toSet() ?: emptySet()
-
-        @VisibleForTesting
-        internal fun buildDependencyId(dependency: Dependency): String? {
-            if (dependency.group == null) {
-                return null
-            }
-
-            var id = "${dependency.group}:${dependency.name}"
-            if (dependency.version != null) {
-                id += ":${dependency.version}"
-            }
-
-            return id
-        }
-    }
+    class VariantDependenciesHolder(val all: Set<String>, val api: Set<String>?)
 
     class VariantClassesHolder(private val variantArtifact: FileCollection) {
 
@@ -216,15 +206,20 @@ abstract class AnalyzeDependenciesTask : NonIncrementalTask() {
                             AndroidArtifacts.ArtifactScope.ALL,
                             AndroidArtifacts.ArtifactType.JAR_CLASS_LIST)
 
-            task.apiDirectDependenciesConfiguration = creationConfig
-                .variantDependencies
-                .getElements(PublishedConfigSpec(AndroidArtifacts.PublishedConfigType.API_ELEMENTS))
+            task.apiDirectDependenciesConfiguration.set(creationConfig
+                    .variantDependencies
+                    .getElements(PublishedConfigSpec(AndroidArtifacts.PublishedConfigType.API_ELEMENTS))?.allDependencies?.mapNotNull { dependency ->
+                        extractBuildId(dependency)
+                    })
 
-            task.allDirectDependencies = creationConfig
-                .variantDependencies
-                .getIncomingRuntimeDependencies()
+            task.allDirectDependencies.set(creationConfig
+                    .variantDependencies
+                    .getIncomingRuntimeDependencies().mapNotNull { dependency ->
+                        extractBuildId(dependency)
+                    })
 
-            task.isVariantLibrary = (creationConfig.componentType == ComponentTypeImpl.LIBRARY)
+            task.variantLibrary.setDisallowChanges(
+                    creationConfig.componentType == ComponentTypeImpl.LIBRARY)
 
             // ResourceSets from main and generated directories of default, flavors,
             // multiflavor and buildtype sources (if they exist).
@@ -236,11 +231,15 @@ abstract class AnalyzeDependenciesTask : NonIncrementalTask() {
                     .artifacts
                     .setTaskInputToFinalProduct(SingleArtifact.MERGED_MANIFEST, task.mergedManifest)
 
-            // b/215776121
-            task.notCompatibleWithConfigurationCache(
-                "AnalyzeDependenciesTask not compatible with configuration caching.")
+            val compileClasspathConfig =
+                    task.project.configurations.getAt("${task.variantName}CompileClasspath")
+            task.configurationCanBeResolved.setDisallowChanges(
+                    compileClasspathConfig.isCanBeResolved
+            )
+            task.compileClasspathResolvedComponentResult.setDisallowChanges(
+                    compileClasspathConfig.incoming.resolutionResult.rootComponent
+            )
         }
-
         override fun handleProvider(
             taskProvider: TaskProvider<AnalyzeDependenciesTask>
         ) {

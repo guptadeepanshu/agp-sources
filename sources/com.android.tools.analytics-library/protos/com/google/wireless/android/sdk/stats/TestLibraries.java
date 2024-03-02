@@ -79,291 +79,6 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private TestLibraries(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    int mutable_bitField0_ = 0;
-    int mutable_bitField1_ = 0;
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 10: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000001;
-            testSupportLibraryVersion_ = bs;
-            break;
-          }
-          case 18: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00020000;
-            espressoVersion_ = bs;
-            break;
-          }
-          case 26: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField1_ |= 0x00000001;
-            robolectricVersion_ = bs;
-            break;
-          }
-          case 34: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField1_ |= 0x00000002;
-            mockitoVersion_ = bs;
-            break;
-          }
-          case 42: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00040000;
-            espressoContribVersion_ = bs;
-            break;
-          }
-          case 50: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00080000;
-            espressoWebVersion_ = bs;
-            break;
-          }
-          case 58: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00100000;
-            espressoIntentsVersion_ = bs;
-            break;
-          }
-          case 66: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00200000;
-            espressoIdlingResourceVersion_ = bs;
-            break;
-          }
-          case 74: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00400000;
-            espressoAccessibilityVersion_ = bs;
-            break;
-          }
-          case 82: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00001000;
-            testOrchestratorVersion_ = bs;
-            break;
-          }
-          case 90: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00002000;
-            testRulesVersion_ = bs;
-            break;
-          }
-          case 98: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000200;
-            testCoreVersion_ = bs;
-            break;
-          }
-          case 106: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000400;
-            testCoreKtxVersion_ = bs;
-            break;
-          }
-          case 114: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00004000;
-            testExtJunitVersion_ = bs;
-            break;
-          }
-          case 122: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00008000;
-            testExtJunitKtxVersion_ = bs;
-            break;
-          }
-          case 130: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00010000;
-            testExtTruthVersion_ = bs;
-            break;
-          }
-          case 138: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x01000000;
-            fragmentTestingVersion_ = bs;
-            break;
-          }
-          case 146: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField1_ |= 0x00000004;
-            junitVersion_ = bs;
-            break;
-          }
-          case 154: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField1_ |= 0x00000008;
-            truthVersion_ = bs;
-            break;
-          }
-          case 162: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x02000000;
-            benchmarkCommonVersion_ = bs;
-            break;
-          }
-          case 170: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x04000000;
-            benchmarkJunit4Version_ = bs;
-            break;
-          }
-          case 178: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000002;
-            testSupportOrchestratorVersion_ = bs;
-            break;
-          }
-          case 186: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000004;
-            testSupportRulesVersion_ = bs;
-            break;
-          }
-          case 194: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000800;
-            testRunnerVersion_ = bs;
-            break;
-          }
-          case 202: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000008;
-            testSupportEspressoVersion_ = bs;
-            break;
-          }
-          case 210: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000010;
-            testSupportEspressoContribVersion_ = bs;
-            break;
-          }
-          case 218: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000020;
-            testSupportEspressoWebVersion_ = bs;
-            break;
-          }
-          case 226: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000040;
-            testSupportEspressoIntentsVersion_ = bs;
-            break;
-          }
-          case 234: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000080;
-            testSupportEspressoIdlingResourceVersion_ = bs;
-            break;
-          }
-          case 242: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000100;
-            testSupportEspressoAccessibilityVersion_ = bs;
-            break;
-          }
-          case 250: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x08000000;
-            benchmarkMacroVersion_ = bs;
-            break;
-          }
-          case 258: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x10000000;
-            benchmarkMacroJunit4Version_ = bs;
-            break;
-          }
-          case 266: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField1_ |= 0x00000010;
-            testNgVersion_ = bs;
-            break;
-          }
-          case 274: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField1_ |= 0x00000020;
-            junitPlatformLauncherVersion_ = bs;
-            break;
-          }
-          case 282: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField1_ |= 0x00000040;
-            junitPlatformRunnerVersion_ = bs;
-            break;
-          }
-          case 290: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField1_ |= 0x00000080;
-            junitJupiterVersion_ = bs;
-            break;
-          }
-          case 298: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField1_ |= 0x00000100;
-            junitVintageEngineVersion_ = bs;
-            break;
-          }
-          case 306: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x20000000;
-            composeUiTestVersion_ = bs;
-            break;
-          }
-          case 314: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x40000000;
-            composeUiTestJunit4Version_ = bs;
-            break;
-          }
-          case 322: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x80000000;
-            composeUiTestManifestVersion_ = bs;
-            break;
-          }
-          case 330: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00800000;
-            espressoDeviceVersion_ = bs;
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TestLibraries_descriptor;
@@ -2976,7 +2691,7 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00800000) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 41, espressoDeviceVersion_);
     }
-    unknownFields.writeTo(output);
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -3108,7 +2823,7 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00800000) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(41, espressoDeviceVersion_);
     }
-    size += unknownFields.getSerializedSize();
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -3328,7 +3043,7 @@ private static final long serialVersionUID = 0L;
       if (!getJunitVintageEngineVersion()
           .equals(other.getJunitVintageEngineVersion())) return false;
     }
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -3503,7 +3218,7 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + JUNIT_VINTAGE_ENGINE_VERSION_FIELD_NUMBER;
       hash = (53 * hash) + getJunitVintageEngineVersion().hashCode();
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -3628,18 +3343,13 @@ private static final long serialVersionUID = 0L;
 
     // Construct using com.google.wireless.android.sdk.stats.TestLibraries.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessageV3
-              .alwaysUseFieldBuilders) {
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
@@ -4175,7 +3885,7 @@ private static final long serialVersionUID = 0L;
         junitVintageEngineVersion_ = other.junitVintageEngineVersion_;
         onChanged();
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -4190,17 +3900,235 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.google.wireless.android.sdk.stats.TestLibraries parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              testSupportLibraryVersion_ = input.readBytes();
+              bitField0_ |= 0x00000001;
+              break;
+            } // case 10
+            case 18: {
+              espressoVersion_ = input.readBytes();
+              bitField0_ |= 0x00020000;
+              break;
+            } // case 18
+            case 26: {
+              robolectricVersion_ = input.readBytes();
+              bitField1_ |= 0x00000001;
+              break;
+            } // case 26
+            case 34: {
+              mockitoVersion_ = input.readBytes();
+              bitField1_ |= 0x00000002;
+              break;
+            } // case 34
+            case 42: {
+              espressoContribVersion_ = input.readBytes();
+              bitField0_ |= 0x00040000;
+              break;
+            } // case 42
+            case 50: {
+              espressoWebVersion_ = input.readBytes();
+              bitField0_ |= 0x00080000;
+              break;
+            } // case 50
+            case 58: {
+              espressoIntentsVersion_ = input.readBytes();
+              bitField0_ |= 0x00100000;
+              break;
+            } // case 58
+            case 66: {
+              espressoIdlingResourceVersion_ = input.readBytes();
+              bitField0_ |= 0x00200000;
+              break;
+            } // case 66
+            case 74: {
+              espressoAccessibilityVersion_ = input.readBytes();
+              bitField0_ |= 0x00400000;
+              break;
+            } // case 74
+            case 82: {
+              testOrchestratorVersion_ = input.readBytes();
+              bitField0_ |= 0x00001000;
+              break;
+            } // case 82
+            case 90: {
+              testRulesVersion_ = input.readBytes();
+              bitField0_ |= 0x00002000;
+              break;
+            } // case 90
+            case 98: {
+              testCoreVersion_ = input.readBytes();
+              bitField0_ |= 0x00000200;
+              break;
+            } // case 98
+            case 106: {
+              testCoreKtxVersion_ = input.readBytes();
+              bitField0_ |= 0x00000400;
+              break;
+            } // case 106
+            case 114: {
+              testExtJunitVersion_ = input.readBytes();
+              bitField0_ |= 0x00004000;
+              break;
+            } // case 114
+            case 122: {
+              testExtJunitKtxVersion_ = input.readBytes();
+              bitField0_ |= 0x00008000;
+              break;
+            } // case 122
+            case 130: {
+              testExtTruthVersion_ = input.readBytes();
+              bitField0_ |= 0x00010000;
+              break;
+            } // case 130
+            case 138: {
+              fragmentTestingVersion_ = input.readBytes();
+              bitField0_ |= 0x01000000;
+              break;
+            } // case 138
+            case 146: {
+              junitVersion_ = input.readBytes();
+              bitField1_ |= 0x00000004;
+              break;
+            } // case 146
+            case 154: {
+              truthVersion_ = input.readBytes();
+              bitField1_ |= 0x00000008;
+              break;
+            } // case 154
+            case 162: {
+              benchmarkCommonVersion_ = input.readBytes();
+              bitField0_ |= 0x02000000;
+              break;
+            } // case 162
+            case 170: {
+              benchmarkJunit4Version_ = input.readBytes();
+              bitField0_ |= 0x04000000;
+              break;
+            } // case 170
+            case 178: {
+              testSupportOrchestratorVersion_ = input.readBytes();
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 178
+            case 186: {
+              testSupportRulesVersion_ = input.readBytes();
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 186
+            case 194: {
+              testRunnerVersion_ = input.readBytes();
+              bitField0_ |= 0x00000800;
+              break;
+            } // case 194
+            case 202: {
+              testSupportEspressoVersion_ = input.readBytes();
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 202
+            case 210: {
+              testSupportEspressoContribVersion_ = input.readBytes();
+              bitField0_ |= 0x00000010;
+              break;
+            } // case 210
+            case 218: {
+              testSupportEspressoWebVersion_ = input.readBytes();
+              bitField0_ |= 0x00000020;
+              break;
+            } // case 218
+            case 226: {
+              testSupportEspressoIntentsVersion_ = input.readBytes();
+              bitField0_ |= 0x00000040;
+              break;
+            } // case 226
+            case 234: {
+              testSupportEspressoIdlingResourceVersion_ = input.readBytes();
+              bitField0_ |= 0x00000080;
+              break;
+            } // case 234
+            case 242: {
+              testSupportEspressoAccessibilityVersion_ = input.readBytes();
+              bitField0_ |= 0x00000100;
+              break;
+            } // case 242
+            case 250: {
+              benchmarkMacroVersion_ = input.readBytes();
+              bitField0_ |= 0x08000000;
+              break;
+            } // case 250
+            case 258: {
+              benchmarkMacroJunit4Version_ = input.readBytes();
+              bitField0_ |= 0x10000000;
+              break;
+            } // case 258
+            case 266: {
+              testNgVersion_ = input.readBytes();
+              bitField1_ |= 0x00000010;
+              break;
+            } // case 266
+            case 274: {
+              junitPlatformLauncherVersion_ = input.readBytes();
+              bitField1_ |= 0x00000020;
+              break;
+            } // case 274
+            case 282: {
+              junitPlatformRunnerVersion_ = input.readBytes();
+              bitField1_ |= 0x00000040;
+              break;
+            } // case 282
+            case 290: {
+              junitJupiterVersion_ = input.readBytes();
+              bitField1_ |= 0x00000080;
+              break;
+            } // case 290
+            case 298: {
+              junitVintageEngineVersion_ = input.readBytes();
+              bitField1_ |= 0x00000100;
+              break;
+            } // case 298
+            case 306: {
+              composeUiTestVersion_ = input.readBytes();
+              bitField0_ |= 0x20000000;
+              break;
+            } // case 306
+            case 314: {
+              composeUiTestJunit4Version_ = input.readBytes();
+              bitField0_ |= 0x40000000;
+              break;
+            } // case 314
+            case 322: {
+              composeUiTestManifestVersion_ = input.readBytes();
+              bitField0_ |= 0x80000000;
+              break;
+            } // case 322
+            case 330: {
+              espressoDeviceVersion_ = input.readBytes();
+              bitField0_ |= 0x00800000;
+              break;
+            } // case 330
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.google.wireless.android.sdk.stats.TestLibraries) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
     private int bitField0_;
@@ -8666,7 +8594,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new TestLibraries(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

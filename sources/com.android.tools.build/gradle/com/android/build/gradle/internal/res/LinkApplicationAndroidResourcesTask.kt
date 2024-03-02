@@ -20,6 +20,7 @@ import com.android.SdkConstants
 import com.android.SdkConstants.FN_RES_BASE
 import com.android.SdkConstants.FN_R_CLASS_JAR
 import com.android.SdkConstants.RES_QUALIFIER_SEP
+import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.variant.FilterConfiguration
 import com.android.build.api.variant.MultiOutputHandler
 import com.android.build.api.variant.VariantOutputConfiguration
@@ -580,9 +581,9 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
 
             task.setType(creationConfig.componentType)
             if (creationConfig is ApkCreationConfig) {
-                task.noCompress.set(androidResourcesCreationConfig.androidResources.noCompress)
+                task.noCompress.set(creationConfig.androidResources.noCompress)
                 task.aaptAdditionalParameters.set(
-                    androidResourcesCreationConfig.androidResources.aaptAdditionalParameters
+                    creationConfig.androidResources.aaptAdditionalParameters
                 )
             }
             task.noCompress.disallowChanges()
@@ -682,7 +683,7 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
             creationConfig.artifacts.setInitialProvider(
                 taskProvider,
                 LinkApplicationAndroidResourcesTask::textSymbolOutputFileProperty
-            ).withName(SdkConstants.FN_RESOURCE_TEXT).on(InternalArtifactType.RUNTIME_SYMBOL_LIST)
+            ).withName(SdkConstants.FN_RESOURCE_TEXT).on(SingleArtifact.RUNTIME_SYMBOL_LIST)
 
             if (!creationConfig.services.projectOptions[BooleanOption.ENABLE_APP_COMPILE_TIME_R_CLASS]) {
                 // Synthetic output for AARs (see SymbolTableWithPackageNameTransform), and created

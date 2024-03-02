@@ -166,6 +166,8 @@ public final class SdkConstants {
     public static final String FN_SETTINGS_GRADLE_TOML = "settings.gradle.toml";
     /** An SDK Project's gradle.properties file */
     public static final String FN_GRADLE_PROPERTIES = "gradle.properties";
+    /** An SDK Project's Gradle cache config.properties file */
+    public static final String FN_GRADLE_CONFIG_PROPERTIES = "config.properties";
     /** An SDK Project's libs.versions.toml file */
     public static final String FN_VERSION_CATALOG = "libs.versions.toml";
     /** An SDK Project's gradle daemon executable */
@@ -251,6 +253,7 @@ public final class SdkConstants {
             "com.android.tools.build.profiles";
     public static final String FN_BINARY_ART_PROFILE = "baseline.prof";
     public static final String FN_BINARY_ART_PROFILE_METADATA = "baseline.profm";
+    public static final String FN_DEX_METADATA_PROP = "dex-metadata-map.properties";
 
     /** aapt executable (with extension for the current OS) */
     public static final String FN_AAPT =
@@ -431,6 +434,8 @@ public final class SdkConstants {
     public static final String FD_JNI = "jni";
     /** Default gradle folder name, i.e. "gradle" */
     public static final String FD_GRADLE = "gradle";
+    /** Default generated gradle cache folder under project directory, i.e. ".gradle" */
+    public static final String FD_GRADLE_CACHE = ".gradle";
     /** Default gradle wrapper folder name, i.e. "gradle/wrapper" */
     public static final String FD_GRADLE_WRAPPER =
             FD_GRADLE + File.separator + "wrapper";
@@ -1090,6 +1095,7 @@ public final class SdkConstants {
     public static final String TAG_USES_PERMISSION_SDK_M = "uses-permission-sdk-m";
     public static final String TAG_USES_LIBRARY = "uses-library";
     public static final String TAG_USES_SPLIT = "uses-split";
+    public static final String TAG_USES_SDK_LIBRARY = "uses-sdk-library";
     public static final String TAG_APPLICATION = "application";
     public static final String TAG_INTENT_FILTER = "intent-filter";
     public static final String TAG_CATEGORY = "category";
@@ -1098,18 +1104,19 @@ public final class SdkConstants {
     public static final String TAG_ACTIVITY_ALIAS = "activity-alias";
     public static final String TAG_RECEIVER = "receiver";
     public static final String TAG_PACKAGE = "package";
+    public static final String TAG_PROPERTY = "property";
     public static final String TAG_PROVIDER = "provider";
     public static final String TAG_GRANT_PERMISSION = "grant-uri-permission";
     public static final String TAG_PATH_PERMISSION = "path-permission";
     public static final String TAG_ACTION = "action";
     public static final String TAG_INSTRUMENTATION = "instrumentation";
     public static final String TAG_META_DATA = "meta-data";
-    public static final String TAG_PROPERTY = "property";
     public static final String TAG_RESOURCE = "resource";
     public static final String TAG_MODULE = "module";
     public static final String TAG_NAV_GRAPH = "nav-graph";
     public static final String TAG_QUERIES = "queries";
     public static final String TAG_INTENT = "intent";
+    public static final String TAG_SDK_LIBRARY = "sdk-library";
 
     // Tags: Resources
     public static final String TAG_RESOURCES = "resources";
@@ -1290,6 +1297,8 @@ public final class SdkConstants {
     public static final String ATTR_PATH = "path";
     public static final String ATTR_PATH_PREFIX = "pathPrefix";
     public static final String ATTR_PATH_PATTERN = "pathPattern";
+    public static final String ATTR_PATH_SUFFIX = "pathSuffix";
+    public static final String ATTR_PATH_ADVANCED_PATTERN = "pathAdvancedPattern";
     public static final String ATTR_ALLOW_BACKUP = "allowBackup";
     public static final String ATTR_DEBUGGABLE = "debuggable";
     public static final String ATTR_READ_PERMISSION = "readPermission";
@@ -1321,6 +1330,8 @@ public final class SdkConstants {
     public static final String ATTR_TASK_AFFINITY = "taskAffinity";
     public static final String ATTR_EXCLUDE_FROM_RECENTS = "excludeFromRecents";
     public static final String ATTR_NO_HISTORY = "noHistory";
+    public static final String ATTR_PRIORITY = "priority";
+    public static final String ATTR_ORDER = "order";
 
     // Attributes: Resources
     public static final String ATTR_ATTR = "attr";
@@ -1375,6 +1386,8 @@ public final class SdkConstants {
     public static final String ATTR_FOREGROUND = "foreground";
     public static final String ATTR_BACKGROUND = "background";
     public static final String ATTR_ORIENTATION = "orientation";
+    public static final String ATTR_SCREEN_ORIENTATION = "screenOrientation";
+    public static final String ATTR_RESIZEABLE_ACTIVITY = "resizeableActivity";
     public static final String ATTR_BARRIER_DIRECTION = "barrierDirection";
     public static final String ATTR_BARRIER_ALLOWS_GONE_WIDGETS = "barrierAllowsGoneWidgets";
     public static final String ATTR_LAYOUT_OPTIMIZATION_LEVEL = "layout_optimizationLevel";
@@ -1893,6 +1906,8 @@ public final class SdkConstants {
     public static final String ATTR_CARD_USE_COMPAT_PADDING = "cardUseCompatPadding";
     public static final String ATTR_ENTRIES = "entries";
     public static final String ATTR_MIN_WIDTH = "minWidth";
+    public static final String ATTR_MIN_ASPECT_RATIO = "minAspectRatio";
+    public static final String ATTR_MAX_ASPECT_RATIO = "maxAspectRatio";
     public static final String ATTR_MAX_WIDTH = "maxWidth";
     public static final String ATTR_DROPDOWN_HEIGHT = "dropDownHeight";
     public static final String ATTR_DROPDOWN_WIDTH = "dropDownWidth";
@@ -2114,6 +2129,7 @@ public final class SdkConstants {
     public static final String DOT_JAR = ".jar";
     public static final String DOT_KOTLIN_MODULE = ".kotlin_module";
     public static final String DOT_SRCJAR = ".srcjar";
+    public static final String DOT_KLIB = ".klib";
     public static final String DOT_GRADLE = ".gradle";
     public static final String DOT_PROPERTIES = ".properties";
     public static final String DOT_JSON = ".json";
@@ -2845,7 +2861,7 @@ public final class SdkConstants {
      * Studio product. It need not actually be the latest version of Gradle, but it will most likely
      * be fairly recent.
      */
-    public static final String GRADLE_LATEST_VERSION = "8.2";
+    public static final String GRADLE_LATEST_VERSION = "8.4";
 
     /**
      * The minimum released version of the Android Gradle Plugin that this version of Studio will
@@ -2998,4 +3014,10 @@ public final class SdkConstants {
 
     /** Name used to identify a folder containing the exploded contents of an .aar file. */
     public static final String EXPLODED_AAR = "exploded-aar";
+
+    /** Path separator in the url for the jar entry, e.g.: jar://my_jar.jar!/entry.txt */
+    public static final String JAR_SEPARATOR = "!/";
+
+    /** Url protocol of the jar files, e.g.: jar://my_jar.jar */
+    public static final String JAR_PROTOCOL = "jar";
 }

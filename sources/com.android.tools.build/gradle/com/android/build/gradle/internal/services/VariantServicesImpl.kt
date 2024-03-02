@@ -357,7 +357,7 @@ class VariantServicesImpl(
     }
 
     override fun <T> domainObjectContainer(type: Class<T>, factory: NamedDomainObjectFactory<T>) =
-        projectServices.objectFactory.domainObjectContainer(type, factory)!!
+        projectServices.objectFactory.domainObjectContainer(type, factory)
 
     // register a property to be locked later.
     // if the properties have already been locked, the property is locked right away.

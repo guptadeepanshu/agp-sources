@@ -19,7 +19,7 @@ package com.android.build.api.variant
 import org.gradle.api.Incubating
 
 /**
- * Interface for component that can minify code
+ * Build-time properties for [Component] that can minify code.
  */
 @Incubating
 interface CanMinifyCode {

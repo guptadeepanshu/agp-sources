@@ -28,6 +28,23 @@ class AndroidAttributes @JvmOverloads constructor(
 
     constructor(stringAttribute: Pair<Attribute<String>, String>) : this(mapOf(stringAttribute))
 
+    operator fun plus(other: AndroidAttributes?): AndroidAttributes {
+        return if (other == null) {
+            this
+        } else {
+            stringAttributes.keys.intersect(other.stringAttributes.keys).let {
+                check(it.isEmpty()) { "Can't add 2 AndroidAttributes instances because they share the same attributes: $it" }
+            }
+            namedAttributes.keys.intersect(other.namedAttributes.keys).let {
+                check(it.isEmpty()) { "Can't add 2 AndroidAttributes instances because they share the same attributes: $it" }
+            }
+            AndroidAttributes(
+                stringAttributes + other.stringAttributes,
+                namedAttributes + other.namedAttributes
+            )
+        }
+    }
+
     fun addAttributesToContainer(container: AttributeContainer) {
         for ((key, value) in stringAttributes) {
             container.attribute(key, value)

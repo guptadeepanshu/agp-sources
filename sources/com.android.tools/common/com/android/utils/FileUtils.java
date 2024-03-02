@@ -15,8 +15,6 @@
  */
 package com.android.utils;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
 import com.android.annotations.NonNull;
 import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
@@ -28,7 +26,9 @@ import com.google.common.collect.Lists;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
-import com.google.common.io.Files;
+import kotlin.io.FilesKt;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -37,14 +37,27 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.CopyOption;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import kotlin.io.FilesKt;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.io.Files.asCharSink;
+import static com.google.common.io.Files.createParentDirs;
+import static com.google.common.io.Files.fileTraverser;
+import static com.google.common.io.Files.getNameWithoutExtension;
+import static com.google.common.io.Files.isFile;
+import static com.google.common.io.Files.toByteArray;
+import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
 
 @SuppressWarnings("WeakerAccess") // These are utility methods, meant to be public.
 public final class FileUtils {
@@ -165,8 +178,7 @@ public final class FileUtils {
      * checking or setting the Windows readonly bit. We have to catch this case and skip the setting
      * writable=true.
      */
-    private static void setWritable(Path path) {
-
+    private static void setWritable(@NotNull Path path) {
         File fileOrNull;
         try {
             fileOrNull = path.toFile();
@@ -183,24 +195,95 @@ public final class FileUtils {
      * contents are merged and files from the source directory overwrite files in the destination.
      */
     public static void copyDirectory(@NonNull File from, @NonNull File to) throws IOException {
-        Preconditions.checkArgument(from.isDirectory(), "Source path is not a directory.");
-        Preconditions.checkArgument(
-                !to.exists() || to.isDirectory(),
-                "Destination path exists and is not a directory.");
+        copyDirectory(from.toPath(), to.toPath(), true);
+    }
 
-        mkdirs(to);
-        File[] children = from.listFiles();
-        if (children != null) {
-            for (File child : children) {
-                if (child.isFile()) {
-                    copyFileToDirectory(child, to);
-                } else if (child.isDirectory()) {
-                    copyDirectoryToDirectory(child, to);
-                } else {
-                    throw new IllegalArgumentException(
-                            "Don't know how to copy file " + child.getAbsolutePath());
+    /**
+     * Copies a directory from one path to another. If the destination directory exists, the file
+     * contents are merged and files from the source directory overwrite files in the destination.
+     * The {@code copyDotFiles} parameter determines whether the files and directories with names
+     * starting with '.' are copied or not.
+     */
+    public static void copyDirectory(@NonNull Path from, @NonNull Path to, boolean copyDotFiles)
+            throws IOException {
+        copyDirectory(
+                from, to, path -> copyDotFiles || !path.getFileName().toString().startsWith("."));
+    }
+
+    /**
+     * Copies a directory from one path to another. If the destination directory exists, the file
+     * contents are merged and files from the source directory overwrite files in the destination.
+     */
+    public static void copyDirectory(@NonNull Path from, @NonNull Path to, Predicate<Path> filter)
+            throws IOException {
+        Preconditions.checkArgument(
+                Files.isDirectory(from), "\"" + from.toAbsolutePath() + "\" is not a directory.");
+        Preconditions.checkArgument(
+                Files.notExists(to, NOFOLLOW_LINKS) || Files.isDirectory(to, NOFOLLOW_LINKS),
+                "\"" + from.toAbsolutePath() + "\" exists and is not a directory.");
+        Preconditions.checkArgument(
+                !isAncestor(from, to, false),
+                "\"" + from.toAbsolutePath() + "\" is ancestor of \"" + to +
+                "\". Can't copy to itself");
+
+        Files.walkFileTree(from, new SimpleFileVisitor<Path>() {
+            @Override
+            @NotNull
+            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
+                    throws IOException {
+                if (!dir.equals(from) && !filter.test(dir)) {
+                    return FileVisitResult.SKIP_SUBTREE;
                 }
+                Files.createDirectories(sourceToTarget(dir));
+                return FileVisitResult.CONTINUE;
             }
+
+            @Override
+            @NotNull
+            public FileVisitResult visitFile(Path sourceFile, BasicFileAttributes attrs)
+                    throws IOException {
+                if (filter.test(sourceFile)) {
+                    copyFile(sourceFile, sourceToTarget(sourceFile));
+                }
+                return FileVisitResult.CONTINUE;
+            }
+
+            @NotNull
+            private Path sourceToTarget(Path sourceFile) {
+                return to.resolve(from.relativize(sourceFile).toString());
+            }
+        });
+    }
+
+    /**
+     * Checks if the {@code p1} is an ancestor of {@code p2}.
+     *
+     * @param p1 supposed ancestor
+     * @param p2 supposed descendant
+     * @param strict if p1 and p2 is thesame path, the method returns {@code !strict}
+     * @return true if {@code p1} is parent of {@code p2}, false otherwise
+     */
+    static boolean isAncestor(@NotNull Path p1, @NotNull Path p2, boolean strict) {
+        Path relative;
+        try {
+            relative = realPath(p1).relativize(realPath(p2));
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+        int segmentCount = relative.getNameCount();
+        if (segmentCount == 0) {
+            return !strict;
+        }
+        return !relative.getName(0).toString().equals("..");
+    }
+
+    /** Returns {@code path.toRealPath()} or the original {@code path} in case of IO errors. */
+    @NotNull
+    public static Path realPath(@NotNull Path path) {
+        try {
+            return path.toRealPath();
+        } catch (IOException ignore) {
+            return path;
         }
     }
 
@@ -239,14 +322,14 @@ public final class FileUtils {
             for (File f : children) {
                 if (f.isDirectory()) {
                     File destination = new File(to, FilesKt.toRelativeString(f, from));
-                    Files.createParentDirs(destination);
+                    createParentDirs(destination);
                     mkdirs(destination);
 
                     copyDirectoryContentToDirectory(f, destination);
                 } else if (f.isFile()) {
                     File destination =
                             new File(to, FilesKt.toRelativeString(f.getParentFile(), from));
-                    Files.createParentDirs(destination);
+                    createParentDirs(destination);
                     mkdirs(destination);
 
                     copyFileToDirectory(f, destination);
@@ -376,7 +459,7 @@ public final class FileUtils {
      */
     @NonNull
     public static String loadFileWithUnixLineSeparators(@NonNull File file) throws IOException {
-        return UNIX_NEW_LINE_JOINER.join(Files.readLines(file, Charsets.UTF_8));
+        return UNIX_NEW_LINE_JOINER.join(Files.readAllLines(file.toPath()));
     }
 
     /**
@@ -439,13 +522,12 @@ public final class FileUtils {
 
     @NonNull
     public static String sha1(@NonNull File file) throws IOException {
-        return Hashing.sha1().hashBytes(Files.toByteArray(file)).toString();
+        return Hashing.sha1().hashBytes(toByteArray(file)).toString();
     }
 
     @NonNull
     public static FluentIterable<File> getAllFiles(@NonNull File dir) {
-        return FluentIterable.from(Files.fileTraverser().depthFirstPreOrder(dir))
-                .filter(Files.isFile());
+        return FluentIterable.from(fileTraverser().depthFirstPreOrder(dir)).filter(isFile());
     }
 
     @NonNull
@@ -472,7 +554,7 @@ public final class FileUtils {
         HashFunction hashFunction = Hashing.sha1();
         HashCode hashCode = hashFunction.hashString(inputFile.getAbsolutePath(), Charsets.UTF_16LE);
 
-        String name = Files.getNameWithoutExtension(inputFile.getName());
+        String name = getNameWithoutExtension(inputFile.getName());
         if (name.equals("classes") && inputFile.getAbsolutePath().contains("exploded-aar")) {
             // This naming scheme is coming from DependencyManager#computeArtifactPath.
             File versionDir = inputFile.getParentFile().getParentFile();
@@ -506,8 +588,8 @@ public final class FileUtils {
      * @param content the new content of the file
      */
     public static void writeToFile(@NonNull File file, @NonNull String content) throws IOException {
-        Files.createParentDirs(file);
-        Files.asCharSink(file, StandardCharsets.UTF_8).write(content);
+        createParentDirs(file);
+        asCharSink(file, StandardCharsets.UTF_8).write(content);
     }
 
     /**
@@ -515,7 +597,7 @@ public final class FileUtils {
      */
     public static List<File> find(@NonNull File base, @NonNull final Pattern pattern) {
         checkArgument(base.isDirectory(), "'%s' must be a directory.", base.getAbsolutePath());
-        return FluentIterable.from(Files.fileTraverser().depthFirstPreOrder(base))
+        return FluentIterable.from(fileTraverser().depthFirstPreOrder(base))
                 .filter(
                         file ->
                                 pattern.matcher(FileUtils.toSystemIndependentPath(file.getPath()))
@@ -528,7 +610,7 @@ public final class FileUtils {
      */
     public static Optional<File> find(@NonNull File base, @NonNull final String name) {
         checkArgument(base.isDirectory(), "'%s' must be a directory.", base.getAbsolutePath());
-        return FluentIterable.from(Files.fileTraverser().depthFirstPreOrder(base))
+        return FluentIterable.from(fileTraverser().depthFirstPreOrder(base))
                 .filter(file -> name.equals(file.getName()))
                 .last();
     }
@@ -603,7 +685,7 @@ public final class FileUtils {
         // hard/symbolic links to somewhere else, it may invalidate the result returned here.
         try {
             if (file1.exists() && file2.exists()) {
-                return java.nio.file.Files.isSameFile(file1.toPath(), file2.toPath());
+                return Files.isSameFile(file1.toPath(), file2.toPath());
             } else {
                 return file1.getCanonicalFile().equals(file2.getCanonicalFile());
             }

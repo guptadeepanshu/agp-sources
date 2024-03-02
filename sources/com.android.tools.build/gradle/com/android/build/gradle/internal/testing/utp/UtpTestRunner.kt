@@ -37,6 +37,7 @@ class UtpTestRunner @JvmOverloads constructor(
         processExecutor: ProcessExecutor,
         private val workerExecutor: WorkerExecutor,
         executor: ExecutorServiceAdapter,
+        private val utpJvmExecutable: File,
         private val utpDependencies: UtpDependencies,
         private val versionedSdkLoader: SdkComponentsBuildService.VersionedSdkLoader,
         private val emulatorControlConfig: EmulatorControlConfig,
@@ -86,7 +87,7 @@ class UtpTestRunner @JvmOverloads constructor(
                 configFactory.createRunnerConfigProtoForLocalDevice(
                     deviceConnector,
                     testData,
-                    TargetApkConfigBundle(apks, targetIsSplitApk),
+                    TargetApkConfigBundle(apks, targetIsSplitApk || apks.size > 1),
                     installOptions,
                     helperApks,
                     uninstallIncompatibleApks,
@@ -113,6 +114,7 @@ class UtpTestRunner @JvmOverloads constructor(
                 )
             }
             UtpRunnerConfig(
+                utpJvmExecutable,
                 deviceConnector.name,
                 deviceConnector.serialNumber,
                 utpOutputDir,

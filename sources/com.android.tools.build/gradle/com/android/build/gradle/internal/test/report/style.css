@@ -27,6 +27,11 @@
     margin: 0;
 }
 
+.grid {
+    background: linear-gradient(-90deg, rgba(0, 0, 0, .05) 1px, transparent 1px), linear-gradient(rgba(0, 0, 0, .05) 1px, transparent 1px), linear-gradient(-90deg, rgba(0, 0, 0, .04) 1px, transparent 1px), linear-gradient(rgba(0, 0, 0, .04) 1px, transparent 1px), linear-gradient(transparent 3px, #f2f2f2 3px, #f2f2f2 98px, transparent 98px), linear-gradient(-90deg, #aaa 1px, transparent 1px), linear-gradient(-90deg, transparent 3px, #f2f2f2 3px, #f2f2f2 98px, transparent 98px), linear-gradient(#aaa 1px, transparent 1px), #f2f2f2;
+    background-size: 10px 10px, 10px 10px, 100px 100px, 100px 100px, 100px 100px, 100px 100px, 100px 100px, 100px 100px;
+}
+
 .counter, .percent {
     font-size: 120%;
     font-weight: bold;

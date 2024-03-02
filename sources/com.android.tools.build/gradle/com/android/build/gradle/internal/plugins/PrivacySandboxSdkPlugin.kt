@@ -35,7 +35,6 @@ import com.android.build.gradle.internal.services.Aapt2DaemonBuildService
 import com.android.build.gradle.internal.services.Aapt2ThreadPoolBuildService
 import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.services.SymbolTableBuildService
-import com.android.build.gradle.internal.services.TaskCreationServicesImpl
 import com.android.build.gradle.internal.services.VersionedSdkLoaderService
 import com.android.build.gradle.internal.tasks.AppMetadataTask
 import com.android.build.gradle.internal.tasks.SignAsbTask
@@ -139,10 +138,13 @@ class PrivacySandboxSdkPlugin @Inject constructor(
 
     override fun apply(project: Project) {
         super.basePluginApply(project)
-        if (!projectServices.projectOptions[BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT]) {
+        if (projectServices.projectOptions.let {
+                    !it[BooleanOption.PRIVACY_SANDBOX_SDK_PLUGIN_SUPPORT] && !it[BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT] }) {
             throw GradleException(
-                    "Privacy Sandbox SDKs are not supported in Android Gradle plugin 8.2.x.\n" +
-                    "To build privacy sandbox SDKs, please use Android Gradle plugin 8.3.0-alpha01 or later."
+                    "Privacy Sandbox SDK Plugin support must be explicitly enabled.\n" +
+                            "To enable support, add\n" +
+                            "    ${BooleanOption.PRIVACY_SANDBOX_SDK_PLUGIN_SUPPORT.propertyName}=true\n" +
+                            "to your project's gradle.properties file."
             )
         }
 

@@ -16,6 +16,8 @@
 
 package com.android.resources;
 
+import com.android.annotations.NonNull;
+
 /**
  * Screen Ratio enum.
  * <p>This is used in the manifest in the uses-configuration node and in the resource folder names.
@@ -86,5 +88,18 @@ public enum ScreenRatio implements ResourceEnum {
         return true;
     }
 
+    /** Calculate the screen ratio. Beyond a 5:3 ratio is considered "long" */
+    @NonNull
+    public static ScreenRatio create(int width, int height) {
+        int longSide = Math.max(width, height);
+        int shortSide = Math.min(width, height);
+
+        // Above a 5:3 ratio is "long"
+        if (((double) longSide) / shortSide >= 5.0 / 3) {
+            return ScreenRatio.LONG;
+        } else {
+            return ScreenRatio.NOTLONG;
+        }
+    }
 }
 

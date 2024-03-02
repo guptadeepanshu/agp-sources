@@ -20,7 +20,6 @@ import com.android.build.api.attributes.ProductFlavorAttr
 import com.android.build.api.component.impl.ComponentImpl
 import com.android.build.api.component.impl.UnitTestImpl
 import com.android.build.api.component.impl.features.BuildConfigCreationConfigImpl
-import com.android.build.api.component.impl.features.ManifestPlaceholdersCreationConfigImpl
 import com.android.build.api.component.impl.features.NativeBuildCreationConfigImpl
 import com.android.build.api.component.impl.features.OptimizationCreationConfigImpl
 import com.android.build.api.component.impl.features.RenderscriptCreationConfigImpl
@@ -36,7 +35,6 @@ import com.android.build.api.variant.Packaging
 import com.android.build.api.variant.ResValue
 import com.android.build.api.variant.Variant
 import com.android.build.gradle.internal.DependencyConfigurator
-import com.android.build.gradle.internal.VariantManager
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.component.features.BuildConfigCreationConfig
@@ -47,9 +45,7 @@ import com.android.build.gradle.internal.component.features.OptimizationCreation
 import com.android.build.gradle.internal.component.features.RenderscriptCreationConfig
 import com.android.build.gradle.internal.component.features.ShadersCreationConfig
 import com.android.build.gradle.internal.core.VariantSources
-import com.android.build.gradle.internal.core.dsl.ConsumableComponentDslInfo
 import com.android.build.gradle.internal.core.dsl.VariantDslInfo
-import com.android.build.gradle.internal.core.dsl.features.ManifestPlaceholdersDslInfo
 import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.MutableTaskContainer
@@ -93,7 +89,7 @@ abstract class VariantImpl<DslInfoT: VariantDslInfo>(
     variantServices,
     taskCreationServices,
     global
-), Variant, VariantCreationConfig, HasUnitTest {
+), Variant, VariantCreationConfig, HasHostTests {
 
     override val description: String
         get() = if (componentIdentity.productFlavors.isNotEmpty()) {
@@ -246,7 +242,7 @@ abstract class VariantImpl<DslInfoT: VariantDslInfo>(
     override val nestedComponents: List<ComponentImpl<*>>
         get() = listOfNotNull(
             unitTest,
-            (this as? HasAndroidTest)?.androidTest,
+            (this as? HasDeviceTests)?.androidTest,
             (this as? HasTestFixtures)?.testFixtures
         )
 
@@ -254,7 +250,7 @@ abstract class VariantImpl<DslInfoT: VariantDslInfo>(
         get() = listOfNotNull(
             this,
             unitTest,
-            (this as? HasAndroidTest)?.androidTest,
+            (this as? HasDeviceTests)?.androidTest,
             (this as? HasTestFixtures)?.testFixtures
         )
 
@@ -267,11 +263,11 @@ abstract class VariantImpl<DslInfoT: VariantDslInfo>(
     }
 
     override val isAndroidTestCoverageEnabled: Boolean
-        get() = (this as? HasAndroidTest)?.androidTest?.isAndroidTestCoverageEnabled == true
+        get() = (this as? HasDeviceTests)?.androidTest?.isAndroidTestCoverageEnabled == true
 
     override val isCoreLibraryDesugaringEnabledLintCheck: Boolean
         get() = if (this is ApkCreationConfig) {
-            dexingCreationConfig.isCoreLibraryDesugaringEnabled
+            dexing.isCoreLibraryDesugaringEnabled
         } else {
             // We don't dex library variants, but we still need to check if core library desugaring
             // for lint checks.

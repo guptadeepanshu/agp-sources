@@ -28,7 +28,7 @@ import com.android.build.api.artifact.impl.ArtifactsImpl;
 import com.android.build.api.variant.ScopedArtifacts;
 import com.android.build.gradle.internal.SdkComponentsBuildService;
 import com.android.build.gradle.internal.component.ComponentCreationConfig;
-import com.android.build.gradle.internal.component.UnitTestCreationConfig;
+import com.android.build.gradle.internal.component.HostTestCreationConfig;
 import com.android.build.gradle.internal.component.VariantCreationConfig;
 import com.android.build.gradle.internal.core.dsl.features.UnitTestOptionsDslInfo;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts;
@@ -37,6 +37,7 @@ import com.android.build.gradle.internal.scope.InternalArtifactType;
 import com.android.build.gradle.internal.tasks.BuildAnalyzer;
 import com.android.build.gradle.internal.tasks.VariantAwareTask;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
+import com.android.build.gradle.internal.utils.HasConfigurableValuesKt;
 import com.android.build.gradle.options.BooleanOption;
 import com.android.build.gradle.options.ProjectOptions;
 import com.android.build.gradle.tasks.AndroidAnalyticsTestListener;
@@ -45,17 +46,25 @@ import com.android.buildanalyzer.common.TaskCategory;
 import com.android.builder.core.ComponentType;
 import com.google.common.collect.ImmutableList;
 import java.io.File;
+import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.Callable;
+import kotlin.Unit;
 import org.gradle.api.artifacts.ArtifactCollection;
 import org.gradle.api.file.ConfigurableFileCollection;
+import org.gradle.api.file.Directory;
 import org.gradle.api.file.RegularFileProperty;
 import org.gradle.api.plugins.JavaBasePlugin;
+import org.gradle.api.provider.ListProperty;
 import org.gradle.api.reporting.DirectoryReport;
 import org.gradle.api.tasks.CacheableTask;
+import org.gradle.api.tasks.InputFiles;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.OutputFile;
+import org.gradle.api.tasks.PathSensitive;
+import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.TaskProvider;
 import org.gradle.api.tasks.testing.JUnitXmlReport;
@@ -101,6 +110,11 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
     @Optional
     public abstract RegularFileProperty getJacocoCoverageOutputFile();
 
+    @InputFiles
+    @Optional
+    @PathSensitive(PathSensitivity.RELATIVE)
+    public abstract ListProperty<Collection<Directory>> getTestJniLibs();
+
     @Override
     @TaskAction
     public void executeTests() {
@@ -115,18 +129,47 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
                         isIdeInvoked);
         this.addTestListener(testListener);
 
+        // Collect all the jni libs directories (including the system ones) and set the
+        // "java.library.path" system property for the spawned JVM so test can load jni libraries
+        // from those locations.
+        List<Collection<Directory>> jniLibsDirs = this.getTestJniLibs().get();
+        if (!jniLibsDirs.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            // the System value is always the top priority, we need to set it as the presence
+            // of the systemProperty("java.library.path", ...) call below will otherwise ignore it.
+            if (System.getProperty("java.library.path") != null) {
+                sb.append(System.getProperty("java.library.path"));
+            }
+            // add existing values before resetting it.
+            if (getSystemProperties().get("java.library.path") != null) {
+                if (sb.length() > 0) sb.append(File.pathSeparatorChar);
+                sb.append(getSystemProperties().get("java.library.path"));
+            }
+
+            // append all jni libraries directories in order.
+            jniLibsDirs.forEach(
+                    directories -> {
+                        directories.forEach(
+                                directory -> {
+                                    sb.append(File.pathSeparatorChar);
+                                    sb.append(directory.getAsFile().getAbsolutePath());
+                                });
+                    });
+            systemProperty("java.library.path", sb.toString());
+        }
+
         super.executeTests();
     }
 
     public static class CreationAction
             extends VariantTaskCreationAction<AndroidUnitTest, ComponentCreationConfig> {
 
-        @NonNull private final UnitTestCreationConfig unitTestCreationConfig;
+        @NonNull private final HostTestCreationConfig unitTestCreationConfig;
 
         private final String jacocoVersion;
 
         public CreationAction(
-                @NonNull UnitTestCreationConfig unitTestCreationConfig,
+                @NonNull HostTestCreationConfig unitTestCreationConfig,
                 @NonNull String jacocoVersion) {
             super(unitTestCreationConfig);
             this.unitTestCreationConfig = unitTestCreationConfig;
@@ -189,6 +232,14 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
                     });
 
             VariantCreationConfig testedVariant = unitTestCreationConfig.getMainVariant();
+            unitTestCreationConfig
+                    .getSources()
+                    .jniLibs(
+                            layeredSourceDirectories -> {
+                                HasConfigurableValuesKt.setDisallowChanges(
+                                        task.getTestJniLibs(), layeredSourceDirectories.getAll());
+                                return Unit.INSTANCE;
+                            });
 
             UnitTestOptionsDslInfo testOptions = creationConfig.getGlobal().getUnitTestOptions();
 

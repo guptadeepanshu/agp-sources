@@ -32,6 +32,7 @@ private static final long serialVersionUID = 0L;
     integerOptionValues_ = java.util.Collections.emptyList();
     longOptions_ = emptyIntList();
     stringOptions_ = emptyIntList();
+    modulePropertyKeys_ = emptyIntList();
   }
 
   @java.lang.Override
@@ -45,200 +46,6 @@ private static final long serialVersionUID = 0L;
   public final com.google.protobuf.UnknownFieldSet
   getUnknownFields() {
     return this.unknownFields;
-  }
-  private GradleProjectOptionsSettings(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    int mutable_bitField0_ = 0;
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 8: {
-            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-              trueBooleanOptions_ = newIntList();
-              mutable_bitField0_ |= 0x00000001;
-            }
-            trueBooleanOptions_.addInt(input.readInt32());
-            break;
-          }
-          case 10: {
-            int length = input.readRawVarint32();
-            int limit = input.pushLimit(length);
-            if (!((mutable_bitField0_ & 0x00000001) != 0) && input.getBytesUntilLimit() > 0) {
-              trueBooleanOptions_ = newIntList();
-              mutable_bitField0_ |= 0x00000001;
-            }
-            while (input.getBytesUntilLimit() > 0) {
-              trueBooleanOptions_.addInt(input.readInt32());
-            }
-            input.popLimit(limit);
-            break;
-          }
-          case 16: {
-            if (!((mutable_bitField0_ & 0x00000002) != 0)) {
-              falseBooleanOptions_ = newIntList();
-              mutable_bitField0_ |= 0x00000002;
-            }
-            falseBooleanOptions_.addInt(input.readInt32());
-            break;
-          }
-          case 18: {
-            int length = input.readRawVarint32();
-            int limit = input.pushLimit(length);
-            if (!((mutable_bitField0_ & 0x00000002) != 0) && input.getBytesUntilLimit() > 0) {
-              falseBooleanOptions_ = newIntList();
-              mutable_bitField0_ |= 0x00000002;
-            }
-            while (input.getBytesUntilLimit() > 0) {
-              falseBooleanOptions_.addInt(input.readInt32());
-            }
-            input.popLimit(limit);
-            break;
-          }
-          case 24: {
-            if (!((mutable_bitField0_ & 0x00000004) != 0)) {
-              trueOptionalBooleanOptions_ = newIntList();
-              mutable_bitField0_ |= 0x00000004;
-            }
-            trueOptionalBooleanOptions_.addInt(input.readInt32());
-            break;
-          }
-          case 26: {
-            int length = input.readRawVarint32();
-            int limit = input.pushLimit(length);
-            if (!((mutable_bitField0_ & 0x00000004) != 0) && input.getBytesUntilLimit() > 0) {
-              trueOptionalBooleanOptions_ = newIntList();
-              mutable_bitField0_ |= 0x00000004;
-            }
-            while (input.getBytesUntilLimit() > 0) {
-              trueOptionalBooleanOptions_.addInt(input.readInt32());
-            }
-            input.popLimit(limit);
-            break;
-          }
-          case 32: {
-            if (!((mutable_bitField0_ & 0x00000008) != 0)) {
-              falseOptionalBooleanOptions_ = newIntList();
-              mutable_bitField0_ |= 0x00000008;
-            }
-            falseOptionalBooleanOptions_.addInt(input.readInt32());
-            break;
-          }
-          case 34: {
-            int length = input.readRawVarint32();
-            int limit = input.pushLimit(length);
-            if (!((mutable_bitField0_ & 0x00000008) != 0) && input.getBytesUntilLimit() > 0) {
-              falseOptionalBooleanOptions_ = newIntList();
-              mutable_bitField0_ |= 0x00000008;
-            }
-            while (input.getBytesUntilLimit() > 0) {
-              falseOptionalBooleanOptions_.addInt(input.readInt32());
-            }
-            input.popLimit(limit);
-            break;
-          }
-          case 42: {
-            if (!((mutable_bitField0_ & 0x00000010) != 0)) {
-              integerOptionValues_ = new java.util.ArrayList<com.google.wireless.android.sdk.stats.GradleIntegerOptionEntry>();
-              mutable_bitField0_ |= 0x00000010;
-            }
-            integerOptionValues_.add(
-                input.readMessage(com.google.wireless.android.sdk.stats.GradleIntegerOptionEntry.PARSER, extensionRegistry));
-            break;
-          }
-          case 48: {
-            if (!((mutable_bitField0_ & 0x00000020) != 0)) {
-              longOptions_ = newIntList();
-              mutable_bitField0_ |= 0x00000020;
-            }
-            longOptions_.addInt(input.readInt32());
-            break;
-          }
-          case 50: {
-            int length = input.readRawVarint32();
-            int limit = input.pushLimit(length);
-            if (!((mutable_bitField0_ & 0x00000020) != 0) && input.getBytesUntilLimit() > 0) {
-              longOptions_ = newIntList();
-              mutable_bitField0_ |= 0x00000020;
-            }
-            while (input.getBytesUntilLimit() > 0) {
-              longOptions_.addInt(input.readInt32());
-            }
-            input.popLimit(limit);
-            break;
-          }
-          case 56: {
-            if (!((mutable_bitField0_ & 0x00000040) != 0)) {
-              stringOptions_ = newIntList();
-              mutable_bitField0_ |= 0x00000040;
-            }
-            stringOptions_.addInt(input.readInt32());
-            break;
-          }
-          case 58: {
-            int length = input.readRawVarint32();
-            int limit = input.pushLimit(length);
-            if (!((mutable_bitField0_ & 0x00000040) != 0) && input.getBytesUntilLimit() > 0) {
-              stringOptions_ = newIntList();
-              mutable_bitField0_ |= 0x00000040;
-            }
-            while (input.getBytesUntilLimit() > 0) {
-              stringOptions_.addInt(input.readInt32());
-            }
-            input.popLimit(limit);
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      if (((mutable_bitField0_ & 0x00000001) != 0)) {
-        trueBooleanOptions_.makeImmutable(); // C
-      }
-      if (((mutable_bitField0_ & 0x00000002) != 0)) {
-        falseBooleanOptions_.makeImmutable(); // C
-      }
-      if (((mutable_bitField0_ & 0x00000004) != 0)) {
-        trueOptionalBooleanOptions_.makeImmutable(); // C
-      }
-      if (((mutable_bitField0_ & 0x00000008) != 0)) {
-        falseOptionalBooleanOptions_.makeImmutable(); // C
-      }
-      if (((mutable_bitField0_ & 0x00000010) != 0)) {
-        integerOptionValues_ = java.util.Collections.unmodifiableList(integerOptionValues_);
-      }
-      if (((mutable_bitField0_ & 0x00000020) != 0)) {
-        longOptions_.makeImmutable(); // C
-      }
-      if (((mutable_bitField0_ & 0x00000040) != 0)) {
-        stringOptions_.makeImmutable(); // C
-      }
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
@@ -602,6 +409,51 @@ private static final long serialVersionUID = 0L;
     return stringOptions_.getInt(index);
   }
 
+  public static final int MODULE_PROPERTY_KEYS_FIELD_NUMBER = 8;
+  private com.google.protobuf.Internal.IntList modulePropertyKeys_;
+  /**
+   * <pre>
+   * Module property keys (experimental properties) that are explicitly set.
+   * A reference to the proto enum in android git, see ModulePropertyKeys in
+   * tools/analytics-library/protos/src/main/proto/analytics_enums.proto
+   * </pre>
+   *
+   * <code>repeated int32 module_property_keys = 8;</code>
+   * @return A list containing the modulePropertyKeys.
+   */
+  @java.lang.Override
+  public java.util.List<java.lang.Integer>
+      getModulePropertyKeysList() {
+    return modulePropertyKeys_;
+  }
+  /**
+   * <pre>
+   * Module property keys (experimental properties) that are explicitly set.
+   * A reference to the proto enum in android git, see ModulePropertyKeys in
+   * tools/analytics-library/protos/src/main/proto/analytics_enums.proto
+   * </pre>
+   *
+   * <code>repeated int32 module_property_keys = 8;</code>
+   * @return The count of modulePropertyKeys.
+   */
+  public int getModulePropertyKeysCount() {
+    return modulePropertyKeys_.size();
+  }
+  /**
+   * <pre>
+   * Module property keys (experimental properties) that are explicitly set.
+   * A reference to the proto enum in android git, see ModulePropertyKeys in
+   * tools/analytics-library/protos/src/main/proto/analytics_enums.proto
+   * </pre>
+   *
+   * <code>repeated int32 module_property_keys = 8;</code>
+   * @param index The index of the element to return.
+   * @return The modulePropertyKeys at the given index.
+   */
+  public int getModulePropertyKeys(int index) {
+    return modulePropertyKeys_.getInt(index);
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -637,7 +489,10 @@ private static final long serialVersionUID = 0L;
     for (int i = 0; i < stringOptions_.size(); i++) {
       output.writeInt32(7, stringOptions_.getInt(i));
     }
-    unknownFields.writeTo(output);
+    for (int i = 0; i < modulePropertyKeys_.size(); i++) {
+      output.writeInt32(8, modulePropertyKeys_.getInt(i));
+    }
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -704,7 +559,16 @@ private static final long serialVersionUID = 0L;
       size += dataSize;
       size += 1 * getStringOptionsList().size();
     }
-    size += unknownFields.getSerializedSize();
+    {
+      int dataSize = 0;
+      for (int i = 0; i < modulePropertyKeys_.size(); i++) {
+        dataSize += com.google.protobuf.CodedOutputStream
+          .computeInt32SizeNoTag(modulePropertyKeys_.getInt(i));
+      }
+      size += dataSize;
+      size += 1 * getModulePropertyKeysList().size();
+    }
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -733,7 +597,9 @@ private static final long serialVersionUID = 0L;
         .equals(other.getLongOptionsList())) return false;
     if (!getStringOptionsList()
         .equals(other.getStringOptionsList())) return false;
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getModulePropertyKeysList()
+        .equals(other.getModulePropertyKeysList())) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -772,7 +638,11 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + STRING_OPTIONS_FIELD_NUMBER;
       hash = (53 * hash) + getStringOptionsList().hashCode();
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    if (getModulePropertyKeysCount() > 0) {
+      hash = (37 * hash) + MODULE_PROPERTY_KEYS_FIELD_NUMBER;
+      hash = (53 * hash) + getModulePropertyKeysList().hashCode();
+    }
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -898,19 +768,13 @@ private static final long serialVersionUID = 0L;
 
     // Construct using com.google.wireless.android.sdk.stats.GradleProjectOptionsSettings.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessageV3
-              .alwaysUseFieldBuilders) {
-        getIntegerOptionValuesFieldBuilder();
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
@@ -925,14 +789,17 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000008);
       if (integerOptionValuesBuilder_ == null) {
         integerOptionValues_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000010);
       } else {
+        integerOptionValues_ = null;
         integerOptionValuesBuilder_.clear();
       }
+      bitField0_ = (bitField0_ & ~0x00000010);
       longOptions_ = emptyIntList();
       bitField0_ = (bitField0_ & ~0x00000020);
       stringOptions_ = emptyIntList();
       bitField0_ = (bitField0_ & ~0x00000040);
+      modulePropertyKeys_ = emptyIntList();
+      bitField0_ = (bitField0_ & ~0x00000080);
       return this;
     }
 
@@ -999,6 +866,11 @@ private static final long serialVersionUID = 0L;
         bitField0_ = (bitField0_ & ~0x00000040);
       }
       result.stringOptions_ = stringOptions_;
+      if (((bitField0_ & 0x00000080) != 0)) {
+        modulePropertyKeys_.makeImmutable();
+        bitField0_ = (bitField0_ & ~0x00000080);
+      }
+      result.modulePropertyKeys_ = modulePropertyKeys_;
       onBuilt();
       return result;
     }
@@ -1133,7 +1005,17 @@ private static final long serialVersionUID = 0L;
         }
         onChanged();
       }
-      this.mergeUnknownFields(other.unknownFields);
+      if (!other.modulePropertyKeys_.isEmpty()) {
+        if (modulePropertyKeys_.isEmpty()) {
+          modulePropertyKeys_ = other.modulePropertyKeys_;
+          bitField0_ = (bitField0_ & ~0x00000080);
+        } else {
+          ensureModulePropertyKeysIsMutable();
+          modulePropertyKeys_.addAll(other.modulePropertyKeys_);
+        }
+        onChanged();
+      }
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -1148,17 +1030,155 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.google.wireless.android.sdk.stats.GradleProjectOptionsSettings parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              int v = input.readInt32();
+              ensureTrueBooleanOptionsIsMutable();
+              trueBooleanOptions_.addInt(v);
+              break;
+            } // case 8
+            case 10: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              ensureTrueBooleanOptionsIsMutable();
+              while (input.getBytesUntilLimit() > 0) {
+                trueBooleanOptions_.addInt(input.readInt32());
+              }
+              input.popLimit(limit);
+              break;
+            } // case 10
+            case 16: {
+              int v = input.readInt32();
+              ensureFalseBooleanOptionsIsMutable();
+              falseBooleanOptions_.addInt(v);
+              break;
+            } // case 16
+            case 18: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              ensureFalseBooleanOptionsIsMutable();
+              while (input.getBytesUntilLimit() > 0) {
+                falseBooleanOptions_.addInt(input.readInt32());
+              }
+              input.popLimit(limit);
+              break;
+            } // case 18
+            case 24: {
+              int v = input.readInt32();
+              ensureTrueOptionalBooleanOptionsIsMutable();
+              trueOptionalBooleanOptions_.addInt(v);
+              break;
+            } // case 24
+            case 26: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              ensureTrueOptionalBooleanOptionsIsMutable();
+              while (input.getBytesUntilLimit() > 0) {
+                trueOptionalBooleanOptions_.addInt(input.readInt32());
+              }
+              input.popLimit(limit);
+              break;
+            } // case 26
+            case 32: {
+              int v = input.readInt32();
+              ensureFalseOptionalBooleanOptionsIsMutable();
+              falseOptionalBooleanOptions_.addInt(v);
+              break;
+            } // case 32
+            case 34: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              ensureFalseOptionalBooleanOptionsIsMutable();
+              while (input.getBytesUntilLimit() > 0) {
+                falseOptionalBooleanOptions_.addInt(input.readInt32());
+              }
+              input.popLimit(limit);
+              break;
+            } // case 34
+            case 42: {
+              com.google.wireless.android.sdk.stats.GradleIntegerOptionEntry m =
+                  input.readMessage(
+                      com.google.wireless.android.sdk.stats.GradleIntegerOptionEntry.PARSER,
+                      extensionRegistry);
+              if (integerOptionValuesBuilder_ == null) {
+                ensureIntegerOptionValuesIsMutable();
+                integerOptionValues_.add(m);
+              } else {
+                integerOptionValuesBuilder_.addMessage(m);
+              }
+              break;
+            } // case 42
+            case 48: {
+              int v = input.readInt32();
+              ensureLongOptionsIsMutable();
+              longOptions_.addInt(v);
+              break;
+            } // case 48
+            case 50: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              ensureLongOptionsIsMutable();
+              while (input.getBytesUntilLimit() > 0) {
+                longOptions_.addInt(input.readInt32());
+              }
+              input.popLimit(limit);
+              break;
+            } // case 50
+            case 56: {
+              int v = input.readInt32();
+              ensureStringOptionsIsMutable();
+              stringOptions_.addInt(v);
+              break;
+            } // case 56
+            case 58: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              ensureStringOptionsIsMutable();
+              while (input.getBytesUntilLimit() > 0) {
+                stringOptions_.addInt(input.readInt32());
+              }
+              input.popLimit(limit);
+              break;
+            } // case 58
+            case 64: {
+              int v = input.readInt32();
+              ensureModulePropertyKeysIsMutable();
+              modulePropertyKeys_.addInt(v);
+              break;
+            } // case 64
+            case 66: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              ensureModulePropertyKeysIsMutable();
+              while (input.getBytesUntilLimit() > 0) {
+                modulePropertyKeys_.addInt(input.readInt32());
+              }
+              input.popLimit(limit);
+              break;
+            } // case 66
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.google.wireless.android.sdk.stats.GradleProjectOptionsSettings) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
     private int bitField0_;
@@ -2257,6 +2277,127 @@ private static final long serialVersionUID = 0L;
       onChanged();
       return this;
     }
+
+    private com.google.protobuf.Internal.IntList modulePropertyKeys_ = emptyIntList();
+    private void ensureModulePropertyKeysIsMutable() {
+      if (!((bitField0_ & 0x00000080) != 0)) {
+        modulePropertyKeys_ = mutableCopy(modulePropertyKeys_);
+        bitField0_ |= 0x00000080;
+       }
+    }
+    /**
+     * <pre>
+     * Module property keys (experimental properties) that are explicitly set.
+     * A reference to the proto enum in android git, see ModulePropertyKeys in
+     * tools/analytics-library/protos/src/main/proto/analytics_enums.proto
+     * </pre>
+     *
+     * <code>repeated int32 module_property_keys = 8;</code>
+     * @return A list containing the modulePropertyKeys.
+     */
+    public java.util.List<java.lang.Integer>
+        getModulePropertyKeysList() {
+      return ((bitField0_ & 0x00000080) != 0) ?
+               java.util.Collections.unmodifiableList(modulePropertyKeys_) : modulePropertyKeys_;
+    }
+    /**
+     * <pre>
+     * Module property keys (experimental properties) that are explicitly set.
+     * A reference to the proto enum in android git, see ModulePropertyKeys in
+     * tools/analytics-library/protos/src/main/proto/analytics_enums.proto
+     * </pre>
+     *
+     * <code>repeated int32 module_property_keys = 8;</code>
+     * @return The count of modulePropertyKeys.
+     */
+    public int getModulePropertyKeysCount() {
+      return modulePropertyKeys_.size();
+    }
+    /**
+     * <pre>
+     * Module property keys (experimental properties) that are explicitly set.
+     * A reference to the proto enum in android git, see ModulePropertyKeys in
+     * tools/analytics-library/protos/src/main/proto/analytics_enums.proto
+     * </pre>
+     *
+     * <code>repeated int32 module_property_keys = 8;</code>
+     * @param index The index of the element to return.
+     * @return The modulePropertyKeys at the given index.
+     */
+    public int getModulePropertyKeys(int index) {
+      return modulePropertyKeys_.getInt(index);
+    }
+    /**
+     * <pre>
+     * Module property keys (experimental properties) that are explicitly set.
+     * A reference to the proto enum in android git, see ModulePropertyKeys in
+     * tools/analytics-library/protos/src/main/proto/analytics_enums.proto
+     * </pre>
+     *
+     * <code>repeated int32 module_property_keys = 8;</code>
+     * @param index The index to set the value at.
+     * @param value The modulePropertyKeys to set.
+     * @return This builder for chaining.
+     */
+    public Builder setModulePropertyKeys(
+        int index, int value) {
+      ensureModulePropertyKeysIsMutable();
+      modulePropertyKeys_.setInt(index, value);
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Module property keys (experimental properties) that are explicitly set.
+     * A reference to the proto enum in android git, see ModulePropertyKeys in
+     * tools/analytics-library/protos/src/main/proto/analytics_enums.proto
+     * </pre>
+     *
+     * <code>repeated int32 module_property_keys = 8;</code>
+     * @param value The modulePropertyKeys to add.
+     * @return This builder for chaining.
+     */
+    public Builder addModulePropertyKeys(int value) {
+      ensureModulePropertyKeysIsMutable();
+      modulePropertyKeys_.addInt(value);
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Module property keys (experimental properties) that are explicitly set.
+     * A reference to the proto enum in android git, see ModulePropertyKeys in
+     * tools/analytics-library/protos/src/main/proto/analytics_enums.proto
+     * </pre>
+     *
+     * <code>repeated int32 module_property_keys = 8;</code>
+     * @param values The modulePropertyKeys to add.
+     * @return This builder for chaining.
+     */
+    public Builder addAllModulePropertyKeys(
+        java.lang.Iterable<? extends java.lang.Integer> values) {
+      ensureModulePropertyKeysIsMutable();
+      com.google.protobuf.AbstractMessageLite.Builder.addAll(
+          values, modulePropertyKeys_);
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Module property keys (experimental properties) that are explicitly set.
+     * A reference to the proto enum in android git, see ModulePropertyKeys in
+     * tools/analytics-library/protos/src/main/proto/analytics_enums.proto
+     * </pre>
+     *
+     * <code>repeated int32 module_property_keys = 8;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearModulePropertyKeys() {
+      modulePropertyKeys_ = emptyIntList();
+      bitField0_ = (bitField0_ & ~0x00000080);
+      onChanged();
+      return this;
+    }
     @java.lang.Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -2290,7 +2431,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new GradleProjectOptionsSettings(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

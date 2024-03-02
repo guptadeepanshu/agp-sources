@@ -17,16 +17,15 @@
 package com.android.build.api.component.analytics
 
 import com.android.build.api.artifact.Artifacts
-import com.android.build.api.variant.AarMetadata
 import com.android.build.api.variant.AndroidTest
+import com.android.build.api.variant.Component
 import com.android.build.api.variant.Instrumentation
 import com.android.build.api.variant.KotlinMultiplatformAndroidVariant
+import com.android.build.api.variant.LifecycleTasks
 import com.android.tools.build.gradle.internal.profile.VariantPropertiesMethodType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
-import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.FileCollection
 import org.gradle.api.model.ObjectFactory
-import org.gradle.api.provider.Provider
 import javax.inject.Inject
 
 open class AnalyticsEnabledKotlinMultiplatformAndroidVariant @Inject constructor(
@@ -68,7 +67,14 @@ open class AnalyticsEnabledKotlinMultiplatformAndroidVariant @Inject constructor
             return delegate.compileClasspath
         }
 
-    private val userVisibleUnitTest: AnalyticsEnabledUnitTest? by lazy {
+    override val lifecycleTasks: LifecycleTasks
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.LIFECYCLE_TASKS_VALUE
+            return delegate.lifecycleTasks
+        }
+
+    private val userVisibleUnitTest: AnalyticsEnabledUnitTest? by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
         delegate.unitTest?.let {
             objectFactory.newInstance(
                 AnalyticsEnabledUnitTest::class.java,
@@ -81,7 +87,7 @@ open class AnalyticsEnabledKotlinMultiplatformAndroidVariant @Inject constructor
     override val unitTest: com.android.build.api.component.UnitTest?
         get() = userVisibleUnitTest
 
-    private val userVisibleAndroidTest: AnalyticsEnabledAndroidTest? by lazy {
+    private val userVisibleAndroidTest: AnalyticsEnabledAndroidTest? by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
         delegate.androidTest?.let {
             objectFactory.newInstance(
                 AnalyticsEnabledAndroidTest::class.java,
@@ -96,5 +102,12 @@ open class AnalyticsEnabledKotlinMultiplatformAndroidVariant @Inject constructor
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.ANDROID_TEST_VALUE
             return userVisibleAndroidTest
+        }
+
+    override val nestedComponents: List<Component>
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.NESTED_COMPONENTS_VALUE
+            return delegate.nestedComponents
         }
 }

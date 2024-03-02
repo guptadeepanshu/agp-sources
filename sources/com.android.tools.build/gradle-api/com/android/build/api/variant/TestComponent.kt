@@ -18,6 +18,30 @@ package com.android.build.api.variant
 
 import org.gradle.api.provider.MapProperty
 
+/**
+ * Model for test components that contains build-time properties.
+ *
+ * These components are attached to a main component ([Variant]), and accessed via them.
+ *
+ * ```kotlin
+ * androidComponents {
+ *   onVariants(selector().all()) { variant: ApplicationVariant ->
+ *     variant.androidTest?.apply {
+ *       ....
+ *     }
+ *     variant.unitTest?.apply {
+ *       ....
+ *     }
+ *   }
+ * }
+ * ```
+ *
+ * Not all subtype of [Variant] will have access to all sub-types of [TestComponent], this
+ * is handled via [HasUnitTest], and [HasAndroidTest].
+ *
+ * The test components are also part of [Variant.nestedComponents]
+ *
+ */
 interface TestComponent: Component {
     /**
      * [MapProperty] of the test component's manifest placeholders.

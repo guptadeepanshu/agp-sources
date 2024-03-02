@@ -21,6 +21,11 @@ import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.process.CommandLineArgumentProvider
 
+/**
+ * Build-time properties for Java annotation processors inside a [Component]
+ *
+ * This is accessed via [JavaCompilation.annotationProcessor]
+ */
 @Incubating
 interface AnnotationProcessor {
 

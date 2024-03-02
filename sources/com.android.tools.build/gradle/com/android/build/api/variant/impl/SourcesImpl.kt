@@ -26,6 +26,8 @@ import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.NamedDomainObjectFactory
 import com.android.build.gradle.internal.services.VariantServices
+import org.gradle.api.provider.Provider
+import java.io.File
 
 /**
  * Implementation of [Sources] for a particular source type like java, kotlin, etc...
@@ -87,6 +89,18 @@ class SourcesImpl(
                 variantSourceProvider?.baselineProfiles as DefaultAndroidSourceDirectorySet?
             )
         }
+
+    override val manifests =
+            ManifestFilesImpl(
+                    variantServices
+            ).also { sourceFilesImpl ->
+                sourceFilesImpl.addSourceFile(defaultSourceProvider.mainManifestFile)
+                defaultSourceProvider.manifestOverlayFiles.run {
+                    forEach {
+                        sourceFilesImpl.addSourceFile(it)
+                    }
+                }
+            }
 
     override val res =
         ResSourceDirectoriesImpl(
@@ -245,8 +259,10 @@ class SourcesImpl(
         defaultSourceProvider.mainManifestFile
     }
 
-    override val manifestOverlayFiles = variantServices.provider {
-        defaultSourceProvider.manifestOverlayFiles
+    override val manifestOverlayFiles: Provider<List<File>> = manifests.all.map {
+        // `all` is ordered from most prioritized to less prioritizes (main manifest)
+        // need to remove main manifest and reverse order from less to the most prioritized
+        files -> files.dropLast(1).reversed().map { it.asFile }
     }
 
     override val sourceProviderNames: List<String>

@@ -174,7 +174,7 @@ abstract class ProcessAndroidAppResourcesTask : NonIncrementalTask() {
 
             task.androidJarInput.initialize(creationConfig)
             if (creationConfig is ApkCreationConfig) {
-                task.noCompress.set(androidResourcesCreationConfig.androidResources.noCompress)
+                task.noCompress.set(creationConfig.androidResources.noCompress)
             }
             task.noCompress.disallowChanges()
             creationConfig.services.initializeAapt2Input(task.aapt2)

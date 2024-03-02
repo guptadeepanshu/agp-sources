@@ -27,8 +27,6 @@ import java.util.regex.Pattern;
 
 /**
  * Provides {@link IDevice} side file listing service.
- *
- * <p>To get an instance for a known {@link IDevice}, call {@link IDevice#getFileListingService()}.
  */
 public final class FileListingService {
 
@@ -114,7 +112,7 @@ public final class FileListingService {
                     "^([bcdlsp-][-r][-w][-xsS][-r][-w][-xsS][-r][-w][-xstST])\\s+"
                             + "(\\S+)\\s+(\\S+)\\s+"
                             + "(\\d{4}-\\d\\d-\\d\\d)\\s+"
-                            + "(\\d\\d:\\d\\d:\\d\\d\\.\\d+)\\s+(-?\\d+)\\s+"
+                            + "(\\d\\d:\\d\\d:\\d\\d\\.\\d+)\\s+([+-]?\\d+)\\s+"
                             + "(\\d+)\\s+"
                             + "(.*)"
                             + "$");

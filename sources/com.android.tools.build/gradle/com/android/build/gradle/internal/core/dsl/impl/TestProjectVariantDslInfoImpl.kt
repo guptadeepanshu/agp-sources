@@ -77,18 +77,9 @@ internal class TestProjectVariantDslInfoImpl(
             ?: (buildTypeObj as? ApplicationBuildType)?.isDebuggable
             ?: false
 
-    override val signingConfig: SigningConfig? by lazy {
-        getSigningConfig(
-            buildTypeObj,
-            mergedFlavor,
-            signingConfigOverride,
-            extension,
-            services
-        )
+    override val signingConfigResolver: SigningConfigResolver? by lazy {
+        SigningConfigResolver.create(buildTypeObj, mergedFlavor, signingConfigOverride, extension, services)
     }
-
-    override val isSigningReady: Boolean
-        get() = signingConfig?.isSigningReady == true
 
     private val instrumentedTestDelegate by lazy {
         InstrumentedTestDslInfoImpl(

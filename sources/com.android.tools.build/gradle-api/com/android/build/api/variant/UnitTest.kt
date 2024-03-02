@@ -16,4 +16,13 @@
 
 package com.android.build.api.variant
 
+/**
+ * Model for Unit Test components that contains build-time properties
+ *
+ * This object is accessible on subtypes of [Variant] that implement [HasUnitTest], via
+ * [HasUnitTest.unitTest]. It is also part of [Variant.nestedComponents].
+ *
+ * The presence of this component in a variant is controlled by [HasUnitTestBuilder.enableUnitTest]
+ * which is accessible on subtypes of [VariantBuilder] that implement [HasUnitTestBuilder]
+ */
 interface UnitTest: TestComponent

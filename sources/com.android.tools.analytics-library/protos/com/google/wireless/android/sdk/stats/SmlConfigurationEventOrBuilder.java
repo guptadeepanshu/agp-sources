@@ -101,4 +101,23 @@ public interface SmlConfigurationEventOrBuilder extends
    * @return The transformEnabled.
    */
   boolean getTransformEnabled();
+
+  /**
+   * <pre>
+   * User agrees to sending project context with queries
+   * </pre>
+   *
+   * <code>optional bool project_context_enabled = 6;</code>
+   * @return Whether the projectContextEnabled field is set.
+   */
+  boolean hasProjectContextEnabled();
+  /**
+   * <pre>
+   * User agrees to sending project context with queries
+   * </pre>
+   *
+   * <code>optional bool project_context_enabled = 6;</code>
+   * @return The projectContextEnabled.
+   */
+  boolean getProjectContextEnabled();
 }

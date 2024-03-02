@@ -34,11 +34,12 @@ data class VariantImpl(
     override val unitTestArtifact: JavaArtifact?,
     override val testFixturesArtifact: AndroidArtifact?,
     override val testedTargetVariant: TestedTargetVariant?,
+    override val runTestInSeparateProcess: Boolean,
     override val isInstantAppCompatible: Boolean,
     override val desugaredMethods: List<File>
 ) : Variant, Serializable {
     companion object {
         @JvmStatic
-        private val serialVersionUID: Long = 1L
+        private val serialVersionUID: Long = 2L
     }
 }

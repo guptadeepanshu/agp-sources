@@ -17,7 +17,7 @@
 package com.android.build.api.variant
 
 /**
- * Variants that optionally have instrumented tests.
+ * [Variant] that optionally have [AndroidTest] component.
  */
 interface HasAndroidTest {
 

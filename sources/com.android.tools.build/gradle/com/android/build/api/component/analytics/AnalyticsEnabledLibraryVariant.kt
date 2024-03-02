@@ -34,7 +34,7 @@ open class AnalyticsEnabledLibraryVariant @Inject constructor(
     delegate, stats, objectFactory
 ), LibraryVariant {
 
-    private val userVisibleAndroidTest: AnalyticsEnabledAndroidTest? by lazy {
+    private val userVisibleAndroidTest: AnalyticsEnabledAndroidTest? by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
         delegate.androidTest?.let {
             objectFactory.newInstance(
                 AnalyticsEnabledAndroidTest::class.java,
@@ -51,7 +51,7 @@ open class AnalyticsEnabledLibraryVariant @Inject constructor(
             return userVisibleAndroidTest
         }
 
-    private val userVisibleTestFixtures: TestFixtures? by lazy {
+    private val userVisibleTestFixtures: TestFixtures? by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
         delegate.testFixtures?.let {
             objectFactory.newInstance(
                 AnalyticsEnabledTestFixtures::class.java,
@@ -68,7 +68,7 @@ open class AnalyticsEnabledLibraryVariant @Inject constructor(
             return userVisibleTestFixtures
         }
 
-    private val userVisibleRenderscript: Renderscript by lazy {
+    private val userVisibleRenderscript: Renderscript by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
         objectFactory.newInstance(
             AnalyticsEnabledRenderscript::class.java,
             delegate.renderscript,
@@ -85,7 +85,7 @@ open class AnalyticsEnabledLibraryVariant @Inject constructor(
             } else null
         }
 
-    private val userVisibleAarMetadata: AarMetadata by lazy {
+    private val userVisibleAarMetadata: AarMetadata by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
         objectFactory.newInstance(
             AnalyticsEnabledAarMetadata::class.java,
             delegate.aarMetadata,

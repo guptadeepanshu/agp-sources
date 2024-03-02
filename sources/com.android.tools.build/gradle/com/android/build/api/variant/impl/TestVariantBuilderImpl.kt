@@ -55,4 +55,7 @@ open class TestVariantBuilderImpl @Inject constructor(
     override var isMinifyEnabled: Boolean =
         dslInfo.optimizationDslInfo.postProcessingOptions.codeShrinkerEnabled()
         set(value) = setMinificationIfPossible("minifyEnabled", value){ field = it }
+
+    internal var _enableMultiDex = dslInfo.dexingDslInfo.isMultiDexEnabled
+    override var enableMultiDex: Boolean? = _enableMultiDex
 }

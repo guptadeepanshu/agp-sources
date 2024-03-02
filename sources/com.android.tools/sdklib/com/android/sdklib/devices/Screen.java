@@ -338,7 +338,7 @@ public class Screen {
         hash = 31 * hash + mScreenSize.ordinal();
         long f = Double.doubleToLongBits(mDiagonalLength);
         hash = 31 * hash + (int) (f ^ (f >>> 32));
-        hash = 31 * hash + mPixelDensity.ordinal();
+        hash = 31 * hash + mPixelDensity.hashCode();
         hash = 31 * hash + mScreenRatio.ordinal();
         hash = 31 * hash + mXDimension;
         hash = 31 * hash + mYDimension;

@@ -149,12 +149,6 @@ class ScopedArtifactsImpl(
      * Publish the current version of [type] under a different internal [into] type. This is useful
      * when some code path requires to have access to an artifact [type] before certain internal
      * transforms are potentially applied.
-     *
-     * For instance, [ScopedArtifact.CLASSES] can be useful to the JacocoReportTask without the
-     * jacoco instrumentation performed on the classes. To achieve that, the [ScopedArtifact.CLASSES]
-     * are publish under a new name [InternalScopedArtifact.PRE_JACOCO_TRANSFORMED_CLASSES] which
-     * guarantees to have access to the final version of the classes before the jacoco transformation
-     * is registered.
      */
     internal fun publishCurrent(type: ScopedArtifact, into: InternalScopedArtifact) {
         getScopedArtifactsContainer(into)
@@ -165,6 +159,9 @@ class ScopedArtifactsImpl(
     }
 
     internal fun getFinalArtifacts(type: ScopedArtifact): FileCollection =
+        getScopedArtifactsContainer(type).finalScopedContent
+
+    internal fun getFinalArtifacts(type: InternalScopedArtifact): FileCollection =
         getScopedArtifactsContainer(type).finalScopedContent
 
     class ScopedArtifactsOperationImpl<T: Task>(

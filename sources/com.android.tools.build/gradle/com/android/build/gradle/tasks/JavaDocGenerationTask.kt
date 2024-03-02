@@ -88,7 +88,6 @@ abstract class JavaDocGenerationTask : NonIncrementalTask() {
     @get:Classpath
     abstract val dokkaCoreClasspath: ConfigurableFileCollection
 
-    @TaskAction
     override fun doTaskAction() {
         workerExecutor.classLoaderIsolation{ it.classpath.from(dokkaCoreClasspath) }.submit(
             DokkaWorkAction::class.java

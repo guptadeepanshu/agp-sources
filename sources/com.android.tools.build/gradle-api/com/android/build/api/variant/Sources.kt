@@ -88,6 +88,12 @@ interface Sources {
     val baselineProfiles: SourceDirectories.Flat?
 
     /**
+     * Access to all android manifest files.
+     * Main manifest file is always the first one.
+     */
+    val manifests: ManifestFiles
+
+    /**
      * Access (and potentially creates) a new [Flat] for a custom source type that can
      * be referenced by its [name].
      *

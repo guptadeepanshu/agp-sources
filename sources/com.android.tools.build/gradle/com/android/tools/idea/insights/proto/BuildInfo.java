@@ -33,85 +33,6 @@ private static final long serialVersionUID = 0L;
     return new BuildInfo();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
-  private BuildInfo(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 10: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            jobId_ = s;
-            break;
-          }
-          case 18: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            jobUrl_ = s;
-            break;
-          }
-          case 26: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            buildId_ = s;
-            break;
-          }
-          case 34: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            label_ = s;
-            break;
-          }
-          case 42: {
-            com.google.protobuf.Timestamp.Builder subBuilder = null;
-            if (buildTimestamp_ != null) {
-              subBuilder = buildTimestamp_.toBuilder();
-            }
-            buildTimestamp_ = input.readMessage(com.google.protobuf.Timestamp.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(buildTimestamp_);
-              buildTimestamp_ = subBuilder.buildPartial();
-            }
-
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.android.tools.idea.insights.proto.VersionControlMetadata.internal_static_BuildInfo_descriptor;
@@ -125,14 +46,28 @@ private static final long serialVersionUID = 0L;
             com.android.tools.idea.insights.proto.BuildInfo.class, com.android.tools.idea.insights.proto.BuildInfo.Builder.class);
   }
 
+  private int bitField0_;
   public static final int JOB_ID_FIELD_NUMBER = 1;
-  private volatile java.lang.Object jobId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object jobId_ = "";
   /**
    * <pre>
    * ID of the build job which created this bundle.
    * </pre>
    *
-   * <code>string job_id = 1;</code>
+   * <code>optional string job_id = 1;</code>
+   * @return Whether the jobId field is set.
+   */
+  @java.lang.Override
+  public boolean hasJobId() {
+    return ((bitField0_ & 0x00000001) != 0);
+  }
+  /**
+   * <pre>
+   * ID of the build job which created this bundle.
+   * </pre>
+   *
+   * <code>optional string job_id = 1;</code>
    * @return The jobId.
    */
   @java.lang.Override
@@ -153,7 +88,7 @@ private static final long serialVersionUID = 0L;
    * ID of the build job which created this bundle.
    * </pre>
    *
-   * <code>string job_id = 1;</code>
+   * <code>optional string job_id = 1;</code>
    * @return The bytes for jobId.
    */
   @java.lang.Override
@@ -172,14 +107,28 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int JOB_URL_FIELD_NUMBER = 2;
-  private volatile java.lang.Object jobUrl_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object jobUrl_ = "";
   /**
    * <pre>
    * URL to the build job which created this bundle. Does not need to be public,
    * and probably will not be.
    * </pre>
    *
-   * <code>string job_url = 2;</code>
+   * <code>optional string job_url = 2;</code>
+   * @return Whether the jobUrl field is set.
+   */
+  @java.lang.Override
+  public boolean hasJobUrl() {
+    return ((bitField0_ & 0x00000002) != 0);
+  }
+  /**
+   * <pre>
+   * URL to the build job which created this bundle. Does not need to be public,
+   * and probably will not be.
+   * </pre>
+   *
+   * <code>optional string job_url = 2;</code>
    * @return The jobUrl.
    */
   @java.lang.Override
@@ -201,7 +150,7 @@ private static final long serialVersionUID = 0L;
    * and probably will not be.
    * </pre>
    *
-   * <code>string job_url = 2;</code>
+   * <code>optional string job_url = 2;</code>
    * @return The bytes for jobUrl.
    */
   @java.lang.Override
@@ -220,13 +169,26 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int BUILD_ID_FIELD_NUMBER = 3;
-  private volatile java.lang.Object buildId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object buildId_ = "";
   /**
    * <pre>
    * ID for the specific build, e.g. a UUID.
    * </pre>
    *
-   * <code>string build_id = 3;</code>
+   * <code>optional string build_id = 3;</code>
+   * @return Whether the buildId field is set.
+   */
+  @java.lang.Override
+  public boolean hasBuildId() {
+    return ((bitField0_ & 0x00000004) != 0);
+  }
+  /**
+   * <pre>
+   * ID for the specific build, e.g. a UUID.
+   * </pre>
+   *
+   * <code>optional string build_id = 3;</code>
    * @return The buildId.
    */
   @java.lang.Override
@@ -247,7 +209,7 @@ private static final long serialVersionUID = 0L;
    * ID for the specific build, e.g. a UUID.
    * </pre>
    *
-   * <code>string build_id = 3;</code>
+   * <code>optional string build_id = 3;</code>
    * @return The bytes for buildId.
    */
   @java.lang.Override
@@ -266,14 +228,28 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LABEL_FIELD_NUMBER = 4;
-  private volatile java.lang.Object label_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object label_ = "";
   /**
    * <pre>
    * Build label: an arbitrary string set by the build system. May be used to
    * embed a release label.
    * </pre>
    *
-   * <code>string label = 4;</code>
+   * <code>optional string label = 4;</code>
+   * @return Whether the label field is set.
+   */
+  @java.lang.Override
+  public boolean hasLabel() {
+    return ((bitField0_ & 0x00000008) != 0);
+  }
+  /**
+   * <pre>
+   * Build label: an arbitrary string set by the build system. May be used to
+   * embed a release label.
+   * </pre>
+   *
+   * <code>optional string label = 4;</code>
    * @return The label.
    */
   @java.lang.Override
@@ -295,7 +271,7 @@ private static final long serialVersionUID = 0L;
    * embed a release label.
    * </pre>
    *
-   * <code>string label = 4;</code>
+   * <code>optional string label = 4;</code>
    * @return The bytes for label.
    */
   @java.lang.Override
@@ -320,19 +296,19 @@ private static final long serialVersionUID = 0L;
    * Time at which the build was started.
    * </pre>
    *
-   * <code>.google.protobuf.Timestamp build_timestamp = 5;</code>
+   * <code>optional .google.protobuf.Timestamp build_timestamp = 5;</code>
    * @return Whether the buildTimestamp field is set.
    */
   @java.lang.Override
   public boolean hasBuildTimestamp() {
-    return buildTimestamp_ != null;
+    return ((bitField0_ & 0x00000010) != 0);
   }
   /**
    * <pre>
    * Time at which the build was started.
    * </pre>
    *
-   * <code>.google.protobuf.Timestamp build_timestamp = 5;</code>
+   * <code>optional .google.protobuf.Timestamp build_timestamp = 5;</code>
    * @return The buildTimestamp.
    */
   @java.lang.Override
@@ -344,11 +320,11 @@ private static final long serialVersionUID = 0L;
    * Time at which the build was started.
    * </pre>
    *
-   * <code>.google.protobuf.Timestamp build_timestamp = 5;</code>
+   * <code>optional .google.protobuf.Timestamp build_timestamp = 5;</code>
    */
   @java.lang.Override
   public com.google.protobuf.TimestampOrBuilder getBuildTimestampOrBuilder() {
-    return getBuildTimestamp();
+    return buildTimestamp_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : buildTimestamp_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -365,22 +341,22 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(jobId_)) {
+    if (((bitField0_ & 0x00000001) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 1, jobId_);
     }
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(jobUrl_)) {
+    if (((bitField0_ & 0x00000002) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 2, jobUrl_);
     }
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(buildId_)) {
+    if (((bitField0_ & 0x00000004) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 3, buildId_);
     }
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(label_)) {
+    if (((bitField0_ & 0x00000008) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 4, label_);
     }
-    if (buildTimestamp_ != null) {
+    if (((bitField0_ & 0x00000010) != 0)) {
       output.writeMessage(5, getBuildTimestamp());
     }
-    unknownFields.writeTo(output);
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -389,23 +365,23 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(jobId_)) {
+    if (((bitField0_ & 0x00000001) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, jobId_);
     }
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(jobUrl_)) {
+    if (((bitField0_ & 0x00000002) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, jobUrl_);
     }
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(buildId_)) {
+    if (((bitField0_ & 0x00000004) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, buildId_);
     }
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(label_)) {
+    if (((bitField0_ & 0x00000008) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, label_);
     }
-    if (buildTimestamp_ != null) {
+    if (((bitField0_ & 0x00000010) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(5, getBuildTimestamp());
     }
-    size += unknownFields.getSerializedSize();
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -420,20 +396,32 @@ private static final long serialVersionUID = 0L;
     }
     com.android.tools.idea.insights.proto.BuildInfo other = (com.android.tools.idea.insights.proto.BuildInfo) obj;
 
-    if (!getJobId()
-        .equals(other.getJobId())) return false;
-    if (!getJobUrl()
-        .equals(other.getJobUrl())) return false;
-    if (!getBuildId()
-        .equals(other.getBuildId())) return false;
-    if (!getLabel()
-        .equals(other.getLabel())) return false;
+    if (hasJobId() != other.hasJobId()) return false;
+    if (hasJobId()) {
+      if (!getJobId()
+          .equals(other.getJobId())) return false;
+    }
+    if (hasJobUrl() != other.hasJobUrl()) return false;
+    if (hasJobUrl()) {
+      if (!getJobUrl()
+          .equals(other.getJobUrl())) return false;
+    }
+    if (hasBuildId() != other.hasBuildId()) return false;
+    if (hasBuildId()) {
+      if (!getBuildId()
+          .equals(other.getBuildId())) return false;
+    }
+    if (hasLabel() != other.hasLabel()) return false;
+    if (hasLabel()) {
+      if (!getLabel()
+          .equals(other.getLabel())) return false;
+    }
     if (hasBuildTimestamp() != other.hasBuildTimestamp()) return false;
     if (hasBuildTimestamp()) {
       if (!getBuildTimestamp()
           .equals(other.getBuildTimestamp())) return false;
     }
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -444,19 +432,27 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + JOB_ID_FIELD_NUMBER;
-    hash = (53 * hash) + getJobId().hashCode();
-    hash = (37 * hash) + JOB_URL_FIELD_NUMBER;
-    hash = (53 * hash) + getJobUrl().hashCode();
-    hash = (37 * hash) + BUILD_ID_FIELD_NUMBER;
-    hash = (53 * hash) + getBuildId().hashCode();
-    hash = (37 * hash) + LABEL_FIELD_NUMBER;
-    hash = (53 * hash) + getLabel().hashCode();
+    if (hasJobId()) {
+      hash = (37 * hash) + JOB_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getJobId().hashCode();
+    }
+    if (hasJobUrl()) {
+      hash = (37 * hash) + JOB_URL_FIELD_NUMBER;
+      hash = (53 * hash) + getJobUrl().hashCode();
+    }
+    if (hasBuildId()) {
+      hash = (37 * hash) + BUILD_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getBuildId().hashCode();
+    }
+    if (hasLabel()) {
+      hash = (37 * hash) + LABEL_FIELD_NUMBER;
+      hash = (53 * hash) + getLabel().hashCode();
+    }
     if (hasBuildTimestamp()) {
       hash = (37 * hash) + BUILD_TIMESTAMP_FIELD_NUMBER;
       hash = (53 * hash) + getBuildTimestamp().hashCode();
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -588,23 +584,20 @@ private static final long serialVersionUID = 0L;
     private void maybeForceBuilderInitialization() {
       if (com.google.protobuf.GeneratedMessageV3
               .alwaysUseFieldBuilders) {
+        getBuildTimestampFieldBuilder();
       }
     }
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       jobId_ = "";
-
       jobUrl_ = "";
-
       buildId_ = "";
-
       label_ = "";
-
-      if (buildTimestampBuilder_ == null) {
-        buildTimestamp_ = null;
-      } else {
-        buildTimestamp_ = null;
+      buildTimestamp_ = null;
+      if (buildTimestampBuilder_ != null) {
+        buildTimestampBuilder_.dispose();
         buildTimestampBuilder_ = null;
       }
       return this;
@@ -633,51 +626,39 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.android.tools.idea.insights.proto.BuildInfo buildPartial() {
       com.android.tools.idea.insights.proto.BuildInfo result = new com.android.tools.idea.insights.proto.BuildInfo(this);
-      result.jobId_ = jobId_;
-      result.jobUrl_ = jobUrl_;
-      result.buildId_ = buildId_;
-      result.label_ = label_;
-      if (buildTimestampBuilder_ == null) {
-        result.buildTimestamp_ = buildTimestamp_;
-      } else {
-        result.buildTimestamp_ = buildTimestampBuilder_.build();
-      }
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.android.tools.idea.insights.proto.BuildInfo result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.jobId_ = jobId_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.jobUrl_ = jobUrl_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.buildId_ = buildId_;
+        to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.label_ = label_;
+        to_bitField0_ |= 0x00000008;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.buildTimestamp_ = buildTimestampBuilder_ == null
+            ? buildTimestamp_
+            : buildTimestampBuilder_.build();
+        to_bitField0_ |= 0x00000010;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.android.tools.idea.insights.proto.BuildInfo) {
@@ -690,26 +671,30 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(com.android.tools.idea.insights.proto.BuildInfo other) {
       if (other == com.android.tools.idea.insights.proto.BuildInfo.getDefaultInstance()) return this;
-      if (!other.getJobId().isEmpty()) {
+      if (other.hasJobId()) {
         jobId_ = other.jobId_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
-      if (!other.getJobUrl().isEmpty()) {
+      if (other.hasJobUrl()) {
         jobUrl_ = other.jobUrl_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
-      if (!other.getBuildId().isEmpty()) {
+      if (other.hasBuildId()) {
         buildId_ = other.buildId_;
+        bitField0_ |= 0x00000004;
         onChanged();
       }
-      if (!other.getLabel().isEmpty()) {
+      if (other.hasLabel()) {
         label_ = other.label_;
+        bitField0_ |= 0x00000008;
         onChanged();
       }
       if (other.hasBuildTimestamp()) {
         mergeBuildTimestamp(other.getBuildTimestamp());
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -724,19 +709,60 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.android.tools.idea.insights.proto.BuildInfo parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              jobId_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000001;
+              break;
+            } // case 10
+            case 18: {
+              jobUrl_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 18
+            case 26: {
+              buildId_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 26
+            case 34: {
+              label_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 34
+            case 42: {
+              input.readMessage(
+                  getBuildTimestampFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000010;
+              break;
+            } // case 42
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.android.tools.idea.insights.proto.BuildInfo) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
+    private int bitField0_;
 
     private java.lang.Object jobId_ = "";
     /**
@@ -744,7 +770,18 @@ private static final long serialVersionUID = 0L;
      * ID of the build job which created this bundle.
      * </pre>
      *
-     * <code>string job_id = 1;</code>
+     * <code>optional string job_id = 1;</code>
+     * @return Whether the jobId field is set.
+     */
+    public boolean hasJobId() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <pre>
+     * ID of the build job which created this bundle.
+     * </pre>
+     *
+     * <code>optional string job_id = 1;</code>
      * @return The jobId.
      */
     public java.lang.String getJobId() {
@@ -764,7 +801,7 @@ private static final long serialVersionUID = 0L;
      * ID of the build job which created this bundle.
      * </pre>
      *
-     * <code>string job_id = 1;</code>
+     * <code>optional string job_id = 1;</code>
      * @return The bytes for jobId.
      */
     public com.google.protobuf.ByteString
@@ -785,17 +822,15 @@ private static final long serialVersionUID = 0L;
      * ID of the build job which created this bundle.
      * </pre>
      *
-     * <code>string job_id = 1;</code>
+     * <code>optional string job_id = 1;</code>
      * @param value The jobId to set.
      * @return This builder for chaining.
      */
     public Builder setJobId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       jobId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -804,12 +839,12 @@ private static final long serialVersionUID = 0L;
      * ID of the build job which created this bundle.
      * </pre>
      *
-     * <code>string job_id = 1;</code>
+     * <code>optional string job_id = 1;</code>
      * @return This builder for chaining.
      */
     public Builder clearJobId() {
-      
       jobId_ = getDefaultInstance().getJobId();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -818,18 +853,16 @@ private static final long serialVersionUID = 0L;
      * ID of the build job which created this bundle.
      * </pre>
      *
-     * <code>string job_id = 1;</code>
+     * <code>optional string job_id = 1;</code>
      * @param value The bytes for jobId to set.
      * @return This builder for chaining.
      */
     public Builder setJobIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       jobId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -841,7 +874,19 @@ private static final long serialVersionUID = 0L;
      * and probably will not be.
      * </pre>
      *
-     * <code>string job_url = 2;</code>
+     * <code>optional string job_url = 2;</code>
+     * @return Whether the jobUrl field is set.
+     */
+    public boolean hasJobUrl() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <pre>
+     * URL to the build job which created this bundle. Does not need to be public,
+     * and probably will not be.
+     * </pre>
+     *
+     * <code>optional string job_url = 2;</code>
      * @return The jobUrl.
      */
     public java.lang.String getJobUrl() {
@@ -862,7 +907,7 @@ private static final long serialVersionUID = 0L;
      * and probably will not be.
      * </pre>
      *
-     * <code>string job_url = 2;</code>
+     * <code>optional string job_url = 2;</code>
      * @return The bytes for jobUrl.
      */
     public com.google.protobuf.ByteString
@@ -884,17 +929,15 @@ private static final long serialVersionUID = 0L;
      * and probably will not be.
      * </pre>
      *
-     * <code>string job_url = 2;</code>
+     * <code>optional string job_url = 2;</code>
      * @param value The jobUrl to set.
      * @return This builder for chaining.
      */
     public Builder setJobUrl(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       jobUrl_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -904,12 +947,12 @@ private static final long serialVersionUID = 0L;
      * and probably will not be.
      * </pre>
      *
-     * <code>string job_url = 2;</code>
+     * <code>optional string job_url = 2;</code>
      * @return This builder for chaining.
      */
     public Builder clearJobUrl() {
-      
       jobUrl_ = getDefaultInstance().getJobUrl();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -919,18 +962,16 @@ private static final long serialVersionUID = 0L;
      * and probably will not be.
      * </pre>
      *
-     * <code>string job_url = 2;</code>
+     * <code>optional string job_url = 2;</code>
      * @param value The bytes for jobUrl to set.
      * @return This builder for chaining.
      */
     public Builder setJobUrlBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       jobUrl_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -941,7 +982,18 @@ private static final long serialVersionUID = 0L;
      * ID for the specific build, e.g. a UUID.
      * </pre>
      *
-     * <code>string build_id = 3;</code>
+     * <code>optional string build_id = 3;</code>
+     * @return Whether the buildId field is set.
+     */
+    public boolean hasBuildId() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <pre>
+     * ID for the specific build, e.g. a UUID.
+     * </pre>
+     *
+     * <code>optional string build_id = 3;</code>
      * @return The buildId.
      */
     public java.lang.String getBuildId() {
@@ -961,7 +1013,7 @@ private static final long serialVersionUID = 0L;
      * ID for the specific build, e.g. a UUID.
      * </pre>
      *
-     * <code>string build_id = 3;</code>
+     * <code>optional string build_id = 3;</code>
      * @return The bytes for buildId.
      */
     public com.google.protobuf.ByteString
@@ -982,17 +1034,15 @@ private static final long serialVersionUID = 0L;
      * ID for the specific build, e.g. a UUID.
      * </pre>
      *
-     * <code>string build_id = 3;</code>
+     * <code>optional string build_id = 3;</code>
      * @param value The buildId to set.
      * @return This builder for chaining.
      */
     public Builder setBuildId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       buildId_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1001,12 +1051,12 @@ private static final long serialVersionUID = 0L;
      * ID for the specific build, e.g. a UUID.
      * </pre>
      *
-     * <code>string build_id = 3;</code>
+     * <code>optional string build_id = 3;</code>
      * @return This builder for chaining.
      */
     public Builder clearBuildId() {
-      
       buildId_ = getDefaultInstance().getBuildId();
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
@@ -1015,18 +1065,16 @@ private static final long serialVersionUID = 0L;
      * ID for the specific build, e.g. a UUID.
      * </pre>
      *
-     * <code>string build_id = 3;</code>
+     * <code>optional string build_id = 3;</code>
      * @param value The bytes for buildId to set.
      * @return This builder for chaining.
      */
     public Builder setBuildIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       buildId_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1038,7 +1086,19 @@ private static final long serialVersionUID = 0L;
      * embed a release label.
      * </pre>
      *
-     * <code>string label = 4;</code>
+     * <code>optional string label = 4;</code>
+     * @return Whether the label field is set.
+     */
+    public boolean hasLabel() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <pre>
+     * Build label: an arbitrary string set by the build system. May be used to
+     * embed a release label.
+     * </pre>
+     *
+     * <code>optional string label = 4;</code>
      * @return The label.
      */
     public java.lang.String getLabel() {
@@ -1059,7 +1119,7 @@ private static final long serialVersionUID = 0L;
      * embed a release label.
      * </pre>
      *
-     * <code>string label = 4;</code>
+     * <code>optional string label = 4;</code>
      * @return The bytes for label.
      */
     public com.google.protobuf.ByteString
@@ -1081,17 +1141,15 @@ private static final long serialVersionUID = 0L;
      * embed a release label.
      * </pre>
      *
-     * <code>string label = 4;</code>
+     * <code>optional string label = 4;</code>
      * @param value The label to set.
      * @return This builder for chaining.
      */
     public Builder setLabel(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       label_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1101,12 +1159,12 @@ private static final long serialVersionUID = 0L;
      * embed a release label.
      * </pre>
      *
-     * <code>string label = 4;</code>
+     * <code>optional string label = 4;</code>
      * @return This builder for chaining.
      */
     public Builder clearLabel() {
-      
       label_ = getDefaultInstance().getLabel();
+      bitField0_ = (bitField0_ & ~0x00000008);
       onChanged();
       return this;
     }
@@ -1116,18 +1174,16 @@ private static final long serialVersionUID = 0L;
      * embed a release label.
      * </pre>
      *
-     * <code>string label = 4;</code>
+     * <code>optional string label = 4;</code>
      * @param value The bytes for label to set.
      * @return This builder for chaining.
      */
     public Builder setLabelBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       label_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1140,18 +1196,18 @@ private static final long serialVersionUID = 0L;
      * Time at which the build was started.
      * </pre>
      *
-     * <code>.google.protobuf.Timestamp build_timestamp = 5;</code>
+     * <code>optional .google.protobuf.Timestamp build_timestamp = 5;</code>
      * @return Whether the buildTimestamp field is set.
      */
     public boolean hasBuildTimestamp() {
-      return buildTimestampBuilder_ != null || buildTimestamp_ != null;
+      return ((bitField0_ & 0x00000010) != 0);
     }
     /**
      * <pre>
      * Time at which the build was started.
      * </pre>
      *
-     * <code>.google.protobuf.Timestamp build_timestamp = 5;</code>
+     * <code>optional .google.protobuf.Timestamp build_timestamp = 5;</code>
      * @return The buildTimestamp.
      */
     public com.google.protobuf.Timestamp getBuildTimestamp() {
@@ -1166,7 +1222,7 @@ private static final long serialVersionUID = 0L;
      * Time at which the build was started.
      * </pre>
      *
-     * <code>.google.protobuf.Timestamp build_timestamp = 5;</code>
+     * <code>optional .google.protobuf.Timestamp build_timestamp = 5;</code>
      */
     public Builder setBuildTimestamp(com.google.protobuf.Timestamp value) {
       if (buildTimestampBuilder_ == null) {
@@ -1174,11 +1230,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         buildTimestamp_ = value;
-        onChanged();
       } else {
         buildTimestampBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -1186,17 +1242,17 @@ private static final long serialVersionUID = 0L;
      * Time at which the build was started.
      * </pre>
      *
-     * <code>.google.protobuf.Timestamp build_timestamp = 5;</code>
+     * <code>optional .google.protobuf.Timestamp build_timestamp = 5;</code>
      */
     public Builder setBuildTimestamp(
         com.google.protobuf.Timestamp.Builder builderForValue) {
       if (buildTimestampBuilder_ == null) {
         buildTimestamp_ = builderForValue.build();
-        onChanged();
       } else {
         buildTimestampBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -1204,21 +1260,22 @@ private static final long serialVersionUID = 0L;
      * Time at which the build was started.
      * </pre>
      *
-     * <code>.google.protobuf.Timestamp build_timestamp = 5;</code>
+     * <code>optional .google.protobuf.Timestamp build_timestamp = 5;</code>
      */
     public Builder mergeBuildTimestamp(com.google.protobuf.Timestamp value) {
       if (buildTimestampBuilder_ == null) {
-        if (buildTimestamp_ != null) {
-          buildTimestamp_ =
-            com.google.protobuf.Timestamp.newBuilder(buildTimestamp_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000010) != 0) &&
+          buildTimestamp_ != null &&
+          buildTimestamp_ != com.google.protobuf.Timestamp.getDefaultInstance()) {
+          getBuildTimestampBuilder().mergeFrom(value);
         } else {
           buildTimestamp_ = value;
         }
-        onChanged();
       } else {
         buildTimestampBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -1226,17 +1283,16 @@ private static final long serialVersionUID = 0L;
      * Time at which the build was started.
      * </pre>
      *
-     * <code>.google.protobuf.Timestamp build_timestamp = 5;</code>
+     * <code>optional .google.protobuf.Timestamp build_timestamp = 5;</code>
      */
     public Builder clearBuildTimestamp() {
-      if (buildTimestampBuilder_ == null) {
-        buildTimestamp_ = null;
-        onChanged();
-      } else {
-        buildTimestamp_ = null;
+      bitField0_ = (bitField0_ & ~0x00000010);
+      buildTimestamp_ = null;
+      if (buildTimestampBuilder_ != null) {
+        buildTimestampBuilder_.dispose();
         buildTimestampBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
@@ -1244,10 +1300,10 @@ private static final long serialVersionUID = 0L;
      * Time at which the build was started.
      * </pre>
      *
-     * <code>.google.protobuf.Timestamp build_timestamp = 5;</code>
+     * <code>optional .google.protobuf.Timestamp build_timestamp = 5;</code>
      */
     public com.google.protobuf.Timestamp.Builder getBuildTimestampBuilder() {
-      
+      bitField0_ |= 0x00000010;
       onChanged();
       return getBuildTimestampFieldBuilder().getBuilder();
     }
@@ -1256,7 +1312,7 @@ private static final long serialVersionUID = 0L;
      * Time at which the build was started.
      * </pre>
      *
-     * <code>.google.protobuf.Timestamp build_timestamp = 5;</code>
+     * <code>optional .google.protobuf.Timestamp build_timestamp = 5;</code>
      */
     public com.google.protobuf.TimestampOrBuilder getBuildTimestampOrBuilder() {
       if (buildTimestampBuilder_ != null) {
@@ -1271,7 +1327,7 @@ private static final long serialVersionUID = 0L;
      * Time at which the build was started.
      * </pre>
      *
-     * <code>.google.protobuf.Timestamp build_timestamp = 5;</code>
+     * <code>optional .google.protobuf.Timestamp build_timestamp = 5;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> 
@@ -1319,7 +1375,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new BuildInfo(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

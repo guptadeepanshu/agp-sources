@@ -16,7 +16,7 @@
 
 package com.android.build.gradle.internal.variant;
 
-import static com.android.build.gradle.internal.dependency.VariantDependencies.CONFIG_NAME_COMPILE_ONLY;
+import static com.android.build.gradle.internal.api.AndroidSourceSetName.CONFIG_NAME_COMPILE_ONLY;
 import static com.android.build.gradle.internal.dependency.VariantDependencies.CONFIG_NAME_TESTED_APKS;
 
 import com.android.annotations.NonNull;
@@ -28,19 +28,20 @@ import com.android.build.api.dsl.TestBuildFeatures;
 import com.android.build.api.dsl.TestExtension;
 import com.android.build.api.variant.ComponentIdentity;
 import com.android.build.api.variant.TestVariantBuilder;
+import com.android.build.api.variant.impl.AndroidTestBuilderImpl;
 import com.android.build.api.variant.impl.GlobalVariantBuilderConfig;
 import com.android.build.api.variant.impl.TestVariantBuilderImpl;
 import com.android.build.api.variant.impl.TestVariantImpl;
 import com.android.build.gradle.internal.component.AndroidTestCreationConfig;
+import com.android.build.gradle.internal.component.HostTestCreationConfig;
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig;
 import com.android.build.gradle.internal.component.TestVariantCreationConfig;
-import com.android.build.gradle.internal.component.UnitTestCreationConfig;
 import com.android.build.gradle.internal.component.VariantCreationConfig;
 import com.android.build.gradle.internal.core.VariantSources;
 import com.android.build.gradle.internal.core.dsl.AndroidTestComponentDslInfo;
+import com.android.build.gradle.internal.core.dsl.HostTestComponentDslInfo;
 import com.android.build.gradle.internal.core.dsl.TestFixturesComponentDslInfo;
 import com.android.build.gradle.internal.core.dsl.TestProjectVariantDslInfo;
-import com.android.build.gradle.internal.core.dsl.UnitTestComponentDslInfo;
 import com.android.build.gradle.internal.dependency.VariantDependencies;
 import com.android.build.gradle.internal.dsl.BuildType;
 import com.android.build.gradle.internal.dsl.DefaultConfig;
@@ -159,7 +160,7 @@ public class TestVariantFactory
 
     @NonNull
     @Override
-    public BuildFeatureValues createUnitTestBuildFeatureValues(
+    public BuildFeatureValues createHostTestBuildFeatureValues(
             @NonNull BuildFeatures buildFeatures,
             @NonNull DataBinding dataBinding,
             @NonNull ProjectOptions projectOptions,
@@ -196,10 +197,10 @@ public class TestVariantFactory
 
     @NonNull
     @Override
-    public UnitTestCreationConfig createUnitTest(
+    public HostTestCreationConfig createUnitTest(
             @NonNull ComponentIdentity componentIdentity,
             @NonNull BuildFeatureValues buildFeatures,
-            @NonNull UnitTestComponentDslInfo dslInfo,
+            @NonNull HostTestComponentDslInfo dslInfo,
             @NonNull VariantDependencies variantDependencies,
             @NonNull VariantSources variantSources,
             @NonNull VariantPathHelper paths,
@@ -228,14 +229,15 @@ public class TestVariantFactory
             @NonNull VariantCreationConfig testedVariant,
             @NonNull VariantServices variantServices,
             @NonNull TaskCreationServices taskCreationServices,
-            @NonNull GlobalTaskCreationConfig globalConfig) {
+            @NonNull GlobalTaskCreationConfig globalConfig,
+            @NonNull AndroidTestBuilderImpl androidTestBuilder) {
         throw new RuntimeException("cannot instantiate android-test properties in test plugin");
     }
 
     @Override
     public void preVariantCallback(
             @NonNull Project project,
-            @NonNull CommonExtension<?, ?, ?, ?, ?> dslExtension,
+            @NonNull CommonExtension<?, ?, ?, ?, ?, ?> dslExtension,
             @NonNull
                     VariantInputModel<DefaultConfig, BuildType, ProductFlavor, SigningConfig>
                             model) {

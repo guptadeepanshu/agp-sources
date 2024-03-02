@@ -63,6 +63,7 @@ public class GoogleCrashReporter implements CrashReporter {
 
   // Crash has a limit of 250 * 1024 bytes for field values
   private static final int MAX_BYTES_FOR_VALUE = 250 * 1024;
+  private static final int MAX_BYTES_FOR_FILE = 1258291; // Crash limits uploaded files to 1.2MB
   private static final String TRUNCATION_INDICATOR = "[truncated]";
 
   private static final String LOCALE = Locale.getDefault() == null ? "unknown" : Locale.getDefault().toString();
@@ -234,7 +235,9 @@ public class GoogleCrashReporter implements CrashReporter {
    */
   public static void addBodyToBuilder(MultipartEntityBuilder builder, String key, String value, ContentType contentType) {
     builder.addTextBody(key, Ascii.truncate(value, MAX_BYTES_FOR_VALUE, TRUNCATION_INDICATOR), contentType);
-    if (value.length() > MAX_BYTES_FOR_VALUE) {
+    // only upload the full text as a file if it will fit in the Crash file size limit - if it doesn't,
+    // Crash will discard all files attached to this report.
+    if (value.length() > MAX_BYTES_FOR_VALUE && value.length() <= MAX_BYTES_FOR_FILE) {
       builder.addBinaryBody(key + "-full", value.getBytes(), contentType, key + ".txt");
     }
   }

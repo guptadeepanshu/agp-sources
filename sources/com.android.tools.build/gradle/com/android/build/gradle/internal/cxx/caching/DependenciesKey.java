@@ -24,7 +24,8 @@ private static final long serialVersionUID = 0L;
   }
   private DependenciesKey() {
     sourceFile_ = "";
-    compilerFlags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    compilerFlags_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
   }
 
   @java.lang.Override
@@ -34,67 +35,6 @@ private static final long serialVersionUID = 0L;
     return new DependenciesKey();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
-  private DependenciesKey(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    int mutable_bitField0_ = 0;
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 10: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            sourceFile_ = s;
-            break;
-          }
-          case 18: {
-            java.lang.String s = input.readStringRequireUtf8();
-            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-              compilerFlags_ = new com.google.protobuf.LazyStringArrayList();
-              mutable_bitField0_ |= 0x00000001;
-            }
-            compilerFlags_.add(s);
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      if (((mutable_bitField0_ & 0x00000001) != 0)) {
-        compilerFlags_ = compilerFlags_.getUnmodifiableView();
-      }
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.android.build.gradle.internal.cxx.caching.CxxCaching.internal_static_DependenciesKey_descriptor;
@@ -109,7 +49,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SOURCE_FILE_FIELD_NUMBER = 1;
-  private volatile java.lang.Object sourceFile_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object sourceFile_ = "";
   /**
    * <pre>
    * Path to the source file being compiled
@@ -155,7 +96,9 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int COMPILER_FLAGS_FIELD_NUMBER = 2;
-  private com.google.protobuf.LazyStringList compilerFlags_;
+  @SuppressWarnings("serial")
+  private com.google.protobuf.LazyStringArrayList compilerFlags_ =
+      com.google.protobuf.LazyStringArrayList.emptyList();
   /**
    * <pre>
    * The compiler flags
@@ -225,7 +168,7 @@ private static final long serialVersionUID = 0L;
     for (int i = 0; i < compilerFlags_.size(); i++) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 2, compilerFlags_.getRaw(i));
     }
-    unknownFields.writeTo(output);
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -245,7 +188,7 @@ private static final long serialVersionUID = 0L;
       size += dataSize;
       size += 1 * getCompilerFlagsList().size();
     }
-    size += unknownFields.getSerializedSize();
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -264,7 +207,7 @@ private static final long serialVersionUID = 0L;
         .equals(other.getSourceFile())) return false;
     if (!getCompilerFlagsList()
         .equals(other.getCompilerFlagsList())) return false;
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -281,7 +224,7 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + COMPILER_FLAGS_FIELD_NUMBER;
       hash = (53 * hash) + getCompilerFlagsList().hashCode();
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -405,26 +348,21 @@ private static final long serialVersionUID = 0L;
 
     // Construct using com.android.build.gradle.internal.cxx.caching.DependenciesKey.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessageV3
-              .alwaysUseFieldBuilders) {
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       sourceFile_ = "";
-
-      compilerFlags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000001);
+      compilerFlags_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
       return this;
     }
 
@@ -451,49 +389,22 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.android.build.gradle.internal.cxx.caching.DependenciesKey buildPartial() {
       com.android.build.gradle.internal.cxx.caching.DependenciesKey result = new com.android.build.gradle.internal.cxx.caching.DependenciesKey(this);
-      int from_bitField0_ = bitField0_;
-      result.sourceFile_ = sourceFile_;
-      if (((bitField0_ & 0x00000001) != 0)) {
-        compilerFlags_ = compilerFlags_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000001);
-      }
-      result.compilerFlags_ = compilerFlags_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.android.build.gradle.internal.cxx.caching.DependenciesKey result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.sourceFile_ = sourceFile_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        compilerFlags_.makeImmutable();
+        result.compilerFlags_ = compilerFlags_;
+      }
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.android.build.gradle.internal.cxx.caching.DependenciesKey) {
@@ -508,19 +419,20 @@ private static final long serialVersionUID = 0L;
       if (other == com.android.build.gradle.internal.cxx.caching.DependenciesKey.getDefaultInstance()) return this;
       if (!other.getSourceFile().isEmpty()) {
         sourceFile_ = other.sourceFile_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (!other.compilerFlags_.isEmpty()) {
         if (compilerFlags_.isEmpty()) {
           compilerFlags_ = other.compilerFlags_;
-          bitField0_ = (bitField0_ & ~0x00000001);
+          bitField0_ |= 0x00000002;
         } else {
           ensureCompilerFlagsIsMutable();
           compilerFlags_.addAll(other.compilerFlags_);
         }
         onChanged();
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -535,17 +447,41 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.android.build.gradle.internal.cxx.caching.DependenciesKey parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              sourceFile_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000001;
+              break;
+            } // case 10
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+              ensureCompilerFlagsIsMutable();
+              compilerFlags_.add(s);
+              break;
+            } // case 18
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.android.build.gradle.internal.cxx.caching.DependenciesKey) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
     private int bitField0_;
@@ -603,11 +539,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setSourceFile(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       sourceFile_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -620,8 +554,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearSourceFile() {
-      
       sourceFile_ = getDefaultInstance().getSourceFile();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -636,22 +570,21 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setSourceFileBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       sourceFile_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
 
-    private com.google.protobuf.LazyStringList compilerFlags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private com.google.protobuf.LazyStringArrayList compilerFlags_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     private void ensureCompilerFlagsIsMutable() {
-      if (!((bitField0_ & 0x00000001) != 0)) {
+      if (!compilerFlags_.isModifiable()) {
         compilerFlags_ = new com.google.protobuf.LazyStringArrayList(compilerFlags_);
-        bitField0_ |= 0x00000001;
-       }
+      }
+      bitField0_ |= 0x00000002;
     }
     /**
      * <pre>
@@ -663,7 +596,8 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ProtocolStringList
         getCompilerFlagsList() {
-      return compilerFlags_.getUnmodifiableView();
+      compilerFlags_.makeImmutable();
+      return compilerFlags_;
     }
     /**
      * <pre>
@@ -713,11 +647,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setCompilerFlags(
         int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureCompilerFlagsIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureCompilerFlagsIsMutable();
       compilerFlags_.set(index, value);
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -732,11 +665,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addCompilerFlags(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureCompilerFlagsIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureCompilerFlagsIsMutable();
       compilerFlags_.add(value);
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -754,6 +686,7 @@ private static final long serialVersionUID = 0L;
       ensureCompilerFlagsIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
           values, compilerFlags_);
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -766,8 +699,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearCompilerFlags() {
-      compilerFlags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000001);
+      compilerFlags_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+      bitField0_ = (bitField0_ & ~0x00000002);;
       onChanged();
       return this;
     }
@@ -782,12 +716,11 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addCompilerFlagsBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       ensureCompilerFlagsIsMutable();
       compilerFlags_.add(value);
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -824,7 +757,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new DependenciesKey(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

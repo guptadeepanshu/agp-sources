@@ -18,7 +18,7 @@ package com.android.build.gradle.internal.res
 import com.android.SdkConstants
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.gradle.internal.component.ComponentCreationConfig
-import com.android.build.gradle.internal.component.UnitTestCreationConfig
+import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL
@@ -80,10 +80,6 @@ abstract class GenerateLibraryRFileTask : ProcessAndroidResources() {
     @get:Optional
     abstract val symbolsWithPackageNameOutputFile: RegularFileProperty
 
-    @get:InputFile
-    @get:PathSensitive(PathSensitivity.NONE)
-    abstract val mergedManifestFile: RegularFileProperty
-
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.NONE) abstract val dependencies: ConfigurableFileCollection
 
@@ -110,19 +106,18 @@ abstract class GenerateLibraryRFileTask : ProcessAndroidResources() {
     @get:Internal
     abstract val symbolTableBuildService: Property<SymbolTableBuildService>
 
+    @get:Internal
+    abstract val mergedManifestFile: RegularFileProperty
+
     @Internal
     override fun getManifestFile(): File? {
         return mergedManifestFile.get().asFile
     }
 
     override fun doTaskAction(inputChanges: InputChanges) {
-        val manifest = mergedManifestFile.asFile.get()
-        if (!manifest.exists()) throw RuntimeException("Cannot load generated manifests, file a bug")
-
         workerExecutor.noIsolation().submit(GenerateLibRFileRunnable::class.java) {
             it.initializeFromAndroidVariantTask(this)
             it.localResourcesFile.set(localResourcesFile)
-            it.manifest.set(manifest)
             it.androidJar.from(platformAttrRTxt)
             it.dependencies.from(dependencies)
             it.namespace.set(namespace.get())
@@ -138,7 +133,6 @@ abstract class GenerateLibraryRFileTask : ProcessAndroidResources() {
 
     abstract class GenerateLibRFileParams : ProfileAwareWorkAction.Parameters() {
         abstract val localResourcesFile: RegularFileProperty
-        abstract val manifest: RegularFileProperty
         abstract val androidJar: ConfigurableFileCollection
         abstract val dependencies: ConfigurableFileCollection
         abstract val namespace: Property<String>
@@ -167,11 +161,11 @@ abstract class GenerateLibraryRFileTask : ProcessAndroidResources() {
                 } else {
                     IdProvider.sequential()
                 }
+
             processLibraryMainSymbolTable(
                 librarySymbols = symbolTable,
                 depSymbolTables = depSymbolTables,
                 mainPackageName = parameters.namespace.get(),
-                manifestFile = parameters.manifest.asFile.get(),
                 rClassOutputJar = parameters.rClassOutputJar.asFile.orNull,
                 symbolFileOut = parameters.textSymbolOutputFile.asFile.orNull,
                 platformSymbols = androidAttrSymbol,
@@ -183,7 +177,7 @@ abstract class GenerateLibraryRFileTask : ProcessAndroidResources() {
             parameters.symbolsWithPackageNameOutputFile.asFile.orNull?.let {
                 SymbolIo.writeSymbolListWithPackageName(
                     parameters.textSymbolOutputFile.get().asFile.toPath(),
-                    parameters.manifest.get().asFile.toPath(),
+                    parameters.namespace.get(),
                     it.toPath()
                 )
             }
@@ -277,8 +271,8 @@ abstract class GenerateLibraryRFileTask : ProcessAndroidResources() {
         }
     }
 
-    internal class TestRuntimeStubRClassCreationAction(creationConfig: UnitTestCreationConfig) :
-        VariantTaskCreationAction<GenerateLibraryRFileTask, UnitTestCreationConfig>(
+    internal class TestRuntimeStubRClassCreationAction(creationConfig: HostTestCreationConfig) :
+        VariantTaskCreationAction<GenerateLibraryRFileTask, HostTestCreationConfig>(
             creationConfig
         ) {
 

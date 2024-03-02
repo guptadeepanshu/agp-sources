@@ -222,103 +222,6 @@ public final class GradleManagedDeviceProto {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private GradleManagedDeviceConfig(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              com.google.protobuf.Any.Builder subBuilder = null;
-              if (avdFolder_ != null) {
-                subBuilder = avdFolder_.toBuilder();
-              }
-              avdFolder_ = input.readMessage(com.google.protobuf.Any.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(avdFolder_);
-                avdFolder_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            case 18: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              avdName_ = s;
-              break;
-            }
-            case 26: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              avdId_ = s;
-              break;
-            }
-            case 32: {
-
-              enableDisplay_ = input.readBool();
-              break;
-            }
-            case 42: {
-              com.google.protobuf.Any.Builder subBuilder = null;
-              if (emulatorPath_ != null) {
-                subBuilder = emulatorPath_.toBuilder();
-              }
-              emulatorPath_ = input.readMessage(com.google.protobuf.Any.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(emulatorPath_);
-                emulatorPath_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            case 50: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              gradleDslDeviceName_ = s;
-              break;
-            }
-            case 58: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              emulatorGpu_ = s;
-              break;
-            }
-            case 64: {
-
-              showEmulatorKernelLogging_ = input.readBool();
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceProto.internal_static_com_android_tools_utp_plugins_deviceprovider_gradle_proto_GradleManagedDeviceConfig_descriptor;
@@ -675,7 +578,7 @@ public final class GradleManagedDeviceProto {
       if (showEmulatorKernelLogging_ != false) {
         output.writeBool(8, showEmulatorKernelLogging_);
       }
-      unknownFields.writeTo(output);
+      getUnknownFields().writeTo(output);
     }
 
     @java.lang.Override
@@ -712,7 +615,7 @@ public final class GradleManagedDeviceProto {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(8, showEmulatorKernelLogging_);
       }
-      size += unknownFields.getSerializedSize();
+      size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
     }
@@ -749,7 +652,7 @@ public final class GradleManagedDeviceProto {
           .equals(other.getEmulatorGpu())) return false;
       if (getShowEmulatorKernelLogging()
           != other.getShowEmulatorKernelLogging()) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
 
@@ -782,7 +685,7 @@ public final class GradleManagedDeviceProto {
       hash = (37 * hash) + SHOW_EMULATOR_KERNEL_LOGGING_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getShowEmulatorKernelLogging());
-      hash = (29 * hash) + unknownFields.hashCode();
+      hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
     }
@@ -903,18 +806,13 @@ public final class GradleManagedDeviceProto {
 
       // Construct using com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceProto.GradleManagedDeviceConfig.newBuilder()
       private Builder() {
-        maybeForceBuilderInitialization();
+
       }
 
       private Builder(
           com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
+
       }
       @java.lang.Override
       public Builder clear() {
@@ -1061,7 +959,7 @@ public final class GradleManagedDeviceProto {
         if (other.getShowEmulatorKernelLogging() != false) {
           setShowEmulatorKernelLogging(other.getShowEmulatorKernelLogging());
         }
-        this.mergeUnknownFields(other.unknownFields);
+        this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
       }
@@ -1076,17 +974,74 @@ public final class GradleManagedDeviceProto {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceProto.GradleManagedDeviceConfig parsedMessage = null;
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
         try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+                input.readMessage(
+                    getAvdFolderFieldBuilder().getBuilder(),
+                    extensionRegistry);
+
+                break;
+              } // case 10
+              case 18: {
+                avdName_ = input.readStringRequireUtf8();
+
+                break;
+              } // case 18
+              case 26: {
+                avdId_ = input.readStringRequireUtf8();
+
+                break;
+              } // case 26
+              case 32: {
+                enableDisplay_ = input.readBool();
+
+                break;
+              } // case 32
+              case 42: {
+                input.readMessage(
+                    getEmulatorPathFieldBuilder().getBuilder(),
+                    extensionRegistry);
+
+                break;
+              } // case 42
+              case 50: {
+                gradleDslDeviceName_ = input.readStringRequireUtf8();
+
+                break;
+              } // case 50
+              case 58: {
+                emulatorGpu_ = input.readStringRequireUtf8();
+
+                break;
+              } // case 58
+              case 64: {
+                showEmulatorKernelLogging_ = input.readBool();
+
+                break;
+              } // case 64
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceProto.GradleManagedDeviceConfig) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
+          onChanged();
+        } // finally
         return this;
       }
 
@@ -1944,7 +1899,18 @@ public final class GradleManagedDeviceProto {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new GradleManagedDeviceConfig(input, extensionRegistry);
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
       }
     };
 

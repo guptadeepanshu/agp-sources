@@ -47,8 +47,8 @@ class DuplicateRelativeFileException constructor(
                     )
                 } else {
                     append(
-                        "Adding a packagingOptions block may help, please refer to\n" +
-                                "${agpReferenceDocsUrl("com/android/build/api/dsl/ResourcesPackagingOptions")}\n" +
+                        "Adding a packaging block may help, please refer to\n" +
+                                "${agpReferenceDocsUrl("com/android/build/api/dsl/Packaging")}\n" +
                                 "for more information"
                     )
                 }

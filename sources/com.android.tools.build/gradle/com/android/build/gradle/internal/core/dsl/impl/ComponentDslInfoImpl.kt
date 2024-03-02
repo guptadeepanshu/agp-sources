@@ -28,7 +28,9 @@ import com.android.build.gradle.internal.core.MergedJavaCompileOptions
 import com.android.build.gradle.internal.core.dsl.ComponentDslInfo
 import com.android.build.gradle.internal.core.dsl.MultiVariantComponentDslInfo
 import com.android.build.gradle.internal.core.dsl.features.AndroidResourcesDslInfo
+import com.android.build.gradle.internal.core.dsl.features.PrivacySandboxDslInfo
 import com.android.build.gradle.internal.core.dsl.impl.features.AndroidResourcesDslInfoImpl
+import com.android.build.gradle.internal.core.dsl.impl.features.PrivacySandboxDslInfoImpl
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.builder.core.AbstractProductFlavor
@@ -47,7 +49,7 @@ internal abstract class ComponentDslInfoImpl internal constructor(
     final override val productFlavorList: List<ProductFlavor>,
     protected val services: VariantServices,
     private val buildDirectory: DirectoryProperty,
-    protected val extension: CommonExtension<*, *, *, *, *>
+    protected val extension: CommonExtension<*, *, *, *, *, *>
 ): ComponentDslInfo, MultiVariantComponentDslInfo {
 
     /**
@@ -70,6 +72,8 @@ internal abstract class ComponentDslInfoImpl internal constructor(
     }
 
     final override val javaCompileOptionsSetInDSL = MergedJavaCompileOptions()
+
+    override val privacySandboxDsl: PrivacySandboxDslInfo = PrivacySandboxDslInfoImpl(extension)
 
     init {
         computeMergedOptions(

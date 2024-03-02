@@ -19,7 +19,7 @@ package com.android.build.gradle
 import org.gradle.api.Project
 
 /**
- * The plugin applied with `com.android.application'
+ * The plugin applied with `com.android.application`
  */
 class AppPlugin: BasePlugin() {
     override fun apply(project: Project) {

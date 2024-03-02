@@ -181,8 +181,9 @@ public class DeviceParser {
             } else if (DeviceSchema.NODE_DIAGONAL_LENGTH.equals(localName)) {
                 mHardware.getScreen().setDiagonalLength(getDouble(mStringAccumulator));
             } else if (DeviceSchema.NODE_PIXEL_DENSITY.equals(localName)) {
-                mHardware.getScreen().setPixelDensity(
-                        Density.getEnum(getString(mStringAccumulator)));
+                mHardware
+                        .getScreen()
+                        .setPixelDensity(Density.create(getString(mStringAccumulator)));
             } else if (DeviceSchema.NODE_SCREEN_RATIO.equals(localName)) {
                 mHardware.getScreen().setRatio(
                     ScreenRatio.getEnum(getString(mStringAccumulator)));

@@ -22,6 +22,7 @@ import com.android.build.gradle.internal.signing.SigningConfigData;
 import com.android.build.gradle.internal.signing.SigningConfigVersions;
 import com.android.builder.files.RelativeFile;
 import com.android.builder.files.SerializableChange;
+import com.android.builder.internal.packaging.ApkFlinger;
 import com.android.builder.internal.packaging.IncrementalPackager;
 import com.android.ide.common.resources.FileStatus;
 import com.android.ide.common.signing.CertificateInfo;
@@ -109,6 +110,9 @@ public class IncrementalPackagerBuilder {
      */
     private boolean enableV4Signing = false;
 
+    /** the page size to use for page alignment */
+    private long pageSize = ApkFlinger.PAGE_SIZE_16K;
+
     /**
      * Is the build JNI-debuggable?
      */
@@ -131,6 +135,10 @@ public class IncrementalPackagerBuilder {
     @NonNull private List<SerializableChange> changedArtProfile = new ArrayList<>();
     @NonNull private List<SerializableChange> changedArtProfileMetadata = new ArrayList<>();
     @NonNull private List<SerializableChange> changedVersionControlInfo = new ArrayList<>();
+
+    @NonNull
+    private List<SerializableChange> changedPrivacySandboxRuntimeEnabledSdkTable =
+            new ArrayList<>(1);
 
     /** Creates a new builder. */
     public IncrementalPackagerBuilder(@NonNull BuildType buildType) {
@@ -319,6 +327,18 @@ public class IncrementalPackagerBuilder {
     }
 
     /**
+     * Sets the page size to use for page alignment.
+     *
+     * @param pageSize the page size to use for page alignment
+     * @return {@code this} for use with fluent-style notation
+     */
+    @NonNull
+    public IncrementalPackagerBuilder withPageSize(long pageSize) {
+        this.pageSize = pageSize;
+        return this;
+    }
+
+    /**
      * Sets whether the APK entries will be ordered deterministically.
      *
      * @param deterministicEntryOrder will the APK entries be ordered deterministically?
@@ -476,6 +496,7 @@ public class IncrementalPackagerBuilder {
                     deterministicEntryOrder,
                     enableV3Signing,
                     enableV4Signing,
+                    pageSize,
                     changedDexFiles,
                     changedJavaResources,
                     changedAssets,
@@ -484,7 +505,8 @@ public class IncrementalPackagerBuilder {
                     changedAppMetadata,
                     changedArtProfile,
                     changedArtProfileMetadata,
-                    changedVersionControlInfo);
+                    changedVersionControlInfo,
+                    changedPrivacySandboxRuntimeEnabledSdkTable);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

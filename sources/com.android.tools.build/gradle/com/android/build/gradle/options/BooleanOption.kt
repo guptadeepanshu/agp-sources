@@ -17,7 +17,6 @@
 package com.android.build.gradle.options
 
 import com.android.build.gradle.internal.errors.DeprecationReporter.DeprecationTarget.BUILD_CONFIG_GLOBAL_PROPERTY
-import com.android.build.gradle.internal.errors.DeprecationReporter.DeprecationTarget.VERSION_8_3
 import com.android.build.gradle.internal.errors.DeprecationReporter.DeprecationTarget.VERSION_9_0
 import com.android.build.gradle.options.Version.VERSION_3_5
 import com.android.build.gradle.options.Version.VERSION_3_6
@@ -27,9 +26,9 @@ import com.android.build.gradle.options.Version.VERSION_4_2
 import com.android.build.gradle.options.Version.VERSION_7_0
 import com.android.build.gradle.options.Version.VERSION_7_2
 import com.android.build.gradle.options.Version.VERSION_7_3
-import com.android.build.gradle.options.Version.VERSION_8_1
 import com.android.build.gradle.options.Version.VERSION_BEFORE_4_0
 import com.android.builder.model.AndroidProject
+import com.android.builder.model.AndroidProject.PROPERTY_AVOID_TASK_REGISTRATION
 import com.android.builder.model.AndroidProject.PROPERTY_BUILD_MODEL_ONLY
 import com.android.builder.model.PROPERTY_BUILD_MODEL_V2_ONLY
 import com.android.builder.model.PROPERTY_BUILD_WITH_STABLE_IDS
@@ -58,6 +57,7 @@ enum class BooleanOption(
     @Deprecated("Use IDE_BUILD_MODEL_ONLY_V2")
     IDE_BUILD_MODEL_FEATURE_FULL_DEPENDENCIES(AndroidProject.PROPERTY_BUILD_MODEL_FEATURE_FULL_DEPENDENCIES, false, ApiStage.Stable),
     IDE_REFRESH_EXTERNAL_NATIVE_MODEL(PROPERTY_REFRESH_EXTERNAL_NATIVE_MODEL, false, ApiStage.Stable),
+    IDE_AVOID_TASK_REGISTRATION(PROPERTY_AVOID_TASK_REGISTRATION, false, ApiStage.Stable),
     //IDE_GENERATE_SOURCES_ONLY(AndroidProject.PROPERTY_GENERATE_SOURCES_ONLY, false, ApiStage.Stable),
 
     // tell bundletool to only extract instant APKs.
@@ -101,6 +101,32 @@ enum class BooleanOption(
      */
     ANDROID_TEST_LEAVE_APKS_INSTALLED_AFTER_RUN("android.injected.androidTest.leaveApksInstalledAfterRun", false, ApiStage.Stable),
 
+    /**
+     * When this option is enabled, dexing transforms will use the full classpath (if desugaring
+     * requires a classpath). This classpath consists of all external artifacts
+     * ([com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.EXTERNAL])
+     * in addition to the input artifact's dependencies provided by Gradle through
+     * [org.gradle.api.artifacts.transform.InputArtifactDependencies].
+     *
+     * This option is useful when some dependencies are missing from the input artifact's
+     * dependencies (see bug 230454566), so the full classpath is needed.
+     *
+     * If dexing transforms do not require a classpath, this option is not used.
+     */
+    USE_FULL_CLASSPATH_FOR_DEXING_TRANSFORM(
+        "android.useFullClasspathForDexingTransform",
+        false,
+        ApiStage.Stable
+    ),
+
+    PRINT_LINT_STACK_TRACE("android.lint.printStackTrace", false, ApiStage.Stable),
+
+    PACKAGE_NATIVE_DEBUG_METADATA_IN_APP_BUNDLE(
+            "android.bundle.includeNativeDebugMetadata",
+            true,
+            ApiStage.Stable
+    ),
+
     /* ------------------
      * SUPPORTED FEATURES
      */
@@ -138,7 +164,6 @@ enum class BooleanOption(
     CONDITIONAL_KEEP_RULES("android.useConditionalKeepRules", false, FeatureStage.Experimental),
     KEEP_SERVICES_BETWEEN_BUILDS("android.keepWorkerActionServicesBetweenBuilds", false, FeatureStage.Experimental),
     ENABLE_PARTIAL_R_INCREMENTAL_BUILDS("android.enablePartialRIncrementalBuilds", false, FeatureStage.Experimental),
-    ENABLE_NEW_RESOURCE_SHRINKER_PRECISE("android.experimental.enableNewResourceShrinker.preciseShrinking", false, FeatureStage.Experimental),
     ENABLE_LOCAL_TESTING("android.bundletool.enableLocalTesting", false, FeatureStage.Experimental),
     DISABLE_MINSDKLIBRARY_CHECK("android.unsafe.disable.minSdkLibraryCheck", false, FeatureStage.Experimental),
     ENABLE_INSTRUMENTATION_TEST_DESUGARING("android.experimental.library.desugarAndroidTest", false, FeatureStage.Experimental),
@@ -166,12 +191,6 @@ enum class BooleanOption(
      * its instability.
      */
     GRADLE_MANAGED_DEVICE_ALLOW_OLD_API_LEVEL_DEVICES("android.experimental.testOptions.managedDevices.allowOldApiLevelDevices", false, FeatureStage.Experimental),
-
-    /**
-     * When enabled, Gradle Managed Device allows a custom managed device type that can be provided
-     * by a plugin by implementing ManagedDeviceTestRunner APIs.
-     */
-    GRADLE_MANAGED_DEVICE_CUSTOM_DEVICE("android.experimental.testOptions.managedDevices.customDevice", false, FeatureStage.Experimental),
 
     /** When set R classes are treated as compilation classpath in libraries, rather than runtime classpath, with values set to 0. */
     ENABLE_ADDITIONAL_ANDROID_TEST_OUTPUT("android.enableAdditionalTestOutput", true, FeatureStage.Experimental),
@@ -218,11 +237,16 @@ enum class BooleanOption(
             FeatureStage.Experimental
     ),
 
+    PRIVACY_SANDBOX_SDK_PLUGIN_SUPPORT("android.experimental.privacysandboxsdk.plugin.enable",
+            false,
+            FeatureStage.Experimental),
+
+    PRIVACY_SANDBOX_SDK_SUPPORT("android.experimental.privacysandboxsdk.enable",
+            false,
+            FeatureStage.Experimental),
 
     PRIVACY_SANDBOX_SDK_REQUIRE_SERVICES(
             "android.experimental.privacysandboxsdk.requireServices", true, FeatureStage.Experimental),
-
-    PRINT_LINT_STACK_TRACE("android.lint.printStackTrace", false, FeatureStage.Experimental),
 
     VERIFY_AAR_CLASSES("android.experimental.verifyLibraryClasses", false, FeatureStage.Experimental),
     DISABLE_COMPILE_SDK_CHECKS("android.experimental.disableCompileSdkChecks", false, FeatureStage.Experimental),
@@ -236,22 +260,6 @@ enum class BooleanOption(
     ),
 
     FUSED_LIBRARY_SUPPORT("android.experimental.fusedLibrarySupport", false, FeatureStage.Experimental),
-    SUPPORT_PAST_STUDIO_VERSIONS("android.experimental.support.past.studio.versions", false, FeatureStage.Experimental),
-
-    /**
-     * Whether to do lint analysis per component (instead of analysing the main variant and the test
-     * components in the same lint invocation).
-     */
-    LINT_ANALYSIS_PER_COMPONENT(
-        "android.experimental.lint.analysisPerComponent",
-        false,
-        FeatureStage.Experimental
-    ),
-
-    /**
-     * Enables task to add version control info to APKs/Bundle
-     */
-    ENABLE_VCS_INFO("android.enableVcsInfo", false, FeatureStage.Experimental),
 
     /**
      * Whether to omit line numbers when writing lint baselines
@@ -271,6 +279,12 @@ enum class BooleanOption(
         FeatureStage.Experimental
     ),
 
+    ENABLE_NEW_TEST_DSL(
+        "android.experimental.enableNewTestDsl",
+        false,
+        FeatureStage.Experimental
+    ),
+
     /* ------------------------
      * SOFTLY-ENFORCED FEATURES
      */
@@ -286,11 +300,27 @@ enum class BooleanOption(
         FeatureStage.SoftlyEnforced(VERSION_9_0)
     ),
 
-    ENABLE_DEXING_ARTIFACT_TRANSFORM(
-        "android.enableDexingArtifactTransform",
+    ENABLE_NEW_RESOURCE_SHRINKER_PRECISE(
+        "android.enableNewResourceShrinker.preciseShrinking",
         true,
-        FeatureStage.SoftlyEnforced(VERSION_8_3)
+        FeatureStage.SoftlyEnforced(VERSION_9_0)
     ),
+
+    /**
+     * Whether to do lint analysis per component (instead of analysing the main variant and the test
+     * components in the same lint invocation).
+     */
+    LINT_ANALYSIS_PER_COMPONENT(
+        "android.experimental.lint.analysisPerComponent",
+        true,
+        FeatureStage.SoftlyEnforced(VERSION_9_0)
+    ),
+
+    /**
+     * When enabled, Gradle Managed Device allows a custom managed device type that can be provided
+     * by a plugin by implementing ManagedDeviceTestRunner APIs.
+     */
+    GRADLE_MANAGED_DEVICE_CUSTOM_DEVICE("android.experimental.testOptions.managedDevices.customDevice", true, FeatureStage.SoftlyEnforced(VERSION_9_0)),
 
     /* -------------------
      * DEPRECATED FEATURES
@@ -603,7 +633,8 @@ enum class BooleanOption(
 
     ENABLE_NEW_RESOURCE_SHRINKER("android.enableNewResourceShrinker",
             true,
-            FeatureStage.Enforced(Version.VERSION_8_0)),
+            FeatureStage.Enforced(Version.VERSION_8_0)
+    ),
 
     @Suppress("unused")
     ENABLE_R_TXT_RESOURCE_SHRINKING(
@@ -636,7 +667,7 @@ enum class BooleanOption(
         true,
         FeatureStage.Enforced(
             Version.VERSION_8_2,
-            "If you want to disable dexing in artifact transforms, use ${ENABLE_DEXING_ARTIFACT_TRANSFORM.propertyName} instead."
+            "If you run into issues with dexing transforms, try setting `${USE_FULL_CLASSPATH_FOR_DEXING_TRANSFORM.propertyName} = true` instead."
         )
     ),
 
@@ -644,6 +675,15 @@ enum class BooleanOption(
         "android.enableDexingArtifactTransformForExternalLibs",
         true,
         FeatureStage.Enforced(Version.VERSION_8_2)
+    ),
+
+    ENABLE_DEXING_ARTIFACT_TRANSFORM(
+        "android.enableDexingArtifactTransform",
+        true,
+        FeatureStage.Enforced(
+            Version.VERSION_8_3,
+            "If you run into issues with dexing transforms, try setting `${USE_FULL_CLASSPATH_FOR_DEXING_TRANSFORM.propertyName} = true` instead."
+        )
     ),
 
     /* ----------------
@@ -747,14 +787,8 @@ enum class BooleanOption(
     @Suppress("unused")
     ENABLE_TEST_SHARDING("android.androidTest.shardBetweenDevices", false, FeatureStage.Removed(Version.VERSION_8_2, "Cross device sharding is no longer supported.")),
 
-    PRIVACY_SANDBOX_SDK_SUPPORT(
-        "android.experimental.privacysandboxsdk.enable",
-        false,
-        FeatureStage.Removed(
-            Version.VERSION_8_1,
-            "Privacy Sandbox SDKs are not supported in Android Gradle plugin 8.2.x.\n\n" +
-                    "To build or consume privacy sandbox SDKs, please use Android Gradle plugin 8.3.0-alpha01 or later.")),
-
+    @Suppress("unused")
+    ENABLE_VCS_INFO("android.enableVcsInfo", false, FeatureStage.Removed(Version.VERSION_8_3, "This feature is now enabled in the DSL per build type with \"vcsInfo.include = true\"."))
     ; // end of enums
 
     override val status = stage.status

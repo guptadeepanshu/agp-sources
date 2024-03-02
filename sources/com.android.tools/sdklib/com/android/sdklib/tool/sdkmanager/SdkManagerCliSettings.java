@@ -91,7 +91,6 @@ class SdkManagerCliSettings implements SettingsController {
     private int mChannel = 0;
     private boolean mIncludeObsolete = false;
     private boolean mForceHttp = false;
-    private boolean mDisableSdkPatches = false;
     private boolean mForceNoProxy = false;
     private boolean mVerbose = false;
     private boolean mNewer = false;
@@ -197,16 +196,6 @@ class SdkManagerCliSettings implements SettingsController {
     @Override
     public void setForceHttp(boolean force) {
         mForceHttp = force;
-    }
-
-    @Override
-    public boolean getDisableSdkPatches() {
-        return mDisableSdkPatches;
-    }
-
-    @Override
-    public void setDisableSdkPatches(boolean disable) {
-        mDisableSdkPatches = disable;
     }
 
     @VisibleForTesting

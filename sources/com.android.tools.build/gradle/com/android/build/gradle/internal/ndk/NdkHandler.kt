@@ -66,9 +66,7 @@ sealed class NdkInstallStatus {
 /**
  * Handles NDK related information.
  */
-open class NdkHandler(
-    private val ndkLocator: NdkLocator
-) {
+open class NdkHandler(private val ndkLocator: NdkLocator) {
     private var ndkInstallStatus: NdkInstallStatus? = null
 
     private fun getNdkInfo(ndk: NdkLocatorRecord) = when {

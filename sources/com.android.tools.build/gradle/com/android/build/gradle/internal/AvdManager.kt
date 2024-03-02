@@ -328,7 +328,7 @@ class AvdManager(
         var delay = BASE_RETRY_DELAY_SECONDS
         for (retry in 0..MAX_SYSTEM_IMAGE_RETRIES) {
             val systemImage = sdkHandler.getSystemImageManager(
-                LoggerProgressIndicatorWrapper(StdLogger(StdLogger.Level.VERBOSE))
+                LoggerProgressIndicatorWrapper(logger)
             ).getImageAt(imageLocation)
 
             if (systemImage != null) {

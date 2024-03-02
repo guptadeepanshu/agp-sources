@@ -20,6 +20,8 @@ import com.android.SdkConstants
 import com.android.build.api.artifact.Artifact
 import com.android.build.api.artifact.ArtifactKind
 import com.android.build.api.artifact.SingleArtifact
+import com.android.build.gradle.internal.api.BaselineProfiles
+import com.android.build.gradle.internal.tasks.GenerateRuntimeEnabledSdkTableTask
 import com.android.builder.internal.packaging.IncrementalPackager.VERSION_CONTROL_INFO_FILE_NAME
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileSystemLocation
@@ -182,6 +184,8 @@ InternalArtifactType<T : FileSystemLocation>(
         "res/pngs",
     ), Replaceable
 
+    object NESTED_RESOURCES_VALIDATION_REPORT: InternalArtifactType<RegularFile>(FILE)
+
     // File containing map between a source set identifier and an absolute resource sourceset path
     // for generating absolute paths in resource linking error messages.
     object SOURCE_SET_PATH_MAP: InternalArtifactType<RegularFile>(FILE), Replaceable
@@ -199,8 +203,6 @@ InternalArtifactType<T : FileSystemLocation>(
     object PACKAGED_RES: InternalArtifactType<Directory>(DIRECTORY), Replaceable
     // R.txt output for libraries - contains mock resource IDs used only at compile time.
     object COMPILE_SYMBOL_LIST: InternalArtifactType<RegularFile>(FILE), Replaceable
-    // R.txt output for applications and android tests - contains real resource IDs used at runtime.
-    object RUNTIME_SYMBOL_LIST: InternalArtifactType<RegularFile>(FILE), Replaceable
     // Synthetic artifacts
     object SYMBOL_LIST_WITH_PACKAGE_NAME: InternalArtifactType<RegularFile>(FILE), Replaceable
     //Resources defined within the current module.
@@ -566,8 +568,20 @@ InternalArtifactType<T : FileSystemLocation>(
     // Micro APK res directory
     object MICRO_APK_RES: InternalArtifactType<Directory>(DIRECTORY)
 
-    // Human-readable Art profile artifacts
+    // Human-readable Art profile artifacts; combines art profiles from various project sources
     object MERGED_ART_PROFILE: InternalArtifactType<RegularFile>(
+        FILE,
+        fileName = SdkConstants.FN_ART_PROFILE
+    )
+    // This is the Art profile expanded by the app and rewritten by the R8 task
+    // When minified is enabled, it is used to produce the final binary art profile
+    object R8_ART_PROFILE: InternalArtifactType<RegularFile>(
+        FILE,
+        fileName = SdkConstants.FN_ART_PROFILE
+    ), Transformable
+    // This is the Art profile expanded by the L8 desugared lib jar and rewritten by the L8 task
+    // When desugaring is enabled, it is to produce the final binary art profile
+    object L8_ART_PROFILE: InternalArtifactType<RegularFile>(
         FILE,
         fileName = SdkConstants.FN_ART_PROFILE
     ), Transformable
@@ -575,7 +589,13 @@ InternalArtifactType<T : FileSystemLocation>(
         FILE,
         fileName = SdkConstants.FN_ART_PROFILE
     )
-
+    // This is the Art profile that combines the app's profile and the L8 profile when present,
+    // which is compiled into the binary art profile
+    // Currently, it is not consumed, and only used in CompileArtProfileTask
+    object COMBINED_ART_PROFILE: InternalArtifactType<RegularFile>(
+        FILE,
+        fileName = SdkConstants.FN_ART_PROFILE
+    )
     // binary art profile artifacts.
     object BINARY_ART_PROFILE: InternalArtifactType<RegularFile>(
         FILE,
@@ -585,21 +605,28 @@ InternalArtifactType<T : FileSystemLocation>(
         FILE,
         fileName = SdkConstants.FN_BINARY_ART_PROFILE_METADATA
     )
-
-    // Sync dynamic properties file artifacts
-    object VARIANT_MODEL: InternalArtifactType<RegularFile>(
-        FILE,
-        fileName = "variant_model.json",
-    )
-
-    object APP_ID_LIST_MODEL: InternalArtifactType<RegularFile>(
-        FILE,
-        fileName = "app_id_list.json"
-    )
+    // Directory containing the dex metadata files to be installed as baseline profiles on devices
+    // It should also contain a file which writes out mappings from API level to ".dm" file
+    object DEX_METADATA_DIRECTORY: InternalArtifactType<Directory>(DIRECTORY)
 
     object VERSION_CONTROL_INFO_FILE: InternalArtifactType<RegularFile>(
         FILE,
         fileName = VERSION_CONTROL_INFO_FILE_NAME
+    )
+
+    object RUNTIME_ENABLED_SDK_TABLE : InternalArtifactType<RegularFile>(
+            FILE,
+            fileName = GenerateRuntimeEnabledSdkTableTask.RUNTIME_ENABLED_SDK_TABLE_FILE_NAME)
+
+    object USES_SDK_LIBRARY_SPLIT_FOR_LOCAL_DEPLOYMENT : InternalArtifactType<Directory>(DIRECTORY), Replaceable
+
+    object SCREENSHOTS_RENDERED: InternalArtifactType<Directory>(DIRECTORY), Replaceable
+
+    // This is the startup profile containing the profiles from all variant sources
+    // Currently, it is not consumed, and only used in R8Task
+    object MERGED_STARTUP_PROFILE: InternalArtifactType<RegularFile>(
+        FILE,
+        fileName = BaselineProfiles.StartupProfileFileName
     )
 
     override fun getFileSystemLocationName(): String {

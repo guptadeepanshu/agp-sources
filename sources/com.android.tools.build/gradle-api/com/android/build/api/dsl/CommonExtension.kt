@@ -31,7 +31,8 @@ interface CommonExtension<
         BuildTypeT : BuildType,
         DefaultConfigT : DefaultConfig,
         ProductFlavorT : ProductFlavor,
-        AndroidResourcesT : AndroidResources> {
+        AndroidResourcesT : AndroidResources,
+        InstallationT: Installation> {
 
     /**
      * Specifies options for the Android Asset Packaging Tool (AAPT).
@@ -94,7 +95,7 @@ interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [AdbOptions].
      */
-    val installation: Installation
+    val installation: InstallationT
 
     /**
      * Specifies options for the
@@ -103,7 +104,7 @@ interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [AdbOptions].
      */
-    fun installation(action: Installation.() -> Unit)
+    fun installation(action: InstallationT.() -> Unit)
 
     /**
      * Specifies Java compiler options, such as the language level of the Java source code and
@@ -775,7 +776,7 @@ interface CommonExtension<
      */
     fun useLibrary(name: String, required: Boolean)
 
-    @Deprecated(
+    @get:Deprecated(
         message = "This API will be removed in AGP 7.0, replaced with AndroidComponents::sdkComponents")
     val sdkComponents: SdkComponents
 

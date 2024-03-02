@@ -31,216 +31,6 @@ private static final long serialVersionUID = 0L;
     return new AndroidLibraryData();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
-  private AndroidLibraryData(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    int mutable_bitField0_ = 0;
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 10: {
-            com.android.builder.model.proto.ide.File.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000001) != 0)) {
-              subBuilder = manifest_.toBuilder();
-            }
-            manifest_ = input.readMessage(com.android.builder.model.proto.ide.File.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(manifest_);
-              manifest_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000001;
-            break;
-          }
-          case 18: {
-            if (!((mutable_bitField0_ & 0x00000002) != 0)) {
-              compileJarFiles_ = new java.util.ArrayList<com.android.builder.model.proto.ide.File>();
-              mutable_bitField0_ |= 0x00000002;
-            }
-            compileJarFiles_.add(
-                input.readMessage(com.android.builder.model.proto.ide.File.parser(), extensionRegistry));
-            break;
-          }
-          case 26: {
-            if (!((mutable_bitField0_ & 0x00000004) != 0)) {
-              runtimeJarFiles_ = new java.util.ArrayList<com.android.builder.model.proto.ide.File>();
-              mutable_bitField0_ |= 0x00000004;
-            }
-            runtimeJarFiles_.add(
-                input.readMessage(com.android.builder.model.proto.ide.File.parser(), extensionRegistry));
-            break;
-          }
-          case 34: {
-            com.android.builder.model.proto.ide.File.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000002) != 0)) {
-              subBuilder = resFolder_.toBuilder();
-            }
-            resFolder_ = input.readMessage(com.android.builder.model.proto.ide.File.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(resFolder_);
-              resFolder_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000002;
-            break;
-          }
-          case 42: {
-            com.android.builder.model.proto.ide.File.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000004) != 0)) {
-              subBuilder = resStaticLibrary_.toBuilder();
-            }
-            resStaticLibrary_ = input.readMessage(com.android.builder.model.proto.ide.File.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(resStaticLibrary_);
-              resStaticLibrary_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000004;
-            break;
-          }
-          case 50: {
-            com.android.builder.model.proto.ide.File.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000008) != 0)) {
-              subBuilder = assetsFolder_.toBuilder();
-            }
-            assetsFolder_ = input.readMessage(com.android.builder.model.proto.ide.File.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(assetsFolder_);
-              assetsFolder_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000008;
-            break;
-          }
-          case 58: {
-            com.android.builder.model.proto.ide.File.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000010) != 0)) {
-              subBuilder = jniFolder_.toBuilder();
-            }
-            jniFolder_ = input.readMessage(com.android.builder.model.proto.ide.File.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(jniFolder_);
-              jniFolder_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000010;
-            break;
-          }
-          case 66: {
-            com.android.builder.model.proto.ide.File.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000020) != 0)) {
-              subBuilder = aidlFolder_.toBuilder();
-            }
-            aidlFolder_ = input.readMessage(com.android.builder.model.proto.ide.File.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(aidlFolder_);
-              aidlFolder_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000020;
-            break;
-          }
-          case 74: {
-            com.android.builder.model.proto.ide.File.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000040) != 0)) {
-              subBuilder = renderscriptFolder_.toBuilder();
-            }
-            renderscriptFolder_ = input.readMessage(com.android.builder.model.proto.ide.File.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(renderscriptFolder_);
-              renderscriptFolder_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000040;
-            break;
-          }
-          case 82: {
-            com.android.builder.model.proto.ide.File.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000080) != 0)) {
-              subBuilder = proguardRules_.toBuilder();
-            }
-            proguardRules_ = input.readMessage(com.android.builder.model.proto.ide.File.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(proguardRules_);
-              proguardRules_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000080;
-            break;
-          }
-          case 90: {
-            com.android.builder.model.proto.ide.File.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000100) != 0)) {
-              subBuilder = externalAnnotations_.toBuilder();
-            }
-            externalAnnotations_ = input.readMessage(com.android.builder.model.proto.ide.File.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(externalAnnotations_);
-              externalAnnotations_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000100;
-            break;
-          }
-          case 98: {
-            com.android.builder.model.proto.ide.File.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000200) != 0)) {
-              subBuilder = publicResources_.toBuilder();
-            }
-            publicResources_ = input.readMessage(com.android.builder.model.proto.ide.File.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(publicResources_);
-              publicResources_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000200;
-            break;
-          }
-          case 106: {
-            com.android.builder.model.proto.ide.File.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000400) != 0)) {
-              subBuilder = symbolFile_.toBuilder();
-            }
-            symbolFile_ = input.readMessage(com.android.builder.model.proto.ide.File.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(symbolFile_);
-              symbolFile_ = subBuilder.buildPartial();
-            }
-            bitField0_ |= 0x00000400;
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      if (((mutable_bitField0_ & 0x00000002) != 0)) {
-        compileJarFiles_ = java.util.Collections.unmodifiableList(compileJarFiles_);
-      }
-      if (((mutable_bitField0_ & 0x00000004) != 0)) {
-        runtimeJarFiles_ = java.util.Collections.unmodifiableList(runtimeJarFiles_);
-      }
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.android.builder.model.proto.ide.IdeModelsProto.internal_static_AndroidLibraryData_descriptor;
@@ -294,6 +84,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int COMPILE_JAR_FILES_FIELD_NUMBER = 2;
+  @SuppressWarnings("serial")
   private java.util.List<com.android.builder.model.proto.ide.File> compileJarFiles_;
   /**
    * <pre>
@@ -354,6 +145,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int RUNTIME_JAR_FILES_FIELD_NUMBER = 3;
+  @SuppressWarnings("serial")
   private java.util.List<com.android.builder.model.proto.ide.File> runtimeJarFiles_;
   /**
    * <pre>
@@ -418,6 +210,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The android resource folder.
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -431,6 +224,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The android resource folder.
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -444,6 +238,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The android resource folder.
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -497,6 +292,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The assets folder.
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -510,6 +306,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The assets folder.
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -523,6 +320,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The assets folder.
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -538,6 +336,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The jni libraries folder.
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -551,6 +350,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The jni libraries folder.
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -564,6 +364,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The jni libraries folder.
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -579,6 +380,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The AIDL import folder
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -592,6 +394,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The AIDL import folder
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -605,6 +408,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The AIDL import folder
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -620,6 +424,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The RenderScript import folder
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -633,6 +438,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The RenderScript import folder
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -646,6 +452,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The RenderScript import folder
+   *
    * The folder may not exist.
    * </pre>
    *
@@ -661,6 +468,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The proguard file rule.
+   *
    * The file may not exist.
    * </pre>
    *
@@ -674,6 +482,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The proguard file rule.
+   *
    * The file may not exist.
    * </pre>
    *
@@ -687,6 +496,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The proguard file rule.
+   *
    * The file may not exist.
    * </pre>
    *
@@ -702,6 +512,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * the zip file with external annotations
+   *
    * The file may not exist.
    * </pre>
    *
@@ -715,6 +526,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * the zip file with external annotations
+   *
    * The file may not exist.
    * </pre>
    *
@@ -728,6 +540,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * the zip file with external annotations
+   *
    * The file may not exist.
    * </pre>
    *
@@ -743,6 +556,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The file listing the public resources
+   *
    * The file may not exist.
    * </pre>
    *
@@ -756,6 +570,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The file listing the public resources
+   *
    * The file may not exist.
    * </pre>
    *
@@ -769,6 +584,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The file listing the public resources
+   *
    * The file may not exist.
    * </pre>
    *
@@ -784,6 +600,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The symbol list file
+   *
    * The file may not exist.
    * </pre>
    *
@@ -797,6 +614,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The symbol list file
+   *
    * The file may not exist.
    * </pre>
    *
@@ -810,6 +628,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The symbol list file
+   *
    * The file may not exist.
    * </pre>
    *
@@ -873,7 +692,7 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000400) != 0)) {
       output.writeMessage(13, getSymbolFile());
     }
-    unknownFields.writeTo(output);
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -934,7 +753,7 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(13, getSymbolFile());
     }
-    size += unknownFields.getSerializedSize();
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -1008,7 +827,7 @@ private static final long serialVersionUID = 0L;
       if (!getSymbolFile()
           .equals(other.getSymbolFile())) return false;
     }
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -1071,7 +890,7 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + SYMBOL_FILE_FIELD_NUMBER;
       hash = (53 * hash) + getSymbolFile().hashCode();
     }
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -1221,84 +1040,76 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      if (manifestBuilder_ == null) {
-        manifest_ = null;
-      } else {
-        manifestBuilder_.clear();
+      bitField0_ = 0;
+      manifest_ = null;
+      if (manifestBuilder_ != null) {
+        manifestBuilder_.dispose();
+        manifestBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000001);
       if (compileJarFilesBuilder_ == null) {
         compileJarFiles_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000002);
       } else {
+        compileJarFiles_ = null;
         compileJarFilesBuilder_.clear();
       }
+      bitField0_ = (bitField0_ & ~0x00000002);
       if (runtimeJarFilesBuilder_ == null) {
         runtimeJarFiles_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000004);
       } else {
+        runtimeJarFiles_ = null;
         runtimeJarFilesBuilder_.clear();
       }
-      if (resFolderBuilder_ == null) {
-        resFolder_ = null;
-      } else {
-        resFolderBuilder_.clear();
+      bitField0_ = (bitField0_ & ~0x00000004);
+      resFolder_ = null;
+      if (resFolderBuilder_ != null) {
+        resFolderBuilder_.dispose();
+        resFolderBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000008);
-      if (resStaticLibraryBuilder_ == null) {
-        resStaticLibrary_ = null;
-      } else {
-        resStaticLibraryBuilder_.clear();
+      resStaticLibrary_ = null;
+      if (resStaticLibraryBuilder_ != null) {
+        resStaticLibraryBuilder_.dispose();
+        resStaticLibraryBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000010);
-      if (assetsFolderBuilder_ == null) {
-        assetsFolder_ = null;
-      } else {
-        assetsFolderBuilder_.clear();
+      assetsFolder_ = null;
+      if (assetsFolderBuilder_ != null) {
+        assetsFolderBuilder_.dispose();
+        assetsFolderBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000020);
-      if (jniFolderBuilder_ == null) {
-        jniFolder_ = null;
-      } else {
-        jniFolderBuilder_.clear();
+      jniFolder_ = null;
+      if (jniFolderBuilder_ != null) {
+        jniFolderBuilder_.dispose();
+        jniFolderBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000040);
-      if (aidlFolderBuilder_ == null) {
-        aidlFolder_ = null;
-      } else {
-        aidlFolderBuilder_.clear();
+      aidlFolder_ = null;
+      if (aidlFolderBuilder_ != null) {
+        aidlFolderBuilder_.dispose();
+        aidlFolderBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000080);
-      if (renderscriptFolderBuilder_ == null) {
-        renderscriptFolder_ = null;
-      } else {
-        renderscriptFolderBuilder_.clear();
+      renderscriptFolder_ = null;
+      if (renderscriptFolderBuilder_ != null) {
+        renderscriptFolderBuilder_.dispose();
+        renderscriptFolderBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000100);
-      if (proguardRulesBuilder_ == null) {
-        proguardRules_ = null;
-      } else {
-        proguardRulesBuilder_.clear();
+      proguardRules_ = null;
+      if (proguardRulesBuilder_ != null) {
+        proguardRulesBuilder_.dispose();
+        proguardRulesBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000200);
-      if (externalAnnotationsBuilder_ == null) {
-        externalAnnotations_ = null;
-      } else {
-        externalAnnotationsBuilder_.clear();
+      externalAnnotations_ = null;
+      if (externalAnnotationsBuilder_ != null) {
+        externalAnnotationsBuilder_.dispose();
+        externalAnnotationsBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000400);
-      if (publicResourcesBuilder_ == null) {
-        publicResources_ = null;
-      } else {
-        publicResourcesBuilder_.clear();
+      publicResources_ = null;
+      if (publicResourcesBuilder_ != null) {
+        publicResourcesBuilder_.dispose();
+        publicResourcesBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000800);
-      if (symbolFileBuilder_ == null) {
-        symbolFile_ = null;
-      } else {
-        symbolFileBuilder_.clear();
+      symbolFile_ = null;
+      if (symbolFileBuilder_ != null) {
+        symbolFileBuilder_.dispose();
+        symbolFileBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00001000);
       return this;
     }
 
@@ -1325,16 +1136,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.android.builder.model.proto.ide.AndroidLibraryData buildPartial() {
       com.android.builder.model.proto.ide.AndroidLibraryData result = new com.android.builder.model.proto.ide.AndroidLibraryData(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        if (manifestBuilder_ == null) {
-          result.manifest_ = manifest_;
-        } else {
-          result.manifest_ = manifestBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000001;
-      }
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.android.builder.model.proto.ide.AndroidLibraryData result) {
       if (compileJarFilesBuilder_ == null) {
         if (((bitField0_ & 0x00000002) != 0)) {
           compileJarFiles_ = java.util.Collections.unmodifiableList(compileJarFiles_);
@@ -1353,123 +1161,80 @@ private static final long serialVersionUID = 0L;
       } else {
         result.runtimeJarFiles_ = runtimeJarFilesBuilder_.build();
       }
+    }
+
+    private void buildPartial0(com.android.builder.model.proto.ide.AndroidLibraryData result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.manifest_ = manifestBuilder_ == null
+            ? manifest_
+            : manifestBuilder_.build();
+        to_bitField0_ |= 0x00000001;
+      }
       if (((from_bitField0_ & 0x00000008) != 0)) {
-        if (resFolderBuilder_ == null) {
-          result.resFolder_ = resFolder_;
-        } else {
-          result.resFolder_ = resFolderBuilder_.build();
-        }
+        result.resFolder_ = resFolderBuilder_ == null
+            ? resFolder_
+            : resFolderBuilder_.build();
         to_bitField0_ |= 0x00000002;
       }
       if (((from_bitField0_ & 0x00000010) != 0)) {
-        if (resStaticLibraryBuilder_ == null) {
-          result.resStaticLibrary_ = resStaticLibrary_;
-        } else {
-          result.resStaticLibrary_ = resStaticLibraryBuilder_.build();
-        }
+        result.resStaticLibrary_ = resStaticLibraryBuilder_ == null
+            ? resStaticLibrary_
+            : resStaticLibraryBuilder_.build();
         to_bitField0_ |= 0x00000004;
       }
       if (((from_bitField0_ & 0x00000020) != 0)) {
-        if (assetsFolderBuilder_ == null) {
-          result.assetsFolder_ = assetsFolder_;
-        } else {
-          result.assetsFolder_ = assetsFolderBuilder_.build();
-        }
+        result.assetsFolder_ = assetsFolderBuilder_ == null
+            ? assetsFolder_
+            : assetsFolderBuilder_.build();
         to_bitField0_ |= 0x00000008;
       }
       if (((from_bitField0_ & 0x00000040) != 0)) {
-        if (jniFolderBuilder_ == null) {
-          result.jniFolder_ = jniFolder_;
-        } else {
-          result.jniFolder_ = jniFolderBuilder_.build();
-        }
+        result.jniFolder_ = jniFolderBuilder_ == null
+            ? jniFolder_
+            : jniFolderBuilder_.build();
         to_bitField0_ |= 0x00000010;
       }
       if (((from_bitField0_ & 0x00000080) != 0)) {
-        if (aidlFolderBuilder_ == null) {
-          result.aidlFolder_ = aidlFolder_;
-        } else {
-          result.aidlFolder_ = aidlFolderBuilder_.build();
-        }
+        result.aidlFolder_ = aidlFolderBuilder_ == null
+            ? aidlFolder_
+            : aidlFolderBuilder_.build();
         to_bitField0_ |= 0x00000020;
       }
       if (((from_bitField0_ & 0x00000100) != 0)) {
-        if (renderscriptFolderBuilder_ == null) {
-          result.renderscriptFolder_ = renderscriptFolder_;
-        } else {
-          result.renderscriptFolder_ = renderscriptFolderBuilder_.build();
-        }
+        result.renderscriptFolder_ = renderscriptFolderBuilder_ == null
+            ? renderscriptFolder_
+            : renderscriptFolderBuilder_.build();
         to_bitField0_ |= 0x00000040;
       }
       if (((from_bitField0_ & 0x00000200) != 0)) {
-        if (proguardRulesBuilder_ == null) {
-          result.proguardRules_ = proguardRules_;
-        } else {
-          result.proguardRules_ = proguardRulesBuilder_.build();
-        }
+        result.proguardRules_ = proguardRulesBuilder_ == null
+            ? proguardRules_
+            : proguardRulesBuilder_.build();
         to_bitField0_ |= 0x00000080;
       }
       if (((from_bitField0_ & 0x00000400) != 0)) {
-        if (externalAnnotationsBuilder_ == null) {
-          result.externalAnnotations_ = externalAnnotations_;
-        } else {
-          result.externalAnnotations_ = externalAnnotationsBuilder_.build();
-        }
+        result.externalAnnotations_ = externalAnnotationsBuilder_ == null
+            ? externalAnnotations_
+            : externalAnnotationsBuilder_.build();
         to_bitField0_ |= 0x00000100;
       }
       if (((from_bitField0_ & 0x00000800) != 0)) {
-        if (publicResourcesBuilder_ == null) {
-          result.publicResources_ = publicResources_;
-        } else {
-          result.publicResources_ = publicResourcesBuilder_.build();
-        }
+        result.publicResources_ = publicResourcesBuilder_ == null
+            ? publicResources_
+            : publicResourcesBuilder_.build();
         to_bitField0_ |= 0x00000200;
       }
       if (((from_bitField0_ & 0x00001000) != 0)) {
-        if (symbolFileBuilder_ == null) {
-          result.symbolFile_ = symbolFile_;
-        } else {
-          result.symbolFile_ = symbolFileBuilder_.build();
-        }
+        result.symbolFile_ = symbolFileBuilder_ == null
+            ? symbolFile_
+            : symbolFileBuilder_.build();
         to_bitField0_ |= 0x00000400;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.android.builder.model.proto.ide.AndroidLibraryData) {
@@ -1567,7 +1332,7 @@ private static final long serialVersionUID = 0L;
       if (other.hasSymbolFile()) {
         mergeSymbolFile(other.getSymbolFile());
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -1582,17 +1347,133 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.android.builder.model.proto.ide.AndroidLibraryData parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              input.readMessage(
+                  getManifestFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000001;
+              break;
+            } // case 10
+            case 18: {
+              com.android.builder.model.proto.ide.File m =
+                  input.readMessage(
+                      com.android.builder.model.proto.ide.File.parser(),
+                      extensionRegistry);
+              if (compileJarFilesBuilder_ == null) {
+                ensureCompileJarFilesIsMutable();
+                compileJarFiles_.add(m);
+              } else {
+                compileJarFilesBuilder_.addMessage(m);
+              }
+              break;
+            } // case 18
+            case 26: {
+              com.android.builder.model.proto.ide.File m =
+                  input.readMessage(
+                      com.android.builder.model.proto.ide.File.parser(),
+                      extensionRegistry);
+              if (runtimeJarFilesBuilder_ == null) {
+                ensureRuntimeJarFilesIsMutable();
+                runtimeJarFiles_.add(m);
+              } else {
+                runtimeJarFilesBuilder_.addMessage(m);
+              }
+              break;
+            } // case 26
+            case 34: {
+              input.readMessage(
+                  getResFolderFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 34
+            case 42: {
+              input.readMessage(
+                  getResStaticLibraryFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000010;
+              break;
+            } // case 42
+            case 50: {
+              input.readMessage(
+                  getAssetsFolderFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000020;
+              break;
+            } // case 50
+            case 58: {
+              input.readMessage(
+                  getJniFolderFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000040;
+              break;
+            } // case 58
+            case 66: {
+              input.readMessage(
+                  getAidlFolderFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000080;
+              break;
+            } // case 66
+            case 74: {
+              input.readMessage(
+                  getRenderscriptFolderFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000100;
+              break;
+            } // case 74
+            case 82: {
+              input.readMessage(
+                  getProguardRulesFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000200;
+              break;
+            } // case 82
+            case 90: {
+              input.readMessage(
+                  getExternalAnnotationsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000400;
+              break;
+            } // case 90
+            case 98: {
+              input.readMessage(
+                  getPublicResourcesFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000800;
+              break;
+            } // case 98
+            case 106: {
+              input.readMessage(
+                  getSymbolFileFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00001000;
+              break;
+            } // case 106
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.android.builder.model.proto.ide.AndroidLibraryData) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
     private int bitField0_;
@@ -1639,11 +1520,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         manifest_ = value;
-        onChanged();
       } else {
         manifestBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -1657,11 +1538,11 @@ private static final long serialVersionUID = 0L;
         com.android.builder.model.proto.ide.File.Builder builderForValue) {
       if (manifestBuilder_ == null) {
         manifest_ = builderForValue.build();
-        onChanged();
       } else {
         manifestBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -1674,18 +1555,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeManifest(com.android.builder.model.proto.ide.File value) {
       if (manifestBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0) &&
-            manifest_ != null &&
-            manifest_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
-          manifest_ =
-            com.android.builder.model.proto.ide.File.newBuilder(manifest_).mergeFrom(value).buildPartial();
+          manifest_ != null &&
+          manifest_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
+          getManifestBuilder().mergeFrom(value);
         } else {
           manifest_ = value;
         }
-        onChanged();
       } else {
         manifestBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -1696,13 +1576,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .File manifest = 1;</code>
      */
     public Builder clearManifest() {
-      if (manifestBuilder_ == null) {
-        manifest_ = null;
-        onChanged();
-      } else {
-        manifestBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000001);
+      manifest_ = null;
+      if (manifestBuilder_ != null) {
+        manifestBuilder_.dispose();
+        manifestBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -2383,6 +2263,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The android resource folder.
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -2395,6 +2276,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The android resource folder.
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -2411,6 +2293,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The android resource folder.
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -2422,16 +2305,17 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         resFolder_ = value;
-        onChanged();
       } else {
         resFolderBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The android resource folder.
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -2441,16 +2325,17 @@ private static final long serialVersionUID = 0L;
         com.android.builder.model.proto.ide.File.Builder builderForValue) {
       if (resFolderBuilder_ == null) {
         resFolder_ = builderForValue.build();
-        onChanged();
       } else {
         resFolderBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The android resource folder.
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -2459,41 +2344,42 @@ private static final long serialVersionUID = 0L;
     public Builder mergeResFolder(com.android.builder.model.proto.ide.File value) {
       if (resFolderBuilder_ == null) {
         if (((bitField0_ & 0x00000008) != 0) &&
-            resFolder_ != null &&
-            resFolder_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
-          resFolder_ =
-            com.android.builder.model.proto.ide.File.newBuilder(resFolder_).mergeFrom(value).buildPartial();
+          resFolder_ != null &&
+          resFolder_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
+          getResFolderBuilder().mergeFrom(value);
         } else {
           resFolder_ = value;
         }
-        onChanged();
       } else {
         resFolderBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The android resource folder.
+     *
      * The folder may not exist.
      * </pre>
      *
      * <code>optional .File res_folder = 4;</code>
      */
     public Builder clearResFolder() {
-      if (resFolderBuilder_ == null) {
-        resFolder_ = null;
-        onChanged();
-      } else {
-        resFolderBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000008);
+      resFolder_ = null;
+      if (resFolderBuilder_ != null) {
+        resFolderBuilder_.dispose();
+        resFolderBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The android resource folder.
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -2507,6 +2393,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The android resource folder.
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -2523,6 +2410,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The android resource folder.
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -2584,11 +2472,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         resStaticLibrary_ = value;
-        onChanged();
       } else {
         resStaticLibraryBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -2602,11 +2490,11 @@ private static final long serialVersionUID = 0L;
         com.android.builder.model.proto.ide.File.Builder builderForValue) {
       if (resStaticLibraryBuilder_ == null) {
         resStaticLibrary_ = builderForValue.build();
-        onChanged();
       } else {
         resStaticLibraryBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -2619,18 +2507,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeResStaticLibrary(com.android.builder.model.proto.ide.File value) {
       if (resStaticLibraryBuilder_ == null) {
         if (((bitField0_ & 0x00000010) != 0) &&
-            resStaticLibrary_ != null &&
-            resStaticLibrary_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
-          resStaticLibrary_ =
-            com.android.builder.model.proto.ide.File.newBuilder(resStaticLibrary_).mergeFrom(value).buildPartial();
+          resStaticLibrary_ != null &&
+          resStaticLibrary_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
+          getResStaticLibraryBuilder().mergeFrom(value);
         } else {
           resStaticLibrary_ = value;
         }
-        onChanged();
       } else {
         resStaticLibraryBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -2641,13 +2528,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .File res_static_library = 5;</code>
      */
     public Builder clearResStaticLibrary() {
-      if (resStaticLibraryBuilder_ == null) {
-        resStaticLibrary_ = null;
-        onChanged();
-      } else {
-        resStaticLibraryBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000010);
+      resStaticLibrary_ = null;
+      if (resStaticLibraryBuilder_ != null) {
+        resStaticLibraryBuilder_.dispose();
+        resStaticLibraryBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -2704,6 +2591,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The assets folder.
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -2716,6 +2604,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The assets folder.
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -2732,6 +2621,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The assets folder.
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -2743,16 +2633,17 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         assetsFolder_ = value;
-        onChanged();
       } else {
         assetsFolderBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The assets folder.
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -2762,16 +2653,17 @@ private static final long serialVersionUID = 0L;
         com.android.builder.model.proto.ide.File.Builder builderForValue) {
       if (assetsFolderBuilder_ == null) {
         assetsFolder_ = builderForValue.build();
-        onChanged();
       } else {
         assetsFolderBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The assets folder.
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -2780,41 +2672,42 @@ private static final long serialVersionUID = 0L;
     public Builder mergeAssetsFolder(com.android.builder.model.proto.ide.File value) {
       if (assetsFolderBuilder_ == null) {
         if (((bitField0_ & 0x00000020) != 0) &&
-            assetsFolder_ != null &&
-            assetsFolder_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
-          assetsFolder_ =
-            com.android.builder.model.proto.ide.File.newBuilder(assetsFolder_).mergeFrom(value).buildPartial();
+          assetsFolder_ != null &&
+          assetsFolder_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
+          getAssetsFolderBuilder().mergeFrom(value);
         } else {
           assetsFolder_ = value;
         }
-        onChanged();
       } else {
         assetsFolderBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The assets folder.
+     *
      * The folder may not exist.
      * </pre>
      *
      * <code>optional .File assets_folder = 6;</code>
      */
     public Builder clearAssetsFolder() {
-      if (assetsFolderBuilder_ == null) {
-        assetsFolder_ = null;
-        onChanged();
-      } else {
-        assetsFolderBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000020);
+      assetsFolder_ = null;
+      if (assetsFolderBuilder_ != null) {
+        assetsFolderBuilder_.dispose();
+        assetsFolderBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The assets folder.
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -2828,6 +2721,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The assets folder.
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -2844,6 +2738,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The assets folder.
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -2869,6 +2764,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The jni libraries folder.
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -2881,6 +2777,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The jni libraries folder.
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -2897,6 +2794,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The jni libraries folder.
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -2908,16 +2806,17 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         jniFolder_ = value;
-        onChanged();
       } else {
         jniFolderBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The jni libraries folder.
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -2927,16 +2826,17 @@ private static final long serialVersionUID = 0L;
         com.android.builder.model.proto.ide.File.Builder builderForValue) {
       if (jniFolderBuilder_ == null) {
         jniFolder_ = builderForValue.build();
-        onChanged();
       } else {
         jniFolderBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The jni libraries folder.
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -2945,41 +2845,42 @@ private static final long serialVersionUID = 0L;
     public Builder mergeJniFolder(com.android.builder.model.proto.ide.File value) {
       if (jniFolderBuilder_ == null) {
         if (((bitField0_ & 0x00000040) != 0) &&
-            jniFolder_ != null &&
-            jniFolder_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
-          jniFolder_ =
-            com.android.builder.model.proto.ide.File.newBuilder(jniFolder_).mergeFrom(value).buildPartial();
+          jniFolder_ != null &&
+          jniFolder_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
+          getJniFolderBuilder().mergeFrom(value);
         } else {
           jniFolder_ = value;
         }
-        onChanged();
       } else {
         jniFolderBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The jni libraries folder.
+     *
      * The folder may not exist.
      * </pre>
      *
      * <code>optional .File jni_folder = 7;</code>
      */
     public Builder clearJniFolder() {
-      if (jniFolderBuilder_ == null) {
-        jniFolder_ = null;
-        onChanged();
-      } else {
-        jniFolderBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000040);
+      jniFolder_ = null;
+      if (jniFolderBuilder_ != null) {
+        jniFolderBuilder_.dispose();
+        jniFolderBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The jni libraries folder.
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -2993,6 +2894,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The jni libraries folder.
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -3009,6 +2911,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The jni libraries folder.
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -3034,6 +2937,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The AIDL import folder
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -3046,6 +2950,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The AIDL import folder
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -3062,6 +2967,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The AIDL import folder
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -3073,16 +2979,17 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         aidlFolder_ = value;
-        onChanged();
       } else {
         aidlFolderBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000080;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The AIDL import folder
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -3092,16 +2999,17 @@ private static final long serialVersionUID = 0L;
         com.android.builder.model.proto.ide.File.Builder builderForValue) {
       if (aidlFolderBuilder_ == null) {
         aidlFolder_ = builderForValue.build();
-        onChanged();
       } else {
         aidlFolderBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000080;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The AIDL import folder
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -3110,41 +3018,42 @@ private static final long serialVersionUID = 0L;
     public Builder mergeAidlFolder(com.android.builder.model.proto.ide.File value) {
       if (aidlFolderBuilder_ == null) {
         if (((bitField0_ & 0x00000080) != 0) &&
-            aidlFolder_ != null &&
-            aidlFolder_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
-          aidlFolder_ =
-            com.android.builder.model.proto.ide.File.newBuilder(aidlFolder_).mergeFrom(value).buildPartial();
+          aidlFolder_ != null &&
+          aidlFolder_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
+          getAidlFolderBuilder().mergeFrom(value);
         } else {
           aidlFolder_ = value;
         }
-        onChanged();
       } else {
         aidlFolderBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000080;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The AIDL import folder
+     *
      * The folder may not exist.
      * </pre>
      *
      * <code>optional .File aidl_folder = 8;</code>
      */
     public Builder clearAidlFolder() {
-      if (aidlFolderBuilder_ == null) {
-        aidlFolder_ = null;
-        onChanged();
-      } else {
-        aidlFolderBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000080);
+      aidlFolder_ = null;
+      if (aidlFolderBuilder_ != null) {
+        aidlFolderBuilder_.dispose();
+        aidlFolderBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The AIDL import folder
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -3158,6 +3067,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The AIDL import folder
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -3174,6 +3084,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The AIDL import folder
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -3199,6 +3110,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The RenderScript import folder
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -3211,6 +3123,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The RenderScript import folder
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -3227,6 +3140,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The RenderScript import folder
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -3238,16 +3152,17 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         renderscriptFolder_ = value;
-        onChanged();
       } else {
         renderscriptFolderBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000100;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The RenderScript import folder
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -3257,16 +3172,17 @@ private static final long serialVersionUID = 0L;
         com.android.builder.model.proto.ide.File.Builder builderForValue) {
       if (renderscriptFolderBuilder_ == null) {
         renderscriptFolder_ = builderForValue.build();
-        onChanged();
       } else {
         renderscriptFolderBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000100;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The RenderScript import folder
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -3275,41 +3191,42 @@ private static final long serialVersionUID = 0L;
     public Builder mergeRenderscriptFolder(com.android.builder.model.proto.ide.File value) {
       if (renderscriptFolderBuilder_ == null) {
         if (((bitField0_ & 0x00000100) != 0) &&
-            renderscriptFolder_ != null &&
-            renderscriptFolder_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
-          renderscriptFolder_ =
-            com.android.builder.model.proto.ide.File.newBuilder(renderscriptFolder_).mergeFrom(value).buildPartial();
+          renderscriptFolder_ != null &&
+          renderscriptFolder_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
+          getRenderscriptFolderBuilder().mergeFrom(value);
         } else {
           renderscriptFolder_ = value;
         }
-        onChanged();
       } else {
         renderscriptFolderBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000100;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The RenderScript import folder
+     *
      * The folder may not exist.
      * </pre>
      *
      * <code>optional .File renderscript_folder = 9;</code>
      */
     public Builder clearRenderscriptFolder() {
-      if (renderscriptFolderBuilder_ == null) {
-        renderscriptFolder_ = null;
-        onChanged();
-      } else {
-        renderscriptFolderBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000100);
+      renderscriptFolder_ = null;
+      if (renderscriptFolderBuilder_ != null) {
+        renderscriptFolderBuilder_.dispose();
+        renderscriptFolderBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The RenderScript import folder
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -3323,6 +3240,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The RenderScript import folder
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -3339,6 +3257,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The RenderScript import folder
+     *
      * The folder may not exist.
      * </pre>
      *
@@ -3364,6 +3283,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The proguard file rule.
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3376,6 +3296,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The proguard file rule.
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3392,6 +3313,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The proguard file rule.
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3403,16 +3325,17 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         proguardRules_ = value;
-        onChanged();
       } else {
         proguardRulesBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000200;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The proguard file rule.
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3422,16 +3345,17 @@ private static final long serialVersionUID = 0L;
         com.android.builder.model.proto.ide.File.Builder builderForValue) {
       if (proguardRulesBuilder_ == null) {
         proguardRules_ = builderForValue.build();
-        onChanged();
       } else {
         proguardRulesBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000200;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The proguard file rule.
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3440,41 +3364,42 @@ private static final long serialVersionUID = 0L;
     public Builder mergeProguardRules(com.android.builder.model.proto.ide.File value) {
       if (proguardRulesBuilder_ == null) {
         if (((bitField0_ & 0x00000200) != 0) &&
-            proguardRules_ != null &&
-            proguardRules_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
-          proguardRules_ =
-            com.android.builder.model.proto.ide.File.newBuilder(proguardRules_).mergeFrom(value).buildPartial();
+          proguardRules_ != null &&
+          proguardRules_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
+          getProguardRulesBuilder().mergeFrom(value);
         } else {
           proguardRules_ = value;
         }
-        onChanged();
       } else {
         proguardRulesBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000200;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The proguard file rule.
+     *
      * The file may not exist.
      * </pre>
      *
      * <code>optional .File proguard_rules = 10;</code>
      */
     public Builder clearProguardRules() {
-      if (proguardRulesBuilder_ == null) {
-        proguardRules_ = null;
-        onChanged();
-      } else {
-        proguardRulesBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000200);
+      proguardRules_ = null;
+      if (proguardRulesBuilder_ != null) {
+        proguardRulesBuilder_.dispose();
+        proguardRulesBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The proguard file rule.
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3488,6 +3413,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The proguard file rule.
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3504,6 +3430,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The proguard file rule.
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3529,6 +3456,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * the zip file with external annotations
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3541,6 +3469,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * the zip file with external annotations
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3557,6 +3486,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * the zip file with external annotations
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3568,16 +3498,17 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         externalAnnotations_ = value;
-        onChanged();
       } else {
         externalAnnotationsBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000400;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * the zip file with external annotations
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3587,16 +3518,17 @@ private static final long serialVersionUID = 0L;
         com.android.builder.model.proto.ide.File.Builder builderForValue) {
       if (externalAnnotationsBuilder_ == null) {
         externalAnnotations_ = builderForValue.build();
-        onChanged();
       } else {
         externalAnnotationsBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000400;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * the zip file with external annotations
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3605,41 +3537,42 @@ private static final long serialVersionUID = 0L;
     public Builder mergeExternalAnnotations(com.android.builder.model.proto.ide.File value) {
       if (externalAnnotationsBuilder_ == null) {
         if (((bitField0_ & 0x00000400) != 0) &&
-            externalAnnotations_ != null &&
-            externalAnnotations_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
-          externalAnnotations_ =
-            com.android.builder.model.proto.ide.File.newBuilder(externalAnnotations_).mergeFrom(value).buildPartial();
+          externalAnnotations_ != null &&
+          externalAnnotations_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
+          getExternalAnnotationsBuilder().mergeFrom(value);
         } else {
           externalAnnotations_ = value;
         }
-        onChanged();
       } else {
         externalAnnotationsBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000400;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * the zip file with external annotations
+     *
      * The file may not exist.
      * </pre>
      *
      * <code>optional .File external_annotations = 11;</code>
      */
     public Builder clearExternalAnnotations() {
-      if (externalAnnotationsBuilder_ == null) {
-        externalAnnotations_ = null;
-        onChanged();
-      } else {
-        externalAnnotationsBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000400);
+      externalAnnotations_ = null;
+      if (externalAnnotationsBuilder_ != null) {
+        externalAnnotationsBuilder_.dispose();
+        externalAnnotationsBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * the zip file with external annotations
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3653,6 +3586,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * the zip file with external annotations
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3669,6 +3603,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * the zip file with external annotations
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3694,6 +3629,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The file listing the public resources
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3706,6 +3642,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The file listing the public resources
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3722,6 +3659,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The file listing the public resources
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3733,16 +3671,17 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         publicResources_ = value;
-        onChanged();
       } else {
         publicResourcesBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000800;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The file listing the public resources
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3752,16 +3691,17 @@ private static final long serialVersionUID = 0L;
         com.android.builder.model.proto.ide.File.Builder builderForValue) {
       if (publicResourcesBuilder_ == null) {
         publicResources_ = builderForValue.build();
-        onChanged();
       } else {
         publicResourcesBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000800;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The file listing the public resources
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3770,41 +3710,42 @@ private static final long serialVersionUID = 0L;
     public Builder mergePublicResources(com.android.builder.model.proto.ide.File value) {
       if (publicResourcesBuilder_ == null) {
         if (((bitField0_ & 0x00000800) != 0) &&
-            publicResources_ != null &&
-            publicResources_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
-          publicResources_ =
-            com.android.builder.model.proto.ide.File.newBuilder(publicResources_).mergeFrom(value).buildPartial();
+          publicResources_ != null &&
+          publicResources_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
+          getPublicResourcesBuilder().mergeFrom(value);
         } else {
           publicResources_ = value;
         }
-        onChanged();
       } else {
         publicResourcesBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000800;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The file listing the public resources
+     *
      * The file may not exist.
      * </pre>
      *
      * <code>optional .File public_resources = 12;</code>
      */
     public Builder clearPublicResources() {
-      if (publicResourcesBuilder_ == null) {
-        publicResources_ = null;
-        onChanged();
-      } else {
-        publicResourcesBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000800);
+      publicResources_ = null;
+      if (publicResourcesBuilder_ != null) {
+        publicResourcesBuilder_.dispose();
+        publicResourcesBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The file listing the public resources
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3818,6 +3759,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The file listing the public resources
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3834,6 +3776,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The file listing the public resources
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3859,6 +3802,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The symbol list file
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3871,6 +3815,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The symbol list file
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3887,6 +3832,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The symbol list file
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3898,16 +3844,17 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         symbolFile_ = value;
-        onChanged();
       } else {
         symbolFileBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00001000;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The symbol list file
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3917,16 +3864,17 @@ private static final long serialVersionUID = 0L;
         com.android.builder.model.proto.ide.File.Builder builderForValue) {
       if (symbolFileBuilder_ == null) {
         symbolFile_ = builderForValue.build();
-        onChanged();
       } else {
         symbolFileBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00001000;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The symbol list file
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3935,41 +3883,42 @@ private static final long serialVersionUID = 0L;
     public Builder mergeSymbolFile(com.android.builder.model.proto.ide.File value) {
       if (symbolFileBuilder_ == null) {
         if (((bitField0_ & 0x00001000) != 0) &&
-            symbolFile_ != null &&
-            symbolFile_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
-          symbolFile_ =
-            com.android.builder.model.proto.ide.File.newBuilder(symbolFile_).mergeFrom(value).buildPartial();
+          symbolFile_ != null &&
+          symbolFile_ != com.android.builder.model.proto.ide.File.getDefaultInstance()) {
+          getSymbolFileBuilder().mergeFrom(value);
         } else {
           symbolFile_ = value;
         }
-        onChanged();
       } else {
         symbolFileBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00001000;
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The symbol list file
+     *
      * The file may not exist.
      * </pre>
      *
      * <code>optional .File symbol_file = 13;</code>
      */
     public Builder clearSymbolFile() {
-      if (symbolFileBuilder_ == null) {
-        symbolFile_ = null;
-        onChanged();
-      } else {
-        symbolFileBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00001000);
+      symbolFile_ = null;
+      if (symbolFileBuilder_ != null) {
+        symbolFileBuilder_.dispose();
+        symbolFileBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
      * <pre>
      * The symbol list file
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3983,6 +3932,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The symbol list file
+     *
      * The file may not exist.
      * </pre>
      *
@@ -3999,6 +3949,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The symbol list file
+     *
      * The file may not exist.
      * </pre>
      *
@@ -4050,7 +4001,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new AndroidLibraryData(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 

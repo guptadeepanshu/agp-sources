@@ -18,46 +18,57 @@ package com.android.resources;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.google.common.collect.Maps;
-import java.util.EnumSet;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.jetbrains.annotations.NotNull;
 
 /**
- * Allowed values of screen density.
+ * Screen density.
  *
- * <p>This enum is used in the manifest in the uses-configuration node and in the resource folder
- * names as well as in other places that need to know the density values.
+ * <p>These values are used in the manifest in the uses-configuration node and in the resource
+ * folder names as well as in other places that need to know the density values.
  */
-public enum Density implements ResourceEnum {
-    XXXHIGH("xxxhdpi", "XXX-High Density", 640, 18), //$NON-NLS-1$
-    DPI_560("560dpi",  "560 DPI Density",  560,  1), //$NON-NLS-1$
-    XXHIGH( "xxhdpi",  "XX-High Density",  480, 16), //$NON-NLS-1$
-    DPI_440("440dpi",  "440 DPI Density",  440, 28),
-    DPI_420("420dpi",  "420 DPI Density",  420, 23), //$NON-NLS-1$
-    DPI_400("400dpi",  "400 DPI Density",  400,  1), //$NON-NLS-1$
-    DPI_360("360dpi",  "360 DPI Density",  360, 23), //$NON-NLS-1$
-    XHIGH(  "xhdpi",   "X-High Density",   320,  8), //$NON-NLS-1$
-    DPI_260("260dpi",  "260 DPI Density",  260, 25), //$NON-NLS-1$
-    DPI_280("280dpi",  "280 DPI Density",  280, 22), //$NON-NLS-1$
-    DPI_300("300dpi",  "300 DPI Density",  300, 25), //$NON-NLS-1$
-    DPI_340("340dpi",  "340 DPI Density",  340, 25), //$NON-NLS-1$
-    HIGH(   "hdpi",    "High Density",     240,  4), //$NON-NLS-1$
-    DPI_220("220dpi",  "220 DPI Density",  220, 29),
-    TV(     "tvdpi",   "TV Density",       213, 13), //$NON-NLS-1$
-    DPI_200("200dpi",  "200 DPI Density",  200, 29),
-    DPI_180("180dpi",  "180 DPI Density",  180, 29),
-    MEDIUM( "mdpi",    "Medium Density",   160,  4), //$NON-NLS-1$
-    DPI_140("140dpi",  "140 DPI Density",  140, 29),
-    LOW(    "ldpi",    "Low Density",      120,  4), //$NON-NLS-1$
-    ANYDPI( "anydpi",  "Any Density",   0xFFFE, 21), // 0xFFFE is the value used by the framework.
-    NODPI(  "nodpi",   "No Density",    0xFFFF,  4); // 0xFFFF is the value used by the framework.
+public class Density implements Comparable<Density>, ResourceEnum, Serializable {
+
+    public static final Density XXXHIGH = new Density("xxxhdpi", "XXX-High Density", 640, 18);
+
+    public static final Density XXHIGH = new Density("xxhdpi", "XX-High Density", 480, 16);
+
+    public static final Density XHIGH = new Density("xhdpi", "X-High Density", 320, 8);
+
+    public static final Density HIGH = new Density("hdpi", "High Density", 240, 4);
+
+    public static final Density TV = new Density("tvdpi", "TV Density", 213, 13);
+
+    public static final Density MEDIUM = new Density("mdpi", "Medium Density", 160, 4);
+
+    public static final Density LOW = new Density("ldpi", "Low Density", 120, 4);
+
+    // 0xFFFE is the value used by the framework.
+    public static final Density ANYDPI = new Density("anydpi", "Any Density", 0xFFFE, 21);
+
+    // 0xFFFF is the value used by the framework.
+    public static final Density NODPI = new Density("nodpi", "No Density", 0xFFFF, 4);
+
+    private static final Density[] values = {
+        XXXHIGH, XXHIGH, XHIGH, HIGH, TV, MEDIUM, LOW, ANYDPI, NODPI
+    };
 
     public static final int DEFAULT_DENSITY = MEDIUM.getDpiValue();
-    private static final Map<String, Density> densityByValue =
-            Maps.newHashMapWithExpectedSize(values().length);
+
+    private static final Map<String, Density> densityByValue = Maps.newHashMap();
+
+    private static final Pattern sDensityPattern = Pattern.compile("^(\\d+)dpi$");
+
+    private static final long serialVersionUID = 1L;
 
     static {
-        for (Density density : values()) {
+        for (Density density : values) {
             densityByValue.put(density.mValue, density);
         }
     }
@@ -67,11 +78,104 @@ public enum Density implements ResourceEnum {
     private final int mDpi;
     private final int mSince;
 
-    Density(@NonNull String value, @NonNull String displayValue, int density, int since) {
+    @NotNull
+    public static Density create(int dpi) {
+        Density density = getEnum(dpi);
+        if (density != null) {
+            return density;
+        }
+        return new Density(dpi);
+    }
+
+    /**
+     * Returns a Density based on a dpi qualifier found in e.g. a FolderConfiguration.
+     *
+     * @param value one of the predefined values: ldpi, mdpi, hdpi, ... or and arbitrary value of an
+     *     natural number followed by "dpi" e.g. "560dpi".
+     * @return the returned value is either:
+     *     <ul>
+     *       <li>one of the predefined Density values defined above
+     *       <li>an arbitrary dpi value Density(dpi) where dpi is a natural number
+     *       <li>null if the value was not be recognized as a valid Density qualifier
+     *     </ul>
+     */
+    @Nullable
+    public static Density create(@NonNull String value) {
+        Density density = getEnum(value);
+        if (density != null) {
+            return density;
+        }
+        Matcher m = sDensityPattern.matcher(value);
+        if (!m.matches()) {
+            return null;
+        }
+        String dpiString = m.group(1);
+        try {
+            int dpi = Integer.parseInt(dpiString);
+            density = Density.getEnum(dpi);
+            if (density == null) {
+                density = new Density(dpi);
+            }
+            return density;
+        } catch (NumberFormatException e) {
+            // looks like the string we extracted wasn't a valid number
+            // which really shouldn't happen since the regexp would have failed.
+            throw new AssertionError(e);
+        }
+    }
+
+    public Density(int density) {
+        mValue = density + "dpi";
+        mDisplayValue = mValue;
+        mDpi = density;
+        mSince = 1;
+    }
+
+    /**
+     * Creates a predefined Density instance.
+     *
+     * @param value a density qualifier defined by the platform: ldpi, mdpi, hdpi, ...
+     * @param displayValue a string to present in the UI
+     * @param density the density value
+     * @param since the Android API level where the density qualifier was added
+     */
+    private Density(@NonNull String value, @NonNull String displayValue, int density, int since) {
         mValue = value;
         mDisplayValue = displayValue;
         mDpi = density;
         mSince = since;
+    }
+
+    @Override
+    public int hashCode() {
+        return mDpi;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object otherInstance) {
+        if (!(otherInstance instanceof Density)) {
+            return false;
+        }
+        Density other = (Density) otherInstance;
+        return mValue.equals(other.mValue)
+                && mDisplayValue.equals(other.mDisplayValue)
+                && mDpi == other.mDpi
+                && mSince == other.mSince;
+    }
+
+    @Override
+    public String toString() {
+        return mDisplayValue;
+    }
+
+    @Override
+    public int compareTo(@NotNull Density other) {
+        return other.mDpi - mDpi;
+    }
+
+    @NotNull
+    public static Density[] values() {
+        return values;
     }
 
     /**
@@ -93,7 +197,7 @@ public enum Density implements ResourceEnum {
      */
     @Nullable
     public static Density getEnum(int dpiValue) {
-        Density[] densities = values();
+        Collection<Density> densities = densityByValue.values();
         for (Density density : densities) {
             if (density.mDpi == dpiValue) {
                 return density;
@@ -128,70 +232,32 @@ public enum Density implements ResourceEnum {
         return mDisplayValue;
     }
 
-    public static int getIndex(@Nullable Density value) {
-        return value == null ? -1 : value.ordinal();
-    }
-
-    @Nullable
-    public static Density getByIndex(int index) {
-        try {
-            return values()[index];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return null;
-        }
-    }
-
     /**
      * Returns all densities which are recommended and valid for a device.
-     *
-     * @see #isRecommended()
-     * @see #isValidValueForDevice()
      */
     @NonNull
     public static Set<Density> getRecommendedValuesForDevice() {
-        EnumSet<Density> result = EnumSet.noneOf(Density.class);
-        for (Density value : values()) {
-            if (value.isRecommended() && value.isValidValueForDevice()) {
-                result.add(value);
-            }
-        }
-
-        return result;
+        Set<Density> densities = new HashSet<>(densityByValue.values());
+        densities.remove(TV);
+        densities.remove(NODPI);
+        densities.remove(ANYDPI);
+        return densities;
     }
 
     /**
-     * Returns true if this density is relevant for app developers (e.g.
-     * a density you should consider providing resources for)
+     * Returns true if this density is relevant for app developers (e.g. a density you should
+     * consider providing resources for)
      */
     public boolean isRecommended() {
-        switch (this) {
-            case TV:
-            case DPI_140:
-            case DPI_180:
-            case DPI_200:
-            case DPI_220:
-            case DPI_260:
-            case DPI_280:
-            case DPI_300:
-            case DPI_340:
-            case DPI_360:
-            case DPI_400:
-            case DPI_420:
-            case DPI_440:
-            case DPI_560:
-                return false;
-            default:
-                return true;
-        }
+        return densityByValue.containsValue(this) && this != TV;
+    }
+
+    public boolean isValidValueForDevice() {
+        return this != NODPI && this != ANYDPI; // nodpi/anydpi is not a valid config for devices.
     }
 
     @Override
     public boolean isFakeValue() {
         return false;
-    }
-
-    @Override
-    public boolean isValidValueForDevice() {
-        return this != NODPI && this != ANYDPI; // nodpi/anydpi is not a valid config for devices.
     }
 }
