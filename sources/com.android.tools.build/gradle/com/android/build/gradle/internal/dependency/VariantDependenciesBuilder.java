@@ -716,6 +716,12 @@ public class VariantDependenciesBuilder {
         // make compileClasspath match runtimeClasspath
         compileClasspath.shouldResolveConsistentlyWith(runtimeClasspath);
 
+        // No dependency alignment for runtimeClasspath and androidTest runtimeClasspath in library
+        if (isAarTest) {
+            // Constraints are added for compileClasspath and runtimeClasspath
+            return true;
+        }
+
         if (componentType.isApk() && testedVariant != null) {
             // if this is a test App, then also synchronize the 2 runtime classpaths
             Configuration testedRuntimeClasspath =

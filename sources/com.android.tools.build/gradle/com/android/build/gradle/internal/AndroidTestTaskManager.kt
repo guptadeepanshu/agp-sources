@@ -282,7 +282,11 @@ class AndroidTestTaskManager(
                         AndroidArtifacts.ArtifactScope.PROJECT,
                         AndroidArtifacts.ArtifactType.APKS_FROM_BUNDLE),
                 privacySandboxSdkApks,
-                privacySandboxCompatSdkApks)
+                privacySandboxCompatSdkApks,
+                androidTestProperties
+                    .services
+                    .projectOptions
+                    .extraInstrumentationTestRunnerArgs)
         } else {
             TestDataImpl(
                 androidTestProperties.namespace,
@@ -291,10 +295,17 @@ class AndroidTestTaskManager(
                 if (isLibrary) null else testedVariant.artifacts.get(SingleArtifact.APK),
                 privacySandboxSdkApks,
                 privacySandboxCompatSdkApks,
-                testedVariant.artifacts.get(InternalArtifactType.USES_SDK_LIBRARY_SPLIT_FOR_LOCAL_DEPLOYMENT)
+                testedVariant.artifacts.get(InternalArtifactType.USES_SDK_LIBRARY_SPLIT_FOR_LOCAL_DEPLOYMENT),
+                androidTestProperties
+                    .services
+                    .projectOptions
+                    .extraInstrumentationTestRunnerArgs
             )
         }
+
         configureTestData(androidTestProperties, testData)
+
+
         val connectedCheckSerials: Provider<List<String>> =
             taskFactory.named(globalConfig.taskNames.connectedCheck).flatMap { test ->
                 (test as DeviceSerialTestTask).serialValues

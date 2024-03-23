@@ -24,7 +24,6 @@ import com.android.build.gradle.internal.testing.TestData
 import com.android.builder.testing.api.DeviceConfigProvider
 import com.android.ide.common.util.toPathString
 import com.google.common.collect.ImmutableList
-import com.google.common.collect.ImmutableMap
 import com.google.common.io.Files
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
@@ -65,10 +64,9 @@ abstract class AbstractTestDataImpl(
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.NONE)
     @get:Optional
-    val additionalSdkSupportedSplitApks: Provider<Directory>?
+    val additionalSdkSupportedSplitApks: Provider<Directory>?,
+    extraInstrumentationTestRunnerArgs: Map<String, String>
 ) : TestData {
-
-    private var extraInstrumentationTestRunnerArgs: Map<String, String> = mutableMapOf()
 
     @get:Internal
     val privacyInstallBundlesFinder: ApkBundlesFinder
@@ -106,21 +104,8 @@ abstract class AbstractTestDataImpl(
 
     override val instrumentationRunner = creationConfig.instrumentationRunner
 
-    override val instrumentationRunnerArguments: Map<String, String> by lazy {
-        ImmutableMap.builder<String, String>()
-            .putAll(creationConfig.instrumentationRunnerArguments.get())
-            .putAll(extraInstrumentationTestRunnerArgs)
-            .build()
-    }
-
-    fun setExtraInstrumentationTestRunnerArgs(
-            extraInstrumentationTestRunnerArgs: Map<String, String>
-    ) {
-        this.extraInstrumentationTestRunnerArgs =
-            ImmutableMap.copyOf(
-                    extraInstrumentationTestRunnerArgs
-            )
-    }
+    final override val instrumentationRunnerArguments =
+        creationConfig.services.mapProperty(String::class.java, String::class.java)
 
     override var animationsDisabled = creationConfig.services.provider { false }
 
@@ -140,13 +125,21 @@ abstract class AbstractTestDataImpl(
             creationConfig.sources.kotlin { kotlinSources -> fileCollection.from(kotlinSources.all) }
         }
 
+    init {
+        // lazily set the instrumentationRunnerArguments
+        instrumentationRunnerArguments.set(creationConfig.instrumentationRunnerArguments)
+        instrumentationRunnerArguments.putAll(extraInstrumentationTestRunnerArgs)
+        // memoize the value which makes it similar to `by lazy`
+        instrumentationRunnerArguments.finalizeValueOnRead()
+    }
+
     override fun getAsStaticData(): StaticTestData {
         return StaticTestData(
                 applicationId.get(),
                 testedApplicationId.orNull,
                 instrumentationTargetPackageId.get(),
                 instrumentationRunner.get(),
-                instrumentationRunnerArguments,
+                instrumentationRunnerArguments.get(),
                 animationsDisabled.get(),
                 testCoverageEnabled.get(),
                 minSdkVersion.get(),

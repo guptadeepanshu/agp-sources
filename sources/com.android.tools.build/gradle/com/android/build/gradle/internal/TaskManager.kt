@@ -1846,11 +1846,6 @@ abstract class TaskManager(
         testData.animationsDisabled = creationConfig
                 .services
                 .provider(globalConfig.androidTestOptions::animationsDisabled)
-        testData.setExtraInstrumentationTestRunnerArgs(
-                creationConfig
-                        .services
-                        .projectOptions
-                        .extraInstrumentationTestRunnerArgs)
     }
 
     private fun maybeCreateCheckDuplicateClassesTask(

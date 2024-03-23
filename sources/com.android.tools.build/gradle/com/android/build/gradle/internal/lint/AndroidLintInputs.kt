@@ -96,6 +96,7 @@ import com.android.utils.PathUtils
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ArtifactCollection
+import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
@@ -120,12 +121,14 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.jvm.tasks.Jar
 import org.gradle.workers.WorkerExecutor
 import org.jetbrains.kotlin.gradle.dsl.KotlinCommonOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import java.io.File
 import java.nio.file.Files
+import java.util.concurrent.Callable
 
 abstract class LintTool {
 
@@ -1133,7 +1136,9 @@ abstract class VariantInputs {
         useModuleDependencyLintModels: Boolean,
         lintMode: LintMode,
         lintModelArtifactType: LintModelArtifactType?,
-        jvmTargetName: String?
+        jvmTargetName: String?,
+        testCompileClasspath: Configuration?,
+        testRuntimeClasspath: Configuration?
     ) {
         if (kotlinExtensionWrapper == null) {
             initializeForStandalone(
@@ -1143,7 +1148,9 @@ abstract class VariantInputs {
                 fatalOnly,
                 useModuleDependencyLintModels,
                 lintMode,
-                lintModelArtifactType
+                lintModelArtifactType,
+                testCompileClasspath,
+                testRuntimeClasspath
             )
         } else {
             initializeForStandaloneWithKotlinMultiplatform(
@@ -1154,7 +1161,9 @@ abstract class VariantInputs {
                 useModuleDependencyLintModels,
                 lintMode,
                 lintModelArtifactType!!,
-                jvmTargetName
+                jvmTargetName,
+                testCompileClasspath,
+                testRuntimeClasspath
             )
         }
     }
@@ -1166,7 +1175,9 @@ abstract class VariantInputs {
         fatalOnly: Boolean,
         useModuleDependencyLintModels: Boolean,
         lintMode: LintMode,
-        lintModelArtifactType: LintModelArtifactType?
+        lintModelArtifactType: LintModelArtifactType?,
+        testCompileClasspath: Configuration?,
+        testRuntimeClasspath: Configuration?
     ) {
         val mainSourceSet = javaExtension.sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME)
         val testSourceSet = javaExtension.sourceSets.getByName(SourceSet.TEST_SOURCE_SET_NAME)
@@ -1215,7 +1226,10 @@ abstract class VariantInputs {
                         },
                         // analyzing test bytecode is expensive, without much benefit
                         includeClassesOutputDirectories = false,
-                        fatalOnly
+                        fatalOnly,
+                        mainSourceSet,
+                        testCompileClasspath,
+                        testRuntimeClasspath
                     )
             )
             if (!fatalOnly) {
@@ -1265,7 +1279,9 @@ abstract class VariantInputs {
         useModuleDependencyLintModels: Boolean,
         lintMode: LintMode,
         lintModelArtifactType: LintModelArtifactType,
-        jvmTargetName: String?
+        jvmTargetName: String?,
+        testCompileClasspath: Configuration?,
+        testRuntimeClasspath: Configuration?
     ) {
         val jvmTarget = kotlinExtensionWrapper.kotlinExtension.targets.findByName(jvmTargetName ?: "jvm")
         val jvmMainCompilation = jvmTarget?.compilations?.findByName("main")
@@ -1316,7 +1332,9 @@ abstract class VariantInputs {
                         useModuleDependencyLintModels,
                         // analyzing test bytecode is expensive, without much benefit
                         includeClassesOutputDirectories = false,
-                        fatalOnly
+                        fatalOnly,
+                        testCompileClasspath,
+                        testRuntimeClasspath
                     )
             )
             val sourceDirectories =
@@ -2033,7 +2051,10 @@ abstract class JavaArtifactInput : ArtifactInput() {
         lintMode: LintMode,
         useModuleDependencyLintModels: Boolean,
         includeClassesOutputDirectories: Boolean,
-        fatalOnly: Boolean
+        fatalOnly: Boolean,
+        testedSourceSet: SourceSet,
+        compileClasspath: Configuration?,
+        runtimeClasspath: Configuration?
     ): JavaArtifactInput {
         if (includeClassesOutputDirectories) {
             classesOutputDirectories.from(sourceSet.output.classesDirs)
@@ -2041,11 +2062,37 @@ abstract class JavaArtifactInput : ArtifactInput() {
         classesOutputDirectories.disallowChanges()
         // Only ever used within the model builder in the standalone plugin
         warnIfProjectTreatedAsExternalDependency.setDisallowChanges(false)
+
+        // Use custom compile and runtime classpath configurations for unit tests for the
+        // standalone lint plugin because the existing testCompileClasspath and testRuntimeClasspath
+        // configurations don't include the main source set's jar output in their artifacts.
+        val mainJarTask = project.tasks.named(testedSourceSet.jarTaskName, Jar::class.java)
+        compileClasspath?.run {
+            extendsFrom(
+                project.configurations.getByName(sourceSet.compileClasspathConfigurationName)
+            )
+            project.dependencies
+                .add(
+                    name,
+                    project.files(Callable { mainJarTask.flatMap { it.archiveFile } })
+                )
+        }
+        runtimeClasspath?.run {
+            extendsFrom(
+                project.configurations.getByName(sourceSet.runtimeClasspathConfigurationName)
+            )
+            project.dependencies
+                .add(
+                    name,
+                    project.files(Callable { mainJarTask.flatMap { it.archiveFile } })
+                )
+        }
+
         val variantDependencies = VariantDependencies(
             variantName = sourceSet.name,
             componentType = ComponentTypeImpl.JAVA_LIBRARY,
-            compileClasspath = project.configurations.getByName(sourceSet.compileClasspathConfigurationName),
-            runtimeClasspath = project.configurations.getByName(sourceSet.runtimeClasspathConfigurationName),
+            compileClasspath = compileClasspath ?: project.configurations.getByName(sourceSet.compileClasspathConfigurationName),
+            runtimeClasspath = runtimeClasspath ?: project.configurations.getByName(sourceSet.runtimeClasspathConfigurationName),
             sourceSetRuntimeConfigurations = listOf(),
             sourceSetImplementationConfigurations = listOf(),
             elements = mapOf(),
@@ -2087,7 +2134,9 @@ abstract class JavaArtifactInput : ArtifactInput() {
         lintMode: LintMode,
         useModuleDependencyLintModels: Boolean,
         includeClassesOutputDirectories: Boolean,
-        fatalOnly: Boolean
+        fatalOnly: Boolean,
+        compileClasspath: Configuration?,
+        runtimeClasspath: Configuration?
     ): JavaArtifactInput {
         val compilation = kotlinCompilationWrapper.kotlinCompilation
         if (includeClassesOutputDirectories) {
@@ -2095,11 +2144,40 @@ abstract class JavaArtifactInput : ArtifactInput() {
         }
         classesOutputDirectories.disallowChanges()
         warnIfProjectTreatedAsExternalDependency.setDisallowChanges(false)
+
+        // Use custom compile and runtime dependency configurations for unit tests for the
+        // standalone lint plugin because the existing compile and runtime dependency
+        // configurations don't include the main jar output in their artifacts.
+        val jvmTarget = kotlinCompilationWrapper.kotlinCompilation.target
+        val mainJarTask = project.tasks.named("${jvmTarget.name}Jar", Jar::class.java)
+        val compileClasspathForLint: Configuration =
+            compileClasspath?.apply {
+                this.extendsFrom(
+                    project.configurations.getByName(compilation.compileDependencyConfigurationName)
+                )
+                project.dependencies
+                    .add(
+                        this.name,
+                        project.files(Callable { mainJarTask.flatMap { it.archiveFile } })
+                    )
+            } ?: project.configurations.getByName(compilation.compileDependencyConfigurationName)
+        val runtimeClasspathForLint: Configuration =
+            compilation.runtimeDependencyConfigurationName?.let { runtimeConfigName ->
+                runtimeClasspath?.apply {
+                    this.extendsFrom(project.configurations.getByName(runtimeConfigName))
+                    project.dependencies
+                        .add(
+                            this.name,
+                            project.files(Callable { mainJarTask.flatMap { it.archiveFile } })
+                        )
+                }
+            } ?: compileClasspathForLint
+
         val variantDependencies = VariantDependencies(
             variantName = compilation.name,
             componentType = ComponentTypeImpl.JAVA_LIBRARY,
-            compileClasspath = project.configurations.getByName(compilation.compileDependencyConfigurationName),
-            runtimeClasspath = project.configurations.getByName(compilation.runtimeDependencyConfigurationName ?: compilation.compileDependencyConfigurationName),
+            compileClasspath = compileClasspathForLint,
+            runtimeClasspath = runtimeClasspathForLint,
             sourceSetRuntimeConfigurations = listOf(),
             sourceSetImplementationConfigurations = listOf(),
             elements = mapOf(),

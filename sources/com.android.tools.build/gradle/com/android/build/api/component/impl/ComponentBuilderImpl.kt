@@ -24,7 +24,6 @@ import com.android.build.gradle.internal.services.VariantBuilderServices
 
 abstract class ComponentBuilderImpl(
     protected val globalVariantBuilderConfig: GlobalVariantBuilderConfig,
-    protected val dslInfo: ComponentDslInfo,
     variantConfiguration: ComponentIdentity,
     protected val variantBuilderServices: VariantBuilderServices
 ) : ComponentBuilder, ComponentIdentity by variantConfiguration {

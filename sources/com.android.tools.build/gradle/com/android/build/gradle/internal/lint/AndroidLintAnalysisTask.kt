@@ -50,6 +50,7 @@ import com.android.tools.lint.model.LintModelArtifactType
 import com.android.tools.lint.model.LintModelSerialization
 import com.android.utils.FileUtils
 import com.google.common.annotations.VisibleForTesting
+import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
@@ -496,6 +497,12 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
     /**
      * If [lintModelArtifactType] is not null, only the corresponding artifact is initialized; if
      * it's null, both the main and test artifacts are initialized.
+     *
+     * If [testCompileClasspath] is null, the standard "testCompileClasspath" is used; otherwise,
+     * [testCompileClasspath] is used in order to properly include the main jar.
+     *
+     * If [testRuntimeClasspath] is null, the standard "testRuntimeClasspath" is used; otherwise,
+     * [testRuntimeClasspath] is used in order to properly include the main jar.
      */
     fun configureForStandalone(
         taskCreationServices: TaskCreationServices,
@@ -505,7 +512,9 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
         lintOptions: Lint,
         lintModelArtifactType: LintModelArtifactType?,
         fatalOnly: Boolean = false,
-        jvmTargetName: String?
+        jvmTargetName: String?,
+        testCompileClasspath: Configuration? = null,
+        testRuntimeClasspath: Configuration? = null
     ) {
         initializeGlobalInputs(
             services = taskCreationServices,
@@ -533,7 +542,9 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
                 useModuleDependencyLintModels = false,
                 LintMode.ANALYSIS,
                 lintModelArtifactType,
-                jvmTargetName
+                jvmTargetName,
+                testCompileClasspath,
+                testRuntimeClasspath
             )
         this.lintRuleJars.fromDisallowChanges(customLintChecksConfig)
         this.lintModelDirectory

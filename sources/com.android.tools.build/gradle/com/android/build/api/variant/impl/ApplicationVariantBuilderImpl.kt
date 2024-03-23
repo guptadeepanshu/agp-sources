@@ -41,8 +41,7 @@ open class ApplicationVariantBuilderImpl @Inject constructor(
     variantBuilderServices
 ), ApplicationVariantBuilder {
 
-    override val debuggable: Boolean
-        get() = (dslInfo as ApplicationVariantDslInfo).isDebuggable
+    override val debuggable: Boolean = (dslInfo as? ApplicationVariantDslInfo)?.isDebuggable ?: false
 
     override var androidTestEnabled: Boolean
         get() = androidTest.enable

@@ -73,7 +73,7 @@ interface TestData {
     val instrumentationRunner: Provider<String>
 
     @get:Input
-    val instrumentationRunnerArguments: Map<String, String>
+    val instrumentationRunnerArguments: Provider<Map<String, String>>
 
     @get:Input
     val animationsDisabled: Provider<Boolean>

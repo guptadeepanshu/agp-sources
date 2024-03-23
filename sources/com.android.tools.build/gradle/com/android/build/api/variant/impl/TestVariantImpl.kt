@@ -40,7 +40,6 @@ import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.file.Directory
-import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import javax.inject.Inject
@@ -168,13 +167,12 @@ open class TestVariantImpl @Inject constructor(
     override val testOnlyApk: Boolean
         get() = true
 
-    override val instrumentationRunnerArguments: MapProperty<String, String> by lazy(LazyThreadSafetyMode.NONE) {
+    override val instrumentationRunnerArguments =
         internalServices.mapPropertyOf(
             String::class.java,
             String::class.java,
             dslInfo.instrumentationRunnerArguments
         )
-    }
 
     override val debuggable: Boolean
         get() = dslInfo.isDebuggable

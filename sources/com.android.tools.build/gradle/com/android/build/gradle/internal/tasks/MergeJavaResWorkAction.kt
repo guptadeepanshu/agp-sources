@@ -17,6 +17,7 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.build.api.artifact.impl.InternalScopedArtifacts
 import com.android.build.api.variant.ScopedArtifacts
+import com.android.build.gradle.internal.cxx.configure.trySymlinkNdk
 import com.android.build.gradle.internal.packaging.ParsedPackagingOptions
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.builder.files.KeyedFileCache
@@ -26,6 +27,7 @@ import com.android.utils.FileUtils
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.logging.Logging
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
@@ -36,7 +38,9 @@ import java.io.File
  */
 abstract class MergeJavaResWorkAction : ProfileAwareWorkAction<MergeJavaResWorkAction.Params>() {
     override fun run() {
-        val isIncremental = parameters.incremental.get()
+        run(isIncremental = parameters.incremental.get(), changedInputs = parameters.changedInputs.orNull)
+    }
+    private fun run(isIncremental: Boolean, changedInputs: SerializableInputChanges?) {
         val outputFile = parameters.outputFile.get().asFile
         val incrementalStateFile = parameters.incrementalStateFile.asFile.get()
         if (!isIncremental) {
@@ -64,15 +68,23 @@ abstract class MergeJavaResWorkAction : ProfileAwareWorkAction<MergeJavaResWorkA
             determinePriority(InternalScopedArtifacts.InternalScope.FEATURES)
         })
 
-        val inputs =
+        val inputs = try {
             toInputs(
                 inputMap,
-                parameters.changedInputs.orNull,
+                changedInputs,
                 zipCache,
                 cacheUpdates,
                 !isIncremental,
                 priorityMap
             )
+        } catch (e: IllegalStateException) {
+            if (isIncremental) {
+                Logging.getLogger(MergeJavaResWorkAction::class.java)
+                        .debug("Incremental loading failed, fall back to non-incremental ", e)
+                return run(isIncremental = false, changedInputs = null)
+            }
+            throw IllegalStateException("Failed to convert inputs to the task non-incremental run ", e)
+        }
 
         val mergeJavaResDelegate =
             MergeJavaResourcesDelegate(
