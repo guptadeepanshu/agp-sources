@@ -254,6 +254,8 @@ public final class SdkConstants {
     public static final String FN_BINARY_ART_PROFILE = "baseline.prof";
     public static final String FN_BINARY_ART_PROFILE_METADATA = "baseline.profm";
     public static final String FN_DEX_METADATA_PROP = "dex-metadata-map.properties";
+    /** name of baseline profiles folder in outputs */
+    public static final String FN_OUTPUT_BASELINE_PROFILES = "baselineProfiles";
 
     /** aapt executable (with extension for the current OS) */
     public static final String FN_AAPT =

@@ -22,7 +22,8 @@ import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.utils.DESUGARED_DESUGAR_LIB
-import com.android.build.gradle.internal.utils.getDesugarLibConfig
+import com.android.build.gradle.internal.utils.DesugarConfigJson.Companion.combineFileContents
+import com.android.build.gradle.internal.utils.getDesugarLibConfigFiles
 import com.android.builder.dexing.KeepRulesConfig
 import com.android.builder.dexing.runL8
 import com.android.tools.r8.OutputMode
@@ -42,6 +43,9 @@ import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 
 /**
  * Transform desugar lib jar into a desugared version using L8. This desugared desugar lib jar is in
@@ -51,8 +55,9 @@ import org.gradle.api.tasks.Input
 @CacheableTransform
 abstract class L8DesugarLibTransform : TransformAction<L8DesugarLibTransform.Parameters> {
     interface Parameters: GenericTransformParameters {
-        @get:Input
-        val libConfiguration: Property<String>
+        @get:InputFiles
+        @get:PathSensitive(PathSensitivity.NONE)
+        val desugarLibConfigFiles: ConfigurableFileCollection
         @get:Input
         val minSdkVersion: Property<Int>
         @get:Classpath
@@ -80,7 +85,7 @@ abstract class L8DesugarLibTransform : TransformAction<L8DesugarLibTransform.Par
         runL8(
             inputFiles,
             outputDir.toPath(),
-            parameters.libConfiguration.get(),
+            combineFileContents(parameters.desugarLibConfigFiles.files) ?: error("desugarLibConfigFiles is empty"),
             parameters.fullBootClasspath.files.map { it.toPath() },
             parameters.minSdkVersion.get(),
             KeepRulesConfig(emptyList(), emptyList()),
@@ -97,7 +102,7 @@ object L8DesugarLibTransformRegistration {
         taskCreationServices: TaskCreationServices,
         globalTaskCreationConfig: GlobalTaskCreationConfig
     ) {
-        val libConfiguration: Provider<String> = getDesugarLibConfig(taskCreationServices)
+        val desugarLibConfigFiles: FileCollection = getDesugarLibConfigFiles(taskCreationServices)
         val fullBootClasspath: FileCollection = globalTaskCreationConfig.fullBootClasspath
     }
 
@@ -146,7 +151,7 @@ object L8DesugarLibTransformRegistration {
     ) {
         dependencyHandler.registerTransform(L8DesugarLibTransform::class.java) { spec ->
             spec.parameters.apply {
-                libConfiguration.set(sharedParameters.libConfiguration)
+                desugarLibConfigFiles.setFrom(sharedParameters.desugarLibConfigFiles)
                 fullBootClasspath.from(sharedParameters.fullBootClasspath)
                 minSdkVersion.set(parameters.minSdkVersion)
             }

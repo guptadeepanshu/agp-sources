@@ -230,7 +230,7 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
                         jarFlinger.addJar(input.toPath(), filterAndOnlyClasses, null)
                     } else {
                         jarFlinger.addDirectory(
-                            input.toPath(), filterAndOnlyClasses, typedefRemover, null
+                            input.toPath(), filterAndOnlyClasses, typedefRemover
                         )
                     }
                 }

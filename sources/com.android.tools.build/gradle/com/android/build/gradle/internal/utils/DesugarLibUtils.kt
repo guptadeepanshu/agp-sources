@@ -26,12 +26,12 @@ import com.android.build.gradle.internal.dependency.L8DesugarLibTransformRegistr
 import com.android.build.gradle.internal.dependency.VariantDependencies.Companion.CONFIG_NAME_CORE_LIBRARY_DESUGARING
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
+import com.android.build.gradle.internal.utils.DesugarConfigJson.Companion.combineFileContents
 import com.android.builder.dexing.D8DesugaredMethodsGenerator
 import com.android.sdklib.AndroidTargetHash
 import com.google.common.io.ByteStreams
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
-import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.api.artifacts.result.ResolvedComponentResult
 import org.gradle.api.artifacts.transform.CacheableTransform
 import org.gradle.api.artifacts.transform.InputArtifact
@@ -50,11 +50,11 @@ import org.gradle.api.provider.ValueSource
 import org.gradle.api.provider.ValueSourceParameters
 import org.gradle.api.tasks.CompileClasspath
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import java.io.File
-import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.util.zip.ZipInputStream
 
@@ -115,16 +115,17 @@ abstract class DesugarConfigJson : ValueSource<String, DesugarConfigJson.Paramet
     }
 
     override fun obtain(): String? {
-        val jsonFiles = parameters.desugarJson.files
-        return if (jsonFiles.isEmpty()) {
-            null
-        } else {
-            val content = StringBuilder()
-            val dirs = jsonFiles.map { it.toPath() }
-            dirs.forEach {
-                content.append(String(Files.readAllBytes(it), StandardCharsets.UTF_8))
+        return combineFileContents(parameters.desugarJson.files)
+    }
+
+    companion object {
+
+        fun combineFileContents(jsonFiles: Collection<File>): String? {
+            return if (jsonFiles.isEmpty()) {
+                null
+            } else {
+                jsonFiles.joinToString("\n") { it.readText() }
             }
-            content.toString()
         }
     }
 }
@@ -132,15 +133,31 @@ abstract class DesugarConfigJson : ValueSource<String, DesugarConfigJson.Paramet
 /**
  * Returns a provider which represents the content of desugar.json file extracted from
  * desugar lib configuration jars
+ *
+ * IMPORTANT: DO NOT USE this method to set up a transform's input as this method uses [ValueSource]
+ * which might cause deadlock when used as a transform input (see bug 329346760); use
+ * [getDesugarLibConfigFiles] instead.
+ *
+ * This method can still be used to set up a task's input (the deadlock mentioned above seems to
+ * happen only to [ValueSource] being used transform inputs, not task inputs).
  */
 fun getDesugarLibConfig(services: TaskCreationServices): Provider<String> {
-    val configuration = services.configurations.findByName(CONFIG_NAME_CORE_LIBRARY_DESUGARING)!!
+    val configuration = services.configurations.getByName(CONFIG_NAME_CORE_LIBRARY_DESUGARING)
 
-    registerDesugarLibConfigTransform(services.dependencies)
+    registerDesugarLibConfigExtractorTransformIfAbsent(services)
 
     return services.providerOf(DesugarConfigJson::class.java) {
         it.parameters.desugarJson.setFrom(getDesugarLibConfigFromTransform(configuration))
     }
+}
+
+/** Returns desugar.json file extracted from desugar lib configuration jars. */
+fun getDesugarLibConfigFiles(services: TaskCreationServices): FileCollection {
+    val configuration = services.configurations.getByName(CONFIG_NAME_CORE_LIBRARY_DESUGARING)
+
+    registerDesugarLibConfigExtractorTransformIfAbsent(services)
+
+    return getDesugarLibConfigFromTransform(configuration)
 }
 
 /**
@@ -219,8 +236,15 @@ private fun getArtifactCollection(configuration: Configuration): FileCollection 
         }
     }.artifacts.artifactFiles
 
-private fun registerDesugarLibConfigTransform(dependencies: DependencyHandler) {
-    dependencies.registerTransform(DesugarLibConfigExtractor::class.java) { spec ->
+/** Registers [DesugarLibConfigExtractor] transform if it is not yet registered. */
+private fun registerDesugarLibConfigExtractorTransformIfAbsent(services: TaskCreationServices) {
+    val transformRegistered = "_agp_internal_${DesugarLibConfigExtractor::class.simpleName}_registered"
+    if (services.extraProperties.has(transformRegistered)) {
+        return
+    }
+    services.extraProperties[transformRegistered] = true
+
+    services.dependencies.registerTransform(DesugarLibConfigExtractor::class.java) { spec ->
         spec.from.attribute(ARTIFACT_TYPE_ATTRIBUTE, ArtifactTypeDefinition.JAR_TYPE)
         spec.to.attribute(ARTIFACT_TYPE_ATTRIBUTE, DESUGAR_LIB_CONFIG)
     }
@@ -366,9 +390,9 @@ abstract class D8BackportedMethodsGenerator
         @get:Input
         val d8Version: Property<String>
 
-        @get:Input
-        @get:Optional
-        val coreLibDesugarConfig: Property<String>
+        @get:InputFiles
+        @get:PathSensitive(PathSensitivity.NONE)
+        val desugarLibConfigFiles: ConfigurableFileCollection
 
         @get:CompileClasspath
         @get:Optional
@@ -383,7 +407,7 @@ abstract class D8BackportedMethodsGenerator
         val outputFile = outputs.file("D8BackportedDesugaredMethods.txt")
         outputFile.printWriter().use {
             D8DesugaredMethodsGenerator.generate(
-                parameters.coreLibDesugarConfig.orNull,
+                combineFileContents(parameters.desugarLibConfigFiles.files),
                 parameters.bootclasspath.files
             ).forEach { method ->
                 it.println(method)

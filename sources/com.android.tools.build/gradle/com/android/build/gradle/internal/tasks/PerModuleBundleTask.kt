@@ -37,7 +37,6 @@ import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.build.gradle.options.BooleanOption
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.dexing.DexingType
 import com.android.builder.files.NativeLibraryAbiPredicate
@@ -241,11 +240,20 @@ abstract class PerModuleBundleTask: NonIncrementalTask() {
                     }
                 }
             } else if (file.exists()){
-                jarCreator.addDirectory(
-                    file.toPath(),
-                    fileFilter,
-                    null,
-                    relocator)
+                if (relocator != null) {
+                    jarCreator.addDirectory(
+                        file.toPath(),
+                        fileFilter,
+                        null,
+                        relocator
+                    )
+                } else {
+                    jarCreator.addDirectory(
+                        file.toPath(),
+                        fileFilter,
+                        null
+                    )
+                }
             }
         }
     }

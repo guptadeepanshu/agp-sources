@@ -65,9 +65,26 @@ public class JarFlinger implements JarCreator {
         this.filter = filter;
     }
 
+    private static class NoOpRelocator implements Relocator {
+        @NonNull
+        @Override
+        public String relocate(@NonNull String entryPath) {
+            return entryPath;
+        }
+    }
+
     @Override
     public void addDirectory(@NonNull Path directory) throws IOException {
-        addDirectory(directory, filter, null, null);
+        addDirectory(directory, filter, null);
+    }
+
+    @Override
+    public void addDirectory(
+            @NonNull Path directory,
+            @Nullable Predicate<String> filterOverride,
+            @Nullable Transformer transformer)
+            throws IOException {
+        addDirectory(directory, filterOverride, transformer, new NoOpRelocator());
     }
 
     @Override
@@ -75,7 +92,7 @@ public class JarFlinger implements JarCreator {
             @NonNull Path directory,
             @Nullable Predicate<String> filterOverride,
             @Nullable Transformer transformer,
-            @Nullable Relocator relocator)
+            @NonNull Relocator relocator)
             throws IOException {
         ImmutableSortedMap.Builder<String, Path> candidateFiles = ImmutableSortedMap.naturalOrder();
         ImmutableSortedSet.Builder<String> foldersEncountered = ImmutableSortedSet.naturalOrder();
@@ -93,9 +110,7 @@ public class JarFlinger implements JarCreator {
                             return FileVisitResult.CONTINUE;
                         }
 
-                        if (relocator != null) {
-                            entryPath = relocator.relocate(entryPath);
-                        }
+                        entryPath = relocator.relocate(entryPath);
 
                         candidateFiles.put(entryPath, file);
                         return FileVisitResult.CONTINUE;
@@ -115,8 +130,8 @@ public class JarFlinger implements JarCreator {
                 });
 
         ImmutableSortedSet<String> sortedDirectories = foldersEncountered.build();
-        for (String dirName: sortedDirectories) {
-            zipArchive.add(Sources.dir(dirName));
+        for (String dirName : sortedDirectories) {
+            zipArchive.add(Sources.dir(relocator.relocate(dirName)));
         }
 
         // Why do we even sort these?

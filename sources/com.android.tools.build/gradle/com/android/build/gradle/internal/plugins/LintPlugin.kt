@@ -75,6 +75,8 @@ import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.attributes.Category
+import org.gradle.api.attributes.Usage
+import org.gradle.api.attributes.java.TargetJvmEnvironment
 import org.gradle.api.component.AdhocComponentWithVariants
 import org.gradle.api.component.ConfigurationVariantDetails
 import org.gradle.api.component.SoftwareComponent
@@ -401,12 +403,31 @@ abstract class LintPlugin : Plugin<Project> {
                         // Create these configurations eagerly here to avoid recent problems when
                         // creating Configurations during task configuration.
                         // TODO(b/327452732) stop creating these extra configurations.
+                        val libraryCategory =
+                            project.objects.named(Category::class.java, Category.LIBRARY)
+                        val standardJvmEnvironment =
+                            project.objects.named(
+                                TargetJvmEnvironment::class.java,
+                                TargetJvmEnvironment.STANDARD_JVM
+                            )
                         val testCompileClasspath =
                             project.configurations
                                 .create("${jvmTargetName}TestCompileClasspathForLint")
                                 .apply {
                                     isCanBeConsumed = false
                                     isCanBeResolved = true
+                                    attributes.attribute(
+                                        Category.CATEGORY_ATTRIBUTE,
+                                        libraryCategory
+                                    )
+                                    attributes.attribute(
+                                        Usage.USAGE_ATTRIBUTE,
+                                        project.objects.named(Usage::class.java, Usage.JAVA_API)
+                                    )
+                                    attributes.attribute(
+                                        TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE,
+                                        standardJvmEnvironment
+                                    )
                                 }
                         val testRuntimeClasspath =
                             project.configurations
@@ -414,6 +435,18 @@ abstract class LintPlugin : Plugin<Project> {
                                 .apply {
                                     isCanBeConsumed = false
                                     isCanBeResolved = true
+                                    attributes.attribute(
+                                        Category.CATEGORY_ATTRIBUTE,
+                                        libraryCategory
+                                    )
+                                    attributes.attribute(
+                                        Usage.USAGE_ATTRIBUTE,
+                                        project.objects.named(Usage::class.java, Usage.JAVA_RUNTIME)
+                                    )
+                                    attributes.attribute(
+                                        TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE,
+                                        standardJvmEnvironment
+                                    )
                                 }
                         val lintAnalysisTestTask =
                             project.tasks.register(

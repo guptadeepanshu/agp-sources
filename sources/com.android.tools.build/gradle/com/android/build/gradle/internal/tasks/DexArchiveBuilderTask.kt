@@ -27,7 +27,8 @@ import com.android.build.gradle.internal.scope.Java8LangSupport
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.features.DexingTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.features.DexingTaskCreationActionImpl
-import com.android.build.gradle.internal.utils.getDesugarLibConfig
+import com.android.build.gradle.internal.utils.DesugarConfigJson.Companion.combineFileContents
+import com.android.build.gradle.internal.utils.getDesugarLibConfigFiles
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.IntegerOption
 import com.android.build.gradle.options.SyncOptions
@@ -368,7 +369,8 @@ abstract class DexArchiveBuilderTask : NewIncrementalTask() {
                 }
             )
             if (libraryDesugaring) {
-                task.dexParams.coreLibDesugarConfig.set(getDesugarLibConfig(creationConfig.services))
+                task.dexParams.desugarLibConfigFiles.setFrom(
+                        getDesugarLibConfigFiles(creationConfig.services))
             }
 
             task.dexParams.enableApiModeling.set(creationConfig.enableApiModeling)
@@ -397,7 +399,7 @@ abstract class DexArchiveBuilderTask : NewIncrementalTask() {
                     this.desugaringClasspath.from(desugaringClasspathForArtifactTransforms)
                     this.errorFormat.set(task.dexParams.errorFormatMode)
                     this.enableDesugaring.set(task.dexParams.withDesugaring)
-                    this.libConfiguration.set(task.dexParams.coreLibDesugarConfig)
+                    this.desugarLibConfigFiles.setFrom(task.dexParams.desugarLibConfigFiles)
                     this.enableGlobalSynthetics.set(task.dexParams.enableGlobalSynthetics)
                     this.enableApiModeling.set(task.dexParams.enableApiModeling)
                 }
@@ -486,9 +488,9 @@ abstract class DexParameterInputs {
     @get:CompileClasspath
     abstract val desugarClasspath: ConfigurableFileCollection
 
-    @get:Input
-    @get:Optional
-    abstract val coreLibDesugarConfig: Property<String>
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.NONE)
+    abstract val desugarLibConfigFiles: ConfigurableFileCollection
 
     @get:Input
     abstract val enableGlobalSynthetics: Property<Boolean>
@@ -506,7 +508,7 @@ abstract class DexParameterInputs {
             withDesugaring = withDesugaring.get(),
             desugarBootclasspath = desugarBootclasspath.files.toList(),
             desugarClasspath = desugarClasspath.files.toList(),
-            coreLibDesugarConfig = coreLibDesugarConfig.orNull,
+            coreLibDesugarConfig = combineFileContents(desugarLibConfigFiles.files),
             enableApiModeling = enableApiModeling.get(),
             errorFormatMode = errorFormatMode.get(),
         )

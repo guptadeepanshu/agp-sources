@@ -69,8 +69,14 @@ public interface JarCreator extends Closeable {
     void addDirectory(
             @NonNull Path directory,
             @Nullable Predicate<String> filterOverride,
+            @Nullable Transformer transformer)
+            throws IOException;
+
+    void addDirectory(
+            @NonNull Path directory,
+            @Nullable Predicate<String> filterOverride,
             @Nullable Transformer transformer,
-            @Nullable Relocator relocator)
+            @NonNull Relocator relocator)
             throws IOException;
 
     void addJar(@NonNull Path file) throws IOException;
