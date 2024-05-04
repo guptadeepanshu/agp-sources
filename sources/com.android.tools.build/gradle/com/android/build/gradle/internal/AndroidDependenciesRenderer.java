@@ -81,8 +81,8 @@ public class AndroidDependenciesRenderer extends TextReportRenderer {
 
     public void render(@NonNull ComponentCreationConfig component) {
         Set<ResolvedArtifact> compileArtifacts =
-                ArtifactUtils.getAllArtifacts(
-                        component, AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH, null);
+                ArtifactUtils.getArtifactsForComponent(
+                        component, AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH);
 
         getTextOutput()
                 .withStyle(Identifier)
@@ -94,8 +94,8 @@ public class AndroidDependenciesRenderer extends TextReportRenderer {
         renderer.completeChildren();
 
         Set<ResolvedArtifact> runtimeArtifacts =
-                ArtifactUtils.getAllArtifacts(
-                        component, AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH, null);
+                ArtifactUtils.getArtifactsForComponent(
+                        component, AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH);
 
         getTextOutput().println();
         getTextOutput()

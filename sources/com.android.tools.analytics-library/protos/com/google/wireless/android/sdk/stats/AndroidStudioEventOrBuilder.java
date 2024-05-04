@@ -5185,4 +5185,85 @@ public interface AndroidStudioEventOrBuilder extends
    * <code>optional .android_studio.PreviewRefreshEvent preview_refresh_event = 185;</code>
    */
   com.google.wireless.android.sdk.stats.PreviewRefreshEventOrBuilder getPreviewRefreshEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = WEAR_HEALTH_SERVICES_TOOL_WINDOW_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.WearHealthServicesEvent wear_health_services_event = 186;</code>
+   * @return Whether the wearHealthServicesEvent field is set.
+   */
+  boolean hasWearHealthServicesEvent();
+  /**
+   * <pre>
+   * set when kind = WEAR_HEALTH_SERVICES_TOOL_WINDOW_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.WearHealthServicesEvent wear_health_services_event = 186;</code>
+   * @return The wearHealthServicesEvent.
+   */
+  com.google.wireless.android.sdk.stats.WearHealthServicesEvent getWearHealthServicesEvent();
+  /**
+   * <pre>
+   * set when kind = WEAR_HEALTH_SERVICES_TOOL_WINDOW_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.WearHealthServicesEvent wear_health_services_event = 186;</code>
+   */
+  com.google.wireless.android.sdk.stats.WearHealthServicesEventOrBuilder getWearHealthServicesEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = UI_DEVICE_SETTINGS_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.UiDeviceSettingsEvent ui_device_settings_event = 187;</code>
+   * @return Whether the uiDeviceSettingsEvent field is set.
+   */
+  boolean hasUiDeviceSettingsEvent();
+  /**
+   * <pre>
+   * set when kind = UI_DEVICE_SETTINGS_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.UiDeviceSettingsEvent ui_device_settings_event = 187;</code>
+   * @return The uiDeviceSettingsEvent.
+   */
+  com.google.wireless.android.sdk.stats.UiDeviceSettingsEvent getUiDeviceSettingsEvent();
+  /**
+   * <pre>
+   * set when kind = UI_DEVICE_SETTINGS_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.UiDeviceSettingsEvent ui_device_settings_event = 187;</code>
+   */
+  com.google.wireless.android.sdk.stats.UiDeviceSettingsEventOrBuilder getUiDeviceSettingsEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = ADB_USAGE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.AdbUsageEvent adb_usage_event = 188;</code>
+   * @return Whether the adbUsageEvent field is set.
+   */
+  boolean hasAdbUsageEvent();
+  /**
+   * <pre>
+   * set when kind = ADB_USAGE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.AdbUsageEvent adb_usage_event = 188;</code>
+   * @return The adbUsageEvent.
+   */
+  com.google.wireless.android.sdk.stats.AdbUsageEvent getAdbUsageEvent();
+  /**
+   * <pre>
+   * set when kind = ADB_USAGE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.AdbUsageEvent adb_usage_event = 188;</code>
+   */
+  com.google.wireless.android.sdk.stats.AdbUsageEventOrBuilder getAdbUsageEventOrBuilder();
 }

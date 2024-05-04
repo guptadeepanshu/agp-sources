@@ -16,23 +16,24 @@
 
 package com.android.build.api.variant.impl
 
-import com.android.build.api.variant.AndroidTestBuilder
 import com.android.build.api.variant.PropertyAccessNotAllowedException
-import com.android.build.gradle.internal.services.VariantBuilderServices
-import com.android.build.gradle.options.BooleanOption
 
+@Suppress("DEPRECATION")
 class AndroidTestBuilderImpl(
-    variantBuilderServices: VariantBuilderServices,
-    enableMultiDexInitialValue: Boolean?
-): AndroidTestBuilder {
+    private val deviceTestBuilder: DeviceTestBuilderImpl,
+): com.android.build.api.variant.AndroidTestBuilder {
 
-    override var enable = !variantBuilderServices.projectOptions[BooleanOption.ENABLE_NEW_TEST_DSL]
+    @Deprecated("replaced with DeviceTestBuilder.enable")
+    override var enable: Boolean
+        get() = deviceTestBuilder.enable
+        set(value) {
+            deviceTestBuilder.enable = value
+        }
 
-    internal var _enableMultiDex = enableMultiDexInitialValue
-
+    @Deprecated("replaced with DeviceTestBuilder.setEnableMultiDex")
     override var enableMultiDex: Boolean?
         get() = throw PropertyAccessNotAllowedException("enableMultiDex", "AndroidTestBuilder")
         set(value) {
-            _enableMultiDex = value
+            deviceTestBuilder.enableMultiDex = value
         }
 }

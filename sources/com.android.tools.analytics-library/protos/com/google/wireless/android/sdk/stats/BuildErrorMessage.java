@@ -103,6 +103,14 @@ private static final long serialVersionUID = 0L;
      * <code>GENERAL_ANDROID_GRADLE_PLUGIN = 11;</code>
      */
     GENERAL_ANDROID_GRADLE_PLUGIN(11),
+    /**
+     * <code>INVALID_TOML_DEFINITION = 12;</code>
+     */
+    INVALID_TOML_DEFINITION(12),
+    /**
+     * <code>CONFIGURATION_CACHE = 13;</code>
+     */
+    CONFIGURATION_CACHE(13),
     ;
 
     /**
@@ -153,6 +161,14 @@ private static final long serialVersionUID = 0L;
      * <code>GENERAL_ANDROID_GRADLE_PLUGIN = 11;</code>
      */
     public static final int GENERAL_ANDROID_GRADLE_PLUGIN_VALUE = 11;
+    /**
+     * <code>INVALID_TOML_DEFINITION = 12;</code>
+     */
+    public static final int INVALID_TOML_DEFINITION_VALUE = 12;
+    /**
+     * <code>CONFIGURATION_CACHE = 13;</code>
+     */
+    public static final int CONFIGURATION_CACHE_VALUE = 13;
 
 
     public final int getNumber() {
@@ -187,6 +203,8 @@ private static final long serialVersionUID = 0L;
         case 9: return R8;
         case 10: return RESOURCE_AND_ASSET_MERGER;
         case 11: return GENERAL_ANDROID_GRADLE_PLUGIN;
+        case 12: return INVALID_TOML_DEFINITION;
+        case 13: return CONFIGURATION_CACHE;
         default: return null;
       }
     }

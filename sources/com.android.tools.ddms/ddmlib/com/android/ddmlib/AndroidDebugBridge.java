@@ -392,18 +392,8 @@ public class AndroidDebugBridge {
      * Terminates the ddm library. This must be called upon application termination.
      */
     public static synchronized void terminate() {
-        // kill the monitoring services
-        if (sThis != null && sThis.mDeviceMonitor != null) {
-            sThis.mDeviceMonitor.stop();
-            sThis.mDeviceMonitor = null;
-        }
-        if (sThis != null && sThis.mIDeviceManager != null) {
-            try {
-                sThis.mIDeviceManager.close();
-            } catch (Exception e) {
-                Log.e(DDMS, "Could not close IDeviceManager:");
-                Log.e(DDMS, e);
-            }
+        if (sThis != null) {
+            sThis.killMonitoringServices();
         }
 
         MonitorThread monitorThread = MonitorThread.getInstance();
@@ -1204,11 +1194,7 @@ public class AndroidDebugBridge {
         }
 
         TimeoutRemainder rem = new TimeoutRemainder(timeout, unit);
-        // kill the monitoring services
-        if (mDeviceMonitor != null) {
-            mDeviceMonitor.stop();
-            mDeviceMonitor = null;
-        }
+        killMonitoringServices();
 
         // Don't stop ADB when using user managed ADB server.
         if (sUserManagedAdbMode) {
@@ -1219,6 +1205,21 @@ public class AndroidDebugBridge {
 
         mStarted = false;
         return true;
+    }
+
+    private void killMonitoringServices() {
+        if (mDeviceMonitor != null) {
+            mDeviceMonitor.stop();
+            mDeviceMonitor = null;
+        }
+        if (mIDeviceManager != null) {
+            try {
+                mIDeviceManager.close();
+            } catch (Exception e) {
+                Log.e(DDMS, "Could not close IDeviceManager:");
+                Log.e(DDMS, e);
+            }
+        }
     }
 
     /**

@@ -17,7 +17,6 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.build.api.artifact.MultipleArtifact
-import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.artifact.impl.InternalScopedArtifact
 import com.android.build.api.artifact.impl.InternalScopedArtifacts
 import com.android.build.gradle.internal.component.ApkCreationConfig
@@ -34,7 +33,6 @@ import com.android.build.gradle.internal.tasks.factory.features.DexingTaskCreati
 import com.android.build.gradle.internal.tasks.factory.features.DexingTaskCreationActionImpl
 import com.android.buildanalyzer.common.TaskCategory
 import org.gradle.api.file.ConfigurableFileCollection
-import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.logging.Logging
@@ -50,7 +48,6 @@ import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
-import java.io.File
 
 /**
  * A task calculating the main dex list for bundle using D8.
@@ -157,7 +154,7 @@ abstract class D8BundleMainDexListTask : NonIncrementalTask() {
     ), DexingTaskCreationAction by DexingTaskCreationActionImpl(
         creationConfig
     ) {
-        override val name: String = creationConfig.computeTaskName("bundleMultiDexList")
+        override val name: String = creationConfig.computeTaskNameInternal("bundleMultiDexList")
         override val type: Class<D8BundleMainDexListTask> = D8BundleMainDexListTask::class.java
 
         override fun handleProvider(taskProvider: TaskProvider<D8BundleMainDexListTask>) {

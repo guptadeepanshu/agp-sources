@@ -39,6 +39,7 @@ data class AndroidProjectImpl(
     override val flags: AndroidGradlePluginProjectFlags,
     override val lintChecksJars: List<File>,
     override val desugarLibConfig: List<File>,
+    override val lintJar: File?
 ) : AndroidProject, Serializable {
     companion object {
         @JvmStatic

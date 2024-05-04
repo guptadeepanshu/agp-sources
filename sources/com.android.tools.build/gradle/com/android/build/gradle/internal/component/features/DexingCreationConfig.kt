@@ -31,6 +31,7 @@ import com.android.builder.dexing.DexingType
 interface DexingCreationConfig: Dexing {
 
     fun finalizeAndLock()
+
     /**
      * The minimum API level that the output `.dex` files support.
      *

@@ -139,6 +139,20 @@ data class LibraryImpl private constructor(
             samplesJar = null,
         )
 
+        fun createNoArtifactProjectLibrary(
+            key: String,
+            projectInfo: ProjectInfo,
+        ) = LibraryImpl(
+            key = key,
+            type = LibraryType.NO_ARTIFACT_FILE,
+            projectInfo = projectInfo,
+            artifact = null,
+            lintJar = null,
+            srcJar = null,
+            docJar = null,
+            samplesJar = null,
+        )
+
         fun createNoArtifactFileLibrary(
             key: String,
             libraryInfo: LibraryInfo,

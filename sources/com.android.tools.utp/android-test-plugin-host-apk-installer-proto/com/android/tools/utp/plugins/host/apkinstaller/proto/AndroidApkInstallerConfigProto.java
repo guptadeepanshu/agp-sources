@@ -271,6 +271,27 @@ public final class AndroidApkInstallerConfigProto {
        * @return The installAsTestService.
        */
       boolean getInstallAsTestService();
+
+      /**
+       * <pre>
+       * Runs AOT compilation soon after the APK is installed.
+       * This option is ignored when a device's API level is lower than 24.
+       * </pre>
+       *
+       * <code>.com.android.tools.utp.plugins.host.apkinstaller.proto.InstallableApk.InstallOption.ForceCompilation force_compilation = 5;</code>
+       * @return The enum numeric value on the wire for forceCompilation.
+       */
+      int getForceCompilationValue();
+      /**
+       * <pre>
+       * Runs AOT compilation soon after the APK is installed.
+       * This option is ignored when a device's API level is lower than 24.
+       * </pre>
+       *
+       * <code>.com.android.tools.utp.plugins.host.apkinstaller.proto.InstallableApk.InstallOption.ForceCompilation force_compilation = 5;</code>
+       * @return The forceCompilation.
+       */
+      com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.ForceCompilation getForceCompilation();
     }
     /**
      * <pre>
@@ -290,6 +311,7 @@ public final class AndroidApkInstallerConfigProto {
       }
       private InstallOption() {
         commandLineParameter_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        forceCompilation_ = 0;
       }
 
       @java.lang.Override
@@ -315,6 +337,152 @@ public final class AndroidApkInstallerConfigProto {
         return com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.internal_static_com_android_tools_utp_plugins_host_apkinstaller_proto_InstallableApk_InstallOption_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.class, com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.Builder.class);
+      }
+
+      /**
+       * <pre>
+       * Options to run AOT compile forcibly after installation before running the app.
+       * See https://source.android.com/docs/core/runtime/jit-compiler#force-compilation-of-a-specific-package
+       * </pre>
+       *
+       * Protobuf enum {@code com.android.tools.utp.plugins.host.apkinstaller.proto.InstallableApk.InstallOption.ForceCompilation}
+       */
+      public enum ForceCompilation
+          implements com.google.protobuf.ProtocolMessageEnum {
+        /**
+         * <pre>
+         * No force compilation.
+         * </pre>
+         *
+         * <code>NO_FORCE_COMPILATION = 0;</code>
+         */
+        NO_FORCE_COMPILATION(0),
+        /**
+         * <pre>
+         * adb shell cmd package compile -m speed-profile -f $my_package_name
+         * </pre>
+         *
+         * <code>PROFILE_BASED_COMPILATION = 1;</code>
+         */
+        PROFILE_BASED_COMPILATION(1),
+        /**
+         * <pre>
+         * adb shell cmd package compile -m speed -f $my_package_name
+         * </pre>
+         *
+         * <code>FULL_COMPILATION = 2;</code>
+         */
+        FULL_COMPILATION(2),
+        UNRECOGNIZED(-1),
+        ;
+
+        /**
+         * <pre>
+         * No force compilation.
+         * </pre>
+         *
+         * <code>NO_FORCE_COMPILATION = 0;</code>
+         */
+        public static final int NO_FORCE_COMPILATION_VALUE = 0;
+        /**
+         * <pre>
+         * adb shell cmd package compile -m speed-profile -f $my_package_name
+         * </pre>
+         *
+         * <code>PROFILE_BASED_COMPILATION = 1;</code>
+         */
+        public static final int PROFILE_BASED_COMPILATION_VALUE = 1;
+        /**
+         * <pre>
+         * adb shell cmd package compile -m speed -f $my_package_name
+         * </pre>
+         *
+         * <code>FULL_COMPILATION = 2;</code>
+         */
+        public static final int FULL_COMPILATION_VALUE = 2;
+
+
+        public final int getNumber() {
+          if (this == UNRECOGNIZED) {
+            throw new java.lang.IllegalArgumentException(
+                "Can't get the number of an unknown enum value.");
+          }
+          return value;
+        }
+
+        /**
+         * @param value The numeric wire value of the corresponding enum entry.
+         * @return The enum associated with the given numeric wire value.
+         * @deprecated Use {@link #forNumber(int)} instead.
+         */
+        @java.lang.Deprecated
+        public static ForceCompilation valueOf(int value) {
+          return forNumber(value);
+        }
+
+        /**
+         * @param value The numeric wire value of the corresponding enum entry.
+         * @return The enum associated with the given numeric wire value.
+         */
+        public static ForceCompilation forNumber(int value) {
+          switch (value) {
+            case 0: return NO_FORCE_COMPILATION;
+            case 1: return PROFILE_BASED_COMPILATION;
+            case 2: return FULL_COMPILATION;
+            default: return null;
+          }
+        }
+
+        public static com.google.protobuf.Internal.EnumLiteMap<ForceCompilation>
+            internalGetValueMap() {
+          return internalValueMap;
+        }
+        private static final com.google.protobuf.Internal.EnumLiteMap<
+            ForceCompilation> internalValueMap =
+              new com.google.protobuf.Internal.EnumLiteMap<ForceCompilation>() {
+                public ForceCompilation findValueByNumber(int number) {
+                  return ForceCompilation.forNumber(number);
+                }
+              };
+
+        public final com.google.protobuf.Descriptors.EnumValueDescriptor
+            getValueDescriptor() {
+          if (this == UNRECOGNIZED) {
+            throw new java.lang.IllegalStateException(
+                "Can't get the descriptor of an unrecognized enum value.");
+          }
+          return getDescriptor().getValues().get(ordinal());
+        }
+        public final com.google.protobuf.Descriptors.EnumDescriptor
+            getDescriptorForType() {
+          return getDescriptor();
+        }
+        public static final com.google.protobuf.Descriptors.EnumDescriptor
+            getDescriptor() {
+          return com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.getDescriptor().getEnumTypes().get(0);
+        }
+
+        private static final ForceCompilation[] VALUES = values();
+
+        public static ForceCompilation valueOf(
+            com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+          if (desc.getType() != getDescriptor()) {
+            throw new java.lang.IllegalArgumentException(
+              "EnumValueDescriptor is not for this type.");
+          }
+          if (desc.getIndex() == -1) {
+            return UNRECOGNIZED;
+          }
+          return VALUES[desc.getIndex()];
+        }
+
+        private final int value;
+
+        private ForceCompilation(int value) {
+          this.value = value;
+        }
+
+        // @@protoc_insertion_point(enum_scope:com.android.tools.utp.plugins.host.apkinstaller.proto.InstallableApk.InstallOption.ForceCompilation)
       }
 
       public static final int COMMAND_LINE_PARAMETER_FIELD_NUMBER = 1;
@@ -417,6 +585,35 @@ public final class AndroidApkInstallerConfigProto {
         return installAsTestService_;
       }
 
+      public static final int FORCE_COMPILATION_FIELD_NUMBER = 5;
+      private int forceCompilation_;
+      /**
+       * <pre>
+       * Runs AOT compilation soon after the APK is installed.
+       * This option is ignored when a device's API level is lower than 24.
+       * </pre>
+       *
+       * <code>.com.android.tools.utp.plugins.host.apkinstaller.proto.InstallableApk.InstallOption.ForceCompilation force_compilation = 5;</code>
+       * @return The enum numeric value on the wire for forceCompilation.
+       */
+      @java.lang.Override public int getForceCompilationValue() {
+        return forceCompilation_;
+      }
+      /**
+       * <pre>
+       * Runs AOT compilation soon after the APK is installed.
+       * This option is ignored when a device's API level is lower than 24.
+       * </pre>
+       *
+       * <code>.com.android.tools.utp.plugins.host.apkinstaller.proto.InstallableApk.InstallOption.ForceCompilation force_compilation = 5;</code>
+       * @return The forceCompilation.
+       */
+      @java.lang.Override public com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.ForceCompilation getForceCompilation() {
+        @SuppressWarnings("deprecation")
+        com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.ForceCompilation result = com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.ForceCompilation.valueOf(forceCompilation_);
+        return result == null ? com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.ForceCompilation.UNRECOGNIZED : result;
+      }
+
       private byte memoizedIsInitialized = -1;
       @java.lang.Override
       public final boolean isInitialized() {
@@ -442,6 +639,9 @@ public final class AndroidApkInstallerConfigProto {
         }
         if (installAsTestService_ != false) {
           output.writeBool(4, installAsTestService_);
+        }
+        if (forceCompilation_ != com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.ForceCompilation.NO_FORCE_COMPILATION.getNumber()) {
+          output.writeEnum(5, forceCompilation_);
         }
         getUnknownFields().writeTo(output);
       }
@@ -472,6 +672,10 @@ public final class AndroidApkInstallerConfigProto {
           size += com.google.protobuf.CodedOutputStream
             .computeBoolSize(4, installAsTestService_);
         }
+        if (forceCompilation_ != com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.ForceCompilation.NO_FORCE_COMPILATION.getNumber()) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeEnumSize(5, forceCompilation_);
+        }
         size += getUnknownFields().getSerializedSize();
         memoizedSize = size;
         return size;
@@ -495,6 +699,7 @@ public final class AndroidApkInstallerConfigProto {
             != other.getInstallApkTimeout()) return false;
         if (getInstallAsTestService()
             != other.getInstallAsTestService()) return false;
+        if (forceCompilation_ != other.forceCompilation_) return false;
         if (!getUnknownFields().equals(other.getUnknownFields())) return false;
         return true;
       }
@@ -518,6 +723,8 @@ public final class AndroidApkInstallerConfigProto {
         hash = (37 * hash) + INSTALL_AS_TEST_SERVICE_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
             getInstallAsTestService());
+        hash = (37 * hash) + FORCE_COMPILATION_FIELD_NUMBER;
+        hash = (53 * hash) + forceCompilation_;
         hash = (29 * hash) + getUnknownFields().hashCode();
         memoizedHashCode = hash;
         return hash;
@@ -658,6 +865,8 @@ public final class AndroidApkInstallerConfigProto {
 
           installAsTestService_ = false;
 
+          forceCompilation_ = 0;
+
           return this;
         }
 
@@ -693,6 +902,7 @@ public final class AndroidApkInstallerConfigProto {
           result.installAsSplitApk_ = installAsSplitApk_;
           result.installApkTimeout_ = installApkTimeout_;
           result.installAsTestService_ = installAsTestService_;
+          result.forceCompilation_ = forceCompilation_;
           onBuilt();
           return result;
         }
@@ -760,6 +970,9 @@ public final class AndroidApkInstallerConfigProto {
           if (other.getInstallAsTestService() != false) {
             setInstallAsTestService(other.getInstallAsTestService());
           }
+          if (other.forceCompilation_ != 0) {
+            setForceCompilationValue(other.getForceCompilationValue());
+          }
           this.mergeUnknownFields(other.getUnknownFields());
           onChanged();
           return this;
@@ -807,6 +1020,11 @@ public final class AndroidApkInstallerConfigProto {
 
                   break;
                 } // case 32
+                case 40: {
+                  forceCompilation_ = input.readEnum();
+
+                  break;
+                } // case 40
                 default: {
                   if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                     done = true; // was an endgroup tag
@@ -1107,6 +1325,85 @@ public final class AndroidApkInstallerConfigProto {
         public Builder clearInstallAsTestService() {
           
           installAsTestService_ = false;
+          onChanged();
+          return this;
+        }
+
+        private int forceCompilation_ = 0;
+        /**
+         * <pre>
+         * Runs AOT compilation soon after the APK is installed.
+         * This option is ignored when a device's API level is lower than 24.
+         * </pre>
+         *
+         * <code>.com.android.tools.utp.plugins.host.apkinstaller.proto.InstallableApk.InstallOption.ForceCompilation force_compilation = 5;</code>
+         * @return The enum numeric value on the wire for forceCompilation.
+         */
+        @java.lang.Override public int getForceCompilationValue() {
+          return forceCompilation_;
+        }
+        /**
+         * <pre>
+         * Runs AOT compilation soon after the APK is installed.
+         * This option is ignored when a device's API level is lower than 24.
+         * </pre>
+         *
+         * <code>.com.android.tools.utp.plugins.host.apkinstaller.proto.InstallableApk.InstallOption.ForceCompilation force_compilation = 5;</code>
+         * @param value The enum numeric value on the wire for forceCompilation to set.
+         * @return This builder for chaining.
+         */
+        public Builder setForceCompilationValue(int value) {
+          
+          forceCompilation_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         * Runs AOT compilation soon after the APK is installed.
+         * This option is ignored when a device's API level is lower than 24.
+         * </pre>
+         *
+         * <code>.com.android.tools.utp.plugins.host.apkinstaller.proto.InstallableApk.InstallOption.ForceCompilation force_compilation = 5;</code>
+         * @return The forceCompilation.
+         */
+        @java.lang.Override
+        public com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.ForceCompilation getForceCompilation() {
+          @SuppressWarnings("deprecation")
+          com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.ForceCompilation result = com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.ForceCompilation.valueOf(forceCompilation_);
+          return result == null ? com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.ForceCompilation.UNRECOGNIZED : result;
+        }
+        /**
+         * <pre>
+         * Runs AOT compilation soon after the APK is installed.
+         * This option is ignored when a device's API level is lower than 24.
+         * </pre>
+         *
+         * <code>.com.android.tools.utp.plugins.host.apkinstaller.proto.InstallableApk.InstallOption.ForceCompilation force_compilation = 5;</code>
+         * @param value The forceCompilation to set.
+         * @return This builder for chaining.
+         */
+        public Builder setForceCompilation(com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.ForceCompilation value) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          
+          forceCompilation_ = value.getNumber();
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         * Runs AOT compilation soon after the APK is installed.
+         * This option is ignored when a device's API level is lower than 24.
+         * </pre>
+         *
+         * <code>.com.android.tools.utp.plugins.host.apkinstaller.proto.InstallableApk.InstallOption.ForceCompilation force_compilation = 5;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearForceCompilation() {
+          
+          forceCompilation_ = 0;
           onChanged();
           return this;
         }
@@ -3203,22 +3500,28 @@ public final class AndroidApkInstallerConfigProto {
     java.lang.String[] descriptorData = {
       "\n1src/main/proto/android_apk_installer_c" +
       "onfig.proto\0225com.android.tools.utp.plugi" +
-      "ns.host.apkinstaller.proto\"\375\002\n\016Installab" +
+      "ns.host.apkinstaller.proto\"\341\004\n\016Installab" +
       "leApk\022\021\n\tapk_paths\030\001 \003(\t\022l\n\017install_opti" +
       "ons\030\002 \001(\0132S.com.android.tools.utp.plugin" +
       "s.host.apkinstaller.proto.InstallableApk" +
       ".InstallOption\022\034\n\024uninstall_after_test\030\003" +
       " \001(\010\022\031\n\021apks_package_name\030\004 \003(\t\022#\n\033force" +
-      "_reinstall_before_test\030\005 \001(\010\032\213\001\n\rInstall" +
+      "_reinstall_before_test\030\005 \001(\010\032\357\002\n\rInstall" +
       "Option\022\036\n\026command_line_parameter\030\001 \003(\t\022\034" +
       "\n\024install_as_split_apk\030\002 \001(\010\022\033\n\023install_" +
       "apk_timeout\030\003 \001(\005\022\037\n\027install_as_test_ser" +
-      "vice\030\004 \001(\010\"{\n\031AndroidApkInstallerConfig\022" +
-      "^\n\017apks_to_install\030\001 \003(\0132E.com.android.t" +
-      "ools.utp.plugins.host.apkinstaller.proto" +
-      ".InstallableApkBW\n5com.android.tools.utp" +
-      ".plugins.host.apkinstaller.protoB\036Androi" +
-      "dApkInstallerConfigProtob\006proto3"
+      "vice\030\004 \001(\010\022\177\n\021force_compilation\030\005 \001(\0162d." +
+      "com.android.tools.utp.plugins.host.apkin" +
+      "staller.proto.InstallableApk.InstallOpti" +
+      "on.ForceCompilation\"a\n\020ForceCompilation\022" +
+      "\030\n\024NO_FORCE_COMPILATION\020\000\022\035\n\031PROFILE_BAS" +
+      "ED_COMPILATION\020\001\022\024\n\020FULL_COMPILATION\020\002\"{" +
+      "\n\031AndroidApkInstallerConfig\022^\n\017apks_to_i" +
+      "nstall\030\001 \003(\0132E.com.android.tools.utp.plu" +
+      "gins.host.apkinstaller.proto.Installable" +
+      "ApkBW\n5com.android.tools.utp.plugins.hos" +
+      "t.apkinstaller.protoB\036AndroidApkInstalle" +
+      "rConfigProtob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -3235,7 +3538,7 @@ public final class AndroidApkInstallerConfigProto {
     internal_static_com_android_tools_utp_plugins_host_apkinstaller_proto_InstallableApk_InstallOption_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_android_tools_utp_plugins_host_apkinstaller_proto_InstallableApk_InstallOption_descriptor,
-        new java.lang.String[] { "CommandLineParameter", "InstallAsSplitApk", "InstallApkTimeout", "InstallAsTestService", });
+        new java.lang.String[] { "CommandLineParameter", "InstallAsSplitApk", "InstallApkTimeout", "InstallAsTestService", "ForceCompilation", });
     internal_static_com_android_tools_utp_plugins_host_apkinstaller_proto_AndroidApkInstallerConfig_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_com_android_tools_utp_plugins_host_apkinstaller_proto_AndroidApkInstallerConfig_fieldAccessorTable = new

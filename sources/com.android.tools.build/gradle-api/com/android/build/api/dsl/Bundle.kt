@@ -19,7 +19,11 @@ package com.android.build.api.dsl
 import org.gradle.api.Incubating
 import org.gradle.api.file.DirectoryProperty
 
-/** Features that apply to distribution by the bundle  */
+/**
+ * DSL object for configuring the Android Application Bundle
+ *
+ * This is accessed via [ApplicationExtension.bundle]
+ */
 interface Bundle {
 
     val abi: BundleAbi

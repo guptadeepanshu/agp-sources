@@ -18,6 +18,7 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.artifact.SingleArtifact
+import com.android.build.api.variant.ApplicationAndroidResources
 import com.android.build.api.variant.ApplicationVariantBuilder
 import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.BaseExtension
@@ -29,6 +30,7 @@ import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig
 import com.android.build.gradle.internal.dsl.AbstractPublishing
+import com.android.build.gradle.internal.dsl.ModulePropertyKey
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType
 import com.android.build.gradle.internal.publishing.PublishedConfigSpec
@@ -100,6 +102,15 @@ class ApplicationTaskManager(
         }
 
         taskFactory.register(MergeArtProfileTask.CreationAction(variant))
+        val r8DexStartupOptimizationEnabled = variant.experimentalProperties.map {
+            ModulePropertyKey.BooleanWithDefault.R8_DEX_STARTUP_OPTIMIZATION.getValue(it)
+        }
+        val d8DexStartupOptimizationEnabled = variant.experimentalProperties.map {
+            ModulePropertyKey.BooleanWithDefault.D8_DEX_STARTUP_OPTIMIZATION.getValue(it)
+        }
+        if (r8DexStartupOptimizationEnabled.get() || d8DexStartupOptimizationEnabled.get()) {
+            taskFactory.register(MergeStartupProfileTask.CreationAction(variant))
+        }
         // The [ExpandArtProfileTask] should only run when the R8 task also runs, and this
         // conditional should match the R8 registration conditional in
         // [TaskManager#maybeCreateJavaCodeShrinkerTask]
@@ -109,7 +120,7 @@ class ApplicationTaskManager(
         }
         taskFactory.register(CompileArtProfileTask.CreationAction(variant))
 
-        if (variant.generateLocaleConfig) {
+        if ((variant.androidResources as? ApplicationAndroidResources)?.generateLocaleConfig == true) {
             val resourceConfigs = variant.androidResourcesCreationConfig?.resourceConfigurations
             if (!resourceConfigs.isNullOrEmpty() &&
                 AaptUtils.getNonDensityResConfigs(resourceConfigs).toList().isNotEmpty()) {
@@ -166,7 +177,7 @@ class ApplicationTaskManager(
 
     private fun createBundleTask(component: ComponentCreationConfig) {
         taskFactory.register(
-            component.computeTaskName("bundle"),
+            component.computeTaskNameInternal("bundle"),
             null,
             object : TaskConfigAction<Task> {
                 override fun configure(task: Task) {

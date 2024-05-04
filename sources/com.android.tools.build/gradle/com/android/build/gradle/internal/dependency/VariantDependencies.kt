@@ -51,8 +51,7 @@ import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.artifacts.ArtifactView
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.Dependency
-import org.gradle.api.artifacts.ProjectDependency
-import org.gradle.api.artifacts.SelfResolvingDependency
+import org.gradle.api.artifacts.FileCollectionDependency
 import org.gradle.api.artifacts.component.ComponentIdentifier
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
@@ -304,16 +303,18 @@ class VariantDependencies internal constructor(
     fun getArtifactCollectionForToolingModel(
         configType: ConsumedConfigType,
         scope: ArtifactScope,
-        artifactType: AndroidArtifacts.ArtifactType
+        artifactType: AndroidArtifacts.ArtifactType,
+        additionalFilter: ((ComponentIdentifier) -> Boolean)? = null
     ): ArtifactCollection {
-        return computeArtifactCollection(configType, scope, artifactType, null)
+        return computeArtifactCollection(configType, scope, artifactType, null, additionalFilter)
     }
 
     private fun computeArtifactCollection(
         configType: ConsumedConfigType,
         scope: ArtifactScope,
         artifactType: AndroidArtifacts.ArtifactType,
-        attributes: AndroidAttributes?
+        attributes: AndroidAttributes?,
+        additionalFilter: ((ComponentIdentifier) -> Boolean)? = null
     ): ArtifactCollection {
         checkComputeArtifactCollectionArguments(configType, scope, artifactType)
 
@@ -326,7 +327,7 @@ class VariantDependencies internal constructor(
                 }.addAttributesToContainer(container)
                 attributes?.addAttributesToContainer(container)
             }
-        val filter = getComponentFilter(scope)
+        val filter = getComponentFilter(scope, additionalFilter)
         val lenientMode =
             projectOptions[BooleanOption.IDE_BUILD_MODEL_ONLY] || projectOptions[BooleanOption.IDE_BUILD_MODEL_ONLY_V2]
 
@@ -353,8 +354,10 @@ class VariantDependencies internal constructor(
         val dependencies = Callable {
             runtimeClasspath
                 .allDependencies
-                .filterIsInstance<SelfResolvingDependency>()
-                .filter { it !is ProjectDependency }
+                .filterIsInstance<FileCollectionDependency>()
+                // Extract the wrapped FileCollection because FileCollectionDependency will
+                // no longer implement Buildable in 9.0
+                .map { it.files }
         }
 
         // Create a file collection builtBy the dependencies.  The files are resolved later.
@@ -374,7 +377,7 @@ class VariantDependencies internal constructor(
                             .flatMapTo(HashSet()) { it.asFile.readLines(Charsets.UTF_8).asSequence() }
 
                         dependencies.call()
-                            .flatMap { it.resolve() }
+                            .flatMap { it.files }
                             .filter {
                                 filePredicate.test(it) &&
                                         !excludedDirectoriesContent.contains(it.absolutePath)
@@ -384,7 +387,7 @@ class VariantDependencies internal constructor(
         } else {
             services.fileCollection(Callable {
                 dependencies.call()
-                    .flatMap { it.resolve() }
+                    .flatMap { it.files }
                     .filter { filePredicate.test(it) }
             }).builtBy(dependencies)
         }
@@ -566,9 +569,17 @@ class VariantDependencies internal constructor(
             }
         }
 
-        private fun getComponentFilter(scope: ArtifactScope): Spec<ComponentIdentifier>? {
+        private fun getComponentFilter(
+            scope: ArtifactScope,
+            additionalFilter: ((ComponentIdentifier) -> Boolean)? = null
+        ): Spec<ComponentIdentifier>? {
+            if (scope != ArtifactScope.ALL) {
+                check(additionalFilter == null) {
+                    "Additional filter is only respected when scope is ALL"
+                }
+            }
             return when (scope) {
-                ArtifactScope.ALL -> null
+                ArtifactScope.ALL -> additionalFilter?.let { filter -> Spec { filter(it)} }
                 ArtifactScope.EXTERNAL ->
                     // since we want both Module dependencies and file based dependencies in this case
                     // the best thing to do is search for non ProjectComponentIdentifier.

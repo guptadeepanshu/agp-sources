@@ -9,7 +9,7 @@ public interface IntelliJNewUIStateOrBuilder extends
 
   /**
    * <pre>
-   * Indicates whether the user has enabled the new IntellJ UI
+   * Indicates whether the user has enabled the new IntelliJ UI
    * </pre>
    *
    * <code>optional bool is_enabled = 1;</code>
@@ -18,7 +18,7 @@ public interface IntelliJNewUIStateOrBuilder extends
   boolean hasIsEnabled();
   /**
    * <pre>
-   * Indicates whether the user has enabled the new IntellJ UI
+   * Indicates whether the user has enabled the new IntelliJ UI
    * </pre>
    *
    * <code>optional bool is_enabled = 1;</code>

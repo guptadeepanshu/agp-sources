@@ -17,13 +17,14 @@ package com.android.build.api.variant.impl
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.component.analytics.AnalyticsEnabledLibraryVariant
-import com.android.build.api.component.impl.AndroidTestImpl
 import com.android.build.api.component.impl.TestFixturesImpl
 import com.android.build.api.variant.AarMetadata
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.Component
+import com.android.build.api.variant.DeviceTest
 import com.android.build.api.variant.LibraryVariant
 import com.android.build.api.variant.Renderscript
+import com.android.build.api.variant.TestedComponentPackaging
 import com.android.build.gradle.internal.component.LibraryCreationConfig
 import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.core.dsl.LibraryVariantDslInfo
@@ -70,7 +71,7 @@ open class LibraryVariantImpl @Inject constructor(
     internalServices,
     taskCreationServices,
     globalTaskCreationConfig,
-), LibraryVariant, LibraryCreationConfig, HasDeviceTests, HasTestFixtures {
+), LibraryVariant, LibraryCreationConfig, InternalHasDeviceTests, HasTestFixtures {
 
     // ---------------------------------------------------------------------------------------------
     // PUBLIC API
@@ -92,7 +93,8 @@ open class LibraryVariantImpl @Inject constructor(
             value = dslInfo.namespace
         )
 
-    override var androidTest: AndroidTestImpl? = null
+
+    override val deviceTests = mutableListOf<DeviceTest>()
 
     override var testFixtures: TestFixturesImpl? = null
 
@@ -116,6 +118,10 @@ open class LibraryVariantImpl @Inject constructor(
 
     override val androidResources: AndroidResourcesImpl =
         getAndroidResources(dslInfo.androidResourcesDsl.androidResources)
+
+    override val packaging: TestedComponentPackaging by lazy {
+        TestedComponentPackagingImpl(dslInfo.packaging, internalServices)
+    }
 
     // ---------------------------------------------------------------------------------------------
     // INTERNAL API

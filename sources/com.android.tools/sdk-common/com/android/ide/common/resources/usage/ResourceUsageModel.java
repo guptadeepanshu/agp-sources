@@ -61,6 +61,7 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.google.common.io.Files;
 import java.io.File;
 import java.io.IOException;
@@ -68,6 +69,7 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -86,7 +88,7 @@ public class ResourceUsageModel {
         mResourceStore = new ResourceStore();
     }
 
-    ResourceUsageModel(ResourceStore resourceStore) {
+    public ResourceUsageModel(ResourceStore resourceStore) {
         mResourceStore = resourceStore;
     }
 
@@ -202,9 +204,41 @@ public class ResourceUsageModel {
         return false;
     }
 
+    public static boolean markReachable(
+            @Nullable Resource resource, ReachableOrigin reachableParent) {
+        if (resource != null && reachableParent != null) {
+            resource.addReachableParent(reachableParent);
+        }
+        return markReachable(resource);
+    }
+
     private static void markUnreachable(@Nullable Resource resource) {
         if (resource != null) {
             resource.setReachable(false);
+        }
+    }
+
+    public interface ReachableOrigin {
+        public abstract Set<ReachableOrigin> getParents();
+
+        public abstract String toString();
+    }
+
+    public static class ResourceReachableOrigin implements ReachableOrigin {
+        private final Resource resource;
+
+        public ResourceReachableOrigin(Resource resource) {
+            this.resource = resource;
+        }
+
+        @Override
+        public Set<ReachableOrigin> getParents() {
+            return resource.reachableParents;
+        }
+
+        @Override
+        public String toString() {
+            return resource.type + ":" + resource.name + ":" + Integer.toHexString(resource.value);
         }
     }
 
@@ -326,6 +360,8 @@ public class ResourceUsageModel {
 
         public List<Path> declarations;
 
+        public Set<ReachableOrigin> reachableParents;
+
         /** Whether we found a declaration for this resource (otherwise we might have seen
          * a reference to this before we came across its potential declaration, so we added it
          * to the map, but we don't want to report unused resources for invalid resource
@@ -425,6 +461,13 @@ public class ResourceUsageModel {
 
         public void addLocation(@NonNull File file) {
             addLocation(file.toPath());
+        }
+
+        public void addReachableParent(ReachableOrigin parent) {
+            if (reachableParents == null) {
+                reachableParents = Sets.newHashSet();
+            }
+            reachableParents.add(parent);
         }
 
         public void addLocation(@NonNull Path path) {

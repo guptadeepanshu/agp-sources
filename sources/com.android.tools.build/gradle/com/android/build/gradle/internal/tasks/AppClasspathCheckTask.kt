@@ -77,7 +77,7 @@ dependencies {
         TaskCreationAction<AppClasspathCheckTask>() {
 
         override val name: String
-        get() = creationConfig.computeTaskName("check", "Classpath")
+        get() = creationConfig.computeTaskNameInternal("check", "Classpath")
 
         override val type: Class<AppClasspathCheckTask>
             get() = AppClasspathCheckTask::class.java

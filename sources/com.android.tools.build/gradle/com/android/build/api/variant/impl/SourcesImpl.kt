@@ -54,7 +54,7 @@ class SourcesImpl(
         ).also { sourceDirectoriesImpl ->
 
             defaultSourceProvider.getJava(sourceDirectoriesImpl).run {
-                sourceDirectoriesImpl.addSources(this)
+                sourceDirectoriesImpl.addStaticOrGeneratedSources(this)
             }
             updateSourceDirectories(sourceDirectoriesImpl, variantSourceProvider?.java)
         }
@@ -67,7 +67,7 @@ class SourcesImpl(
         ).also { sourceDirectoriesImpl ->
 
             defaultSourceProvider.getKotlin(sourceDirectoriesImpl).run {
-                sourceDirectoriesImpl.addSources(this)
+                sourceDirectoriesImpl.addStaticOrGeneratedSources(this)
             }
             updateSourceDirectories(
                 sourceDirectoriesImpl,
@@ -82,7 +82,7 @@ class SourcesImpl(
         ).also { sourceDirectoriesImpl ->
 
             defaultSourceProvider.getBaselineProfiles(sourceDirectoriesImpl).run {
-                sourceDirectoriesImpl.addSources(this)
+                sourceDirectoriesImpl.addStaticOrGeneratedSources(this)
             }
             updateSourceDirectories(
                 sourceDirectoriesImpl,
@@ -111,7 +111,7 @@ class SourcesImpl(
             val defaultResDirectories = defaultSourceProvider.getRes(sourceDirectoriesImpl) ?: return@let null
             defaultResDirectories.run {
                 forEach {
-                    sourceDirectoriesImpl.addSources(it)
+                    sourceDirectoriesImpl.addStaticSources(it)
                 }
             }
             updateSourceDirectories(sourceDirectoriesImpl, variantSourceProvider?.res)
@@ -126,7 +126,7 @@ class SourcesImpl(
         ).also { sourceDirectoriesImpl ->
 
             defaultSourceProvider.getResources(sourceDirectoriesImpl).run {
-                sourceDirectoriesImpl.addSources(this)
+                sourceDirectoriesImpl.addStaticOrGeneratedSources(this)
             }
             updateSourceDirectories(sourceDirectoriesImpl, variantSourceProvider?.resources)
         }
@@ -140,7 +140,7 @@ class SourcesImpl(
 
             defaultSourceProvider.getAssets(sourceDirectoriesImpl).run {
                 forEach {
-                    sourceDirectoriesImpl.addSources(it)
+                    sourceDirectoriesImpl.addStaticSources(it)
                 }
             }
             updateSourceDirectories(sourceDirectoriesImpl, variantSourceProvider?.assets)
@@ -155,7 +155,7 @@ class SourcesImpl(
 
             defaultSourceProvider.getJniLibs(sourceDirectoriesImpl).run {
                 forEach {
-                    sourceDirectoriesImpl.addSources(it)
+                    sourceDirectoriesImpl.addStaticSources(it)
                 }
             }
             updateSourceDirectories(sourceDirectoriesImpl, variantSourceProvider?.jniLibs)
@@ -171,7 +171,7 @@ class SourcesImpl(
 
                 listOfDirectoryEntries.run {
                     forEach {
-                        sourceDirectoriesImpl.addSources(it)
+                        sourceDirectoriesImpl.addStaticSources(it)
                     }
                 }
                 updateSourceDirectories(sourceDirectoriesImpl, variantSourceProvider?.shaders)
@@ -187,7 +187,7 @@ class SourcesImpl(
             val defaultMlModelsDirectories = defaultSourceProvider.getMlModels(sourceDirectoriesImpl) ?: return@let null
             defaultMlModelsDirectories.run {
                 forEach {
-                    sourceDirectoriesImpl.addSources(it)
+                    sourceDirectoriesImpl.addStaticSources(it)
                 }
             }
             updateSourceDirectories(sourceDirectoriesImpl, variantSourceProvider?.mlModels)
@@ -202,7 +202,7 @@ class SourcesImpl(
         ).let { sourceDirectoriesImpl ->
             val defaultAidlDirectories =
                     defaultSourceProvider.getAidl(sourceDirectoriesImpl) ?: return@let null
-            sourceDirectoriesImpl.addSources(defaultAidlDirectories)
+            sourceDirectoriesImpl.addStaticOrGeneratedSources(defaultAidlDirectories)
             updateSourceDirectories(sourceDirectoriesImpl, variantSourceProvider?.aidl)
             return@let sourceDirectoriesImpl
         }
@@ -218,7 +218,7 @@ class SourcesImpl(
             val defaultRenderscriptDirectories =
                     defaultSourceProvider.getRenderscript(sourceDirectoriesImpl) ?: return@let null
 
-            sourceDirectoriesImpl.addSources(defaultRenderscriptDirectories)
+            sourceDirectoriesImpl.addStaticOrGeneratedSources(defaultRenderscriptDirectories)
             updateSourceDirectories(sourceDirectoriesImpl, variantSourceProvider?.renderscript)
             return@let sourceDirectoriesImpl
         }

@@ -17,7 +17,9 @@ package com.android.build.api.variant.impl
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.attributes.ProductFlavorAttr
+import com.android.build.api.component.impl.DeviceTestImpl
 import com.android.build.api.component.impl.ComponentImpl
+import com.android.build.api.component.impl.ScreenshotTestImpl
 import com.android.build.api.component.impl.UnitTestImpl
 import com.android.build.api.component.impl.features.BuildConfigCreationConfigImpl
 import com.android.build.api.component.impl.features.NativeBuildCreationConfigImpl
@@ -31,7 +33,7 @@ import com.android.build.api.variant.CanMinifyAndroidResourcesBuilder
 import com.android.build.api.variant.CanMinifyCodeBuilder
 import com.android.build.api.variant.Component
 import com.android.build.api.variant.ExternalNativeBuild
-import com.android.build.api.variant.Packaging
+import com.android.build.api.variant.HasDeviceTests
 import com.android.build.api.variant.ResValue
 import com.android.build.api.variant.Variant
 import com.android.build.gradle.internal.DependencyConfigurator
@@ -132,11 +134,6 @@ abstract class VariantImpl<DslInfoT: VariantDslInfo>(
             )
     }
 
-    override val packaging: Packaging by lazy {
-        PackagingImpl(dslInfo.packaging, internalServices)
-    }
-
-
     override val externalNativeBuild: ExternalNativeBuild?
         get() = nativeBuildCreationConfig.externalNativeBuild
 
@@ -218,6 +215,7 @@ abstract class VariantImpl<DslInfoT: VariantDslInfo>(
     override fun makeResValueKey(type: String, name: String): ResValue.Key = ResValueKeyImpl(type, name)
 
     override var unitTest: UnitTestImpl? = null
+    override var screenshotTest: ScreenshotTestImpl? = null
 
     override val pseudoLocalesEnabled: Property<Boolean> by lazy {
         androidResourcesCreationConfig?.pseudoLocalesEnabled
@@ -242,17 +240,15 @@ abstract class VariantImpl<DslInfoT: VariantDslInfo>(
     override val nestedComponents: List<ComponentImpl<*>>
         get() = listOfNotNull(
             unitTest,
-            (this as? HasDeviceTests)?.androidTest,
             (this as? HasTestFixtures)?.testFixtures
-        )
+        ).plus(deviceTests())
 
     override val components: List<Component>
         get() = listOfNotNull(
             this,
             unitTest,
-            (this as? HasDeviceTests)?.androidTest,
             (this as? HasTestFixtures)?.testFixtures
-        )
+        ).plus(deviceTests())
 
     override val manifestPlaceholders: MapProperty<String, String>
         get() = manifestPlaceholdersCreationConfig.placeholders
@@ -263,7 +259,7 @@ abstract class VariantImpl<DslInfoT: VariantDslInfo>(
     }
 
     override val isAndroidTestCoverageEnabled: Boolean
-        get() = (this as? HasDeviceTests)?.androidTest?.isAndroidTestCoverageEnabled == true
+        get() = ((this as? InternalHasDeviceTests)?.defaultDeviceTest as? DeviceTestImpl)?.isAndroidTestCoverageEnabled == true
 
     override val isCoreLibraryDesugaringEnabledLintCheck: Boolean
         get() = if (this is ApkCreationConfig) {
@@ -294,4 +290,8 @@ abstract class VariantImpl<DslInfoT: VariantDslInfo>(
             ImmutableMap.of(name, requestedValues.toList())
         )
     }
+
+    private fun deviceTests(): List<ComponentImpl<*>> =
+        (this as? HasDeviceTests)?.deviceTests?.map { it as ComponentImpl<*> }
+            ?: listOf()
 }

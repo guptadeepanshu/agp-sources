@@ -17,7 +17,6 @@
 package com.android.build.gradle.internal.tasks.factory
 
 import com.android.build.gradle.internal.component.ComponentCreationConfig
-import com.android.build.gradle.internal.profile.AnalyticsService
 import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.BaseTask
@@ -72,9 +71,11 @@ abstract class VariantTaskCreationAction<TaskT, CreationConfigT: ComponentCreati
         creationConfig: CreationConfigT
     ): this(creationConfig, true)
 
-    @JvmOverloads
-    protected fun computeTaskName(prefix: String, suffix: String = ""): String =
-        creationConfig.computeTaskName(prefix, suffix)
+    protected fun computeTaskName(prefix: String, suffix: String): String =
+        creationConfig.computeTaskNameInternal(prefix, suffix)
+
+    protected fun computeTaskName(prefix: String): String =
+        creationConfig.computeTaskNameInternal(prefix)
 
     override fun preConfigure(taskName: String) {
         // default does nothing

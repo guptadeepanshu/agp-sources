@@ -87,7 +87,9 @@ abstract class IssueReporter {
         ACCESSING_DISABLED_FEATURE_VARIANT_API(SyncIssue.TYPE_ACCESSING_DISABLED_FEATURE_VARIANT_API),
         APPLICATION_ID_MUST_NOT_BE_DYNAMIC(SyncIssue.TYPE_APPLICATION_ID_MUST_NOT_BE_DYNAMIC),
         REMOVED_API(SyncIssue.TYPE_REMOVED_API),
-        EMPTY_FLAVOR_DIMENSION(SyncIssue.TYPE_EMPTY_FLAVOR_DIMENSION)
+        EMPTY_FLAVOR_DIMENSION(SyncIssue.TYPE_EMPTY_FLAVOR_DIMENSION),
+        EXCEPTION(SyncIssue.TYPE_EXCEPTION),
+        NAMESPACE_NOT_SET(SyncIssue.TYPE_NAMESPACE_NOT_SET)
     }
 
     protected abstract fun reportIssue(type: Type, severity: Severity, exception: EvalIssueException)

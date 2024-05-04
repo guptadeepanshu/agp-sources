@@ -156,7 +156,7 @@ public enum SdkMavenRepository {
         String version = directories.remove(directories.size() - 1);
         String name = directories.remove(directories.size() - 1);
         String group = String.join(".", directories.subList(2, directories.size()));
-        return new Component(group, name, Version.Companion.parse(version));
+        return new Component(group, name, Version.parse(version));
     }
 
     /**
@@ -212,7 +212,7 @@ public enum SdkMavenRepository {
         Predicate<Revision> revisionFilter =
                 filter == null ? null : (revision) -> filter.test(revisionToVersion(revision));
         return sdkHandler.getLatestLocalPackageForPrefix(
-                prefix, revisionFilter, allowPreview, Version.Companion::parse, progress);
+                prefix, revisionFilter, allowPreview, Version::parse, progress);
     }
 
     @Deprecated
@@ -230,7 +230,7 @@ public enum SdkMavenRepository {
 
     @NonNull
     private static Version revisionToVersion(Revision revision) {
-        return Version.Companion.parse(revision.toString("-"));
+        return Version.parse(revision.toString("-"));
     }
 
     /**
@@ -249,7 +249,7 @@ public enum SdkMavenRepository {
         Predicate<Revision> revisionFilter =
                 filter == null ? null : (revision) -> filter.test(revisionToVersion(revision));
         return sdkHandler.getLatestRemotePackageForPrefix(
-                prefix, revisionFilter, allowPreview, Version.Companion::parse, progress);
+                prefix, revisionFilter, allowPreview, Version::parse, progress);
     }
 
     @Deprecated

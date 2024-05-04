@@ -16,20 +16,26 @@
 
 package com.android.build.gradle.internal.ide.v2
 
+import com.android.builder.core.ComponentTypeImpl
 import com.android.builder.model.v2.ide.ArtifactDependenciesAdjacencyList
 import com.android.builder.model.v2.ide.Library
-import com.android.builder.model.v2.models.VariantDependencies
 import com.android.builder.model.v2.models.VariantDependenciesAdjacencyList
 import java.io.Serializable
 
 data class VariantDependenciesAdjacencyListImpl(
     override val name: String,
     override val mainArtifact: ArtifactDependenciesAdjacencyList,
-    override val androidTestArtifact: ArtifactDependenciesAdjacencyList?,
-    override val unitTestArtifact: ArtifactDependenciesAdjacencyList?,
+    override val deviceTestArtifacts: Map<String, ArtifactDependenciesAdjacencyList>,
+    override val hostTestArtifacts: Map<String, ArtifactDependenciesAdjacencyList>,
     override val testFixturesArtifact: ArtifactDependenciesAdjacencyList?,
     override val libraries: Map<String, Library>
 ) : VariantDependenciesAdjacencyList, Serializable {
+
+    override val androidTestArtifact: ArtifactDependenciesAdjacencyList?
+        get() = deviceTestArtifacts[ComponentTypeImpl.ANDROID_TEST.artifactName]
+    override val unitTestArtifact: ArtifactDependenciesAdjacencyList?
+        get() = hostTestArtifacts[ComponentTypeImpl.UNIT_TEST.artifactName]
+
     companion object {
         @JvmStatic
         private val serialVersionUID: Long = 1L

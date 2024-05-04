@@ -19,6 +19,7 @@ package com.android.build.api.variant.impl
 import com.android.build.api.component.analytics.AnalyticsEnabledDynamicFeatureVariantBuilder
 import com.android.build.api.variant.AndroidTestBuilder
 import com.android.build.api.variant.ComponentIdentity
+import com.android.build.api.variant.DeviceTestBuilder
 import com.android.build.api.variant.DynamicFeatureVariantBuilder
 import com.android.build.api.variant.PropertyAccessNotAllowedException
 import com.android.build.api.variant.VariantBuilder
@@ -76,6 +77,11 @@ open class DynamicFeatureVariantBuilderImpl @Inject constructor(
             _enableMultiDex = value
         }
 
-    override val androidTest: AndroidTestBuilderImpl =
-        AndroidTestBuilderImpl(variantBuilderServices, _enableMultiDex)
+    private val defaultDeviceTestBuilder = DeviceTestBuilderImpl(
+        variantBuilderServices,
+        _enableMultiDex,
+    )
+    override val androidTest: AndroidTestBuilder = AndroidTestBuilderImpl(defaultDeviceTestBuilder)
+    override val deviceTests: List<DeviceTestBuilder>
+        get() = listOf(defaultDeviceTestBuilder)
 }

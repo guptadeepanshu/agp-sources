@@ -173,8 +173,9 @@ class Aapt2DaemonImpl(
         try {
             processOutput.delegate = waitForTask
             Aapt2DaemonUtil.requestLink(writer, request)
-            when (val result = waitForTask.future.get(daemonTimeouts.link, daemonTimeouts.linkUnit)) {
-                is WaitForTaskCompletion.Result.Succeeded -> { }
+            when (val result =
+                waitForTask.future.get(daemonTimeouts.link, daemonTimeouts.linkUnit)) {
+                is WaitForTaskCompletion.Result.Succeeded -> {}
                 is WaitForTaskCompletion.Result.Failed -> {
                     val configWithResourcesListed =
                         if (request.intermediateDir != null) {

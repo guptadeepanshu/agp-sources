@@ -22,6 +22,7 @@ import com.android.build.api.dsl.DataBinding
 import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.VariantBuilder
 import com.android.build.api.variant.impl.AndroidTestBuilderImpl
+import com.android.build.api.variant.impl.DeviceTestBuilderImpl
 import com.android.build.api.variant.impl.GlobalVariantBuilderConfig
 import com.android.build.gradle.internal.api.BaseVariantImpl
 import com.android.build.gradle.internal.api.ReadOnlyObjectProvider
@@ -114,6 +115,22 @@ interface VariantFactory<VariantBuilderT : VariantBuilder, VariantDslInfoT: Vari
         globalConfig: GlobalTaskCreationConfig,
     ): HostTestCreationConfig
 
+    fun createScreenshotTest(
+            componentIdentity: ComponentIdentity,
+            buildFeatures: BuildFeatureValues,
+            dslInfo: HostTestComponentDslInfo,
+            variantDependencies: VariantDependencies,
+            variantSources: VariantSources,
+            paths: VariantPathHelper,
+            artifacts: ArtifactsImpl,
+            variantData: TestVariantData,
+            taskContainer: MutableTaskContainer,
+            testedVariantProperties: VariantCreationConfig,
+            variantServices: VariantServices,
+            taskCreationServices: TaskCreationServices,
+            globalConfig: GlobalTaskCreationConfig,
+    ): HostTestCreationConfig
+
     fun createAndroidTest(
         componentIdentity: ComponentIdentity,
         buildFeatures: BuildFeatureValues,
@@ -128,7 +145,7 @@ interface VariantFactory<VariantBuilderT : VariantBuilder, VariantDslInfoT: Vari
         variantServices: VariantServices,
         taskCreationServices: TaskCreationServices,
         globalConfig: GlobalTaskCreationConfig,
-        androidTestBuilder: AndroidTestBuilderImpl,
+        defaultDeviceTestBuilder: DeviceTestBuilderImpl,
     ): AndroidTestCreationConfig
 
     fun createVariantData(

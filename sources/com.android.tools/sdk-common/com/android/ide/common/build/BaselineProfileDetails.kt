@@ -16,6 +16,7 @@
 package com.android.ide.common.build
 
 import java.io.File
+import java.io.Serializable
 
 /**
  * Specifies Baseline Profiles file and the API range that they support
@@ -28,7 +29,7 @@ data class BaselineProfileDetails(
     val minApi: Int,
     val maxApi: Int,
     val baselineProfiles: Set<File>
-) {
+): Serializable {
     fun getBaselineProfileFile(apkName: String) =
         baselineProfiles.singleOrNull {
             it.nameWithoutExtension == apkName

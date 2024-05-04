@@ -27,7 +27,6 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -212,22 +211,11 @@ public class SystemImageManager {
             abi = SdkConstants.ABI_ARMEABI;
         }
 
-        IdDisplay tag;
         IdDisplay vendor = null;
         if (details instanceof DetailsTypes.AddonDetailsType) {
             vendor = ((DetailsTypes.AddonDetailsType) details).getVendor();
         } else if (details instanceof DetailsTypes.SysImgDetailsType) {
             vendor = ((DetailsTypes.SysImgDetailsType) details).getVendor();
-        }
-
-        if (details instanceof DetailsTypes.SysImgDetailsType) {
-            // TODO: support multi-tag
-            List<IdDisplay> tags = ((DetailsTypes.SysImgDetailsType) details).getTags();
-            tag = tags.isEmpty() ? SystemImageTags.DEFAULT_TAG : tags.get(0);
-        } else if (details instanceof DetailsTypes.AddonDetailsType) {
-            tag = ((DetailsTypes.AddonDetailsType) details).getTag();
-        } else {
-            tag = SystemImageTags.DEFAULT_TAG;
         }
 
         Path skinDir = dir.resolve(SdkConstants.FD_SKINS);
@@ -240,7 +228,7 @@ public class SystemImageManager {
         } else {
             skins = new Path[0];
         }
-        return new SystemImage(dir, tag, vendor, abi, skins, p);
+        return new SystemImage(dir, SystemImageTags.getTags(p), vendor, abi, skins, p);
     }
 
     @Nullable

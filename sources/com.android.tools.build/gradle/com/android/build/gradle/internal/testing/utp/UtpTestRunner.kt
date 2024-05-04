@@ -43,6 +43,7 @@ class UtpTestRunner @JvmOverloads constructor(
         private val emulatorControlConfig: EmulatorControlConfig,
         private val retentionConfig: RetentionConfig,
         private val useOrchestrator: Boolean,
+        private val forceCompilation: Boolean,
         private val uninstallIncompatibleApks: Boolean,
         private val utpTestResultListener: UtpTestResultListener?,
         private val utpLoggingLevel: Level,
@@ -99,6 +100,7 @@ class UtpTestRunner @JvmOverloads constructor(
                     retentionConfig,
                     File(coverageDir, deviceConnector.name),
                     useOrchestrator,
+                    forceCompilation,
                     if (additionalTestOutputEnabled && additionalTestOutputDir != null) {
                         File(additionalTestOutputDir, deviceConnector.name)
                     } else {

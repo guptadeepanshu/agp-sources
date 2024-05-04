@@ -130,6 +130,7 @@ data class RichVersion(
          * optional preferred version; if there is no such `!!` substring, the whole string denotes
          * a required version range (which handles its upper bound more permissively).
          */
+        @JvmStatic
         fun parse(string: String): RichVersion {
             return when (val bangs = string.indexOf("!!")) {
                 // Gradle refuses to parse a RichVersion identifier with !! at index 0.  We do the
@@ -151,6 +152,7 @@ data class RichVersion(
          * Return a [RichVersion] with a [Kind.REQUIRE] declaration on the singleton (given)
          * version.
          */
+        @JvmStatic
         fun require(version: Version): RichVersion =
             RichVersion(Declaration(Kind.REQUIRE, VersionRange(Range.singleton(version))))
     }

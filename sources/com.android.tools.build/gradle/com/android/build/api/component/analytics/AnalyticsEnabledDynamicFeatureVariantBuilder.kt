@@ -17,6 +17,7 @@
 package com.android.build.api.component.analytics
 
 import com.android.build.api.variant.AndroidTestBuilder
+import com.android.build.api.variant.DeviceTestBuilder
 import com.android.build.api.variant.DynamicFeatureVariantBuilder
 import com.android.build.api.variant.PropertyAccessNotAllowedException
 import com.android.tools.build.gradle.internal.profile.VariantMethodType
@@ -71,5 +72,27 @@ open class AnalyticsEnabledDynamicFeatureVariantBuilder @Inject constructor(
             stats.variantApiAccessBuilder.addVariantAccessBuilder().type =
                 VariantMethodType.ANDROID_TEST_BUILDER_VALUE
             return _androidTest
+        }
+
+    override val deviceTests: List<DeviceTestBuilder>
+        get() {
+            stats.variantApiAccessBuilder.addVariantAccessBuilder().type =
+                VariantMethodType.DEVICE_TESTS_BUILDER_VALUE
+            // return a copy of the list every time as new items may have
+            // been added to it since last call.
+            return delegate.deviceTests.map {
+                @Suppress("DEPRECATION")
+                if (it is AndroidTestBuilder) {
+                    AnalyticsEnabledAndroidTestBuilder(
+                        it,
+                        stats
+                    )
+                } else {
+                    AnalyticsEnabledDeviceTestBuilder(
+                        it,
+                        stats
+                    )
+                }
+            }
         }
 }

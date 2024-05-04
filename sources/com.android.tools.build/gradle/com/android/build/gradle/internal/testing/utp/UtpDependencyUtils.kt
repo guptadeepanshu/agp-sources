@@ -17,9 +17,8 @@
 package com.android.build.gradle.internal.testing.utp
 
 import com.android.Version.ANDROID_TOOLS_BASE_VERSION
+import com.android.build.gradle.internal.component.ComponentCreationConfig
 import org.gradle.api.NonExtensible
-import org.gradle.api.Project
-import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ConfigurationContainer
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.tasks.Classpath
@@ -191,19 +190,19 @@ abstract class UtpDependencies {
 /**
  * Looks for Nitrogen configurations in a project and creates and add to the project with default
  * values if missing.
- *
- * @param project a project for the resulted [Configuration] to be added to.
  */
-fun maybeCreateUtpConfigurations(project: Project) {
+fun maybeCreateUtpConfigurations(creationConfig: ComponentCreationConfig) {
+    val configurations = creationConfig.services.configurations
+    val dependencies = creationConfig.services.dependencies
     UtpDependency.values().forEach { nitrogenDependency ->
-        if (project.configurations.findByName(nitrogenDependency.configurationName) == null) {
-            project.configurations.create(nitrogenDependency.configurationName).apply {
+        if (configurations.findByName(nitrogenDependency.configurationName) == null) {
+            configurations.create(nitrogenDependency.configurationName).apply {
                 isVisible = false
                 isTransitive = true
                 isCanBeConsumed = false
                 description = "A configuration to resolve the Unified Test Platform dependencies."
             }
-            project.dependencies.add(
+            dependencies.add(
                 nitrogenDependency.configurationName,
                 nitrogenDependency.mavenCoordinate())
         }

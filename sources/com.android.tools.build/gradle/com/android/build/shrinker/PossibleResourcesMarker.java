@@ -16,7 +16,6 @@
 
 package com.android.build.shrinker;
 
-import static com.android.ide.common.resources.ResourcesUtil.resourceNameToFieldName;
 import static com.google.common.collect.ImmutableSet.toImmutableSet;
 import static java.lang.Character.isDigit;
 
@@ -118,11 +117,13 @@ public class PossibleResourcesMarker {
                             boolean justName = true;
                             boolean formatting = false;
                             boolean haveSlash = false;
+                            boolean haveDot = false;
                             for (int i = 0; i < n; i++) {
                                 char c = string.charAt(i);
                                 haveSlash |= c == '/';
                                 formatting |= c == '%';
                                 justName = justName && !(c == ':' || c == '%' || c == '/');
+                                haveDot |= c == '.';
                             }
 
                             Stream<Resource> reachable =
@@ -130,12 +131,16 @@ public class PossibleResourcesMarker {
                                             foundWebContent
                                                     ? possibleWebResources(names, string)
                                                     : Stream.empty(),
-                                            justName ? possiblePrefixMatch(string) : Stream.empty(),
+                                            justName
+                                                    ? possiblePrefixMatch(
+                                                            replaceDots(string, haveDot))
+                                                    : Stream.empty(),
                                             formatting && !haveSlash
                                                     ? possibleFormatting(string)
                                                     : Stream.empty(),
                                             haveSlash
-                                                    ? possibleTypedResource(names, string)
+                                                    ? possibleTypedResource(
+                                                            names, replaceDots(string, haveDot))
                                                     : Stream.empty(),
                                             possibleIntResource(string));
 
@@ -149,6 +154,10 @@ public class PossibleResourcesMarker {
                                                                     + string));
                         })
                 .forEach(ResourceUsageModel::markReachable);
+    }
+
+    private static String replaceDots(String string, boolean haveDot) {
+        return haveDot ? string.replace('.', '_') : string;
     }
 
     private Stream<Resource> possibleWebResources(
@@ -175,7 +184,7 @@ public class PossibleResourcesMarker {
         // Check for a simple prefix match, e.g. as in
         // getResources().getIdentifier("ic_video_codec_" + codecName, "drawable", ...)
         return resourceStore.getResources().stream()
-                .filter(resource -> resource.name.startsWith(resourceNameToFieldName(string)));
+                .filter(resource -> resource.name.startsWith(string));
     }
 
     private Stream<Resource> possibleFormatting(String string) {
@@ -195,7 +204,7 @@ public class PossibleResourcesMarker {
         // Try to pick out the resource name pieces; if we can find the
         // resource type unambiguously; if not, just match on names
         int slash = string.indexOf('/');
-        String name = resourceNameToFieldName(string.substring(slash + 1));
+        String name = string.substring(slash + 1);
         if (name.isEmpty() || !names.contains(name)) {
             return Stream.empty();
         }

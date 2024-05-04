@@ -16,6 +16,7 @@
 package com.android.sdklib.internal.avd;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
+import static java.util.stream.Collectors.joining;
 
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
@@ -77,6 +78,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.OptionalLong;
@@ -133,9 +135,21 @@ public class AvdManager {
     public static final String AVD_INI_TAG_ID = "tag.id"; //$NON-NLS-1$
 
     /**
+     * AVD/config.ini key name for the tag ids of the AVD's system image, represented as a
+     * comma-separated list
+     */
+    public static final String AVD_INI_TAG_IDS = "tag.ids"; // $NON-NLS-1$
+
+    /**
      * AVD/config.ini key name representing the tag display of the specific avd
      */
     public static final String AVD_INI_TAG_DISPLAY = "tag.display"; //$NON-NLS-1$
+
+    /**
+     * AVD/config.ini key name for the display names of the tags of the AVD's system image,
+     * represented as a comma-separated list
+     */
+    public static final String AVD_INI_TAG_DISPLAYNAMES = "tag.displaynames"; // $NON-NLS-1$
 
     /**
      * AVD/config.ini key name representing the abi type of the specific avd
@@ -337,6 +351,10 @@ public class AvdManager {
     public static final String AVD_INI_ROLL_DEFAULTS = "hw.sensor.roll.defaults";
     public static final String AVD_INI_ROLL_RADIUS = "hw.sensor.roll.radius";
     public static final String AVD_INI_ROLL_DIRECTION = "hw.sensor.roll.direction";
+
+    /** AVD/user-settings.ini key for Preferred ABI */
+    public static final String USER_SETTINGS_INI_PREFERRED_ABI = "abi.type.preferred";
+
     public static final String AVD_INI_ROLL_RESIZE_1_AT_POSTURE =
             "hw.sensor.roll.resize_to_displayRegion.0.1_at_posture";
     public static final String AVD_INI_ROLL_RESIZE_2_AT_POSTURE =
@@ -373,6 +391,7 @@ public class AvdManager {
     public static final String USERDATA_IMG = "userdata.img";
     public static final String USERDATA_QEMU_IMG = "userdata-qemu.img";
     public static final String SNAPSHOTS_DIRECTORY = "snapshots";
+    public static final String USER_SETTINGS_INI = "user-settings.ini"; // $NON-NLS-1$
 
     private static final String BOOT_PROP = "boot.prop"; //$NON-NLS-1$
     static final String CONFIG_INI = "config.ini"; //$NON-NLS-1$
@@ -833,6 +852,7 @@ public class AvdManager {
      * @param sdcard the parameter value for the sdCard. Can be null. This is either a path to an
      *     existing sdcard image or a sdcard size (\d+, \d+K, \dM).
      * @param hardwareConfig the hardware setup for the AVD. Can be null to use defaults.
+     * @param userSettings optional settings for the AVD. Can be null.
      * @param bootProps the optional boot properties for the AVD. Can be null.
      * @param removePrevious If true remove any previous files.
      * @param editExisting If true, edit an existing AVD, changing only the minimum required. This
@@ -850,6 +870,7 @@ public class AvdManager {
             @Nullable String skinName,
             @Nullable String sdcard,
             @Nullable Map<String, String> hardwareConfig,
+            @Nullable Map<String, String> userSettings,
             @Nullable Map<String, String> bootProps,
             boolean deviceHasPlayStore,
             boolean removePrevious,
@@ -917,6 +938,12 @@ public class AvdManager {
             IdDisplay tag = systemImage.getTag();
             configValues.put(AVD_INI_TAG_ID, tag.getId());
             configValues.put(AVD_INI_TAG_DISPLAY, tag.getDisplay());
+            List<IdDisplay> tags = systemImage.getTags();
+            configValues.put(
+                    AVD_INI_TAG_IDS, tags.stream().map(IdDisplay::getId).collect(joining(",")));
+            configValues.put(
+                    AVD_INI_TAG_DISPLAYNAMES,
+                    tags.stream().map(IdDisplay::getDisplay).collect(joining(",")));
             configValues.put(AVD_INI_ABI_TYPE, systemImage.getAbiType());
             configValues.put(AVD_INI_PLAYSTORE_ENABLED, Boolean.toString(deviceHasPlayStore && systemImage.hasPlayStore()));
             configValues.put(
@@ -931,6 +958,16 @@ public class AvdManager {
             writeCpuArch(systemImage, hardwareConfig, mLog);
 
             addHardwareConfig(systemImage, skinFolder, avdFolder, hardwareConfig, configValues);
+
+            if (userSettings != null) {
+                try {
+                    writeIniFile(avdFolder.resolve(USER_SETTINGS_INI), userSettings, true);
+                }
+                catch (IOException e) {
+                    mLog.warning("Could not write user settings file (at %1$s): %2$s",
+                                 avdFolder.resolve(USER_SETTINGS_INI).toString(), e);
+                }
+            }
 
             if (bootProps != null && !bootProps.isEmpty()) {
                 Path bootPropsFile = avdFolder.resolve(BOOT_PROP);

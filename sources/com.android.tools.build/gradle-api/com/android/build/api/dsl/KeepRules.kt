@@ -8,6 +8,10 @@ import org.gradle.api.Incubating
 @Incubating
 interface KeepRules {
 
+    @Incubating
+    @Deprecated("Renamed to ignoreFrom", replaceWith = ReplaceWith("ignoreFrom"))
+    fun ignoreExternalDependencies(vararg ids: String)
+
     /**
      * Ignore keep rules from listed external dependencies. External dependencies can be specified
      * via GAV coordinates(e.g. "groupId:artifactId:version") or in the format of
@@ -15,11 +19,18 @@ interface KeepRules {
      * groupId & artifactId.
      */
     @Incubating
-    fun ignoreExternalDependencies(vararg ids: String)
+    fun ignoreFrom(vararg ids: String)
+
+    @Incubating
+    @Deprecated(
+        "Renamed to ignoreFromAllExternalDependencies",
+        replaceWith = ReplaceWith("ignoreFromAllExternalDependencies")
+    )
+    fun ignoreAllExternalDependencies(ignore: Boolean)
 
     /**
      * Ignore keep rules from all the external dependencies.
      */
     @Incubating
-    fun ignoreAllExternalDependencies(ignore: Boolean)
+    fun ignoreFromAllExternalDependencies(ignore: Boolean)
 }

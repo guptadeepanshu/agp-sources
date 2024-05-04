@@ -28,6 +28,6 @@ object AnchorTaskNames {
      * from a bundle file.
      */
     fun getExtractApksAnchorTaskName(componentImpl: ComponentCreationConfig): String {
-        return componentImpl.computeTaskName("extractApksFor")
+        return componentImpl.computeTaskNameInternal("extractApksFor")
     }
 }

@@ -56,7 +56,7 @@ internal fun configureKotlinTestDependencyForUnitTestCompilation(
         unitTestComponent.androidKotlinCompilation,
         kotlinMultiplatformExtension,
         testFrameworkCapabilityProvider = project.tasks.named(
-            unitTestComponent.computeTaskName(ComponentType.UNIT_TEST_PREFIX)
+            unitTestComponent.computeTaskNameInternal(ComponentType.UNIT_TEST_PREFIX)
         ).map {
             testFrameworkCapabilityOf(testFrameworkOf(it as Test?))
         }

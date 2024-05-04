@@ -82,6 +82,7 @@ class LegacyVariantInputManager(
         var testFixturesSourceSet: LazyAndroidSourceSet? = null
         var androidTestSourceSet: LazyAndroidSourceSet? = null
         var unitTestSourceSet: LazyAndroidSourceSet? = null
+        var screenshotTestSourceSet: LazyAndroidSourceSet? = null
         if (componentType.hasTestComponents) {
             androidTestSourceSet =
                 sourceSetManager.setUpTestSourceSet(ComponentType.ANDROID_TEST_PREFIX)
@@ -89,6 +90,10 @@ class LegacyVariantInputManager(
                 sourceSetManager.setUpTestSourceSet(ComponentType.UNIT_TEST_PREFIX)
             testFixturesSourceSet =
                 sourceSetManager.setUpSourceSet(ComponentType.TEST_FIXTURES_PREFIX)
+            screenshotTestSourceSet =
+                if (dslServices.projectOptions[BooleanOption.ENABLE_SCREENSHOT_TEST]) {
+                    sourceSetManager.setUpSourceSet(ComponentType.SCREENSHOT_TEST_PREFIX)
+                } else null
         }
 
         defaultConfigData = DefaultConfigData(
@@ -97,6 +102,7 @@ class LegacyVariantInputManager(
             testFixturesSourceSet = testFixturesSourceSet,
             androidTestSourceSet = androidTestSourceSet,
             unitTestSourceSet = unitTestSourceSet,
+            screenshotTestSourceSet = screenshotTestSourceSet,
             lazySourceSetCreation = dslServices.projectOptions[BooleanOption.ENABLE_NEW_TEST_DSL]
         )
 

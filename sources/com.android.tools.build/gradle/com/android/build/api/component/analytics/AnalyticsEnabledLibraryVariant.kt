@@ -17,10 +17,11 @@
 package com.android.build.api.component.analytics
 
 import com.android.build.api.variant.AarMetadata
-import com.android.build.api.variant.AndroidTest
+import com.android.build.api.variant.DeviceTest
 import com.android.build.api.variant.LibraryVariant
 import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.TestFixtures
+import com.android.build.api.variant.TestedComponentPackaging
 import com.android.tools.build.gradle.internal.profile.VariantPropertiesMethodType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.model.ObjectFactory
@@ -34,7 +35,7 @@ open class AnalyticsEnabledLibraryVariant @Inject constructor(
     delegate, stats, objectFactory
 ), LibraryVariant {
 
-    private val userVisibleAndroidTest: AnalyticsEnabledAndroidTest? by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
+    private val userVisibleAndroidTest: AnalyticsEnabledAndroidTest? by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
         delegate.androidTest?.let {
             objectFactory.newInstance(
                 AnalyticsEnabledAndroidTest::class.java,
@@ -44,14 +45,15 @@ open class AnalyticsEnabledLibraryVariant @Inject constructor(
         }
     }
 
-    override val androidTest: AndroidTest?
+    @Suppress("DEPRECATION")
+    override val androidTest: com.android.build.api.variant.AndroidTest?
         get() {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.ANDROID_TEST_VALUE
             return userVisibleAndroidTest
         }
 
-    private val userVisibleTestFixtures: TestFixtures? by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
+    private val userVisibleTestFixtures: TestFixtures? by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
         delegate.testFixtures?.let {
             objectFactory.newInstance(
                 AnalyticsEnabledTestFixtures::class.java,
@@ -68,7 +70,7 @@ open class AnalyticsEnabledLibraryVariant @Inject constructor(
             return userVisibleTestFixtures
         }
 
-    private val userVisibleRenderscript: Renderscript by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
+    private val userVisibleRenderscript: Renderscript by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
         objectFactory.newInstance(
             AnalyticsEnabledRenderscript::class.java,
             delegate.renderscript,
@@ -85,7 +87,7 @@ open class AnalyticsEnabledLibraryVariant @Inject constructor(
             } else null
         }
 
-    private val userVisibleAarMetadata: AarMetadata by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
+    private val userVisibleAarMetadata: AarMetadata by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
         objectFactory.newInstance(
             AnalyticsEnabledAarMetadata::class.java,
             delegate.aarMetadata,
@@ -104,5 +106,36 @@ open class AnalyticsEnabledLibraryVariant @Inject constructor(
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.CODE_MINIFICATION_VALUE
             return delegate.isMinifyEnabled
+        }
+
+    override val deviceTests: List<DeviceTest>
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.DEVICE_TESTS_VALUE
+            // return a new list everytime as items may eventually be added through future APIs.
+            // we may consider returning a live list instead.
+            return delegate.deviceTests.map {
+                @Suppress("DEPRECATION")
+                if (it is com.android.build.api.variant.AndroidTest) {
+                    AnalyticsEnabledAndroidTest(it, stats, objectFactory)
+                } else {
+                    AnalyticsEnabledDeviceTest(it, stats, objectFactory)
+                }
+            }
+        }
+
+    private val userVisiblePackaging: TestedComponentPackaging by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
+        objectFactory.newInstance(
+            AnalyticsEnabledTestedComponentPackaging::class.java,
+            delegate.packaging,
+            stats
+        )
+    }
+
+    override val packaging: TestedComponentPackaging
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.PACKAGING_OPTIONS_VALUE
+            return userVisiblePackaging
         }
 }

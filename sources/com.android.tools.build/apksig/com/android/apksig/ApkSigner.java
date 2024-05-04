@@ -16,6 +16,7 @@
 
 package com.android.apksig;
 
+import static com.android.apksig.Constants.LIBRARY_PAGE_ALIGNMENT_BYTES;
 import static com.android.apksig.apk.ApkUtils.SOURCE_STAMP_CERTIFICATE_HASH_ZIP_ENTRY_NAME;
 import static com.android.apksig.internal.apk.v3.V3SchemeConstants.MIN_SDK_WITH_V31_SUPPORT;
 import static com.android.apksig.internal.apk.v3.V3SchemeConstants.MIN_SDK_WITH_V3_SUPPORT;
@@ -25,6 +26,7 @@ import com.android.apksig.apk.ApkSigningBlockNotFoundException;
 import com.android.apksig.apk.ApkUtils;
 import com.android.apksig.apk.MinSdkVersionException;
 import com.android.apksig.internal.apk.v3.V3SchemeConstants;
+import com.android.apksig.internal.util.AndroidSdkVersion;
 import com.android.apksig.internal.util.ByteBufferDataSource;
 import com.android.apksig.internal.zip.CentralDirectoryRecord;
 import com.android.apksig.internal.zip.EocdRecord;
@@ -82,8 +84,6 @@ public class ApkSigner {
      */
     private static final short ALIGNMENT_ZIP_EXTRA_DATA_FIELD_MIN_SIZE_BYTES = 6;
 
-    private static final short ANDROID_COMMON_PAGE_ALIGNMENT_BYTES = 4096;
-
     private static final short ANDROID_FILE_ALIGNMENT_BYTES = 4096;
 
     /** Name of the Android manifest ZIP entry in APKs. */
@@ -106,6 +106,8 @@ public class ApkSigner {
     private final boolean mV4ErrorReportingEnabled;
     private final boolean mDebuggableApkPermitted;
     private final boolean mOtherSignersSignaturesPreserved;
+    private final boolean mAlignmentPreserved;
+    private final int mLibraryPageAlignmentBytes;
     private final String mCreatedBy;
 
     private final ApkSignerEngine mSignerEngine;
@@ -139,6 +141,8 @@ public class ApkSigner {
             boolean v4ErrorReportingEnabled,
             boolean debuggableApkPermitted,
             boolean otherSignersSignaturesPreserved,
+            boolean alignmentPreserved,
+            int libraryPageAlignmentBytes,
             String createdBy,
             ApkSignerEngine signerEngine,
             File inputApkFile,
@@ -166,6 +170,8 @@ public class ApkSigner {
         mV4ErrorReportingEnabled = v4ErrorReportingEnabled;
         mDebuggableApkPermitted = debuggableApkPermitted;
         mOtherSignersSignaturesPreserved = otherSignersSignaturesPreserved;
+        mAlignmentPreserved = alignmentPreserved;
+        mLibraryPageAlignmentBytes = libraryPageAlignmentBytes;
         mCreatedBy = createdBy;
 
         mSignerEngine = signerEngine;
@@ -297,13 +303,20 @@ public class ApkSigner {
             List<DefaultApkSignerEngine.SignerConfig> engineSignerConfigs =
                     new ArrayList<>(mSignerConfigs.size());
             for (SignerConfig signerConfig : mSignerConfigs) {
-                engineSignerConfigs.add(
+                DefaultApkSignerEngine.SignerConfig.Builder signerConfigBuilder =
                         new DefaultApkSignerEngine.SignerConfig.Builder(
-                                        signerConfig.getName(),
-                                        signerConfig.getPrivateKey(),
-                                        signerConfig.getCertificates(),
-                                        signerConfig.getDeterministicDsaSigning())
-                                .build());
+                                signerConfig.getName(),
+                                signerConfig.getPrivateKey(),
+                                signerConfig.getCertificates(),
+                                signerConfig.getDeterministicDsaSigning());
+                int signerMinSdkVersion = signerConfig.getMinSdkVersion();
+                SigningCertificateLineage signerLineage =
+                        signerConfig.getSigningCertificateLineage();
+                if (signerMinSdkVersion > 0) {
+                    signerConfigBuilder.setLineageForMinSdkVersion(signerLineage,
+                            signerMinSdkVersion);
+                }
+                engineSignerConfigs.add(signerConfigBuilder.build());
             }
             DefaultApkSignerEngine.Builder signerEngineBuilder =
                     new DefaultApkSignerEngine.Builder(engineSignerConfigs, minSdkVersion)
@@ -437,7 +450,7 @@ public class ApkSigner {
                 // Output entry's Local File Header + data
                 long outputLocalFileHeaderOffset = outputOffset;
                 OutputSizeAndDataOffset outputLfrResult =
-                        outputInputJarEntryLfhRecordPreservingDataAlignment(
+                        outputInputJarEntryLfhRecord(
                                 inputApkLfhSection,
                                 inputLocalFileRecord,
                                 outputApkOut,
@@ -736,14 +749,14 @@ public class ApkSigner {
         }
     }
 
-    private static OutputSizeAndDataOffset outputInputJarEntryLfhRecordPreservingDataAlignment(
+    private OutputSizeAndDataOffset outputInputJarEntryLfhRecord(
             DataSource inputLfhSection,
             LocalFileRecord inputRecord,
             DataSink outputLfhSection,
             long outputOffset)
             throws IOException {
         long inputOffset = inputRecord.getStartOffsetInArchive();
-        if (inputOffset == outputOffset) {
+        if (inputOffset == outputOffset && mAlignmentPreserved) {
             // This record's data will be aligned same as in the input APK.
             return new OutputSizeAndDataOffset(
                     inputRecord.outputRecord(inputLfhSection, outputLfhSection),
@@ -751,8 +764,8 @@ public class ApkSigner {
         }
         int dataAlignmentMultiple = getInputJarEntryDataAlignmentMultiple(inputRecord);
         if ((dataAlignmentMultiple <= 1)
-                || ((inputOffset % dataAlignmentMultiple)
-                        == (outputOffset % dataAlignmentMultiple))) {
+                || ((inputOffset % dataAlignmentMultiple) == (outputOffset % dataAlignmentMultiple)
+                        && mAlignmentPreserved)) {
             // This record's data will be aligned same as in the input APK.
             return new OutputSizeAndDataOffset(
                     inputRecord.outputRecord(inputLfhSection, outputLfhSection),
@@ -760,7 +773,7 @@ public class ApkSigner {
         }
 
         long inputDataStartOffset = inputOffset + inputRecord.getDataStartOffsetInRecord();
-        if ((inputDataStartOffset % dataAlignmentMultiple) != 0) {
+        if ((inputDataStartOffset % dataAlignmentMultiple) != 0 && mAlignmentPreserved) {
             // This record's data is not aligned in the input APK. No need to align it in the
             // output.
             return new OutputSizeAndDataOffset(
@@ -785,7 +798,7 @@ public class ApkSigner {
                 dataOffset);
     }
 
-    private static int getInputJarEntryDataAlignmentMultiple(LocalFileRecord entry) {
+    private int getInputJarEntryDataAlignmentMultiple(LocalFileRecord entry) {
         if (entry.isDataCompressed()) {
             // Compressed entries don't need to be aligned
             return 1;
@@ -825,7 +838,7 @@ public class ApkSigner {
         }
 
         // Fall back to filename-based defaults
-        return (entry.getName().endsWith(".so")) ? ANDROID_COMMON_PAGE_ALIGNMENT_BYTES : 4;
+        return (entry.getName().endsWith(".so")) ? mLibraryPageAlignmentBytes : 4;
     }
 
     private static ByteBuffer createExtraFieldToAlignData(
@@ -1018,18 +1031,19 @@ public class ApkSigner {
         private final String mName;
         private final PrivateKey mPrivateKey;
         private final List<X509Certificate> mCertificates;
-        private boolean mDeterministicDsaSigning;
+        private final boolean mDeterministicDsaSigning;
+        private final int mMinSdkVersion;
+        private final SigningCertificateLineage mSigningCertificateLineage;
 
-        private SignerConfig(
-                String name,
-                PrivateKey privateKey,
-                List<X509Certificate> certificates,
-                boolean deterministicDsaSigning) {
-            mName = name;
-            mPrivateKey = privateKey;
-            mCertificates = Collections.unmodifiableList(new ArrayList<>(certificates));
-            mDeterministicDsaSigning = deterministicDsaSigning;
+        private SignerConfig(Builder builder) {
+            mName = builder.mName;
+            mPrivateKey = builder.mPrivateKey;
+            mCertificates = Collections.unmodifiableList(new ArrayList<>(builder.mCertificates));
+            mDeterministicDsaSigning = builder.mDeterministicDsaSigning;
+            mMinSdkVersion = builder.mMinSdkVersion;
+            mSigningCertificateLineage = builder.mSigningCertificateLineage;
         }
+
         /** Returns the name of this signer. */
         public String getName() {
             return mName;
@@ -1048,12 +1062,21 @@ public class ApkSigner {
             return mCertificates;
         }
 
-
         /**
          * If this signer is a DSA signer, whether or not the signing is done deterministically.
          */
         public boolean getDeterministicDsaSigning() {
             return mDeterministicDsaSigning;
+        }
+
+        /** Returns the minimum SDK version for which this signer should be used. */
+        public int getMinSdkVersion() {
+            return mMinSdkVersion;
+        }
+
+        /** Returns the {@link SigningCertificateLineage} for this signer. */
+        public SigningCertificateLineage getSigningCertificateLineage() {
+            return mSigningCertificateLineage;
         }
 
         /** Builder of {@link SignerConfig} instances. */
@@ -1062,6 +1085,9 @@ public class ApkSigner {
             private final PrivateKey mPrivateKey;
             private final List<X509Certificate> mCertificates;
             private final boolean mDeterministicDsaSigning;
+
+            private int mMinSdkVersion;
+            private SigningCertificateLineage mSigningCertificateLineage;
 
             /**
              * Constructs a new {@code Builder}.
@@ -1104,13 +1130,71 @@ public class ApkSigner {
                 mDeterministicDsaSigning = deterministicDsaSigning;
             }
 
+            /** @see #setLineageForMinSdkVersion(SigningCertificateLineage, int) */
+            public Builder setMinSdkVersion(int minSdkVersion) {
+                return setLineageForMinSdkVersion(null, minSdkVersion);
+            }
+
+            /**
+             * Sets the specified {@code minSdkVersion} as the minimum Android platform version
+             * (API level) for which the provided {@code lineage} (where applicable) should be used
+             * to produce the APK's signature. This method is useful if callers want to specify a
+             * particular rotated signer or lineage with restricted capabilities for later
+             * platform releases.
+             *
+             * <p><em>Note:</em>>The V1 and V2 signature schemes do not support key rotation and
+             * signing lineages with capabilities; only an app's original signer(s) can be used for
+             * the V1 and V2 signature blocks. Because of this, only a value of {@code
+             * minSdkVersion} >= 28 (Android P) where support for the V3 signature scheme was
+             * introduced can be specified.
+             *
+             * <p><em>Note:</em>Due to limitations with platform targeting in the V3.0 signature
+             * scheme, specifying a {@code minSdkVersion} value <= 32 (Android Sv2) will result in
+             * the current {@code SignerConfig} being used in the V3.0 signing block and applied to
+             * Android P through at least Sv2 (and later depending on the {@code minSdkVersion} for
+             * subsequent {@code SignerConfig} instances). Because of this, only a single {@code
+             * SignerConfig} can be instantiated with a minimum SDK version <= 32.
+             *
+             * @param lineage the {@code SigningCertificateLineage} to target the specified {@code
+             *                minSdkVersion}
+             * @param minSdkVersion the minimum SDK version for which this {@code SignerConfig}
+             *                      should be used
+             * @return this {@code Builder} instance
+             *
+             * @throws IllegalArgumentException if the provided {@code minSdkVersion} < 28 or the
+             * certificate provided in the constructor is not in the specified {@code lineage}.
+             */
+            public Builder setLineageForMinSdkVersion(SigningCertificateLineage lineage,
+                    int minSdkVersion) {
+                if (minSdkVersion < AndroidSdkVersion.P) {
+                    throw new IllegalArgumentException(
+                            "SDK targeted signing config is only supported with the V3 signature "
+                                    + "scheme on Android P (SDK version "
+                                    + AndroidSdkVersion.P + ") and later");
+                }
+                if (minSdkVersion < MIN_SDK_WITH_V31_SUPPORT) {
+                    minSdkVersion = AndroidSdkVersion.P;
+                }
+                mMinSdkVersion = minSdkVersion;
+                // If a lineage is provided, ensure the signing certificate for this signer is in
+                // the lineage; in the case of multiple signing certificates, the first is always
+                // used in the lineage.
+                if (lineage != null && !lineage.isCertificateInLineage(mCertificates.get(0))) {
+                    throw new IllegalArgumentException(
+                            "The provided lineage does not contain the signing certificate, "
+                                    + mCertificates.get(0).getSubjectDN()
+                                    + ", for this SignerConfig");
+                }
+                mSigningCertificateLineage = lineage;
+                return this;
+            }
+
             /**
              * Returns a new {@code SignerConfig} instance configured based on the configuration of
              * this builder.
              */
             public SignerConfig build() {
-                return new SignerConfig(mName, mPrivateKey, mCertificates,
-                        mDeterministicDsaSigning);
+                return new SignerConfig(this);
             }
         }
     }
@@ -1142,6 +1226,8 @@ public class ApkSigner {
         private boolean mV4ErrorReportingEnabled = false;
         private boolean mDebuggableApkPermitted = true;
         private boolean mOtherSignersSignaturesPreserved;
+        private boolean mAlignmentPreserved = false;
+        private int mLibraryPageAlignmentBytes = LIBRARY_PAGE_ALIGNMENT_BYTES;
         private String mCreatedBy;
         private Integer mMinSdkVersion;
         private int mRotationMinSdkVersion = V3SchemeConstants.DEFAULT_ROTATION_MIN_SDK_VERSION;
@@ -1629,6 +1715,26 @@ public class ApkSigner {
         }
 
         /**
+         * Sets whether the existing alignment within the APK should be preserved; the
+         * default for this setting is false. When this value is false, the value provided to
+         * {@link #setLibraryPageAlignmentBytes(int)} will be used to page align native library
+         * files and 4 bytes will be used to align all other uncompressed files.
+         */
+        public Builder setAlignmentPreserved(boolean alignmentPreserved) {
+            mAlignmentPreserved = alignmentPreserved;
+            return this;
+        }
+
+        /**
+         * Sets the number of bytes to be used to page align native library files in the APK; the
+         * default for this setting is {@link Constants#LIBRARY_PAGE_ALIGNMENT_BYTES}.
+         */
+        public Builder setLibraryPageAlignmentBytes(int libraryPageAlignmentBytes) {
+            mLibraryPageAlignmentBytes = libraryPageAlignmentBytes;
+            return this;
+        }
+
+        /**
          * Returns a new {@code ApkSigner} instance initialized according to the configuration of
          * this builder.
          */
@@ -1679,6 +1785,8 @@ public class ApkSigner {
                     mV4ErrorReportingEnabled,
                     mDebuggableApkPermitted,
                     mOtherSignersSignaturesPreserved,
+                    mAlignmentPreserved,
+                    mLibraryPageAlignmentBytes,
                     mCreatedBy,
                     mSignerEngine,
                     mInputApkFile,

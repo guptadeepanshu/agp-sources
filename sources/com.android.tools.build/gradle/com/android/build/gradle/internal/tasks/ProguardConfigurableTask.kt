@@ -28,6 +28,10 @@ import com.android.build.gradle.internal.component.ConsumableCreationConfig
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.dependency.AarToRClassTransform
+import com.android.build.gradle.internal.dsl.ModulePropertyKey
+import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType
+import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInternalArtifactType
+import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.PROJECT
@@ -38,23 +42,29 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedCon
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.GENERATED_PROGUARD_FILE
+import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.builder.core.ComponentType
 import com.android.build.gradle.internal.tasks.factory.features.OptimizationTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.features.OptimizationTaskCreationActionImpl
 import com.android.build.gradle.internal.utils.fromDisallowChanges
+import com.android.build.gradle.options.BooleanOption
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
+import com.android.builder.core.ComponentType
+import com.android.builder.core.ComponentTypeImpl
 import com.google.common.base.Preconditions
 import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.artifacts.transform.TransformParameters
 import org.gradle.api.artifacts.transform.TransformSpec
 import org.gradle.api.artifacts.type.ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE
 import org.gradle.api.attributes.Usage
+import org.gradle.api.attributes.Usage.JAVA_RUNTIME
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.ProjectLayout
+import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
@@ -71,7 +81,9 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.work.DisableCachingByDefault
+import org.jetbrains.kotlin.gradle.utils.`is`
 import java.io.File
+import java.util.concurrent.Callable
 import javax.inject.Inject
 
 /**
@@ -113,6 +125,7 @@ abstract class ProguardConfigurableTask(
     abstract val referencedResources: ConfigurableFileCollection
 
     @get:InputFiles
+    @get:Optional
     @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val extractedDefaultProguardFile: DirectoryProperty
 
@@ -134,10 +147,10 @@ abstract class ProguardConfigurableTask(
     abstract val libraryKeepRulesFileCollection: ConfigurableFileCollection
 
     @get:Input
-    abstract val ignoredLibraryKeepRules: SetProperty<String>
+    abstract val ignoreFromInKeepRules: SetProperty<String>
 
     @get:Input
-    abstract val ignoreAllLibraryKeepRules: Property<Boolean>
+    abstract val ignoreFromAllExternalDependenciesInKeepRules: Property<Boolean>
 
     @get:OutputFile
     abstract val mappingFile: RegularFileProperty
@@ -183,7 +196,7 @@ abstract class ProguardConfigurableTask(
         return proguardFiles.files.mapNotNull { proguardFile ->
             // if the file is a default proguard file, swap its location with the directory
             // where the final artifacts are.
-            if (defaultFiles.contains(proguardFile)) {
+            if (defaultFiles.contains(proguardFile) && extractedDefaultProguardFile.isPresent) {
                extractedDefaultProguardFile.get().file(proguardFile.name).asFile
             } else {
                 removeIfAbsent(proguardFile)
@@ -201,6 +214,200 @@ abstract class ProguardConfigurableTask(
             logger.warn("Supplied proguard configuration does not exist: ${file.path}")
             null
         }
+    }
+
+    abstract class PrivacySandboxSdkCreationAction<TaskT : ProguardConfigurableTask, CreationConfigT: PrivacySandboxSdkVariantScope>
+    @JvmOverloads
+    internal constructor(
+        private val creationConfig: CreationConfigT,
+        private val addCompileRClass: Boolean
+    ): TaskCreationAction<TaskT>() {
+
+        private val classes: FileCollection
+        private val referencedClasses: FileCollection
+        private val referencedResources: FileCollection
+
+        private val externalInputScopes = setOf(
+            InternalScopedArtifacts.InternalScope.SUB_PROJECTS,
+            InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS,
+        )
+
+        init {
+            classes = creationConfig.services.fileCollection().also {
+                it.from(
+                    creationConfig.artifacts.get(FusedLibraryInternalArtifactType.MERGED_CLASSES)
+                )
+                externalInputScopes.forEach { scope ->
+                    it.from(
+                        creationConfig.artifacts.forScope(scope)
+                            .getFinalArtifacts(ScopedArtifact.CLASSES)
+                    )
+                }
+            }
+
+            val referencedButNotMergedScopes =
+                mutableSetOf(InternalScopedArtifacts.InternalScope.COMPILE_ONLY)
+
+            referencedClasses = creationConfig.services.fileCollection().also {
+                referencedButNotMergedScopes.forEach { scope ->
+                    it.from(creationConfig.artifacts.forScope(
+                        scope
+                    ).getFinalArtifacts(ScopedArtifact.CLASSES))
+                }
+            }
+            referencedResources = creationConfig.services.fileCollection().also {
+                referencedButNotMergedScopes.forEach { scope ->
+                    it.from(creationConfig.artifacts.forScope(
+                        scope
+                    ).getFinalArtifacts(ScopedArtifact.JAVA_RES))
+                }
+            }
+        }
+
+        override fun handleProvider(
+            taskProvider: TaskProvider<TaskT>
+        ) {
+            super.handleProvider(taskProvider)
+
+            creationConfig.artifacts
+                .setInitialProvider(taskProvider,
+                    ProguardConfigurableTask::mappingFile)
+                .on(SingleArtifact.OBFUSCATION_MAPPING_FILE)
+        }
+
+        override fun configure(
+            task: TaskT
+        ) {
+            task.configureVariantProperties(
+                "",
+                creationConfig.services.buildServiceRegistry
+            )
+            task.projectPath.setDisallowChanges(creationConfig.services.projectInfo.path)
+            task.componentType.set(ComponentTypeImpl.BASE_APK)
+            task.includeFeaturesInScopes.set(false)
+
+            val hasAllAccessTransformers = creationConfig.artifacts.forScope(Scope.ALL)
+                .getScopedArtifactsContainer(ScopedArtifact.CLASSES).artifactsAltered.get()
+            task.hasAllAccessTransformers.set(hasAllAccessTransformers)
+
+            task.classes.from(classes)
+            if (addCompileRClass) {
+                task.classes.from(
+                    creationConfig
+                        .artifacts
+                        .get(InternalArtifactType.COMPILE_R_CLASS_JAR)
+                )
+            }
+
+            registerAarToRClassTransform(task)
+            task.referencedClasses.from(referencedClasses)
+            task.referencedResources.from(referencedResources)
+
+            task.extractedDefaultProguardFile.set(
+                creationConfig.artifacts.get(InternalArtifactType.DEFAULT_PROGUARD_FILES)
+            )
+
+            applyProguardRules(task, creationConfig, task.testedMappingFile)
+        }
+
+        private fun applyProguardRules(
+            task: ProguardConfigurableTask,
+            creationConfig: PrivacySandboxSdkVariantScope,
+            inputProguardMapping: FileCollection?,
+        ) {
+            task.libraryKeepRules = creationConfig.dependencies.getArtifactCollection(
+                JAVA_RUNTIME,
+                ALL,
+                AndroidArtifacts.ArtifactType.FILTERED_PROGUARD_RULES
+            )
+            task.libraryKeepRulesFileCollection.from(task.libraryKeepRules.artifactFiles)
+            task.ignoreFromInKeepRules.set(
+                creationConfig.optimization.keepRules.ignoreFrom
+            )
+            task.ignoreFromAllExternalDependenciesInKeepRules.set(
+                creationConfig.optimization.keepRules.ignoreFromAllExternalDependencies
+            )
+
+            applyProguardConfigForNonTest(task, creationConfig)
+
+            if (inputProguardMapping != null) {
+                task.dependsOn(inputProguardMapping)
+            }
+        }
+
+        private fun applyProguardConfigForNonTest(
+            task: ProguardConfigurableTask,
+            creationConfig: PrivacySandboxSdkVariantScope
+        ) {
+            val experimentalProperties = creationConfig.experimentalProperties
+            experimentalProperties.finalizeValue()
+            val optimize =
+                ModulePropertyKey.OptionalBoolean.ANDROID_PRIVACY_SANDBOX_R8_OPTIMIZATION.getValue(
+                    experimentalProperties.get()
+                ) ?: false
+
+            creationConfig.optimization.let {
+                val postprocessingFeatures = PostprocessingFeatures(
+                    optimize, false, optimize
+                )
+
+                setActions(postprocessingFeatures)
+            }
+
+            task.generatedProguardFile.apply {
+                from(Callable {
+                    creationConfig.artifacts.get(GENERATED_PROGUARD_FILE)
+                        .takeIf { it.isPresent }
+                })
+            }
+
+            task.configurationFiles.apply {
+                from(creationConfig.optimization.keepRules.files)
+                from(task.libraryKeepRulesFileCollection)
+                from(Callable {
+                    creationConfig.artifacts.get(PrivacySandboxSdkInternalArtifactType.GENERATED_PROGUARD_FILE)
+                        .takeIf { it.isPresent }
+                })
+                disallowChanges()
+            }
+
+            keep("class **.R")
+            keep("class **.R$* {*;}")
+            dontWarn("javax.**")
+        }
+
+        private fun registerAarToRClassTransform(task: ProguardConfigurableTask) {
+            val apiUsage: Usage = task.objectFactory.named(Usage::class.java, Usage.JAVA_API)
+
+            creationConfig.services.dependencies.registerTransform(
+                AarToRClassTransform::class.java
+            ) { reg: TransformSpec<TransformParameters.None> ->
+                reg.from.attribute(
+                    ARTIFACT_TYPE_ATTRIBUTE,
+                    creationConfig.aarOrJarTypeToConsume.aar.type
+                )
+                reg.from.attribute(
+                    Usage.USAGE_ATTRIBUTE,
+                    apiUsage
+                )
+                reg.to.attribute(
+                    ARTIFACT_TYPE_ATTRIBUTE,
+                    AndroidArtifacts.ArtifactType.R_CLASS_JAR.type
+                )
+                reg.to.attribute(
+                    Usage.USAGE_ATTRIBUTE,
+                    apiUsage
+                )
+            }
+        }
+
+        protected abstract fun keep(keep: String)
+
+        protected abstract fun keepAttributes()
+
+        protected abstract fun dontWarn(dontWarn: String)
+
+        protected abstract fun setActions(actions: PostprocessingFeatures)
     }
 
     abstract class CreationAction<TaskT : ProguardConfigurableTask, CreationConfigT: ConsumableCreationConfig>
@@ -227,17 +434,21 @@ abstract class ProguardConfigurableTask(
 
         private val classes: FileCollection
 
+        private val disableMinifyLocalDeps = creationConfig.services.projectOptions.get(
+            BooleanOption.DISABLE_MINIFY_LOCAL_DEPENDENCIES_FOR_LIBRARIES)
+
         private val externalInputScopes =
-            when {
-                componentType.isAar -> setOf(
-                    InternalScopedArtifacts.InternalScope.LOCAL_DEPS
-                )
-                else -> setOf(
+            if (componentType.isAar) {
+                if (disableMinifyLocalDeps) {
+                    setOf()
+                } else {
+                    setOf(InternalScopedArtifacts.InternalScope.LOCAL_DEPS)
+                }
+            } else {
+                setOf(
                     InternalScopedArtifacts.InternalScope.SUB_PROJECTS,
                     InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS,
-                    InternalScopedArtifacts.InternalScope.FEATURES.takeIf {
-                        includeFeaturesInScopes
-                    }
+                    InternalScopedArtifacts.InternalScope.FEATURES.takeIf { includeFeaturesInScopes }
                 ).filterNotNull().toSet()
             }
 
@@ -247,6 +458,9 @@ abstract class ProguardConfigurableTask(
                     if (componentType.isAar) {
                         add(InternalScopedArtifacts.InternalScope.SUB_PROJECTS)
                         add(InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS)
+                        if (disableMinifyLocalDeps) {
+                            add(InternalScopedArtifacts.InternalScope.LOCAL_DEPS)
+                        }
                     }
 
                 if (componentType.isTestComponent) {
@@ -415,8 +629,9 @@ abstract class ProguardConfigurableTask(
                             FILTERED_PROGUARD_RULES
                     )
             task.libraryKeepRulesFileCollection.from(task.libraryKeepRules.artifactFiles)
-            task.ignoredLibraryKeepRules.set(optimizationCreationConfig.ignoredLibraryKeepRules)
-            task.ignoreAllLibraryKeepRules.set(optimizationCreationConfig.ignoreAllLibraryKeepRules)
+            task.ignoreFromInKeepRules.set(optimizationCreationConfig.ignoreFromInKeepRules)
+            task.ignoreFromAllExternalDependenciesInKeepRules.set(
+                optimizationCreationConfig.ignoreFromAllExternalDependenciesInKeepRules)
 
             when {
                 testedConfig != null -> {
@@ -478,31 +693,27 @@ abstract class ProguardConfigurableTask(
             val postprocessingFeatures = optimizationCreationConfig.postProcessingFeatures
             postprocessingFeatures?.let { setActions(postprocessingFeatures) }
 
-            val aaptProguardFile =
-                if (task.includeFeaturesInScopes.get()) {
-                    creationConfig.artifacts.get(
-                        InternalArtifactType.MERGED_AAPT_PROGUARD_FILE)
-                } else {
-                    creationConfig.artifacts.get(
-                        InternalArtifactType.AAPT_PROGUARD_FILE
-                    )
-                }
-
             task.generatedProguardFile.fromDisallowChanges(
                 creationConfig.artifacts.get(GENERATED_PROGUARD_FILE)
             )
 
-            val configurationFiles = task.project.files(
-                optimizationCreationConfig.proguardFiles,
-                aaptProguardFile,
-                task.libraryKeepRulesFileCollection
-            )
-
-            if (task.includeFeaturesInScopes.get()) {
-                addFeatureProguardRules(creationConfig, configurationFiles)
+            task.configurationFiles.apply {
+                from(optimizationCreationConfig.proguardFiles)
+                from(task.libraryKeepRulesFileCollection)
+                if (task.includeFeaturesInScopes.get()) {
+                    from(creationConfig.artifacts.get(InternalArtifactType.MERGED_AAPT_PROGUARD_FILE))
+                    from(getFeatureProguardRules(creationConfig))
+                } else {
+                    from(Callable {
+                        // Consume AAPT_PROGUARD_FILE only if it is produced (see b/319132114).
+                        // The `Provider.isPresent` check needs to happen lazily when all
+                        // producers/consumers have been finalized, so we do this inside a Callable.
+                        creationConfig.artifacts.get(InternalArtifactType.AAPT_PROGUARD_FILE)
+                            .takeIf { it.isPresent }
+                    })
+                }
+                disallowChanges()
             }
-
-            task.configurationFiles.from(configurationFiles)
 
             if (creationConfig.componentType.isAar) {
                 keep("class **.R")
@@ -518,17 +729,9 @@ abstract class ProguardConfigurableTask(
             }
         }
 
-        private fun addFeatureProguardRules(
-            creationConfig: ConsumableCreationConfig,
-            configurationFiles: ConfigurableFileCollection
-        ) {
-            configurationFiles.from(
-                creationConfig.variantDependencies.getArtifactFileCollection(
-                    REVERSE_METADATA_VALUES,
-                    PROJECT,
-                    FILTERED_PROGUARD_RULES
-                )
-            )
+        private fun getFeatureProguardRules(creationConfig: ConsumableCreationConfig): FileCollection {
+            return creationConfig.variantDependencies
+                .getArtifactFileCollection(REVERSE_METADATA_VALUES, PROJECT, FILTERED_PROGUARD_RULES)
         }
 
         protected abstract fun keep(keep: String)

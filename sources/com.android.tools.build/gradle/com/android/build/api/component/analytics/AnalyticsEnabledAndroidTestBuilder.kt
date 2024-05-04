@@ -16,16 +16,17 @@
 
 package com.android.build.api.component.analytics
 
-import com.android.build.api.variant.AndroidTestBuilder
 import com.android.build.api.variant.PropertyAccessNotAllowedException
 import com.android.tools.build.gradle.internal.profile.VariantMethodType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 
+@Suppress("DEPRECATION")
 open class AnalyticsEnabledAndroidTestBuilder(
-        val delegate: AndroidTestBuilder,
+        val delegate: com.android.build.api.variant.AndroidTestBuilder,
         val stats: GradleBuildVariant.Builder,
-): AndroidTestBuilder {
+): com.android.build.api.variant.AndroidTestBuilder {
 
+    @Deprecated("replaced with DeviceTestBuilder.enable")
     override var enable: Boolean
         get() = delegate.enable
         set(value) {
@@ -33,11 +34,14 @@ open class AnalyticsEnabledAndroidTestBuilder(
                     VariantMethodType.ANDROID_TEST_ENABLED_VALUE
             delegate.enable = value
         }
+
+    @Deprecated("replaced with DeviceTestBuilder.setEnableMultiDex")
     override var enableMultiDex: Boolean?
         get() =  throw PropertyAccessNotAllowedException("enableMultiDex", "AndroidTestBuilder")
         set(value) {
             stats.variantApiAccessBuilder.addVariantAccessBuilder().type =
                     VariantMethodType.ENABLE_MULTI_DEX_VALUE
+            @Suppress("DEPRECATION")
             delegate.enableMultiDex = value
         }
 }

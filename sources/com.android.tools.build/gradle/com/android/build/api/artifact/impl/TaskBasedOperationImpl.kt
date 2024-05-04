@@ -57,7 +57,12 @@ class TaskBasedOperationImpl<TaskT: Task>(
         taskInput: (TaskT) -> RegularFileProperty,
         taskOutput: (TaskT) -> RegularFileProperty
     ): InAndOutFileOperationRequest =
-        InAndOutFileOperationRequestImpl(artifacts, taskProvider, taskInput, taskOutput).also {
+        InAndOutFileOperationRequestImpl(
+            artifacts,
+            taskProvider,
+            taskInput,
+            taskOutput
+        ).also {
             artifacts.addRequest(it)
             closeRequest()
         }

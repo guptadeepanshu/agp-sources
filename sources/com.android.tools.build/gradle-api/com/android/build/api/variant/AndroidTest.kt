@@ -26,14 +26,14 @@ import java.io.Serializable
 /**
  * Model for Android Test components that contains build-time properties
  *
- * This object is accessible on subtypes of [Variant] that implement [HasAndroidTest], via
- * [HasAndroidTest.androidTest]. It is also part of [Variant.nestedComponents].
+ * This object is accessible on subtypes of [Variant] that implement [HasDeviceTests], via
+ * [HasDeviceTests.androidTest]. It is also part of [Variant.nestedComponents].
  *
  * The presence of this component in a variant is controlled by
- * [HasAndroidTestBuilder.androidTest.enable] which is accessible on subtypes of [VariantBuilder]
- * that implement [HasAndroidTestBuilder]
+ * [HasDeviceTestsBuilder.deviceTests.enable] which is accessible on subtypes of [VariantBuilder]
+ * that implement [HasDeviceTestsBuilder]
  */
-interface AndroidTest : GeneratesTestApk, TestComponent, HasAndroidResources {
+interface AndroidTest : GeneratesTestApk, HasAndroidResources, DeviceTest {
 
     /**
      * Variant's application ID as present in the final manifest file of the APK.
@@ -43,18 +43,19 @@ interface AndroidTest : GeneratesTestApk, TestComponent, HasAndroidResources {
     /**
      * Variant's [BuildConfigField] which will be generated in the BuildConfig class.
      */
-    val buildConfigFields: MapProperty<String, out BuildConfigField<out Serializable>>
+    override val buildConfigFields: MapProperty<String, out BuildConfigField<out Serializable>>
 
     /**
      * Variant's signingConfig, initialized by the corresponding DSL element.
      * @return Variant's config or null if the variant is not configured for signing.
      */
-    val signingConfig: SigningConfig?
+    override val signingConfig: SigningConfig?
 
     /**
      * List of proguard configuration files for this variant. The list is initialized from the
      * corresponding DSL element, and cannot be queried at configuration time. At configuration time,
      * you can only add new elements to the list.
      */
-    val proguardFiles: ListProperty<RegularFile>
+    override val proguardFiles: ListProperty<RegularFile>
+
 }

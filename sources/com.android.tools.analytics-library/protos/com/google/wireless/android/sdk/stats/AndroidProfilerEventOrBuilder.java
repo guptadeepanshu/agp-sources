@@ -708,4 +708,104 @@ public interface AndroidProfilerEventOrBuilder extends
    * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27;</code>
    */
   com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadataOrBuilder getPowerProfilerCaptureMetadataOrBuilder();
+
+  /**
+   * <pre>
+   * Set if |type| is |TASK_ENTERED|
+   * </pre>
+   *
+   * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28;</code>
+   * @return Whether the taskEnteredMetadata field is set.
+   */
+  boolean hasTaskEnteredMetadata();
+  /**
+   * <pre>
+   * Set if |type| is |TASK_ENTERED|
+   * </pre>
+   *
+   * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28;</code>
+   * @return The taskEnteredMetadata.
+   */
+  com.google.wireless.android.sdk.stats.TaskEnteredMetadata getTaskEnteredMetadata();
+  /**
+   * <pre>
+   * Set if |type| is |TASK_ENTERED|
+   * </pre>
+   *
+   * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28;</code>
+   */
+  com.google.wireless.android.sdk.stats.TaskEnteredMetadataOrBuilder getTaskEnteredMetadataOrBuilder();
+
+  /**
+   * <pre>
+   * Set if |type| is |TASK_FINISHED|
+   * </pre>
+   *
+   * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29;</code>
+   * @return Whether the taskFinishedMetadata field is set.
+   */
+  boolean hasTaskFinishedMetadata();
+  /**
+   * <pre>
+   * Set if |type| is |TASK_FINISHED|
+   * </pre>
+   *
+   * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29;</code>
+   * @return The taskFinishedMetadata.
+   */
+  com.google.wireless.android.sdk.stats.TaskFinishedMetadata getTaskFinishedMetadata();
+  /**
+   * <pre>
+   * Set if |type| is |TASK_FINISHED|
+   * </pre>
+   *
+   * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29;</code>
+   */
+  com.google.wireless.android.sdk.stats.TaskFinishedMetadataOrBuilder getTaskFinishedMetadataOrBuilder();
+
+  /**
+   * <pre>
+   * Set if |type| is |TASK_FAILED|
+   * </pre>
+   *
+   * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30;</code>
+   * @return Whether the taskFailedMetadata field is set.
+   */
+  boolean hasTaskFailedMetadata();
+  /**
+   * <pre>
+   * Set if |type| is |TASK_FAILED|
+   * </pre>
+   *
+   * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30;</code>
+   * @return The taskFailedMetadata.
+   */
+  com.google.wireless.android.sdk.stats.TaskFailedMetadata getTaskFailedMetadata();
+  /**
+   * <pre>
+   * Set if |type| is |TASK_FAILED|
+   * </pre>
+   *
+   * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30;</code>
+   */
+  com.google.wireless.android.sdk.stats.TaskFailedMetadataOrBuilder getTaskFailedMetadataOrBuilder();
+
+  /**
+   * <pre>
+   * Set if |type| is |TASK_SETTINGS_OPENED|
+   * </pre>
+   *
+   * <code>optional bool is_task_settings_changed = 31;</code>
+   * @return Whether the isTaskSettingsChanged field is set.
+   */
+  boolean hasIsTaskSettingsChanged();
+  /**
+   * <pre>
+   * Set if |type| is |TASK_SETTINGS_OPENED|
+   * </pre>
+   *
+   * <code>optional bool is_task_settings_changed = 31;</code>
+   * @return The isTaskSettingsChanged.
+   */
+  boolean getIsTaskSettingsChanged();
 }

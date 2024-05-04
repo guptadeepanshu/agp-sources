@@ -625,4 +625,33 @@ public interface GradleBuildProjectOrBuilder extends
    * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
    */
   com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptionsOrBuilder getCompileOptionsOrBuilder();
+
+  /**
+   * <pre>
+   * The NDK version
+   * </pre>
+   *
+   * <code>optional string ndk_version = 21;</code>
+   * @return Whether the ndkVersion field is set.
+   */
+  boolean hasNdkVersion();
+  /**
+   * <pre>
+   * The NDK version
+   * </pre>
+   *
+   * <code>optional string ndk_version = 21;</code>
+   * @return The ndkVersion.
+   */
+  java.lang.String getNdkVersion();
+  /**
+   * <pre>
+   * The NDK version
+   * </pre>
+   *
+   * <code>optional string ndk_version = 21;</code>
+   * @return The bytes for ndkVersion.
+   */
+  com.google.protobuf.ByteString
+      getNdkVersionBytes();
 }

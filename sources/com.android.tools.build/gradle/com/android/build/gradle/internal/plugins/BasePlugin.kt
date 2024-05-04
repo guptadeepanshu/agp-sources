@@ -53,6 +53,7 @@ import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.dsl.BuildType
 import com.android.build.gradle.internal.dsl.CommonExtensionImpl
 import com.android.build.gradle.internal.dsl.DefaultConfig
+import com.android.build.gradle.internal.dsl.ModulePropertyKey
 import com.android.build.gradle.internal.dsl.ProductFlavor
 import com.android.build.gradle.internal.dsl.SigningConfig
 import com.android.build.gradle.internal.errors.DeprecationReporterImpl
@@ -65,7 +66,7 @@ import com.android.build.gradle.internal.ide.v2.GlobalSyncService
 import com.android.build.gradle.internal.ide.v2.NativeModelBuilder
 import com.android.build.gradle.internal.lint.LintFixBuildService
 import com.android.build.gradle.internal.profile.AnalyticsUtil
-import com.android.build.gradle.internal.projectIsolationRequested
+import com.android.build.gradle.internal.projectIsolationActive
 import com.android.build.gradle.internal.scope.DelayedActionsExecutor
 import com.android.build.gradle.internal.services.Aapt2DaemonBuildService
 import com.android.build.gradle.internal.services.Aapt2ThreadPoolBuildService
@@ -147,7 +148,8 @@ abstract class BasePlugin<
                 VariantT: Variant>(
     val registry: ToolingModelBuilderRegistry,
     val componentFactory: SoftwareComponentFactory,
-    listenerRegistry: BuildEventsListenerRegistry
+    listenerRegistry: BuildEventsListenerRegistry,
+    private val gradleBuildFeatures: org.gradle.api.configuration.BuildFeatures,
 ): AndroidPluginBaseServices(listenerRegistry), Plugin<Project> {
 
     init {
@@ -348,7 +350,7 @@ abstract class BasePlugin<
 
     override fun apply(project: Project) {
         runAction {
-            basePluginApply(project)
+            basePluginApply(project, gradleBuildFeatures)
             pluginSpecificApply(project)
             project.pluginManager.apply(AndroidBasePlugin::class.java)
         }
@@ -416,7 +418,7 @@ abstract class BasePlugin<
 
         // TODO(b/189990965) Re-enable checking minimum versions of certain plugins once
         // https://github.com/gradle/gradle/issues/23838 is fixed
-        if (!projectIsolationRequested(project.providers)) {
+        if (!gradleBuildFeatures.projectIsolationActive()) {
             enforceMinimumVersionsOfPlugins(project, issueReporter)
         }
 
@@ -682,8 +684,10 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
         if (projectBuilder != null) {
             projectBuilder
                 .setCompileSdk(extension.compileSdkVersion)
-                .setBuildToolsVersion(extension.buildToolsRevision.toString()).splits =
-                AnalyticsUtil.toProto(extension.splits)
+                .setBuildToolsVersion(extension.buildToolsRevision.toString())
+                .setSplits(AnalyticsUtil.toProto(extension.splits))
+                .setNdkVersion(newExtension.ndkVersion)
+
             getKotlinAndroidPluginVersion(project)?.let {
                 projectBuilder.kotlinPluginVersion = it
             }
@@ -710,6 +714,24 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
             }
         variantManager.createVariants(buildFeatureValues)
         val variants = variantManager.mainComponents
+        projectBuilder?.let { builder ->
+            variants.forEach { variant ->
+                variant.variant.experimentalProperties.get().keys.forEach { modulePropertyKey ->
+                    ModulePropertyKey.OptionalString[modulePropertyKey]?.name?.let {
+                        AnalyticsUtil.toProto(it).number
+                    }?.let { builder.optionsBuilder.addModulePropertyKeys(it) }
+                    ModulePropertyKey.BooleanWithDefault[modulePropertyKey]?.name?.let {
+                        AnalyticsUtil.toProto(it).number
+                    }?.let { builder.optionsBuilder.addModulePropertyKeys(it) }
+                    ModulePropertyKey.Dependencies[modulePropertyKey]?.name?.let {
+                        AnalyticsUtil.toProto(it).number
+                    }?.let { builder.optionsBuilder.addModulePropertyKeys(it) }
+                    ModulePropertyKey.OptionalBoolean[modulePropertyKey]?.name?.let {
+                        AnalyticsUtil.toProto(it).number
+                    }?.let { builder.optionsBuilder.addModulePropertyKeys(it) }
+                }
+            }
+        }
         val taskManager = createTaskManager(
             project,
             variants,

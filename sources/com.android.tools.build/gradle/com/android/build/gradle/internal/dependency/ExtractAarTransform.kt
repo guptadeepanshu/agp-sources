@@ -16,10 +16,11 @@
 
 package com.android.build.gradle.internal.dependency
 
-import com.android.SdkConstants.FD_JARS
-import com.android.SdkConstants.FN_CLASSES_JAR
-import com.android.builder.aar.AarExtractor
+import com.android.SdkConstants
+import com.android.build.gradle.internal.caching.DisabledCachingReason
+import com.android.builder.utils.isValidZipEntryName
 import com.android.utils.FileUtils
+import com.google.common.annotations.VisibleForTesting
 import com.google.common.io.Files
 import org.gradle.api.artifacts.transform.InputArtifact
 import org.gradle.api.artifacts.transform.TransformAction
@@ -28,44 +29,107 @@ import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Classpath
 import org.gradle.work.DisableCachingByDefault
-import java.io.BufferedOutputStream
+import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 import java.util.jar.JarOutputStream
-import java.util.jar.Manifest
+import java.util.zip.ZipInputStream
 
-/** Transform that extracts an AAR file into a directory.  */
-@DisableCachingByDefault
+/**
+ * Transform that extracts an AAR file into a directory.
+ *
+ * Note: There are small adjustments made to the extracted contents (see [AarExtractor.extract]).
+ */
+@DisableCachingByDefault(because = DisabledCachingReason.COPY_TASK)
 abstract class ExtractAarTransform: TransformAction<GenericTransformParameters> {
 
     @get:Classpath
     @get:InputArtifact
-    abstract val primaryInput: Provider<FileSystemLocation>
+    abstract val aarFile: Provider<FileSystemLocation>
 
     override fun transform(outputs: TransformOutputs) {
         //TODO(b/162813654) record transform execution span
-        val inputFile = primaryInput.get().asFile
-        val name = Files.getNameWithoutExtension(inputFile.name)
-        val outputDir = outputs.dir(name)
+        val inputFile = aarFile.get().asFile
+        val outputDir = outputs.dir(inputFile.nameWithoutExtension)
         FileUtils.mkdirs(outputDir)
-        val aarExtractor = AarExtractor()
-        aarExtractor.extract(inputFile, outputDir)
-
-        // Verify that we have a classes.jar, if we don't just create an empty one.
-        val classesJar = File(File(outputDir, FD_JARS), FN_CLASSES_JAR)
-        if (!classesJar.exists()) {
-            try {
-                Files.createParentDirs(classesJar)
-                FileOutputStream(classesJar).use { out ->
-                    // FileOutputStream above is the actual OS resource that will get closed,
-                    // JarOutputStream writes the bytes or an empty jar in it.
-                    val jarOutputStream = JarOutputStream(BufferedOutputStream(out), Manifest())
-                    jarOutputStream.close()
-                }
-            } catch (e: IOException) {
-                throw RuntimeException("Cannot create missing classes.jar", e)
-            }
-        }
+        AarExtractor().extract(inputFile, outputDir)
     }
 }
+
+private const val LIBS_PREFIX = SdkConstants.LIBS_FOLDER + '/'
+private const val LIBS_PREFIX_LENGTH = LIBS_PREFIX.length
+private const val JARS_PREFIX_LENGTH = SdkConstants.FD_JARS.length + 1
+
+@VisibleForTesting
+internal class AarExtractor {
+
+    /**
+     * [StringBuilder] used to construct all paths. It gets truncated back to [JARS_PREFIX_LENGTH]
+     * on every calculation.
+     */
+    private val stringBuilder = StringBuilder(60).apply {
+        append(SdkConstants.FD_JARS)
+        append(File.separatorChar)
+    }
+
+    private fun choosePathInOutput(entryName: String): String {
+        stringBuilder.setLength(JARS_PREFIX_LENGTH)
+
+        return when {
+            entryName == SdkConstants.FN_CLASSES_JAR || entryName == SdkConstants.FN_LINT_JAR -> {
+                stringBuilder.append(entryName)
+                stringBuilder.toString()
+            }
+            entryName.startsWith(LIBS_PREFIX) -> {
+                // In case we have libs/classes.jar we are going to rename them, due an issue in
+                // Gradle.
+                // TODO: stop doing this once this is fixed in gradle. b/65298222
+                when (val pathWithinLibs = entryName.substring(LIBS_PREFIX_LENGTH)) {
+                    SdkConstants.FN_CLASSES_JAR -> stringBuilder.append(LIBS_PREFIX).append("classes-2${SdkConstants.DOT_JAR}")
+                    SdkConstants.FN_LINT_JAR -> stringBuilder.append(LIBS_PREFIX).append("lint-2${SdkConstants.DOT_JAR}")
+                    else -> stringBuilder.append(LIBS_PREFIX).append(pathWithinLibs)
+                }
+                stringBuilder.toString()
+            }
+            else -> entryName
+        }
+    }
+
+    /**
+     * Extracts an AAR file into a directory.
+     *
+     * Note: There are small adjustments made to the extracted contents. For example, classes.jar
+     * inside the AAR will be extracted to jars/classes.jar, and if the jar does not exist, we will
+     * create an empty classes.jar.
+     */
+    fun extract(aar: File, outputDir: File) {
+        ZipInputStream(aar.inputStream().buffered()).use { zipInputStream ->
+            while (true) {
+                val entry = zipInputStream.nextEntry ?: break
+                if (entry.isDirectory || !isValidZipEntryName(entry) || entry.name.isEmpty()) {
+                    continue
+                }
+                val path = FileUtils.toSystemDependentPath(choosePathInOutput(entry.name))
+                val outputFile = File(outputDir, path)
+                Files.createParentDirs(outputFile)
+                Files.asByteSink(outputFile).writeFrom(zipInputStream)
+            }
+        }
+
+        // If classes.jar does not exist, create an empty one
+        val classesJar = outputDir.resolve("${SdkConstants.FD_JARS}/${SdkConstants.FN_CLASSES_JAR}")
+        if (!classesJar.exists()) {
+            Files.createParentDirs(classesJar)
+            classesJar.writeBytes(emptyJar)
+        }
+    }
+
+}
+
+private val emptyJar: ByteArray =
+    // Note:
+    //  - A jar doesn't need a manifest entry, but if we ever want to create a manifest entry, be
+    //    sure to set a fixed timestamp for it so that the jar is deterministic (see b/315336689).
+    //  - This empty jar takes up only ~22 bytes, so we don't need to GC it at the end of the build.
+    ByteArrayOutputStream().apply {
+        JarOutputStream(this).use { }
+    }.toByteArray()

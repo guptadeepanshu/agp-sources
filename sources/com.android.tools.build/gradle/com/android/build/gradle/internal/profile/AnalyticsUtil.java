@@ -305,6 +305,21 @@ public class AnalyticsUtil {
         return com.android.tools.build.gradle.internal.profile.StringOption.valueOf(value);
     }
 
+    @VisibleForTesting
+    @NonNull
+    public static com.android.tools.build.gradle.internal.profile.ModulePropertyKeys toProto(
+            @NonNull String modulePropertyKey) {
+        final String modulePropertyKeyPrefix = "MODULE_";
+        Descriptors.EnumValueDescriptor value =
+                com.android.tools.build.gradle.internal.profile.ModulePropertyKeys.getDescriptor()
+                        .findValueByName(modulePropertyKeyPrefix + modulePropertyKey);
+        if (value == null) {
+            return com.android.tools.build.gradle.internal.profile.ModulePropertyKeys
+                    .UNKNOWN_MODULE_PROPERTY_KEY;
+        }
+        return com.android.tools.build.gradle.internal.profile.ModulePropertyKeys.valueOf(value);
+    }
+
     @NonNull
     public static GradleProjectOptionsSettings toProto(@NonNull ProjectOptions projectOptions) {
         GradleProjectOptionsSettings.Builder builder = GradleProjectOptionsSettings.newBuilder();

@@ -21,7 +21,7 @@ import com.android.build.api.variant.JniLibsApkPackaging
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.sdklib.AndroidVersion.VersionCodes.M
 
-class JniLibsApkPackagingImpl(
+open class JniLibsApkPackagingImpl(
     dslPackaging: Packaging,
     variantServices: VariantServices,
     minSdk: Int

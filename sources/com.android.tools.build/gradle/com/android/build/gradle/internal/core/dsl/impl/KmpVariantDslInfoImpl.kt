@@ -34,9 +34,9 @@ import com.android.build.gradle.internal.core.dsl.features.NativeBuildDslInfo
 import com.android.build.gradle.internal.core.dsl.features.OptimizationDslInfo
 import com.android.build.gradle.internal.core.dsl.features.RenderscriptDslInfo
 import com.android.build.gradle.internal.core.dsl.features.ShadersDslInfo
-import com.android.build.gradle.internal.dsl.LibraryKeepRulesImpl
 import com.android.build.gradle.internal.dsl.KmpOptimizationImpl
 import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidExtensionImpl
+import com.android.build.gradle.internal.dsl.LibraryKeepRulesImpl
 import com.android.build.gradle.internal.plugins.KotlinMultiplatformAndroidPlugin.Companion.ANDROID_EXTENSION_ON_KOTLIN_EXTENSION_NAME
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.builder.core.ComponentTypeImpl
@@ -119,9 +119,9 @@ class KmpVariantDslInfoImpl(
         private val keepRules =
             (extension.optimization as KmpOptimizationImpl).keepRules as LibraryKeepRulesImpl
 
-        override val ignoredLibraryKeepRules: Set<String>
+        override val ignoreFromInKeepRules: Set<String>
             get() = keepRules.ignoreFrom
-        override val ignoreAllLibraryKeepRules: Boolean
+        override val ignoreFromAllExternalDependenciesInKeepRules: Boolean
             get() = keepRules.ignoreFromAllExternalDependencies
         override val ignoreFromInBaselineProfile: Set<String>
             get() = emptySet()

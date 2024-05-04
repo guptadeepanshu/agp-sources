@@ -19,40 +19,19 @@ package com.android.build.gradle.internal.tasks
 import com.android.build.api.variant.impl.BuiltArtifactImpl
 import com.android.build.api.variant.impl.BuiltArtifactsImpl
 import com.android.build.gradle.internal.AndroidJarInput
-import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
-import com.android.build.gradle.internal.component.ApkCreationConfig
-import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.initialize
-import com.android.build.gradle.internal.res.namespaced.Aapt2LinkRunnable
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.Aapt2Input
-import com.android.build.gradle.internal.services.getLeasingAapt2
-import com.android.build.gradle.internal.signing.SigningConfigData
 import com.android.build.gradle.internal.signing.SigningConfigDataProvider
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.build.gradle.options.BooleanOption
 import com.android.buildanalyzer.common.TaskCategory
-import com.android.builder.core.ComponentTypeImpl
-import com.android.builder.internal.aapt.AaptOptions
-import com.android.builder.internal.aapt.AaptPackageConfig
-import com.android.builder.internal.packaging.ApkFlinger
-import com.android.ide.common.signing.KeystoreHelper
-import com.android.ide.common.xml.XmlPrettyPrinter
-import com.android.tools.build.apkzlib.sign.SigningOptions
-import com.android.tools.build.apkzlib.zfile.ApkCreatorFactory
-import com.android.tools.build.apkzlib.zfile.NativeLibrariesPackagingMode
 import com.android.utils.FileUtils
-import com.google.common.base.Charsets
-import com.google.common.collect.ImmutableList
-import com.google.common.io.Files
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.logging.Logging
 import org.gradle.api.provider.Property
-import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
@@ -64,14 +43,9 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.work.DisableCachingByDefault
-import org.xml.sax.InputSource
 import java.io.File
-import java.io.StringReader
 import java.nio.file.Path
-import java.util.zip.Deflater
 import java.util.zip.ZipFile
-import javax.xml.parsers.DocumentBuilder
-import javax.xml.parsers.DocumentBuilderFactory
 
 /**
  * Task to produce a directory containing .apks files generated from Privacy Sandbox ASAR files.
@@ -235,7 +209,7 @@ abstract class ExtractPrivacySandboxCompatApks: NonIncrementalTask() {
 
         companion object {
             fun getTaskName(creationAction: ApplicationCreationConfig): String {
-                return creationAction.computeTaskName("extractApksFromSdkSplitsFor")
+                return creationAction.computeTaskNameInternal("extractApksFromSdkSplitsFor")
             }
         }
     }

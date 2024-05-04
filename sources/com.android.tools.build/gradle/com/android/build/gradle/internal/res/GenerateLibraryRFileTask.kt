@@ -81,7 +81,8 @@ abstract class GenerateLibraryRFileTask : ProcessAndroidResources() {
     abstract val symbolsWithPackageNameOutputFile: RegularFileProperty
 
     @get:InputFiles
-    @get:PathSensitive(PathSensitivity.NONE) abstract val dependencies: ConfigurableFileCollection
+    @get:PathSensitive(PathSensitivity.NONE)
+    abstract val dependencies: ConfigurableFileCollection
 
     @get:Input
     abstract val namespace: Property<String>
@@ -191,9 +192,8 @@ abstract class GenerateLibraryRFileTask : ProcessAndroidResources() {
     }
 
     internal class CreationAction(
-        creationConfig: ComponentCreationConfig,
-        val isLibrary: Boolean)
-        : VariantTaskCreationAction<GenerateLibraryRFileTask, ComponentCreationConfig>(creationConfig) {
+        creationConfig: ComponentCreationConfig
+    ) : VariantTaskCreationAction<GenerateLibraryRFileTask, ComponentCreationConfig>(creationConfig) {
 
         override val name: String
             get() = computeTaskName("generate", "RFile")

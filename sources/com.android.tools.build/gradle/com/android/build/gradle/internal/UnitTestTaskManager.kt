@@ -16,8 +16,10 @@
 
 package com.android.build.gradle.internal
 
+import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.artifact.impl.InternalScopedArtifacts
+import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.component.KmpComponentCreationConfig
 import com.android.build.gradle.internal.coverage.JacocoConfigurations
@@ -156,9 +158,6 @@ class UnitTestTaskManager(
                 )
             }
 
-            taskFactory.configure(ASSEMBLE_UNIT_TEST) { assembleTest: Task ->
-                assembleTest.dependsOn(unitTestCreationConfig.taskContainer.assembleTask.name)
-            }
         } else {
             if (testedVariant.componentType.isAar && testedVariant.buildFeatures.androidResources) {
                 // With compile classpath R classes, we need to generate a dummy R class for unit
@@ -170,6 +169,21 @@ class UnitTestTaskManager(
                     )
                 )
             }
+        }
+
+        // Whether we have android resources or not, we must always depend on the
+        // CLASSES so we run compilation, etc...
+        taskContainer.assembleTask.configure { task: Task ->
+            task.dependsOn(
+                unitTestCreationConfig
+                    .artifacts
+                    .forScope(ScopedArtifacts.Scope.PROJECT)
+                    .getFinalArtifacts(ScopedArtifact.CLASSES),
+            )
+        }
+
+        taskFactory.configure(ASSEMBLE_UNIT_TEST) { assembleTest: Task ->
+            assembleTest.dependsOn(unitTestCreationConfig.taskContainer.assembleTask.name)
         }
 
         // TODO(b/276758294): Remove such checks
@@ -217,6 +231,8 @@ class UnitTestTaskManager(
             unitTestCreationConfig,
             getJacocoVersion(unitTestCreationConfig)
         ))
+
+        unitTestCreationConfig.runTestTaskConfigurationActions(runTestsTask)
         taskFactory.configure(globalConfig.taskNames.test) { test: Task ->
             test.dependsOn(runTestsTask)
         }
@@ -255,21 +271,7 @@ class UnitTestTaskManager(
         }
         val pluginExtension = project.extensions.findByType(JacocoPluginExtension::class.java)
         if (pluginExtension != null) {
-            // When the plugin is applied, but the toolVersion is not set, Gradle automatically
-            // sets the version to 0.8.9, which is not supported in AGP currently (b/316929520).
-            // So we set the value to the AGP default version.
-            if (pluginExtension.toolVersion == "0.8.9") {
-                LoggerWrapper.getLogger(this.javaClass)
-                    .warning(
-                        "The Jacoco plugin extension version '0.8.9' is not currently "
-                                + "available in the Android Gradle Plugin. Setting the version "
-                                + "to "
-                                + JacocoOptions.DEFAULT_VERSION
-                    )
-                return JacocoOptions.DEFAULT_VERSION
-            } else {
-                return pluginExtension.toolVersion
-            }
+            return pluginExtension.toolVersion
         }
         return JacocoOptions.DEFAULT_VERSION
     }

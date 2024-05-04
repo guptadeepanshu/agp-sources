@@ -16,11 +16,9 @@
 
 package com.android.build.api.artifact
 
-import org.gradle.api.Incubating
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.file.RegularFile
-import java.lang.Appendable
 
 /**
  * Public [Artifact] for Android Gradle plugin.

@@ -252,7 +252,7 @@ private static final long serialVersionUID = 0L;
 
     /**
      * <pre>
-     * True if the "Apply" button was used as oppesed to "OK"
+     * True if the "Apply" button was used as opposed to "OK"
      * </pre>
      *
      * <code>optional bool is_apply_button_used = 3;</code>
@@ -261,7 +261,7 @@ private static final long serialVersionUID = 0L;
     boolean hasIsApplyButtonUsed();
     /**
      * <pre>
-     * True if the "Apply" button was used as oppesed to "OK"
+     * True if the "Apply" button was used as opposed to "OK"
      * </pre>
      *
      * <code>optional bool is_apply_button_used = 3;</code>
@@ -383,7 +383,7 @@ private static final long serialVersionUID = 0L;
     private boolean isApplyButtonUsed_;
     /**
      * <pre>
-     * True if the "Apply" button was used as oppesed to "OK"
+     * True if the "Apply" button was used as opposed to "OK"
      * </pre>
      *
      * <code>optional bool is_apply_button_used = 3;</code>
@@ -395,7 +395,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * True if the "Apply" button was used as oppesed to "OK"
+     * True if the "Apply" button was used as opposed to "OK"
      * </pre>
      *
      * <code>optional bool is_apply_button_used = 3;</code>
@@ -1029,7 +1029,7 @@ private static final long serialVersionUID = 0L;
       private boolean isApplyButtonUsed_ ;
       /**
        * <pre>
-       * True if the "Apply" button was used as oppesed to "OK"
+       * True if the "Apply" button was used as opposed to "OK"
        * </pre>
        *
        * <code>optional bool is_apply_button_used = 3;</code>
@@ -1041,7 +1041,7 @@ private static final long serialVersionUID = 0L;
       }
       /**
        * <pre>
-       * True if the "Apply" button was used as oppesed to "OK"
+       * True if the "Apply" button was used as opposed to "OK"
        * </pre>
        *
        * <code>optional bool is_apply_button_used = 3;</code>
@@ -1053,7 +1053,7 @@ private static final long serialVersionUID = 0L;
       }
       /**
        * <pre>
-       * True if the "Apply" button was used as oppesed to "OK"
+       * True if the "Apply" button was used as opposed to "OK"
        * </pre>
        *
        * <code>optional bool is_apply_button_used = 3;</code>
@@ -1068,7 +1068,7 @@ private static final long serialVersionUID = 0L;
       }
       /**
        * <pre>
-       * True if the "Apply" button was used as oppesed to "OK"
+       * True if the "Apply" button was used as opposed to "OK"
        * </pre>
        *
        * <code>optional bool is_apply_button_used = 3;</code>

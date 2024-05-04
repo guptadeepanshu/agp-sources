@@ -21,6 +21,8 @@ import com.android.tools.build.gradle.internal.profile.VariantPropertiesMethodTy
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.MapProperty
+import org.gradle.api.tasks.TaskProvider
+import org.gradle.api.tasks.testing.Test
 import javax.inject.Inject
 
 open class AnalyticsEnabledUnitTest @Inject constructor(
@@ -34,4 +36,10 @@ open class AnalyticsEnabledUnitTest @Inject constructor(
                 VariantPropertiesMethodType.MANIFEST_PLACEHOLDERS_VALUE
             return delegate.manifestPlaceholders
         }
+
+    override fun configureTestTask(action: (Test) -> Unit) {
+        stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+            VariantPropertiesMethodType.CONFIGURE_TEST_TASK_VALUE
+        delegate.configureTestTask(action)
+    }
 }

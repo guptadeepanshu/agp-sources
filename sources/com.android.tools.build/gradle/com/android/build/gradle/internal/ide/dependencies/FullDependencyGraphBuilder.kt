@@ -36,14 +36,20 @@ import com.android.builder.model.v2.ide.UnresolvedDependency
 import org.gradle.api.artifacts.component.ComponentIdentifier
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
 import org.gradle.api.artifacts.result.DependencyResult
+import org.gradle.api.artifacts.result.ResolvedComponentResult
 import org.gradle.api.artifacts.result.ResolvedDependencyResult
 import org.gradle.api.artifacts.result.ResolvedVariantResult
 import org.gradle.api.artifacts.result.UnresolvedDependencyResult
+import org.gradle.api.attributes.Attribute
+import org.gradle.api.attributes.AttributeContainer
+import org.gradle.api.attributes.Category
 import org.gradle.internal.component.local.model.OpaqueComponentArtifactIdentifier
 import java.io.File
 
 class FullDependencyGraphBuilder(
-    private val inputs: ArtifactCollectionsInputs,
+    private val artifactsProvider:
+        (AndroidArtifacts.ConsumedConfigType, root: ResolvedComponentResult) -> Set<ResolvedArtifact>,
+    private val projectPath: String,
     private val resolutionResultProvider: ResolutionResultProvider,
     private val libraryService: LibraryService,
     private val graphEdgeCache: GraphEdgeCache?,
@@ -76,13 +82,14 @@ class FullDependencyGraphBuilder(
         buildAdjacencyList: Boolean
     ): Graph {
         // query for the actual graph, and get the first level children.
-        val roots: Set<DependencyResult> = resolutionResultProvider.getResolutionResult(configType).root.dependencies
+        val root = resolutionResultProvider.getResolutionResult(configType).root
+        val roots = root.dependencies
 
         // get the artifact first. This is a flat list of items that have been computed
         // to contain information about the actual artifacts (whether they are sub-projects
         // or external dependencies, whether they are java or android, whether they are
         // wrapper local jar/aar, etc...)
-        val artifacts = inputs.getAllArtifacts(configType)
+        val artifacts = artifactsProvider(configType, root)
 
         val artifactMap = artifacts.associateBy { it.variant.toKey() }
 
@@ -193,14 +200,14 @@ class FullDependencyGraphBuilder(
         }
 
         val library = getLibrary(
-            inputs = inputs,
-            libraryService = libraryService,
-            variant = variant,
-            variantDependencies = variantDependencies,
-            artifactMap = artifactMap,
-            javadocArtifacts = javadocArtifacts,
-            sourceArtifacts = sourceArtifacts,
-            sampleArtifacts = sampleArtifacts
+            projectPath,
+            libraryService,
+            variant,
+            variantDependencies,
+            artifactMap,
+            javadocArtifacts,
+            sourceArtifacts,
+            sampleArtifacts
         )
 
         if (library != null) {
@@ -252,7 +259,7 @@ private sealed class Graph {
 }
 
 fun getLibrary(
-    inputs: ArtifactCollectionsInputs,
+    projectPath: String,
     libraryService: LibraryService,
     variant: ResolvedVariantResult,
     variantDependencies: List<DependencyResult>,
@@ -269,83 +276,104 @@ fun getLibrary(
     val sample = sampleArtifacts[variant.owner]
     val additionalArtifacts = AdditionalArtifacts(javadoc, source, sample)
 
+    // A dependency on an android variant
+    fun androidProjectDependency(owner: ProjectComponentIdentifier) =
+        libraryService.getLibrary(
+            ResolvedArtifact(
+                owner,
+                variant,
+                variantName = variant.attributes
+                    .getAttribute(VariantAttr.ATTRIBUTE)
+                    ?.toString()
+                    ?: "unknown",
+                artifactFile = null,
+                isTestFixturesArtifact = variant.capabilities.any {
+                    it.isProjectTestFixturesCapability(owner.projectName)
+                },
+                extractedFolder = null,
+                publishedLintJar = null,
+                dependencyType = ResolvedArtifact.DependencyType.ANDROID,
+                isWrappedModule = false,
+            ),
+            additionalArtifacts
+        )
+
+    // A dependency that doesn't have any artifacts but included in the list due to its transitive
+    // dependencies
+    fun dependencyWithoutArtifactButTransitiveDependencies() =
+        libraryService.getLibrary(
+            ResolvedArtifact(
+                variant.owner,
+                variant,
+                variantName = "unknown",
+                artifactFile = null,
+                isTestFixturesArtifact = false,
+                extractedFolder = null,
+                publishedLintJar = null,
+                dependencyType = ResolvedArtifact.DependencyType.NO_ARTIFACT_FILE,
+                isWrappedModule = false,
+            ),
+            additionalArtifacts
+        )
+    // Artifact is relocated via Gradle's module "available-at" feature.
+    fun relocatedArtifactLibrary() =
+        libraryService.getLibrary(
+            ResolvedArtifact(
+                variant.owner,
+                variant,
+                variantName = "unknown",
+                artifactFile = null,
+                isTestFixturesArtifact = false,
+                extractedFolder = null,
+                publishedLintJar = null,
+                dependencyType = ResolvedArtifact.DependencyType.RELOCATED_ARTIFACT,
+                isWrappedModule = false,
+            ),
+            additionalArtifacts
+        )
+
     return if (artifact == null) {
         val owner = variant.owner
-
-        // There are 4 (currently known) reasons this can happen:
-        // 1. when an artifact is relocated via Gradle's module "available-at" feature.
-        // 2. when resolving a test graph, as one of the roots will be the same module and this
-        //    is not included in the other artifact-based API.
-        // 3. when an external dependency is without artifact file, but with transitive
-        //    dependencies
-        // 4. when resolving a dynamic-feature dependency graph; e.g., the app module does not
-        //    publish an ArtifactType.JAR artifact to runtimeElements
-        //
-        // In cases 1, 2, and 3, there are still dependencies, so we need to create a library
-        // object, and traverse the dependencies.
-        //
-        // In case 4, we want to ignore the app dependency and any transitive dependencies.
-        if (variant.externalVariant.isPresent) {
-            // Scenario 1
-            libraryService.getLibrary(
-                ResolvedArtifact(
-                    owner,
-                    variant,
-                    variantName = "unknown",
-                    artifactFile = null,
-                    isTestFixturesArtifact = false,
-                    extractedFolder = null,
-                    publishedLintJar = null,
-                    dependencyType = ResolvedArtifact.DependencyType.RELOCATED_ARTIFACT,
-                    isWrappedModule = false,
-                ),
-                additionalArtifacts
-            )
-        } else if (owner is ProjectComponentIdentifier && inputs.projectPath == owner.projectPath) {
-            // Scenario 2
-            // create on the fly a ResolvedArtifact around this project
-            // and get the matching library item
-            libraryService.getLibrary(
-                ResolvedArtifact(
-                    owner,
-                    variant,
-                    variantName = variant.attributes
-                        .getAttribute(VariantAttr.ATTRIBUTE)
-                        ?.toString()
-                        ?: "unknown",
-                    artifactFile = File("wont/matter"),
-                    isTestFixturesArtifact = variant.capabilities.any {
-                        it.isProjectTestFixturesCapability(owner.projectName)
-                    },
-                    extractedFolder = null,
-                    publishedLintJar = null,
-                    dependencyType = ResolvedArtifact.DependencyType.ANDROID,
-                    isWrappedModule = false,
-                ),
-                additionalArtifacts
-            )
-        } else if (owner !is ProjectComponentIdentifier && variantDependencies.isNotEmpty()) {
-            // Scenario 3
-            libraryService.getLibrary(
-                ResolvedArtifact(
-                    owner,
-                    variant,
-                    variantName = "unknown",
-                    artifactFile = null,
-                    isTestFixturesArtifact = false,
-                    extractedFolder = null,
-                    publishedLintJar = null,
-                    dependencyType = ResolvedArtifact.DependencyType.NO_ARTIFACT_FILE,
-                    isWrappedModule = false,
-                ),
-                additionalArtifacts
-            )
-        } else {
-            // Scenario 4 or other unknown scenario
-            null
+        when {
+            // Artifact is relocated via Gradle's module "available-at" feature.
+            variant.externalVariant.isPresent -> relocatedArtifactLibrary()
+            // When resolving a test graph, as one of the roots will be the same module and this
+            // is not included in the other artifact-based API.
+            owner is ProjectComponentIdentifier && projectPath == owner.projectPath -> androidProjectDependency(owner)
+            // When an external dependency has no artifact file, but with transitive dependencies
+            owner !is ProjectComponentIdentifier && variantDependencies.isNotEmpty() -> dependencyWithoutArtifactButTransitiveDependencies()
+            // There is a platform dependency on a project, which has transitive dependencies
+            owner is ProjectComponentIdentifier && variantDependencies.isNotEmpty()
+                    && getCategoryAttribute(variant.attributes) == Category.REGULAR_PLATFORM ->
+                dependencyWithoutArtifactButTransitiveDependencies()
+            // AARs for Android projects aren't fetched as an optimization, but we still need them
+            // and their transitive dependencies
+            owner is ProjectComponentIdentifier && variant.isAndroidProjectDependency() ->
+                androidProjectDependency(owner)
+            // This shouldn't happen but if it does, we ignore the transitive dependencies as we're
+            // dealing with an unknown library.
+            else -> null
         }
     } else {
         // get the matching library item
         libraryService.getLibrary(artifact, additionalArtifacts)
+    }
+}
+
+private fun getCategoryAttribute(attributes: AttributeContainer): String? {
+    if (Category.CATEGORY_ATTRIBUTE in attributes.keySet()) {
+        return attributes.getAttribute(Category.CATEGORY_ATTRIBUTE)!!.name
+    }
+
+    // Sometimes attributes are just strings, so we need to use name matching
+    val categoryAttr =
+        attributes.keySet().firstOrNull { it.name == Category.CATEGORY_ATTRIBUTE.name }
+            ?: return null
+    return if (categoryAttr.type == String::class.java) {
+        @Suppress("UNCHECKED_CAST")
+        categoryAttr as Attribute<String>
+        attributes.getAttribute(categoryAttr)
+    } else {
+        null
     }
 }

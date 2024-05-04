@@ -60,7 +60,7 @@ public interface UIActionStatsOrBuilder extends
 
   /**
    * <pre>
-   * The way this action was invocated by the user.
+   * The way this action was invoked by the user.
    * </pre>
    *
    * <code>optional .android_studio.UIActionStats.InvocationKind invocation_kind = 3;</code>
@@ -69,7 +69,7 @@ public interface UIActionStatsOrBuilder extends
   boolean hasInvocationKind();
   /**
    * <pre>
-   * The way this action was invocated by the user.
+   * The way this action was invoked by the user.
    * </pre>
    *
    * <code>optional .android_studio.UIActionStats.InvocationKind invocation_kind = 3;</code>

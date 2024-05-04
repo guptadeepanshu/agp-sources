@@ -109,7 +109,7 @@ public interface ProductDetailsOrBuilder extends
 
   /**
    * <pre>
-   * The CPU archtecture the product is running on.
+   * The CPU architecture the product is running on.
    * </pre>
    *
    * <code>optional .android_studio.ProductDetails.CpuArchitecture os_architecture = 5;</code>
@@ -118,7 +118,7 @@ public interface ProductDetailsOrBuilder extends
   boolean hasOsArchitecture();
   /**
    * <pre>
-   * The CPU archtecture the product is running on.
+   * The CPU architecture the product is running on.
    * </pre>
    *
    * <code>optional .android_studio.ProductDetails.CpuArchitecture os_architecture = 5;</code>

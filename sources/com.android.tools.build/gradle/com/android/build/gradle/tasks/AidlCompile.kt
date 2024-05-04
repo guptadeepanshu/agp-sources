@@ -131,7 +131,9 @@ abstract class AidlCompile : NonIncrementalTask() {
             FileUtils.cleanOutputDir(parcelableDir.asFile)
         }
 
-        val sourceFolders = sourceDirs.get()
+        // De-duplicate source directories- this is needed in case they are added twice like in
+        // b/317262738
+        val sourceFolders = sourceDirs.get().distinct()
         val importFolders = importDirs.files
 
         val fullImportList = sourceFolders.map { it.asFile } + importFolders

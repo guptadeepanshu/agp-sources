@@ -142,7 +142,7 @@ fun configureKotlinCompileTasks(
     // `debug`). Note that the keys are name prefixes because KMP projects have task names such as
     // `compileDebugKotlinAndroid` instead of `compileDebugKotlin`.
     val taskNamePrefixToVariant: Map<String, ComponentCreationConfig> =
-        creationConfigs.associateBy { it.computeTaskName("compile", "Kotlin") }
+        creationConfigs.associateBy { it.computeTaskNameInternal("compile", "Kotlin") }
 
     project.tasks.withType(KotlinCompile::class.java).configureEach { kotlinCompile ->
         // Note: We won't run `action` if we can't find a matching variant for the task (e.g.,
@@ -206,7 +206,6 @@ fun addComposeArgsToKotlinCompile(
 
     task.addPluginClasspath(kotlinVersion, compilerExtension)
 
-    task.addPluginOption("androidx.compose.plugins.idea", "enabled", "true")
     if (debuggable) {
         task.addPluginOption("androidx.compose.compiler.plugins.kotlin", "sourceInformation", "true")
         if (useLiveLiterals) {
@@ -244,7 +243,12 @@ private fun KotlinCompile.addPluginOption(pluginId: String, key: String, value: 
     //         })
     //     } else { ... }
     // For now, continue to use the old way to add plugin options.
-    kotlinOptions.freeCompilerArgs += listOf("-P", "plugin:$pluginId:$key=$value")
+    val pluginOption = "plugin:$pluginId:$key"
+
+    // Only add the plugin option if it was not previously added by the user (see b/318384658)
+    if (kotlinOptions.freeCompilerArgs.none { it.startsWith("$pluginOption=") }) {
+        kotlinOptions.freeCompilerArgs += listOf("-P", "$pluginOption=$value")
+    }
 }
 
 /**

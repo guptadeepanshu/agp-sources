@@ -48,7 +48,7 @@ interface ModelBuilderParameter {
     /**
      * Don't build the runtime classpath for the unit test artifact. If true
      * [ArtifactDependencies.runtimeDependencies] will be null for
-     * [VariantDependencies.unitTestArtifact].
+     * [VariantDependencies.hostTestArtifacts(UNIT_TEST)].
      *
      * See [dontBuildRuntimeClasspath] for additional details.
      */
@@ -57,7 +57,16 @@ interface ModelBuilderParameter {
     /**
      * Don't build the runtime classpath for the unit test artifact. If true
      * [ArtifactDependencies.runtimeDependencies] will be null for
-     * [VariantDependencies.androidTestArtifact].
+     * [VariantDependencies.hostTestArtifacts(SCREENSHOT_TEST)].
+     *
+     * See [dontBuildRuntimeClasspath] for additional details.
+     */
+    var dontBuildScreenshotTestRuntimeClasspath: Boolean
+
+    /**
+     * Don't build the runtime classpath for the unit test artifact. If true
+     * [ArtifactDependencies.runtimeDependencies] will be null for
+     * [VariantDependencies.deviceTestArtifacts(ANDROID_TEST)].
      *
      * See [dontBuildRuntimeClasspath] for additional details.
      */
@@ -80,15 +89,17 @@ enum class ClasspathParameterConfig(
     private val mainRuntime: Boolean,
     private val unitTestRuntime: Boolean,
     private val androidTestRuntime: Boolean,
+    private val screenshotTestRuntime: Boolean,
     private val testFixturesRuntime: Boolean,
 ) {
-    ALL(true, true, true, true),
-    ANDROID_TEST_ONLY(false, false, true, false),
-    NONE(false, false, false, false);
+    ALL(true, true, true, true, true),
+    ANDROID_TEST_ONLY(false, false, true, false, false),
+    NONE(false, false, false, false, false);
 
     fun applyTo(param: ModelBuilderParameter) {
         param.dontBuildRuntimeClasspath = !mainRuntime
         param.dontBuildUnitTestRuntimeClasspath = !unitTestRuntime
+        param.dontBuildScreenshotTestRuntimeClasspath = !screenshotTestRuntime
         param.dontBuildAndroidTestRuntimeClasspath = !androidTestRuntime
         param.dontBuildTestFixtureRuntimeClasspath = !testFixturesRuntime
     }

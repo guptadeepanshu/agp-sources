@@ -140,4 +140,13 @@ interface Component: ComponentIdentity {
      */
     @get:Incubating
     val lifecycleTasks: LifecycleTasks
+
+    /**
+     * Utility method to create unique task name for component.
+     * You still need to assign task name during task registration.
+     * For <debug> variant `getTaskName("produce", "manifestReport")` will return
+     * produceDebugManifestReport
+     */
+    @Incubating
+    fun computeTaskName(action: String, subject: String): String
 }

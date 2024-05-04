@@ -16,16 +16,13 @@
 
 package com.android.build.api.variant
 
-import org.gradle.api.Incubating
-
-@Incubating
-interface AndroidTestBuilder {
+interface AndroidTestBuilder: DeviceTestBuilder {
 
     /**
      * Set to `true` if the variant's has any android tests, false otherwise.
      * Value is [Boolean#True] by default.
      */
-    var enable: Boolean
+    override var enable: Boolean
 
     /**
      * Sets whether multi-dex is enabled for this variant.
@@ -43,11 +40,9 @@ interface AndroidTestBuilder {
      * Note the a [RuntimeException] will be thrown at Runtime if a java or groovy code tries
      * to read the property value.
      */
-    @get:Incubating
     @get:Deprecated(
         message="Other plugins can change this value, it is not safe to read it at this stage",
         level = DeprecationLevel.ERROR
     )
-    @set:Incubating
-    var enableMultiDex: Boolean?
+    override var enableMultiDex: Boolean?
 }

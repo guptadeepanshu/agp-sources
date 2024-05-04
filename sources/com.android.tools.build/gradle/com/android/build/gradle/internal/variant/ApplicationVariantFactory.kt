@@ -47,6 +47,7 @@ import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantBuilderServices
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
+import com.android.build.gradle.internal.utils.restrictRenderScriptOnRiscv
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.ProjectOptions
 import com.android.build.gradle.options.StringOption
@@ -59,6 +60,7 @@ import com.google.common.base.Joiner
 import com.google.common.base.Strings
 import java.util.Arrays
 import java.util.function.Consumer
+import java.util.stream.Collectors
 
 class ApplicationVariantFactory(
     dslServices: DslServices,
@@ -115,8 +117,12 @@ class ApplicationVariantFactory(
                 taskCreationServices,
                 globalConfig,
             )
-
         computeOutputs(appVariant, (variantData as ApplicationVariantData), globalConfig)
+        restrictRenderScriptOnRiscv(
+            dslServices,
+            appVariant,
+            buildFeatures,
+            globalConfig)
 
         return appVariant
     }
@@ -375,7 +381,9 @@ class ApplicationVariantFactory(
             return
         }
         genericBuiltArtifacts.forEach { key: GenericBuiltArtifact, value: VariantOutputImpl ->
-            if (key != computedBestArtifact) value.enabled.set(false)
+            if (key != computedBestArtifact) {
+                value.enabled.set(false)
+            }
         }
     }
 }

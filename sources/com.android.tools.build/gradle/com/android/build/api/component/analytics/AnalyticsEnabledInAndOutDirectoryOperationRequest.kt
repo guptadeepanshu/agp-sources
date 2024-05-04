@@ -45,7 +45,8 @@ open class AnalyticsEnabledInAndOutDirectoryOperationRequest<TaskT: Task> @Injec
 
     override fun <ArtifactTypeT> toTransformMany(type: ArtifactTypeT): ArtifactTransformationRequest<TaskT>
             where ArtifactTypeT : Artifact.Single<Directory>,
-                  ArtifactTypeT : Artifact.ContainsMany {
+                  ArtifactTypeT : Artifact.ContainsMany,
+                  ArtifactTypeT : Artifact.Transformable {
         stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
             VariantPropertiesMethodType.TO_TRANSFORM_MANY_VALUE
         stats.variantApiAccessBuilder.addArtifactAccessBuilder().also {

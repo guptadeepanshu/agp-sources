@@ -53,6 +53,22 @@ interface Versions: AndroidModel {
          * If not present, a future version of AGP will not be considered compatible
          */
         const val MINIMUM_MODEL_CONSUMER = "minimum_model_consumer"
+
+        /**
+         * The version of the model-producing code (i.e. the model builder in AGP)
+         *
+         * The minor version is increased every time an addition is made to the model interfaces,
+         * or other semantic change that the code injected by studio should react to.
+         *
+         * The major version is increased, and the minor version reset to 0 every time AGP is
+         * branched to allow for changes in that branch to be modelled.
+         *
+         * Changes made to the model must always be compatible with the MINIMUM_MODEL_CONSUMER
+         * version of Android Studio. To make a breaking change, such as removing an older model
+         * method not called by current versions of Studio, the MINIMUM_MODEL_CONSUMER version must
+         * be increased to exclude all older versions of Studio that called that method.
+         */
+        const val MODEL_PRODUCER = "model_producer"
     }
 
     /**

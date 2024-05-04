@@ -18,6 +18,7 @@ package com.android.ide.common.resources
 
 import com.android.ide.common.resources.configuration.FolderConfiguration
 import com.android.ide.common.resources.configuration.LocaleQualifier
+import com.android.SdkConstants
 import com.google.common.annotations.VisibleForTesting
 import java.io.File
 import java.io.FileInputStream
@@ -30,11 +31,14 @@ fun generateLocaleConfigManifestAttribute(localeConfigFileName: String): String 
 @VisibleForTesting
 fun generateLocaleString(localeQualifier: LocaleQualifier): String {
     return localeQualifier.language!! +
-            (localeQualifier.script?.let { script -> "-$script" } ?: "") +
-            (localeQualifier.region?.let { region -> "-$region" } ?: "")
+        (localeQualifier.script?.let { script -> "-$script" } ?: "") +
+        (localeQualifier.region?.let { region -> "-$region" } ?: "")
 }
 
-fun generateLocaleList(resources: Collection<File>): List<String> {
+fun generateLocaleList(
+    resources: Collection<File>,
+    pseudoLocalesEnabled: Boolean = false
+): List<String> {
     // Fold all root resource directories into a one-dimensional
     // list of qualified resource directories (main/res -> main/res/values-en-rUS, etc.)
     val allResources = resources.fold(mutableListOf<File>()) { acc, it ->
@@ -57,6 +61,11 @@ fun generateLocaleList(resources: Collection<File>): List<String> {
         it?.let { localeQualifier ->
             supportedLocales.add(generateLocaleString(localeQualifier))
         }
+    }
+    // Add the pseudolocales if enabled
+    if (pseudoLocalesEnabled) {
+        supportedLocales.add(SdkConstants.EN_XA)
+        supportedLocales.add(SdkConstants.AR_XB)
     }
     return supportedLocales.toList()
 }

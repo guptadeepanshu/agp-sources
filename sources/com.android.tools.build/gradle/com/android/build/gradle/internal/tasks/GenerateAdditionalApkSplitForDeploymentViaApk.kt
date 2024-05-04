@@ -258,10 +258,9 @@ abstract class GenerateAdditionalApkSplitForDeploymentViaApk : NonIncrementalTas
         }
 
         companion object {
-
             fun computeTaskName(component: ApplicationCreationConfig): String {
-                return component.computeTaskName("generate",
-                        "AdditionalSplitForPrivacySandboxDeployment")
+                return component.computeTaskNameInternal("generate",
+                    "AdditionalSplitForPrivacySandboxDeployment")
             }
         }
     }

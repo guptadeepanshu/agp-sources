@@ -166,6 +166,10 @@ private static final long serialVersionUID = 0L;
      * <code>GROUPED_GRID = 4;</code>
      */
     GROUPED_GRID(4),
+    /**
+     * <code>GALLERY = 5;</code>
+     */
+    GALLERY(5),
     ;
 
     /**
@@ -188,6 +192,10 @@ private static final long serialVersionUID = 0L;
      * <code>GROUPED_GRID = 4;</code>
      */
     public static final int GROUPED_GRID_VALUE = 4;
+    /**
+     * <code>GALLERY = 5;</code>
+     */
+    public static final int GALLERY_VALUE = 5;
 
 
     public final int getNumber() {
@@ -215,6 +223,7 @@ private static final long serialVersionUID = 0L;
         case 2: return GRID;
         case 3: return GROUPED_LIST;
         case 4: return GROUPED_GRID;
+        case 5: return GALLERY;
         default: return null;
       }
     }

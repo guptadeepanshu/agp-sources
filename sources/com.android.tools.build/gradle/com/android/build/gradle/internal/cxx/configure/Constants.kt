@@ -21,13 +21,3 @@ package com.android.build.gradle.internal.cxx.configure
  * that the folder contents shouldn't be checked in to source control.
  */
 const val CXX_DEFAULT_CONFIGURATION_SUBFOLDER = ".cxx"
-
-/**
- * The name of the property in local.settings to control the C++ build caching folder.
- */
-const val CXX_LOCAL_PROPERTIES_CACHE_DIR = "cxx.cache.dir"
-
-/**
- * The name of the compiler settings cache leaf folder.
- */
-const val CXX_CMAKE_COMPILER_SETTINGS_CACHE_SUBFOLDER = "cmake-compiler-settings"

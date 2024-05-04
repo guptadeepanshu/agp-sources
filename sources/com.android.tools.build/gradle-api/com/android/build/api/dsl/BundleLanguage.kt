@@ -18,6 +18,11 @@ package com.android.build.api.dsl
 
 import org.gradle.api.Incubating
 
+/**
+ * DSL object for configuring the App Bundle Language options
+ *
+ * This is accessed via [Bundle.language]
+ */
 interface BundleLanguage {
     @get:Incubating
     @set:Incubating

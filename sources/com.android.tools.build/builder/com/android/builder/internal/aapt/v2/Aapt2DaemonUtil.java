@@ -41,7 +41,7 @@ public class Aapt2DaemonUtil {
         try {
             args = AaptV2CommandBuilder.makeLinkCommand(command);
         } catch (AaptException e) {
-            throw new IOException("Unable to make AAPT link command.", e);
+            throw Aapt2Exception.create(null, "Unable to make AAPT link command", e);
         }
         request(writer, "l", args);
     }

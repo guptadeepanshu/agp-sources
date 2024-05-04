@@ -41,7 +41,11 @@ abstract class NoOpAnalyticsConfiguratorService : AnalyticsConfiguratorService()
     }
 
     override fun createAnalyticsService(
-        project: Project, registry: BuildEventsListenerRegistry, parameters: AnalyticsService.Params
+        project: Project,
+        registry: BuildEventsListenerRegistry,
+        parameters: AnalyticsService.Params,
+        configurationCacheActive: Boolean,
+        projectIsolationActive: Boolean,
     ) {}
 
     override fun recordBlock(

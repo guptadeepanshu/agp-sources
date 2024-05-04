@@ -53,12 +53,12 @@ fun Artifact<*>.getOutputPath(
     buildDirectory: DirectoryProperty,
     variantIdentifier: String,
     vararg paths: String,
-    forceFilename: String = ""
+    forceFilename: String? = null,
 ) = FileUtils.join(
     getOutputDir(buildDirectory.get().asFile),
     variantIdentifier,
     *paths,
-    forceFilename.ifEmpty { getFileSystemLocationName() }
+    forceFilename ?: getFileSystemLocationName()
 )
 
 /**
@@ -68,12 +68,12 @@ fun Artifact<*>.getIntermediateOutputPath(
     buildDirectory: DirectoryProperty,
     variantIdentifier: String,
     vararg paths: String,
-    forceFilename: String = ""
+    forceFilename: String? = null
 ): File = FileUtils.join(
     getIntermediateOutputDir(buildDirectory.get().asFile),
     variantIdentifier,
     *paths,
-    forceFilename.ifEmpty { getFileSystemLocationName() }
+    forceFilename ?: getFileSystemLocationName()
 )
 
 /**

@@ -87,7 +87,6 @@ import com.android.build.gradle.internal.tasks.ExtractProguardFiles
 import com.android.build.gradle.internal.tasks.FeatureDexMergeTask
 import com.android.build.gradle.internal.tasks.FeatureGlobalSyntheticsMergeTask
 import com.android.build.gradle.internal.tasks.GenerateLibraryProguardRulesTask
-import com.android.build.gradle.internal.tasks.ValidateResourcesTask
 import com.android.build.gradle.internal.tasks.GlobalSyntheticsMergeTask
 import com.android.build.gradle.internal.tasks.InstallVariantTask
 import com.android.build.gradle.internal.tasks.JacocoTask
@@ -110,6 +109,7 @@ import com.android.build.gradle.internal.tasks.R8Task
 import com.android.build.gradle.internal.tasks.RecalculateStackFramesTask
 import com.android.build.gradle.internal.tasks.SourceSetsTask
 import com.android.build.gradle.internal.tasks.UninstallTask
+import com.android.build.gradle.internal.tasks.ValidateResourcesTask
 import com.android.build.gradle.internal.tasks.ValidateSigningTask
 import com.android.build.gradle.internal.tasks.VerifyLibraryClassesTask
 import com.android.build.gradle.internal.tasks.databinding.DataBindingCompilerArguments.Companion.createArguments
@@ -160,6 +160,7 @@ import com.android.build.gradle.tasks.ProcessPackagedManifestTask
 import com.android.build.gradle.tasks.ProcessTestManifest
 import com.android.build.gradle.tasks.RenderscriptCompile
 import com.android.build.gradle.tasks.ShaderCompile
+import com.android.build.gradle.tasks.SimplifiedMergedManifestsProducerTask
 import com.android.build.gradle.tasks.TransformClassesWithAsmTask
 import com.android.build.gradle.tasks.VerifyLibraryResourcesTask
 import com.android.buildanalyzer.common.TaskCategoryIssue
@@ -416,7 +417,7 @@ abstract class TaskManager(
         return if (creationConfig is ApplicationCreationConfig) {
             taskFactory.register(ProcessMultiApkApplicationManifest.CreationAction(creationConfig))
         } else {
-            null
+            taskFactory.register(SimplifiedMergedManifestsProducerTask.CreationAction(creationConfig))
         }
     }
 
@@ -604,21 +605,36 @@ abstract class TaskManager(
                 projectInfo.getProjectBaseName())
         val projectOptions = creationConfig.services.projectOptions
         val nonTransitiveR = projectOptions[BooleanOption.NON_TRANSITIVE_R_CLASS]
+        val enableAppCompileRClass = projectOptions[BooleanOption.ENABLE_APP_COMPILE_TIME_R_CLASS]
         val namespaced: Boolean = globalConfig.namespacedAndroidResources
 
-        // TODO(b/138780301): Also use compile time R class in android tests.
-        if ((projectOptions[BooleanOption.ENABLE_APP_COMPILE_TIME_R_CLASS] || nonTransitiveR)
-                && !creationConfig.componentType.isForTesting
-                && !namespaced) {
+        if (namespaced) return
+
+        if (creationConfig.componentType.isForTesting
+            && !isTestApkCompileRClassEnabled(enableAppCompileRClass, creationConfig.componentType)) {
+            return
+        }
+
+        if (enableAppCompileRClass || nonTransitiveR) {
             // Generate the COMPILE TIME only R class using the local resources instead of waiting
             // for the above full link to finish. Linking will still output the RUN TIME R class.
             // Since we're gonna use AAPT2 to generate the keep rules, do not generate them here.
             createProcessResTask(
-                    creationConfig,
-                    packageOutputType,
-                    MergeType.PACKAGE,
-                    projectInfo.getProjectBaseName())
+                creationConfig,
+                packageOutputType,
+                MergeType.PACKAGE,
+                projectInfo.getProjectBaseName()
+            )
         }
+    }
+
+    private fun isTestApkCompileRClassEnabled(
+        compileRClassFlag: Boolean,
+        componentType: ComponentType
+    ): Boolean {
+        return compileRClassFlag
+            && componentType.isForTesting
+            && componentType.isApk
     }
 
     fun createProcessResTask(
@@ -638,10 +654,7 @@ abstract class TaskManager(
         // even if legacy multidex is not explicitly enabled.
         val useAaptToGenerateLegacyMultidexMainDexProguardRules =
                 (creationConfig is ApkCreationConfig
-                        && creationConfig
-                        .dexing
-                        .dexingType
-                        .needsMainDexList)
+                        && creationConfig.dexing.dexingType.isLegacyMultiDex)
         if (globalConfig.namespacedAndroidResources) {
             // TODO: make sure we generate the proguard rules in the namespaced case.
             NamespacedResourcesTaskManager(
@@ -710,8 +723,7 @@ abstract class TaskManager(
                 // TODO: double check this (what about dynamic features?)
                 if (!nonTransitiveRClassInApp || compileTimeRClassInApp || creationConfig.componentType.isAar) {
                     taskFactory.register(GenerateLibraryRFileTask.CreationAction(
-                        creationConfig,
-                        creationConfig.componentType.isAar
+                        creationConfig
                     ))
                 }
             }
@@ -909,7 +921,7 @@ abstract class TaskManager(
         }
 
         val allDevicesVariantTask = taskFactory.register(
-            creationConfig.computeTaskName("allDevices", testTaskSuffix)
+            creationConfig.computeTaskNameInternal("allDevices", testTaskSuffix)
         ) { allDevicesVariant: Task ->
             allDevicesVariant.description =
                 "Runs the tests for $variantName on all managed devices in the dsl."
@@ -1611,7 +1623,7 @@ abstract class TaskManager(
 
     protected fun createAssembleTask(component: ComponentCreationConfig) {
         taskFactory.register(
-                component.computeTaskName("assemble"),
+                component.computeTaskNameInternal("assemble"),
                 null /*preConfigAction*/,
                 object : TaskConfigAction<Task> {
                     override fun configure(task: Task) {
@@ -1762,7 +1774,7 @@ abstract class TaskManager(
         creationConfig
                 .taskContainer
                 .sourceGenTask = taskFactory.register(
-                creationConfig.computeTaskName("generate", "Sources")
+                creationConfig.computeTaskNameInternal("generate", "Sources")
         ) { task: Task ->
             task.dependsOn(creationConfig.global.taskNames.compileLintChecks)
             if (creationConfig.componentType.isAar) {
@@ -1778,13 +1790,13 @@ abstract class TaskManager(
         creationConfig
                 .taskContainer
                 .assetGenTask =
-                taskFactory.register(creationConfig.computeTaskName("generate", "Assets"))
+                taskFactory.register(creationConfig.computeTaskNameInternal("generate", "Assets"))
         // Create anchor task for creating instrumentation test coverage reports
         if (creationConfig is VariantCreationConfig && creationConfig.isAndroidTestCoverageEnabled) {
             creationConfig
                     .taskContainer
                     .coverageReportTask = taskFactory.register(
-                    creationConfig.computeTaskName("create", "CoverageReport")
+                    creationConfig.computeTaskNameInternal("create", "CoverageReport")
             ) { task: Task ->
                 task.group = JavaBasePlugin.VERIFICATION_GROUP
                 task.description = String.format(
@@ -1837,7 +1849,7 @@ abstract class TaskManager(
     private fun createCompileAnchorTask(creationConfig: ComponentCreationConfig) {
         val taskContainer = creationConfig.taskContainer
         taskContainer.compileTask = taskFactory.register(
-                creationConfig.computeTaskName("compile", "Sources")
+                creationConfig.computeTaskNameInternal("compile", "Sources")
         ) { task: Task -> task.group = BUILD_GROUP }
     }
 

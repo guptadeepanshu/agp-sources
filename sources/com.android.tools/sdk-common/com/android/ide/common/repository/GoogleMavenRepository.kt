@@ -50,8 +50,8 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
      */
     networkTimeoutMs: Int = 3000,
 
-    /** Maximum allowed age of cached data; default is 7 days */
-    cacheExpiryHours: Int = TimeUnit.DAYS.toHours(7).toInt(),
+    /** Maximum allowed age of cached data; default is 1 day */
+    cacheExpiryHours: Int = TimeUnit.DAYS.toHours(1).toInt(),
 
     /** If false, this repository won't make network requests */
     useNetwork: Boolean = true

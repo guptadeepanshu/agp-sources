@@ -60,11 +60,13 @@ abstract class AbstractAppPlugin<
 @Inject constructor(
         registry: ToolingModelBuilderRegistry?,
         componentFactory: SoftwareComponentFactory?,
-        listenerRegistry: BuildEventsListenerRegistry?
+        listenerRegistry: BuildEventsListenerRegistry?,
+        buildFeatures: org.gradle.api.configuration.BuildFeatures
 ) : BasePlugin<BuildFeaturesT, BuildTypeT, DefaultConfigT, ProductFlavorT, AndroidResourcesT, InstallationT, AndroidT, AndroidComponentsT, VariantBuilderT, VariantDslInfoT, CreationConfigT, VariantT>(
         registry!!,
         componentFactory!!,
-        listenerRegistry!!
+        listenerRegistry!!,
+        buildFeatures,
 ) {
 
     override fun getProjectType(): Int {

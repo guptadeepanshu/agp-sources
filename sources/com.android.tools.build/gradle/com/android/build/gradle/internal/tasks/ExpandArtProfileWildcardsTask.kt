@@ -140,7 +140,7 @@ abstract class ExpandArtProfileWildcardsTask: NonIncrementalTask() {
     ) : VariantTaskCreationAction<ExpandArtProfileWildcardsTask, ApkCreationConfig>(creationConfig) {
 
         override val name: String
-            get() = creationConfig.computeTaskName("expand", "ArtProfileWildcards")
+            get() = creationConfig.computeTaskNameInternal("expand", "ArtProfileWildcards")
         override val type: Class<ExpandArtProfileWildcardsTask>
             get() = ExpandArtProfileWildcardsTask::class.java
 
@@ -176,7 +176,7 @@ abstract class ExpandArtProfileWildcardsTask: NonIncrementalTask() {
         creationConfig
     ) {
         override val name: String
-            get() = creationConfig.computeTaskName("expand", "L8ArtProfileWildcards")
+            get() = creationConfig.computeTaskNameInternal("expand", "L8ArtProfileWildcards")
         override val type: Class<ExpandArtProfileWildcardsTask>
             get() = ExpandArtProfileWildcardsTask::class.java
 

@@ -919,6 +919,7 @@ public interface IDevice extends IShellEnabledDevice, IUserDataMap {
      * @return a {@link String} with an error code, or <code>null</code> if success.
      * @throws InstallException if the uninstallation fails.
      */
+    @Nullable
     String uninstallPackage(String packageName) throws InstallException;
 
     /**
@@ -930,6 +931,7 @@ public interface IDevice extends IShellEnabledDevice, IUserDataMap {
      * @return a {@link String} with an error code, or <code>null</code> if success.
      * @throws InstallException if the uninstallation fails.
      */
+    @Nullable
     String uninstallApp(String applicationID, String... extraArgs) throws InstallException;
 
     /**

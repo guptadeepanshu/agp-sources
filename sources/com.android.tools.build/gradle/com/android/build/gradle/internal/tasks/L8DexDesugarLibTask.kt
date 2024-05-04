@@ -166,8 +166,10 @@ abstract class L8DexDesugarLibTask : NonIncrementalTask() {
 
             if (dexingCreationConfig.needsShrinkDesugarLibrary) {
                 task.desugaredDesugarLibJar.from(getDesugaredDesugarLib(creationConfig))
-                // when app is using D8, desugar library is shrunk to reduce apk but not obfuscated
-                // or optimized
+                // When D8 is used (minifiedEnabled = false), we disable obfuscation/optimization
+                // This is so that users can see stack traces more easily
+                // When R8 is used (minifiedEnabled = true), obfuscation/optimization is needed to
+                // reduce the APK size, so we should not disable them (see http://b/300373199)
                 if (!creationConfig.optimizationCreationConfig.minifiedEnabled) {
                     task.keepRulesConfigurations.set(listOf("-dontobfuscate", "-dontoptimize"))
                 }

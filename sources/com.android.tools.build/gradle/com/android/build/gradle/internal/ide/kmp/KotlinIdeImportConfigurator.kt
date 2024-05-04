@@ -38,9 +38,24 @@ import org.jetbrains.kotlin.gradle.plugin.ide.IdeDependencyResolver
 import org.jetbrains.kotlin.gradle.plugin.ide.IdeMultiplatformImport
 import org.jetbrains.kotlin.gradle.plugin.ide.dependencyResolvers.IdeBinaryDependencyResolver
 
+/**
+ * A singleton that is responsible for registering services that runs during the kotlin model
+ * building phase to resolve dependencies, serialize and deserialize extras.
+ */
 @OptIn(ExternalKotlinTargetApi::class)
 internal object KotlinIdeImportConfigurator {
 
+    /**
+     * Configures IDE import hooks. Since this is called on creating the target which happens on
+     * applying the plugin, we pass in lazy values that will not be available until afterEvaluate.
+     *
+     * @param sourceSetToCreationConfigMap the default android sourceSets that map to a single
+     *          compilation that maps then to an android component.
+     * @param extraSourceSetsToIncludeInResolution this includes sourceSets that only exist in
+     *          android compilation, such as a sourceSet that was added to an android compilation
+     *          or the common sourceSet in an android-only kmp module. Those sourceSets we treat
+     *          as fully android in order to have full IDE android support for them.
+     */
     fun configure(
         project: Project,
         androidTarget: Lazy<KotlinMultiplatformAndroidTarget>,
@@ -98,6 +113,9 @@ internal object KotlinIdeImportConfigurator {
                     extraSourceSetsToIncludeInResolution.value.contains(sourceSet)
         }
 
+        // Use the kotlin class IdeBinaryDependencyResolver to resolve dependencies on binary
+        // artifacts, we resolve the compile classpath configuration to the classes jar artifact
+        // to run the artifact transforms if necessary.
         service.registerDependencyResolver(
             resolver = IdeBinaryDependencyResolver(
                 artifactResolutionStrategy = IdeBinaryDependencyResolver.ArtifactResolutionStrategy.ResolvableConfiguration(
@@ -120,9 +138,9 @@ internal object KotlinIdeImportConfigurator {
             priority = resolutionPriority
         )
 
+        // Register a resolver to resolve dependencies on modules.
         service.registerDependencyResolver(
             resolver = ProjectDependencyResolver(
-                project = project,
                 libraryResolver = libraryResolver,
                 sourceSetToCreationConfigMap = sourceSetToCreationConfigMap
             ),
@@ -131,6 +149,9 @@ internal object KotlinIdeImportConfigurator {
             priority = resolutionPriority
         )
 
+        // Register an additional artifact resolver that adds extra data to dependencies on android
+        // libraries (AARs), the extra data is needed as the IDE needs to watch the exploded
+        // content of the AAR such as the android manifest and the R.txt.
         service.registerAdditionalArtifactResolver(
             resolver = AndroidLibraryDependencyResolver(
                 libraryResolver = libraryResolver,
@@ -141,6 +162,10 @@ internal object KotlinIdeImportConfigurator {
             priority = resolutionPriority
         )
 
+        // Register a resolver that exists as a workaround for the kotlin plugin not providing hooks
+        // to run code in the model building phase. We need to run in the model building phase
+        // explicitly since we access values that will not be finalized until model building, such
+        // as sourceSet dependency graphs and DSL values.
         service.registerAdditionalArtifactResolver(
             resolver = KotlinModelBuildingHook(
                 project = project,
@@ -155,6 +180,9 @@ internal object KotlinIdeImportConfigurator {
             priority = resolutionPriority
         )
 
+        // Add an empty resolver to bypass sources and documentation resolution since we have our
+        // own mechanism in android studio to fetch these using the extra information sent with
+        // the libraries.
         service.registerDependencyResolver(
             resolver = IdeDependencyResolver.empty,
             constraint = androidSourceSetFilter,

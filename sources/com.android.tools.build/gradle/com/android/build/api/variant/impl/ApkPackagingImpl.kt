@@ -19,7 +19,7 @@ package com.android.build.api.variant.impl
 import com.android.build.api.variant.ApkPackaging
 import com.android.build.gradle.internal.services.VariantServices
 
-class ApkPackagingImpl(
+open class ApkPackagingImpl(
     dslPackaging: com.android.build.api.dsl.Packaging,
     variantServices: VariantServices,
     minSdk: Int

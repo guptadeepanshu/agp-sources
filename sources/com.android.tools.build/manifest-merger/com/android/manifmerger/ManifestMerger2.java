@@ -1522,13 +1522,17 @@ public class ManifestMerger2 {
                     finalMergedDocument
                             .getRootNode()
                             .getNodeByTypeAndKey(ManifestModel.NodeTypes.APPLICATION, null);
-            if (!element.isPresent()) {
+            if (element.isEmpty()) {
                 return;
             }
             XmlElement applicationElement = element.get();
 
             checkIfExportedIsNeeded(
                     applicationElement.getAllNodesByType(ManifestModel.NodeTypes.ACTIVITY),
+                    mergingReportBuilder);
+
+            checkIfExportedIsNeeded(
+                    applicationElement.getAllNodesByType(ManifestModel.NodeTypes.ACTIVITY_ALIAS),
                     mergingReportBuilder);
 
             checkIfExportedIsNeeded(

@@ -17,7 +17,11 @@
 package com.android.build.api.dsl
 
 import org.gradle.api.Incubating
-
+/**
+ * Extension properties for Fused libraries.
+ *
+ * @suppress Do not use from production code. Only exposed for prototype.
+ **/
 @Incubating
 interface FusedLibraryExtension {
 

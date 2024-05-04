@@ -185,4 +185,25 @@ public interface DynamicLayoutInspectorAttachToProcessOrBuilder extends
    * @return The isEmbeddedLayoutInspector.
    */
   boolean getIsEmbeddedLayoutInspector();
+
+  /**
+   * <pre>
+   * The time it took for attach to start and end.
+   * It can end because of success, error or cancellation.
+   * </pre>
+   *
+   * <code>optional int64 attach_duration_ms = 10;</code>
+   * @return Whether the attachDurationMs field is set.
+   */
+  boolean hasAttachDurationMs();
+  /**
+   * <pre>
+   * The time it took for attach to start and end.
+   * It can end because of success, error or cancellation.
+   * </pre>
+   *
+   * <code>optional int64 attach_duration_ms = 10;</code>
+   * @return The attachDurationMs.
+   */
+  long getAttachDurationMs();
 }

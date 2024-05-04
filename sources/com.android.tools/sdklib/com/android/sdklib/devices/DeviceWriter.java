@@ -241,7 +241,16 @@ public class DeviceWriter {
                 hw.getRemovableStorage());
         addElement(doc, hardware, DeviceSchema.NODE_CPU, hw.getCpu());
         addElement(doc, hardware, DeviceSchema.NODE_GPU, hw.getGpu());
-        addElement(doc, hardware, DeviceSchema.NODE_ABI, hw.getSupportedAbis());
+        hw.getSupportedAbis()
+                .forEach(abi -> addElement(doc, hardware, DeviceSchema.NODE_ABIS, abi.toString()));
+        hw.getTranslatedAbis()
+                .forEach(
+                        abi ->
+                                addElement(
+                                        doc,
+                                        hardware,
+                                        DeviceSchema.NODE_TRANSLATED_ABIS,
+                                        abi.toString()));
 
         StringBuilder sb = new StringBuilder();
         for (UiMode u : hw.getSupportedUiModes()) {
@@ -303,9 +312,9 @@ public class DeviceWriter {
             // TODO: Only append nodes which are different from the default hardware
             Element hardware = generateHardwareNode(s.getHardware(), doc);
             NodeList children = hardware.getChildNodes();
-            for (int i = 0 ; i < children.getLength(); i++) {
-                Node child = children.item(i);
-                state.appendChild(child);
+            while (children.getLength() > 0) {
+                Node child = children.item(0);
+                state.appendChild(child); // This call removes child from children.
             }
         }
         return state;

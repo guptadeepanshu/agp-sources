@@ -65,10 +65,10 @@ abstract class ModuleMetadataWriterTask : NonIncrementalTask() {
     abstract val abiFilters: ListProperty<String>
 
     @get:Input
-    abstract val ignoredLibraryKeepRules: SetProperty<String>
+    abstract val ignoreFromInKeepRules: SetProperty<String>
 
     @get:Input
-    abstract val ignoreAllLibraryKeepRules: Property<Boolean>
+    abstract val ignoreFromAllExternalDependenciesInKeepRules: Property<Boolean>
 
     @get:OutputFile
     abstract val outputFile: RegularFileProperty
@@ -81,8 +81,9 @@ abstract class ModuleMetadataWriterTask : NonIncrementalTask() {
                 versionName = versionName.orNull,
                 debuggable = debuggable.get(),
                 abiFilters = abiFilters.get(),
-                ignoredLibraryKeepRules = ignoredLibraryKeepRules.get(),
-                ignoreAllLibraryKeepRules = ignoreAllLibraryKeepRules.get()
+                ignoreFromInKeepRules = ignoreFromInKeepRules.get(),
+                ignoreFromAllExternalDependenciesInKeepRules =
+                    ignoreFromAllExternalDependenciesInKeepRules.get()
             )
 
         declaration.save(outputFile.get().asFile)
@@ -121,11 +122,11 @@ abstract class ModuleMetadataWriterTask : NonIncrementalTask() {
             task.abiFilters.setDisallowChanges(
                 (creationConfig.nativeBuildCreationConfig?.supportedAbis ?: emptyList()).sorted()
             )
-            task.ignoredLibraryKeepRules.setDisallowChanges(
-                creationConfig.optimizationCreationConfig.ignoredLibraryKeepRules
+            task.ignoreFromInKeepRules.setDisallowChanges(
+                creationConfig.optimizationCreationConfig.ignoreFromInKeepRules
             )
-            task.ignoreAllLibraryKeepRules.setDisallowChanges(
-                    creationConfig.optimizationCreationConfig.ignoreAllLibraryKeepRules
+            task.ignoreFromAllExternalDependenciesInKeepRules.setDisallowChanges(
+                creationConfig.optimizationCreationConfig.ignoreFromAllExternalDependenciesInKeepRules
             )
         }
     }

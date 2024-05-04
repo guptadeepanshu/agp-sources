@@ -19,7 +19,6 @@ package com.android.build.gradle.internal.tasks
 import com.android.build.api.artifact.MultipleArtifact
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.PostprocessingFeatures
-import com.android.build.gradle.internal.api.BaselineProfiles
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
@@ -27,6 +26,9 @@ import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.core.ToolExecutionOptions
 import com.android.build.gradle.internal.dsl.ModulePropertyKey
 import com.android.build.gradle.internal.errors.MessageReceiverImpl
+import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType
+import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInternalArtifactType
+import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.DUPLICATE_CLASSES_CHECK
@@ -55,7 +57,6 @@ import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.file.ProjectLayout
-import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.logging.Logging
 import org.gradle.api.provider.ListProperty
@@ -218,18 +219,15 @@ abstract class R8Task @Inject constructor(
     @get:Input
     abstract val artProfileRewriting: Property<Boolean>
 
-    @get:Input
-    abstract val enableDexStartupOptimization: Property<Boolean>
-
     @get:Optional
     @get:PathSensitive(PathSensitivity.NAME_ONLY)
     @get:InputFiles
     abstract val inputArtProfile: RegularFileProperty
 
-    @get:InputFiles
-    @get:PathSensitive(PathSensitivity.RELATIVE)
     @get:Optional
-    abstract val baselineProfilesSources: ListProperty<RegularFile>
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
+    @get:InputFiles
+    abstract val inputProfileForDexStartupOptimization: RegularFileProperty
 
     @get:Optional
     @get:OutputFile
@@ -241,6 +239,99 @@ abstract class R8Task @Inject constructor(
     @get:Optional
     @get:OutputFile
     abstract val mergedStartupProfile: RegularFileProperty
+
+    class PrivacySandboxSdkCreationAction(
+        val creationConfig: PrivacySandboxSdkVariantScope,
+        addCompileRClass: Boolean,
+    ): ProguardConfigurableTask.PrivacySandboxSdkCreationAction<R8Task, PrivacySandboxSdkVariantScope>(
+        creationConfig, addCompileRClass
+    ) {
+
+        override val type = R8Task::class.java
+        override val name =  "minifyBundleWithR8"
+
+        private var disableTreeShaking: Boolean = false
+        private var disableMinification: Boolean = false
+
+        private val proguardConfigurations: MutableList<String> = mutableListOf()
+
+        override fun handleProvider(
+            taskProvider: TaskProvider<R8Task>
+        ) {
+            super.handleProvider(taskProvider)
+
+            creationConfig.artifacts.setInitialProvider(
+                taskProvider,
+                R8Task::outputDex
+            ).on(PrivacySandboxSdkInternalArtifactType.DEX)
+
+            creationConfig.artifacts.use(taskProvider)
+                .wiredWithFiles(R8Task::resourcesJar, R8Task::outputResources)
+                .toTransform(FusedLibraryInternalArtifactType.MERGED_JAVA_RES)
+        }
+
+        override fun configure(
+            task: R8Task
+        ) {
+            super.configure(task)
+
+            task.artProfileRewriting.set(false)
+
+            task.usesService(
+                getBuildService(
+                    creationConfig.services.buildServiceRegistry,
+                    R8ParallelBuildService::class.java
+                )
+            )
+
+            task.enableDesugaring.setDisallowChanges(true)
+            task.executionOptions.setDisallowChanges(
+                ToolExecutionOptions(emptyList(), false)
+            )
+
+            setBootClasspathForCodeShrinker(task)
+            task.minSdkVersion.setDisallowChanges(creationConfig.minSdkVersion.apiLevel)
+
+            task.debuggable.setDisallowChanges(false)
+            task.disableTreeShaking.set(disableTreeShaking)
+            task.disableMinification.set(disableMinification)
+            task.errorFormatMode.set(SyncOptions.getErrorFormatMode(creationConfig.services.projectOptions))
+            task.legacyMultiDexEnabled.setDisallowChanges(
+                false
+            )
+            task.useFullR8.setDisallowChanges(creationConfig.services.projectOptions[BooleanOption.FULL_R8])
+
+            task.proguardConfigurations = proguardConfigurations
+
+            task.baseJar.disallowChanges()
+            task.featureClassJars.disallowChanges()
+            task.featureJavaResourceJars.disallowChanges()
+        }
+
+        override fun keep(keep: String) {
+            proguardConfigurations.add("-keep $keep")
+        }
+
+        override fun keepAttributes() {
+            proguardConfigurations.add("-keepattributes *")
+        }
+
+        override fun dontWarn(dontWarn: String) {
+            proguardConfigurations.add("-dontwarn $dontWarn")
+        }
+
+        override fun setActions(actions: PostprocessingFeatures) {
+            disableTreeShaking = !actions.isRemoveUnusedCode
+            disableMinification = !actions.isObfuscate
+            if (!actions.isOptimize) {
+                proguardConfigurations.add("-dontoptimize")
+            }
+        }
+
+        private fun setBootClasspathForCodeShrinker(task: R8Task) {
+            task.bootClasspath.from(creationConfig.bootClasspath)
+        }
+    }
 
     class CreationAction(
             creationConfig: ConsumableCreationConfig,
@@ -307,7 +398,7 @@ abstract class R8Task @Inject constructor(
                         ).withName("mainDexList.txt")
                             .on(InternalArtifactType.MAIN_DEX_LIST_FOR_BUNDLE)
                     }
-                    creationConfig.dexing.dexingType.needsMainDexList -> {
+                    creationConfig.dexing.dexingType.isLegacyMultiDex -> {
                         creationConfig.artifacts.setInitialProvider(
                             taskProvider,
                             R8Task::mainDexListOutput
@@ -321,11 +412,6 @@ abstract class R8Task @Inject constructor(
                     .use(taskProvider)
                     .wiredWithFiles(R8Task::inputArtProfile, R8Task::outputArtProfile)
                     .toTransform(InternalArtifactType.R8_ART_PROFILE)
-
-                creationConfig.artifacts.setInitialProvider(
-                    taskProvider,
-                    R8Task::mergedStartupProfile
-                ).on(InternalArtifactType.MERGED_STARTUP_PROFILE)
             }
         }
 
@@ -342,14 +428,11 @@ abstract class R8Task @Inject constructor(
                         ModulePropertyKey.BooleanWithDefault.ART_PROFILE_R8_REWRITING.getValue(it)
                     }
                 )
-                task.enableDexStartupOptimization.set(
-                    creationConfig.experimentalProperties.map {
-                        ModulePropertyKey.BooleanWithDefault.R8_DEX_STARTUP_OPTIMIZATION.getValue(it)
-                    }
+                task.inputProfileForDexStartupOptimization.set(
+                    artifacts.get(InternalArtifactType.MERGED_STARTUP_PROFILE)
                 )
             } else {
                 task.artProfileRewriting.set(false)
-                task.enableDexStartupOptimization.set(false)
             }
 
             task.usesService(
@@ -366,13 +449,10 @@ abstract class R8Task @Inject constructor(
 
             setBootClasspathForCodeShrinker(task)
             if (creationConfig is ApkCreationConfig) {
-                task.minSdkVersion.set(
-                    creationConfig.dexing.minSdkVersionForDexing
-                )
+                task.minSdkVersion.setDisallowChanges(creationConfig.dexing.minSdkVersionForDexing)
             } else {
-                task.minSdkVersion.set(creationConfig.minSdk.apiLevel)
+                task.minSdkVersion.setDisallowChanges(creationConfig.minSdk.apiLevel)
             }
-            task.minSdkVersion.disallowChanges()
 
             task.debuggable
                 .setDisallowChanges(creationConfig.debuggable)
@@ -395,10 +475,10 @@ abstract class R8Task @Inject constructor(
                 task.duplicateClassesCheck.from(artifacts.get(DUPLICATE_CLASSES_CHECK))
 
                 task.mainDexRulesFiles.from(
-                        artifacts.getAll(MultipleArtifact.MULTIDEX_KEEP_PROGUARD)
+                    artifacts.getAll(MultipleArtifact.MULTIDEX_KEEP_PROGUARD)
                 )
 
-                if (creationConfig.dexing.dexingType.needsMainDexList &&
+                if (creationConfig.dexing.dexingType.isLegacyMultiDex &&
                     !creationConfig.global.namespacedAndroidResources) {
                     task.mainDexRulesFiles.from(
                         artifacts.get(
@@ -435,15 +515,6 @@ abstract class R8Task @Inject constructor(
                 }
             }
 
-            creationConfig.sources.baselineProfiles {
-                task.baselineProfilesSources.setDisallowChanges(
-                    it.all.map { directories ->
-                        directories.map {directory ->
-                            directory.file(BaselineProfiles.StartupProfileFileName)
-                        }
-                    }
-                )
-            }
             task.baseJar.disallowChanges()
             task.featureClassJars.disallowChanges()
             task.featureJavaResourceJars.disallowChanges()
@@ -538,27 +609,6 @@ abstract class R8Task @Inject constructor(
             outputArtProfile.orNull?.asFile?.let { FileUtils.copyFile(inputArtProfileFile, it) }
         }
 
-        if (enableDexStartupOptimization.get()) {
-            val sources = baselineProfilesSources.orNull
-            if (sources.isNullOrEmpty()) {
-                getLogger().debug(
-                    "Dex optimization based on startup profile is enabled, " +
-                    "but there are no source folders.")
-            } else {
-                val startupProfiles = sources.filter { it.asFile.exists() }.map { it.asFile }
-                if (startupProfiles.isEmpty()) {
-                    getLogger().debug(
-                        "Dex optimization based on startup profile is enabled, but there are no " +
-                        "input baseline profiles found in the baselineProfiles sources. " +
-                        "You should add ${sources.first().asFile.absolutePath}, for instance.")
-                } else {
-                    mergedStartupProfile.get().asFile.printWriter().buffered().use { writer ->
-                        startupProfiles.joinTo(writer, "\n") { it.readText() }
-                    }
-                }
-            }
-        }
-
         val workerAction = { it: R8Runnable.Params ->
             it.bootClasspath.from(bootClasspath.toList())
             it.minSdkVersion.set(minSdkVersion.get())
@@ -583,8 +633,8 @@ abstract class R8Task @Inject constructor(
             it.proguardConfigurationFiles.from(
                 reconcileDefaultProguardFile(
                     getFilteredFiles(
-                        ignoredLibraryKeepRules.get(),
-                        ignoreAllLibraryKeepRules.get(),
+                        ignoreFromInKeepRules.get(),
+                        ignoreFromAllExternalDependenciesInKeepRules.get(),
                         libraryKeepRules,
                         finalListOfConfigurationFiles,
                         LoggerWrapper.getLogger(R8Task::class.java),
@@ -621,15 +671,11 @@ abstract class R8Task @Inject constructor(
             it.featureJavaResourceOutputDir.set(featureJavaResourceOutputDir.asFile.orNull)
             it.libConfiguration.set(coreLibDesugarConfig.orNull)
             it.errorFormatMode.set(errorFormatMode.get())
-            it.enableDexStartupOptimization.set(enableDexStartupOptimization)
             if (artProfileRewriting.get()) {
                 it.inputArtProfile.set(inputArtProfile)
                 it.outputArtProfile.set(outputArtProfile)
             }
-            if (enableDexStartupOptimization.get() &&
-                mergedStartupProfile.orNull?.asFile?.exists() == true) {
-                it.inputProfileForDexStartupOptimization.set(mergedStartupProfile)
-            }
+            it.inputProfileForDexStartupOptimization.set(inputProfileForDexStartupOptimization)
         }
         if (executionOptions.get().runInSeparateProcess) {
             workerExecutor.processIsolation { spec ->
@@ -677,7 +723,6 @@ abstract class R8Task @Inject constructor(
             errorFormatMode: SyncOptions.ErrorFormatMode,
             inputArtProfile: File?,
             outputArtProfile: File?,
-            enableDexStartupOptimization: Boolean,
             inputProfileForDexStartupOptimization: File?,
         ) {
             val logger = LoggerWrapper.getLogger(R8Task::class.java)
@@ -753,7 +798,6 @@ abstract class R8Task @Inject constructor(
                 libConfiguration,
                 inputArtProfile?.toPath(),
                 outputArtProfile?.toPath(),
-                enableDexStartupOptimization,
                 inputProfileForDexStartupOptimization?.toPath(),
             )
         }
@@ -805,7 +849,6 @@ abstract class R8Task @Inject constructor(
             abstract val errorFormatMode: Property<SyncOptions.ErrorFormatMode>
             abstract val inputArtProfile: RegularFileProperty
             abstract val outputArtProfile: RegularFileProperty
-            abstract val enableDexStartupOptimization: Property<Boolean>
             abstract val inputProfileForDexStartupOptimization: RegularFileProperty
         }
 
@@ -844,7 +887,6 @@ abstract class R8Task @Inject constructor(
                 parameters.errorFormatMode.get(),
                 parameters.inputArtProfile.orNull?.asFile,
                 parameters.outputArtProfile.orNull?.asFile,
-                parameters.enableDexStartupOptimization.get(),
                 parameters.inputProfileForDexStartupOptimization.orNull?.asFile,
             )
         }

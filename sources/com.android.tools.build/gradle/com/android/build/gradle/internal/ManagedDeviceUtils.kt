@@ -74,7 +74,7 @@ fun managedDeviceGroupAllVariantsTaskName(deviceGroup: DeviceGroup): String =
 
 fun managedDeviceGroupSingleVariantTaskName(
     creationConfig: InstrumentedTestCreationConfig, deviceGroup: DeviceGroup): String =
-    creationConfig.computeTaskName("${deviceGroup.name}Group")
+    creationConfig.computeTaskNameInternal("${deviceGroup.name}Group")
 
 fun computeAbiFromArchitecture(device: ManagedVirtualDevice): String =
     computeAbiFromArchitecture(

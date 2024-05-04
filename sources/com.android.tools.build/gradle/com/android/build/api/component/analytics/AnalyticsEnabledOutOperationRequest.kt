@@ -29,6 +29,14 @@ open class AnalyticsEnabledOutOperationRequest<FileTypeT: FileSystemLocation> @I
     val delegate: OutOperationRequest<FileTypeT>,
     val stats: GradleBuildVariant.Builder
 ): OutOperationRequest<FileTypeT> {
+
+    override fun withName(name: String): OutOperationRequest<FileTypeT> {
+        stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+            VariantPropertiesMethodType.TRANSFORM_WITH_NAME_VALUE
+        delegate.withName(name)
+        return this
+    }
+
     override fun <ArtifactTypeT> toAppendTo(type: ArtifactTypeT)
             where ArtifactTypeT : Artifact.Multiple<FileTypeT>,
                   ArtifactTypeT : Artifact.Appendable {

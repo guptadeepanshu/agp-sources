@@ -16,6 +16,7 @@
 
 package com.android.build.api.dsl
 
+import org.gradle.api.Incubating
 
 /**
  * Packaging options for native library (.so) files in the Android DSL
@@ -60,4 +61,13 @@ interface JniLibsPackaging {
      * Example: `android.packagingOptions.jniLibs.keepDebugSymbols += "**`/`doNotStrip.so"`
      */
     val keepDebugSymbols: MutableSet<String>
+
+    /**
+     * The set of test-only patterns. Native libraries matching any of these patterns do not get
+     * packaged in the main APK or AAR, but they are included in the test APK.
+     *
+     * Example: `android.packaging.jniLibs.testOnly += "**`/`testOnly.so"`
+     */
+    @get:Incubating
+    val testOnly: MutableSet<String>
 }

@@ -16,7 +16,7 @@
 package com.android.build.gradle.internal
 
 import com.android.SdkConstants.FD_RES_VALUES
-import com.android.build.gradle.internal.component.ApplicationCreationConfig
+import com.android.build.api.variant.ApplicationAndroidResources
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.features.AndroidResourcesCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
@@ -259,7 +259,7 @@ abstract class DependencyResourcesComputer {
             )
         }
 
-        if ((creationConfig as? ApplicationCreationConfig)?.generateLocaleConfig == true) {
+        if ((creationConfig.androidResources as? ApplicationAndroidResources)?.generateLocaleConfig == true) {
             generatedLocaleConfig.set(
                 creationConfig.artifacts.get(InternalArtifactType.GENERATED_LOCALE_CONFIG)
             )

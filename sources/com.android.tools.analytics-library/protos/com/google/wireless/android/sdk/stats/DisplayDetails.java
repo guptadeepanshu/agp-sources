@@ -106,7 +106,7 @@ private static final long serialVersionUID = 0L;
   private int dotsPerInchHorizontal_;
   /**
    * <pre>
-   * Densitiy of the pixels on the screen horiziontally.
+   * Density of the pixels on the screen horiziontally.
    * </pre>
    *
    * <code>optional int32 dots_per_inch_horizontal = 3;</code>
@@ -118,7 +118,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * Densitiy of the pixels on the screen horiziontally.
+   * Density of the pixels on the screen horiziontally.
    * </pre>
    *
    * <code>optional int32 dots_per_inch_horizontal = 3;</code>
@@ -751,7 +751,7 @@ private static final long serialVersionUID = 0L;
     private int dotsPerInchHorizontal_ ;
     /**
      * <pre>
-     * Densitiy of the pixels on the screen horiziontally.
+     * Density of the pixels on the screen horiziontally.
      * </pre>
      *
      * <code>optional int32 dots_per_inch_horizontal = 3;</code>
@@ -763,7 +763,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * Densitiy of the pixels on the screen horiziontally.
+     * Density of the pixels on the screen horiziontally.
      * </pre>
      *
      * <code>optional int32 dots_per_inch_horizontal = 3;</code>
@@ -775,7 +775,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * Densitiy of the pixels on the screen horiziontally.
+     * Density of the pixels on the screen horiziontally.
      * </pre>
      *
      * <code>optional int32 dots_per_inch_horizontal = 3;</code>
@@ -790,7 +790,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * Densitiy of the pixels on the screen horiziontally.
+     * Density of the pixels on the screen horiziontally.
      * </pre>
      *
      * <code>optional int32 dots_per_inch_horizontal = 3;</code>

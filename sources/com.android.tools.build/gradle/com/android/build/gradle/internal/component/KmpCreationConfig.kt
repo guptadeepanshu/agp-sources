@@ -21,5 +21,5 @@ package com.android.build.gradle.internal.component
  */
 interface KmpCreationConfig: KmpComponentCreationConfig, VariantCreationConfig, AarCreationConfig {
     val unitTest: HostTestCreationConfig?
-    val androidTest: AndroidTestCreationConfig?
+    val androidDeviceTest: AndroidTestCreationConfig?
 }

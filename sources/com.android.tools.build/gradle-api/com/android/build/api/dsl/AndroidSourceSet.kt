@@ -117,6 +117,11 @@ interface AndroidSourceSet : Named {
     val compileOnlyConfigurationName: String
 
     /**
+     * Returns the name of the compileOnlyApi configuration for this source set.
+     */
+    val compileOnlyApiConfigurationName: String
+
+    /**
      * Returns the name of the implementation configuration for this source set.
      */
     val implementationConfigurationName: String

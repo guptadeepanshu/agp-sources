@@ -37,7 +37,7 @@ class CompileRClassTaskCreationAction(private val creationConfig: ComponentCreat
     TaskCreationAction<JavaCompile>() {
 
     override val name: String
-        get() = creationConfig.computeTaskName("compile", "FinalRClass")
+        get() = creationConfig.computeTaskNameInternal("compile", "FinalRClass")
 
     override val type: Class<JavaCompile>
         get() = JavaCompile::class.java

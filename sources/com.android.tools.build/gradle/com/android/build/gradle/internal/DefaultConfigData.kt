@@ -32,7 +32,13 @@ class DefaultConfigData<DefaultConfigT : DefaultConfig>(
     testFixturesSourceSet: LazyAndroidSourceSet?,
     androidTestSourceSet: LazyAndroidSourceSet?,
     unitTestSourceSet: LazyAndroidSourceSet?,
+    screenshotTestSourceSet: LazyAndroidSourceSet?,
     lazySourceSetCreation: Boolean
 ) : VariantDimensionData(
-    sourceSet, testFixturesSourceSet, androidTestSourceSet, unitTestSourceSet, lazySourceSetCreation
+    sourceSet,
+    testFixturesSourceSet,
+    androidTestSourceSet,
+    unitTestSourceSet,
+    screenshotTestSourceSet,
+    lazySourceSetCreation
 )

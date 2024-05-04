@@ -92,4 +92,33 @@ public interface GradleNativeAndroidModuleOrBuilder extends
    * @return The buildSystemType.
    */
   com.google.wireless.android.sdk.stats.GradleNativeAndroidModule.NativeBuildSystemType getBuildSystemType();
+
+  /**
+   * <pre>
+   * the ndk version being used by this module
+   * </pre>
+   *
+   * <code>optional string ndk_version = 4;</code>
+   * @return Whether the ndkVersion field is set.
+   */
+  boolean hasNdkVersion();
+  /**
+   * <pre>
+   * the ndk version being used by this module
+   * </pre>
+   *
+   * <code>optional string ndk_version = 4;</code>
+   * @return The ndkVersion.
+   */
+  java.lang.String getNdkVersion();
+  /**
+   * <pre>
+   * the ndk version being used by this module
+   * </pre>
+   *
+   * <code>optional string ndk_version = 4;</code>
+   * @return The bytes for ndkVersion.
+   */
+  com.google.protobuf.ByteString
+      getNdkVersionBytes();
 }

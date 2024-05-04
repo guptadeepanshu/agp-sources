@@ -19,6 +19,7 @@ package com.android.build.gradle.internal.lint
 import com.android.SdkConstants
 import com.android.SdkConstants.MAVEN_ARTIFACT_ID_PROPERTY
 import com.android.SdkConstants.MAVEN_GROUP_ID_PROPERTY
+import com.android.SdkConstants.MAVEN_VERSION_PROPERTY
 import com.android.build.gradle.internal.ide.dependencies.ArtifactHandler
 import com.android.build.gradle.internal.ide.dependencies.MavenCoordinatesCacheBuildService
 import com.android.builder.model.MavenCoordinates
@@ -129,7 +130,7 @@ class ExternalLintModelArtifactHandler private constructor(
                 DefaultLintModelMavenName(
                     groupId = properties.getProperty(MAVEN_GROUP_ID_PROPERTY),
                     artifactId = properties.getProperty(MAVEN_ARTIFACT_ID_PROPERTY),
-                    version = "unspecified"
+                    version = properties.getProperty(MAVEN_VERSION_PROPERTY)
                 )
             } ?: coordinatesSupplier().toMavenName()
         return DefaultLintModelAndroidLibrary(
@@ -204,7 +205,7 @@ class ExternalLintModelArtifactHandler private constructor(
                 DefaultLintModelMavenName(
                     groupId = properties.getProperty(MAVEN_GROUP_ID_PROPERTY),
                     artifactId = properties.getProperty(MAVEN_ARTIFACT_ID_PROPERTY),
-                    version = "unspecified"
+                    version = properties.getProperty(MAVEN_VERSION_PROPERTY)
                 )
             } ?: LintModelMavenName.NONE
         return DefaultLintModelJavaLibrary(

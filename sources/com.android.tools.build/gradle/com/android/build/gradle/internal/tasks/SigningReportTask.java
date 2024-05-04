@@ -29,14 +29,15 @@ import com.android.buildanalyzer.common.TaskCategory;
 import com.android.ide.common.signing.CertificateInfo;
 import com.android.ide.common.signing.KeystoreHelper;
 import com.android.ide.common.signing.KeytoolException;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -55,7 +56,17 @@ import org.gradle.work.DisableCachingByDefault;
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.HELP)
 public class SigningReportTask extends DefaultTask {
 
-    private List<ApkCreationConfig> components;
+    private List<ComponentSigningDetails> componentSigningDetails = new ArrayList<>();
+
+    class ComponentSigningDetails implements Serializable {
+        String componentName;
+        SigningConfigImpl signingConfig;
+
+        ComponentSigningDetails(String componentName, SigningConfigImpl signingConfig) {
+            this.componentName = componentName;
+            this.signingConfig = signingConfig;
+        }
+    }
 
     @TaskAction
     public void generate() {
@@ -65,13 +76,13 @@ public class SigningReportTask extends DefaultTask {
 
         Map<SigningConfig, SigningInfo> cache = Maps.newHashMap();
 
-        for (ApkCreationConfig component : components) {
+        for (ComponentSigningDetails details : componentSigningDetails) {
             textOutput.withStyle(Identifier).text("Variant: ");
-            textOutput.withStyle(Description).text(component.getName());
+            textOutput.withStyle(Description).text(details.componentName);
             textOutput.println();
 
             // get the data
-            SigningConfigImpl signingConfig = component.getSigningConfig();
+            SigningConfigImpl signingConfig = details.signingConfig;
             if (signingConfig == null) {
                 textOutput.withStyle(Identifier).text("Config: ");
                 textOutput.withStyle(Normal).text("none");
@@ -124,7 +135,11 @@ public class SigningReportTask extends DefaultTask {
 
     /** Sets the configurations to generate the report for. */
     public void setComponents(@NonNull Collection<ApkCreationConfig> components) {
-        this.components = ImmutableList.copyOf(components);
+        components.forEach(
+                component ->
+                        componentSigningDetails.add(
+                                new ComponentSigningDetails(
+                                        component.getName(), component.getSigningConfig())));
     }
 
     private static SigningInfo getSigningInfo(

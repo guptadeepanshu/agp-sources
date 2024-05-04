@@ -145,6 +145,7 @@ interface ComponentType {
         const val PREVIEW_SCREENSHOT_PREFIX = "previewScreenshot"
         const val PREVIEW_SCREENSHOT_UPDATE_PREFIX = "previewScreenshotUpdate"
         const val PREVIEW_SCREENSHOT_RENDER_PREFIX = "previewScreenshotRender"
+        const val SCREENSHOT_TEST_PREFIX = "screenshotTest"
         const val SCREENSHOT_TEST_SUFFIX = "ScreenshotTest"
 
         val testComponents: ImmutableList<ComponentType>
@@ -234,7 +235,7 @@ enum class ComponentTypeImpl(
         prefix = ComponentType.ANDROID_TEST_PREFIX,
         suffix = ComponentType.ANDROID_TEST_SUFFIX,
         isSingleBuildType = true,
-        artifactName = AndroidProject.ARTIFACT_ANDROID_TEST,
+        artifactName = "_android_test_",
         artifactType = ArtifactMetaData.TYPE_ANDROID,
         analyticsVariantType = GradleBuildVariant.VariantType.ANDROID_TEST),
     UNIT_TEST(
@@ -242,9 +243,17 @@ enum class ComponentTypeImpl(
         prefix = ComponentType.UNIT_TEST_PREFIX,
         suffix = ComponentType.UNIT_TEST_SUFFIX,
         isSingleBuildType = true,
-        artifactName = AndroidProject.ARTIFACT_UNIT_TEST,
+        artifactName = "_unit_test_",
         artifactType = ArtifactMetaData.TYPE_JAVA,
         analyticsVariantType = GradleBuildVariant.VariantType.UNIT_TEST),
+    SCREENSHOT_TEST(
+        isForTesting = true,
+        prefix = ComponentType.SCREENSHOT_TEST_PREFIX,
+        suffix = ComponentType.SCREENSHOT_TEST_SUFFIX,
+        isSingleBuildType = true,
+        artifactName = "_screenshot_test_",
+        artifactType = ArtifactMetaData.TYPE_JAVA,
+        analyticsVariantType = GradleBuildVariant.VariantType.SCREENSHOT_TEST),
     TEST_FIXTURES(
         isAar = true,
         prefix = ComponentType.TEST_FIXTURES_PREFIX,

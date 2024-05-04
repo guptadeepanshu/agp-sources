@@ -132,6 +132,14 @@ private static final long serialVersionUID = 0L;
      * <code>ENABLE_VCS_INFO = 7;</code>
      */
     ENABLE_VCS_INFO(7),
+    /**
+     * <pre>
+     * Whether Android resources are enabled in this project
+     * </pre>
+     *
+     * <code>BUILD_FEATURE_ANDROID_RESOURCES = 8;</code>
+     */
+    BUILD_FEATURE_ANDROID_RESOURCES(8),
     UNRECOGNIZED(-1),
     ;
 
@@ -206,6 +214,14 @@ private static final long serialVersionUID = 0L;
      * <code>ENABLE_VCS_INFO = 7;</code>
      */
     public static final int ENABLE_VCS_INFO_VALUE = 7;
+    /**
+     * <pre>
+     * Whether Android resources are enabled in this project
+     * </pre>
+     *
+     * <code>BUILD_FEATURE_ANDROID_RESOURCES = 8;</code>
+     */
+    public static final int BUILD_FEATURE_ANDROID_RESOURCES_VALUE = 8;
 
 
     public final int getNumber() {
@@ -240,6 +256,7 @@ private static final long serialVersionUID = 0L;
         case 5: return UNIFIED_TEST_PLATFORM;
         case 6: return USE_ANDROID_X;
         case 7: return ENABLE_VCS_INFO;
+        case 8: return BUILD_FEATURE_ANDROID_RESOURCES;
         default: return null;
       }
     }

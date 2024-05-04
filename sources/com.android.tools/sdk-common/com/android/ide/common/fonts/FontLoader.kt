@@ -24,21 +24,17 @@ import java.io.File
 import java.io.FileReader
 import java.io.IOException
 import java.net.URL
-import java.util.ArrayList
 import java.util.Collections
-import java.util.HashMap
 import javax.xml.parsers.ParserConfigurationException
 import javax.xml.parsers.SAXParserFactory
 
 const val FONT_PROVIDERS = "providers"
 const val FONT_PROVIDERS_FILENAME = "provider_directory.xml"
-const val FONTS_FOLDER = "fonts"
 const val FONT_DIRECTORY_FOLDER = "directory"
 const val FONT_DIRECTORY_FILENAME = "font_directory.xml"
 
 open class FontLoader {
     protected val lock = Object()
-    @GuardedBy("lock") protected var sdkHome: File? = null
     @GuardedBy("lock") protected var providers = HashMap<String, FontProvider>()
     @GuardedBy("lock") protected var fonts = HashMap<FontFamily, FontFamily>()
     @GuardedBy("lock") protected var sortedFontFamilies = ArrayList<FontFamily>()
@@ -46,22 +42,29 @@ open class FontLoader {
     companion object {
         @JvmField protected var instance: FontLoader? = null
 
-        @JvmStatic fun getInstance(sdkHome: File?): FontLoader {
+        @JvmStatic fun getInstance(sdkPath: File?): FontLoader {
             if (instance == null) {
                 instance = FontLoader()
             }
-            instance!!.clear(sdkHome)
+            instance!!.fontPath = getFontsPath(sdkPath)
             return instance!!
         }
     }
 
-    val fontPath: File?
+    @GuardedBy("lock")
+    var fontPath: File? = null
         get() {
             synchronized(lock) {
-                if (sdkHome == null) {
-                    return null
+                return field
+            }
+        }
+        protected set(value) {
+            synchronized(lock) {
+                if (field != value) {
+                    field = value
+                    providers.clear()
+                    fonts.clear()
                 }
-                return File(sdkHome, FONTS_FOLDER)
             }
         }
 
@@ -113,16 +116,6 @@ open class FontLoader {
         }
     }
 
-    protected fun clear(newSdkHome: File?) {
-        synchronized(lock) {
-            if (sdkHome != newSdkHome) {
-                sdkHome = newSdkHome
-                providers.clear()
-                fonts.clear()
-            }
-        }
-    }
-
     private fun lazyLoad() {
         synchronized(lock) {
             if (providers.isNotEmpty()) {
@@ -134,10 +127,9 @@ open class FontLoader {
     }
 
     private fun loadProviders() {
-        val localSdkHome = sdkHome
-        if (localSdkHome != null && localSdkHome.exists()) {
-            val fontFolder = File(localSdkHome, FONTS_FOLDER)
-            val providerFolder = File(fontFolder, FONT_PROVIDERS)
+        val fontsFolder = fontPath
+        if (fontsFolder != null && fontsFolder.exists()) {
+            val providerFolder = File(fontsFolder, FONT_PROVIDERS)
             val providerFile = File(providerFolder, FONT_PROVIDERS_FILENAME)
             if (providerFile.exists()) {
                 val providerList = loadProviders(InputSource(FileReader(providerFile)))
@@ -152,10 +144,9 @@ open class FontLoader {
     }
 
     open protected fun loadFonts() {
-        val localSdkHome = sdkHome ?: return
-        val fontFolder = File(localSdkHome, FONTS_FOLDER)
+        val fontsFolder = fontPath ?: return
         for (provider in providers.values) {
-            val providerFolder = File(fontFolder, provider.authority)
+            val providerFolder = File(fontsFolder, provider.authority)
             val directoryFolder = File(providerFolder, FONT_DIRECTORY_FOLDER)
             val directoryFile = File(directoryFolder, FONT_DIRECTORY_FILENAME)
             if (directoryFile.exists()) {

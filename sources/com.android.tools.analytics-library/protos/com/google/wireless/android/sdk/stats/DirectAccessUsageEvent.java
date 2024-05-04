@@ -262,6 +262,14 @@ private static final long serialVersionUID = 0L;
     SCOPE_CANCELLED(2),
     /**
      * <pre>
+     * Studio project is closing
+     * </pre>
+     *
+     * <code>PROJECT_CLOSING = 3;</code>
+     */
+    PROJECT_CLOSING(3),
+    /**
+     * <pre>
      * Disconnect Reasons
      * Device failed to connect to ADB
      * </pre>
@@ -301,6 +309,15 @@ private static final long serialVersionUID = 0L;
      * <code>DISCONNECT_BEFORE_CONNECTED = 15;</code>
      */
     DISCONNECT_BEFORE_CONNECTED(15),
+    /**
+     * <pre>
+     * End Reservation Reasons
+     * Server side failed to allocate a device or the request expired in queue
+     * </pre>
+     *
+     * <code>FAILED_TO_ALLOCATE_DEVICE = 21;</code>
+     */
+    FAILED_TO_ALLOCATE_DEVICE(21),
     ;
 
     /**
@@ -323,6 +340,14 @@ private static final long serialVersionUID = 0L;
      * <code>SCOPE_CANCELLED = 2;</code>
      */
     public static final int SCOPE_CANCELLED_VALUE = 2;
+    /**
+     * <pre>
+     * Studio project is closing
+     * </pre>
+     *
+     * <code>PROJECT_CLOSING = 3;</code>
+     */
+    public static final int PROJECT_CLOSING_VALUE = 3;
     /**
      * <pre>
      * Disconnect Reasons
@@ -364,6 +389,15 @@ private static final long serialVersionUID = 0L;
      * <code>DISCONNECT_BEFORE_CONNECTED = 15;</code>
      */
     public static final int DISCONNECT_BEFORE_CONNECTED_VALUE = 15;
+    /**
+     * <pre>
+     * End Reservation Reasons
+     * Server side failed to allocate a device or the request expired in queue
+     * </pre>
+     *
+     * <code>FAILED_TO_ALLOCATE_DEVICE = 21;</code>
+     */
+    public static final int FAILED_TO_ALLOCATE_DEVICE_VALUE = 21;
 
 
     public final int getNumber() {
@@ -389,11 +423,13 @@ private static final long serialVersionUID = 0L;
         case 0: return UNKNOWN_FAILURE;
         case 1: return USER_LOGGED_OUT;
         case 2: return SCOPE_CANCELLED;
+        case 3: return PROJECT_CLOSING;
         case 11: return CONNECTION_FAILED;
         case 12: return ADB_DISCONNECTED;
         case 13: return LATENCY_DISCONNECT;
         case 14: return SESSION_ENDED;
         case 15: return DISCONNECT_BEFORE_CONNECTED;
+        case 21: return FAILED_TO_ALLOCATE_DEVICE;
         default: return null;
       }
     }
@@ -2687,6 +2723,10 @@ private static final long serialVersionUID = 0L;
        * <code>SIXTY_MINUTES = 2;</code>
        */
       SIXTY_MINUTES(2),
+      /**
+       * <code>FIFTEEN_MINUTES = 3;</code>
+       */
+      FIFTEEN_MINUTES(3),
       ;
 
       /**
@@ -2701,6 +2741,10 @@ private static final long serialVersionUID = 0L;
        * <code>SIXTY_MINUTES = 2;</code>
        */
       public static final int SIXTY_MINUTES_VALUE = 2;
+      /**
+       * <code>FIFTEEN_MINUTES = 3;</code>
+       */
+      public static final int FIFTEEN_MINUTES_VALUE = 3;
 
 
       public final int getNumber() {
@@ -2726,6 +2770,7 @@ private static final long serialVersionUID = 0L;
           case 0: return NONE;
           case 1: return THIRTY_MINUTES;
           case 2: return SIXTY_MINUTES;
+          case 3: return FIFTEEN_MINUTES;
           default: return null;
         }
       }

@@ -41,15 +41,9 @@ open class AnalyticsEnabledAndroidTest @Inject constructor(
     override val delegate: AndroidTest,
     stats: GradleBuildVariant.Builder,
     objectFactory: ObjectFactory
-) : AnalyticsEnabledTestComponent(
+) : AnalyticsEnabledDeviceTest(
     delegate, stats, objectFactory
 ), AndroidTest {
-    override val applicationId: Property<String>
-        get() {
-            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-                VariantPropertiesMethodType.APPLICATION_ID_VALUE
-            return delegate.applicationId
-        }
 
     override val instrumentationRunner: Property<String>
         get() {
@@ -109,20 +103,6 @@ open class AnalyticsEnabledAndroidTest @Inject constructor(
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                     VariantPropertiesMethodType.VARIANT_PSEUDOLOCALES_ENABLED_VALUE
             return delegate.pseudoLocalesEnabled
-        }
-
-    override val manifestPlaceholders: MapProperty<String, String>
-        get() {
-            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-                VariantPropertiesMethodType.MANIFEST_PLACEHOLDERS_VALUE
-            return delegate.manifestPlaceholders
-        }
-
-    override val signingConfig: SigningConfig?
-        get() {
-            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-                VariantPropertiesMethodType.SIGNING_CONFIG_VALUE
-            return delegate.signingConfig
         }
 
     override val proguardFiles: ListProperty<RegularFile>

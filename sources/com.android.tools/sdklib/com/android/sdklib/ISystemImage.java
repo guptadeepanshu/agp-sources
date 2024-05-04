@@ -16,6 +16,10 @@
 
 package com.android.sdklib;
 
+import static com.android.sdklib.SystemImageTags.AUTOMOTIVE_PLAY_STORE_TAG;
+import static com.android.sdklib.SystemImageTags.PLAY_STORE_TAG;
+import static com.android.sdklib.SystemImageTags.WEAR_TAG;
+
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
@@ -24,6 +28,7 @@ import com.android.repository.api.RepoPackage;
 import com.android.sdklib.devices.Abi;
 import com.android.sdklib.repository.IdDisplay;
 import java.nio.file.Path;
+import java.util.List;
 
 /**
  * Describes a system image as used by an {@link IAndroidTarget}.
@@ -67,9 +72,20 @@ public interface ISystemImage extends Comparable<ISystemImage> {
     @NonNull
     Path getLocation();
 
-    /** Returns the tag of the system image. */
+    /**
+     * Returns the first tag of the system image.
+     *
+     * @deprecated Images may have multiple tags; use getTags() instead
+     */
+    @Deprecated
     @NonNull
-    IdDisplay getTag();
+    default IdDisplay getTag() {
+        return getTags().stream().findFirst().orElse(SystemImageTags.DEFAULT_TAG);
+    }
+
+    /** Returns an immutable list containing the tags of the system image. May be empty. */
+    @NonNull
+    List<IdDisplay> getTags();
 
     /** Returns the vendor for an add-on's system image, or null for a platform system-image. */
     @Nullable
@@ -110,10 +126,30 @@ public interface ISystemImage extends Comparable<ISystemImage> {
      */
     boolean obsolete();
 
-    /**
-     * Returns true if this system image supports Google Play Store.
-     */
-    boolean hasPlayStore();
+    /** Returns true if this system image contains Google APIs. */
+    default boolean hasGoogleApis() {
+        return SystemImageTags.hasGoogleApi(getTags());
+    }
+
+    /** Returns true if this system image supports Google Play Store. */
+    default boolean hasPlayStore() {
+        // Multi-tagged packages only need this check
+        if (getTags().contains(PLAY_STORE_TAG)) {
+            return true;
+        }
+        // Fallback logic for old non-multi-tagged packages
+        if (AUTOMOTIVE_PLAY_STORE_TAG.equals(getTag())) {
+            return true;
+        }
+        // A Wear system image has Play Store if it is
+        // a recent API version and is NOT Wear-for-China.
+        if (WEAR_TAG.equals(getTag())
+                && getAndroidVersion().getApiLevel() >= AndroidVersion.MIN_RECOMMENDED_WEAR_API
+                && !getPackage().getPath().contains(WEAR_CN_DIRECTORY)) {
+            return true;
+        }
+        return false;
+    }
 
     /** The sdk package containing this system image. */
     @NonNull

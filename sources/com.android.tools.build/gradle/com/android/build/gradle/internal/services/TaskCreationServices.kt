@@ -17,7 +17,6 @@
 package com.android.build.gradle.internal.services
 
 import com.android.build.gradle.internal.lint.LintFromMaven
-import com.android.build.gradle.internal.transforms.LayoutlibFromMaven
 import org.gradle.api.Action
 import org.gradle.api.Named
 import org.gradle.api.artifacts.ConfigurationContainer
@@ -69,7 +68,6 @@ interface TaskCreationServices: BaseServices {
     fun <T : Named> named(type: Class<T>, name: String): T
 
     val lintFromMaven: LintFromMaven
-    val layoutlibFromMaven: LayoutlibFromMaven
 
     val configurations: ConfigurationContainer
     val dependencies: DependencyHandler

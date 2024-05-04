@@ -16,8 +16,6 @@
 
 package com.android.build.gradle.internal.plugins
 
-import com.android.build.api.artifact.Artifact
-import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.attributes.BuildTypeAttr
 import com.android.build.api.dsl.FusedLibraryExtension
 import com.android.build.gradle.internal.dsl.FusedLibraryExtensionImpl
@@ -25,6 +23,7 @@ import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifa
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryVariantScope
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryVariantScopeImpl
 import com.android.build.gradle.internal.fusedlibrary.SegregatingConstraintHandler
+import com.android.build.gradle.internal.fusedlibrary.configureElements
 import com.android.build.gradle.internal.fusedlibrary.configureTransforms
 import com.android.build.gradle.internal.fusedlibrary.createTasks
 import com.android.build.gradle.internal.fusedlibrary.getDslServices
@@ -55,7 +54,7 @@ import org.gradle.api.attributes.Category
 import org.gradle.api.attributes.LibraryElements
 import org.gradle.api.attributes.Usage
 import org.gradle.api.component.SoftwareComponentFactory
-import org.gradle.api.file.RegularFile
+import org.gradle.api.configuration.BuildFeatures
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPom
 import org.gradle.api.publish.maven.MavenPublication
@@ -67,6 +66,7 @@ import javax.inject.Inject
 class FusedLibraryPlugin @Inject constructor(
         private val softwareComponentFactory: SoftwareComponentFactory,
         listenerRegistry: BuildEventsListenerRegistry,
+        private val buildFeatures: BuildFeatures
 ) : AndroidPluginBaseServices(listenerRegistry), Plugin<Project> {
 
     val dslServices: DslServices by lazy(LazyThreadSafetyMode.NONE) {
@@ -273,14 +273,11 @@ class FusedLibraryPlugin @Inject constructor(
             GradleBuildProject.PluginType.FUSED_LIBRARIES
 
     override fun apply(project: Project) {
-        super.basePluginApply(project)
+        super.basePluginApply(project, buildFeatures)
 
         if (!projectServices.projectOptions[BooleanOption.FUSED_LIBRARY_SUPPORT]) {
             throw GradleException(
-                    "Fused Library Plugin is in development and is not yet supported.\n" +
-                            "To enable support for internal testing only, add\n" +
-                            "    ${BooleanOption.FUSED_LIBRARY_SUPPORT.propertyName}=true\n" +
-                            "to your project's gradle.properties file."
+                "The fused library plugin does not work yet."
             )
         }
 
@@ -363,47 +360,16 @@ class FusedLibraryPlugin @Inject constructor(
         }
         // this is the outgoing configuration for JAVA_API scoped declarations, it will contain
         // this module and all transitive non merged dependencies
-        fun configureElements(
-                elements: Configuration,
-                usage: String,
-                artifacts: ArtifactsImpl,
-                publicationArtifact: Artifact.Single<RegularFile>,
-                publicationArtifactType: AndroidArtifacts.ArtifactType
-        ) {
-            // we are only interested in the last provider in the chain of transformers for this bundle.
-            // Obviously, this is theoretical at this point since there is no variant API to replace
-            // artifacts, there is always only one.
-            val bundleTaskProvider = publicationArtifact.let {
-                artifacts
-                        .getArtifactContainer(it)
-                        .getTaskProviders()
-                        .last()
-            }
-            elements.attributes.attribute(
-                    Usage.USAGE_ATTRIBUTE,
-                    project.objects.named(Usage::class.java, usage)
-            )
-            elements.isCanBeResolved = false
-            elements.isCanBeConsumed = true
-            elements.isTransitive = true
-
-            elements.outgoing.variants { variants ->
-                variants.create(publicationArtifactType.type) { variant ->
-                    variant.artifact(bundleTaskProvider) { artifact ->
-                        artifact.type = publicationArtifactType.type
-                    }
-                }
-            }
-        }
-
         val includeApiElements =
                 project.configurations.create("apiElements") { apiElements ->
                     configureElements(
+                            project,
                             apiElements,
                             Usage.JAVA_API,
                             variantScope.artifacts,
-                            FusedLibraryInternalArtifactType.BUNDLED_LIBRARY,
-                            AndroidArtifacts.ArtifactType.AAR)
+                            mapOf(
+                                    FusedLibraryInternalArtifactType.BUNDLED_LIBRARY to
+                                            AndroidArtifacts.ArtifactType.AAR))
 
                     apiElements.extendsFrom(includedApiUnmerged)
                 }
@@ -412,11 +378,13 @@ class FusedLibraryPlugin @Inject constructor(
         val includeRuntimeElements =
                 project.configurations.create("runtimeElements") { runtimeElements ->
                     configureElements(
+                            project,
                             runtimeElements,
                             Usage.JAVA_RUNTIME,
                             variantScope.artifacts,
-                            FusedLibraryInternalArtifactType.BUNDLED_LIBRARY,
-                            AndroidArtifacts.ArtifactType.AAR)
+                            mapOf(
+                            FusedLibraryInternalArtifactType.BUNDLED_LIBRARY to
+                            AndroidArtifacts.ArtifactType.AAR))
                     runtimeElements.extendsFrom(includeRuntimeUnmerged)
                 }
 

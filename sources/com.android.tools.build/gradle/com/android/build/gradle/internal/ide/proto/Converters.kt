@@ -90,6 +90,8 @@ internal fun com.android.builder.model.v2.ide.AndroidGradlePluginProjectFlags.Bo
             AndroidGradlePluginProjectFlags.BooleanFlag.USE_ANDROID_X
         com.android.builder.model.v2.ide.AndroidGradlePluginProjectFlags.BooleanFlag.ENABLE_VCS_INFO ->
             AndroidGradlePluginProjectFlags.BooleanFlag.ENABLE_VCS_INFO
+        com.android.builder.model.v2.ide.AndroidGradlePluginProjectFlags.BooleanFlag.BUILD_FEATURE_ANDROID_RESOURCES ->
+            AndroidGradlePluginProjectFlags.BooleanFlag.BUILD_FEATURE_ANDROID_RESOURCES
     }
 
 internal fun com.android.builder.model.v2.ide.AndroidGradlePluginProjectFlags.convert() =

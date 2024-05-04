@@ -935,7 +935,7 @@ private static final long serialVersionUID = 0L;
   private long creationTimestamp_;
   /**
    * <pre>
-   * When was this AVD created, UTC Unix timespamp.
+   * When was this AVD created, UTC Unix timestamp.
    * </pre>
    *
    * <code>optional int64 creation_timestamp = 4;</code>
@@ -947,7 +947,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * When was this AVD created, UTC Unix timespamp.
+   * When was this AVD created, UTC Unix timestamp.
    * </pre>
    *
    * <code>optional int64 creation_timestamp = 4;</code>
@@ -2147,7 +2147,7 @@ private static final long serialVersionUID = 0L;
     private long creationTimestamp_ ;
     /**
      * <pre>
-     * When was this AVD created, UTC Unix timespamp.
+     * When was this AVD created, UTC Unix timestamp.
      * </pre>
      *
      * <code>optional int64 creation_timestamp = 4;</code>
@@ -2159,7 +2159,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * When was this AVD created, UTC Unix timespamp.
+     * When was this AVD created, UTC Unix timestamp.
      * </pre>
      *
      * <code>optional int64 creation_timestamp = 4;</code>
@@ -2171,7 +2171,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * When was this AVD created, UTC Unix timespamp.
+     * When was this AVD created, UTC Unix timestamp.
      * </pre>
      *
      * <code>optional int64 creation_timestamp = 4;</code>
@@ -2186,7 +2186,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * When was this AVD created, UTC Unix timespamp.
+     * When was this AVD created, UTC Unix timestamp.
      * </pre>
      *
      * <code>optional int64 creation_timestamp = 4;</code>

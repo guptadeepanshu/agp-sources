@@ -19,6 +19,7 @@ package com.android.build.api.variant.impl
 import com.android.build.api.component.analytics.AnalyticsEnabledLibraryVariantBuilder
 import com.android.build.api.variant.AndroidTestBuilder
 import com.android.build.api.variant.ComponentIdentity
+import com.android.build.api.variant.DeviceTestBuilder
 import com.android.build.api.variant.LibraryVariantBuilder
 import com.android.build.api.variant.VariantBuilder
 import com.android.build.gradle.internal.core.dsl.LibraryVariantDslInfo
@@ -92,8 +93,11 @@ open class LibraryVariantBuilderImpl @Inject constructor(
         dslInfo.optimizationDslInfo.postProcessingOptions.codeShrinkerEnabled()
         set(value) = setMinificationIfPossible("minifyEnabled", value) { field = it }
 
-    override val androidTest: AndroidTestBuilder = AndroidTestBuilderImpl(
+    private val defaultDeviceTestBuilder = DeviceTestBuilderImpl(
         variantBuilderServices,
         dslInfo.isAndroidTestMultiDexEnabled
     )
+    override val androidTest: AndroidTestBuilder = AndroidTestBuilderImpl(defaultDeviceTestBuilder)
+    override val deviceTests: List<DeviceTestBuilder>
+        get() = listOf(defaultDeviceTestBuilder)
 }

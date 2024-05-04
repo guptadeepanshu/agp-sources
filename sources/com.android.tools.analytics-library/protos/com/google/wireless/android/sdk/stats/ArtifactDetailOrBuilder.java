@@ -25,4 +25,15 @@ public interface ArtifactDetailOrBuilder extends
    * @return The size.
    */
   long getSize();
+
+  /**
+   * <code>optional .android_studio.ArtifactDetail.ArtifactType type = 2;</code>
+   * @return Whether the type field is set.
+   */
+  boolean hasType();
+  /**
+   * <code>optional .android_studio.ArtifactDetail.ArtifactType type = 2;</code>
+   * @return The type.
+   */
+  com.google.wireless.android.sdk.stats.ArtifactDetail.ArtifactType getType();
 }

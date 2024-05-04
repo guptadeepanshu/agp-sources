@@ -25,5 +25,5 @@ interface LintModelBuildFeatures {
 class DefaultLintModelBuildFeatures(
   override val viewBinding: Boolean,
   override val coreLibraryDesugaringEnabled: Boolean,
-  override val namespacingMode: LintModelNamespacingMode
+  override val namespacingMode: LintModelNamespacingMode,
 ) : LintModelBuildFeatures

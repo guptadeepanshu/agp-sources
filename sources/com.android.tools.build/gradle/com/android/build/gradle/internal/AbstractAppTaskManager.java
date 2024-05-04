@@ -255,12 +255,22 @@ public abstract class AbstractAppTaskManager<
 
         ProjectOptions projectOptions = creationConfig.getServices().getProjectOptions();
         boolean nonTransitiveR = projectOptions.get(BooleanOption.NON_TRANSITIVE_R_CLASS);
+        boolean appCompileRClass =
+                projectOptions.get(BooleanOption.ENABLE_APP_COMPILE_TIME_R_CLASS);
         boolean namespaced = creationConfig.getGlobal().getNamespacedAndroidResources();
 
-        // TODO(b/138780301): Also use compile time R class in android tests.
-        if ((projectOptions.get(BooleanOption.ENABLE_APP_COMPILE_TIME_R_CLASS) || nonTransitiveR)
-                && !creationConfig.getComponentType().isForTesting()
-                && !namespaced) {
+        if (namespaced) {
+            return;
+        }
+
+        if (creationConfig.getComponentType().isForTesting()
+                && !isTestApkCompileRClassEnabled(
+                        appCompileRClass, creationConfig.getComponentType())) {
+            return;
+        }
+
+        if (appCompileRClass || nonTransitiveR) {
+
             // The "small merge" of only the app's local resources (can be multiple source-sets, but
             // most of the time it's just one). This is used by the Process for generating the local
             // R-def.txt file containing a list of resources defined in this module.
@@ -273,6 +283,11 @@ public abstract class AbstractAppTaskManager<
                     ImmutableSet.of(),
                     null);
         }
+    }
+
+    private boolean isTestApkCompileRClassEnabled(
+            boolean compileRClassFlag, ComponentType componentType) {
+        return compileRClassFlag && componentType.isForTesting() && componentType.isApk();
     }
 
     /** Extract dependencies for profiler supports if needed. */

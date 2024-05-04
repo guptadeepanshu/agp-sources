@@ -149,7 +149,7 @@ class DefaultLintModelModule(
   override val javaSourceLevel: String,
   override val compileTarget: String,
   override val variants: List<LintModelVariant>,
-  private val neverShrinking: Boolean
+  private val neverShrinking: Boolean,
 ) : LintModelModule {
   override fun neverShrinking(): Boolean {
     return neverShrinking

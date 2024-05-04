@@ -23,6 +23,7 @@ import com.android.build.api.attributes.BuildTypeAttr
 import com.android.build.api.attributes.ProductFlavorAttr
 import com.android.build.api.component.analytics.AnalyticsEnabledKotlinMultiplatformAndroidVariant
 import com.android.build.api.component.impl.KmpAndroidTestImpl
+import com.android.build.api.component.impl.KmpComponentImpl
 import com.android.build.api.component.impl.KmpUnitTestImpl
 import com.android.build.api.dsl.KotlinMultiplatformAndroidCompilation
 import com.android.build.api.dsl.KotlinMultiplatformAndroidExtension
@@ -41,6 +42,7 @@ import com.android.build.gradle.internal.DependencyConfigurator
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.TaskManager
 import com.android.build.gradle.internal.VariantManager.Companion.finalizeAllComponents
+import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.core.dsl.KmpComponentDslInfo
 import com.android.build.gradle.internal.core.dsl.impl.KmpAndroidTestDslInfoImpl
 import com.android.build.gradle.internal.core.dsl.impl.KmpUnitTestDslInfoImpl
@@ -61,6 +63,7 @@ import com.android.build.gradle.internal.lint.LintFixBuildService
 import com.android.build.gradle.internal.manifest.LazyManifestParser
 import com.android.build.gradle.internal.multiplatform.KotlinMultiplatformAndroidHandler
 import com.android.build.gradle.internal.multiplatform.KotlinMultiplatformAndroidHandlerImpl
+import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.KotlinMultiplatformBuildFeaturesValuesImpl
 import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.Aapt2DaemonBuildService
@@ -98,15 +101,18 @@ import org.gradle.api.Incubating
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
+import org.gradle.api.configuration.BuildFeatures
 import org.gradle.api.provider.Provider
 import org.gradle.build.event.BuildEventsListenerRegistry
 import org.jetbrains.kotlin.gradle.ExternalKotlinTargetApi
 import javax.inject.Inject
 import org.jetbrains.kotlin.gradle.plugin.mpp.external.publishSources
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 @Incubating
 class KotlinMultiplatformAndroidPlugin @Inject constructor(
-    listenerRegistry: BuildEventsListenerRegistry
+    listenerRegistry: BuildEventsListenerRegistry,
+    private val buildFeatures: BuildFeatures,
 ): AndroidPluginBaseServices(listenerRegistry), Plugin<Project> {
 
     private lateinit var global: GlobalTaskCreationConfig
@@ -146,7 +152,7 @@ class KotlinMultiplatformAndroidPlugin @Inject constructor(
         GradleBuildProject.PluginType.KOTLIN_MULTIPLATFORM_ANDROID_LIBRARY
 
     override fun apply(project: Project) {
-        super.basePluginApply(project)
+        super.basePluginApply(project, buildFeatures)
     }
 
     override fun configureProject(project: Project) {
@@ -347,7 +353,9 @@ class KotlinMultiplatformAndroidPlugin @Inject constructor(
         )
 
         mainVariant.unitTest = unitTest
-        mainVariant.androidTest = androidTest
+        androidTest?.let {
+            mainVariant.deviceTests.add(it)
+        }
 
         val stats = configuratorService.getVariantBuilder(
             project.path,
@@ -389,9 +397,23 @@ class KotlinMultiplatformAndroidPlugin @Inject constructor(
             androidTest
         )
 
+        updateTestComponentFriendPaths(listOfNotNull(unitTest, androidTest))
         finalizeAllComponents(listOfNotNull(mainVariant, unitTest, androidTest))
-
         kotlinMultiplatformHandler.finalize(mainVariant)
+    }
+
+    private fun updateTestComponentFriendPaths(components: List<KmpComponentImpl<out KmpComponentDslInfo>>) {
+        // for test compilations, add the main compilation's classes.jar to the friend path
+        // to grant access to declarations with internal visibility
+        components.forEach {
+            it.androidKotlinCompilation.compileTaskProvider.configure { task ->
+                (task as KotlinJvmCompile).friendPaths.from(
+                    it.services.fileCollection(
+                        mainVariant.artifacts.get(InternalArtifactType.COMPILE_LIBRARY_CLASSES_JAR)
+                    )
+                )
+            }
+        }
     }
 
     private fun Configuration.forMainVariantConfiguration(

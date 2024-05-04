@@ -63,6 +63,7 @@ import javax.inject.Inject;
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Project;
 import org.gradle.api.component.SoftwareComponentFactory;
+import org.gradle.api.configuration.BuildFeatures;
 import org.gradle.api.reflect.TypeOf;
 import org.gradle.build.event.BuildEventsListenerRegistry;
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry;
@@ -86,8 +87,9 @@ public class TestPlugin
     public TestPlugin(
             ToolingModelBuilderRegistry registry,
             SoftwareComponentFactory componentFactory,
-            BuildEventsListenerRegistry listenerRegistry) {
-        super(registry, componentFactory, listenerRegistry);
+            BuildEventsListenerRegistry listenerRegistry,
+            BuildFeatures buildFeatures) {
+        super(registry, componentFactory, listenerRegistry, buildFeatures);
     }
 
     @Override

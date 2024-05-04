@@ -20,11 +20,15 @@ import com.android.build.api.instrumentation.ClassContext
 import com.android.build.api.instrumentation.ClassData
 
 class ClassContextImpl(
-        override val currentClassData: ClassData,
-        val classesHierarchyResolver: ClassesHierarchyResolver
+    override val currentClassData: ClassData,
+    val classesHierarchyResolver: ClassesHierarchyResolver
 ) : ClassContext {
 
     @Synchronized
-    override fun loadClassData(className: String) =
-            classesHierarchyResolver.loadClassDataForVisitor(className)
+    override fun loadClassData(className: String): ClassData? {
+        if (className.contains("/")) {
+            throw RuntimeException("Fully qualified name must be provided to loadClassData.")
+        }
+        return classesHierarchyResolver.loadClassDataForVisitor(className)
+    }
 }

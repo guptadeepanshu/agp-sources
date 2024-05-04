@@ -143,7 +143,7 @@ class DefaultLintModelVariant(
         desugaredMethodsFiles = listOf(),
         dependencies = artifact.dependencies,
         classOutputs = artifact.classOutputs,
-        type = artifact.type
+        type = artifact.type,
       )
   }
 }

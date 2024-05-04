@@ -9,7 +9,7 @@ public interface DynamicLayoutInspectorAutoConnectInfoOrBuilder extends
 
   /**
    * <pre>
-   * The result of the handsthake. Does the device support auto connect?
+   * The result of the handshake. Does the device support auto connect?
    * </pre>
    *
    * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeResult handshake_result = 1;</code>
@@ -18,7 +18,7 @@ public interface DynamicLayoutInspectorAutoConnectInfoOrBuilder extends
   boolean hasHandshakeResult();
   /**
    * <pre>
-   * The result of the handsthake. Does the device support auto connect?
+   * The result of the handshake. Does the device support auto connect?
    * </pre>
    *
    * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeResult handshake_result = 1;</code>

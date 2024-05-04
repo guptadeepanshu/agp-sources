@@ -34,18 +34,26 @@ interface OptimizationCreationConfig {
 
     val proguardFiles: ListProperty<RegularFile>
 
-    val consumerProguardFiles: List<File>
+    /** Consumer Proguard files with task dependencies. */
+    val consumerProguardFiles: Provider<List<RegularFile>>
+
+    /**
+     * Consumer Proguard files without task dependencies (used in model building only).
+     *
+     * Use [consumerProguardFiles] instead if possible.
+     */
+    val consumerProguardFilePaths: List<File>
 
     /**
      * Returns the component ids of those library dependencies whose keep rules are ignored when
      * building the project.
      */
-    val ignoredLibraryKeepRules: Provider<Set<String>>
+    val ignoreFromInKeepRules: Provider<Set<String>>
 
     /**
      * Returns whether to ignore all keep rules from external library dependencies.
      */
-    val ignoreAllLibraryKeepRules: Boolean
+    val ignoreFromAllExternalDependenciesInKeepRules: Boolean
 
     /**
      * Returns the external dependencies to ignore in baseline profiles.

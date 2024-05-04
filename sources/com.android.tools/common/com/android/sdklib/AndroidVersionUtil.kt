@@ -15,6 +15,8 @@
  */
 package com.android.sdklib
 
+import com.android.SdkConstants.CODENAME_RELEASE
+
 private const val RO_BUILD_VERSION_SDK = "ro.build.version.sdk"
 private const val RO_BUILD_VERSION_CODENAME = "ro.build.version.codename"
 private const val BUILD_EXTENSION_PREFIX = "build.version.extensions."
@@ -32,7 +34,7 @@ object AndroidVersionUtil {
         // release.
         val extensionLevel = extensions.maxByOrNull { it.key }?.value?.toIntOrNull() ?: 0
         val baseExtensionLevel = AndroidVersion.getBaseExtensionLevel(apiLevel)
-        val codename = properties[RO_BUILD_VERSION_CODENAME]
+        val codename = properties[RO_BUILD_VERSION_CODENAME]?.takeIf { it != CODENAME_RELEASE }
         // We consider preview releases to be base, since we don't necessarily know their base
         // extension level, and when they are released it should be at least the level we see now.
         val isBase = codename != null || extensionLevel <= baseExtensionLevel

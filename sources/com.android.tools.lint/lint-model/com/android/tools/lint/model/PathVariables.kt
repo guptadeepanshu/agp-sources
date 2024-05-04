@@ -93,7 +93,7 @@ class PathVariables {
   fun toPathStringIfMatched(
     fullPath: String,
     relativeTo: String? = null,
-    unix: Boolean = false
+    unix: Boolean = false,
   ): String? {
     for ((prefix, root) in pathVariables) {
       if (fullPath.startsWith(root.path)) {
@@ -127,7 +127,7 @@ class PathVariables {
   fun fromPathString(
     path: String,
     relativeTo: File? = null,
-    allowMissingPathVariable: Boolean = false
+    allowMissingPathVariable: Boolean = false,
   ): File {
     if (path.startsWith("$")) {
       val hasBraces = path.length > 1 && path[1] == '{'
@@ -240,7 +240,7 @@ class PathVariables {
         { it.name.endsWith(CANONICALIZED) },
         { -it.dir.path.length },
         { it.dir.path },
-        { it.name }
+        { it.name },
       )
 
     /**

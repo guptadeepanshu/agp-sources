@@ -44,6 +44,8 @@ import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.variant.VariantPathHelper
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Provider
+import org.gradle.api.tasks.TaskProvider
+import org.gradle.api.tasks.testing.Test
 import java.io.File
 import javax.inject.Inject
 
@@ -112,6 +114,9 @@ open class KmpUnitTestImpl @Inject constructor(
     override val isUnitTestCoverageEnabled: Boolean
         get() = dslInfo.isUnitTestCoverageEnabled
 
+    override val isScreenshotTestCoverageEnabled: Boolean
+        get() = false
+
     override fun <ParamT : InstrumentationParameters> transformClassesWith(
         classVisitorFactoryImplClass: Class<out AsmClassVisitorFactory<ParamT>>,
         scope: InstrumentationScope,
@@ -130,10 +135,24 @@ open class KmpUnitTestImpl @Inject constructor(
 
     override val androidResources: AndroidResourcesImpl? =
         if (global.unitTestOptions.isIncludeAndroidResources) {
-            initializeAaptOptionsFromDsl(dslInfo.androidResourcesDsl!!.androidResources, internalServices)
+            initializeAaptOptionsFromDsl(dslInfo.androidResourcesDsl!!.androidResources, buildFeatures, internalServices)
         } else {
             null
         }
+
+    val testTaskConfigurationActions = mutableListOf<(Test) -> Unit>()
+
+    @Synchronized
+    override fun configureTestTask(action: (Test) -> Unit) {
+        testTaskConfigurationActions.add(action)
+    }
+
+    @Synchronized
+    override fun runTestTaskConfigurationActions(testTaskProvider: TaskProvider<out Test>) {
+        testTaskConfigurationActions.forEach {
+            testTaskProvider.configure { testTask -> it(testTask) }
+        }
+    }
 
     override fun finalizeAndLock() {
     }

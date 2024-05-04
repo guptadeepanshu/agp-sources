@@ -29,13 +29,6 @@ data class EmulatorControlConfig(
 fun createEmulatorControlConfig(
     projectOptions: ProjectOptions, emulatorControl: EmulatorControl
 ): EmulatorControlConfig {
-    check(
-        !emulatorControl.enable || projectOptions.get(BooleanOption.ENABLE_EMULATOR_CONTROL)
-    ) {
-        "EmulatorControl is an experimental feature and it is disabled by default. " +
-                "Please add android.experimental.androidTest.enableEmulatorControl=true " +
-                "in your gradle.properties to opt-in to this feature."
-    }
     return EmulatorControlConfig(
         emulatorControl.enable && projectOptions.get(BooleanOption.ENABLE_EMULATOR_CONTROL),
         emulatorControl.allowedEndpoints.toSet(),

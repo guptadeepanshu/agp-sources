@@ -26,6 +26,8 @@ import static com.android.build.gradle.internal.publishing.AndroidArtifacts.Publ
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.RUNTIME_ELEMENTS;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.RUNTIME_PUBLICATION;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.SOURCE_PUBLICATION;
+import static com.android.build.gradle.internal.utils.KgpUtils.isKotlinAndroidPluginApplied;
+import static com.android.build.gradle.internal.utils.KgpUtils.isKotlinPluginAppliedInTheSameClassloader;
 import static java.util.Objects.requireNonNull;
 import static org.gradle.api.attributes.Bundling.BUNDLING_ATTRIBUTE;
 import static org.gradle.api.attributes.Bundling.EXTERNAL;
@@ -199,6 +201,13 @@ public class VariantDependenciesBuilder {
                 apiClasspaths.add(apiConfig);
             }
 
+            Configuration compileOnlyApiConfig =
+                    configs.findByName(sourceSet.getCompileOnlyApiConfigurationName());
+            if (compileOnlyApiConfig != null) {
+                compileClasspaths.add(compileOnlyApiConfig);
+                apiClasspaths.add(compileOnlyApiConfig);
+            }
+
             annotationConfigs.add(
                     configs.getByName(sourceSet.getAnnotationProcessorConfigurationName()));
             wearAppConfigs.add(configs.getByName(sourceSet.getWearAppConfigurationName()));
@@ -319,6 +328,13 @@ public class VariantDependenciesBuilder {
         runtimeAttributes.attribute(AgpVersionAttr.ATTRIBUTE, agpVersion);
         runtimeAttributes.attribute(
                 CATEGORY_ATTRIBUTE, factory.named(Category.class, Category.LIBRARY));
+
+        // only apply this treatment if KGP is not applied
+        if (!projectOptions.get(BooleanOption.DISABLE_KOTLIN_ATTRIBUTE_SETUP) && !kgpApplied()) {
+
+            KotlinPlatformAttribute.configureKotlinPlatformAttribute(
+                    List.of(compileClasspath, runtimeClasspath), project);
+        }
 
         boolean isLibraryConstraintApplied =
                 maybeAddDependencyConstraints(componentType, compileClasspath, runtimeClasspath);
@@ -686,6 +702,15 @@ public class VariantDependenciesBuilder {
                 projectOptions,
                 isLibraryConstraintApplied,
                 isSelfInstrumenting);
+    }
+
+    private boolean kgpApplied() {
+        try {
+            return isKotlinAndroidPluginApplied(project)
+                    || isKotlinPluginAppliedInTheSameClassloader(project);
+        } catch (Throwable e) {
+            return false;
+        }
     }
 
     /**

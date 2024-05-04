@@ -19,8 +19,9 @@ package com.android.build.gradle.internal.utils
 import com.android.build.api.variant.impl.AndroidVersionImpl
 import com.android.builder.core.DefaultApiVersion
 import com.android.sdklib.AndroidVersion
+import com.google.common.base.Splitter
 import java.util.regex.Pattern
-
+import javax.lang.model.SourceVersion
 
 data class CompileData(
     val apiLevel: Int? = null,
@@ -64,6 +65,21 @@ fun parseTargetHash(targetHash : String): CompileData  {
                     - vendorName:addonName:31
                     """.trimIndent()
     )
+}
+
+fun validateNamespaceValue(value: String?): String? {
+    if (value.isNullOrEmpty() || SourceVersion.isName(value)) return null
+    val msg = "Namespace '$value' is not a valid Java package name"
+    for (segment in Splitter.on('.').split(value)) {
+        if(!SourceVersion.isIdentifier(segment)) {
+            return "$msg as '$segment' is not a valid Java identifier."
+        }
+        if(SourceVersion.isKeyword(segment)) {
+            return "$msg as '$segment' is a Java keyword."
+        }
+    }
+    // Shouldn't happen.
+   return "$msg."
 }
 
 fun validatePreviewTargetValue(value: String): String? =

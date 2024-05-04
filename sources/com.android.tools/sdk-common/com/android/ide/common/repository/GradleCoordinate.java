@@ -576,9 +576,9 @@ public final class GradleCoordinate {
     @NonNull
     public Version getLowerBoundVersion() {
         if (acceptsGreaterRevisions()) {
-            return Version.Companion.prefixInfimum(getPrefix());
+            return Version.prefixInfimum(getPrefix());
         }
-        return Version.Companion.parse(getRevision());
+        return Version.parse(getRevision());
     }
 
     /**
@@ -596,9 +596,9 @@ public final class GradleCoordinate {
     @NonNull
     public Version getUpperBoundVersion() {
         if (acceptsGreaterRevisions()) {
-            return Version.Companion.prefixInfimum(getPrefix()).nextPrefix();
+            return Version.prefixInfimum(getPrefix()).nextPrefix();
         }
-        return Version.Companion.parse(getRevision());
+        return Version.parse(getRevision());
     }
 
     /**
@@ -619,9 +619,9 @@ public final class GradleCoordinate {
     public VersionRange getVersionRange() {
         String revision = getRevision();
         if (acceptsGreaterRevisions()) {
-            return VersionRange.Companion.parse(revision);
+            return VersionRange.parse(revision);
         } else {
-            Version version = Version.Companion.parse(getRevision());
+            Version version = Version.parse(getRevision());
             Component component = new Component(mGroupId, mArtifactId, version);
             KnownVersionStability stability = getStability(component);
             // this is [version,expiration), where stability.expiration(...) has computed the

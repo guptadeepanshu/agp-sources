@@ -25,6 +25,7 @@ import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.api.variant.impl.AndroidResourcesImpl
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.component.features.AndroidResourcesCreationConfig
+import com.android.build.gradle.internal.component.features.BuildConfigCreationConfig
 import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.core.dsl.HostTestComponentDslInfo
 import com.android.build.gradle.internal.dependency.VariantDependencies
@@ -35,6 +36,8 @@ import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
+import org.gradle.api.tasks.TaskProvider
+import org.gradle.api.tasks.testing.Test
 import javax.inject.Inject
 
 open class UnitTestImpl @Inject constructor(
@@ -74,7 +77,9 @@ open class UnitTestImpl @Inject constructor(
     override val targetSdkVersion: AndroidVersion
         get() = global.unitTestOptions.targetSdkVersion ?: getMainTargetSdkVersion()
 
-    override val androidResourcesCreationConfig: AndroidResourcesCreationConfig? by lazy(LazyThreadSafetyMode.NONE) {
+    override val androidResourcesCreationConfig: AndroidResourcesCreationConfig? by lazy(
+        LazyThreadSafetyMode.NONE
+    ) {
         // in case of unit tests, we add the R jar even if android resources are
         // disabled (includeAndroidResources) as we want to be able to compile against
         // the values inside.
@@ -98,4 +103,20 @@ open class UnitTestImpl @Inject constructor(
     override val isUnitTestCoverageEnabled: Boolean
         get() = dslInfo.isUnitTestCoverageEnabled
 
+    override val isScreenshotTestCoverageEnabled: Boolean
+        get() = false
+
+    private val testTaskConfigActions = mutableListOf<(Test) -> Unit>()
+
+    @Synchronized
+    override fun configureTestTask(action: (Test) -> Unit) {
+        testTaskConfigActions.add(action)
+    }
+
+    @Synchronized
+    override fun runTestTaskConfigurationActions(testTaskProvider: TaskProvider<out Test>) {
+        testTaskConfigActions.forEach {
+            testTaskProvider.configure { testTask -> it(testTask) }
+        }
+    }
 }

@@ -67,4 +67,7 @@ internal class UnitTestComponentDslInfoImpl(
 
     override val isUnitTestCoverageEnabled: Boolean
         get() = buildTypeObj.enableUnitTestCoverage || buildTypeObj.isTestCoverageEnabled
+
+    override val isScreenshotTestCoverageEnabled: Boolean
+        get() = false
 }

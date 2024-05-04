@@ -23,8 +23,9 @@ import org.gradle.api.file.FileCollection
 /**
  * Properties for the main Variant of a kotlin multiplatform android library
  */
+@Suppress("DEPRECATION")
 @Incubating
-interface KotlinMultiplatformAndroidVariant: HasAndroidTest, HasUnitTest {
+interface KotlinMultiplatformAndroidVariant: HasDeviceTests, HasAndroidTest, HasUnitTest {
     /**
      * The name of the variant
      */
@@ -55,7 +56,7 @@ interface KotlinMultiplatformAndroidVariant: HasAndroidTest, HasUnitTest {
      * List of the components nested in the main variant, the returned list may contain:
      *
      * * [UnitTest] component if the unit tests for this variant are enabled,
-     * * [AndroidTest] component if this variant [HasAndroidTest] and android tests for this variant
+     * * [AndroidTest] component if this variant [HasDeviceTests] and android tests for this variant
      * are enabled,
      *
      * Use this list to do operations on all nested components of this variant without having to

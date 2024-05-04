@@ -302,5 +302,5 @@ class DefaultLintModelLintOptions(
   override val checkReleaseBuilds: Boolean,
   override val checkDependencies: Boolean,
   override val baselineFile: File?,
-  override val severityOverrides: Map<String, LintModelSeverity>?
+  override val severityOverrides: Map<String, LintModelSeverity>?,
 ) : LintModelLintOptions, Serializable

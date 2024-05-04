@@ -199,7 +199,7 @@ public final class DeviceImpl implements IDevice {
 
     @Override
     public DeviceState getState() {
-        return logCall(IDeviceUsageTracker.Method.GET_STATE, () -> mState);
+        return mState;
     }
 
     /** Changes the state of the device. */
@@ -327,8 +327,7 @@ public final class DeviceImpl implements IDevice {
     @NonNull
     @Override
     public AndroidVersion getVersion() {
-        return logCall(
-                IDeviceUsageTracker.Method.GET_VERSION, () -> iDeviceSharedImpl.getVersion());
+        return iDeviceSharedImpl.getVersion();
     }
 
     @Nullable

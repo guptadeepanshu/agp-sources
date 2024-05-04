@@ -28,6 +28,7 @@ private static final long serialVersionUID = 0L;
     pluginNames_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     taskNames_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     appliedPlugins_ = java.util.Collections.emptyList();
+    ndkVersion_ = "";
   }
 
   @java.lang.Override
@@ -2837,6 +2838,66 @@ private static final long serialVersionUID = 0L;
     return compileOptions_ == null ? com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions.getDefaultInstance() : compileOptions_;
   }
 
+  public static final int NDK_VERSION_FIELD_NUMBER = 21;
+  private volatile java.lang.Object ndkVersion_;
+  /**
+   * <pre>
+   * The NDK version
+   * </pre>
+   *
+   * <code>optional string ndk_version = 21;</code>
+   * @return Whether the ndkVersion field is set.
+   */
+  @java.lang.Override
+  public boolean hasNdkVersion() {
+    return ((bitField0_ & 0x00008000) != 0);
+  }
+  /**
+   * <pre>
+   * The NDK version
+   * </pre>
+   *
+   * <code>optional string ndk_version = 21;</code>
+   * @return The ndkVersion.
+   */
+  @java.lang.Override
+  public java.lang.String getNdkVersion() {
+    java.lang.Object ref = ndkVersion_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      if (bs.isValidUtf8()) {
+        ndkVersion_ = s;
+      }
+      return s;
+    }
+  }
+  /**
+   * <pre>
+   * The NDK version
+   * </pre>
+   *
+   * <code>optional string ndk_version = 21;</code>
+   * @return The bytes for ndkVersion.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getNdkVersionBytes() {
+    java.lang.Object ref = ndkVersion_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      ndkVersion_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -2910,6 +2971,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00004000) != 0)) {
       output.writeMessage(20, getCompileOptions());
+    }
+    if (((bitField0_ & 0x00008000) != 0)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 21, ndkVersion_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -3008,6 +3072,9 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(20, getCompileOptions());
     }
+    if (((bitField0_ & 0x00008000) != 0)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(21, ndkVersion_);
+    }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
@@ -3105,6 +3172,11 @@ private static final long serialVersionUID = 0L;
       if (!getCompileOptions()
           .equals(other.getCompileOptions())) return false;
     }
+    if (hasNdkVersion() != other.hasNdkVersion()) return false;
+    if (hasNdkVersion()) {
+      if (!getNdkVersion()
+          .equals(other.getNdkVersion())) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -3198,6 +3270,10 @@ private static final long serialVersionUID = 0L;
     if (hasCompileOptions()) {
       hash = (37 * hash) + COMPILE_OPTIONS_FIELD_NUMBER;
       hash = (53 * hash) + getCompileOptions().hashCode();
+    }
+    if (hasNdkVersion()) {
+      hash = (37 * hash) + NDK_VERSION_FIELD_NUMBER;
+      hash = (53 * hash) + getNdkVersion().hashCode();
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -3409,6 +3485,8 @@ private static final long serialVersionUID = 0L;
         compileOptionsBuilder_.clear();
       }
       bitField0_ = (bitField0_ & ~0x00080000);
+      ndkVersion_ = "";
+      bitField0_ = (bitField0_ & ~0x00100000);
       return this;
     }
 
@@ -3550,6 +3628,10 @@ private static final long serialVersionUID = 0L;
         }
         to_bitField0_ |= 0x00004000;
       }
+      if (((from_bitField0_ & 0x00100000) != 0)) {
+        to_bitField0_ |= 0x00008000;
+      }
+      result.ndkVersion_ = ndkVersion_;
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -3735,6 +3817,11 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasCompileOptions()) {
         mergeCompileOptions(other.getCompileOptions());
+      }
+      if (other.hasNdkVersion()) {
+        bitField0_ |= 0x00100000;
+        ndkVersion_ = other.ndkVersion_;
+        onChanged();
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -3928,6 +4015,11 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00080000;
               break;
             } // case 162
+            case 170: {
+              ndkVersion_ = input.readBytes();
+              bitField0_ |= 0x00100000;
+              break;
+            } // case 170
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -6671,6 +6763,114 @@ private static final long serialVersionUID = 0L;
         compileOptions_ = null;
       }
       return compileOptionsBuilder_;
+    }
+
+    private java.lang.Object ndkVersion_ = "";
+    /**
+     * <pre>
+     * The NDK version
+     * </pre>
+     *
+     * <code>optional string ndk_version = 21;</code>
+     * @return Whether the ndkVersion field is set.
+     */
+    public boolean hasNdkVersion() {
+      return ((bitField0_ & 0x00100000) != 0);
+    }
+    /**
+     * <pre>
+     * The NDK version
+     * </pre>
+     *
+     * <code>optional string ndk_version = 21;</code>
+     * @return The ndkVersion.
+     */
+    public java.lang.String getNdkVersion() {
+      java.lang.Object ref = ndkVersion_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          ndkVersion_ = s;
+        }
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <pre>
+     * The NDK version
+     * </pre>
+     *
+     * <code>optional string ndk_version = 21;</code>
+     * @return The bytes for ndkVersion.
+     */
+    public com.google.protobuf.ByteString
+        getNdkVersionBytes() {
+      java.lang.Object ref = ndkVersion_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        ndkVersion_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <pre>
+     * The NDK version
+     * </pre>
+     *
+     * <code>optional string ndk_version = 21;</code>
+     * @param value The ndkVersion to set.
+     * @return This builder for chaining.
+     */
+    public Builder setNdkVersion(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00100000;
+      ndkVersion_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * The NDK version
+     * </pre>
+     *
+     * <code>optional string ndk_version = 21;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearNdkVersion() {
+      bitField0_ = (bitField0_ & ~0x00100000);
+      ndkVersion_ = getDefaultInstance().getNdkVersion();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * The NDK version
+     * </pre>
+     *
+     * <code>optional string ndk_version = 21;</code>
+     * @param value The bytes for ndkVersion to set.
+     * @return This builder for chaining.
+     */
+    public Builder setNdkVersionBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00100000;
+      ndkVersion_ = value;
+      onChanged();
+      return this;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

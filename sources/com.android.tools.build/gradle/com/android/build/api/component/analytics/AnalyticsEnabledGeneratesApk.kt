@@ -59,11 +59,19 @@ open class AnalyticsEnabledGeneratesApk(
             } else null
         }
 
+    private val userVisibleAndroidResources by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
+        objectFactory.newInstance(
+            AnalyticsEnabledAndroidResources::class.java,
+            delegate.androidResources,
+            stats
+        )
+    }
+
     override val androidResources: AndroidResources
         get() {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                     VariantPropertiesMethodType.AAPT_OPTIONS_VALUE
-            return delegate.androidResources
+            return userVisibleAndroidResources
         }
 
     private val userVisibleApkPackaging: ApkPackaging by lazy(LazyThreadSafetyMode.SYNCHRONIZED){

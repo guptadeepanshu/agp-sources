@@ -20,9 +20,7 @@ import com.android.apksig.apk.ApkUtils
 import com.android.build.api.variant.impl.BuiltArtifactImpl
 import com.android.build.api.variant.impl.BuiltArtifactsImpl
 import com.android.build.api.variant.impl.BuiltArtifactsImpl.Companion.saveAll
-import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
-import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
@@ -31,7 +29,6 @@ import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.options.StringOption
 import com.android.utils.FileUtils
 import com.android.zipflinger.ZipArchive
-import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
@@ -48,7 +45,6 @@ import org.gradle.work.DisableCachingByDefault
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
-import kotlin.io.path.bufferedWriter
 
 /**
  * Task to extract the privacy sandbox SDK APKs for this app
@@ -183,7 +179,7 @@ abstract class BuildPrivacySandboxSdkApks : NonIncrementalTask() {
         }
 
         companion object {
-            fun getTaskName(creationConfig: ApplicationCreationConfig) = creationConfig.computeTaskName("buildPrivacySandboxSdkApksFor")
+            fun getTaskName(creationConfig: ApplicationCreationConfig) = creationConfig.computeTaskNameInternal("buildPrivacySandboxSdkApksFor")
         }
     }
 }

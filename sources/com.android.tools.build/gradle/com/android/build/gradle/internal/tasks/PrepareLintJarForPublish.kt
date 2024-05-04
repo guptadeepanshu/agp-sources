@@ -82,27 +82,28 @@ abstract class PrepareLintJarForPublish : NonIncrementalGlobalTask() {
         override fun configure(task: PrepareLintJarForPublish) {
             super.configure(task)
 
-            task.lintChecks.fromDisallowChanges(getPublishedCustomLintChecks())
-        }
-
-        /**
-         * Gets the lint JAR from the lint publishing configuration.
-         *
-         * @return the resolved lint.jar ArtifactFile from the lint publishing configuration
-         */
-        private fun getPublishedCustomLintChecks(): FileCollection {
-            // Query for JAR instead of PROCESSED_JAR as lint.jar doesn't need processing
-            val attributes =
-                Action { container: AttributeContainer ->
-                    container.attribute(
-                        AndroidArtifacts.ARTIFACT_TYPE, AndroidArtifacts.ArtifactType.JAR.type
-                    )
-                }
-            return creationConfig.lintPublish
-                .incoming
-                .artifactView { it.attributes(attributes) }
-                .artifacts
-                .artifactFiles
+            task.lintChecks.fromDisallowChanges(creationConfig.getPublishedCustomLintChecks())
         }
     }
 }
+
+/**
+ * Gets the lint JAR from the lint publishing configuration.
+ *
+ * @return the resolved lint.jar ArtifactFile from the lint publishing configuration
+ */
+fun GlobalTaskCreationConfig.getPublishedCustomLintChecks(): FileCollection {
+    // Query for JAR instead of PROCESSED_JAR as lint.jar doesn't need processing
+    val attributes =
+        Action { container: AttributeContainer ->
+            container.attribute(
+                AndroidArtifacts.ARTIFACT_TYPE, AndroidArtifacts.ArtifactType.JAR.type
+            )
+        }
+    return lintPublish
+        .incoming
+        .artifactView { it.attributes(attributes) }
+        .artifacts
+        .artifactFiles
+}
+

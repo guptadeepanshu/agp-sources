@@ -50,6 +50,7 @@ import org.gradle.api.provider.Provider
 import org.gradle.api.services.BuildServiceRegistry
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.process.CommandLineArgumentProvider
 import java.io.File
 import java.io.FileReader
@@ -58,6 +59,7 @@ import java.io.IOException
 import java.io.Serializable
 import java.io.UncheckedIOException
 import java.util.jar.JarFile
+import kotlin.math.min
 
 const val ANNOTATION_PROCESSORS_INDICATOR_FILE =
     "META-INF/services/javax.annotation.processing.Processor"
@@ -107,7 +109,10 @@ fun JavaCompile.configureProperties(creationConfig: ComponentCreationConfig) {
     this.targetCompatibility = compileOptions.targetCompatibility.toString()
     this.options.encoding = compileOptions.encoding
 
-    checkReleaseFlag(creationConfig.global.compileOptions.sourceCompatibility.isJava9Compatible)
+    checkReleaseOption(creationConfig.services.issueReporter)
+    checkDeprecatedSourceAndTargetAtExecutionTime(
+        compileOptions.sourceCompatibility, compileOptions.targetCompatibility
+    )
 }
 
 /**
@@ -364,29 +369,90 @@ private fun checkSdkCompatibility(compileSdkVersion: String, issueReporter: Issu
     }
 }
 
-private fun JavaCompile.checkReleaseFlag(isJava9Compatible: Boolean) {
-    this.doFirst {
-        val issueReporter = DefaultIssueReporter(LoggerWrapper(logger))
-        if (this.options.release.isPresent) {
-            if (isJava9Compatible) {
-                issueReporter.reportWarning(
-                    IssueReporter.Type.GENERIC, "WARNING: Using '--release' option could " +
-                            "cause issues when using Android Gradle Plugin to compile sources " +
-                            "with Java 9+. Instead, please set 'sourceCompatibility' and " +
-                            "'targetCompatibility' to the desired Java version, and set " +
-                            "'compileSdkVersion' to 30 or above. See " +
-                            "https://developer.android.com/studio/releases/gradle-plugin#java-11"
-                )
-            } else {
-                issueReporter.reportError(
-                    IssueReporter.Type.GENERIC, "Using '--release' option prevents Android " +
-                            "Gradle Plugin from setting correct bootclasspath when compiling " +
-                            "source with Java 8. Instead, please set 'sourceCompatibility' and " +
-                            "'targetCompatibility' to 8. See " +
-                            "https://developer.android.com/studio/write/java8-support#supported_features"
-                )
+private fun JavaCompile.checkReleaseOption(issueReporter: IssueReporter) {
+    if (options.release.isPresent) {
+        issueReporter.reportError(
+            IssueReporter.Type.GENERIC,
+            """
+            Using '--release' option for JavaCompile is not supported because it prevents the Android Gradle plugin
+            from setting up the bootclasspath for compiling Java source files against Android APIs
+            (see https://issuetracker.google.com/278800528).
+            Please use Java toolchain or set 'sourceCompatibility' and 'targetCompatibility' options instead.
+            (see https://developer.android.com/build/jdks#source-compat).
+            """.trimIndent()
+        )
+    }
+}
+
+private fun JavaCompile.checkDeprecatedSourceAndTargetAtExecutionTime(
+    sourceCompatibility: JavaVersion,
+    targetCompatibility: JavaVersion
+) {
+    // Run this check at execution time as we don't want to run it if the task doesn't run (e.g.,
+    // when there are no Java sources).
+    doFirst {
+        checkDeprecatedSourceAndTarget(
+            (it as JavaCompile).javaCompiler.get().metadata.languageVersion.asJavaVersion(),
+            sourceCompatibility,
+            targetCompatibility,
+            DefaultIssueReporter(LoggerWrapper(logger)),
+        )
+    }
+}
+
+private fun checkDeprecatedSourceAndTarget(
+    javacVersion: JavaVersion,
+    sourceCompatibility: JavaVersion,
+    targetCompatibility: JavaVersion,
+    issueReporter: IssueReporter
+) {
+    val severity =
+        determineJavacSupportForSourceAndTarget(javacVersion, sourceCompatibility, targetCompatibility)
+        ?: return
+    val removedOrDeprecated = when (severity) {
+        IssueReporter.Severity.ERROR -> "removed"
+        IssueReporter.Severity.WARNING -> "deprecated"
+    }
+    val message =
+        """
+        Java compiler version $javacVersion has $removedOrDeprecated support for compiling with source/target version ${min(sourceCompatibility.majorVersion.toInt(), targetCompatibility.majorVersion.toInt())}.
+        Try one of the following options:
+            1. [Recommended] Set a lower Java compiler version (using Java toolchain)
+            2. Set a higher source/target version
+            3. If you don't want to use Java toolchain, try using a lower version of the JDK running the build
+               (e.g., by setting the `JAVA_HOME` environment variable or the `org.gradle.java.home` Gradle property)
+        For more details on how to configure these settings, see https://developer.android.com/build/jdks.
+        """.trimIndent()
+    val data = "javacVersion=$javacVersion,sourceCompatibility=$sourceCompatibility,targetCompatibility=$targetCompatibility"
+    when (severity) {
+        IssueReporter.Severity.ERROR -> issueReporter.reportError(IssueReporter.Type.GENERIC, message, data)
+        IssueReporter.Severity.WARNING -> issueReporter.reportWarning(IssueReporter.Type.GENERIC, message, data)
+    }
+}
+
+/**
+ * Determines the level of support of [javacVersion] when compiling with the given
+ * [sourceCompatibility]/[targetCompatibility] version.
+ *   - [IssueReporter.Severity.ERROR]: javac will produce an ERROR when compiling with the given
+ *     source/target version
+ *   - [IssueReporter.Severity.WARNING]: javac will produce a WARNING when compiling with the given
+ *     source/target version
+ *   - null: Undefined (we don't need to consider these scenarios yet)
+ */
+private fun determineJavacSupportForSourceAndTarget(
+    javacVersion: JavaVersion,
+    sourceCompatibility: JavaVersion,
+    targetCompatibility: JavaVersion
+): IssueReporter.Severity? {
+    return when {
+        javacVersion >= JavaVersion.VERSION_20 -> {
+            when {
+                sourceCompatibility <= JavaVersion.VERSION_1_7 || targetCompatibility <= JavaVersion.VERSION_1_7 -> IssueReporter.Severity.ERROR
+                sourceCompatibility == JavaVersion.VERSION_1_8 || targetCompatibility == JavaVersion.VERSION_1_8 -> IssueReporter.Severity.WARNING
+                else -> null
             }
         }
+        else -> null
     }
 }
 
@@ -414,3 +480,5 @@ fun AnnotationProcessorInfo.toProcessorInfo(): ProcessorInfo = when {
     isIncremental -> ProcessorInfo.INCREMENTAL_AP
     else -> ProcessorInfo.NON_INCREMENTAL_AP
 }
+
+fun JavaLanguageVersion.asJavaVersion(): JavaVersion = JavaVersion.toVersion(asInt())

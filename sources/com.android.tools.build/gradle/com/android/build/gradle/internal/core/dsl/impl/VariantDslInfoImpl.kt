@@ -29,6 +29,7 @@ import com.android.build.gradle.internal.dsl.DefaultConfig
 import com.android.build.gradle.internal.manifest.ManifestDataProvider
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.builder.core.ComponentType
+import com.android.builder.errors.IssueReporter
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
@@ -72,17 +73,26 @@ internal abstract class VariantDslInfoImpl internal constructor(
 
     // For main variants we get the namespace from the DSL.
     override val namespace: Provider<String>
-        get() = extension.namespace?.let { services.provider { it } }
-            ?: throw RuntimeException(
-                "Namespace not specified. Specify a namespace in the module's build file. " +
-                        "See https://d.android.com/r/tools/upgrade-assistant/set-namespace for " +
-                        "information about setting the namespace.\n\n" +
-                        "If you've specified the package attribute in the source " +
-                        "AndroidManifest.xml, you can use the AGP Upgrade Assistant to migrate " +
-                        "to the namespace value in the build file. Refer to " +
-                        "https://d.android.com/r/tools/upgrade-assistant/agp-upgrade-assistant " +
-                        "for general information about using the AGP Upgrade Assistant."
-            )
+        get() {
+            // If no namespace is specified in the DSL, use a placeholder namespace and report a
+            // sync error instead of throwing an exception so that sync can finish (b/321392253).
+            if (extension.namespace == null) {
+                val buildFilePath = services.projectInfo.buildFile.absolutePath
+                val message =
+                    "Namespace not specified. Specify a namespace in the module's build file: " +
+                            "$buildFilePath. See " +
+                            "https://d.android.com/r/tools/upgrade-assistant/set-namespace " +
+                            "for information about setting the namespace.\n\n" +
+                            "If you've specified the package attribute in the source " +
+                            "AndroidManifest.xml, you can use the AGP Upgrade Assistant to " +
+                            "migrate to the namespace value in the build file. Refer to " +
+                            "https://d.android.com/r/tools/upgrade-assistant/agp-upgrade-assistant " +
+                            "for general information about using the AGP Upgrade Assistant."
+                services.issueReporter
+                    .reportError(IssueReporter.Type.NAMESPACE_NOT_SET, message, buildFilePath)
+            }
+            return services.provider { extension.namespace ?: "missing.namespace" }
+        }
 
     override val applicationId: Property<String> by lazy {
         services.newPropertyBackingDeprecatedApi(

@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.ide.v2
 
+import com.android.builder.core.ComponentTypeImpl
 import com.android.builder.model.v2.ide.BasicArtifact
 import com.android.builder.model.v2.ide.BasicVariant
 import com.android.builder.model.v2.ide.Variant
@@ -27,12 +28,17 @@ import java.io.Serializable
 data class BasicVariantImpl(
     override val name: String,
     override val mainArtifact: BasicArtifact,
-    override val androidTestArtifact: BasicArtifact?,
-    override val unitTestArtifact: BasicArtifact?,
+    override val deviceTestArtifacts: Map<String, BasicArtifact>,
+    override val hostTestArtifacts: Map<String, BasicArtifact>,
     override val testFixturesArtifact: BasicArtifact?,
     override val buildType: String?,
     override val productFlavors: List<String>,
 ) : BasicVariant, Serializable {
+    override val androidTestArtifact: BasicArtifact?
+        get() = deviceTestArtifacts[ComponentTypeImpl.ANDROID_TEST.artifactName]
+    override val unitTestArtifact: BasicArtifact?
+        get() = hostTestArtifacts[ComponentTypeImpl.UNIT_TEST.artifactName]
+
     companion object {
         @JvmStatic
         private val serialVersionUID: Long = 1L

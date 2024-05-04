@@ -16,7 +16,6 @@
 
 package com.android.build.gradle.internal.profile
 
-import com.android.build.gradle.internal.projectIsolationRequested
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.VariantAwareTask
 import com.android.build.gradle.options.BooleanOption
@@ -296,12 +295,16 @@ class AnalyticsResourceManager constructor(
         params.applicationId.set(applicationIds)
     }
 
-    fun recordGlobalProperties(project: Project) {
+    fun recordGlobalProperties(
+        project: Project,
+        configurationCacheActive: Boolean,
+        projectIsolationActive: Boolean
+    ) {
         val projectOptions =
             getBuildService(project.gradle.sharedServices, ProjectOptionService::class.java)
                 .get().projectOptions
 
-        if (!projectIsolationRequested(project.providers)) {
+        if (!projectIsolationActive) {
             recordPlugins(project)
         }
 
@@ -313,7 +316,7 @@ class AnalyticsResourceManager constructor(
             .setMaxMemory(Runtime.getRuntime().maxMemory())
             .setGradleVersion(project.gradle.gradleVersion)
 
-        profileBuilder.configurationCachingEnabled = project.gradle.startParameter.isConfigurationCacheRequested
+        profileBuilder.configurationCachingEnabled = configurationCacheActive
         profileBuilder.parallelTaskExecution = project.gradle.startParameter.isParallelProjectExecutionEnabled
 
         // Use 'platform independent' path to match AS behaviour.

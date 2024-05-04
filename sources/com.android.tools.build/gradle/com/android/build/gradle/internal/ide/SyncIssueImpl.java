@@ -124,6 +124,7 @@ public final class SyncIssueImpl implements SyncIssue, Serializable {
                 .add("severity", severity)
                 .add("data", data)
                 .add("message", message)
+                .add("multiLineMessage", multiLineMessage)
                 .toString();
     }
 }

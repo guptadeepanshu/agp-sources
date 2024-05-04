@@ -30,6 +30,8 @@ import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.artifacts.component.ComponentIdentifier
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
 import org.gradle.api.artifacts.result.ResolvedArtifactResult
+import org.gradle.api.artifacts.result.ResolvedComponentResult
+import org.gradle.api.artifacts.result.ResolvedDependencyResult
 import org.gradle.api.artifacts.result.ResolvedVariantResult
 import org.gradle.api.capabilities.Capability
 import org.gradle.api.file.FileCollection
@@ -78,22 +80,12 @@ interface ArtifactCollectionsInputs {
  *
  * It is used as a [org.gradle.api.tasks.Nested] input to the lint model generation task.
  */
-class ArtifactCollectionsInputsImpl constructor(
+class ArtifactCollectionsInputsImpl(
     variantDependencies: VariantDependencies,
     override val projectPath: String,
     override val variantName: String,
     @get:Input val runtimeType: RuntimeType,
 ): ArtifactCollectionsInputs {
-
-    constructor(
-        componentImpl: ComponentCreationConfig,
-        runtimeType: RuntimeType,
-    ) : this(
-        componentImpl.variantDependencies,
-        componentImpl.services.projectInfo.path,
-        componentImpl.name,
-        runtimeType,
-    )
 
     override val projectBuildTreePath: Provider<String> = getBuildTreePath(variantDependencies)
 
@@ -149,12 +141,24 @@ class ArtifactCollectionsInputsImpl constructor(
         } else {
             runtimeClasspath!!
         }
-        return getAllArtifacts(
-            collections,
-            dependencyFailureHandler,
-            projectPath,
-            variantName
-        )
+        return resolveArtifacts(
+            collections.all,
+            collections.aarOrAsar,
+            collections.lintJar
+        ) {
+            if (dependencyFailureHandler != null) {
+                // compute the name of the configuration
+                dependencyFailureHandler.addErrors(
+                    projectPath
+                            + "@"
+                            + variantName
+                            + "/"
+                            + collections.consumedConfigType.getName(),
+                    collections.all.failures
+                )
+            }
+        }
+
     }
 }
 
@@ -224,22 +228,13 @@ class ArtifactCollections(
      * This captures dependencies without transforming them using `AttributeCompatibilityRule`s.
      **/
     @get:Internal
-    val all: ArtifactCollection = variantDependencies.getArtifactCollectionForToolingModel(
-        consumedConfigType,
-        AndroidArtifacts.ArtifactScope.ALL,
-        AndroidArtifacts.ArtifactType.AAR_OR_JAR
-    )
+    val all: ArtifactCollection = variantDependencies.aarOrJar(consumedConfigType)
 
     @get:Classpath
-    val allFileCollection: FileCollection
-        get() = all.artifactFiles
+    val allFileCollection: FileCollection get() = all.artifactFiles
 
     @get:Internal
-    val lintJar: ArtifactCollection = variantDependencies.getArtifactCollectionForToolingModel(
-        consumedConfigType,
-        AndroidArtifacts.ArtifactScope.ALL,
-        AndroidArtifacts.ArtifactType.LINT
-    )
+    val lintJar: ArtifactCollection = variantDependencies.lintJars(consumedConfigType, externalOnly = false)
 
     // We still need to understand wrapped jars and aars. The former is difficult (TBD), but
     // the latter can be done by querying for EXPLODED_AAR. If a sub-project is in this list,
@@ -250,11 +245,7 @@ class ArtifactCollections(
     // Contents of ASARs to be used by IDE, (i.e. the interface descriptor jars) for privacy sandbox
     // is also grouped into this query for efficiency
     @get:Internal
-    val aarOrAsar: ArtifactCollection = variantDependencies.getArtifactCollectionForToolingModel(
-            consumedConfigType,
-            AndroidArtifacts.ArtifactScope.ALL,
-            AndroidArtifacts.ArtifactType.EXPLODED_AAR_OR_ASAR_INTERFACE_DESCRIPTOR
-    )
+    val aarOrAsar: ArtifactCollection = variantDependencies.aarsOrAsars(consumedConfigType)
 
 
     /**
@@ -277,78 +268,83 @@ class ArtifactCollections(
 }
 
 /**
+ * Model builder is decoupled from artifact collections / inputs to be able to optimize some of its
+ * behavior.
+ */
+fun getArtifactsForModelBuilder(
+    component: ComponentCreationConfig,
+    configType: AndroidArtifacts.ConsumedConfigType,
+    root: ResolvedComponentResult
+): Set<ResolvedArtifact> {
+    // For project Android variant dependencies, we don't actually need the AARs or JARs, as just
+    // the module path is enough for us to set up dependencies correctly. Here, a filter is created
+    // to filter out any project dependencies that only has Android variant dependencies. This
+    // results in significant performance improvements for larger builds with many projects.
+    val nonAndroidProjectsFilter = filterProjectDependenciesWithNonAndroidVariants(root)
+    return resolveArtifacts(
+        component.variantDependencies.aarOrJar(configType, nonAndroidProjectsFilter),
+        component.variantDependencies.aarsOrAsars(configType, nonAndroidProjectsFilter),
+        component.variantDependencies.lintJars(configType, externalOnly = true)
+    )
+}
+
+/**
  * Returns a set of ResolvedArtifact where the [ResolvedArtifact.dependencyType] and
  * [ResolvedArtifact.isWrappedModule] fields have been setup properly.
  *
  * @param componentImpl the variant to get the artifacts from
  * @param consumedConfigType the type of the dependency to resolve (compile vs runtime)
- * @param dependencyFailureHandler handler for dependency resolution errors
  */
-fun getAllArtifacts(
+fun getArtifactsForComponent(
     componentImpl: ComponentCreationConfig,
     consumedConfigType: AndroidArtifacts.ConsumedConfigType,
-    dependencyFailureHandler: DependencyFailureHandler?,
 ): Set<ResolvedArtifact> {
     val collections = ArtifactCollections(componentImpl, consumedConfigType)
-    return getAllArtifacts(
-        collections,
-        dependencyFailureHandler,
-        componentImpl.services.projectInfo.path,
-        componentImpl.name,
+    return resolveArtifacts(
+        collections.all,
+        collections.aarOrAsar,
+        collections.lintJar
     )
 }
 
-private fun getAllArtifacts(
-    collections: ArtifactCollections,
-    dependencyFailureHandler: DependencyFailureHandler?,
-    projectPath: String,
-    variantName: String,
+private fun resolveArtifacts(
+    // All artifacts: see comment on collections.all
+    allArtifacts : ArtifactCollection,
+    aarOrAsar: ArtifactCollection,
+    lintJar: ArtifactCollection,
+    dependencyFailureHandler: () -> Any = {},
 ): Set<ResolvedArtifact> {
 
     // we need to figure out the following:
     // - Is it an external dependency or a sub-project?
     // - Is it an android or a java dependency
 
-    // All artifacts: see comment on collections.all
-    val incomingArtifacts = collections.all
-
-    val explodedAars = collections.aarOrAsar.filter {
+    val explodedAars = aarOrAsar.filter {
         it.hasType(AndroidArtifacts.ArtifactType.EXPLODED_AAR)
     }.asMap()
 
-    val asarJars = collections.aarOrAsar.filter {
+    val asarJars = aarOrAsar.filter {
         it.hasType(AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_INTERFACE_DESCRIPTOR)
     }.asMap()
 
-    val lintJars = collections.lintJar.asMap { it.file }
+    val lintJars = lintJar.asMap { it.file }
 
     /** See [ArtifactCollections.projectJars]. */
     val projectJarsMap: ImmutableMultimap<VariantKey, ResolvedArtifactResult> by lazy(LazyThreadSafetyMode.NONE) {
-        collections.all.artifacts.filter {
+        allArtifacts.artifacts.filter {
             it.variant.owner is ProjectComponentIdentifier && it.hasType(AndroidArtifacts.ArtifactType.JAR)
         }.asMultiMap()
     }
 
     // collect dependency resolution failures
-    if (dependencyFailureHandler != null) {
-        val failures = incomingArtifacts.failures
-        // compute the name of the configuration
-        dependencyFailureHandler.addErrors(
-            projectPath
-                    + "@"
-                    + variantName
-                    + "/"
-                    + collections.consumedConfigType.getName(),
-            failures
-        )
-    }
+    dependencyFailureHandler()
 
     // build a list of wrapped AAR, and a map of all the exploded-aar artifacts
     val aarWrappedAsProjects =
         explodedAars.keys.filter { it.owner is ProjectComponentIdentifier }
 
     // build the final list, using the main list augmented with data from the previous lists.
-    val resolvedArtifactResults = incomingArtifacts.artifacts
+    val resolvedArtifactResults = allArtifacts.artifacts
 
     // use a linked hash set to keep the artifact order.
     val artifacts =
@@ -399,7 +395,7 @@ private fun getAllArtifacts(
                 )
             }
             AndroidArtifacts.ArtifactType.JAR.type ->
-                if (resolvedComponentResult.isAndroidProjectLibrary()) {
+                if (resolvedComponentResult.isAndroidProjectDependency()) {
                     // When a project dependency is an Android one, the artifact file doesn't matter
                     // We can safely set it to null. The variant attributes will be used to compute
                     // the key to the library model objects, so they are passed further down.
@@ -417,7 +413,7 @@ private fun getAllArtifacts(
                     //
                     // The check here iterates over all the jars this particular project publishes
                     // and skips this dependency completely if any of them is android.
-                    if (projectJarsMap[variantKey].any {it.isAndroidProjectLibrary()}) {
+                    if (projectJarsMap[variantKey].any {it.isAndroidProjectDependency()}) {
                         continue
                     }
                     val projectJars = projectJarsMap[variantKey]
@@ -440,14 +436,39 @@ private fun getAllArtifacts(
     return artifacts
 }
 
-/**
- * Checks whether a local project library is and Android one.
- *
- * [AgpVersionAttr] is only present for android libraries.
- */
-private fun ResolvedArtifactResult.isAndroidProjectLibrary() =
-    variant.attributes.getAttribute(AgpVersionAttr.ATTRIBUTE) != null
+private fun filterProjectDependenciesWithNonAndroidVariants(root: ResolvedComponentResult): (ComponentIdentifier) -> Boolean {
+    val seen = mutableSetOf<ResolvedComponentResult>()
+    fun ResolvedComponentResult.traverse() {
+        seen.add(this)
+        dependencies
+            .forEach {
+                if (it is ResolvedDependencyResult
+                    && it.resolvedVariant.owner is ProjectComponentIdentifier
+                    && it.selected !in seen) {
+                    it.selected.traverse()
+                }
+            }
+    }
+    root.traverse()
+    val androidProjects = mutableSetOf<String>();
+    seen.forEach {
+      it.variants.forEach {
+        if (it.owner is ProjectComponentIdentifier && it.isAndroidProjectDependency()) {
+            // If any of the resolved variants is Android for a project, we consider that a single
+            // project dependency as we don't really handle this case properly in the IDE side.
+            androidProjects.add((it.owner as ProjectComponentIdentifier).getIdString())
+        }
+      }
+    }
 
+    // This will be passed into Gradle APIs later down the line
+    return fun(it: ComponentIdentifier): Boolean {
+        return when (it) {
+            is ProjectComponentIdentifier -> it.getIdString() !in androidProjects
+            else -> true
+        }
+    }
+}
 
 /**
  * This is a multi map to handle when there are multiple jars with the same component id.
@@ -494,4 +515,38 @@ fun ResolvedVariantResult.toKey(): VariantKey = VariantKey(
     owner,
     capabilities,
     externalVariant.orElse(null)?.toKey()
+)
+
+/**
+ * Checks whether a local project dependency is an Android one.
+ *
+ * [AgpVersionAttr] is only present for variants  from Android projects.
+ */
+fun ResolvedVariantResult.isAndroidProjectDependency() =
+    attributes.getAttribute(
+        attributes.keySet().firstOrNull { it.name == AgpVersionAttr.ATTRIBUTE.name }) != null
+
+private fun ResolvedArtifactResult.isAndroidProjectDependency() = variant.isAndroidProjectDependency()
+
+private fun VariantDependencies.aarOrJar(
+    configType: AndroidArtifacts.ConsumedConfigType,
+    additionalFilter: ((ComponentIdentifier) -> Boolean)? = null
+) = getArtifactCollectionForToolingModel(
+    configType,
+    AndroidArtifacts.ArtifactScope.ALL,
+    AndroidArtifacts.ArtifactType.AAR_OR_JAR,
+    additionalFilter
+)
+
+private fun VariantDependencies.lintJars(configType: AndroidArtifacts.ConsumedConfigType, externalOnly: Boolean) = getArtifactCollectionForToolingModel(
+    configType,
+    if (externalOnly) AndroidArtifacts.ArtifactScope.EXTERNAL else AndroidArtifacts.ArtifactScope.ALL,
+    AndroidArtifacts.ArtifactType.LINT
+)
+
+private fun VariantDependencies.aarsOrAsars(configType: AndroidArtifacts.ConsumedConfigType, additionalFilter: ((ComponentIdentifier) -> Boolean)? = null) = getArtifactCollectionForToolingModel(
+    configType,
+    AndroidArtifacts.ArtifactScope.ALL,
+    AndroidArtifacts.ArtifactType.EXPLODED_AAR_OR_ASAR_INTERFACE_DESCRIPTOR,
+    additionalFilter
 )

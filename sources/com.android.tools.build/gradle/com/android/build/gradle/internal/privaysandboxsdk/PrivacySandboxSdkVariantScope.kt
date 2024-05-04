@@ -20,6 +20,7 @@ import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.dsl.PrivacySandboxSdkExtension
 import com.android.build.api.dsl.SigningConfig
 import com.android.build.gradle.internal.dsl.PrivacySandboxSdkBundleImpl
+import com.android.build.gradle.internal.dsl.PrivacySandboxSdkOptimizationImpl
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryConfigurations
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryDependencies
 import com.android.build.gradle.internal.publishing.AarOrJarTypeToConsume
@@ -46,6 +47,7 @@ interface PrivacySandboxSdkVariantScope {
     val bundle: PrivacySandboxSdkBundleImpl
     val services: TaskCreationServices
     val signingConfig: SigningConfig
+    val optimization: PrivacySandboxSdkOptimizationImpl
     val experimentalProperties: MapProperty<String, Any>
     val aarOrJarTypeToConsume: AarOrJarTypeToConsume
 }

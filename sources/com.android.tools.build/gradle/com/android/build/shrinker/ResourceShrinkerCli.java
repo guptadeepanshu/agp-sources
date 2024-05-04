@@ -19,6 +19,7 @@ package com.android.build.shrinker;
 import com.android.build.shrinker.gatherer.ProtoResourceTableGatherer;
 import com.android.build.shrinker.gatherer.ResourcesGatherer;
 import com.android.build.shrinker.graph.ProtoResourcesGraphBuilder;
+import com.android.build.shrinker.obfuscation.ProguardMappingsRecorder;
 import com.android.build.shrinker.usages.DexUsageRecorder;
 import com.android.build.shrinker.usages.ProtoAndroidManifestUsageRecorder;
 import com.android.build.shrinker.usages.ResourceUsageRecorder;
@@ -41,6 +42,8 @@ public class ResourceShrinkerCli {
     private static final String DEX_INPUT_ARG = "--dex_input";
     private static final String OUTPUT_ARG = "--output";
     private static final String RES_ARG = "--raw_resources";
+    private static final String PROGUARD_MAP = "--proguard_map";
+
     private static final String HELP_ARG = "--help";
     private static final String PRINT_USAGE_LOG = "--print_usage_log";
 
@@ -52,6 +55,7 @@ public class ResourceShrinkerCli {
         private String input;
         private final List<String> dex_inputs = new ArrayList<>();
         private String output;
+        private String proguardMap;
         private String usageLog;
         private final List<String> rawResources = new ArrayList<>();
         private boolean help;
@@ -107,6 +111,13 @@ public class ResourceShrinkerCli {
                                 "No argument given for raw_resources");
                     }
                     options.rawResources.add(args[i]);
+                } else if (arg.startsWith(PROGUARD_MAP)) {
+                    i++;
+                    if (i == args.length) {
+                        throw new ResourceShrinkingFailedException(
+                                "No argument given for proguard_map");
+                    }
+                    options.proguardMap = args[i];
                 } else if (arg.equals(HELP_ARG)) {
                     options.help = true;
                 } else {
@@ -188,10 +199,14 @@ public class ResourceShrinkerCli {
         ProtoResourcesGraphBuilder res =
                 new ProtoResourcesGraphBuilder(
                         fileSystemProto.getPath(RES_FOLDER), fileSystemProto.getPath(RESOURCES_PB));
+        ProguardMappingsRecorder proguardMappingsRecorder =
+                options.proguardMap != null
+                        ? new ProguardMappingsRecorder(Paths.get(options.proguardMap))
+                        : null;
         ResourceShrinkerImpl resourceShrinker =
                 new ResourceShrinkerImpl(
                         List.of(gatherer),
-                        null,
+                        proguardMappingsRecorder,
                         resourceUsageRecorders,
                         List.of(res),
                         options.usageLog != null
@@ -242,6 +257,9 @@ public class ResourceShrinkerCli {
         for (String rawResource : options.getRawResources()) {
             validateFileExists(rawResource);
         }
+        if (options.proguardMap != null) {
+            validateFileExists(options.proguardMap);
+        }
     }
 
     private static void printUsage() {
@@ -254,7 +272,8 @@ public class ResourceShrinkerCli {
         out.println("       handled if this contains other files. Several --dex_input arguments");
         out.println("       are supported");
         out.println("    --output <output-file>");
-        out.println("    --raw_resource <xml-file or res directory>");
+        out.println("    --proguard_map <mapping file>");
+        out.println("    --raw_resources <xml-file or res directory>");
         out.println("      optional, more than one raw_resoures argument might be given");
         out.println("    --help prints this help message");
     }

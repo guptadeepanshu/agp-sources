@@ -18,6 +18,7 @@ package com.android.build.gradle.internal
 
 import com.android.build.api.dsl.CompileOptions
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
+import com.android.build.gradle.tasks.asJavaVersion
 import com.android.build.gradle.tasks.recordCompileOptionsForAnalytics
 import com.google.common.base.Charsets
 import org.gradle.api.JavaVersion
@@ -101,7 +102,7 @@ abstract class CompileOptions : CompileOptions {
             // we have to do it because AGP `CompileOptions` properties are currently not lazy
             // (bug 271841527).
             it.finalizeValue()
-            it.orNull?.run { JavaVersion.toVersion(asInt()) }
+            it.orNull?.asJavaVersion()
         }
         finalizeSourceAndTargetCompatibility(toolchainVersion)
 

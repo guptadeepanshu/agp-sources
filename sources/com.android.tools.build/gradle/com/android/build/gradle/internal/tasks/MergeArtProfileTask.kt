@@ -81,7 +81,7 @@ abstract class MergeArtProfileTask: MergeFileTask() {
             it.inputFiles.from(
                 profileSourceDirectories.get().map { directory -> directory.asFileTree.files }
                     .flatten()
-                    .filter(BaselineProfiles::shouldBeMerged)
+                    .filter(BaselineProfiles::shouldBeMergedIntoArtProfile)
             )
             if (profileSource.get().asFile.isFile) {
                 it.inputFiles.from(profileSource)
@@ -121,7 +121,7 @@ abstract class MergeArtProfileTask: MergeFileTask() {
     ) : VariantTaskCreationAction<MergeArtProfileTask, ApkCreationConfig>(creationConfig) {
 
         override val name: String
-            get() = creationConfig.computeTaskName("merge", "ArtProfile")
+            get() = creationConfig.computeTaskNameInternal("merge", "ArtProfile")
         override val type: Class<MergeArtProfileTask>
             get() = MergeArtProfileTask::class.java
 

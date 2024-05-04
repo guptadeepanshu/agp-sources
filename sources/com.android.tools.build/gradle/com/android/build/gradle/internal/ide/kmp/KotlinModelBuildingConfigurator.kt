@@ -49,6 +49,14 @@ import com.android.kotlin.multiplatform.models.SourceProvider
 import com.android.kotlin.multiplatform.models.UnitTestInfo
 import org.gradle.api.Project
 
+/**
+ * A singleton that is responsible for populating the android models sent along with the android
+ * target, compilation and sourceSets. Data is added through [org.jetbrains.kotlin.tooling.core.HasMutableExtras.extras]
+ * which the target, compilation and sourceSet implements.
+ *
+ * Checkout [androidTargetKey], [androidCompilationKey], [androidSourceSetKey] to see what data is
+ * held in each model.
+ */
 object KotlinModelBuildingConfigurator {
     private fun KmpComponentCreationConfig.toType() = when (this) {
         is KmpCreationConfig -> AndroidCompilation.CompilationType.MAIN
@@ -57,6 +65,14 @@ object KotlinModelBuildingConfigurator {
         else -> throw IllegalArgumentException("Unknown type ${this::class.java}")
     }
 
+    /**
+     * As each [KmpComponentCreationConfig] corresponds to a kotlin compilation, this method
+     * adds extra android-specific information to the android kotlin compilations. That includes,
+     * the main compilation and the unitTest and instrumentedTest compilations if enabled.
+     *
+     * This method also adds android-specific data about the default sourceSet in each compilation,
+     * mainly the android manifest location.
+     */
     fun setupAndroidCompilations(
         components: List<KmpComponentCreationConfig>,
         testInstrumentationRunner: String?,
@@ -103,6 +119,11 @@ object KotlinModelBuildingConfigurator {
         }
     }
 
+    /**
+     * This method attaches global information about the android target to the kotlin android target
+     * object. The data sent here is global to the different android compilations created within the
+     * target.
+     */
     fun setupAndroidTargetModels(
         project: Project,
         mainVariant: KmpCreationConfig,
@@ -129,17 +150,17 @@ object KotlinModelBuildingConfigurator {
                 .setTestInfo(
                     TestInfoImpl(
                         animationsDisabled = mainVariant.global.androidTestOptions.takeIf {
-                            mainVariant.androidTest != null
+                            mainVariant.androidDeviceTest != null
                         }?.animationsDisabled ?: false,
                         execution = mainVariant.global.androidTestOptions.takeIf {
-                            mainVariant.androidTest != null
+                            mainVariant.androidDeviceTest != null
                         }?.execution?.convertToExecution(),
                         additionalRuntimeApks = project
                             .configurations
                             .findByName(
                                 SdkConstants.GRADLE_ANDROID_TEST_UTIL_CONFIGURATION
                             )?.files ?: listOf(),
-                        instrumentedTestTaskName = mainVariant.androidTest?.taskContainer?.connectedTestTask?.name
+                        instrumentedTestTaskName = mainVariant.androidDeviceTest?.taskContainer?.connectedTestTask?.name
                             ?: ""
                     ).convert()
                 )
@@ -190,7 +211,7 @@ object KotlinModelBuildingConfigurator {
                 optimizationCreationConfig.proguardFiles.get().map { it.asFile.convert() }
             )
             .addAllConsumerProguardFiles(
-                optimizationCreationConfig.consumerProguardFiles.map { it.convert() }
+                optimizationCreationConfig.consumerProguardFilePaths.map { it.convert() }
             )
             .setMinificationEnabled(
                 optimizationCreationConfig.minifiedEnabled
@@ -205,7 +226,7 @@ object KotlinModelBuildingConfigurator {
                 UnitTestInfo.Builder::setMockablePlatformJar
             )
             .setUnitTestTaskName(
-                computeTaskName(ComponentType.UNIT_TEST_PREFIX)
+                computeTaskNameInternal(ComponentType.UNIT_TEST_PREFIX)
             )
             .build()
 

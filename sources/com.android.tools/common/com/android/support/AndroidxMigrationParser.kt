@@ -15,7 +15,6 @@
  */
 package com.android.support
 
-import com.android.SdkConstants.ATTR_TYPE
 import com.android.utils.XmlUtils
 import java.io.InputStreamReader
 

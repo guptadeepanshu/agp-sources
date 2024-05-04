@@ -64,7 +64,7 @@ public class MavenRepositories {
             if (!CancellableFileIo.isDirectory(dir)) {
                 continue;
             }
-            Version version = Version.Companion.parse(dir.getFileName().toString());
+            Version version = Version.parse(dir.getFileName().toString());
             Component component = new Component(groupId, artifactId, version);
             if (allowPreview || !isPreview(component)) {
                 if (filter == null || filter.test(version)) {
@@ -102,7 +102,7 @@ public class MavenRepositories {
             if (name.isEmpty() || !Character.isDigit(name.charAt(0))) {
                 continue;
             }
-            Version version = Version.Companion.parse(name);
+            Version version = Version.parse(name);
             if ((allowPreview || !version.isPreview())
                     && (filter == null || filter.test(version))
                     && (maxVersion == null || version.compareTo(maxVersion) > 0)) {
@@ -127,7 +127,7 @@ public class MavenRepositories {
 
         return "com.google.android.gms".equals(component.getGroup())
                 && "play-services".equals(component.getName())
-                && component.getVersion().equals(Version.Companion.parse("5.2.08"));
+                && component.getVersion().equals(Version.parse("5.2.08"));
     }
 
     /**
@@ -170,7 +170,7 @@ public class MavenRepositories {
             if (name.isEmpty()) {
                 continue;
             }
-            builder.add(Version.Companion.parse(name));
+            builder.add(Version.parse(name));
         }
         return builder.build();
     }

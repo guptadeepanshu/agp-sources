@@ -17,14 +17,14 @@
 package com.android.build.api.component.analytics
 
 import com.android.build.api.variant.AndroidResources
-import com.android.build.api.variant.AndroidTest
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.GeneratesApk
-import com.android.build.api.variant.ApkPackaging
+import com.android.build.api.variant.DeviceTest
 import com.android.build.api.variant.Dexing
 import com.android.build.api.variant.DynamicFeatureVariant
 import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.TestFixtures
+import com.android.build.api.variant.TestedApkPackaging
 import com.android.tools.build.gradle.internal.profile.VariantPropertiesMethodType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.model.ObjectFactory
@@ -47,7 +47,8 @@ open class AnalyticsEnabledDynamicFeatureVariant @Inject constructor(
         }
     }
 
-    override val androidTest: AndroidTest?
+    @Suppress("DEPRECATION")
+    override val androidTest: com.android.build.api.variant.AndroidTest?
         get() {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.ANDROID_TEST_VALUE
@@ -91,9 +92,37 @@ open class AnalyticsEnabledDynamicFeatureVariant @Inject constructor(
     override val renderscript: Renderscript?
         get() = generatesApk.renderscript
 
-    override val packaging: ApkPackaging
-        get() = generatesApk.packaging
+    private val userVisiblePackaging: TestedApkPackaging by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
+        objectFactory.newInstance(
+            AnalyticsEnabledTestedApkPackaging::class.java,
+            delegate.packaging,
+            stats
+        )
+    }
+
+    override val packaging: TestedApkPackaging
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.PACKAGING_OPTIONS_VALUE
+            return userVisiblePackaging
+        }
 
     override val targetSdk: AndroidVersion
         get() = generatesApk.targetSdk
+
+    override val deviceTests: List<DeviceTest>
+        get()  {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.DEVICE_TESTS_VALUE
+            // return a new list everytime as items may eventually be added through future APIs.
+            // we may consider returning a live list instead.
+            return  delegate.deviceTests.map {
+                @Suppress("DEPRECATION")
+                if (it is com.android.build.api.variant.AndroidTest) {
+                    AnalyticsEnabledAndroidTest(it, stats, objectFactory)
+                } else {
+                    AnalyticsEnabledDeviceTest(it, stats, objectFactory)
+                }
+            }
+        }
 }

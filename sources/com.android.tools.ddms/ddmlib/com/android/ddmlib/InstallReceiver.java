@@ -17,6 +17,7 @@
 package com.android.ddmlib;
 
 import com.android.annotations.NonNull;
+import com.android.annotations.Nullable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -89,16 +90,19 @@ public class InstallReceiver extends MultiLineReceiver {
      * Returns the error message from the installation. Returns null if it was successful or if a
      * timeout occurred.
      */
+    @Nullable
     public String getErrorMessage() {
         return mErrorMessage;
     }
 
     /** Returns the success message from the installation. Returns null if failure is seen. */
+    @Nullable
     public String getSuccessMessage() {
         return mSuccessMessage;
     }
 
     /** @return The ERROR_CODE part of a message like: "Failure [ERROR_CODE: description]" */
+    @Nullable
     public String getErrorCode() {
         return mErrorCode;
     }

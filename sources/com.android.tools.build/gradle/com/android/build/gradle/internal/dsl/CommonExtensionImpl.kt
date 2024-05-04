@@ -33,6 +33,7 @@ import com.android.build.gradle.internal.coverage.JacocoOptions
 import com.android.build.gradle.internal.plugins.DslContainerProvider
 import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.utils.parseTargetHash
+import com.android.build.gradle.internal.utils.validateNamespaceValue
 import com.android.build.gradle.internal.utils.validatePreviewTargetValue
 import com.android.builder.core.LibraryRequest
 import com.android.builder.core.ToolsRevisionUtils
@@ -134,6 +135,18 @@ abstract class CommonExtensionImpl<
     override fun buildFeatures(action: BuildFeaturesT.() -> Unit) {
         action(buildFeatures)
     }
+
+    protected abstract var _namespace: String?
+
+    override var namespace: String?
+        get() = _namespace
+        set(value) {
+            _namespace = value
+            val errorMsg = validateNamespaceValue(value)
+            errorMsg?.let {
+                dslServices.issueReporter.reportError(IssueReporter.Type.GENERIC, it)
+            }
+        }
 
     protected abstract var _compileSdkVersion: String?
 

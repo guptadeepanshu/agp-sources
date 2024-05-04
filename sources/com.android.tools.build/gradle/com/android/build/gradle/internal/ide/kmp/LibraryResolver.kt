@@ -97,7 +97,7 @@ class LibraryResolver(
         variant: ResolvedVariantResult,
         sourceSet: KotlinSourceSet
     ) = com.android.build.gradle.internal.ide.dependencies.getLibrary(
-        inputs = getInputs(sourceSet),
+        getInputs(sourceSet).projectPath,
         libraryService = libraryService,
         variant = variant,
         variantDependencies = emptyList(),

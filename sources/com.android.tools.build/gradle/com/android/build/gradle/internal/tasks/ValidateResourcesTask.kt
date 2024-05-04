@@ -24,7 +24,6 @@ import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.options.Version
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.utils.FileUtils
-import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.ProjectLayout
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.MapProperty
@@ -122,7 +121,7 @@ abstract class ValidateResourcesTask @Inject constructor(
         creationConfig: ComponentCreationConfig,
     ) :  VariantTaskCreationAction<ValidateResourcesTask, ComponentCreationConfig>(creationConfig) {
 
-        override val name: String = creationConfig.computeTaskName("generate", "Resources")
+        override val name: String = computeTaskName("generate", "Resources")
 
         override val type: Class<ValidateResourcesTask> = ValidateResourcesTask::class.java
 

@@ -70,7 +70,7 @@ abstract class JacocoPropertiesTask : NonIncrementalTask() {
     ) {
 
         override val name: String =
-            creationConfig.computeTaskName("generate", "JacocoPropertiesFile")
+            computeTaskName("generate", "JacocoPropertiesFile")
         override val type: Class<JacocoPropertiesTask> get() = JacocoPropertiesTask::class.java
 
         override fun handleProvider(taskProvider: TaskProvider<JacocoPropertiesTask>) {

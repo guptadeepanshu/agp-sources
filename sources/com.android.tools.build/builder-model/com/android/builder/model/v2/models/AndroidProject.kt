@@ -116,4 +116,7 @@ interface AndroidProject: AndroidModel {
      * entire project, but could be more in the future if r8 team decides to publish more.
      */
     val desugarLibConfig: List<File>
+
+    /** Lint jar published from the project, if any. */
+    val lintJar: File?
 }

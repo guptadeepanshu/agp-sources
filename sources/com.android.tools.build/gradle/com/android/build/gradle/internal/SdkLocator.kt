@@ -17,6 +17,12 @@
 package com.android.build.gradle.internal
 
 import com.android.SdkConstants
+import com.android.build.gradle.internal.SdkLocator.PropertyLocation.ANDROID_DIR_PROPERTY_LOCATION
+import com.android.build.gradle.internal.SdkLocator.PropertyLocation.ANDROID_HOME_LOCATION
+import com.android.build.gradle.internal.SdkLocator.PropertyLocation.ANDROID_HOME_SYSTEM_LOCATION
+import com.android.build.gradle.internal.SdkLocator.PropertyLocation.ANDROID_SDK_ROOT_LOCATION
+import com.android.build.gradle.internal.SdkLocator.PropertyLocation.SDK_DIR_PROPERTY_LOCATION
+import com.android.build.gradle.internal.SdkLocator.PropertyLocation.SDK_TEST_DIRECTORY_LOCATION
 import com.android.builder.errors.IssueReporter
 import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.file.RegularFileProperty
@@ -73,60 +79,99 @@ object SdkLocator {
     var sdkTestDirectory: File? = null
 
     @VisibleForTesting
-    const val ANDROID_DIR_PROPERTY = "android.dir"
-    @VisibleForTesting
     const val ANDROID_HOME_SYSTEM_PROPERTY = "android.home"
+
+    // Descriptions will be part of warning messages for user to understand what property or
+    // environment variable has wrong value
+    internal enum class PropertyLocation(val description: String) {
+        SDK_DIR_PROPERTY_LOCATION("sdk.dir property in local.properties file."),
+        ANDROID_DIR_PROPERTY_LOCATION("Fallback android.dir property in local.properties file."),
+        SDK_TEST_DIRECTORY_LOCATION("sdkTestDirectory - set by test code."),
+        ANDROID_SDK_ROOT_LOCATION("ANDROID_SDK_ROOT environment variable."),
+        ANDROID_HOME_LOCATION("ANDROID_HOME environment variable."),
+        ANDROID_HOME_SYSTEM_LOCATION("android.home system property variable."),
+    }
+
+    // Instance of this class aggregates validation result.
+    // It can be validation failures with null value or some failures with good value.
+    internal class ValidationResult<T>(
+        val value: T?,
+        val failures: List<ValidationFailure> = listOf()
+    ) {
+
+        fun <Out> map(f: (T?) -> Out?): ValidationResult<Out> = ValidationResult(f(value), failures)
+
+        fun use(f: (T) -> Unit) = value?.let { f(value) }
+    }
+
+    // For each property or environment variable we have the following possible validation problems
+    internal enum class ValidationProblem(val message: String) {
+        EMPTY_VALUE("Set with empty value"),
+        NOT_A_DIRECTORY("Path is pointing not to a directory"),
+        DOES_NOT_EXIST("Directory does not exist")
+    }
+
+    // Class encapsulate description about what was checked and what problem was spotted
+    internal data class ValidationFailure(
+        val locationDescription: PropertyLocation,
+        val problem: ValidationProblem
+    )
 
     // Order defines the preference for matching an SDK directory.
     internal enum class SdkLocationSource(val sdkType: SdkType) {
         TEST_SDK_DIRECTORY(SdkType.TEST) {
-            override fun getSdkPathProperty(sourceSet: SdkLocationSourceSet): File? {
+            override fun getSdkPathProperty(sourceSet: SdkLocationSourceSet): ValidationResult<File>? {
                 return sdkTestDirectory?.absolutePath?.let {
-                    validateSdkPath(it, sourceSet.projectRoot)
+                    validateSdkPath(it, sourceSet.projectRoot, SDK_TEST_DIRECTORY_LOCATION)
                 }
             }
         },
         LOCAL_SDK_DIR(SdkType.REGULAR) {
-            override fun getSdkPathProperty(sourceSet: SdkLocationSourceSet): File? {
+            override fun getSdkPathProperty(sourceSet: SdkLocationSourceSet): ValidationResult<File>? {
                 return sourceSet.localProperties.getProperty(SdkConstants.SDK_DIR_PROPERTY)?.let {
-                    validateSdkPath(it, sourceSet.projectRoot)
+                    validateSdkPath(it, sourceSet.projectRoot, SDK_DIR_PROPERTY_LOCATION)
                 }
             }
 
         }, LOCAL_ANDROID_DIR(SdkType.PLATFORM) { // TODO: Check if this is still used.
-            override fun getSdkPathProperty(sourceSet: SdkLocationSourceSet): File? {
-                return sourceSet.localProperties.getProperty(ANDROID_DIR_PROPERTY)?.let {
-                    validateSdkPath(it, sourceSet.projectRoot)
+            override fun getSdkPathProperty(sourceSet: SdkLocationSourceSet): ValidationResult<File>? {
+                return sourceSet.localProperties.getProperty(SdkConstants.ANDROID_DIR_PROPERTY)?.let {
+                    validateSdkPath(it, sourceSet.projectRoot, ANDROID_DIR_PROPERTY_LOCATION)
                 }
             }
 
         }, INJECTED_SDK_HOME(SdkType.REGULAR) {
 
-            override fun getSdkPathProperty(sourceSet: SdkLocationSourceSet): File? {
+            override fun getSdkPathProperty(sourceSet: SdkLocationSourceSet): ValidationResult<File>? {
                 // Special Handling:
                 // If the query is ANDROID_SDK_ROOT, then also query ANDROID_HOME and compare
                 // the values. If both values are set, they must match
                 val map = mutableMapOf<String, File>()
 
+                val validationFailures = mutableListOf<ValidationFailure>()
+
                 sourceSet.environmentProperties
                     .getProperty(SdkConstants.ANDROID_SDK_ROOT_ENV)
                     ?.let { path ->
-                        validateSdkPath(path, sourceSet.projectRoot)?.let {
-                            map[SdkConstants.ANDROID_SDK_ROOT_ENV] = it
+                        validateSdkPath(path, sourceSet.projectRoot, ANDROID_SDK_ROOT_LOCATION).let {
+                            it.use { value -> map[SdkConstants.ANDROID_SDK_ROOT_ENV] = value }
+                            validationFailures.addAll(it.failures)
                         }
                     }
 
                 sourceSet.environmentProperties
                     .getProperty(SdkConstants.ANDROID_HOME_ENV)
                     ?.let { path ->
-                        validateSdkPath(path, sourceSet.projectRoot)?.let {
-                            map[SdkConstants.ANDROID_HOME_ENV] = it
+                        validateSdkPath(path, sourceSet.projectRoot, ANDROID_HOME_LOCATION).let {
+                            it.use { value:File -> map[SdkConstants.ANDROID_HOME_ENV] = value }
+                            validationFailures.addAll(it.failures)
                         }
                     }
 
                 sourceSet.systemProperties.getProperty(ANDROID_HOME_SYSTEM_PROPERTY)?.let { path ->
-                    validateSdkPath(path, sourceSet.projectRoot)?.let {
-                        map[ANDROID_HOME_SYSTEM_PROPERTY] = it
+                    validateSdkPath(path, sourceSet.projectRoot, ANDROID_HOME_SYSTEM_LOCATION).let {
+                        it.use { value -> map[ANDROID_HOME_SYSTEM_PROPERTY] = value }
+                        validationFailures.addAll(it.failures)
                     }
                 }
 
@@ -135,7 +180,7 @@ object SdkLocator {
                 }
 
                 if (map.size == 1) {
-                    return map.values.single()
+                    return ValidationResult(map.values.single(), validationFailures)
                 }
 
                 // check if the different entries have different values.
@@ -143,7 +188,7 @@ object SdkLocator {
 
                 if (reverseMap.size == 1) {
                     // then all points to a single location
-                    return reverseMap.keys.single()
+                    return ValidationResult(reverseMap.keys.single(), validationFailures)
                 }
 
                 // if not, fail
@@ -168,16 +213,26 @@ It is recommended to use ANDROID_HOME as other methods are deprecated
             }
         };
 
-        fun getSdkLocation(sourceSet: SdkLocationSourceSet): SdkLocation? {
-            return getSdkPathProperty(sourceSet)?.let { SdkLocation(it, sdkType) }
+        fun getSdkLocation(sourceSet: SdkLocationSourceSet): ValidationResult<SdkLocation>? {
+            return getSdkPathProperty(sourceSet)?.let {
+                it.map { value -> value?.let { SdkLocation(value, sdkType) } ?: null }
+            }
         }
 
-        abstract fun getSdkPathProperty(sourceSet: SdkLocationSourceSet): File?
+        abstract fun getSdkPathProperty(sourceSet: SdkLocationSourceSet): ValidationResult<File>?
 
         // Basic SDK path validation:
         // * If it's not an absolute path, uses the project rootDir as base.
         // * Check if the path points to a directory in the disk.
-        protected fun validateSdkPath(path: String, rootDir: File): File? {
+        protected fun validateSdkPath(
+            path: String,
+            rootDir: File,
+            locationDescription: PropertyLocation
+        ): ValidationResult<File> {
+            if (path == "") return ValidationResult(
+                null,
+                listOf(ValidationFailure(locationDescription, ValidationProblem.EMPTY_VALUE))
+            )
             var sdk = File(path)
             if (!sdk.isAbsolute) {
                 // Canonical file transforms paths like: .../userHome/projectRoot/../AndroidSDK
@@ -186,7 +241,17 @@ It is recommended to use ANDROID_HOME as other methods are deprecated
                 // more clear to present the canonical path to the user.
                 sdk = File(rootDir, path).canonicalFile
             }
-            return if (sdk.isDirectory) sdk else null
+            return if (sdk.isDirectory) ValidationResult(sdk)
+            else ValidationResult(
+                null,
+                listOf(
+                    ValidationFailure(
+                        locationDescription,
+                        if (sdk.exists()) ValidationProblem.NOT_A_DIRECTORY
+                        else ValidationProblem.DOES_NOT_EXIST
+                    )
+                )
+            )
         }
     }
 
@@ -224,11 +289,17 @@ It is recommended to use ANDROID_HOME as other methods are deprecated
                 return cachedSdkLocation!!
             }
         }
+        val validationFailures = mutableListOf<ValidationFailure>()
 
         for (source in SdkLocationSource.values()) {
             source.getSdkLocation(sourceSet)?.let {
-                updateCache(it, sourceSet)
-                return it
+                validationFailures.addAll(it.failures)
+
+                if(it.value != null) {
+                    reportWarnings(validationFailures, issueReporter)
+                    updateCache(it.value, sourceSet)
+                    return it.value
+                }
             }
         }
 
@@ -238,8 +309,12 @@ It is recommended to use ANDROID_HOME as other methods are deprecated
             // builds).
             updateCache(it, sourceSet)
 
+            // reporting
+            reportWarnings(validationFailures, issueReporter)
+
             val filePath =
                 File(sourceSet.projectRoot, SdkConstants.FN_LOCAL_PROPERTIES).absolutePath
+
             val message =
                 "SDK location not found. Define a valid SDK location with an ANDROID_HOME" +
                         " environment variable or by setting the sdk.dir path in your project's" +
@@ -249,6 +324,19 @@ It is recommended to use ANDROID_HOME as other methods are deprecated
             return it
         }
     }
+
+    private fun reportWarnings(validationFailures: List<ValidationFailure>, issueReporter: IssueReporter){
+        if(validationFailures.isNotEmpty()){
+            issueReporter.reportWarning(
+                IssueReporter.Type.GENERIC,
+                createWarningMessage(validationFailures)
+            )
+        }
+    }
+
+    private fun createWarningMessage(failures: List<ValidationFailure>) =
+        failures.fold("The following problems were found when resolving the SDK location:\n")
+        { acc, e -> acc + "Where: " + e.locationDescription.description + " Problem: " + e.problem.message + "\n" }
 
     @Synchronized
     private fun updateCache(sdkLocation: SdkLocation, sourceSet: SdkLocationSourceSet) {

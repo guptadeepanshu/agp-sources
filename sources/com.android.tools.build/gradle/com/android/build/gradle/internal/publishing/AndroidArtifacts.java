@@ -206,6 +206,7 @@ public class AndroidArtifacts {
 
     private static final String TYPE_SUPPORTED_LOCALE_LIST = "supported-locale-list";
     private static final String TYPE_R_CLASS_JAR = "r-class-jar";
+    private static final String TYPE_MERGED_TEST_ONLY_NATIVE_LIBS = "merged-test-only-native-libs";
 
     public enum ConsumedConfigType {
         COMPILE_CLASSPATH("compileClasspath", API_ELEMENTS, true),
@@ -608,7 +609,11 @@ public class AndroidArtifacts {
         SUPPORTED_LOCALE_LIST(TYPE_SUPPORTED_LOCALE_LIST),
 
         // The compilation only R class jar which is already part of the compile jar
-        R_CLASS_JAR(TYPE_R_CLASS_JAR);
+        R_CLASS_JAR(TYPE_R_CLASS_JAR),
+
+        // native libs to be packaged with test components instead of main components.
+        MERGED_TEST_ONLY_NATIVE_LIBS(TYPE_MERGED_TEST_ONLY_NATIVE_LIBS),
+        ;
 
         @NonNull private final String type;
         @Nullable private final ArtifactCategory category;

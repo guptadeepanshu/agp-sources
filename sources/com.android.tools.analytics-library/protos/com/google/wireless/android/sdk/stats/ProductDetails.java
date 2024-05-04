@@ -799,7 +799,7 @@ private static final long serialVersionUID = 0L;
   private int osArchitecture_;
   /**
    * <pre>
-   * The CPU archtecture the product is running on.
+   * The CPU architecture the product is running on.
    * </pre>
    *
    * <code>optional .android_studio.ProductDetails.CpuArchitecture os_architecture = 5;</code>
@@ -810,7 +810,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * The CPU archtecture the product is running on.
+   * The CPU architecture the product is running on.
    * </pre>
    *
    * <code>optional .android_studio.ProductDetails.CpuArchitecture os_architecture = 5;</code>
@@ -1916,7 +1916,7 @@ private static final long serialVersionUID = 0L;
     private int osArchitecture_ = 0;
     /**
      * <pre>
-     * The CPU archtecture the product is running on.
+     * The CPU architecture the product is running on.
      * </pre>
      *
      * <code>optional .android_studio.ProductDetails.CpuArchitecture os_architecture = 5;</code>
@@ -1927,7 +1927,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * The CPU archtecture the product is running on.
+     * The CPU architecture the product is running on.
      * </pre>
      *
      * <code>optional .android_studio.ProductDetails.CpuArchitecture os_architecture = 5;</code>
@@ -1941,7 +1941,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * The CPU archtecture the product is running on.
+     * The CPU architecture the product is running on.
      * </pre>
      *
      * <code>optional .android_studio.ProductDetails.CpuArchitecture os_architecture = 5;</code>
@@ -1959,7 +1959,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * The CPU archtecture the product is running on.
+     * The CPU architecture the product is running on.
      * </pre>
      *
      * <code>optional .android_studio.ProductDetails.CpuArchitecture os_architecture = 5;</code>

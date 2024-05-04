@@ -20,6 +20,7 @@ package com.android.ide.common.resources
 import com.android.SdkConstants
 import com.android.SdkConstants.DOT_9PNG
 import com.android.ide.common.resources.usage.ResourceUsageModel.Resource
+import com.android.ide.common.resources.usage.ResourceUsageModel.ResourceReachableOrigin
 import com.android.ide.common.util.PathString
 import com.android.ide.common.util.toPathString
 import com.android.resources.ResourceType
@@ -116,18 +117,21 @@ fun findUnusedResources(
   rootsConsumer: (List<Resource>) -> Unit
 ): List<Resource> {
   val seen = Collections.newSetFromMap(IdentityHashMap<Resource, Boolean>())
-  fun visit(resource: Resource) {
+  fun visit(resource: Resource, parent: Resource?) {
+    if (parent != null && parent.reachableParents != null) {
+      resource.addReachableParent(ResourceReachableOrigin(parent));
+    }
     if (seen.contains(resource)) {
       return
     }
     seen += resource
     resource.isReachable = true
-    resource.references?.forEach { visit(it) }
+    resource.references?.forEach { visit(it, resource) }
   }
 
   val roots = resources.filter { it.isReachable || it.isKeep || it.isPublic }
   rootsConsumer(roots)
-  roots.forEach { visit(it) }
+  roots.forEach { visit(it, null) }
 
   return resources.asSequence()
     .filterNot { it.isReachable }

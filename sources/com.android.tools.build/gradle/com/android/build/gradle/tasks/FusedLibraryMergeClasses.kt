@@ -71,7 +71,7 @@ abstract class FusedLibraryMergeClasses: DefaultTask() {
                             val outputFile = File(outputDir.asFile, fileName)
                             if (outputFile.exists()) {
                                 throw DuplicateFileCopyingException(
-                                        "${jarEntry.name} is present in multiple jar files.")
+                                        "${jarEntry.name} is present in multiple jars, cannot merge from $file.")
                             }
                             outputFile.parentFile.mkdirs()
                             FileOutputStream(outputFile).use { outputStream ->
@@ -85,7 +85,7 @@ abstract class FusedLibraryMergeClasses: DefaultTask() {
     }
 
     class FusedLibraryCreationAction(val creationConfig: FusedLibraryVariantScope) :
-        TaskCreationAction<FusedLibraryMergeClasses>() {
+            TaskCreationAction<FusedLibraryMergeClasses>() {
         override val name: String
             get() = "mergeClasses"
         override val type: Class<FusedLibraryMergeClasses>
@@ -94,17 +94,17 @@ abstract class FusedLibraryMergeClasses: DefaultTask() {
         override fun handleProvider(taskProvider: TaskProvider<FusedLibraryMergeClasses>) {
             super.handleProvider(taskProvider)
             creationConfig.artifacts.setInitialProvider(
-                taskProvider,
-                FusedLibraryMergeClasses::outputDirectory
+                    taskProvider,
+                    FusedLibraryMergeClasses::outputDirectory
             ).on(FusedLibraryInternalArtifactType.MERGED_CLASSES)
         }
 
         override fun configure(task: FusedLibraryMergeClasses) {
             task.incoming.setFrom(
-                creationConfig.dependencies.getArtifactFileCollection(
-                    Usage.JAVA_RUNTIME,
-                    creationConfig.mergeSpec,
-                    AndroidArtifacts.ArtifactType.CLASSES_JAR)
+                    creationConfig.dependencies.getArtifactFileCollection(
+                            Usage.JAVA_RUNTIME,
+                            creationConfig.mergeSpec,
+                            AndroidArtifacts.ArtifactType.CLASSES_JAR)
             )
         }
     }

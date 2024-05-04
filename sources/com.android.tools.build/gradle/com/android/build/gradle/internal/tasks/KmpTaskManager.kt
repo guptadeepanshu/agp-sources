@@ -265,7 +265,7 @@ class KmpTaskManager(
         createPreBuildTask: Boolean = true
     ) {
         project.tasks.registerTask(
-            component.computeTaskName("assemble"),
+            component.computeTaskNameInternal("assemble"),
             Task::class.java,
             null,
             object : TaskConfigAction<Task> {

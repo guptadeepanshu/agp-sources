@@ -1,11 +1,11 @@
 /*
- * Copyright (C) 2012 The Android Open Source Project
+ * Copyright (C) 2024 The Android Open Source Project
  *
- * Licensed under the Eclipse Public License, Version 1.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.eclipse.org/org/documents/epl-v10.php
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -54,7 +54,7 @@ public class DeviceSchema {
      * The latest version of the device XML Schema. Valid version numbers are between 1 and this
      * number, included.
      */
-    public static final int NS_LATEST_VERSION = 7;
+    public static final int NS_LATEST_VERSION = 8;
 
     /** The XML namespace of the latest device XML. */
     public static final String NS_DEVICES_URI = getSchemaUri(NS_LATEST_VERSION);
@@ -148,6 +148,10 @@ public class DeviceSchema {
     public static final String NODE_DIMENSIONS = "dimensions";
 
     public static final String NODE_ABI = "abi";
+
+    public static final String NODE_ABIS = "abis";
+
+    public static final String NODE_TRANSLATED_ABIS = "translatedAbis";
 
     public static final String NODE_MECHANISM = "mechanism";
 

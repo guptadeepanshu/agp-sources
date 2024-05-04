@@ -33,7 +33,6 @@ import com.android.sdklib.repository.LoggerProgressIndicatorWrapper
 import com.android.testing.utils.isTvOrAutoDevice
 import com.android.utils.FileUtils
 import com.android.utils.ILogger
-import com.android.utils.StdLogger
 import com.sun.xml.bind.v2.util.EditDistance
 import java.io.File
 import java.nio.file.Path
@@ -159,6 +158,7 @@ class AvdManager(
                 null,
                 null,
                 hardwareConfig,
+                null,
                 device.bootProps,
                 device.hasPlayStore(),
                 false,
@@ -207,35 +207,18 @@ class AvdManager(
                 return@runWithMultiProcessLocking
             }
 
-            val adbExecutable = versionedSdkLoader.get().adbExecutableProvider.get().asFile
-
             deviceLockManager.lock(1).use {
-                logger.verbose("Creating snapshot for $deviceName")
                 snapshotHandler.generateSnapshot(
                     deviceName,
                     emulatorExecutable,
                     avdFolder,
                     emulatorGpuFlag,
+                    avdManager,
                     logger
                 )
             }
 
-            if (snapshotHandler.checkSnapshotLoadable(
-                    deviceName,
-                    emulatorExecutable,
-                    avdFolder,
-                    emulatorGpuFlag,
-                    logger
-                )
-            ) {
-                logger.verbose("Verified snapshot created for: $deviceName.")
-            } else {
-                error("""
-                    Snapshot setup ran successfully, but the snapshot failed to be created. This is
-                    likely to a lack of disk space for the snapshot. Try the cleanManagedDevices
-                    task with the --unused-only flag to remove any unused devices for this project.
-                """.trimIndent())
-            }
+            logger.verbose("Verified snapshot created for: $deviceName.")
         }
     }
 

@@ -1351,6 +1351,26 @@ public enum GradleTaskExecutionType
    * <code>GENERATE_ADDITIONAL_APK_SPLIT_FOR_DEPLOYMENT_VIA_APK = 333;</code>
    */
   GENERATE_ADDITIONAL_APK_SPLIT_FOR_DEPLOYMENT_VIA_APK(333),
+  /**
+   * <code>PREVIEW_DISCOVERY = 334;</code>
+   */
+  PREVIEW_DISCOVERY(334),
+  /**
+   * <code>SCREENSHOT_TEST_REPORT = 335;</code>
+   */
+  SCREENSHOT_TEST_REPORT(335),
+  /**
+   * <code>SIMPLIFIED_MERGED_MANIFESTS_PRODUCER = 336;</code>
+   */
+  SIMPLIFIED_MERGED_MANIFESTS_PRODUCER(336),
+  /**
+   * <code>MERGE_STARTUP_PROFILE = 337;</code>
+   */
+  MERGE_STARTUP_PROFILE(337),
+  /**
+   * <code>GENERATE_PRIVACY_SANDBOX_PROGUARD_RULES = 338;</code>
+   */
+  GENERATE_PRIVACY_SANDBOX_PROGUARD_RULES(338),
   UNRECOGNIZED(-1),
   ;
 
@@ -2690,6 +2710,26 @@ public enum GradleTaskExecutionType
    * <code>GENERATE_ADDITIONAL_APK_SPLIT_FOR_DEPLOYMENT_VIA_APK = 333;</code>
    */
   public static final int GENERATE_ADDITIONAL_APK_SPLIT_FOR_DEPLOYMENT_VIA_APK_VALUE = 333;
+  /**
+   * <code>PREVIEW_DISCOVERY = 334;</code>
+   */
+  public static final int PREVIEW_DISCOVERY_VALUE = 334;
+  /**
+   * <code>SCREENSHOT_TEST_REPORT = 335;</code>
+   */
+  public static final int SCREENSHOT_TEST_REPORT_VALUE = 335;
+  /**
+   * <code>SIMPLIFIED_MERGED_MANIFESTS_PRODUCER = 336;</code>
+   */
+  public static final int SIMPLIFIED_MERGED_MANIFESTS_PRODUCER_VALUE = 336;
+  /**
+   * <code>MERGE_STARTUP_PROFILE = 337;</code>
+   */
+  public static final int MERGE_STARTUP_PROFILE_VALUE = 337;
+  /**
+   * <code>GENERATE_PRIVACY_SANDBOX_PROGUARD_RULES = 338;</code>
+   */
+  public static final int GENERATE_PRIVACY_SANDBOX_PROGUARD_RULES_VALUE = 338;
 
 
   public final int getNumber() {
@@ -3050,6 +3090,11 @@ public enum GradleTaskExecutionType
       case 331: return PREVIEW_SCREENSHOT_RENDER;
       case 332: return VALIDATE_RESOURCES;
       case 333: return GENERATE_ADDITIONAL_APK_SPLIT_FOR_DEPLOYMENT_VIA_APK;
+      case 334: return PREVIEW_DISCOVERY;
+      case 335: return SCREENSHOT_TEST_REPORT;
+      case 336: return SIMPLIFIED_MERGED_MANIFESTS_PRODUCER;
+      case 337: return MERGE_STARTUP_PROFILE;
+      case 338: return GENERATE_PRIVACY_SANDBOX_PROGUARD_RULES;
       default: return null;
     }
   }

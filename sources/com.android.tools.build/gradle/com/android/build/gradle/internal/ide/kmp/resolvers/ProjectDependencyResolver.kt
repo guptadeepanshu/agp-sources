@@ -24,7 +24,6 @@ import com.android.build.gradle.internal.ide.proto.convert
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.kotlin.multiplatform.ide.models.serialization.androidDependencyKey
 import com.android.kotlin.multiplatform.models.DependencyInfo
-import org.gradle.api.Project
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
 import org.jetbrains.kotlin.gradle.ExternalKotlinTargetApi
 import org.jetbrains.kotlin.gradle.idea.tcs.IdeaKotlinDependency
@@ -40,7 +39,6 @@ import org.jetbrains.kotlin.gradle.plugin.ide.IdeDependencyResolver
  */
 @OptIn(ExternalKotlinTargetApi::class)
 internal class ProjectDependencyResolver(
-    project: Project,
     libraryResolver: LibraryResolver,
     sourceSetToCreationConfigMap: Lazy<Map<KotlinSourceSet, KmpComponentCreationConfig>>
 ) : BaseIdeDependencyResolver(
@@ -73,10 +71,13 @@ internal class ProjectDependencyResolver(
                 return@mapNotNull null
             }
 
+            val buildPath = componentId.build.buildPath
+
             IdeaKotlinProjectArtifactDependency(
                 type = IdeaKotlinSourceDependency.Type.Regular,
                 coordinates = IdeaKotlinProjectCoordinates(
-                    buildId = componentId.build.buildPath,
+                    buildName = if (buildPath == ":") ":" else buildPath.split(":").last(),
+                    buildPath = buildPath,
                     projectPath = componentId.projectPath,
                     projectName = componentId.projectName
                 )

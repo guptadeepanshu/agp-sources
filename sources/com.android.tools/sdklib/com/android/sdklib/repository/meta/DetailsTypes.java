@@ -28,9 +28,13 @@ import com.android.repository.impl.meta.PackageDisplayNameQualifier;
 import com.android.repository.impl.meta.TypeDetails;
 import com.android.sdklib.AndroidVersion;
 import com.android.sdklib.OptionalLibrary;
+import com.android.sdklib.devices.Abi;
 import com.android.sdklib.repository.IdDisplay;
-import java.util.ArrayList;
+import java.util.AbstractList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -272,25 +276,71 @@ public final class DetailsTypes {
     public interface SysImgDetailsType extends ApiDetailsType {
 
         /**
-         * Sets the abi type (x86, armeabi-v7a, etc.) for this package.
+         * @deprecated This is only supported in pre-v4. Set the results from {@link #getAbis()}
+         *     instead. Sets the abi type (x86, armeabi-v7a, etc.) for this package.
          */
-        void setAbi(@NonNull String abi);
+        default void setAbi(@NonNull String abi) {
+            List<String> abis = getAbis();
+            abis.clear();
+            abis.add(abi);
+        }
 
         /**
-         * Gets the abi type (x86, armeabi-v7a, etc.) for this package.
+         * @deprecated This is only supported in pre-v4. Call to {@link #isValidAbis(String)}
+         *     instead. Checks whether {@code value} is a valid abi type.
+         */
+        default boolean isValidAbi(@Nullable String value) {
+            return isValidAbis(value);
+        }
+
+        /**
+         * @deprecated This is only supported in pre-v4. Call to {@link #getAbis()} instead.
+         *     <p>Gets the abi type (x86, armeabi-v7a, etc.) for this package.
          */
         @NonNull
-        String getAbi();
+        default String getAbi() {
+            // Default implementation supports v4+, since v1-v3 will have this method overridden.
+            return getAbis().get(0);
+        }
 
         /**
-         * Checks whether {@code value} is a valid abi type.
+         * Gets the list of natively-supported abi types (x86, armeabi-v7a, etc.) for this package.
+         * Must include the result {@link #getAbi()} as the first item in the returned list.
          */
-        boolean isValidAbi(@Nullable String value);
+        @NonNull
+        default List<String> getAbis() {
+            // Default implementation supports pre-v4. Any version should either override #getAbi
+            // or #getNativeAbis, so there should be no circular calls.
+            return Collections.singletonList(getAbi());
+        }
+
+        default boolean isValidAbis(String value) {
+            return ((value != null)
+                    && (value.matches(
+                            Arrays.stream(Abi.values())
+                                    .map(Abi::toString)
+                                    .collect(Collectors.joining("|")))));
+        }
+
+        /**
+         * Gets the list of translated abi types (x86, armeabi-v7a, etc.) for this package. Must not
+         * include anything in {@link #getAbis()}.
+         */
+        @NonNull
+        default List<String> getTranslatedAbis() {
+            return Collections.emptyList();
+        }
+
+        default boolean isValidTranslatedAbis(String value) {
+            return ((value == null)
+                    || (value.matches(
+                            "armeabi|armeabi-v7a|arm64-v8a|x86|x86_64|mips|mips64|riscv64")));
+        }
 
         default List<IdDisplay> getTags() {
             // Implementation for v1
 
-            return new ArrayList<IdDisplay>() {
+            return new AbstractList<IdDisplay>() {
                 @Override
                 public int size() {
                     return DEFAULT_TAG.equals(getTag()) ? 0 : 1;
@@ -302,9 +352,23 @@ public final class DetailsTypes {
                 }
 
                 @Override
-                public boolean add(@Nullable IdDisplay idDisplay) {
-                    setTag(idDisplay);
-                    return true;
+                public void add(int index, IdDisplay element) {
+                    if (index == 0 && size() == 0) {
+                        setTag(element);
+                    } else {
+                        throw new IllegalArgumentException("Only one element can be added");
+                    }
+                }
+
+                @Override
+                public IdDisplay set(int index, IdDisplay element) {
+                    if (index == 0 && size() == 1) {
+                        IdDisplay oldValue = getTag();
+                        setTag(element);
+                        return oldValue;
+                    } else {
+                        throw new IndexOutOfBoundsException();
+                    }
                 }
 
                 @Override

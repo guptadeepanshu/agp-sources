@@ -110,9 +110,11 @@ public final class FileListingService {
     public static final Pattern STAT_PATTERN =
             Pattern.compile(
                     "^([bcdlsp-][-r][-w][-xsS][-r][-w][-xsS][-r][-w][-xstST])\\s+"
-                            + "(\\S+)\\s+(\\S+)\\s+"
+                            + "(\\S+)\\s+"
+                            + "(\\S+)\\s+"
                             + "(\\d{4}-\\d\\d-\\d\\d)\\s+"
-                            + "(\\d\\d:\\d\\d:\\d\\d\\.\\d+)\\s+([+-]?\\d+)\\s+"
+                            + "(\\d\\d:\\d\\d:\\d\\d\\.\\d+)\\s+"
+                            + "([+-]?\\d+\\s+)?"
                             + "(\\d+)\\s+"
                             + "(.*)"
                             + "$");

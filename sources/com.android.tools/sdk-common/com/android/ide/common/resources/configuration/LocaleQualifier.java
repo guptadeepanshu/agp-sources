@@ -92,8 +92,14 @@ public final class LocaleQualifier extends ResourceQualifier {
     }
 
     public static boolean isRegionSegment(@NonNull String segment) {
-        return (segment.startsWith("r") || segment.startsWith("R")) && segment.length() == 3
-                && Character.isLetter(segment.charAt(0)) && Character.isLetter(segment.charAt(1));
+        return (segment.startsWith("r") || segment.startsWith("R"))
+                && ((segment.length() == 3
+                                && Character.isLetter(segment.charAt(1))
+                                && Character.isLetter(segment.charAt(2)))
+                        || (segment.length() == 4
+                                && Character.isDigit(segment.charAt(1))
+                                && Character.isDigit(segment.charAt(2))
+                                && Character.isDigit(segment.charAt(3))));
     }
 
     /**
@@ -433,11 +439,11 @@ public final class LocaleQualifier extends ResourceQualifier {
      * {@link FolderConfiguration}.
      */
     void setRegionSegment(@NonNull String segment) {
-        assert segment.length() == 3 : segment;
-        mRegion = new String(new char[] {
-                Character.toUpperCase(segment.charAt(1)),
-                Character.toUpperCase(segment.charAt(2))
-        });
+        char[] chrs = new char[segment.length() - 1];
+        for (int i = 0; i < chrs.length; ++i) {
+            chrs[i] = Character.toUpperCase(segment.charAt(1 + i));
+        }
+        mRegion = new String(chrs);
         mFull = mLanguage + "-r" + mRegion;
     }
 

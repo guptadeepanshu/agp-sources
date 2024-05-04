@@ -172,7 +172,8 @@ abstract class SdkComponentsBuildService @Inject constructor(
                         buildToolsRevision.orNull,
                         parameters.useAndroidX.get(),
                         parameters.issueReporter.get(),
-                        parameters.suppressWarningUnsupportedCompileSdk.orNull
+                        parameters.suppressWarningUnsupportedCompileSdk.orNull,
+                        providerFactory
                     )
 
                     SdkLoadingStrategy(

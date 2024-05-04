@@ -16,6 +16,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private ArtifactDetail() {
+    type_ = 0;
   }
 
   @java.lang.Override
@@ -41,6 +42,111 @@ private static final long serialVersionUID = 0L;
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_ArtifactDetail_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             com.google.wireless.android.sdk.stats.ArtifactDetail.class, com.google.wireless.android.sdk.stats.ArtifactDetail.Builder.class);
+  }
+
+  /**
+   * Protobuf enum {@code android_studio.ArtifactDetail.ArtifactType}
+   */
+  public enum ArtifactType
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>UNKNOWN = 0;</code>
+     */
+    UNKNOWN(0),
+    /**
+     * <code>APK = 1;</code>
+     */
+    APK(1),
+    /**
+     * <code>BASELINE_PROFILE = 2;</code>
+     */
+    BASELINE_PROFILE(2),
+    ;
+
+    /**
+     * <code>UNKNOWN = 0;</code>
+     */
+    public static final int UNKNOWN_VALUE = 0;
+    /**
+     * <code>APK = 1;</code>
+     */
+    public static final int APK_VALUE = 1;
+    /**
+     * <code>BASELINE_PROFILE = 2;</code>
+     */
+    public static final int BASELINE_PROFILE_VALUE = 2;
+
+
+    public final int getNumber() {
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static ArtifactType valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static ArtifactType forNumber(int value) {
+      switch (value) {
+        case 0: return UNKNOWN;
+        case 1: return APK;
+        case 2: return BASELINE_PROFILE;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<ArtifactType>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        ArtifactType> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<ArtifactType>() {
+            public ArtifactType findValueByNumber(int number) {
+              return ArtifactType.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.ArtifactDetail.getDescriptor().getEnumTypes().get(0);
+    }
+
+    private static final ArtifactType[] VALUES = values();
+
+    public static ArtifactType valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private ArtifactType(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:android_studio.ArtifactDetail.ArtifactType)
   }
 
   private int bitField0_;
@@ -71,6 +177,25 @@ private static final long serialVersionUID = 0L;
     return size_;
   }
 
+  public static final int TYPE_FIELD_NUMBER = 2;
+  private int type_;
+  /**
+   * <code>optional .android_studio.ArtifactDetail.ArtifactType type = 2;</code>
+   * @return Whether the type field is set.
+   */
+  @java.lang.Override public boolean hasType() {
+    return ((bitField0_ & 0x00000002) != 0);
+  }
+  /**
+   * <code>optional .android_studio.ArtifactDetail.ArtifactType type = 2;</code>
+   * @return The type.
+   */
+  @java.lang.Override public com.google.wireless.android.sdk.stats.ArtifactDetail.ArtifactType getType() {
+    @SuppressWarnings("deprecation")
+    com.google.wireless.android.sdk.stats.ArtifactDetail.ArtifactType result = com.google.wireless.android.sdk.stats.ArtifactDetail.ArtifactType.valueOf(type_);
+    return result == null ? com.google.wireless.android.sdk.stats.ArtifactDetail.ArtifactType.UNKNOWN : result;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -88,6 +213,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000001) != 0)) {
       output.writeUInt64(1, size_);
     }
+    if (((bitField0_ & 0x00000002) != 0)) {
+      output.writeEnum(2, type_);
+    }
     getUnknownFields().writeTo(output);
   }
 
@@ -100,6 +228,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000001) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeUInt64Size(1, size_);
+    }
+    if (((bitField0_ & 0x00000002) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(2, type_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -121,6 +253,10 @@ private static final long serialVersionUID = 0L;
       if (getSize()
           != other.getSize()) return false;
     }
+    if (hasType() != other.hasType()) return false;
+    if (hasType()) {
+      if (type_ != other.type_) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -136,6 +272,10 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + SIZE_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getSize());
+    }
+    if (hasType()) {
+      hash = (37 * hash) + TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + type_;
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -267,6 +407,8 @@ private static final long serialVersionUID = 0L;
       super.clear();
       size_ = 0L;
       bitField0_ = (bitField0_ & ~0x00000001);
+      type_ = 0;
+      bitField0_ = (bitField0_ & ~0x00000002);
       return this;
     }
 
@@ -299,6 +441,10 @@ private static final long serialVersionUID = 0L;
         result.size_ = size_;
         to_bitField0_ |= 0x00000001;
       }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        to_bitField0_ |= 0x00000002;
+      }
+      result.type_ = type_;
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -351,6 +497,9 @@ private static final long serialVersionUID = 0L;
       if (other.hasSize()) {
         setSize(other.getSize());
       }
+      if (other.hasType()) {
+        setType(other.getType());
+      }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
@@ -382,6 +531,18 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000001;
               break;
             } // case 8
+            case 16: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.ArtifactDetail.ArtifactType tmpValue =
+                  com.google.wireless.android.sdk.stats.ArtifactDetail.ArtifactType.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(2, tmpRaw);
+              } else {
+                type_ = tmpRaw;
+                bitField0_ |= 0x00000002;
+              }
+              break;
+            } // case 16
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -450,6 +611,49 @@ private static final long serialVersionUID = 0L;
     public Builder clearSize() {
       bitField0_ = (bitField0_ & ~0x00000001);
       size_ = 0L;
+      onChanged();
+      return this;
+    }
+
+    private int type_ = 0;
+    /**
+     * <code>optional .android_studio.ArtifactDetail.ArtifactType type = 2;</code>
+     * @return Whether the type field is set.
+     */
+    @java.lang.Override public boolean hasType() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <code>optional .android_studio.ArtifactDetail.ArtifactType type = 2;</code>
+     * @return The type.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.ArtifactDetail.ArtifactType getType() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.ArtifactDetail.ArtifactType result = com.google.wireless.android.sdk.stats.ArtifactDetail.ArtifactType.valueOf(type_);
+      return result == null ? com.google.wireless.android.sdk.stats.ArtifactDetail.ArtifactType.UNKNOWN : result;
+    }
+    /**
+     * <code>optional .android_studio.ArtifactDetail.ArtifactType type = 2;</code>
+     * @param value The type to set.
+     * @return This builder for chaining.
+     */
+    public Builder setType(com.google.wireless.android.sdk.stats.ArtifactDetail.ArtifactType value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00000002;
+      type_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional .android_studio.ArtifactDetail.ArtifactType type = 2;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearType() {
+      bitField0_ = (bitField0_ & ~0x00000002);
+      type_ = 0;
       onChanged();
       return this;
     }

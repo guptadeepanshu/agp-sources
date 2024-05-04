@@ -15,10 +15,6 @@
  */
 package com.android.sdklib.repository.targets;
 
-import static com.android.sdklib.SystemImageTags.AUTOMOTIVE_PLAY_STORE_TAG;
-import static com.android.sdklib.SystemImageTags.PLAY_STORE_TAG;
-import static com.android.sdklib.SystemImageTags.WEAR_TAG;
-
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.repository.Revision;
@@ -29,8 +25,10 @@ import com.android.sdklib.ISystemImage;
 import com.android.sdklib.repository.IdDisplay;
 import com.android.sdklib.repository.meta.DetailsTypes;
 import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableList;
 import java.nio.file.Path;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * {@link ISystemImage} based on a {@link RepoPackage} (either system image, platform, or addon).
@@ -40,10 +38,8 @@ public class SystemImage implements ISystemImage {
     /** Directory containing the system image. */
     private final Path mLocation;
 
-    /**
-     * Tag of the system image. Used for matching addons and system images, and for filtering.
-     */
-    private final IdDisplay mTag;
+    /** Tag of the system image. Used for matching addons and system images, and for filtering. */
+    private final ImmutableList<IdDisplay> mTags;
 
     /**
      * Vendor of the system image.
@@ -71,13 +67,13 @@ public class SystemImage implements ISystemImage {
 
     public SystemImage(
             @NonNull Path location,
-            @Nullable IdDisplay tag,
+            @NonNull Iterable<IdDisplay> tags,
             @Nullable IdDisplay vendor,
             @NonNull String abi,
             @NonNull Path[] skins,
             @NonNull RepoPackage pkg) {
         mLocation = location;
-        mTag = tag;
+        mTags = ImmutableList.copyOf(tags);
         mVendor = vendor;
         mAbi = abi;
         mSkins = skins;
@@ -85,6 +81,16 @@ public class SystemImage implements ISystemImage {
         TypeDetails details = pkg.getTypeDetails();
         assert details instanceof DetailsTypes.ApiDetailsType;
         mAndroidVersion = ((DetailsTypes.ApiDetailsType) details).getAndroidVersion();
+    }
+
+    public SystemImage(
+            @NonNull Path location,
+            @NonNull IdDisplay tag,
+            @Nullable IdDisplay vendor,
+            @NonNull String abi,
+            @NonNull Path[] skins,
+            @NonNull RepoPackage pkg) {
+        this(location, ImmutableList.of(tag), vendor, abi, skins, pkg);
     }
 
     @NonNull
@@ -95,8 +101,8 @@ public class SystemImage implements ISystemImage {
 
     @NonNull
     @Override
-    public IdDisplay getTag() {
-        return mTag;
+    public List<IdDisplay> getTags() {
+        return mTags;
     }
 
     @Nullable
@@ -132,21 +138,6 @@ public class SystemImage implements ISystemImage {
     @Override
     public boolean obsolete() {
         return mPackage.obsolete();
-    }
-
-    @Override
-    public boolean hasPlayStore() {
-        if (PLAY_STORE_TAG.equals(getTag()) || AUTOMOTIVE_PLAY_STORE_TAG.equals(getTag())) {
-            return true;
-        }
-        // A Wear system image has Play Store if it is
-        // a recent API version and is NOT Wear-for-China.
-        if (WEAR_TAG.equals(getTag())
-                && mAndroidVersion.getApiLevel() >= AndroidVersion.MIN_RECOMMENDED_WEAR_API
-                && !getPackage().getPath().contains(WEAR_CN_DIRECTORY)) {
-            return true;
-        }
-        return false;
     }
 
     @Override

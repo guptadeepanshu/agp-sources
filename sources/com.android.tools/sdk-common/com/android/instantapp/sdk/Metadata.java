@@ -128,6 +128,7 @@ public class Metadata {
         X86_64("x86_64"),
         MIPS("mips"),
         MIPS64("mips64"),
+        RISCV64("riscv64"),
         UNKNOWN("unknown");
 
         @NonNull private final String myArchName;

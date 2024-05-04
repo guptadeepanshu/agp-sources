@@ -65,4 +65,6 @@ interface ApkCreationConfig: ConsumableCreationConfig {
     val enableGlobalSynthetics: Boolean
 
     override val androidResources: AndroidResourcesImpl
+
+    val isForceAotCompilation: Boolean
 }

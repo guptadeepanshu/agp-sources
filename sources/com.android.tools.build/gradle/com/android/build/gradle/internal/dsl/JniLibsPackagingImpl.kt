@@ -27,4 +27,7 @@ abstract class JniLibsPackagingImpl : JniLibsPackaging {
 
     // support keepDebugSymbols += 'foo' syntax in groovy
     abstract fun setKeepDebugSymbols(patterns: Set<String>)
+
+    // support testOnly += 'foo' syntax in groovy
+    abstract fun setTestOnly(patterns: Set<String>)
 }

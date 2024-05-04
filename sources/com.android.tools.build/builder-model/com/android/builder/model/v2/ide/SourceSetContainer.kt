@@ -29,13 +29,25 @@ interface SourceSetContainer: AndroidModel {
     val sourceProvider: SourceProvider
 
     /**
+     * The source set for each device test component, e.g., androidTest
+     */
+    val deviceTestSourceProviders: Map<String, SourceProvider>
+
+    /**
      * The optional source set for the AndroidTest component
      */
+    @Deprecated("Contained in deviceTestSourceProviders")
     val androidTestSourceProvider: SourceProvider?
+
+    /**
+     * The source set for each host test component, e.g., unitTest
+     */
+    val hostTestSourceProviders: Map<String, SourceProvider>
 
     /**
      * The optional source set for the UnitTest component
      */
+    @Deprecated("Contained in hostTestSourceProviders")
     val unitTestSourceProvider: SourceProvider?
 
     /**

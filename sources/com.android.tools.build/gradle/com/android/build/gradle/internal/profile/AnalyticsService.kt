@@ -176,14 +176,22 @@ abstract class AnalyticsService :
     class RegistrationAction(
         project: Project,
         private val configuratorService: AnalyticsConfiguratorService,
-        @Suppress("UnstableApiUsage") val listenerRegistry: BuildEventsListenerRegistry
+        @Suppress("UnstableApiUsage") val listenerRegistry: BuildEventsListenerRegistry,
+        private val configurationCacheActive: Boolean,
+        private val projectIsolationActive: Boolean,
     ) : ServiceRegistrationAction<AnalyticsService, Params>(
         project,
         AnalyticsService::class.java
     ) {
 
         override fun configure(parameters: Params) {
-            configuratorService.createAnalyticsService(project, listenerRegistry, parameters)
+            configuratorService.createAnalyticsService(
+                project,
+                listenerRegistry,
+                parameters,
+                configurationCacheActive,
+                projectIsolationActive,
+            )
         }
     }
 

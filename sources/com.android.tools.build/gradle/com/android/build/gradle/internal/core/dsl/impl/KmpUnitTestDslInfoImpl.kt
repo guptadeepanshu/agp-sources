@@ -62,6 +62,10 @@ class KmpUnitTestDslInfoImpl(
     override val isUnitTestCoverageEnabled: Boolean
         get() = testOnJvmConfig.enableCoverage
 
+    // This is about a UnitTest config, so ScreenshotTest coverage isn't within the scope.
+    override val isScreenshotTestCoverageEnabled: Boolean
+        get() = false
+
     override val androidResourcesDsl: AndroidResourcesDslInfo? by lazy {
         if (testOnJvmConfig.isIncludeAndroidResources) {
             object : AndroidResourcesDslInfo {

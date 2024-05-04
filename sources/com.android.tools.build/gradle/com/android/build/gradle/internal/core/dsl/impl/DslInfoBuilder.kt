@@ -262,6 +262,20 @@ class DslInfoBuilder<CommonExtensionT: CommonExtension<*, *, *, *, *, *>, DslInf
         )
     }
 
+    private fun createScreenshotTestComponentDslInfo(): HostTestComponentDslInfoImpl {
+        return ScreenshotTestComponentDslInfoImpl(
+                componentIdentity = createComponentIdentity(),
+                componentType = componentType,
+                defaultConfig = defaultConfig,
+                buildTypeObj = buildType,
+                productFlavorList = flavors.map { it.first },
+                services = variantServices,
+                buildDirectory = buildDirectory,
+                mainVariantDslInfo = productionVariant!!,
+                extension = extension as InternalTestedExtension<*, *, *, *, *, *>
+        )
+    }
+
     private fun createAndroidTestComponentDslInfo(): AndroidTestComponentDslInfo {
         return AndroidTestComponentDslInfoImpl(
             componentIdentity = createComponentIdentity(),
@@ -287,6 +301,7 @@ class DslInfoBuilder<CommonExtensionT: CommonExtension<*, *, *, *, *, *>, DslInf
             ComponentTypeImpl.TEST_FIXTURES -> createTestFixturesComponentDslInfo()
             ComponentTypeImpl.UNIT_TEST -> createUnitTestComponentDslInfo()
             ComponentTypeImpl.ANDROID_TEST -> createAndroidTestComponentDslInfo()
+            ComponentTypeImpl.SCREENSHOT_TEST -> createScreenshotTestComponentDslInfo()
             else -> {
                 throw RuntimeException("Unknown component type ${componentType.name}")
             }

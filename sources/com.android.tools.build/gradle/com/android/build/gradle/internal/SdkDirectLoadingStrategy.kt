@@ -29,6 +29,10 @@ import com.android.sdklib.OptionalLibrary
 import com.android.sdklib.repository.meta.DetailsTypes
 import com.google.common.annotations.VisibleForTesting
 import com.google.common.collect.ImmutableList
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.ProviderFactory
+import org.gradle.api.provider.ValueSource
+import org.gradle.api.provider.ValueSourceParameters
 import java.io.File
 import java.util.Optional
 import java.util.concurrent.ConcurrentHashMap
@@ -50,6 +54,7 @@ class SdkDirectLoadingStrategy(
     private val useAndroidX: Boolean,
     private val issueReporter: IssueReporter,
     private val suppressWarningIfTooNewForVersions: String?,
+    private val providerFactory: ProviderFactory,
 ) {
 
     companion object {
@@ -68,7 +73,7 @@ class SdkDirectLoadingStrategy(
     }
 
     private val components: DirectLoadComponents? by lazy {
-        init()
+        init(providerFactory)
     }
 
     /** Holder of all components loaded **/
@@ -82,17 +87,20 @@ class SdkDirectLoadingStrategy(
     )
 
     @Synchronized
-    private fun init(): DirectLoadComponents? {
+    private fun init(providerFactory: ProviderFactory): DirectLoadComponents? {
         val targetHash = checkNotNull(platformTargetHashSupplier) {
             "Extension not initialized yet, couldn't access compileSdkVersion."}
         val buildToolRevision = checkBuildToolsRevision(
             checkNotNull(buildToolRevisionSupplier) {
                 "Extension not initialized yet, couldn't access buildToolsVersion."})
 
-        return loadSdkComponents(targetHash, buildToolRevision)
+        return loadSdkComponents(targetHash, buildToolRevision, providerFactory)
     }
 
-    private fun loadSdkComponents(targetHash: String, buildToolRevision: Revision): DirectLoadComponents? {
+    private fun loadSdkComponents(
+        targetHash: String,
+        buildToolRevision: Revision,
+        providerFactory: ProviderFactory): DirectLoadComponents? {
         val sdkLocation =
             SdkLocator.getSdkLocation(
                 sdkLocationSourceSet,
@@ -106,12 +114,14 @@ class SdkDirectLoadingStrategy(
 
         val platformTools =
             PlatformToolsComponents.build(
-                sdkDirectory
+                sdkDirectory,
+                providerFactory
             )
         val supportTools =
             SupportToolsComponents.build(
                 sdkDirectory,
-                targetHash
+                targetHash,
+                providerFactory
             )
 
         val buildTools = buildToolsCache.getOrPut(buildToolRevision) {
@@ -131,7 +141,7 @@ class SdkDirectLoadingStrategy(
             )
         }.orElse(null)
 
-        val emulator = EmulatorComponents.build(sdkDirectory)
+        val emulator = EmulatorComponents.build(sdkDirectory, providerFactory)
 
         if (platformTools == null || supportTools == null || buildTools == null || platform == null) {
             return null
@@ -236,9 +246,11 @@ private class PlatformToolsComponents(
     internal val adbExecutable: File) {
 
     companion object {
-        internal fun build(sdkDirectory: File): PlatformToolsComponents? {
-            val platformToolsPackageXml = sdkDirectory.resolve(SdkConstants.FD_PLATFORM_TOOLS).resolve("package.xml")
-            if (!platformToolsPackageXml.exists()) {
+        internal fun build(sdkDirectory: File, providerFactory: ProviderFactory): PlatformToolsComponents? {
+            val fileExists = providerFactory.of(FileExistsValueSource::class.java) {
+                it.parameters.file.set(sdkDirectory.resolve(SdkConstants.FD_PLATFORM_TOOLS).resolve("package.xml"))
+            }
+            if (!fileExists.get()) {
                 return null
             }
             return PlatformToolsComponents(
@@ -247,19 +259,31 @@ private class PlatformToolsComponents(
         }
     }
 }
+abstract class FileExistsValueSource: ValueSource<Boolean, FileExistsValueSource.Params> {
+    interface Params: ValueSourceParameters {
+        val file: RegularFileProperty
+    }
+
+    override fun obtain(): Boolean {
+            return parameters.file.get().asFile.exists()
+    }
+}
 
 private class SupportToolsComponents(
     /** This is the Annotations.jar, usually $SDK/tools/support/annotations.jar **/
     internal val annotationsJar: File) {
 
     companion object {
-        internal fun build(sdkDirectory: File, targetHash: String): SupportToolsComponents? {
-            val supportToolsPackageXml = sdkDirectory.resolve(SdkConstants.FD_TOOLS).resolve("package.xml")
+        internal fun build(sdkDirectory: File, targetHash: String, providerFactory: ProviderFactory): SupportToolsComponents? {
+            val fileExists = providerFactory.of(FileExistsValueSource::class.java) {
+                it.parameters.file.set(sdkDirectory.resolve(SdkConstants.FD_TOOLS).resolve("package.xml"))
+            }
+
             val apiLevelLessThan16 = AndroidTargetHash.getVersionFromHash(targetHash)?.apiLevel?.let { it < 16 } ?: false
 
             // We only require tools/support package to exist if we are targeting api < 16, otherwise
             // the annotations included in the annotations.jar are already inside android.jar.
-            if (!supportToolsPackageXml.exists() && apiLevelLessThan16) {
+            if (!fileExists.get() && apiLevelLessThan16) {
                 return null
             }
             return SupportToolsComponents(
@@ -376,10 +400,13 @@ private class SystemImageComponents(internal val systemImageDir: File) {
 
 private class EmulatorComponents(internal val emulatorDir: File) {
     companion object{
-        internal fun build(sdkDirectory: File): EmulatorComponents? {
+        internal fun build(sdkDirectory: File, providerFactory: ProviderFactory): EmulatorComponents? {
             val emulatorBase = sdkDirectory.resolve(SdkConstants.FD_EMULATOR)
-            val emulatorXml = emulatorBase.resolve("package.xml")
-            if (!emulatorXml.exists()) {
+            val fileExists = providerFactory.of(FileExistsValueSource::class.java) {
+                it.parameters.file.set(emulatorBase.resolve("package.xml"))
+            }
+
+            if (!fileExists.get()) {
                 return null
             }
             return EmulatorComponents(emulatorBase)

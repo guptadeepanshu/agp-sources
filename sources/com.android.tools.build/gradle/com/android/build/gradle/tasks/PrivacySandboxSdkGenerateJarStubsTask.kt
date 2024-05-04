@@ -17,6 +17,7 @@
 package com.android.build.gradle.tasks
 
 import com.android.build.api.variant.Variant
+import com.android.build.gradle.internal.MavenCoordinates
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.dsl.ModulePropertyKey
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType
@@ -134,7 +135,7 @@ abstract class PrivacySandboxSdkGenerateJarStubsTask : DefaultTask() {
                             ?: (creationConfig.services.projectOptions
                                     .get(StringOption.ANDROID_PRIVACY_SANDBOX_SDK_API_PACKAGER)
                                     ?.split(",")
-                                    ?: listOf(PLAY_SDK_API_PACKAGER_ARTIFACT)).map {
+                                    ?: listOf(MavenCoordinates.ANDROIDX_PRIVACYSANDBOX_TOOLS_TOOLS_API_PACKAGER.toString())).map {
                                 creationConfig.services.dependencies.create(it)
                             }
             val apiPackager = creationConfig.services.configurations.detachedConfiguration()
@@ -173,7 +174,6 @@ abstract class PrivacySandboxSdkGenerateJarStubsTask : DefaultTask() {
         /** Name of jar file containing api description that is packaged in an ASAR file. */
         const val privacySandboxSdkStubJarFilename: String = "sdk-interface-descriptors.jar"
 
-        private const val PLAY_SDK_API_PACKAGER_ARTIFACT = "androidx.privacysandbox.tools:tools-apipackager:1.0.0-alpha03"
     }
 }
 

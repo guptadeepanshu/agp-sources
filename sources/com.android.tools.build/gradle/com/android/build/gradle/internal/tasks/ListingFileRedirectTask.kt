@@ -28,7 +28,6 @@ import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
-import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.work.DisableCachingByDefault
 
@@ -71,7 +70,7 @@ abstract class ListingFileRedirectTask: NonIncrementalTask() {
     ) : TaskCreationAction<ListingFileRedirectTask>() {
 
         override val type = ListingFileRedirectTask::class.java
-        override val name = creationConfig.computeTaskName(
+        override val name = creationConfig.computeTaskNameInternal(
             prefix = "create",
             suffix = "${taskSuffix}ListingFileRedirect")
 

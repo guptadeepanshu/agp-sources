@@ -62,37 +62,46 @@ open class AnalyticsEnabledSources @Inject constructor(
                 objectFactory)
         }
 
-    override val res: SourceDirectories.Layered
+    override val res: SourceDirectories.Layered?
         get() {
-            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-                VariantPropertiesMethodType.SOURCES_RES_ACCESS_VALUE
-            return objectFactory.newInstance(
-                AnalyticsEnabledLayered::class.java,
-                delegate.res,
-                stats,
-                objectFactory)
+            return delegate.res?.let {
+                stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                    VariantPropertiesMethodType.SOURCES_RES_ACCESS_VALUE
+                return objectFactory.newInstance(
+                    AnalyticsEnabledLayered::class.java,
+                    it,
+                    stats,
+                    objectFactory
+                )
+            }
         }
 
-    override val assets: SourceDirectories.Layered
+    override val assets: SourceDirectories.Layered?
         get() {
-            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-                VariantPropertiesMethodType.SOURCES_ASSETS_ACCESS_VALUE
-            return objectFactory.newInstance(
-                AnalyticsEnabledLayered::class.java,
-                delegate.assets,
-                stats,
-                objectFactory)
+            return delegate.assets?.let {
+                stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                    VariantPropertiesMethodType.SOURCES_ASSETS_ACCESS_VALUE
+                objectFactory.newInstance(
+                    AnalyticsEnabledLayered::class.java,
+                    it,
+                    stats,
+                    objectFactory
+                )
+            }
         }
 
-    override val jniLibs: SourceDirectories.Layered
+    override val jniLibs: SourceDirectories.Layered?
         get() {
-            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-                VariantPropertiesMethodType.SOURCES_JNI_ACCESS_VALUE
-            return objectFactory.newInstance(
-                AnalyticsEnabledLayered::class.java,
-                delegate.jniLibs,
-                stats,
-                objectFactory)
+            return delegate.jniLibs?.let {
+                stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                    VariantPropertiesMethodType.SOURCES_JNI_ACCESS_VALUE
+                objectFactory.newInstance(
+                    AnalyticsEnabledLayered::class.java,
+                    it,
+                    stats,
+                    objectFactory
+                )
+            }
         }
 
     override val shaders: SourceDirectories.Layered?
@@ -107,15 +116,18 @@ open class AnalyticsEnabledSources @Inject constructor(
                     objectFactory)
             }
 
-    override val mlModels: SourceDirectories.Layered
+    override val mlModels: SourceDirectories.Layered?
         get() {
-            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-                VariantPropertiesMethodType.SOURCES_ML_MODELS_ACCESS_VALUE
-            return objectFactory.newInstance(
-                AnalyticsEnabledLayered::class.java,
-                delegate.mlModels,
-                stats,
-                objectFactory)
+            return delegate.mlModels?.let {
+                stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                    VariantPropertiesMethodType.SOURCES_ML_MODELS_ACCESS_VALUE
+                objectFactory.newInstance(
+                    AnalyticsEnabledLayered::class.java,
+                    it,
+                    stats,
+                    objectFactory
+                )
+            }
         }
 
     override val aidl: SourceDirectories.Flat?

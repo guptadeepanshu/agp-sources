@@ -22,11 +22,11 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Storage {
+public final class Storage {
     // For parsing a string that represents a Storage
     static final Pattern storagePattern = Pattern.compile("([0-9]+)( *)([KMGT]?)(B?)");
 
-    private long mNoBytes;
+    private final long mNoBytes;
 
     public Storage(long amount, Unit unit) {
         mNoBytes = amount * unit.getNumberOfBytes();
@@ -39,11 +39,6 @@ public class Storage {
     /** Returns the amount of storage represented, in Bytes */
     public long getSize() {
         return getSizeAsUnit(Unit.B);
-    }
-
-    @NonNull
-    public Storage deepCopy() {
-        return new Storage(mNoBytes);
     }
 
     /**
@@ -142,12 +137,12 @@ public class Storage {
         GiB("GiB", "GB", 1024 * 1024 * 1024),
         TiB("TiB", "TB", 1024L * 1024L * 1024L * 1024L);
 
-        @NonNull private String mValue;
+        @NonNull private final String mValue;
 
-        @NonNull private String mDisplayValue;
+        @NonNull private final String mDisplayValue;
 
         /** The number of bytes needed to have one of the given unit */
-        private long mNoBytes;
+        private final long mNoBytes;
 
         Unit(@NonNull String val, @NonNull String displayVal, long noBytes) {
             mValue = val;

@@ -888,6 +888,7 @@ class AvdManagerCli extends CommandLineParser {
                             skinName,
                             getParamSdCard(),
                             hardwareConfig,
+                            null,
                             device == null ? null : device.getBootProps(),
                             true,
                             removePrevious,

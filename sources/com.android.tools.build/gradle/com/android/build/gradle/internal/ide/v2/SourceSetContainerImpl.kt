@@ -16,16 +16,23 @@
 
 package com.android.build.gradle.internal.ide.v2
 
+import com.android.builder.core.ComponentTypeImpl
 import com.android.builder.model.v2.ide.SourceProvider
 import com.android.builder.model.v2.ide.SourceSetContainer
 import java.io.Serializable
 
 data class SourceSetContainerImpl(
     override val sourceProvider: SourceProvider,
-    override val androidTestSourceProvider: SourceProvider? = null,
-    override val unitTestSourceProvider: SourceProvider? = null,
+    override val deviceTestSourceProviders: Map<String, SourceProvider>,
+    override val hostTestSourceProviders: Map<String, SourceProvider>,
     override val testFixturesSourceProvider: SourceProvider? = null
 ) : SourceSetContainer, Serializable {
+
+    override val androidTestSourceProvider: SourceProvider?
+        get() = deviceTestSourceProviders[ComponentTypeImpl.ANDROID_TEST.artifactName]
+    override val unitTestSourceProvider: SourceProvider?
+        get() = hostTestSourceProviders[ComponentTypeImpl.UNIT_TEST.artifactName]
+
     companion object {
         @JvmStatic
         private val serialVersionUID: Long = 1L

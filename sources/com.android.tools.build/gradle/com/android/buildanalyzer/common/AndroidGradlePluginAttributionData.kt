@@ -28,11 +28,6 @@ import java.io.Serializable
 
 data class AndroidGradlePluginAttributionData(
     /**
-     * Contains registered tasks that are not cacheable.
-     */
-    val noncacheableTasks: Set<String> = emptySet(),
-
-    /**
      * Contains a list of tasks sharing the same outputs.
      * The key of the map represents the absolute path to the file or the directory output and the
      * key contains a list of tasks declaring this file or directory as their output.

@@ -48,6 +48,7 @@ data class Component(
          * of the [Module]; and the remainder of the string is parsed as a [Version].  If the
          * string has fewer than two colons, return `null`.
          */
+        @JvmStatic
         fun tryParse(string: String): Component? = string
             .takeIf { s -> s.count { it == ':' } > 1 }
             ?.run {
@@ -65,6 +66,7 @@ data class Component(
          *
          * @throws IllegalArgumentException
          */
+        @JvmStatic
         fun parse(string: String): Component =
             tryParse(string) ?: throw IllegalArgumentException("Invalid component: `$string`")
     }

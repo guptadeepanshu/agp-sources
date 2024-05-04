@@ -268,47 +268,48 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
             Logger logger)
             throws IOException {
         Directory dmDir = dexMetadataDirectory.getOrNull();
-        if (dmDir != null && dmDir.file(SdkConstants.FN_DEX_METADATA_PROP).getAsFile().exists()) {
-            File dexMetadataProperties = dmDir.file(SdkConstants.FN_DEX_METADATA_PROP).getAsFile();
-            InputStream inputStream = new FileInputStream(dexMetadataProperties);
-            Properties properties = new Properties();
-            properties.load(inputStream);
-            String dmPath;
-            if (device.getApiLevel() > ArtProfileKt.SDK_LEVEL_FOR_V0_1_5_S) {
-                dmPath = properties.getProperty(String.valueOf(Integer.MAX_VALUE));
-            } else {
-                dmPath = properties.getProperty(String.valueOf(device.getApiLevel()));
-            }
-            if (dmPath == null) {
-                logger.log(
-                        LogLevel.INFO,
-                        "Baseline Profile not found for API level " + device.getApiLevel());
-                return;
-            }
+        if (dmDir == null || !dmDir.file(SdkConstants.FN_DEX_METADATA_PROP).getAsFile().exists()) {
+            return;
+        }
+        File dexMetadataProperties = dmDir.file(SdkConstants.FN_DEX_METADATA_PROP).getAsFile();
+        InputStream inputStream = new FileInputStream(dexMetadataProperties);
+        Properties properties = new Properties();
+        properties.load(inputStream);
+        String dmPath;
+        if (device.getApiLevel() > ArtProfileKt.SDK_LEVEL_FOR_V0_1_5_S) {
+            dmPath = properties.getProperty(String.valueOf(Integer.MAX_VALUE));
+        } else {
+            dmPath = properties.getProperty(String.valueOf(device.getApiLevel()));
+        }
+        if (dmPath == null) {
+            logger.log(
+                    LogLevel.INFO,
+                    "Baseline Profile not found for API level " + device.getApiLevel());
+            return;
+        }
 
-            if (!apkFiles.isEmpty()) {
-                String fileIndex = new File(dmPath).getParentFile().getName();
-                int numApks = apkFiles.size();
-                for (int i = 0; i < numApks; i++) {
-                    String apkFileName = apkFiles.get(i).getName();
-                    if (apkFileName.endsWith(".apk")) {
-                        String apkName = Files.getNameWithoutExtension(apkFileName);
-                        File renamedBaselineProfile =
-                                FileUtils.join(
-                                        apkDirectory.getAsFile(),
-                                        "baselineProfiles",
-                                        fileIndex,
-                                        apkName + ".dm");
-                        if (!renamedBaselineProfile.exists()) {
-                            logger.log(
-                                    LogLevel.INFO,
-                                    "Baseline Profile at "
-                                            + renamedBaselineProfile.getAbsolutePath()
-                                            + " was not found.");
-                            return;
-                        }
-                        apkFiles.add(renamedBaselineProfile);
+        if (!apkFiles.isEmpty()) {
+            String fileIndex = new File(dmPath).getParentFile().getName();
+            int numApks = apkFiles.size();
+            for (int i = 0; i < numApks; i++) {
+                String apkFileName = apkFiles.get(i).getName();
+                if (apkFileName.endsWith(".apk")) {
+                    String apkName = Files.getNameWithoutExtension(apkFileName);
+                    File renamedBaselineProfile =
+                            FileUtils.join(
+                                    apkDirectory.getAsFile(),
+                                    "baselineProfiles",
+                                    fileIndex,
+                                    apkName + ".dm");
+                    if (!renamedBaselineProfile.exists()) {
+                        logger.log(
+                                LogLevel.INFO,
+                                "Baseline Profile at "
+                                        + renamedBaselineProfile.getAbsolutePath()
+                                        + " was not found.");
+                        return;
                     }
+                    apkFiles.add(renamedBaselineProfile);
                 }
             }
         }

@@ -305,11 +305,19 @@ public class DeviceParser {
                 mHardware.setCpu(getString(mStringAccumulator));
             } else if (DeviceSchema.NODE_GPU.equals(localName)) {
                 mHardware.setGpu(getString(mStringAccumulator));
-            } else if (DeviceSchema.NODE_ABI.equals(localName)) {
+            } else if (DeviceSchema.NODE_ABI.equals(localName)
+                    || DeviceSchema.NODE_ABIS.equals(localName)) {
                 for (String s : getStringList(mStringAccumulator)) {
                     Abi abi = Abi.getEnum(s);
                     if (abi != null) {
                         mHardware.addSupportedAbi(abi);
+                    }
+                }
+            } else if (DeviceSchema.NODE_TRANSLATED_ABIS.equals(localName)) {
+                for (String s : getStringList(mStringAccumulator)) {
+                    Abi abi = Abi.getEnum(s);
+                    if (abi != null) {
+                        mHardware.addTranslatedAbi(abi);
                     }
                 }
             } else if (DeviceSchema.NODE_DOCK.equals(localName)) {

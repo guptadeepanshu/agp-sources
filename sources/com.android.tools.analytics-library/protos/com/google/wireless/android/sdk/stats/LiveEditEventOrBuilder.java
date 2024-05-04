@@ -133,4 +133,15 @@ public interface LiveEditEventOrBuilder extends
    */
   com.google.protobuf.ByteString
       getProjectIdBytes();
+
+  /**
+   * <code>optional .android_studio.LiveEditEvent.Device target_device = 7;</code>
+   * @return Whether the targetDevice field is set.
+   */
+  boolean hasTargetDevice();
+  /**
+   * <code>optional .android_studio.LiveEditEvent.Device target_device = 7;</code>
+   * @return The targetDevice.
+   */
+  com.google.wireless.android.sdk.stats.LiveEditEvent.Device getTargetDevice();
 }

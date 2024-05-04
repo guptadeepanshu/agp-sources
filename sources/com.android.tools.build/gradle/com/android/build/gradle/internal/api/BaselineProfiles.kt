@@ -25,7 +25,7 @@ class BaselineProfiles {
          * Returns true if the file should be merged as part of the human readable art profile
          * merging.
          */
-        fun shouldBeMerged(file: File): Boolean =
+        fun shouldBeMergedIntoArtProfile(file: File): Boolean =
             file.name != StartupProfileFileName
 
         /**

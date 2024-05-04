@@ -315,16 +315,23 @@ class LibraryCacheImpl(
 
                 ResolvedArtifact.DependencyType.ANDROID_SANDBOX_SDK -> {
                     val folder = artifact.extractedFolder
-                        ?: throw RuntimeException("Null extracted folder for artifact: $artifact")
-
-                    LibraryImpl.createJavaLibrary(
-                        stringCache.cacheString(libraryInfo.computeKey()),
-                        libraryInfo,
-                        folder,
-                        additionalArtifacts.source,
-                        additionalArtifacts.javadoc,
-                        additionalArtifacts.sample,
-                    )
+                    if (folder != null) {
+                        LibraryImpl.createJavaLibrary(
+                            stringCache.cacheString(libraryInfo.computeKey()),
+                            libraryInfo,
+                            folder,
+                            additionalArtifacts.source,
+                            additionalArtifacts.javadoc,
+                            additionalArtifacts.sample,
+                        )
+                    } else {
+                        // If privacy sandbox isn't enabled treat the library as an empty artifact
+                        // (The build will fail with an explanation)
+                        LibraryImpl.createNoArtifactFileLibrary(
+                            stringCache.cacheString(libraryInfo.computeKey()),
+                            libraryInfo,
+                        )
+                    }
                 }
 
                 ResolvedArtifact.DependencyType.JAVA -> {
@@ -375,6 +382,13 @@ class LibraryCacheImpl(
                 additionalArtifacts.javadoc,
                 additionalArtifacts.sample,
             )
+        } else if (artifact.dependencyType == ResolvedArtifact.DependencyType.NO_ARTIFACT_FILE) {
+            // Handle projects that have no artifacts (e.g. java-platform)
+            val projectInfo = getProjectInfo(artifact.variant)
+            LibraryImpl.createNoArtifactProjectLibrary(
+                stringCache.cacheString(projectInfo.computeKey()),
+                projectInfo
+            )
         } else {
             // In general, we do not need to provide the artifact for project dependencies
             // because on the IDE side we're just going to do a project to project dependency link.
@@ -399,7 +413,9 @@ class LibraryCacheImpl(
                 stringCache.cacheString(projectInfo.computeKey()),
                 projectInfo,
                 artifactFile = artifactFile,
-                lintJar = artifact.publishedLintJar,
+                // For sync model building, this will be null and will be available through project
+                // models, but for lint model building, it is still used
+                lintJar = artifact.publishedLintJar
             )
         }
     }

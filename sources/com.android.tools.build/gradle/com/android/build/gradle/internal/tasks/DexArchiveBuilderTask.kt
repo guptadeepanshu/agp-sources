@@ -234,7 +234,7 @@ abstract class DexArchiveBuilderTask : NewIncrementalTask() {
         creationConfig
     ) {
 
-        override val name = creationConfig.computeTaskName("dexBuilder")
+        override val name = creationConfig.computeTaskNameInternal("dexBuilder")
 
         private val projectClasses: FileCollection
         private val subProjectsClasses: FileCollection

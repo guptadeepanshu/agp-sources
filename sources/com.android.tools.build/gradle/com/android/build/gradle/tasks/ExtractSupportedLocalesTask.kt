@@ -17,6 +17,7 @@
 package com.android.build.gradle.tasks
 
 import com.android.SdkConstants.FD_MAIN
+import com.android.SdkConstants.FN_RESOURCES_PROPERTIES
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
@@ -63,16 +64,19 @@ abstract class ExtractSupportedLocalesTask : NonIncrementalTask() {
     @get:Input
     abstract val fromAppModule: Property<Boolean>
 
+    @get:Input
+    abstract val pseudoLocalesEnabled: Property<Boolean>
+
     public override fun doTaskAction() {
         val resources = listOf(nonMainResSet.files, mainResSet.files).flatten()
 
-        val localeList = generateLocaleList(resources)
+        val localeList = generateLocaleList(resources, pseudoLocalesEnabled.get())
 
         var validatedDefaultLocale: String? = null
 
         if (fromAppModule.get()) {
             // Find resources.properties file
-            val propFiles = mainResSet.files.map { File(it, "resources.properties") }.filter { it.exists() }
+            val propFiles = mainResSet.files.map { File(it, FN_RESOURCES_PROPERTIES) }.filter { it.exists() }
             val noResourcesPropertiesMessage = "No resources.properties file found. " +
                 "See https://developer.android.com/r/studio-ui/build/automatic-per-app-languages"
             if (propFiles.isEmpty() && resources.isNotEmpty()) { // Mandate a resource property file
@@ -135,6 +139,13 @@ abstract class ExtractSupportedLocalesTask : NonIncrementalTask() {
             task.mainResSet.disallowChanges()
 
             task.fromAppModule.setDisallowChanges(creationConfig.componentType.isBaseModule)
+            if (creationConfig.androidResourcesCreationConfig == null) {
+                task.pseudoLocalesEnabled.setDisallowChanges(false)
+            } else {
+                task.pseudoLocalesEnabled.setDisallowChanges(
+                    creationConfig.androidResourcesCreationConfig!!.pseudoLocalesEnabled
+                )
+            }
         }
     }
 }

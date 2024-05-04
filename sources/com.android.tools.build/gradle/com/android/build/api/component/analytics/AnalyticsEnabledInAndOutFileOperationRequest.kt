@@ -40,4 +40,11 @@ open class AnalyticsEnabledInAndOutFileOperationRequest @Inject constructor(
         }
         delegate.toTransform(type)
     }
+
+    override fun withName(name: String): InAndOutFileOperationRequest {
+        stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+            VariantPropertiesMethodType.TRANSFORM_WITH_NAME_VALUE
+        delegate.withName(name)
+        return this
+    }
 }

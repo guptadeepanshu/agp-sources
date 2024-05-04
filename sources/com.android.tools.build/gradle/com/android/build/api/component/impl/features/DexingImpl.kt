@@ -17,7 +17,6 @@
 package com.android.build.api.component.impl.features
 
 import com.android.build.api.artifact.MultipleArtifact
-import com.android.build.api.variant.impl.getFeatureLevel
 import com.android.build.gradle.internal.component.AndroidTestCreationConfig
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig
@@ -32,7 +31,7 @@ import java.io.File
 
 class DexingImpl(
     private val component: ApkCreationConfig,
-    multiDexEnabled: Boolean?,
+    private val multiDexEnabledFromDsl: Boolean?,
     multiDexProguardFile: File?,
     multiDexKeepFile: File?,
     private val internalServices: VariantServices,
@@ -65,13 +64,10 @@ class DexingImpl(
             }
         }
 
-    override val isMultiDexEnabled: Boolean =
-        multiDexEnabled ?: (component.minSdk.getFeatureLevel() >= 21)
-
     override val needsMainDexListForBundle: Boolean
         get() = component.componentType.isBaseModule
                 && component.global.hasDynamicFeatures
-                && dexingType.needsMainDexList
+                && dexingType.isLegacyMultiDex
 
     /**
      * Package desugar_lib DEX for base feature androidTest only if the base packages shrunk
@@ -92,21 +88,35 @@ class DexingImpl(
             else -> isCoreLibraryDesugaringEnabled
         }
 
-    override val dexingType: DexingType
-        get() =
-            if (component is DynamicFeatureCreationConfig) {
-                // dynamic features can always be build in native multidex mode
-                DexingType.NATIVE_MULTIDEX
-            } else if (isMultiDexEnabled) {
-                if (component.minSdk.getFeatureLevel() >= 21 ||
-                    component.global.targetDeployApiFromIDE?.let { it >= 21 } == true
-                ) {
-                    // if minSdkVersion is 21+ or we are deploying to 21+ device, use native multidex
-                    DexingType.NATIVE_MULTIDEX
-                } else DexingType.LEGACY_MULTIDEX
-            } else {
-                DexingType.MONO_DEX
+    override val dexingType: DexingType =
+        @Suppress("IntroduceWhenSubject")
+        when {
+            multiDexEnabledFromDsl == false -> DexingType.MONO_DEX
+
+            multiDexEnabledFromDsl == true -> when {
+                canRunNativeMultiDex() -> DexingType.NATIVE_MULTIDEX
+                else -> DexingType.LEGACY_MULTIDEX
             }
+
+            // multiDexEnabledFromDsl == null
+            else -> when {
+                canRunNativeMultiDex() -> DexingType.NATIVE_MULTIDEX
+                else -> DexingType.MONO_DEX
+            }
+        }
+
+    /**
+     * We can run native multidex if:
+     *   - minSdkVersion >= 21, or
+     *   - targetDeployApiFromIDE >= 21 (to improve performance), or
+     *   - if this is a dynamic feature module (see [DexingType]'s kdoc).
+     */
+    private fun canRunNativeMultiDex(): Boolean =
+        component.minSdk.apiLevel >= 21 ||
+                component.global.targetDeployApiFromIDE?.let { it >= 21 } == true ||
+                component is DynamicFeatureCreationConfig
+
+    override val isMultiDexEnabled: Boolean = dexingType.isMultiDex
 
     override val java8LangSupportType: Java8LangSupport
         get() {
@@ -158,7 +168,7 @@ class DexingImpl(
                         IssueReporter.Type.GENERIC, "In order to use core library desugaring, "
                                 + "please enable java 8 language desugaring with D8 or R8.")
             }
-            if (libDesugarEnabled && !isMultiDexEnabled) {
+            if (libDesugarEnabled && !dexingType.isMultiDex) {
                 component
                     .services
                     .issueReporter
@@ -181,7 +191,7 @@ class DexingImpl(
      */
     override val minSdkVersionForDexing: Int
         get() {
-            var minSdkVersion = component.minSdk.getFeatureLevel()
+            var minSdkVersion = component.minSdk.apiLevel
 
             val deviceApiLevel = component.global.targetDeployApiFromIDE
             if (minSdkVersion < 24 && deviceApiLevel != null && deviceApiLevel >= 24) {

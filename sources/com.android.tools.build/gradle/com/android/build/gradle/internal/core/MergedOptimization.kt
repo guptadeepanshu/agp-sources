@@ -22,10 +22,10 @@ import com.android.build.gradle.internal.dsl.OptimizationImpl
 
 class MergedOptimization : MergedOptions<OptimizationImpl> {
 
-    var ignoredLibraryKeepRules: MutableSet<String> = mutableSetOf()
+    var ignoreFromInKeepRules: MutableSet<String> = mutableSetOf()
         private set
 
-    var ignoreAllLibraryKeepRules: Boolean = false
+    var ignoreFromAllExternalDependenciesInKeepRules: Boolean = false
         private set
 
     var ignoreFromInBaselineProfile: MutableSet<String> = mutableSetOf()
@@ -35,16 +35,16 @@ class MergedOptimization : MergedOptions<OptimizationImpl> {
         private set
 
     override fun reset() {
-        ignoredLibraryKeepRules = mutableSetOf()
-        ignoreAllLibraryKeepRules = false
+        ignoreFromInKeepRules = mutableSetOf()
+        ignoreFromAllExternalDependenciesInKeepRules = false
         ignoreFromInBaselineProfile = mutableSetOf()
         ignoreFromAllExternalDependenciesInBaselineProfile = false
     }
 
     override fun append(option: OptimizationImpl) {
-        ignoredLibraryKeepRules.addAll((option.keepRules as KeepRulesImpl).dependencies)
-        ignoreAllLibraryKeepRules = ignoreAllLibraryKeepRules ||
-                (option.keepRules as KeepRulesImpl).ignoreAllDependencies
+        ignoreFromInKeepRules.addAll((option.keepRules as KeepRulesImpl).ignoreFrom)
+        ignoreFromAllExternalDependenciesInKeepRules = ignoreFromAllExternalDependenciesInKeepRules ||
+                (option.keepRules as KeepRulesImpl).ignoreFromAllExternalDependencies
         ignoreFromInBaselineProfile.addAll((option.baselineProfile as BaselineProfileImpl).ignoreFrom)
         ignoreFromAllExternalDependenciesInBaselineProfile =
             ignoreFromAllExternalDependenciesInBaselineProfile ||

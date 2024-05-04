@@ -16,7 +16,7 @@
 
 package com.android.build.api.variant.impl
 
-import com.android.build.api.component.impl.HostTestImpl
+import com.android.build.api.component.impl.ScreenshotTestImpl
 import com.android.build.api.component.impl.UnitTestImpl
 
 /**
@@ -25,4 +25,5 @@ import com.android.build.api.component.impl.UnitTestImpl
  */
 interface HasHostTests {
     var unitTest: UnitTestImpl?
+    var screenshotTest: ScreenshotTestImpl?
 }

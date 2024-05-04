@@ -43,6 +43,9 @@ import org.gradle.api.Incubating
 interface DynamicFeatureBuildType :
     BuildType,
     DynamicFeatureVariantDimension {
+    /** Whether this build type should generate a debuggable apk. */
+    var isDebuggable: Boolean
+
     /**
      * Whether to crunch PNGs.
      *

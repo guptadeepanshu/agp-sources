@@ -26,6 +26,8 @@ import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.build.gradle.internal.component.ComponentCreationConfig;
+import com.android.build.gradle.internal.component.NestedComponentCreationConfig;
+import com.android.build.gradle.internal.component.VariantCreationConfig;
 import com.android.build.gradle.internal.lint.LintMode;
 import com.android.build.gradle.internal.lint.LintTool;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
@@ -170,6 +172,9 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
     @Internal
     public abstract Property<LintClassLoaderBuildService> getLintClassLoaderBuildService();
 
+    @Input
+    public abstract Property<Boolean> getUseK2Uast();
+
     @Override
     protected void doTaskAction() {
         getLintClassLoaderBuildService().get().setShouldDispose(true);
@@ -205,6 +210,9 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
         }
         args.add("--skip-class-retention");
         args.add("--no-sort");
+        if (getUseK2Uast().get()) {
+            args.add("--XuseK2Uast");
+        }
         getLintTool()
                 .submit(
                         getWorkerExecutor(),
@@ -387,6 +395,19 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
                     BuildServicesKt.getBuildService(
                             creationConfig.getServices().getBuildServiceRegistry(),
                             LintClassLoaderBuildService.class));
+
+            if (creationConfig instanceof VariantCreationConfig) {
+                task.getUseK2Uast().set(((VariantCreationConfig) creationConfig).getUseK2Uast());
+            } else if (creationConfig instanceof NestedComponentCreationConfig) {
+                task.getUseK2Uast()
+                        .set(
+                                ((NestedComponentCreationConfig) creationConfig)
+                                        .getMainVariant()
+                                        .getUseK2Uast());
+            } else {
+                throw new RuntimeException("Unexpected instance of ComponentCreationConfig.");
+            }
+            task.getUseK2Uast().disallowChanges();
         }
     }
 

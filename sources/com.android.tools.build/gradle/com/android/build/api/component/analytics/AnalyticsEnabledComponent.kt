@@ -202,4 +202,10 @@ abstract class AnalyticsEnabledComponent(
                 stats
             )
         }
+
+    override fun computeTaskName(action: String, subject: String): String {
+        stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+            VariantPropertiesMethodType.COMPUTE_TASK_NAME_VALUE
+        return delegate.computeTaskName(action, subject)
+    }
 }

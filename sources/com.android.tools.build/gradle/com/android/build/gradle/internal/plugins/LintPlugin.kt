@@ -21,6 +21,7 @@ import com.android.build.api.dsl.Lint
 import com.android.build.api.extension.impl.DslLifecycleComponentsOperationsRegistrar
 import com.android.build.gradle.LintLifecycleExtensionImpl
 import com.android.build.gradle.internal.SdkComponentsBuildService
+import com.android.build.gradle.internal.configurationCacheActive
 import com.android.build.gradle.internal.dependency.ModelArtifactCompatibilityRule
 import com.android.build.gradle.internal.dsl.LintImpl
 import com.android.build.gradle.internal.dsl.LintOptions
@@ -46,6 +47,7 @@ import com.android.build.gradle.internal.profile.AnalyticsConfiguratorService
 import com.android.build.gradle.internal.profile.AnalyticsService
 import com.android.build.gradle.internal.profile.AnalyticsUtil
 import com.android.build.gradle.internal.profile.NoOpAnalyticsService
+import com.android.build.gradle.internal.projectIsolationActive
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.getAttributes
 import com.android.build.gradle.internal.scope.InternalMultipleArtifactType
@@ -80,6 +82,7 @@ import org.gradle.api.attributes.java.TargetJvmEnvironment
 import org.gradle.api.component.AdhocComponentWithVariants
 import org.gradle.api.component.ConfigurationVariantDetails
 import org.gradle.api.component.SoftwareComponent
+import org.gradle.api.configuration.BuildFeatures
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.plugins.JavaBasePlugin
@@ -104,6 +107,9 @@ abstract class LintPlugin : Plugin<Project> {
 
     @get:Inject
     abstract val listenerRegistry: BuildEventsListenerRegistry
+
+    @get:Inject
+    abstract val buildFeatures: BuildFeatures
 
     override fun apply(project: Project) {
         // We run by default in headless mode, so the JVM doesn't steal focus.
@@ -906,8 +912,13 @@ abstract class LintPlugin : Plugin<Project> {
                     .setPluginGeneration(GradleBuildProject.PluginGeneration.FIRST)
                     .setOptions(AnalyticsUtil.toProto(projectServices.projectOptions))
             }
-            AnalyticsService.RegistrationAction(project, configuratorService, listenerRegistry)
-                .execute()
+            AnalyticsService.RegistrationAction(
+                project,
+                configuratorService,
+                listenerRegistry,
+                buildFeatures.configurationCacheActive(),
+                buildFeatures.projectIsolationActive()
+            ).execute()
 
         } else {
             NoOpAnalyticsService.RegistrationAction(project).execute()

@@ -18,12 +18,25 @@ package com.android.manifmerger
 
 class OverrideLibrarySelector(private val selectorPackageName: String) {
 
+    private val packageNamePrefix: String? = if (selectorPackageName.endsWith(WILDCARD_SUFFIX) && selectorPackageName.length > 2) {
+            selectorPackageName.substring(0, selectorPackageName.length - 2)
+        } else null
+
     /**
      * Returns true if the passed element is "selected" by this selector. If so, any action this
      * selector decorated will be applied to the element.
      */
     fun appliesTo(element: XmlElement): Boolean {
         val packageName = element.document.getPackage()
-        return packageName.isPresent && selectorPackageName == packageName.get().value
+
+        return if (packageNamePrefix != null) {
+            packageName.isPresent && packageName.get().value.startsWith(packageNamePrefix)
+        } else {
+            packageName.isPresent && selectorPackageName == packageName.get().value
+        }
+    }
+
+    companion object {
+        const val WILDCARD_SUFFIX = ".*"
     }
 }

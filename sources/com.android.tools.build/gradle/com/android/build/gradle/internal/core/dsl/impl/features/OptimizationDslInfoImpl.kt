@@ -63,11 +63,11 @@ class OptimizationDslInfoImpl(
         )
     }
 
-    override val ignoredLibraryKeepRules: Set<String>
-        get() = mergedOptimization.ignoredLibraryKeepRules
+    override val ignoreFromInKeepRules: Set<String>
+        get() = mergedOptimization.ignoreFromInKeepRules
 
-    override val ignoreAllLibraryKeepRules: Boolean
-        get() = mergedOptimization.ignoreAllLibraryKeepRules
+    override val ignoreFromAllExternalDependenciesInKeepRules: Boolean
+        get() = mergedOptimization.ignoreFromAllExternalDependenciesInKeepRules
 
     override val ignoreFromInBaselineProfile: Set<String>
         get() = mergedOptimization.ignoreFromInBaselineProfile

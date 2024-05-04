@@ -243,4 +243,9 @@ open class TestVariantImpl @Inject constructor(
         super.finalizeAndLock()
         dexing.finalizeAndLock()
     }
+
+    override val isForceAotCompilation: Boolean
+        get() = experimentalProperties.map {
+            ModulePropertyKey.BooleanWithDefault.FORCE_AOT_COMPILATION.getValue(it)
+        }.getOrElse(false)
 }

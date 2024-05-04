@@ -16,9 +16,10 @@
 
 package com.android.build.api.component.analytics
 
-import com.android.build.api.artifact.SingleArtifact
+import com.android.build.api.artifact.Artifact
 import com.android.build.api.artifact.Artifacts
 import com.android.build.api.artifact.MultipleArtifact
+import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.artifact.TaskBasedOperation
 import com.android.build.api.variant.BuiltArtifactsLoader
 import com.android.build.api.variant.ScopedArtifacts
@@ -27,6 +28,7 @@ import com.android.tools.build.gradle.internal.profile.VariantPropertiesMethodTy
 import com.google.wireless.android.sdk.stats.ArtifactAccess
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.Task
+import org.gradle.api.file.Directory
 import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Provider
@@ -71,6 +73,15 @@ open class AnalyticsEnabledArtifacts @Inject constructor(
         stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.ADD_ARTIFACTS_VALUE
         delegate.add(type, artifact)
+    }
+
+    override fun <MultipleArtifactT : MultipleArtifact<Directory>> addStaticDirectory(
+        type: MultipleArtifactT,
+        inputLocation: Directory
+    ) where MultipleArtifactT : Artifact.Appendable {
+        stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+            VariantPropertiesMethodType.ADD_STATIC_DIRECTORY_VALUE
+        delegate.addStaticDirectory(type, inputLocation)
     }
 
     @Suppress("UNCHECKED_CAST")

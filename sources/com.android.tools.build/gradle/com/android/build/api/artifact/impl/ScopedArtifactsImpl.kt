@@ -242,10 +242,8 @@ class ScopedArtifactsImpl(
                 setContentPath(type, intoDirDirectory(task), taskProvider.name, "dirs")
             }
             newContent.from(
-                // TODO: this is a hack, we should instead have all the tasks like jacoco and asm tasks
-                // that transform classes to produce a list of jars instead of a directory containing
-                // jars.
-                // see bug 254666753
+                // Unfortunately, Gradle works only with Directory as input/output
+                // when file path is unknown on configuration phase.
                 taskProvider.flatMap { task -> intoJarDirectory(task).map {
                     it.asFileTree.files
                 } },
@@ -277,10 +275,8 @@ class ScopedArtifactsImpl(
                 setContentPath(type, intoDirDirectory(task), taskProvider.name, "dirs")
             }
             newContent.from(
-                // TODO: this is a hack, we should instead have all the tasks like jacoco and asm tasks
-                // that transform classes to produce a list of jars instead of a directory containing
-                // jars.
-                // see bug 254666753.
+                // Unfortunately, Gradle works only with Directory as input/output
+                // when file path is unknown on configuration phase.
                 taskProvider.flatMap { task -> intoJarDirectory(task).map {
                     it.asFileTree.files
                 } },

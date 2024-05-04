@@ -18,6 +18,7 @@ package com.android.build.gradle.internal.ide.v2
 
 import com.android.build.api.dsl.AndroidResources
 import com.android.build.api.dsl.CompileOptions
+import com.android.build.api.dsl.Installation
 import com.android.build.api.dsl.Lint
 import com.android.build.api.variant.InternalSources
 import com.android.build.api.variant.impl.SourceDirectoriesImpl
@@ -245,6 +246,11 @@ private fun variantSourcesForModel(sourceDirectories: SourceDirectoriesImpl?) =
 
 internal fun AndroidResources.convert() = AaptOptionsImpl(
     namespacing = if (namespaced) REQUIRED else DISABLED
+)
+
+internal fun Installation.convert() = InstallationImpl(
+    timeOutInMs = timeOutInMs,
+    installOptions = installOptions.toImmutableList(),
 )
 
 internal fun Lint.convert() = LintOptionsImpl(

@@ -77,7 +77,6 @@ abstract class PrivacySandboxSdkGenerateRClassTask : NonIncrementalTask() {
     }
 
     abstract class Params : ProfileAwareWorkAction.Parameters() {
-
         abstract val applicationId: Property<String>
         abstract val rPackages: ConfigurableFileCollection
         abstract val runtimeSymbolList: RegularFileProperty
@@ -97,19 +96,20 @@ abstract class PrivacySandboxSdkGenerateRClassTask : NonIncrementalTask() {
                 val depSymbolTables = symbolTableBuildService.loadClasspath(rPackages).map {
                     it.withValuesFrom(assignedValues)
                 }
+
                 exportToCompiledJava(
-                        tables = depSymbolTables,
-                        outJar = rClassJar.toPath(),
-                        finalIds = false,
-                        rPackage = applicationId,
+                    tables = depSymbolTables,
+                    outJar = rClassJar.toPath(),
+                    finalIds = false,
+                    rPackage = applicationId,
+                    packageNameToId = mapOf(applicationId to 0x7F000000),
                 )
             }
         }
     }
 
-    class CreationAction constructor(
-            private val creationConfig: PrivacySandboxSdkVariantScope,
-    ) : TaskCreationAction<PrivacySandboxSdkGenerateRClassTask>() {
+    class CreationAction(private val creationConfig: PrivacySandboxSdkVariantScope) :
+        TaskCreationAction<PrivacySandboxSdkGenerateRClassTask>() {
 
         override val name = "generateRClass"
         override val type = PrivacySandboxSdkGenerateRClassTask::class.java

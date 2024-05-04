@@ -39,4 +39,11 @@ open class AnalyticsEnabledLayered @Inject constructor(
                 VariantPropertiesMethodType.SOURCES_AND_OVERLAY_DIRECTORIES_GET_ALL_VALUE
             return delegate.all
         }
+
+    override val static: Provider<List<Collection<Directory>>>
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.SOURCES_AND_OVERLAY_DIRECTORIES_GET_STATIC_VALUE
+            return delegate.static
+        }
 }

@@ -28,9 +28,18 @@ import com.android.tools.r8.D8;
 import com.android.tools.r8.D8Command;
 import com.android.tools.r8.Diagnostic;
 import com.android.tools.r8.OutputMode;
+import com.android.tools.r8.TextInputStream;
 import com.android.tools.r8.errors.DuplicateTypesDiagnostic;
 import com.android.tools.r8.origin.Origin;
+import com.android.tools.r8.origin.PathOrigin;
+import com.android.tools.r8.startup.StartupProfileBuilder;
+import com.android.tools.r8.startup.StartupProfileProvider;
 import com.google.common.util.concurrent.MoreExecutors;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
@@ -49,17 +58,19 @@ final class D8DexArchiveMerger implements DexArchiveMerger {
     private static final String ERROR_MULTIDEX =
             "Cannot fit requested classes in a single dex file";
 
+    @NonNull private final DexingType dexingType;
     private final int minSdkVersion;
     @NonNull private final CompilationMode compilationMode;
     @NonNull private final MessageReceiver messageReceiver;
     @Nullable private final ForkJoinPool forkJoinPool;
-    private volatile boolean hintForMultidex = false;
 
     public D8DexArchiveMerger(
             @Nonnull MessageReceiver messageReceiver,
+            @NonNull DexingType dexingType,
             int minSdkVersion,
             @NonNull CompilationMode compilationMode,
             @Nullable ForkJoinPool forkJoinPool) {
+        this.dexingType = dexingType;
         this.minSdkVersion = minSdkVersion;
         this.compilationMode = compilationMode;
         this.messageReceiver = messageReceiver;
@@ -75,6 +86,7 @@ final class D8DexArchiveMerger implements DexArchiveMerger {
             @Nullable List<String> mainDexRules,
             @Nullable Path userMultidexKeepFile,
             @Nullable Collection<Path> libraryFiles,
+            @Nullable Path inputProfileForDexStartupOptimization,
             @Nullable Path mainDexListOutput)
             throws DexArchiveMergerException {
         if (LOGGER.isLoggable(Level.INFO)) {
@@ -135,8 +147,57 @@ final class D8DexArchiveMerger implements DexArchiveMerger {
                 builder.setMainDexListOutputPath(mainDexListOutput);
             }
 
-            builder.setMinApiLevel(minSdkVersion)
-                    .setMode(compilationMode)
+            if (dexingType == DexingType.NATIVE_MULTIDEX && minSdkVersion < 21) {
+                // It's possible to run in native multidex mode and have minSdkVersion < 21
+                // (see `DexingImpl.canRunNativeMultiDex`). When this happens, we need to modify the
+                // minSdkVersion passed to D8. The reason is that if minSdkVersion < 21 and D8 can't
+                // fit all input dex files into 1 final dex file (because there are more than 64k
+                // methods), D8 will throw an exception (note that in native multidex mode, we're
+                // not passing main dex list to D8, so it's expected that D8 will fail).
+                //
+                // It is safe to override minSdkVersion because in native multidex mode, we don't
+                // have to fit all input dex files into 1 final dex file, and modifying
+                // minSdkVersion at this step doesn't affect the dex bytecode.
+                builder.setMinApiLevel(21);
+            } else {
+                builder.setMinApiLevel(minSdkVersion);
+            }
+
+            if (inputProfileForDexStartupOptimization != null
+                    && inputProfileForDexStartupOptimization.toFile().exists()) {
+                builder.addStartupProfileProviders(
+                        new StartupProfileProvider() {
+                            @Override
+                            public void getStartupProfile(
+                                    StartupProfileBuilder startupProfileBuilder) {
+                                startupProfileBuilder.addHumanReadableArtProfile(
+                                        new TextInputStream() {
+                                            @Override
+                                            public InputStream getInputStream() {
+                                                try {
+                                                    return Files.newInputStream(
+                                                            inputProfileForDexStartupOptimization);
+                                                } catch (IOException e) {
+                                                    throw new RuntimeException(e);
+                                                }
+                                            }
+
+                                            @Override
+                                            public Charset getCharset() {
+                                                return StandardCharsets.UTF_8;
+                                            }
+                                        },
+                                        humanReadableArtProfileParserBuilder -> {});
+                            }
+
+                            @Override
+                            public Origin getOrigin() {
+                                return new PathOrigin(inputProfileForDexStartupOptimization);
+                            }
+                        });
+            }
+
+            builder.setMode(compilationMode)
                     .setOutput(outputDir, OutputMode.DexIndexed)
                     .setDisableDesugaring(true)
                     .setIntermediate(false);

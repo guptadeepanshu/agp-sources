@@ -850,6 +850,9 @@ interface CommonExtension<
 
     /**
      * Additional per module experimental properties.
+     *
+     * Values provided should not be based on a Task execution result, as most of these properties
+     * are read during configuration.
      */
     @get:Incubating
     val experimentalProperties: MutableMap<String, Any>

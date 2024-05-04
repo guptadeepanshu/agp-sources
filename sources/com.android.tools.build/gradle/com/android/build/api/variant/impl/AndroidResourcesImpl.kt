@@ -17,17 +17,21 @@
 package com.android.build.api.variant.impl
 
 import com.android.build.api.variant.AndroidResources
+import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.services.VariantServices
 import org.gradle.api.provider.ListProperty
 
-class AndroidResourcesImpl(
+open class AndroidResourcesImpl(
     override val ignoreAssetsPatterns: ListProperty<String>,
     override val aaptAdditionalParameters: ListProperty<String>,
-    override val noCompress: ListProperty<String>
+    override val noCompress: ListProperty<String>,
+    override val viewBinding: Boolean,
+    override val dataBinding: Boolean
 ) : AndroidResources
 
 internal fun initializeAaptOptionsFromDsl(
     dslAndroidResources: com.android.build.api.dsl.AndroidResources,
+    buildFeatureValues: BuildFeatureValues,
     variantServices: VariantServices
 ) : AndroidResourcesImpl {
     return AndroidResourcesImpl(
@@ -42,6 +46,8 @@ internal fun initializeAaptOptionsFromDsl(
         noCompress = variantServices.listPropertyOf(
             String::class.java,
             dslAndroidResources.noCompress
-        )
+        ),
+        viewBinding = buildFeatureValues.viewBinding,
+        dataBinding = buildFeatureValues.dataBinding
     )
 }

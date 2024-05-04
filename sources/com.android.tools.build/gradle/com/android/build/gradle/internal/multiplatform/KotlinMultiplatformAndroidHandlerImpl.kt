@@ -179,7 +179,7 @@ internal class KotlinMultiplatformAndroidHandlerImpl(
 
         mainVariant = variant
 
-        listOfNotNull(mainVariant, mainVariant.unitTest, mainVariant.androidTest).forEach {
+        listOfNotNull(mainVariant, mainVariant.unitTest, mainVariant.androidDeviceTest).forEach {
             it.androidKotlinCompilation.kotlinSourceSets.forEach { sourceSet ->
                 sourceSetToCreationConfigMap[sourceSet] = it
             }
@@ -193,7 +193,7 @@ internal class KotlinMultiplatformAndroidHandlerImpl(
             )
         }
 
-        mainVariant.androidTest?.let {
+        mainVariant.androidDeviceTest?.let {
             configureKotlinTestDependencyForInstrumentedTestCompilation(
                 project,
                 it,
@@ -235,7 +235,7 @@ internal class KotlinMultiplatformAndroidHandlerImpl(
             }
             sourceSet.takeIf { targetsContainingSourceSet.singleOrNull() == androidTarget }
         }.forEach { commonSourceSet ->
-            for (component in listOfNotNull(mainVariant, mainVariant.unitTest, mainVariant.androidTest)) {
+            for (component in listOfNotNull(mainVariant, mainVariant.unitTest, mainVariant.androidDeviceTest)) {
                 if (component.androidKotlinCompilation.allKotlinSourceSets.contains(commonSourceSet)) {
                     sourceSetToCreationConfigMap[commonSourceSet] = component
                     extraSourceSetsToIncludeInResolution.add(commonSourceSet)

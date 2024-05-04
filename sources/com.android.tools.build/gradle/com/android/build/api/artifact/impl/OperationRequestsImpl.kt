@@ -48,18 +48,25 @@ open class OutOperationRequestImpl<TaskT: Task, FileTypeT: FileSystemLocation>(
     val with: (TaskT) -> FileSystemLocationProperty<FileTypeT>
 ) : OutOperationRequest<FileTypeT>, ArtifactOperationRequest {
 
+    var name: String? = null
+
+    override fun withName(name: String): OutOperationRequestImpl<TaskT, FileTypeT> {
+        this.name = name
+        return this
+    }
+
     override fun <ArtifactTypeT> toAppendTo(type: ArtifactTypeT)
             where ArtifactTypeT : Multiple<FileTypeT>,
                   ArtifactTypeT : Artifact.Appendable {
         closeRequest()
-        toAppend(artifacts, taskProvider, with, type)
+        toAppend(artifacts, taskProvider, with, type, name)
     }
 
     override fun <ArtifactTypeT> toCreate(type: ArtifactTypeT)
             where ArtifactTypeT : Single<FileTypeT>,
                   ArtifactTypeT : Artifact.Replaceable {
         closeRequest()
-        toCreate(artifacts, taskProvider, with, type)
+        toCreate(artifacts, taskProvider, with, type, name)
     }
 
     override fun <ArtifactTypeT : Single<FileTypeT>> toListenTo(type: ArtifactTypeT) {
@@ -102,14 +109,21 @@ class InAndOutFileOperationRequestImpl<TaskT: Task>(
     override val artifacts: ArtifactsImpl,
     val taskProvider: TaskProvider<TaskT>,
     val from: (TaskT) -> RegularFileProperty,
-    val into: (TaskT) -> RegularFileProperty
+    val into: (TaskT) -> RegularFileProperty,
 ): InAndOutFileOperationRequest, ArtifactOperationRequest {
+
+    var name: String? = null
+
+    override fun withName(name: String): InAndOutFileOperationRequest {
+        this.name = name
+        return this
+    }
 
     override fun <ArtifactTypeT> toTransform(type: ArtifactTypeT)
             where ArtifactTypeT : Single<RegularFile>,
                   ArtifactTypeT : Artifact.Transformable {
         closeRequest()
-        toTransform(artifacts, taskProvider, from, into, type)
+        toTransform(artifacts, taskProvider, from, into, type, name)
     }
 
     override val description: String
@@ -161,7 +175,8 @@ class InAndOutDirectoryOperationRequestImpl<TaskT: Task>(
         type: ArtifactTypeT
     ): ArtifactTransformationRequest<TaskT>
             where ArtifactTypeT : Single<Directory>,
-                  ArtifactTypeT : Artifact.ContainsMany {
+                  ArtifactTypeT : Artifact.ContainsMany,
+                  ArtifactTypeT : Artifact.Transformable {
 
         closeRequest()
         val artifactContainer = artifacts.getArtifactContainer(type)
@@ -337,13 +352,15 @@ private fun <TaskT: Task, FileTypeT: FileSystemLocation, ArtifactTypeT> toAppend
     artifacts: ArtifactsImpl,
     taskProvider: TaskProvider<TaskT>,
     with: (TaskT) -> FileSystemLocationProperty<FileTypeT>,
-    type: ArtifactTypeT
+    type: ArtifactTypeT,
+    outputFileSystemLocationName: String?,
 ) where ArtifactTypeT : Multiple<FileTypeT>,
         ArtifactTypeT: Artifact.Appendable {
 
+    checkWithName(type, outputFileSystemLocationName)
     val artifactContainer = artifacts.getArtifactContainer(type)
     taskProvider.configure {
-        with(it).set(artifacts.getOutputPath(type, taskProvider.name))
+        with(it).set(artifacts.getOutputPath(type, taskProvider.name, outputFileSystemLocationName?: ""))
     }
     // all producers of a multiple artifact type are added to the initial list (just like
     // the AGP producers) since the transforms always operate on the complete list of added
@@ -356,13 +373,15 @@ private fun <TaskT: Task, FileTypeT: FileSystemLocation, ArtifactTypeT> toCreate
     artifacts: ArtifactsImpl,
     taskProvider: TaskProvider<TaskT>,
     with: (TaskT) -> FileSystemLocationProperty<FileTypeT>,
-    type: ArtifactTypeT
+    type: ArtifactTypeT,
+    outputFileSystemLocationName: String? = null,
 ) where ArtifactTypeT : Single<FileTypeT>,
         ArtifactTypeT: Artifact.Replaceable {
 
+    checkWithName(type, outputFileSystemLocationName)
     val artifactContainer = artifacts.getArtifactContainer(type)
     taskProvider.configure {
-        with(it).set(artifacts.getOutputPath(type, taskProvider.name))
+        with(it).set(artifacts.getOutputPath(type, taskProvider.name, forceFilename = outputFileSystemLocationName))
     }
     artifactContainer.replace(taskProvider, taskProvider.flatMap { with(it) })
 }
@@ -372,7 +391,9 @@ private fun <TaskT: Task, FileTypeT: FileSystemLocation, ArtifactTypeT> toTransf
     taskProvider: TaskProvider<TaskT>,
     from: (TaskT) -> FileSystemLocationProperty<FileTypeT>,
     into: (TaskT) -> FileSystemLocationProperty<FileTypeT>,
-    type: ArtifactTypeT)
+    type: ArtifactTypeT,
+    outputFileSystemLocationName: String? = null,
+)
         where ArtifactTypeT : Single<FileTypeT>,
               ArtifactTypeT : Artifact.Transformable {
     if (type is Artifact.ContainsMany) {
@@ -388,7 +409,7 @@ private fun <TaskT: Task, FileTypeT: FileSystemLocation, ArtifactTypeT> toTransf
     taskProvider.configure { it ->
         from(it).set(currentProvider)
         // since the task will now execute, resolve its output path.
-        val outputAbsolutePath:File = artifacts.calculateOutputPath(type, it)
+        val outputAbsolutePath:File = artifacts.calculateOutputPath(type, it, outputFileSystemLocationName)
         into(it).set(outputAbsolutePath)
     }
 }
@@ -446,5 +467,13 @@ private fun <TaskT: Task, FileTypeT: FileSystemLocation, ArtifactTypeT> _toListe
         } ?: artifacts.logger.warn("${taskProvider.name} was registered to listen to the " +
                 "production of the ${type.name()} artifact, but there are no producer for this " +
                 "type. The ${taskProvider.name} will never be invoked.")
+    }
+}
+
+private fun  checkWithName(type: Artifact<*>, outputFileSystemLocationName: String?) {
+    if (type.getFileSystemLocationName().isNotBlank() && !outputFileSystemLocationName.isNullOrBlank()) {
+        throw RuntimeException("You cannot use `withName(\"${outputFileSystemLocationName}\")` " +
+                "on a artifact like ${type.name()} which" +
+                " name is set to always be \"${type.getFileSystemLocationName()}\"")
     }
 }

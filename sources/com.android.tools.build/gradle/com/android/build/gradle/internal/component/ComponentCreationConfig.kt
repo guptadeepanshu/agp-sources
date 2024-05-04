@@ -61,8 +61,8 @@ interface ComponentCreationConfig : ComponentIdentity {
     val componentType: ComponentType
     val description: String
     val productFlavorList: List<ProductFlavor>
-    fun computeTaskName(prefix: String, suffix: String): String
-    fun computeTaskName(prefix: String): String
+    fun computeTaskNameInternal(prefix: String, suffix: String): String
+    fun computeTaskNameInternal(prefix: String): String
 
     // ---------------------------------------------------------------------------------------------
     // NEEDED BY ALL COMPONENTS

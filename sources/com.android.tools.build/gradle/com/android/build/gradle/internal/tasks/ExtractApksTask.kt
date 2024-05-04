@@ -62,7 +62,7 @@ abstract class ExtractApksTask : NonIncrementalTask() {
     companion object {
         const val namePrefix = "extractApksFromBundleFor"
         fun getTaskName(componentImpl: ComponentCreationConfig): String {
-            return componentImpl.computeTaskName(namePrefix)
+            return componentImpl.computeTaskNameInternal(namePrefix)
         }
     }
 

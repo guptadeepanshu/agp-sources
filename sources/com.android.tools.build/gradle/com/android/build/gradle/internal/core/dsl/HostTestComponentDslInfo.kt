@@ -29,4 +29,6 @@ package com.android.build.gradle.internal.core.dsl
  */
 interface HostTestComponentDslInfo: TestComponentDslInfo {
     val isUnitTestCoverageEnabled: Boolean
+
+    val isScreenshotTestCoverageEnabled: Boolean
 }

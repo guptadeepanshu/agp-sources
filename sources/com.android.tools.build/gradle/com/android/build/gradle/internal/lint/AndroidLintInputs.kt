@@ -312,6 +312,9 @@ abstract class ProjectInputs {
     @get:Input
     abstract val mavenArtifactId: Property<String>
 
+    @get:Input
+    abstract val mavenVersion: Property<String>
+
     @get:Internal
     abstract val buildDirectoryPath: Property<String>
 
@@ -408,6 +411,7 @@ abstract class ProjectInputs {
         projectGradlePath.setDisallowChanges(projectInfo.path)
         mavenGroupId.setDisallowChanges(projectInfo.group)
         mavenArtifactId.setDisallowChanges(projectInfo.name)
+        mavenVersion.setDisallowChanges(projectInfo.version)
         buildDirectoryPath.setDisallowChanges(projectInfo.buildDirectory.map { it.asFile.absolutePath })
         if (lintMode != LintMode.ANALYSIS) {
             projectDirectoryPathInput.set(projectDirectoryPath)
@@ -426,7 +430,8 @@ abstract class ProjectInputs {
             type = projectType.get(),
             mavenName = DefaultLintModelMavenName(
                 mavenGroupId.get(),
-                mavenArtifactId.get()
+                mavenArtifactId.get(),
+                mavenVersion.get()
             ),
             agpVersion = AgpVersion.tryParse(Version.ANDROID_GRADLE_PLUGIN_VERSION),
             buildFolder = File(buildDirectoryPath.get()),
@@ -836,7 +841,7 @@ abstract class VariantInputs {
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.NAME_ONLY)
     @get:Optional
-    abstract val consumerProguardFiles: ListProperty<File>
+    abstract val consumerProguardFiles: ListProperty<RegularFile>
 
     @get:Nested
     @get:Optional
@@ -1417,7 +1422,7 @@ abstract class VariantInputs {
             manifestPlaceholders = manifestPlaceholders.get(),
             resourceConfigurations = resourceConfigurations.get(),
             proguardFiles = proguardFiles.orNull?.map { it.asFile } ?: listOf(),
-            consumerProguardFiles = consumerProguardFiles.orNull ?: listOf(),
+            consumerProguardFiles = consumerProguardFiles.orNull?.map { it.asFile } ?: listOf(),
             sourceProviders = mainSourceProvider.orNull?.toLintModels() ?: emptyList(),
             testSourceProviders = listOfNotNull(
                 unitTestSourceProvider.orNull?.toLintModels(),

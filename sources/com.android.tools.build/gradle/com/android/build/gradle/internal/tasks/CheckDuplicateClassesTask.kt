@@ -68,7 +68,7 @@ abstract class CheckDuplicateClassesTask : NonIncrementalTask() {
 
         override val type = CheckDuplicateClassesTask::class.java
 
-        override val name = creationConfig.computeTaskName("check", "DuplicateClasses")
+        override val name = computeTaskName("check", "DuplicateClasses")
 
         override fun handleProvider(
             taskProvider: TaskProvider<CheckDuplicateClassesTask>

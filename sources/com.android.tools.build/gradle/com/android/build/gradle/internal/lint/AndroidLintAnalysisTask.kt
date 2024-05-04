@@ -226,7 +226,7 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
      * that variant.
      */
     class SingleVariantCreationAction(variant: VariantWithTests) : VariantCreationAction(variant) {
-        override val name = creationConfig.computeTaskName("lintAnalyze")
+        override val name = creationConfig.computeTaskNameInternal("lintAnalyze")
         override val fatalOnly = false
         override val description = "Run lint analysis on the ${creationConfig.name} variant"
 
@@ -250,7 +250,7 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
             testFixtures = null
         ))
     {
-        override val name = creationConfig.computeTaskName("lintVitalAnalyze")
+        override val name = creationConfig.computeTaskNameInternal("lintVitalAnalyze")
         override val fatalOnly = true
         override val description =
             "Run lint analysis with only the fatal issues enabled on the ${creationConfig.name} variant"
@@ -344,9 +344,9 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
 
         override val name =
             if (fatalOnly) {
-                creationConfig.computeTaskName("lintVitalAnalyze")
+                creationConfig.computeTaskNameInternal("lintVitalAnalyze")
             } else {
-                creationConfig.computeTaskName("lintAnalyze")
+                creationConfig.computeTaskNameInternal("lintAnalyze")
 
             }
         private val description =

@@ -107,4 +107,21 @@ interface PrivacySandboxSdkExtension {
 
     @Incubating
     fun signingConfig(action: SigningConfig?.() -> Unit)
+
+    /**
+     * Specifies options for the R8/D8 optimization tool.
+     *
+     * For more information about the properties you can configure in this block, see [PrivacySandboxSdkOptimization].
+     */
+    @get:Incubating
+    val optimization: PrivacySandboxSdkOptimization
+
+    /**
+     * Specifies options for the R8/D8 optimization tool.
+     *
+     * For more information about the properties you can configure in this block, see [PrivacySandboxSdkOptimization].
+     */
+    @Incubating
+    fun optimization(action: PrivacySandboxSdkOptimization.() -> Unit)
+
 }

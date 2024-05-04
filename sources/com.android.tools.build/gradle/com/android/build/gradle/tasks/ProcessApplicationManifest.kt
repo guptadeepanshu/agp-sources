@@ -15,10 +15,7 @@
  */
 package com.android.build.gradle.tasks
 
-import com.android.SdkConstants
 import com.android.build.api.artifact.SingleArtifact
-import com.android.build.api.variant.impl.BuiltArtifactImpl
-import com.android.build.api.variant.impl.BuiltArtifactsImpl
 import com.android.build.api.variant.impl.getApiString
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.component.ApkCreationConfig
@@ -56,7 +53,6 @@ import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
 import org.gradle.api.artifacts.result.ResolvedArtifactResult
-import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
@@ -69,7 +65,6 @@ import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
-import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
@@ -140,16 +135,6 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
     @get:Input
     abstract val addLocaleConfigAttribute: Property<Boolean>
 
-    /**
-     * For non-application components, we still depend on the multiApkManifests artifacts as part of
-     * the manifest processing pipeline, and since these components don't have splits, we can just
-     * use this task to output the main manifest to that directory without having to run a task to
-     * just copy the manifest.
-     */
-    @get:Optional
-    @get:OutputDirectory
-    abstract val multiApkManifestOutputDirectory: DirectoryProperty
-
     @Throws(IOException::class)
     override fun doTaskAction() {
         if (baseModuleDebuggable.isPresent) {
@@ -207,27 +192,6 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
             compileSdk = compileSdk.orNull
         )
         outputMergeBlameContents(mergingReport, mergeBlameFile.get().asFile)
-
-        // This is a non-application variant, add the main manifest to the
-        // multiApkManifestOutputDirectory directly.
-        if (multiApkManifestOutputDirectory.isPresent) {
-            val outputFile = File(
-                multiApkManifestOutputDirectory.get().asFile,
-                SdkConstants.ANDROID_MANIFEST_XML
-            )
-            mergedManifest.get().asFile.copyTo(outputFile, overwrite = true)
-
-            BuiltArtifactsImpl(
-                artifactType = InternalArtifactType.MERGED_MANIFESTS,
-                applicationId = applicationId.get(),
-                variantName = variantName,
-                elements = listOf(
-                    BuiltArtifactImpl.make(
-                        outputFile = outputFile.absolutePath
-                    )
-                )
-            ).save(multiApkManifestOutputDirectory.get())
-        }
     }
 
     @get:PathSensitive(PathSensitivity.RELATIVE)
@@ -394,13 +358,6 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
                 )
                 .withName("manifest-merger-" + creationConfig.baseName + "-report.txt")
                 .on(MANIFEST_MERGE_REPORT)
-
-            if (creationConfig !is ApplicationCreationConfig) {
-                creationConfig.artifacts.setInitialProvider(
-                    taskProvider,
-                    ProcessApplicationManifest::multiApkManifestOutputDirectory
-                ).on(InternalArtifactType.MERGED_MANIFESTS)
-            }
         }
 
         override fun configure(
@@ -517,7 +474,7 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
             task.projectBuildFile.disallowChanges()
             task.addLocaleConfigAttribute.setDisallowChanges(
                 (creationConfig is ApplicationCreationConfig) &&
-                (creationConfig.generateLocaleConfig)
+                (creationConfig.androidResources.generateLocaleConfig == true)
             )
             // TODO: here in the "else" block should be the code path for the namespaced pipeline
         }

@@ -17,7 +17,6 @@
 package com.android.build.gradle.internal.profile
 
 import com.android.build.gradle.internal.LoggerWrapper
-import com.android.build.gradle.internal.projectIsolationRequested
 import com.android.build.gradle.internal.services.ServiceRegistrationAction
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.builder.profile.Recorder
@@ -117,7 +116,11 @@ abstract class AnalyticsConfiguratorService : BuildService<AnalyticsConfigurator
     }
 
     open fun createAnalyticsService(
-        project: Project, registry: BuildEventsListenerRegistry, parameters: AnalyticsService.Params
+        project: Project,
+        registry: BuildEventsListenerRegistry,
+        parameters: AnalyticsService.Params,
+        configurationCacheActive: Boolean,
+        projectIsolationActive: Boolean,
     ) {
         if (state == State.CALLBACK_REGISTERED) {
             return
@@ -126,14 +129,16 @@ abstract class AnalyticsConfiguratorService : BuildService<AnalyticsConfigurator
 
         if (project.gradle.startParameter.taskNames.isEmpty()) {
             project.gradle.projectsEvaluated {
-                resourcesManager.recordGlobalProperties(project)
+                resourcesManager.recordGlobalProperties(
+                    project, configurationCacheActive, projectIsolationActive)
                 resourcesManager.configureAnalyticsService(parameters)
                 instantiateAnalyticsService(project)
             }
         } else {
             project.gradle.taskGraph.whenReady {
-                resourcesManager.recordGlobalProperties(project)
-                if (!projectIsolationRequested(project.providers)) {
+                resourcesManager.recordGlobalProperties(
+                    project, configurationCacheActive, projectIsolationActive)
+                if (!projectIsolationActive) {
                     // Accessing all tasks is not supported in project isolation mode
                     resourcesManager.collectTaskMetadata(it)
                     resourcesManager.recordTaskNames(it)

@@ -21,6 +21,7 @@ import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.signing.SigningConfigVersions
 import org.gradle.api.provider.Provider
 import java.io.File
+import java.io.Serializable
 import java.util.concurrent.Callable
 
 class SigningConfigImpl(
@@ -28,7 +29,7 @@ class SigningConfigImpl(
     variantServices: VariantServices,
     minSdk: Int,
     targetApi: Int?
-) : SigningConfig {
+) : SigningConfig, Serializable {
 
     private var dslSigningConfig = signingConfig
 

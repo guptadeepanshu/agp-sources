@@ -1100,87 +1100,87 @@ private static final long serialVersionUID = 0L;
 
     /**
      * <pre>
-     * The number of screenshot that was attempted to render.
-     * This value and TestRun.number_of_tests_executed might be
-     * different because this value only counts attempted screenshot
-     * renderings whereas TestRun.number_of_tests_executed counts
-     * skipped test cases.
+     * Deprecated: use TestRun.number_of_tests_executed.
      * </pre>
      *
-     * <code>optional int32 screenshot_count = 1;</code>
+     * <code>optional int32 screenshot_count = 1 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the screenshotCount field is set.
      */
-    boolean hasScreenshotCount();
+    @java.lang.Deprecated boolean hasScreenshotCount();
     /**
      * <pre>
-     * The number of screenshot that was attempted to render.
-     * This value and TestRun.number_of_tests_executed might be
-     * different because this value only counts attempted screenshot
-     * renderings whereas TestRun.number_of_tests_executed counts
-     * skipped test cases.
+     * Deprecated: use TestRun.number_of_tests_executed.
      * </pre>
      *
-     * <code>optional int32 screenshot_count = 1;</code>
+     * <code>optional int32 screenshot_count = 1 [deprecated = true];</code>
+     * @deprecated
      * @return The screenshotCount.
      */
-    int getScreenshotCount();
+    @java.lang.Deprecated int getScreenshotCount();
 
     /**
      * <pre>
-     * Total run time including preview discovery and rendering.
+     * Deprecated: use GradleBuildProfileSpan.
      * </pre>
      *
-     * <code>optional int64 total_run_time_ms = 2;</code>
+     * <code>optional int64 total_run_time_ms = 2 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the totalRunTimeMs field is set.
      */
-    boolean hasTotalRunTimeMs();
+    @java.lang.Deprecated boolean hasTotalRunTimeMs();
     /**
      * <pre>
-     * Total run time including preview discovery and rendering.
+     * Deprecated: use GradleBuildProfileSpan.
      * </pre>
      *
-     * <code>optional int64 total_run_time_ms = 2;</code>
+     * <code>optional int64 total_run_time_ms = 2 [deprecated = true];</code>
+     * @deprecated
      * @return The totalRunTimeMs.
      */
-    long getTotalRunTimeMs();
+    @java.lang.Deprecated long getTotalRunTimeMs();
 
     /**
      * <pre>
-     * Run time for preview discovery.
+     * Deprecated: use GradleBuildProfileSpan.
      * </pre>
      *
-     * <code>optional int64 discovery_run_time_ms = 3;</code>
+     * <code>optional int64 discovery_run_time_ms = 3 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the discoveryRunTimeMs field is set.
      */
-    boolean hasDiscoveryRunTimeMs();
+    @java.lang.Deprecated boolean hasDiscoveryRunTimeMs();
     /**
      * <pre>
-     * Run time for preview discovery.
+     * Deprecated: use GradleBuildProfileSpan.
      * </pre>
      *
-     * <code>optional int64 discovery_run_time_ms = 3;</code>
+     * <code>optional int64 discovery_run_time_ms = 3 [deprecated = true];</code>
+     * @deprecated
      * @return The discoveryRunTimeMs.
      */
-    long getDiscoveryRunTimeMs();
+    @java.lang.Deprecated long getDiscoveryRunTimeMs();
 
     /**
      * <pre>
-     * Run time for rendering.
+     * Deprecated: use GradleBuildProfileSpan.
      * </pre>
      *
-     * <code>optional int64 rendering_run_time_ms = 4;</code>
+     * <code>optional int64 rendering_run_time_ms = 4 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the renderingRunTimeMs field is set.
      */
-    boolean hasRenderingRunTimeMs();
+    @java.lang.Deprecated boolean hasRenderingRunTimeMs();
     /**
      * <pre>
-     * Run time for rendering.
+     * Deprecated: use GradleBuildProfileSpan.
      * </pre>
      *
-     * <code>optional int64 rendering_run_time_ms = 4;</code>
+     * <code>optional int64 rendering_run_time_ms = 4 [deprecated = true];</code>
+     * @deprecated
      * @return The renderingRunTimeMs.
      */
-    long getRenderingRunTimeMs();
+    @java.lang.Deprecated long getRenderingRunTimeMs();
   }
   /**
    * Protobuf type {@code android_studio.TestRun.PreviewScreenshotRun}
@@ -1227,34 +1227,28 @@ private static final long serialVersionUID = 0L;
     private int screenshotCount_;
     /**
      * <pre>
-     * The number of screenshot that was attempted to render.
-     * This value and TestRun.number_of_tests_executed might be
-     * different because this value only counts attempted screenshot
-     * renderings whereas TestRun.number_of_tests_executed counts
-     * skipped test cases.
+     * Deprecated: use TestRun.number_of_tests_executed.
      * </pre>
      *
-     * <code>optional int32 screenshot_count = 1;</code>
+     * <code>optional int32 screenshot_count = 1 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the screenshotCount field is set.
      */
     @java.lang.Override
-    public boolean hasScreenshotCount() {
+    @java.lang.Deprecated public boolean hasScreenshotCount() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <pre>
-     * The number of screenshot that was attempted to render.
-     * This value and TestRun.number_of_tests_executed might be
-     * different because this value only counts attempted screenshot
-     * renderings whereas TestRun.number_of_tests_executed counts
-     * skipped test cases.
+     * Deprecated: use TestRun.number_of_tests_executed.
      * </pre>
      *
-     * <code>optional int32 screenshot_count = 1;</code>
+     * <code>optional int32 screenshot_count = 1 [deprecated = true];</code>
+     * @deprecated
      * @return The screenshotCount.
      */
     @java.lang.Override
-    public int getScreenshotCount() {
+    @java.lang.Deprecated public int getScreenshotCount() {
       return screenshotCount_;
     }
 
@@ -1262,26 +1256,28 @@ private static final long serialVersionUID = 0L;
     private long totalRunTimeMs_;
     /**
      * <pre>
-     * Total run time including preview discovery and rendering.
+     * Deprecated: use GradleBuildProfileSpan.
      * </pre>
      *
-     * <code>optional int64 total_run_time_ms = 2;</code>
+     * <code>optional int64 total_run_time_ms = 2 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the totalRunTimeMs field is set.
      */
     @java.lang.Override
-    public boolean hasTotalRunTimeMs() {
+    @java.lang.Deprecated public boolean hasTotalRunTimeMs() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
      * <pre>
-     * Total run time including preview discovery and rendering.
+     * Deprecated: use GradleBuildProfileSpan.
      * </pre>
      *
-     * <code>optional int64 total_run_time_ms = 2;</code>
+     * <code>optional int64 total_run_time_ms = 2 [deprecated = true];</code>
+     * @deprecated
      * @return The totalRunTimeMs.
      */
     @java.lang.Override
-    public long getTotalRunTimeMs() {
+    @java.lang.Deprecated public long getTotalRunTimeMs() {
       return totalRunTimeMs_;
     }
 
@@ -1289,26 +1285,28 @@ private static final long serialVersionUID = 0L;
     private long discoveryRunTimeMs_;
     /**
      * <pre>
-     * Run time for preview discovery.
+     * Deprecated: use GradleBuildProfileSpan.
      * </pre>
      *
-     * <code>optional int64 discovery_run_time_ms = 3;</code>
+     * <code>optional int64 discovery_run_time_ms = 3 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the discoveryRunTimeMs field is set.
      */
     @java.lang.Override
-    public boolean hasDiscoveryRunTimeMs() {
+    @java.lang.Deprecated public boolean hasDiscoveryRunTimeMs() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
      * <pre>
-     * Run time for preview discovery.
+     * Deprecated: use GradleBuildProfileSpan.
      * </pre>
      *
-     * <code>optional int64 discovery_run_time_ms = 3;</code>
+     * <code>optional int64 discovery_run_time_ms = 3 [deprecated = true];</code>
+     * @deprecated
      * @return The discoveryRunTimeMs.
      */
     @java.lang.Override
-    public long getDiscoveryRunTimeMs() {
+    @java.lang.Deprecated public long getDiscoveryRunTimeMs() {
       return discoveryRunTimeMs_;
     }
 
@@ -1316,26 +1314,28 @@ private static final long serialVersionUID = 0L;
     private long renderingRunTimeMs_;
     /**
      * <pre>
-     * Run time for rendering.
+     * Deprecated: use GradleBuildProfileSpan.
      * </pre>
      *
-     * <code>optional int64 rendering_run_time_ms = 4;</code>
+     * <code>optional int64 rendering_run_time_ms = 4 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the renderingRunTimeMs field is set.
      */
     @java.lang.Override
-    public boolean hasRenderingRunTimeMs() {
+    @java.lang.Deprecated public boolean hasRenderingRunTimeMs() {
       return ((bitField0_ & 0x00000008) != 0);
     }
     /**
      * <pre>
-     * Run time for rendering.
+     * Deprecated: use GradleBuildProfileSpan.
      * </pre>
      *
-     * <code>optional int64 rendering_run_time_ms = 4;</code>
+     * <code>optional int64 rendering_run_time_ms = 4 [deprecated = true];</code>
+     * @deprecated
      * @return The renderingRunTimeMs.
      */
     @java.lang.Override
-    public long getRenderingRunTimeMs() {
+    @java.lang.Deprecated public long getRenderingRunTimeMs() {
       return renderingRunTimeMs_;
     }
 
@@ -1762,50 +1762,41 @@ private static final long serialVersionUID = 0L;
       private int screenshotCount_ ;
       /**
        * <pre>
-       * The number of screenshot that was attempted to render.
-       * This value and TestRun.number_of_tests_executed might be
-       * different because this value only counts attempted screenshot
-       * renderings whereas TestRun.number_of_tests_executed counts
-       * skipped test cases.
+       * Deprecated: use TestRun.number_of_tests_executed.
        * </pre>
        *
-       * <code>optional int32 screenshot_count = 1;</code>
+       * <code>optional int32 screenshot_count = 1 [deprecated = true];</code>
+       * @deprecated
        * @return Whether the screenshotCount field is set.
        */
       @java.lang.Override
-      public boolean hasScreenshotCount() {
+      @java.lang.Deprecated public boolean hasScreenshotCount() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
        * <pre>
-       * The number of screenshot that was attempted to render.
-       * This value and TestRun.number_of_tests_executed might be
-       * different because this value only counts attempted screenshot
-       * renderings whereas TestRun.number_of_tests_executed counts
-       * skipped test cases.
+       * Deprecated: use TestRun.number_of_tests_executed.
        * </pre>
        *
-       * <code>optional int32 screenshot_count = 1;</code>
+       * <code>optional int32 screenshot_count = 1 [deprecated = true];</code>
+       * @deprecated
        * @return The screenshotCount.
        */
       @java.lang.Override
-      public int getScreenshotCount() {
+      @java.lang.Deprecated public int getScreenshotCount() {
         return screenshotCount_;
       }
       /**
        * <pre>
-       * The number of screenshot that was attempted to render.
-       * This value and TestRun.number_of_tests_executed might be
-       * different because this value only counts attempted screenshot
-       * renderings whereas TestRun.number_of_tests_executed counts
-       * skipped test cases.
+       * Deprecated: use TestRun.number_of_tests_executed.
        * </pre>
        *
-       * <code>optional int32 screenshot_count = 1;</code>
+       * <code>optional int32 screenshot_count = 1 [deprecated = true];</code>
+       * @deprecated
        * @param value The screenshotCount to set.
        * @return This builder for chaining.
        */
-      public Builder setScreenshotCount(int value) {
+      @java.lang.Deprecated public Builder setScreenshotCount(int value) {
         bitField0_ |= 0x00000001;
         screenshotCount_ = value;
         onChanged();
@@ -1813,17 +1804,14 @@ private static final long serialVersionUID = 0L;
       }
       /**
        * <pre>
-       * The number of screenshot that was attempted to render.
-       * This value and TestRun.number_of_tests_executed might be
-       * different because this value only counts attempted screenshot
-       * renderings whereas TestRun.number_of_tests_executed counts
-       * skipped test cases.
+       * Deprecated: use TestRun.number_of_tests_executed.
        * </pre>
        *
-       * <code>optional int32 screenshot_count = 1;</code>
+       * <code>optional int32 screenshot_count = 1 [deprecated = true];</code>
+       * @deprecated
        * @return This builder for chaining.
        */
-      public Builder clearScreenshotCount() {
+      @java.lang.Deprecated public Builder clearScreenshotCount() {
         bitField0_ = (bitField0_ & ~0x00000001);
         screenshotCount_ = 0;
         onChanged();
@@ -1833,38 +1821,41 @@ private static final long serialVersionUID = 0L;
       private long totalRunTimeMs_ ;
       /**
        * <pre>
-       * Total run time including preview discovery and rendering.
+       * Deprecated: use GradleBuildProfileSpan.
        * </pre>
        *
-       * <code>optional int64 total_run_time_ms = 2;</code>
+       * <code>optional int64 total_run_time_ms = 2 [deprecated = true];</code>
+       * @deprecated
        * @return Whether the totalRunTimeMs field is set.
        */
       @java.lang.Override
-      public boolean hasTotalRunTimeMs() {
+      @java.lang.Deprecated public boolean hasTotalRunTimeMs() {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
        * <pre>
-       * Total run time including preview discovery and rendering.
+       * Deprecated: use GradleBuildProfileSpan.
        * </pre>
        *
-       * <code>optional int64 total_run_time_ms = 2;</code>
+       * <code>optional int64 total_run_time_ms = 2 [deprecated = true];</code>
+       * @deprecated
        * @return The totalRunTimeMs.
        */
       @java.lang.Override
-      public long getTotalRunTimeMs() {
+      @java.lang.Deprecated public long getTotalRunTimeMs() {
         return totalRunTimeMs_;
       }
       /**
        * <pre>
-       * Total run time including preview discovery and rendering.
+       * Deprecated: use GradleBuildProfileSpan.
        * </pre>
        *
-       * <code>optional int64 total_run_time_ms = 2;</code>
+       * <code>optional int64 total_run_time_ms = 2 [deprecated = true];</code>
+       * @deprecated
        * @param value The totalRunTimeMs to set.
        * @return This builder for chaining.
        */
-      public Builder setTotalRunTimeMs(long value) {
+      @java.lang.Deprecated public Builder setTotalRunTimeMs(long value) {
         bitField0_ |= 0x00000002;
         totalRunTimeMs_ = value;
         onChanged();
@@ -1872,13 +1863,14 @@ private static final long serialVersionUID = 0L;
       }
       /**
        * <pre>
-       * Total run time including preview discovery and rendering.
+       * Deprecated: use GradleBuildProfileSpan.
        * </pre>
        *
-       * <code>optional int64 total_run_time_ms = 2;</code>
+       * <code>optional int64 total_run_time_ms = 2 [deprecated = true];</code>
+       * @deprecated
        * @return This builder for chaining.
        */
-      public Builder clearTotalRunTimeMs() {
+      @java.lang.Deprecated public Builder clearTotalRunTimeMs() {
         bitField0_ = (bitField0_ & ~0x00000002);
         totalRunTimeMs_ = 0L;
         onChanged();
@@ -1888,38 +1880,41 @@ private static final long serialVersionUID = 0L;
       private long discoveryRunTimeMs_ ;
       /**
        * <pre>
-       * Run time for preview discovery.
+       * Deprecated: use GradleBuildProfileSpan.
        * </pre>
        *
-       * <code>optional int64 discovery_run_time_ms = 3;</code>
+       * <code>optional int64 discovery_run_time_ms = 3 [deprecated = true];</code>
+       * @deprecated
        * @return Whether the discoveryRunTimeMs field is set.
        */
       @java.lang.Override
-      public boolean hasDiscoveryRunTimeMs() {
+      @java.lang.Deprecated public boolean hasDiscoveryRunTimeMs() {
         return ((bitField0_ & 0x00000004) != 0);
       }
       /**
        * <pre>
-       * Run time for preview discovery.
+       * Deprecated: use GradleBuildProfileSpan.
        * </pre>
        *
-       * <code>optional int64 discovery_run_time_ms = 3;</code>
+       * <code>optional int64 discovery_run_time_ms = 3 [deprecated = true];</code>
+       * @deprecated
        * @return The discoveryRunTimeMs.
        */
       @java.lang.Override
-      public long getDiscoveryRunTimeMs() {
+      @java.lang.Deprecated public long getDiscoveryRunTimeMs() {
         return discoveryRunTimeMs_;
       }
       /**
        * <pre>
-       * Run time for preview discovery.
+       * Deprecated: use GradleBuildProfileSpan.
        * </pre>
        *
-       * <code>optional int64 discovery_run_time_ms = 3;</code>
+       * <code>optional int64 discovery_run_time_ms = 3 [deprecated = true];</code>
+       * @deprecated
        * @param value The discoveryRunTimeMs to set.
        * @return This builder for chaining.
        */
-      public Builder setDiscoveryRunTimeMs(long value) {
+      @java.lang.Deprecated public Builder setDiscoveryRunTimeMs(long value) {
         bitField0_ |= 0x00000004;
         discoveryRunTimeMs_ = value;
         onChanged();
@@ -1927,13 +1922,14 @@ private static final long serialVersionUID = 0L;
       }
       /**
        * <pre>
-       * Run time for preview discovery.
+       * Deprecated: use GradleBuildProfileSpan.
        * </pre>
        *
-       * <code>optional int64 discovery_run_time_ms = 3;</code>
+       * <code>optional int64 discovery_run_time_ms = 3 [deprecated = true];</code>
+       * @deprecated
        * @return This builder for chaining.
        */
-      public Builder clearDiscoveryRunTimeMs() {
+      @java.lang.Deprecated public Builder clearDiscoveryRunTimeMs() {
         bitField0_ = (bitField0_ & ~0x00000004);
         discoveryRunTimeMs_ = 0L;
         onChanged();
@@ -1943,38 +1939,41 @@ private static final long serialVersionUID = 0L;
       private long renderingRunTimeMs_ ;
       /**
        * <pre>
-       * Run time for rendering.
+       * Deprecated: use GradleBuildProfileSpan.
        * </pre>
        *
-       * <code>optional int64 rendering_run_time_ms = 4;</code>
+       * <code>optional int64 rendering_run_time_ms = 4 [deprecated = true];</code>
+       * @deprecated
        * @return Whether the renderingRunTimeMs field is set.
        */
       @java.lang.Override
-      public boolean hasRenderingRunTimeMs() {
+      @java.lang.Deprecated public boolean hasRenderingRunTimeMs() {
         return ((bitField0_ & 0x00000008) != 0);
       }
       /**
        * <pre>
-       * Run time for rendering.
+       * Deprecated: use GradleBuildProfileSpan.
        * </pre>
        *
-       * <code>optional int64 rendering_run_time_ms = 4;</code>
+       * <code>optional int64 rendering_run_time_ms = 4 [deprecated = true];</code>
+       * @deprecated
        * @return The renderingRunTimeMs.
        */
       @java.lang.Override
-      public long getRenderingRunTimeMs() {
+      @java.lang.Deprecated public long getRenderingRunTimeMs() {
         return renderingRunTimeMs_;
       }
       /**
        * <pre>
-       * Run time for rendering.
+       * Deprecated: use GradleBuildProfileSpan.
        * </pre>
        *
-       * <code>optional int64 rendering_run_time_ms = 4;</code>
+       * <code>optional int64 rendering_run_time_ms = 4 [deprecated = true];</code>
+       * @deprecated
        * @param value The renderingRunTimeMs to set.
        * @return This builder for chaining.
        */
-      public Builder setRenderingRunTimeMs(long value) {
+      @java.lang.Deprecated public Builder setRenderingRunTimeMs(long value) {
         bitField0_ |= 0x00000008;
         renderingRunTimeMs_ = value;
         onChanged();
@@ -1982,13 +1981,14 @@ private static final long serialVersionUID = 0L;
       }
       /**
        * <pre>
-       * Run time for rendering.
+       * Deprecated: use GradleBuildProfileSpan.
        * </pre>
        *
-       * <code>optional int64 rendering_run_time_ms = 4;</code>
+       * <code>optional int64 rendering_run_time_ms = 4 [deprecated = true];</code>
+       * @deprecated
        * @return This builder for chaining.
        */
-      public Builder clearRenderingRunTimeMs() {
+      @java.lang.Deprecated public Builder clearRenderingRunTimeMs() {
         bitField0_ = (bitField0_ & ~0x00000008);
         renderingRunTimeMs_ = 0L;
         onChanged();

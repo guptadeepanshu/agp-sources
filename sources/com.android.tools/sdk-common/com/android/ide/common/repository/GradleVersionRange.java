@@ -62,7 +62,7 @@ public class GradleVersionRange {
     public static GradleVersionRange parse(
             @NonNull String value, @NonNull KnownVersionStability stability) {
         if (!value.startsWith("[")) {
-            Version minimum = Version.Companion.parse(value);
+            Version minimum = Version.parse(value);
             return new GradleVersionRange(minimum, stability.expiration(minimum));
         }
         Matcher matcher = RANGE_PATTERN.matcher(value);
@@ -70,7 +70,7 @@ public class GradleVersionRange {
             throw parsingFailure(value);
         }
         return new GradleVersionRange(
-                Version.Companion.parse(matcher.group(1)), Version.Companion.prefixInfimum(matcher.group(2)));
+                Version.parse(matcher.group(1)), Version.prefixInfimum(matcher.group(2)));
     }
 
     /**

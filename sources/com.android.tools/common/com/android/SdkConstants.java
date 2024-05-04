@@ -67,6 +67,8 @@ public final class SdkConstants {
 
     /** Property in local.properties file that specifies the path of the Android SDK. */
     public static final String SDK_DIR_PROPERTY = "sdk.dir";
+    /** Fallback property in local.properties file that specifies the path of the Android SDK. */
+    public static final String ANDROID_DIR_PROPERTY = "android.dir";
 
     /**
      * A maximum version of the Android SDK that this version of AGP and Android Studio IDE can
@@ -110,8 +112,8 @@ public final class SdkConstants {
 
     /** Properties in lint-model-metadata.properties file */
     public static final String MAVEN_GROUP_ID_PROPERTY = "mavenGroupId";
-
     public static final String MAVEN_ARTIFACT_ID_PROPERTY = "mavenArtifactId";
+    public static final String MAVEN_VERSION_PROPERTY = "mavenVersion";
 
     /**
      * The encoding we strive to use for all files we write.
@@ -168,6 +170,8 @@ public final class SdkConstants {
     public static final String FN_GRADLE_PROPERTIES = "gradle.properties";
     /** An SDK Project's Gradle cache config.properties file */
     public static final String FN_GRADLE_CONFIG_PROPERTIES = "config.properties";
+    /** An SDK Project's Resources properties file */
+    public static final String FN_RESOURCES_PROPERTIES = "resources.properties";
     /** An SDK Project's libs.versions.toml file */
     public static final String FN_VERSION_CATALOG = "libs.versions.toml";
     /** An SDK Project's gradle daemon executable */
@@ -2086,6 +2090,10 @@ public final class SdkConstants {
     // Value delimiters: Manifest
     public static final String VALUE_DELIMITER_PIPE = "|";
 
+    // Pseudolocale Values
+    public static final String EN_XA = "en-XA";
+    public static final String AR_XB = "ar-XB";
+
     // Menus
     public static final String ATTR_CHECKABLE = "checkable";
     public static final String ATTR_CHECKABLE_BEHAVIOR = "checkableBehavior";
@@ -2863,7 +2871,7 @@ public final class SdkConstants {
      * Studio product. It need not actually be the latest version of Gradle, but it will most likely
      * be fairly recent.
      */
-    public static final String GRADLE_LATEST_VERSION = "8.4";
+    public static final String GRADLE_LATEST_VERSION = "8.6";
 
     /**
      * The minimum released version of the Android Gradle Plugin that this version of Studio will
@@ -2888,7 +2896,7 @@ public final class SdkConstants {
      * The version of NDK to use as default. If no specific version of NDK is specified in
      * build.gradle then this is the version that will be used.
      */
-    public static final String NDK_DEFAULT_VERSION = "25.1.8937393";
+    public static final String NDK_DEFAULT_VERSION = "26.1.10909125";
 
     /** use api or implementation */
     @Deprecated public static final String GRADLE_COMPILE_CONFIGURATION = "compile";
@@ -3022,4 +3030,10 @@ public final class SdkConstants {
 
     /** Url protocol of the jar files, e.g.: jar://my_jar.jar */
     public static final String JAR_PROTOCOL = "jar";
+
+    /** Url protocol of a file. */
+    public static final String FILE_PROTOCOL = "file";
+
+    /** Sdk downloadable fonts folder. */
+    public static final String SDK_DL_FONTS_FOLDER = "fonts";
 }

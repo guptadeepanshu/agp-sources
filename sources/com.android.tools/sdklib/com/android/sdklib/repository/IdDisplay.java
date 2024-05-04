@@ -18,13 +18,16 @@ package com.android.sdklib.repository;
 
 import com.android.annotations.NonNull;
 import com.android.sdklib.repository.meta.SdkCommonFactory;
-
-import javax.xml.bind.annotation.XmlTransient;
+import com.google.common.collect.Comparators;
+import java.util.Comparator;
 import java.util.Locale;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * A string with both user-friendly and easily-parsed versions.
- * Contains stubs to be overridden by xjc-generated classes.
+ * A string with both user-friendly and easily-parsed versions. Contains stubs to be overridden by
+ * xjc-generated classes.
+ *
+ * <p>Note that only the ID is used for equality, not the display name.
  */
 @SuppressWarnings("NullableProblems")
 @XmlTransient
@@ -110,4 +113,6 @@ public abstract class IdDisplay implements Comparable<IdDisplay> {
         return name;
     }
 
+    public static Comparator<Iterable<IdDisplay>> ID_DISPLAY_LIST_COMPARATOR =
+            Comparators.lexicographical(Comparator.<IdDisplay>naturalOrder());
 }

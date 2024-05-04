@@ -38,12 +38,22 @@ import java.util.Objects
  * stable version of Android Gradle Plugin, it's recommended to drop support for the preview versions.
  * For example, if a new API was introduced in 7.0.0-alpha05, you can test for that using
  *
- * ```if (androidComponents.pluginVersion >= AndroidPluginVersion(7.0).alpha(5)) { ... }```
+ * ```if (androidComponents.pluginVersion >= AndroidPluginVersion(7, 0).alpha(5)) { ... }```
  *
  * If that API is marked as stable in 7.0.0, drop support for the preview versions before it by
  * updating your condition to:
  *
- * ```if (androidComponents.pluginVersion >= AndroidPluginVersion(7.0)) { ... }```
+ * ```if (androidComponents.pluginVersion >= AndroidPluginVersion(7, 0)) { ... }```
+ *
+ * Take care with maximum version checks to avoid excluding point releases.
+ * For example, if a behavior is only applicable for AGP 8.7 series, and you have a different code
+ * path for the following version, don't check for 8.7.0 as the maximum, as your plugin will break
+ * on point releases of 8.7.0, instead compare with an exclusive bound with the first alpha of the
+ * subsequent major-minor version. (This applies even if the alpha is never released as it turned
+ * out to be a major version)
+ *
+ * ```if (androidComponents.pluginVersion < AndroidPluginVersion(8, 8).alpha(1)) { ... }```
+ *
  */
 class AndroidPluginVersion private constructor(
     /**
@@ -168,10 +178,36 @@ class AndroidPluginVersion private constructor(
         return Objects.hash(major, minor, micro, _previewType, preview)
     }
 
-    override fun toString(): String =
-        "Android Gradle Plugin version $major.$minor.$micro" +
-                (if (previewType != null) "-$previewType" else "") +
-                (if (preview > 0) preview else "")
+    override fun toString(): String {
+        return "Android Gradle Plugin version $version"
+    }
+
+    /**
+     * Returns the string representing this AGP version in maven version form.
+     *
+     * This corresponds exactly to the format of the version of the Android Gradle plugin artifacts
+     * published in the Google maven repository.
+     */
+    val version: String = StringBuilder().apply {
+        append(major).append('.').append(minor).append('.').append(micro)
+        // This duplicates encoding the same special cases as in AgpVersion. Sadly it's challenging
+        // to share code as gradle-api should  have as few dependencies as possible.
+        // See AndroidPluginVersionTest
+        when (_previewType) {
+            PreviewType.FINAL -> {}
+            PreviewType.DEV -> append("-dev")
+            else -> {
+                append('-').append(previewType)
+                val isTwoDigitPreviewFormat = major > 3 ||
+                        major == 3 && minor > 1 ||
+                        major == 3 && minor == 1 && micro == 0 && _previewType != PreviewType.BETA
+                if (isTwoDigitPreviewFormat && preview < 10) append('0')
+                append(preview)
+            }
+        }
+    }.toString()
+
+
 
     companion object {
         private val comparator: Comparator<AndroidPluginVersion> =

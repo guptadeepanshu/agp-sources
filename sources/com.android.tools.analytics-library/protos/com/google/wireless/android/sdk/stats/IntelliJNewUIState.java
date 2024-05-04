@@ -48,7 +48,7 @@ private static final long serialVersionUID = 0L;
   private boolean isEnabled_;
   /**
    * <pre>
-   * Indicates whether the user has enabled the new IntellJ UI
+   * Indicates whether the user has enabled the new IntelliJ UI
    * </pre>
    *
    * <code>optional bool is_enabled = 1;</code>
@@ -60,7 +60,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * Indicates whether the user has enabled the new IntellJ UI
+   * Indicates whether the user has enabled the new IntelliJ UI
    * </pre>
    *
    * <code>optional bool is_enabled = 1;</code>
@@ -402,7 +402,7 @@ private static final long serialVersionUID = 0L;
     private boolean isEnabled_ ;
     /**
      * <pre>
-     * Indicates whether the user has enabled the new IntellJ UI
+     * Indicates whether the user has enabled the new IntelliJ UI
      * </pre>
      *
      * <code>optional bool is_enabled = 1;</code>
@@ -414,7 +414,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * Indicates whether the user has enabled the new IntellJ UI
+     * Indicates whether the user has enabled the new IntelliJ UI
      * </pre>
      *
      * <code>optional bool is_enabled = 1;</code>
@@ -426,7 +426,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * Indicates whether the user has enabled the new IntellJ UI
+     * Indicates whether the user has enabled the new IntelliJ UI
      * </pre>
      *
      * <code>optional bool is_enabled = 1;</code>
@@ -441,7 +441,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * Indicates whether the user has enabled the new IntellJ UI
+     * Indicates whether the user has enabled the new IntelliJ UI
      * </pre>
      *
      * <code>optional bool is_enabled = 1;</code>

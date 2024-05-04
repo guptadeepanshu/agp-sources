@@ -269,6 +269,8 @@ InternalArtifactType<T : FileSystemLocation>(
     // a zip containing all of the NATIVE_DEBUG_METADATA or NATIVE_DEBUG_TABLES, to be published in
     // the outputs folder if creating an APK instead of an app bundle.
     object MERGED_NATIVE_DEBUG_METADATA: InternalArtifactType<RegularFile>(FILE, Category.OUTPUTS, "native-debug-symbols"), Replaceable
+    // native libs to be packaged with test components instead of main components.
+    object MERGED_TEST_ONLY_NATIVE_LIBS: InternalArtifactType<Directory>(DIRECTORY), Replaceable
 
     // Partial prefab directory without libraries built yet.
     object PREFAB_PACKAGE_CONFIGURATION: InternalArtifactType<RegularFile>(FILE), Replaceable
@@ -623,7 +625,6 @@ InternalArtifactType<T : FileSystemLocation>(
     object SCREENSHOTS_RENDERED: InternalArtifactType<Directory>(DIRECTORY), Replaceable
 
     // This is the startup profile containing the profiles from all variant sources
-    // Currently, it is not consumed, and only used in R8Task
     object MERGED_STARTUP_PROFILE: InternalArtifactType<RegularFile>(
         FILE,
         fileName = BaselineProfiles.StartupProfileFileName

@@ -629,6 +629,66 @@ public enum VariantPropertiesMethodType
    * <code>REGISTER_PRE_BUILD = 143;</code>
    */
   REGISTER_PRE_BUILD(143),
+  /**
+   * <code>SOURCES_DIRECTORIES_GET_STATIC = 144;</code>
+   */
+  SOURCES_DIRECTORIES_GET_STATIC(144),
+  /**
+   * <code>SOURCES_AND_OVERLAY_DIRECTORIES_GET_STATIC = 145;</code>
+   */
+  SOURCES_AND_OVERLAY_DIRECTORIES_GET_STATIC(145),
+  /**
+   * <code>COMPUTE_TASK_NAME = 146;</code>
+   */
+  COMPUTE_TASK_NAME(146),
+  /**
+   * <code>ADD_STATIC_DIRECTORY = 147;</code>
+   */
+  ADD_STATIC_DIRECTORY(147),
+  /**
+   * <code>TRANSFORM_WITH_NAME = 148;</code>
+   */
+  TRANSFORM_WITH_NAME(148),
+  /**
+   * <code>CONFIGURE_TEST_TASK = 149;</code>
+   */
+  CONFIGURE_TEST_TASK(149),
+  /**
+   * <code>GENERATE_LOCALE_CONFIG_FLAG = 150;</code>
+   */
+  GENERATE_LOCALE_CONFIG_FLAG(150),
+  /**
+   * <code>IGNORE_ASSETS_PATTERN = 151;</code>
+   */
+  IGNORE_ASSETS_PATTERN(151),
+  /**
+   * <code>AAPT_ADDITIONAL_PARAMETERS = 152;</code>
+   */
+  AAPT_ADDITIONAL_PARAMETERS(152),
+  /**
+   * <code>NO_COMPRESS = 153;</code>
+   */
+  NO_COMPRESS(153),
+  /**
+   * <code>VIEW_BINDING = 154;</code>
+   */
+  VIEW_BINDING(154),
+  /**
+   * <code>DATA_BINDING = 155;</code>
+   */
+  DATA_BINDING(155),
+  /**
+   * <code>DEVICE_TESTS = 156;</code>
+   */
+  DEVICE_TESTS(156),
+  /**
+   * <pre>
+   * removed
+   * </pre>
+   *
+   * <code>DEFAULT_DEVICE_TEST = 157;</code>
+   */
+  DEFAULT_DEVICE_TEST(157),
   UNRECOGNIZED(-1),
   ;
 
@@ -1252,6 +1312,66 @@ public enum VariantPropertiesMethodType
    * <code>REGISTER_PRE_BUILD = 143;</code>
    */
   public static final int REGISTER_PRE_BUILD_VALUE = 143;
+  /**
+   * <code>SOURCES_DIRECTORIES_GET_STATIC = 144;</code>
+   */
+  public static final int SOURCES_DIRECTORIES_GET_STATIC_VALUE = 144;
+  /**
+   * <code>SOURCES_AND_OVERLAY_DIRECTORIES_GET_STATIC = 145;</code>
+   */
+  public static final int SOURCES_AND_OVERLAY_DIRECTORIES_GET_STATIC_VALUE = 145;
+  /**
+   * <code>COMPUTE_TASK_NAME = 146;</code>
+   */
+  public static final int COMPUTE_TASK_NAME_VALUE = 146;
+  /**
+   * <code>ADD_STATIC_DIRECTORY = 147;</code>
+   */
+  public static final int ADD_STATIC_DIRECTORY_VALUE = 147;
+  /**
+   * <code>TRANSFORM_WITH_NAME = 148;</code>
+   */
+  public static final int TRANSFORM_WITH_NAME_VALUE = 148;
+  /**
+   * <code>CONFIGURE_TEST_TASK = 149;</code>
+   */
+  public static final int CONFIGURE_TEST_TASK_VALUE = 149;
+  /**
+   * <code>GENERATE_LOCALE_CONFIG_FLAG = 150;</code>
+   */
+  public static final int GENERATE_LOCALE_CONFIG_FLAG_VALUE = 150;
+  /**
+   * <code>IGNORE_ASSETS_PATTERN = 151;</code>
+   */
+  public static final int IGNORE_ASSETS_PATTERN_VALUE = 151;
+  /**
+   * <code>AAPT_ADDITIONAL_PARAMETERS = 152;</code>
+   */
+  public static final int AAPT_ADDITIONAL_PARAMETERS_VALUE = 152;
+  /**
+   * <code>NO_COMPRESS = 153;</code>
+   */
+  public static final int NO_COMPRESS_VALUE = 153;
+  /**
+   * <code>VIEW_BINDING = 154;</code>
+   */
+  public static final int VIEW_BINDING_VALUE = 154;
+  /**
+   * <code>DATA_BINDING = 155;</code>
+   */
+  public static final int DATA_BINDING_VALUE = 155;
+  /**
+   * <code>DEVICE_TESTS = 156;</code>
+   */
+  public static final int DEVICE_TESTS_VALUE = 156;
+  /**
+   * <pre>
+   * removed
+   * </pre>
+   *
+   * <code>DEFAULT_DEVICE_TEST = 157;</code>
+   */
+  public static final int DEFAULT_DEVICE_TEST_VALUE = 157;
 
 
   public final int getNumber() {
@@ -1422,6 +1542,20 @@ public enum VariantPropertiesMethodType
       case 141: return WIRED_WITH_MULTIPLE;
       case 142: return LIFECYCLE_TASKS;
       case 143: return REGISTER_PRE_BUILD;
+      case 144: return SOURCES_DIRECTORIES_GET_STATIC;
+      case 145: return SOURCES_AND_OVERLAY_DIRECTORIES_GET_STATIC;
+      case 146: return COMPUTE_TASK_NAME;
+      case 147: return ADD_STATIC_DIRECTORY;
+      case 148: return TRANSFORM_WITH_NAME;
+      case 149: return CONFIGURE_TEST_TASK;
+      case 150: return GENERATE_LOCALE_CONFIG_FLAG;
+      case 151: return IGNORE_ASSETS_PATTERN;
+      case 152: return AAPT_ADDITIONAL_PARAMETERS;
+      case 153: return NO_COMPRESS;
+      case 154: return VIEW_BINDING;
+      case 155: return DATA_BINDING;
+      case 156: return DEVICE_TESTS;
+      case 157: return DEFAULT_DEVICE_TEST;
       default: return null;
     }
   }

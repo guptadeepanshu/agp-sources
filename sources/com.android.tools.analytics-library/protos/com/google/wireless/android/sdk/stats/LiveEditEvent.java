@@ -19,6 +19,7 @@ private static final long serialVersionUID = 0L;
     status_ = 0;
     mode_ = 0;
     projectId_ = "";
+    targetDevice_ = 0;
   }
 
   @java.lang.Override
@@ -616,6 +617,128 @@ private static final long serialVersionUID = 0L;
     // @@protoc_insertion_point(enum_scope:android_studio.LiveEditEvent.Mode)
   }
 
+  /**
+   * Protobuf enum {@code android_studio.LiveEditEvent.Device}
+   */
+  public enum Device
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <pre>
+     * Possible bug or device disconnected between actions.
+     * </pre>
+     *
+     * <code>NONE = 0;</code>
+     */
+    NONE(0),
+    /**
+     * <code>PHYSICAL = 1;</code>
+     */
+    PHYSICAL(1),
+    /**
+     * <code>EMULATOR = 2;</code>
+     */
+    EMULATOR(2),
+    /**
+     * <code>MULTI = 3;</code>
+     */
+    MULTI(3),
+    ;
+
+    /**
+     * <pre>
+     * Possible bug or device disconnected between actions.
+     * </pre>
+     *
+     * <code>NONE = 0;</code>
+     */
+    public static final int NONE_VALUE = 0;
+    /**
+     * <code>PHYSICAL = 1;</code>
+     */
+    public static final int PHYSICAL_VALUE = 1;
+    /**
+     * <code>EMULATOR = 2;</code>
+     */
+    public static final int EMULATOR_VALUE = 2;
+    /**
+     * <code>MULTI = 3;</code>
+     */
+    public static final int MULTI_VALUE = 3;
+
+
+    public final int getNumber() {
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static Device valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static Device forNumber(int value) {
+      switch (value) {
+        case 0: return NONE;
+        case 1: return PHYSICAL;
+        case 2: return EMULATOR;
+        case 3: return MULTI;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<Device>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        Device> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<Device>() {
+            public Device findValueByNumber(int number) {
+              return Device.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.LiveEditEvent.getDescriptor().getEnumTypes().get(2);
+    }
+
+    private static final Device[] VALUES = values();
+
+    public static Device valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private Device(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:android_studio.LiveEditEvent.Device)
+  }
+
   private int bitField0_;
   public static final int STATUS_FIELD_NUMBER = 1;
   private int status_;
@@ -815,6 +938,25 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int TARGET_DEVICE_FIELD_NUMBER = 7;
+  private int targetDevice_;
+  /**
+   * <code>optional .android_studio.LiveEditEvent.Device target_device = 7;</code>
+   * @return Whether the targetDevice field is set.
+   */
+  @java.lang.Override public boolean hasTargetDevice() {
+    return ((bitField0_ & 0x00000040) != 0);
+  }
+  /**
+   * <code>optional .android_studio.LiveEditEvent.Device target_device = 7;</code>
+   * @return The targetDevice.
+   */
+  @java.lang.Override public com.google.wireless.android.sdk.stats.LiveEditEvent.Device getTargetDevice() {
+    @SuppressWarnings("deprecation")
+    com.google.wireless.android.sdk.stats.LiveEditEvent.Device result = com.google.wireless.android.sdk.stats.LiveEditEvent.Device.valueOf(targetDevice_);
+    return result == null ? com.google.wireless.android.sdk.stats.LiveEditEvent.Device.NONE : result;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -847,6 +989,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000020) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 6, projectId_);
     }
+    if (((bitField0_ & 0x00000040) != 0)) {
+      output.writeEnum(7, targetDevice_);
+    }
     getUnknownFields().writeTo(output);
   }
 
@@ -878,6 +1023,10 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00000020) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, projectId_);
+    }
+    if (((bitField0_ & 0x00000040) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(7, targetDevice_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -922,6 +1071,10 @@ private static final long serialVersionUID = 0L;
       if (!getProjectId()
           .equals(other.getProjectId())) return false;
     }
+    if (hasTargetDevice() != other.hasTargetDevice()) return false;
+    if (hasTargetDevice()) {
+      if (targetDevice_ != other.targetDevice_) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -959,6 +1112,10 @@ private static final long serialVersionUID = 0L;
     if (hasProjectId()) {
       hash = (37 * hash) + PROJECT_ID_FIELD_NUMBER;
       hash = (53 * hash) + getProjectId().hashCode();
+    }
+    if (hasTargetDevice()) {
+      hash = (37 * hash) + TARGET_DEVICE_FIELD_NUMBER;
+      hash = (53 * hash) + targetDevice_;
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -1100,6 +1257,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000010);
       projectId_ = "";
       bitField0_ = (bitField0_ & ~0x00000020);
+      targetDevice_ = 0;
+      bitField0_ = (bitField0_ & ~0x00000040);
       return this;
     }
 
@@ -1152,6 +1311,10 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000020;
       }
       result.projectId_ = projectId_;
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        to_bitField0_ |= 0x00000040;
+      }
+      result.targetDevice_ = targetDevice_;
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -1220,6 +1383,9 @@ private static final long serialVersionUID = 0L;
         bitField0_ |= 0x00000020;
         projectId_ = other.projectId_;
         onChanged();
+      }
+      if (other.hasTargetDevice()) {
+        setTargetDevice(other.getTargetDevice());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -1291,6 +1457,18 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000020;
               break;
             } // case 50
+            case 56: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.LiveEditEvent.Device tmpValue =
+                  com.google.wireless.android.sdk.stats.LiveEditEvent.Device.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(7, tmpRaw);
+              } else {
+                targetDevice_ = tmpRaw;
+                bitField0_ |= 0x00000040;
+              }
+              break;
+            } // case 56
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -1701,6 +1879,49 @@ private static final long serialVersionUID = 0L;
   }
   bitField0_ |= 0x00000020;
       projectId_ = value;
+      onChanged();
+      return this;
+    }
+
+    private int targetDevice_ = 0;
+    /**
+     * <code>optional .android_studio.LiveEditEvent.Device target_device = 7;</code>
+     * @return Whether the targetDevice field is set.
+     */
+    @java.lang.Override public boolean hasTargetDevice() {
+      return ((bitField0_ & 0x00000040) != 0);
+    }
+    /**
+     * <code>optional .android_studio.LiveEditEvent.Device target_device = 7;</code>
+     * @return The targetDevice.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.LiveEditEvent.Device getTargetDevice() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.LiveEditEvent.Device result = com.google.wireless.android.sdk.stats.LiveEditEvent.Device.valueOf(targetDevice_);
+      return result == null ? com.google.wireless.android.sdk.stats.LiveEditEvent.Device.NONE : result;
+    }
+    /**
+     * <code>optional .android_studio.LiveEditEvent.Device target_device = 7;</code>
+     * @param value The targetDevice to set.
+     * @return This builder for chaining.
+     */
+    public Builder setTargetDevice(com.google.wireless.android.sdk.stats.LiveEditEvent.Device value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00000040;
+      targetDevice_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional .android_studio.LiveEditEvent.Device target_device = 7;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearTargetDevice() {
+      bitField0_ = (bitField0_ & ~0x00000040);
+      targetDevice_ = 0;
       onChanged();
       return this;
     }

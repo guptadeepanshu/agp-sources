@@ -40,6 +40,7 @@ data class Module(
          * separates the group from the name.  If the string has zero, or more than one, colon,
          * return `null`.
          */
+        @JvmStatic
         fun tryParse(string: String) = string
             .takeIf { s -> s.count { it == ':' } == 1 }
             ?.run { Module(substring(0, indexOf(':')), substring(indexOf(':') + 1)) }
@@ -50,6 +51,7 @@ data class Module(
          *
          * @throws IllegalArgumentException
          */
+        @JvmStatic
         fun parse(string: String): Module =
             tryParse(string) ?: throw IllegalArgumentException("Invalid module: `$string`")
     }

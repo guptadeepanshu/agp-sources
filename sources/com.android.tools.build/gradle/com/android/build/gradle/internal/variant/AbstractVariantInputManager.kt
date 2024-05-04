@@ -119,12 +119,24 @@ abstract class AbstractVariantInputManager<
                 )
             } else null
 
+        val screenshotTestEnabled = dslServices.projectOptions[BooleanOption.ENABLE_SCREENSHOT_TEST]
+        val screenshotTestSourceSet = if (screenshotTestEnabled) {
+            if (componentType.hasTestComponents) {
+                sourceSetManager.setUpTestSourceSet(
+                    computeSourceSetName(
+                        buildType.name, ComponentTypeImpl.SCREENSHOT_TEST
+                    )
+                )
+            } else null
+        } else null
+
         buildTypes[name] = BuildTypeData(
             buildType = buildType,
             sourceSet = sourceSetManager.setUpSourceSet(buildType.name).get(),
             testFixturesSourceSet = testFixturesSourceSet,
             androidTestSourceSet = androidTestSourceSet,
             unitTestSourceSet = unitTestSourceSet,
+            screenshotTestSourceSet = screenshotTestSourceSet,
             lazySourceSetCreation = dslServices.projectOptions[BooleanOption.ENABLE_NEW_TEST_DSL]
         )
     }
@@ -146,6 +158,7 @@ abstract class AbstractVariantInputManager<
         var testFixturesSourceSet: LazyAndroidSourceSet? = null
         var androidTestSourceSet: LazyAndroidSourceSet? = null
         var unitTestSourceSet: LazyAndroidSourceSet? = null
+        var screenshotTestSourceSet: LazyAndroidSourceSet? = null
         if (componentType.hasTestComponents) {
             androidTestSourceSet = sourceSetManager.setUpTestSourceSet(
                 computeSourceSetName(
@@ -162,6 +175,14 @@ abstract class AbstractVariantInputManager<
                     productFlavor.name, ComponentTypeImpl.TEST_FIXTURES
                 )
             )
+            val screenshotTestEnabled = dslServices.projectOptions[BooleanOption.ENABLE_SCREENSHOT_TEST]
+            screenshotTestSourceSet = if (screenshotTestEnabled) {
+                sourceSetManager.setUpSourceSet(
+                    computeSourceSetName(
+                        productFlavor.name, ComponentTypeImpl.SCREENSHOT_TEST
+                    )
+                )
+            } else null
         }
         val productFlavorData =
             ProductFlavorData(
@@ -170,6 +191,7 @@ abstract class AbstractVariantInputManager<
                 testFixturesSourceSet = testFixturesSourceSet,
                 androidTestSourceSet = androidTestSourceSet,
                 unitTestSourceSet = unitTestSourceSet,
+                screenshotTestSourceSet = screenshotTestSourceSet,
                 lazySourceSetCreation = dslServices.projectOptions[BooleanOption.ENABLE_NEW_TEST_DSL]
             )
         productFlavors[productFlavor.name] = productFlavorData

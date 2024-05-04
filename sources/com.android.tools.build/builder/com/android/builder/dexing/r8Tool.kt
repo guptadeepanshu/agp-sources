@@ -105,7 +105,6 @@ fun runR8(
     libConfiguration: String? = null,
     inputArtProfile: Path? = null,
     outputArtProfile: Path? = null,
-    enableMinimalStartupOptimization: Boolean = false,
     inputProfileForDexStartupOptimization: Path? = null,
 ) {
     val logger: Logger = Logger.getLogger("R8")
@@ -317,13 +316,11 @@ fun runR8(
             wireArtProfileRewriting(r8CommandBuilder, input, outputArtProfile)
         }
     }
-    if (enableMinimalStartupOptimization) {
-        if (inputProfileForDexStartupOptimization == null) {
-            logger.info("'android.experimental.r8.dex-startup-optimization' " +
-                "is enabled but there are no baseline profile source files in this project.")
-        } else {
-            wireMinimalStartupOptimization(r8CommandBuilder, inputProfileForDexStartupOptimization)
-        }
+
+    // Add startup profile if exists
+    if (inputProfileForDexStartupOptimization != null &&
+        inputProfileForDexStartupOptimization.toFile().exists()) {
+        wireMinimalStartupOptimization(r8CommandBuilder, inputProfileForDexStartupOptimization)
     }
 
     // Enable workarounds for missing library APIs in R8 (see b/231547906).

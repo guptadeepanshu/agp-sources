@@ -9,7 +9,7 @@ package com.google.wireless.android.sdk.stats;
  * Each string field of this message holds the exact version of the given
  * library (e.g. "1.0.0") that the field name represents. The field is populated
  * only if this project uses the given library.
- * Next ID: 42
+ * Next ID: 44
  * </pre>
  *
  * Protobuf type {@code android_studio.TestLibraries}
@@ -48,6 +48,8 @@ private static final long serialVersionUID = 0L;
     espressoIdlingResourceVersion_ = "";
     espressoAccessibilityVersion_ = "";
     espressoDeviceVersion_ = "";
+    testServicesStorageVersion_ = "";
+    testServicesTestServicesVersion_ = "";
     fragmentTestingVersion_ = "";
     benchmarkCommonVersion_ = "";
     benchmarkJunit4Version_ = "";
@@ -1534,6 +1536,126 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int TEST_SERVICES_STORAGE_VERSION_FIELD_NUMBER = 42;
+  private volatile java.lang.Object testServicesStorageVersion_;
+  /**
+   * <pre>
+   * "androidx.test.services:storage"
+   * </pre>
+   *
+   * <code>optional string test_services_storage_version = 42;</code>
+   * @return Whether the testServicesStorageVersion field is set.
+   */
+  @java.lang.Override
+  public boolean hasTestServicesStorageVersion() {
+    return ((bitField0_ & 0x01000000) != 0);
+  }
+  /**
+   * <pre>
+   * "androidx.test.services:storage"
+   * </pre>
+   *
+   * <code>optional string test_services_storage_version = 42;</code>
+   * @return The testServicesStorageVersion.
+   */
+  @java.lang.Override
+  public java.lang.String getTestServicesStorageVersion() {
+    java.lang.Object ref = testServicesStorageVersion_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      if (bs.isValidUtf8()) {
+        testServicesStorageVersion_ = s;
+      }
+      return s;
+    }
+  }
+  /**
+   * <pre>
+   * "androidx.test.services:storage"
+   * </pre>
+   *
+   * <code>optional string test_services_storage_version = 42;</code>
+   * @return The bytes for testServicesStorageVersion.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getTestServicesStorageVersionBytes() {
+    java.lang.Object ref = testServicesStorageVersion_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      testServicesStorageVersion_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int TEST_SERVICES_TEST_SERVICES_VERSION_FIELD_NUMBER = 43;
+  private volatile java.lang.Object testServicesTestServicesVersion_;
+  /**
+   * <pre>
+   * "androidx.test.services:test-services"
+   * </pre>
+   *
+   * <code>optional string test_services_test_services_version = 43;</code>
+   * @return Whether the testServicesTestServicesVersion field is set.
+   */
+  @java.lang.Override
+  public boolean hasTestServicesTestServicesVersion() {
+    return ((bitField0_ & 0x02000000) != 0);
+  }
+  /**
+   * <pre>
+   * "androidx.test.services:test-services"
+   * </pre>
+   *
+   * <code>optional string test_services_test_services_version = 43;</code>
+   * @return The testServicesTestServicesVersion.
+   */
+  @java.lang.Override
+  public java.lang.String getTestServicesTestServicesVersion() {
+    java.lang.Object ref = testServicesTestServicesVersion_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      if (bs.isValidUtf8()) {
+        testServicesTestServicesVersion_ = s;
+      }
+      return s;
+    }
+  }
+  /**
+   * <pre>
+   * "androidx.test.services:test-services"
+   * </pre>
+   *
+   * <code>optional string test_services_test_services_version = 43;</code>
+   * @return The bytes for testServicesTestServicesVersion.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getTestServicesTestServicesVersionBytes() {
+    java.lang.Object ref = testServicesTestServicesVersion_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      testServicesTestServicesVersion_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   public static final int FRAGMENT_TESTING_VERSION_FIELD_NUMBER = 17;
   private volatile java.lang.Object fragmentTestingVersion_;
   /**
@@ -1546,7 +1668,7 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public boolean hasFragmentTestingVersion() {
-    return ((bitField0_ & 0x01000000) != 0);
+    return ((bitField0_ & 0x04000000) != 0);
   }
   /**
    * <pre>
@@ -1606,7 +1728,7 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public boolean hasBenchmarkCommonVersion() {
-    return ((bitField0_ & 0x02000000) != 0);
+    return ((bitField0_ & 0x08000000) != 0);
   }
   /**
    * <pre>
@@ -1666,7 +1788,7 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public boolean hasBenchmarkJunit4Version() {
-    return ((bitField0_ & 0x04000000) != 0);
+    return ((bitField0_ & 0x10000000) != 0);
   }
   /**
    * <pre>
@@ -1726,7 +1848,7 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public boolean hasBenchmarkMacroVersion() {
-    return ((bitField0_ & 0x08000000) != 0);
+    return ((bitField0_ & 0x20000000) != 0);
   }
   /**
    * <pre>
@@ -1786,7 +1908,7 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public boolean hasBenchmarkMacroJunit4Version() {
-    return ((bitField0_ & 0x10000000) != 0);
+    return ((bitField0_ & 0x40000000) != 0);
   }
   /**
    * <pre>
@@ -1846,7 +1968,7 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public boolean hasComposeUiTestVersion() {
-    return ((bitField0_ & 0x20000000) != 0);
+    return ((bitField0_ & 0x80000000) != 0);
   }
   /**
    * <pre>
@@ -1906,7 +2028,7 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public boolean hasComposeUiTestJunit4Version() {
-    return ((bitField0_ & 0x40000000) != 0);
+    return ((bitField1_ & 0x00000001) != 0);
   }
   /**
    * <pre>
@@ -1966,7 +2088,7 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public boolean hasComposeUiTestManifestVersion() {
-    return ((bitField0_ & 0x80000000) != 0);
+    return ((bitField1_ & 0x00000002) != 0);
   }
   /**
    * <pre>
@@ -2026,7 +2148,7 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public boolean hasRobolectricVersion() {
-    return ((bitField1_ & 0x00000001) != 0);
+    return ((bitField1_ & 0x00000004) != 0);
   }
   /**
    * <pre>
@@ -2086,7 +2208,7 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public boolean hasMockitoVersion() {
-    return ((bitField1_ & 0x00000002) != 0);
+    return ((bitField1_ & 0x00000008) != 0);
   }
   /**
    * <pre>
@@ -2146,7 +2268,7 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public boolean hasJunitVersion() {
-    return ((bitField1_ & 0x00000004) != 0);
+    return ((bitField1_ & 0x00000010) != 0);
   }
   /**
    * <pre>
@@ -2206,7 +2328,7 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public boolean hasTruthVersion() {
-    return ((bitField1_ & 0x00000008) != 0);
+    return ((bitField1_ & 0x00000020) != 0);
   }
   /**
    * <pre>
@@ -2266,7 +2388,7 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public boolean hasTestNgVersion() {
-    return ((bitField1_ & 0x00000010) != 0);
+    return ((bitField1_ & 0x00000040) != 0);
   }
   /**
    * <pre>
@@ -2326,7 +2448,7 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public boolean hasJunitPlatformLauncherVersion() {
-    return ((bitField1_ & 0x00000020) != 0);
+    return ((bitField1_ & 0x00000080) != 0);
   }
   /**
    * <pre>
@@ -2386,7 +2508,7 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public boolean hasJunitPlatformRunnerVersion() {
-    return ((bitField1_ & 0x00000040) != 0);
+    return ((bitField1_ & 0x00000100) != 0);
   }
   /**
    * <pre>
@@ -2446,7 +2568,7 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public boolean hasJunitJupiterVersion() {
-    return ((bitField1_ & 0x00000080) != 0);
+    return ((bitField1_ & 0x00000200) != 0);
   }
   /**
    * <pre>
@@ -2506,7 +2628,7 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public boolean hasJunitVintageEngineVersion() {
-    return ((bitField1_ & 0x00000100) != 0);
+    return ((bitField1_ & 0x00000400) != 0);
   }
   /**
    * <pre>
@@ -2574,10 +2696,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00020000) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 2, espressoVersion_);
     }
-    if (((bitField1_ & 0x00000001) != 0)) {
+    if (((bitField1_ & 0x00000004) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 3, robolectricVersion_);
     }
-    if (((bitField1_ & 0x00000002) != 0)) {
+    if (((bitField1_ & 0x00000008) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 4, mockitoVersion_);
     }
     if (((bitField0_ & 0x00040000) != 0)) {
@@ -2616,19 +2738,19 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00010000) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 16, testExtTruthVersion_);
     }
-    if (((bitField0_ & 0x01000000) != 0)) {
+    if (((bitField0_ & 0x04000000) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 17, fragmentTestingVersion_);
     }
-    if (((bitField1_ & 0x00000004) != 0)) {
+    if (((bitField1_ & 0x00000010) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 18, junitVersion_);
     }
-    if (((bitField1_ & 0x00000008) != 0)) {
+    if (((bitField1_ & 0x00000020) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 19, truthVersion_);
     }
-    if (((bitField0_ & 0x02000000) != 0)) {
+    if (((bitField0_ & 0x08000000) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 20, benchmarkCommonVersion_);
     }
-    if (((bitField0_ & 0x04000000) != 0)) {
+    if (((bitField0_ & 0x10000000) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 21, benchmarkJunit4Version_);
     }
     if (((bitField0_ & 0x00000002) != 0)) {
@@ -2658,38 +2780,44 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000100) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 30, testSupportEspressoAccessibilityVersion_);
     }
-    if (((bitField0_ & 0x08000000) != 0)) {
+    if (((bitField0_ & 0x20000000) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 31, benchmarkMacroVersion_);
     }
-    if (((bitField0_ & 0x10000000) != 0)) {
+    if (((bitField0_ & 0x40000000) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 32, benchmarkMacroJunit4Version_);
     }
-    if (((bitField1_ & 0x00000010) != 0)) {
+    if (((bitField1_ & 0x00000040) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 33, testNgVersion_);
     }
-    if (((bitField1_ & 0x00000020) != 0)) {
+    if (((bitField1_ & 0x00000080) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 34, junitPlatformLauncherVersion_);
     }
-    if (((bitField1_ & 0x00000040) != 0)) {
+    if (((bitField1_ & 0x00000100) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 35, junitPlatformRunnerVersion_);
     }
-    if (((bitField1_ & 0x00000080) != 0)) {
+    if (((bitField1_ & 0x00000200) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 36, junitJupiterVersion_);
     }
-    if (((bitField1_ & 0x00000100) != 0)) {
+    if (((bitField1_ & 0x00000400) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 37, junitVintageEngineVersion_);
     }
-    if (((bitField0_ & 0x20000000) != 0)) {
+    if (((bitField0_ & 0x80000000) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 38, composeUiTestVersion_);
     }
-    if (((bitField0_ & 0x40000000) != 0)) {
+    if (((bitField1_ & 0x00000001) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 39, composeUiTestJunit4Version_);
     }
-    if (((bitField0_ & 0x80000000) != 0)) {
+    if (((bitField1_ & 0x00000002) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 40, composeUiTestManifestVersion_);
     }
     if (((bitField0_ & 0x00800000) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 41, espressoDeviceVersion_);
+    }
+    if (((bitField0_ & 0x01000000) != 0)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 42, testServicesStorageVersion_);
+    }
+    if (((bitField0_ & 0x02000000) != 0)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 43, testServicesTestServicesVersion_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -2706,10 +2834,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00020000) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, espressoVersion_);
     }
-    if (((bitField1_ & 0x00000001) != 0)) {
+    if (((bitField1_ & 0x00000004) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, robolectricVersion_);
     }
-    if (((bitField1_ & 0x00000002) != 0)) {
+    if (((bitField1_ & 0x00000008) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, mockitoVersion_);
     }
     if (((bitField0_ & 0x00040000) != 0)) {
@@ -2748,19 +2876,19 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00010000) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(16, testExtTruthVersion_);
     }
-    if (((bitField0_ & 0x01000000) != 0)) {
+    if (((bitField0_ & 0x04000000) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(17, fragmentTestingVersion_);
     }
-    if (((bitField1_ & 0x00000004) != 0)) {
+    if (((bitField1_ & 0x00000010) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(18, junitVersion_);
     }
-    if (((bitField1_ & 0x00000008) != 0)) {
+    if (((bitField1_ & 0x00000020) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(19, truthVersion_);
     }
-    if (((bitField0_ & 0x02000000) != 0)) {
+    if (((bitField0_ & 0x08000000) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(20, benchmarkCommonVersion_);
     }
-    if (((bitField0_ & 0x04000000) != 0)) {
+    if (((bitField0_ & 0x10000000) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(21, benchmarkJunit4Version_);
     }
     if (((bitField0_ & 0x00000002) != 0)) {
@@ -2790,38 +2918,44 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000100) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(30, testSupportEspressoAccessibilityVersion_);
     }
-    if (((bitField0_ & 0x08000000) != 0)) {
+    if (((bitField0_ & 0x20000000) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(31, benchmarkMacroVersion_);
     }
-    if (((bitField0_ & 0x10000000) != 0)) {
+    if (((bitField0_ & 0x40000000) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(32, benchmarkMacroJunit4Version_);
     }
-    if (((bitField1_ & 0x00000010) != 0)) {
+    if (((bitField1_ & 0x00000040) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(33, testNgVersion_);
     }
-    if (((bitField1_ & 0x00000020) != 0)) {
+    if (((bitField1_ & 0x00000080) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(34, junitPlatformLauncherVersion_);
     }
-    if (((bitField1_ & 0x00000040) != 0)) {
+    if (((bitField1_ & 0x00000100) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(35, junitPlatformRunnerVersion_);
     }
-    if (((bitField1_ & 0x00000080) != 0)) {
+    if (((bitField1_ & 0x00000200) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(36, junitJupiterVersion_);
     }
-    if (((bitField1_ & 0x00000100) != 0)) {
+    if (((bitField1_ & 0x00000400) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(37, junitVintageEngineVersion_);
     }
-    if (((bitField0_ & 0x20000000) != 0)) {
+    if (((bitField0_ & 0x80000000) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(38, composeUiTestVersion_);
     }
-    if (((bitField0_ & 0x40000000) != 0)) {
+    if (((bitField1_ & 0x00000001) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(39, composeUiTestJunit4Version_);
     }
-    if (((bitField0_ & 0x80000000) != 0)) {
+    if (((bitField1_ & 0x00000002) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(40, composeUiTestManifestVersion_);
     }
     if (((bitField0_ & 0x00800000) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(41, espressoDeviceVersion_);
+    }
+    if (((bitField0_ & 0x01000000) != 0)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(42, testServicesStorageVersion_);
+    }
+    if (((bitField0_ & 0x02000000) != 0)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(43, testServicesTestServicesVersion_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -2957,6 +3091,16 @@ private static final long serialVersionUID = 0L;
     if (hasEspressoDeviceVersion()) {
       if (!getEspressoDeviceVersion()
           .equals(other.getEspressoDeviceVersion())) return false;
+    }
+    if (hasTestServicesStorageVersion() != other.hasTestServicesStorageVersion()) return false;
+    if (hasTestServicesStorageVersion()) {
+      if (!getTestServicesStorageVersion()
+          .equals(other.getTestServicesStorageVersion())) return false;
+    }
+    if (hasTestServicesTestServicesVersion() != other.hasTestServicesTestServicesVersion()) return false;
+    if (hasTestServicesTestServicesVersion()) {
+      if (!getTestServicesTestServicesVersion()
+          .equals(other.getTestServicesTestServicesVersion())) return false;
     }
     if (hasFragmentTestingVersion() != other.hasFragmentTestingVersion()) return false;
     if (hasFragmentTestingVersion()) {
@@ -3150,6 +3294,14 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + ESPRESSO_DEVICE_VERSION_FIELD_NUMBER;
       hash = (53 * hash) + getEspressoDeviceVersion().hashCode();
     }
+    if (hasTestServicesStorageVersion()) {
+      hash = (37 * hash) + TEST_SERVICES_STORAGE_VERSION_FIELD_NUMBER;
+      hash = (53 * hash) + getTestServicesStorageVersion().hashCode();
+    }
+    if (hasTestServicesTestServicesVersion()) {
+      hash = (37 * hash) + TEST_SERVICES_TEST_SERVICES_VERSION_FIELD_NUMBER;
+      hash = (53 * hash) + getTestServicesTestServicesVersion().hashCode();
+    }
     if (hasFragmentTestingVersion()) {
       hash = (37 * hash) + FRAGMENT_TESTING_VERSION_FIELD_NUMBER;
       hash = (53 * hash) + getFragmentTestingVersion().hashCode();
@@ -3319,7 +3471,7 @@ private static final long serialVersionUID = 0L;
    * Each string field of this message holds the exact version of the given
    * library (e.g. "1.0.0") that the field name represents. The field is populated
    * only if this project uses the given library.
-   * Next ID: 42
+   * Next ID: 44
    * </pre>
    *
    * Protobuf type {@code android_studio.TestLibraries}
@@ -3402,40 +3554,44 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00400000);
       espressoDeviceVersion_ = "";
       bitField0_ = (bitField0_ & ~0x00800000);
-      fragmentTestingVersion_ = "";
+      testServicesStorageVersion_ = "";
       bitField0_ = (bitField0_ & ~0x01000000);
-      benchmarkCommonVersion_ = "";
+      testServicesTestServicesVersion_ = "";
       bitField0_ = (bitField0_ & ~0x02000000);
-      benchmarkJunit4Version_ = "";
+      fragmentTestingVersion_ = "";
       bitField0_ = (bitField0_ & ~0x04000000);
-      benchmarkMacroVersion_ = "";
+      benchmarkCommonVersion_ = "";
       bitField0_ = (bitField0_ & ~0x08000000);
-      benchmarkMacroJunit4Version_ = "";
+      benchmarkJunit4Version_ = "";
       bitField0_ = (bitField0_ & ~0x10000000);
-      composeUiTestVersion_ = "";
+      benchmarkMacroVersion_ = "";
       bitField0_ = (bitField0_ & ~0x20000000);
-      composeUiTestJunit4Version_ = "";
+      benchmarkMacroJunit4Version_ = "";
       bitField0_ = (bitField0_ & ~0x40000000);
-      composeUiTestManifestVersion_ = "";
+      composeUiTestVersion_ = "";
       bitField0_ = (bitField0_ & ~0x80000000);
-      robolectricVersion_ = "";
+      composeUiTestJunit4Version_ = "";
       bitField1_ = (bitField1_ & ~0x00000001);
-      mockitoVersion_ = "";
+      composeUiTestManifestVersion_ = "";
       bitField1_ = (bitField1_ & ~0x00000002);
-      junitVersion_ = "";
+      robolectricVersion_ = "";
       bitField1_ = (bitField1_ & ~0x00000004);
-      truthVersion_ = "";
+      mockitoVersion_ = "";
       bitField1_ = (bitField1_ & ~0x00000008);
-      testNgVersion_ = "";
+      junitVersion_ = "";
       bitField1_ = (bitField1_ & ~0x00000010);
-      junitPlatformLauncherVersion_ = "";
+      truthVersion_ = "";
       bitField1_ = (bitField1_ & ~0x00000020);
-      junitPlatformRunnerVersion_ = "";
+      testNgVersion_ = "";
       bitField1_ = (bitField1_ & ~0x00000040);
-      junitJupiterVersion_ = "";
+      junitPlatformLauncherVersion_ = "";
       bitField1_ = (bitField1_ & ~0x00000080);
-      junitVintageEngineVersion_ = "";
+      junitPlatformRunnerVersion_ = "";
       bitField1_ = (bitField1_ & ~0x00000100);
+      junitJupiterVersion_ = "";
+      bitField1_ = (bitField1_ & ~0x00000200);
+      junitVintageEngineVersion_ = "";
+      bitField1_ = (bitField1_ & ~0x00000400);
       return this;
     }
 
@@ -3565,69 +3721,77 @@ private static final long serialVersionUID = 0L;
       if (((from_bitField0_ & 0x01000000) != 0)) {
         to_bitField0_ |= 0x01000000;
       }
-      result.fragmentTestingVersion_ = fragmentTestingVersion_;
+      result.testServicesStorageVersion_ = testServicesStorageVersion_;
       if (((from_bitField0_ & 0x02000000) != 0)) {
         to_bitField0_ |= 0x02000000;
       }
-      result.benchmarkCommonVersion_ = benchmarkCommonVersion_;
+      result.testServicesTestServicesVersion_ = testServicesTestServicesVersion_;
       if (((from_bitField0_ & 0x04000000) != 0)) {
         to_bitField0_ |= 0x04000000;
       }
-      result.benchmarkJunit4Version_ = benchmarkJunit4Version_;
+      result.fragmentTestingVersion_ = fragmentTestingVersion_;
       if (((from_bitField0_ & 0x08000000) != 0)) {
         to_bitField0_ |= 0x08000000;
       }
-      result.benchmarkMacroVersion_ = benchmarkMacroVersion_;
+      result.benchmarkCommonVersion_ = benchmarkCommonVersion_;
       if (((from_bitField0_ & 0x10000000) != 0)) {
         to_bitField0_ |= 0x10000000;
       }
-      result.benchmarkMacroJunit4Version_ = benchmarkMacroJunit4Version_;
+      result.benchmarkJunit4Version_ = benchmarkJunit4Version_;
       if (((from_bitField0_ & 0x20000000) != 0)) {
         to_bitField0_ |= 0x20000000;
       }
-      result.composeUiTestVersion_ = composeUiTestVersion_;
+      result.benchmarkMacroVersion_ = benchmarkMacroVersion_;
       if (((from_bitField0_ & 0x40000000) != 0)) {
         to_bitField0_ |= 0x40000000;
       }
-      result.composeUiTestJunit4Version_ = composeUiTestJunit4Version_;
+      result.benchmarkMacroJunit4Version_ = benchmarkMacroJunit4Version_;
       if (((from_bitField0_ & 0x80000000) != 0)) {
         to_bitField0_ |= 0x80000000;
       }
-      result.composeUiTestManifestVersion_ = composeUiTestManifestVersion_;
+      result.composeUiTestVersion_ = composeUiTestVersion_;
       if (((from_bitField1_ & 0x00000001) != 0)) {
         to_bitField1_ |= 0x00000001;
       }
-      result.robolectricVersion_ = robolectricVersion_;
+      result.composeUiTestJunit4Version_ = composeUiTestJunit4Version_;
       if (((from_bitField1_ & 0x00000002) != 0)) {
         to_bitField1_ |= 0x00000002;
       }
-      result.mockitoVersion_ = mockitoVersion_;
+      result.composeUiTestManifestVersion_ = composeUiTestManifestVersion_;
       if (((from_bitField1_ & 0x00000004) != 0)) {
         to_bitField1_ |= 0x00000004;
       }
-      result.junitVersion_ = junitVersion_;
+      result.robolectricVersion_ = robolectricVersion_;
       if (((from_bitField1_ & 0x00000008) != 0)) {
         to_bitField1_ |= 0x00000008;
       }
-      result.truthVersion_ = truthVersion_;
+      result.mockitoVersion_ = mockitoVersion_;
       if (((from_bitField1_ & 0x00000010) != 0)) {
         to_bitField1_ |= 0x00000010;
       }
-      result.testNgVersion_ = testNgVersion_;
+      result.junitVersion_ = junitVersion_;
       if (((from_bitField1_ & 0x00000020) != 0)) {
         to_bitField1_ |= 0x00000020;
       }
-      result.junitPlatformLauncherVersion_ = junitPlatformLauncherVersion_;
+      result.truthVersion_ = truthVersion_;
       if (((from_bitField1_ & 0x00000040) != 0)) {
         to_bitField1_ |= 0x00000040;
       }
-      result.junitPlatformRunnerVersion_ = junitPlatformRunnerVersion_;
+      result.testNgVersion_ = testNgVersion_;
       if (((from_bitField1_ & 0x00000080) != 0)) {
         to_bitField1_ |= 0x00000080;
       }
-      result.junitJupiterVersion_ = junitJupiterVersion_;
+      result.junitPlatformLauncherVersion_ = junitPlatformLauncherVersion_;
       if (((from_bitField1_ & 0x00000100) != 0)) {
         to_bitField1_ |= 0x00000100;
+      }
+      result.junitPlatformRunnerVersion_ = junitPlatformRunnerVersion_;
+      if (((from_bitField1_ & 0x00000200) != 0)) {
+        to_bitField1_ |= 0x00000200;
+      }
+      result.junitJupiterVersion_ = junitJupiterVersion_;
+      if (((from_bitField1_ & 0x00000400) != 0)) {
+        to_bitField1_ |= 0x00000400;
       }
       result.junitVintageEngineVersion_ = junitVintageEngineVersion_;
       result.bitField0_ = to_bitField0_;
@@ -3800,88 +3964,98 @@ private static final long serialVersionUID = 0L;
         espressoDeviceVersion_ = other.espressoDeviceVersion_;
         onChanged();
       }
-      if (other.hasFragmentTestingVersion()) {
+      if (other.hasTestServicesStorageVersion()) {
         bitField0_ |= 0x01000000;
+        testServicesStorageVersion_ = other.testServicesStorageVersion_;
+        onChanged();
+      }
+      if (other.hasTestServicesTestServicesVersion()) {
+        bitField0_ |= 0x02000000;
+        testServicesTestServicesVersion_ = other.testServicesTestServicesVersion_;
+        onChanged();
+      }
+      if (other.hasFragmentTestingVersion()) {
+        bitField0_ |= 0x04000000;
         fragmentTestingVersion_ = other.fragmentTestingVersion_;
         onChanged();
       }
       if (other.hasBenchmarkCommonVersion()) {
-        bitField0_ |= 0x02000000;
+        bitField0_ |= 0x08000000;
         benchmarkCommonVersion_ = other.benchmarkCommonVersion_;
         onChanged();
       }
       if (other.hasBenchmarkJunit4Version()) {
-        bitField0_ |= 0x04000000;
+        bitField0_ |= 0x10000000;
         benchmarkJunit4Version_ = other.benchmarkJunit4Version_;
         onChanged();
       }
       if (other.hasBenchmarkMacroVersion()) {
-        bitField0_ |= 0x08000000;
+        bitField0_ |= 0x20000000;
         benchmarkMacroVersion_ = other.benchmarkMacroVersion_;
         onChanged();
       }
       if (other.hasBenchmarkMacroJunit4Version()) {
-        bitField0_ |= 0x10000000;
+        bitField0_ |= 0x40000000;
         benchmarkMacroJunit4Version_ = other.benchmarkMacroJunit4Version_;
         onChanged();
       }
       if (other.hasComposeUiTestVersion()) {
-        bitField0_ |= 0x20000000;
+        bitField0_ |= 0x80000000;
         composeUiTestVersion_ = other.composeUiTestVersion_;
         onChanged();
       }
       if (other.hasComposeUiTestJunit4Version()) {
-        bitField0_ |= 0x40000000;
+        bitField1_ |= 0x00000001;
         composeUiTestJunit4Version_ = other.composeUiTestJunit4Version_;
         onChanged();
       }
       if (other.hasComposeUiTestManifestVersion()) {
-        bitField0_ |= 0x80000000;
+        bitField1_ |= 0x00000002;
         composeUiTestManifestVersion_ = other.composeUiTestManifestVersion_;
         onChanged();
       }
       if (other.hasRobolectricVersion()) {
-        bitField1_ |= 0x00000001;
+        bitField1_ |= 0x00000004;
         robolectricVersion_ = other.robolectricVersion_;
         onChanged();
       }
       if (other.hasMockitoVersion()) {
-        bitField1_ |= 0x00000002;
+        bitField1_ |= 0x00000008;
         mockitoVersion_ = other.mockitoVersion_;
         onChanged();
       }
       if (other.hasJunitVersion()) {
-        bitField1_ |= 0x00000004;
+        bitField1_ |= 0x00000010;
         junitVersion_ = other.junitVersion_;
         onChanged();
       }
       if (other.hasTruthVersion()) {
-        bitField1_ |= 0x00000008;
+        bitField1_ |= 0x00000020;
         truthVersion_ = other.truthVersion_;
         onChanged();
       }
       if (other.hasTestNgVersion()) {
-        bitField1_ |= 0x00000010;
+        bitField1_ |= 0x00000040;
         testNgVersion_ = other.testNgVersion_;
         onChanged();
       }
       if (other.hasJunitPlatformLauncherVersion()) {
-        bitField1_ |= 0x00000020;
+        bitField1_ |= 0x00000080;
         junitPlatformLauncherVersion_ = other.junitPlatformLauncherVersion_;
         onChanged();
       }
       if (other.hasJunitPlatformRunnerVersion()) {
-        bitField1_ |= 0x00000040;
+        bitField1_ |= 0x00000100;
         junitPlatformRunnerVersion_ = other.junitPlatformRunnerVersion_;
         onChanged();
       }
       if (other.hasJunitJupiterVersion()) {
-        bitField1_ |= 0x00000080;
+        bitField1_ |= 0x00000200;
         junitJupiterVersion_ = other.junitJupiterVersion_;
         onChanged();
       }
       if (other.hasJunitVintageEngineVersion()) {
-        bitField1_ |= 0x00000100;
+        bitField1_ |= 0x00000400;
         junitVintageEngineVersion_ = other.junitVintageEngineVersion_;
         onChanged();
       }
@@ -3923,12 +4097,12 @@ private static final long serialVersionUID = 0L;
             } // case 18
             case 26: {
               robolectricVersion_ = input.readBytes();
-              bitField1_ |= 0x00000001;
+              bitField1_ |= 0x00000004;
               break;
             } // case 26
             case 34: {
               mockitoVersion_ = input.readBytes();
-              bitField1_ |= 0x00000002;
+              bitField1_ |= 0x00000008;
               break;
             } // case 34
             case 42: {
@@ -3993,27 +4167,27 @@ private static final long serialVersionUID = 0L;
             } // case 130
             case 138: {
               fragmentTestingVersion_ = input.readBytes();
-              bitField0_ |= 0x01000000;
+              bitField0_ |= 0x04000000;
               break;
             } // case 138
             case 146: {
               junitVersion_ = input.readBytes();
-              bitField1_ |= 0x00000004;
+              bitField1_ |= 0x00000010;
               break;
             } // case 146
             case 154: {
               truthVersion_ = input.readBytes();
-              bitField1_ |= 0x00000008;
+              bitField1_ |= 0x00000020;
               break;
             } // case 154
             case 162: {
               benchmarkCommonVersion_ = input.readBytes();
-              bitField0_ |= 0x02000000;
+              bitField0_ |= 0x08000000;
               break;
             } // case 162
             case 170: {
               benchmarkJunit4Version_ = input.readBytes();
-              bitField0_ |= 0x04000000;
+              bitField0_ |= 0x10000000;
               break;
             } // case 170
             case 178: {
@@ -4063,52 +4237,52 @@ private static final long serialVersionUID = 0L;
             } // case 242
             case 250: {
               benchmarkMacroVersion_ = input.readBytes();
-              bitField0_ |= 0x08000000;
+              bitField0_ |= 0x20000000;
               break;
             } // case 250
             case 258: {
               benchmarkMacroJunit4Version_ = input.readBytes();
-              bitField0_ |= 0x10000000;
+              bitField0_ |= 0x40000000;
               break;
             } // case 258
             case 266: {
               testNgVersion_ = input.readBytes();
-              bitField1_ |= 0x00000010;
+              bitField1_ |= 0x00000040;
               break;
             } // case 266
             case 274: {
               junitPlatformLauncherVersion_ = input.readBytes();
-              bitField1_ |= 0x00000020;
+              bitField1_ |= 0x00000080;
               break;
             } // case 274
             case 282: {
               junitPlatformRunnerVersion_ = input.readBytes();
-              bitField1_ |= 0x00000040;
+              bitField1_ |= 0x00000100;
               break;
             } // case 282
             case 290: {
               junitJupiterVersion_ = input.readBytes();
-              bitField1_ |= 0x00000080;
+              bitField1_ |= 0x00000200;
               break;
             } // case 290
             case 298: {
               junitVintageEngineVersion_ = input.readBytes();
-              bitField1_ |= 0x00000100;
+              bitField1_ |= 0x00000400;
               break;
             } // case 298
             case 306: {
               composeUiTestVersion_ = input.readBytes();
-              bitField0_ |= 0x20000000;
+              bitField0_ |= 0x80000000;
               break;
             } // case 306
             case 314: {
               composeUiTestJunit4Version_ = input.readBytes();
-              bitField0_ |= 0x40000000;
+              bitField1_ |= 0x00000001;
               break;
             } // case 314
             case 322: {
               composeUiTestManifestVersion_ = input.readBytes();
-              bitField0_ |= 0x80000000;
+              bitField1_ |= 0x00000002;
               break;
             } // case 322
             case 330: {
@@ -4116,6 +4290,16 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00800000;
               break;
             } // case 330
+            case 338: {
+              testServicesStorageVersion_ = input.readBytes();
+              bitField0_ |= 0x01000000;
+              break;
+            } // case 338
+            case 346: {
+              testServicesTestServicesVersion_ = input.readBytes();
+              bitField0_ |= 0x02000000;
+              break;
+            } // case 346
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -6726,6 +6910,222 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
+    private java.lang.Object testServicesStorageVersion_ = "";
+    /**
+     * <pre>
+     * "androidx.test.services:storage"
+     * </pre>
+     *
+     * <code>optional string test_services_storage_version = 42;</code>
+     * @return Whether the testServicesStorageVersion field is set.
+     */
+    public boolean hasTestServicesStorageVersion() {
+      return ((bitField0_ & 0x01000000) != 0);
+    }
+    /**
+     * <pre>
+     * "androidx.test.services:storage"
+     * </pre>
+     *
+     * <code>optional string test_services_storage_version = 42;</code>
+     * @return The testServicesStorageVersion.
+     */
+    public java.lang.String getTestServicesStorageVersion() {
+      java.lang.Object ref = testServicesStorageVersion_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          testServicesStorageVersion_ = s;
+        }
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <pre>
+     * "androidx.test.services:storage"
+     * </pre>
+     *
+     * <code>optional string test_services_storage_version = 42;</code>
+     * @return The bytes for testServicesStorageVersion.
+     */
+    public com.google.protobuf.ByteString
+        getTestServicesStorageVersionBytes() {
+      java.lang.Object ref = testServicesStorageVersion_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        testServicesStorageVersion_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <pre>
+     * "androidx.test.services:storage"
+     * </pre>
+     *
+     * <code>optional string test_services_storage_version = 42;</code>
+     * @param value The testServicesStorageVersion to set.
+     * @return This builder for chaining.
+     */
+    public Builder setTestServicesStorageVersion(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x01000000;
+      testServicesStorageVersion_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * "androidx.test.services:storage"
+     * </pre>
+     *
+     * <code>optional string test_services_storage_version = 42;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearTestServicesStorageVersion() {
+      bitField0_ = (bitField0_ & ~0x01000000);
+      testServicesStorageVersion_ = getDefaultInstance().getTestServicesStorageVersion();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * "androidx.test.services:storage"
+     * </pre>
+     *
+     * <code>optional string test_services_storage_version = 42;</code>
+     * @param value The bytes for testServicesStorageVersion to set.
+     * @return This builder for chaining.
+     */
+    public Builder setTestServicesStorageVersionBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x01000000;
+      testServicesStorageVersion_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object testServicesTestServicesVersion_ = "";
+    /**
+     * <pre>
+     * "androidx.test.services:test-services"
+     * </pre>
+     *
+     * <code>optional string test_services_test_services_version = 43;</code>
+     * @return Whether the testServicesTestServicesVersion field is set.
+     */
+    public boolean hasTestServicesTestServicesVersion() {
+      return ((bitField0_ & 0x02000000) != 0);
+    }
+    /**
+     * <pre>
+     * "androidx.test.services:test-services"
+     * </pre>
+     *
+     * <code>optional string test_services_test_services_version = 43;</code>
+     * @return The testServicesTestServicesVersion.
+     */
+    public java.lang.String getTestServicesTestServicesVersion() {
+      java.lang.Object ref = testServicesTestServicesVersion_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          testServicesTestServicesVersion_ = s;
+        }
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <pre>
+     * "androidx.test.services:test-services"
+     * </pre>
+     *
+     * <code>optional string test_services_test_services_version = 43;</code>
+     * @return The bytes for testServicesTestServicesVersion.
+     */
+    public com.google.protobuf.ByteString
+        getTestServicesTestServicesVersionBytes() {
+      java.lang.Object ref = testServicesTestServicesVersion_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        testServicesTestServicesVersion_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <pre>
+     * "androidx.test.services:test-services"
+     * </pre>
+     *
+     * <code>optional string test_services_test_services_version = 43;</code>
+     * @param value The testServicesTestServicesVersion to set.
+     * @return This builder for chaining.
+     */
+    public Builder setTestServicesTestServicesVersion(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x02000000;
+      testServicesTestServicesVersion_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * "androidx.test.services:test-services"
+     * </pre>
+     *
+     * <code>optional string test_services_test_services_version = 43;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearTestServicesTestServicesVersion() {
+      bitField0_ = (bitField0_ & ~0x02000000);
+      testServicesTestServicesVersion_ = getDefaultInstance().getTestServicesTestServicesVersion();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * "androidx.test.services:test-services"
+     * </pre>
+     *
+     * <code>optional string test_services_test_services_version = 43;</code>
+     * @param value The bytes for testServicesTestServicesVersion to set.
+     * @return This builder for chaining.
+     */
+    public Builder setTestServicesTestServicesVersionBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x02000000;
+      testServicesTestServicesVersion_ = value;
+      onChanged();
+      return this;
+    }
+
     private java.lang.Object fragmentTestingVersion_ = "";
     /**
      * <pre>
@@ -6736,7 +7136,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the fragmentTestingVersion field is set.
      */
     public boolean hasFragmentTestingVersion() {
-      return ((bitField0_ & 0x01000000) != 0);
+      return ((bitField0_ & 0x04000000) != 0);
     }
     /**
      * <pre>
@@ -6795,7 +7195,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x01000000;
+  bitField0_ |= 0x04000000;
       fragmentTestingVersion_ = value;
       onChanged();
       return this;
@@ -6809,7 +7209,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearFragmentTestingVersion() {
-      bitField0_ = (bitField0_ & ~0x01000000);
+      bitField0_ = (bitField0_ & ~0x04000000);
       fragmentTestingVersion_ = getDefaultInstance().getFragmentTestingVersion();
       onChanged();
       return this;
@@ -6828,7 +7228,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x01000000;
+  bitField0_ |= 0x04000000;
       fragmentTestingVersion_ = value;
       onChanged();
       return this;
@@ -6844,7 +7244,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the benchmarkCommonVersion field is set.
      */
     public boolean hasBenchmarkCommonVersion() {
-      return ((bitField0_ & 0x02000000) != 0);
+      return ((bitField0_ & 0x08000000) != 0);
     }
     /**
      * <pre>
@@ -6903,7 +7303,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x02000000;
+  bitField0_ |= 0x08000000;
       benchmarkCommonVersion_ = value;
       onChanged();
       return this;
@@ -6917,7 +7317,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearBenchmarkCommonVersion() {
-      bitField0_ = (bitField0_ & ~0x02000000);
+      bitField0_ = (bitField0_ & ~0x08000000);
       benchmarkCommonVersion_ = getDefaultInstance().getBenchmarkCommonVersion();
       onChanged();
       return this;
@@ -6936,7 +7336,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x02000000;
+  bitField0_ |= 0x08000000;
       benchmarkCommonVersion_ = value;
       onChanged();
       return this;
@@ -6952,7 +7352,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the benchmarkJunit4Version field is set.
      */
     public boolean hasBenchmarkJunit4Version() {
-      return ((bitField0_ & 0x04000000) != 0);
+      return ((bitField0_ & 0x10000000) != 0);
     }
     /**
      * <pre>
@@ -7011,7 +7411,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x04000000;
+  bitField0_ |= 0x10000000;
       benchmarkJunit4Version_ = value;
       onChanged();
       return this;
@@ -7025,7 +7425,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearBenchmarkJunit4Version() {
-      bitField0_ = (bitField0_ & ~0x04000000);
+      bitField0_ = (bitField0_ & ~0x10000000);
       benchmarkJunit4Version_ = getDefaultInstance().getBenchmarkJunit4Version();
       onChanged();
       return this;
@@ -7044,7 +7444,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x04000000;
+  bitField0_ |= 0x10000000;
       benchmarkJunit4Version_ = value;
       onChanged();
       return this;
@@ -7060,7 +7460,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the benchmarkMacroVersion field is set.
      */
     public boolean hasBenchmarkMacroVersion() {
-      return ((bitField0_ & 0x08000000) != 0);
+      return ((bitField0_ & 0x20000000) != 0);
     }
     /**
      * <pre>
@@ -7119,7 +7519,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x08000000;
+  bitField0_ |= 0x20000000;
       benchmarkMacroVersion_ = value;
       onChanged();
       return this;
@@ -7133,7 +7533,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearBenchmarkMacroVersion() {
-      bitField0_ = (bitField0_ & ~0x08000000);
+      bitField0_ = (bitField0_ & ~0x20000000);
       benchmarkMacroVersion_ = getDefaultInstance().getBenchmarkMacroVersion();
       onChanged();
       return this;
@@ -7152,7 +7552,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x08000000;
+  bitField0_ |= 0x20000000;
       benchmarkMacroVersion_ = value;
       onChanged();
       return this;
@@ -7168,7 +7568,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the benchmarkMacroJunit4Version field is set.
      */
     public boolean hasBenchmarkMacroJunit4Version() {
-      return ((bitField0_ & 0x10000000) != 0);
+      return ((bitField0_ & 0x40000000) != 0);
     }
     /**
      * <pre>
@@ -7227,7 +7627,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x10000000;
+  bitField0_ |= 0x40000000;
       benchmarkMacroJunit4Version_ = value;
       onChanged();
       return this;
@@ -7241,7 +7641,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearBenchmarkMacroJunit4Version() {
-      bitField0_ = (bitField0_ & ~0x10000000);
+      bitField0_ = (bitField0_ & ~0x40000000);
       benchmarkMacroJunit4Version_ = getDefaultInstance().getBenchmarkMacroJunit4Version();
       onChanged();
       return this;
@@ -7260,7 +7660,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x10000000;
+  bitField0_ |= 0x40000000;
       benchmarkMacroJunit4Version_ = value;
       onChanged();
       return this;
@@ -7276,7 +7676,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the composeUiTestVersion field is set.
      */
     public boolean hasComposeUiTestVersion() {
-      return ((bitField0_ & 0x20000000) != 0);
+      return ((bitField0_ & 0x80000000) != 0);
     }
     /**
      * <pre>
@@ -7335,7 +7735,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x20000000;
+  bitField0_ |= 0x80000000;
       composeUiTestVersion_ = value;
       onChanged();
       return this;
@@ -7349,7 +7749,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearComposeUiTestVersion() {
-      bitField0_ = (bitField0_ & ~0x20000000);
+      bitField0_ = (bitField0_ & ~0x80000000);
       composeUiTestVersion_ = getDefaultInstance().getComposeUiTestVersion();
       onChanged();
       return this;
@@ -7368,7 +7768,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x20000000;
+  bitField0_ |= 0x80000000;
       composeUiTestVersion_ = value;
       onChanged();
       return this;
@@ -7384,7 +7784,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the composeUiTestJunit4Version field is set.
      */
     public boolean hasComposeUiTestJunit4Version() {
-      return ((bitField0_ & 0x40000000) != 0);
+      return ((bitField1_ & 0x00000001) != 0);
     }
     /**
      * <pre>
@@ -7443,7 +7843,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x40000000;
+  bitField1_ |= 0x00000001;
       composeUiTestJunit4Version_ = value;
       onChanged();
       return this;
@@ -7457,7 +7857,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearComposeUiTestJunit4Version() {
-      bitField0_ = (bitField0_ & ~0x40000000);
+      bitField1_ = (bitField1_ & ~0x00000001);
       composeUiTestJunit4Version_ = getDefaultInstance().getComposeUiTestJunit4Version();
       onChanged();
       return this;
@@ -7476,7 +7876,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x40000000;
+  bitField1_ |= 0x00000001;
       composeUiTestJunit4Version_ = value;
       onChanged();
       return this;
@@ -7492,7 +7892,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the composeUiTestManifestVersion field is set.
      */
     public boolean hasComposeUiTestManifestVersion() {
-      return ((bitField0_ & 0x80000000) != 0);
+      return ((bitField1_ & 0x00000002) != 0);
     }
     /**
      * <pre>
@@ -7551,7 +7951,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x80000000;
+  bitField1_ |= 0x00000002;
       composeUiTestManifestVersion_ = value;
       onChanged();
       return this;
@@ -7565,7 +7965,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearComposeUiTestManifestVersion() {
-      bitField0_ = (bitField0_ & ~0x80000000);
+      bitField1_ = (bitField1_ & ~0x00000002);
       composeUiTestManifestVersion_ = getDefaultInstance().getComposeUiTestManifestVersion();
       onChanged();
       return this;
@@ -7584,7 +7984,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x80000000;
+  bitField1_ |= 0x00000002;
       composeUiTestManifestVersion_ = value;
       onChanged();
       return this;
@@ -7600,7 +8000,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the robolectricVersion field is set.
      */
     public boolean hasRobolectricVersion() {
-      return ((bitField1_ & 0x00000001) != 0);
+      return ((bitField1_ & 0x00000004) != 0);
     }
     /**
      * <pre>
@@ -7659,7 +8059,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000001;
+  bitField1_ |= 0x00000004;
       robolectricVersion_ = value;
       onChanged();
       return this;
@@ -7673,7 +8073,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearRobolectricVersion() {
-      bitField1_ = (bitField1_ & ~0x00000001);
+      bitField1_ = (bitField1_ & ~0x00000004);
       robolectricVersion_ = getDefaultInstance().getRobolectricVersion();
       onChanged();
       return this;
@@ -7692,7 +8092,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000001;
+  bitField1_ |= 0x00000004;
       robolectricVersion_ = value;
       onChanged();
       return this;
@@ -7708,7 +8108,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the mockitoVersion field is set.
      */
     public boolean hasMockitoVersion() {
-      return ((bitField1_ & 0x00000002) != 0);
+      return ((bitField1_ & 0x00000008) != 0);
     }
     /**
      * <pre>
@@ -7767,7 +8167,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000002;
+  bitField1_ |= 0x00000008;
       mockitoVersion_ = value;
       onChanged();
       return this;
@@ -7781,7 +8181,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearMockitoVersion() {
-      bitField1_ = (bitField1_ & ~0x00000002);
+      bitField1_ = (bitField1_ & ~0x00000008);
       mockitoVersion_ = getDefaultInstance().getMockitoVersion();
       onChanged();
       return this;
@@ -7800,7 +8200,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000002;
+  bitField1_ |= 0x00000008;
       mockitoVersion_ = value;
       onChanged();
       return this;
@@ -7816,7 +8216,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the junitVersion field is set.
      */
     public boolean hasJunitVersion() {
-      return ((bitField1_ & 0x00000004) != 0);
+      return ((bitField1_ & 0x00000010) != 0);
     }
     /**
      * <pre>
@@ -7875,7 +8275,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000004;
+  bitField1_ |= 0x00000010;
       junitVersion_ = value;
       onChanged();
       return this;
@@ -7889,7 +8289,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearJunitVersion() {
-      bitField1_ = (bitField1_ & ~0x00000004);
+      bitField1_ = (bitField1_ & ~0x00000010);
       junitVersion_ = getDefaultInstance().getJunitVersion();
       onChanged();
       return this;
@@ -7908,7 +8308,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000004;
+  bitField1_ |= 0x00000010;
       junitVersion_ = value;
       onChanged();
       return this;
@@ -7924,7 +8324,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the truthVersion field is set.
      */
     public boolean hasTruthVersion() {
-      return ((bitField1_ & 0x00000008) != 0);
+      return ((bitField1_ & 0x00000020) != 0);
     }
     /**
      * <pre>
@@ -7983,7 +8383,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000008;
+  bitField1_ |= 0x00000020;
       truthVersion_ = value;
       onChanged();
       return this;
@@ -7997,7 +8397,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearTruthVersion() {
-      bitField1_ = (bitField1_ & ~0x00000008);
+      bitField1_ = (bitField1_ & ~0x00000020);
       truthVersion_ = getDefaultInstance().getTruthVersion();
       onChanged();
       return this;
@@ -8016,7 +8416,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000008;
+  bitField1_ |= 0x00000020;
       truthVersion_ = value;
       onChanged();
       return this;
@@ -8032,7 +8432,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the testNgVersion field is set.
      */
     public boolean hasTestNgVersion() {
-      return ((bitField1_ & 0x00000010) != 0);
+      return ((bitField1_ & 0x00000040) != 0);
     }
     /**
      * <pre>
@@ -8091,7 +8491,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000010;
+  bitField1_ |= 0x00000040;
       testNgVersion_ = value;
       onChanged();
       return this;
@@ -8105,7 +8505,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearTestNgVersion() {
-      bitField1_ = (bitField1_ & ~0x00000010);
+      bitField1_ = (bitField1_ & ~0x00000040);
       testNgVersion_ = getDefaultInstance().getTestNgVersion();
       onChanged();
       return this;
@@ -8124,7 +8524,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000010;
+  bitField1_ |= 0x00000040;
       testNgVersion_ = value;
       onChanged();
       return this;
@@ -8140,7 +8540,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the junitPlatformLauncherVersion field is set.
      */
     public boolean hasJunitPlatformLauncherVersion() {
-      return ((bitField1_ & 0x00000020) != 0);
+      return ((bitField1_ & 0x00000080) != 0);
     }
     /**
      * <pre>
@@ -8199,7 +8599,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000020;
+  bitField1_ |= 0x00000080;
       junitPlatformLauncherVersion_ = value;
       onChanged();
       return this;
@@ -8213,7 +8613,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearJunitPlatformLauncherVersion() {
-      bitField1_ = (bitField1_ & ~0x00000020);
+      bitField1_ = (bitField1_ & ~0x00000080);
       junitPlatformLauncherVersion_ = getDefaultInstance().getJunitPlatformLauncherVersion();
       onChanged();
       return this;
@@ -8232,7 +8632,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000020;
+  bitField1_ |= 0x00000080;
       junitPlatformLauncherVersion_ = value;
       onChanged();
       return this;
@@ -8248,7 +8648,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the junitPlatformRunnerVersion field is set.
      */
     public boolean hasJunitPlatformRunnerVersion() {
-      return ((bitField1_ & 0x00000040) != 0);
+      return ((bitField1_ & 0x00000100) != 0);
     }
     /**
      * <pre>
@@ -8307,7 +8707,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000040;
+  bitField1_ |= 0x00000100;
       junitPlatformRunnerVersion_ = value;
       onChanged();
       return this;
@@ -8321,7 +8721,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearJunitPlatformRunnerVersion() {
-      bitField1_ = (bitField1_ & ~0x00000040);
+      bitField1_ = (bitField1_ & ~0x00000100);
       junitPlatformRunnerVersion_ = getDefaultInstance().getJunitPlatformRunnerVersion();
       onChanged();
       return this;
@@ -8340,7 +8740,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000040;
+  bitField1_ |= 0x00000100;
       junitPlatformRunnerVersion_ = value;
       onChanged();
       return this;
@@ -8356,7 +8756,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the junitJupiterVersion field is set.
      */
     public boolean hasJunitJupiterVersion() {
-      return ((bitField1_ & 0x00000080) != 0);
+      return ((bitField1_ & 0x00000200) != 0);
     }
     /**
      * <pre>
@@ -8415,7 +8815,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000080;
+  bitField1_ |= 0x00000200;
       junitJupiterVersion_ = value;
       onChanged();
       return this;
@@ -8429,7 +8829,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearJunitJupiterVersion() {
-      bitField1_ = (bitField1_ & ~0x00000080);
+      bitField1_ = (bitField1_ & ~0x00000200);
       junitJupiterVersion_ = getDefaultInstance().getJunitJupiterVersion();
       onChanged();
       return this;
@@ -8448,7 +8848,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000080;
+  bitField1_ |= 0x00000200;
       junitJupiterVersion_ = value;
       onChanged();
       return this;
@@ -8464,7 +8864,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the junitVintageEngineVersion field is set.
      */
     public boolean hasJunitVintageEngineVersion() {
-      return ((bitField1_ & 0x00000100) != 0);
+      return ((bitField1_ & 0x00000400) != 0);
     }
     /**
      * <pre>
@@ -8523,7 +8923,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000100;
+  bitField1_ |= 0x00000400;
       junitVintageEngineVersion_ = value;
       onChanged();
       return this;
@@ -8537,7 +8937,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearJunitVintageEngineVersion() {
-      bitField1_ = (bitField1_ & ~0x00000100);
+      bitField1_ = (bitField1_ & ~0x00000400);
       junitVintageEngineVersion_ = getDefaultInstance().getJunitVintageEngineVersion();
       onChanged();
       return this;
@@ -8556,7 +8956,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000100;
+  bitField1_ |= 0x00000400;
       junitVintageEngineVersion_ = value;
       onChanged();
       return this;

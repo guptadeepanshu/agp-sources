@@ -705,6 +705,64 @@ public interface TestLibrariesOrBuilder extends
 
   /**
    * <pre>
+   * "androidx.test.services:storage"
+   * </pre>
+   *
+   * <code>optional string test_services_storage_version = 42;</code>
+   * @return Whether the testServicesStorageVersion field is set.
+   */
+  boolean hasTestServicesStorageVersion();
+  /**
+   * <pre>
+   * "androidx.test.services:storage"
+   * </pre>
+   *
+   * <code>optional string test_services_storage_version = 42;</code>
+   * @return The testServicesStorageVersion.
+   */
+  java.lang.String getTestServicesStorageVersion();
+  /**
+   * <pre>
+   * "androidx.test.services:storage"
+   * </pre>
+   *
+   * <code>optional string test_services_storage_version = 42;</code>
+   * @return The bytes for testServicesStorageVersion.
+   */
+  com.google.protobuf.ByteString
+      getTestServicesStorageVersionBytes();
+
+  /**
+   * <pre>
+   * "androidx.test.services:test-services"
+   * </pre>
+   *
+   * <code>optional string test_services_test_services_version = 43;</code>
+   * @return Whether the testServicesTestServicesVersion field is set.
+   */
+  boolean hasTestServicesTestServicesVersion();
+  /**
+   * <pre>
+   * "androidx.test.services:test-services"
+   * </pre>
+   *
+   * <code>optional string test_services_test_services_version = 43;</code>
+   * @return The testServicesTestServicesVersion.
+   */
+  java.lang.String getTestServicesTestServicesVersion();
+  /**
+   * <pre>
+   * "androidx.test.services:test-services"
+   * </pre>
+   *
+   * <code>optional string test_services_test_services_version = 43;</code>
+   * @return The bytes for testServicesTestServicesVersion.
+   */
+  com.google.protobuf.ByteString
+      getTestServicesTestServicesVersionBytes();
+
+  /**
+   * <pre>
    * "androidx.fragment:fragment-testing".
    * </pre>
    *

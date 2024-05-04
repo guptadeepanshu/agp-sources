@@ -281,7 +281,7 @@ private static final long serialVersionUID = 0L;
   private int invocationKind_;
   /**
    * <pre>
-   * The way this action was invocated by the user.
+   * The way this action was invoked by the user.
    * </pre>
    *
    * <code>optional .android_studio.UIActionStats.InvocationKind invocation_kind = 3;</code>
@@ -292,7 +292,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * The way this action was invocated by the user.
+   * The way this action was invoked by the user.
    * </pre>
    *
    * <code>optional .android_studio.UIActionStats.InvocationKind invocation_kind = 3;</code>
@@ -1090,7 +1090,7 @@ private static final long serialVersionUID = 0L;
     private int invocationKind_ = 0;
     /**
      * <pre>
-     * The way this action was invocated by the user.
+     * The way this action was invoked by the user.
      * </pre>
      *
      * <code>optional .android_studio.UIActionStats.InvocationKind invocation_kind = 3;</code>
@@ -1101,7 +1101,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * The way this action was invocated by the user.
+     * The way this action was invoked by the user.
      * </pre>
      *
      * <code>optional .android_studio.UIActionStats.InvocationKind invocation_kind = 3;</code>
@@ -1115,7 +1115,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * The way this action was invocated by the user.
+     * The way this action was invoked by the user.
      * </pre>
      *
      * <code>optional .android_studio.UIActionStats.InvocationKind invocation_kind = 3;</code>
@@ -1133,7 +1133,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * The way this action was invocated by the user.
+     * The way this action was invoked by the user.
      * </pre>
      *
      * <code>optional .android_studio.UIActionStats.InvocationKind invocation_kind = 3;</code>

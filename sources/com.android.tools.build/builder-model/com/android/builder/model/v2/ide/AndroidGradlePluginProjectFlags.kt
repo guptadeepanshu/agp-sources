@@ -89,7 +89,14 @@ interface AndroidGradlePluginProjectFlags {
         /**
          * Whether VCS metadata file is generated in APK/Bundle for this project.
          */
-        ENABLE_VCS_INFO(false);
+        ENABLE_VCS_INFO(false),
+
+        /**
+         * Whether Android resources are enabled in this project
+         */
+        BUILD_FEATURE_ANDROID_RESOURCES(true),
+
+        ;
 
         /**
          * Returns the value of this flag for the given gradle project flags.

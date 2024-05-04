@@ -139,6 +139,8 @@ open class DefaultAndroidSourceSet @Inject constructor(
 
     override val compileOnlyConfigurationName = sourceSetName.compileOnlyConfigurationName
 
+    override val compileOnlyApiConfigurationName = sourceSetName.compileOnlyApiConfigurationName
+
     override val implementationConfigurationName = sourceSetName.implementationConfigurationName
 
     override val runtimeOnlyConfigurationName = sourceSetName.runtimeOnlyConfigurationName

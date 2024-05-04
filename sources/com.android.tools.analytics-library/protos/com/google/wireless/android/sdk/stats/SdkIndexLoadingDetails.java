@@ -110,6 +110,14 @@ private static final long serialVersionUID = 0L;
      * <code>DEFAULT_DATA = 7;</code>
      */
     DEFAULT_DATA(7),
+    /**
+     * <pre>
+     * Cache file exists and expired but server reported not modified
+     * </pre>
+     *
+     * <code>CACHE_FILE_NOT_MODIFIED = 8;</code>
+     */
+    CACHE_FILE_NOT_MODIFIED(8),
     ;
 
     /**
@@ -172,6 +180,14 @@ private static final long serialVersionUID = 0L;
      * <code>DEFAULT_DATA = 7;</code>
      */
     public static final int DEFAULT_DATA_VALUE = 7;
+    /**
+     * <pre>
+     * Cache file exists and expired but server reported not modified
+     * </pre>
+     *
+     * <code>CACHE_FILE_NOT_MODIFIED = 8;</code>
+     */
+    public static final int CACHE_FILE_NOT_MODIFIED_VALUE = 8;
 
 
     public final int getNumber() {
@@ -202,6 +218,7 @@ private static final long serialVersionUID = 0L;
         case 5: return CACHE_FILE_RECENT;
         case 6: return CACHE_FILE_NEW;
         case 7: return DEFAULT_DATA;
+        case 8: return CACHE_FILE_NOT_MODIFIED;
         default: return null;
       }
     }

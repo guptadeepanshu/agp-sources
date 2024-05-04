@@ -419,6 +419,7 @@ public class IDeviceSharedImpl {
         }
     }
 
+    @Nullable
     public String uninstallApp(String applicationID, String... extraArgs) throws InstallException {
         try {
             StringBuilder command = new StringBuilder("pm uninstall");

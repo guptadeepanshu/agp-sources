@@ -56,8 +56,10 @@ import com.android.build.api.dsl.NdkBuild
 import com.android.build.api.dsl.Optimization
 import com.android.build.api.dsl.Packaging
 import com.android.build.api.dsl.PrivacySandbox
+import com.android.build.api.dsl.PrivacySandboxKeepRules
 import com.android.build.api.dsl.PrivacySandboxSdkBundle
 import com.android.build.api.dsl.PrivacySandboxSdkExtension
+import com.android.build.api.dsl.PrivacySandboxSdkOptimization
 import com.android.build.api.dsl.ResourcesPackaging
 import com.android.build.api.dsl.SigningConfig
 import com.android.build.api.dsl.Split
@@ -95,8 +97,10 @@ import com.android.build.gradle.internal.dsl.LintImpl
 import com.android.build.gradle.internal.dsl.MultiDexConfigImpl
 import com.android.build.gradle.internal.dsl.NdkBuildOptions
 import com.android.build.gradle.internal.dsl.PrivacySandboxImpl
+import com.android.build.gradle.internal.dsl.PrivacySandboxKeepRulesImpl
 import com.android.build.gradle.internal.dsl.PrivacySandboxSdkBundleImpl
 import com.android.build.gradle.internal.dsl.PrivacySandboxSdkExtensionImpl
+import com.android.build.gradle.internal.dsl.PrivacySandboxSdkOptimizationImpl
 import com.android.build.gradle.internal.dsl.ResourcesPackagingImpl
 import com.android.build.gradle.internal.dsl.SplitOptions
 import com.android.build.gradle.internal.dsl.VcsInfoImpl
@@ -166,10 +170,12 @@ val AGP_SUPPORTED_PROPERTY_TYPES: List<SupportedPropertyType> = listOf(
     SupportedPropertyType.Block(VcsInfo::class.java, VcsInfoImpl::class.java),
 
     // FusedLibrary Extensions.
+    SupportedPropertyType.Block(PrivacySandboxSdkOptimization::class.java, PrivacySandboxSdkOptimizationImpl::class.java),
     SupportedPropertyType.Block(FusedLibraryExtension::class.java, FusedLibraryExtensionImpl::class.java),
     SupportedPropertyType.Block(PrivacySandboxSdkExtension::class.java, PrivacySandboxSdkExtensionImpl::class.java),
-    SupportedPropertyType.Block(PrivacySandboxSdkBundle::class.java, PrivacySandboxSdkBundleImpl::class.java)
-)
+    SupportedPropertyType.Block(PrivacySandboxSdkBundle::class.java, PrivacySandboxSdkBundleImpl::class.java),
+    SupportedPropertyType.Block(PrivacySandboxKeepRules::class.java, PrivacySandboxKeepRulesImpl::class.java),
+    )
 
 /**
  * The DSL decorator in this classloader in AGP.

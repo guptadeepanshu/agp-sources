@@ -17,7 +17,6 @@
 package com.android.builder.symbols
 
 import com.android.SdkConstants
-import com.android.builder.packaging.JarCreator
 import com.android.builder.packaging.JarFlinger
 import com.android.ide.common.symbols.Symbol
 import com.android.ide.common.symbols.SymbolTable
@@ -51,12 +50,19 @@ fun exportToCompiledJava(
         outJar: Path,
         finalIds: Boolean = false,
         rPackage: String? = null,
+        packageNameToId: Map<String, Int>? = null,
 ) {
     JarFlinger(outJar).use { jarCreator ->
         // NO_COMPRESSION because R.jar isn't packaged into final APK or AAR
         jarCreator.setCompressionLevel(NO_COMPRESSION)
         exportToCompiledJava(tables, finalIds, rPackage) { entryPath, content ->
             jarCreator.addEntry(entryPath, content.inputStream())
+        }
+
+        if (packageNameToId != null) {
+            writeRPackages(packageNameToId) { entryPath, content ->
+                jarCreator.addEntry(entryPath, content.inputStream())
+            }
         }
     }
 }
@@ -281,17 +287,23 @@ fun writeRPackages(packageNameToId: Map<String, Int>, outJar: Path) {
     JarFlinger(outJar).use { jarCreator ->
         // NO_COMPRESSION because RPackage.jar isn't packaged into final APK or AAR
         jarCreator.setCompressionLevel(NO_COMPRESSION)
-        packageNameToId.forEach { (packageName, packageId) ->
-            val (internalName, bytes) = generateRPackageClass(packageName, packageId)
-            jarCreator.addEntry(
-                    internalName + SdkConstants.DOT_CLASS,
-                    bytes.inputStream()
-            )
+        writeRPackages(packageNameToId) { entryPath, content ->
+            jarCreator.addEntry(entryPath, content.inputStream())
         }
     }
 }
 
-fun generateRPackageClass(packageName: String, packageId: Int): Pair<String, ByteArray> {
+private fun writeRPackages(
+    packageNameToId: Map<String, Int>,
+    consumer: (String, ByteArray) -> Unit
+) {
+    packageNameToId.forEach { (packageName, packageId) ->
+        val (internalName, bytes) = generateRPackageClass(packageName, packageId)
+        consumer.invoke(internalName + SdkConstants.DOT_CLASS, bytes)
+    }
+}
+
+private fun generateRPackageClass(packageName: String, packageId: Int): Pair<String, ByteArray> {
     val cw = ClassWriter(COMPUTE_MAXS)
     val internalName = packageName.replace(".", "/") + "/" + "RPackage"
     cw.visit(

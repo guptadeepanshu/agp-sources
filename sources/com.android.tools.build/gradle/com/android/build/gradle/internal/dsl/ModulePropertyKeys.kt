@@ -51,6 +51,11 @@ sealed interface ModulePropertyKey<OutputT> {
                 else -> throw IllegalArgumentException("Unexpected type ${value::class.qualifiedName} for property $key")
             }
         }
+
+        companion object {
+            private val keyToModulePropertyKey = Dependencies.values().associateBy { it.key }
+            internal operator fun get(value: String) = keyToModulePropertyKey[value]
+        }
     }
 
     enum class OptionalBoolean(override val key: String) : ModulePropertyKey<Boolean?> {
@@ -61,10 +66,20 @@ sealed interface ModulePropertyKey<OutputT> {
          * [BooleanOption.LINT_USE_K2_UAST].
          */
         LINT_USE_K2_UAST(BooleanOption.LINT_USE_K2_UAST.propertyName),
+
+        /**
+         * Whether to enable various R8 optimization on the code
+         */
+        ANDROID_PRIVACY_SANDBOX_R8_OPTIMIZATION("android.experimental.privacysandboxsdk.optimize"),
         ;
 
         override fun getValue(properties: Map<String, Any>): Boolean? {
             return properties[key]?.let { parseBoolean(key, it) }
+        }
+
+        companion object {
+            private val keyToModulePropertyKey = OptionalBoolean.values().associateBy { it.key }
+            internal operator fun get(value: String) = keyToModulePropertyKey[value]
         }
     }
 
@@ -84,7 +99,7 @@ sealed interface ModulePropertyKey<OutputT> {
         ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_KEY_ALIAS(
                 "android.privacy_sandbox.local_deployment_signing_key_alias"
         ),
-        ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_KEY_PASSOWRD(
+        ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_KEY_PASSWORD(
                 "android.privacy_sandbox.local_deployment_signing_key_password"
         ),
 
@@ -97,6 +112,11 @@ sealed interface ModulePropertyKey<OutputT> {
 
         override fun getValue(properties: Map<String, Any>): String? {
             return properties[key] as String?
+        }
+
+        companion object {
+            private val keyToModulePropertyKey = OptionalString.values().associateBy { it.key }
+            internal operator fun get(value: String) = keyToModulePropertyKey[value]
         }
     }
 
@@ -117,11 +137,35 @@ sealed interface ModulePropertyKey<OutputT> {
          * If false - R8 will not attempt to optimize startup dex
          * If true - R8 will optimize first dex for optimal startup performance.
          */
-        R8_DEX_STARTUP_OPTIMIZATION("android.experimental.r8.dex-startup-optimization", true)
+        R8_DEX_STARTUP_OPTIMIZATION("android.experimental.r8.dex-startup-optimization", true),
+
+        /**
+         * If false - Screenshot tests support will not be enabled
+         * If true - Screenshot test support will be enabled
+         */
+        SCREENSHOT_TEST("android.experimental.enableScreenshotTest", false),
+
+        /**
+         * This option only affects to running instrumented tests on devices API level 24 and above.
+         * If false - Does not run AOT compile forcibly
+         * If true - Run AOT compile forcibly after installation before running the app
+         */
+        FORCE_AOT_COMPILATION("android.experimental.force-aot-compilation", false),
+
+        /**
+         * If false - D8 will not attempt to optimize startup dex
+         * If true - D8 will optimize first dex for optimal startup performance.
+         */
+        D8_DEX_STARTUP_OPTIMIZATION("android.experimental.d8.dex-startup-optimization", false),
         ;
 
         override fun getValue(properties: Map<String, Any>): Boolean {
             return properties[key]?.let { parseBoolean(key, it) } ?: default
+        }
+
+        companion object {
+            private val keyToModulePropertyKey = BooleanWithDefault.values().associateBy { it.key }
+            internal operator fun get(value: String) = keyToModulePropertyKey[value]
         }
     }
 

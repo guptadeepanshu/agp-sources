@@ -137,6 +137,9 @@ interface Variant : Component, HasAndroidResources {
      * Additional per variant experimental properties.
      *
      * Initialized from [com.android.build.api.dsl.CommonExtension.experimentalProperties]
+     *
+     * Values provided should not be based on a Task execution result, as most of these properties
+     * are read during configuration.
      */
     @get:Incubating
     val experimentalProperties: MapProperty<String, Any>
@@ -145,7 +148,7 @@ interface Variant : Component, HasAndroidResources {
      * List of the components nested in this variant, the returned list will contain:
      *
      * * [UnitTest] component if the unit tests for this variant are enabled,
-     * * [AndroidTest] component if this variant [HasAndroidTest] and android tests for this variant
+     * * [AndroidTest] component if this variant [HasDeviceTests] and android tests for this variant
      * are enabled,
      * * [TestFixtures] component if this variant [HasTestFixtures] and test fixtures for this
      * variant are enabled.

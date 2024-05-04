@@ -23,7 +23,6 @@ import com.android.build.gradle.internal.dsl.DefaultConfig
 import com.android.build.gradle.internal.manifest.ManifestDataProvider
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.builder.dexing.DexingType
-import com.android.builder.dexing.isLegacyMultiDexMode
 import org.gradle.api.provider.Provider
 
 internal class InstrumentedTestDslInfoImpl(
@@ -49,7 +48,7 @@ internal class InstrumentedTestDslInfoImpl(
         // else return the value from the Manifest
         return dataProvider.manifestData.map {
             it.instrumentationRunner
-                ?: if (dexingType.isLegacyMultiDexMode()) {
+                ?: if (dexingType.isLegacyMultiDex) {
                     MULTIDEX_TEST_RUNNER
                 } else {
                     DEFAULT_TEST_RUNNER

@@ -17,16 +17,15 @@ package com.android.build.api.variant.impl
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.component.analytics.AnalyticsEnabledApplicationVariant
-import com.android.build.api.component.impl.AndroidTestImpl
 import com.android.build.api.component.impl.TestFixturesImpl
 import com.android.build.api.component.impl.features.DexingImpl
 import com.android.build.api.component.impl.isTestApk
 import com.android.build.api.variant.AndroidVersion
-import com.android.build.api.variant.ApkPackaging
 import com.android.build.api.variant.ApplicationVariant
 import com.android.build.api.variant.Component
 import com.android.build.api.variant.DependenciesInfo
 import com.android.build.api.variant.DependenciesInfoBuilder
+import com.android.build.api.variant.DeviceTest
 import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.VariantOutputConfiguration
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
@@ -34,6 +33,7 @@ import com.android.build.gradle.internal.component.features.DexingCreationConfig
 import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.core.dsl.ApplicationVariantDslInfo
 import com.android.build.gradle.internal.dependency.VariantDependencies
+import com.android.build.gradle.internal.dsl.ModulePropertyKey
 import com.android.build.gradle.internal.profile.ProfilingMode
 import com.android.build.gradle.internal.publishing.VariantPublishingInfo
 import com.android.build.gradle.internal.scope.BuildFeatureValues
@@ -76,7 +76,7 @@ open class ApplicationVariantImpl @Inject constructor(
     internalServices,
     taskCreationServices,
     globalTaskCreationConfig
-), ApplicationVariant, ApplicationCreationConfig, HasDeviceTests, HasTestFixtures {
+), ApplicationVariant, ApplicationCreationConfig, InternalHasDeviceTests, HasTestFixtures {
 
     // ---------------------------------------------------------------------------------------------
     // PUBLIC API
@@ -94,8 +94,12 @@ open class ApplicationVariantImpl @Inject constructor(
         )
     }
 
-    override val androidResources: AndroidResourcesImpl by lazy {
-        getAndroidResources(dslInfo.androidResourcesDsl.androidResources)
+    override val androidResources: ApplicationAndroidResourcesImpl by lazy {
+        ApplicationAndroidResourcesImpl(
+            getAndroidResources(dslInfo.androidResourcesDsl.androidResources),
+            buildFeatures,
+            variantBuilder.androidResources.generateLocaleConfig,
+        )
     }
 
     override val signingConfig: SigningConfigImpl by lazy {
@@ -107,8 +111,8 @@ open class ApplicationVariantImpl @Inject constructor(
         )
     }
 
-    override val packaging: ApkPackaging by lazy {
-        ApkPackagingImpl(
+    override val packaging: TestedApkPackagingImpl by lazy {
+        TestedApkPackagingImpl(
             dslInfo.packaging,
             internalServices,
             minSdk.apiLevel
@@ -117,8 +121,7 @@ open class ApplicationVariantImpl @Inject constructor(
 
     override val publishInfo: VariantPublishingInfo?
         get() = dslInfo.publishInfo
-
-    override var androidTest: AndroidTestImpl? = null
+    override val deviceTests = mutableListOf<DeviceTest>()
 
     override var testFixtures: TestFixturesImpl? = null
 
@@ -275,9 +278,6 @@ open class ApplicationVariantImpl @Inject constructor(
     override val isWearAppUnbundled: Boolean?
         get() = dslInfo.isWearAppUnbundled
 
-    override val generateLocaleConfig: Boolean
-        get() = dslInfo.generateLocaleConfig
-
     override val enableApiModeling: Boolean
         get() = isApiModelingEnabled()
 
@@ -286,4 +286,9 @@ open class ApplicationVariantImpl @Inject constructor(
 
     override val includeVcsInfo: Boolean?
         get() = dslInfo.includeVcsInfo
+
+    override val isForceAotCompilation: Boolean
+        get() = experimentalProperties.map {
+            ModulePropertyKey.BooleanWithDefault.FORCE_AOT_COMPILATION.getValue(it)
+        }.getOrElse(false)
 }

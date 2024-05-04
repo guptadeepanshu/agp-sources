@@ -155,6 +155,7 @@ class VersionRange(private val range: Range<Version>) {
          * (e.g. because the lower bound is higher than the upper bound) are treated as an empty
          * range.
          */
+        @JvmStatic
         fun parse(string: String): VersionRange {
             val range = when {
                 string == "+" -> Range.all()

@@ -63,7 +63,7 @@ class JavaCompileCreationAction(
     private val dataBindingExportClassListFile = objectFactory.fileProperty()
 
     override val name: String
-        get() = creationConfig.computeTaskName("compile", "JavaWithJavac")
+        get() = creationConfig.computeTaskNameInternal("compile", "JavaWithJavac")
 
     override val type: Class<JavaCompile>
         get() = JavaCompile::class.java

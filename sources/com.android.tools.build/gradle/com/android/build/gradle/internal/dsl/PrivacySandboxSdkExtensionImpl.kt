@@ -22,7 +22,9 @@ import com.android.builder.core.ToolsRevisionUtils
 import javax.inject.Inject
 
 abstract class PrivacySandboxSdkExtensionImpl
-@Inject @WithLazyInitialization("lazyInit") constructor() : InternalPrivacySandboxSdkExtension {
+@Inject @WithLazyInitialization("lazyInit") constructor(
+    private val dslServices: DslServices
+) : InternalPrivacySandboxSdkExtension {
 
     override var namespace: String?
         get() = bundle.applicationId

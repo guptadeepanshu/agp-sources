@@ -18,6 +18,11 @@ package com.android.build.api.dsl
 
 import org.gradle.api.Incubating
 
+/**
+ * DSL object for configuring the App Bundle Density options
+ *
+ * This is accessed via [Bundle.density]
+ */
 interface BundleDensity {
     @get:Incubating
     @set:Incubating

@@ -278,6 +278,7 @@ class Version: Comparable<Version>, Serializable {
          * included in a range (but not, directly, implementing the concept of "base version"
          * used in conflict resolution).
          */
+        @JvmStatic
         fun parse(string: String): Version = doParse(string, false)
 
         /**
@@ -286,6 +287,7 @@ class Version: Comparable<Version>, Serializable {
          * separator).  Conceptually, this is the same as the version denoted by [string] followed
          * by an infinite sequence of `dev` parts.
          */
+        @JvmStatic
         fun prefixInfimum(string: String): Version = doParse(string, true)
     }
 }

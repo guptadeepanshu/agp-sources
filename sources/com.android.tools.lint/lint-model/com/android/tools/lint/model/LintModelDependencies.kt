@@ -130,7 +130,7 @@ interface LintModelLibraryResolver {
 
 class DefaultLintModelDependencyGraph(
   override val roots: List<LintModelDependency>,
-  private val libraryResolver: LintModelLibraryResolver
+  private val libraryResolver: LintModelLibraryResolver,
 ) : LintModelDependencyGraph {
   /** All libraries that we depend on, keyed by the identifier */
   private val transitiveDependencies = mutableMapOf<String, LintModelDependency>()
@@ -207,7 +207,7 @@ open class DefaultLintModelDependency(
   override val artifactName: String,
   override val requestedCoordinates: String?,
   override val dependencies: List<LintModelDependency>,
-  private val libraryResolver: LintModelLibraryResolver
+  private val libraryResolver: LintModelLibraryResolver,
 ) : LintModelDependency {
   override fun findLibrary(): LintModelLibrary? = libraryResolver.getLibrary(identifier)
 
@@ -219,7 +219,7 @@ open class DefaultLintModelDependency(
 class DefaultLintModelDependencies(
   override val compileDependencies: LintModelDependencyGraph,
   override val packageDependencies: LintModelDependencyGraph,
-  private val libraryResolver: LintModelLibraryResolver
+  private val libraryResolver: LintModelLibraryResolver,
 ) : LintModelDependencies {
   override fun getLibraryResolver(): LintModelLibraryResolver = libraryResolver
 

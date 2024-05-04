@@ -150,6 +150,7 @@ abstract class ManagedDeviceInstrumentationTestSetupTask: NonIncrementalGlobalTa
                 compileSdkVersion = parameters.compileSdkVersion,
                 buildToolsRevision = parameters.buildToolsRevision
             )
+
             val imageHash = computeImageHash()
             val sdkImageProvider = versionedSdkLoader.sdkImageDirectoryProvider(imageHash)
             if (!sdkImageProvider.isPresent) {
@@ -160,6 +161,11 @@ abstract class ManagedDeviceInstrumentationTestSetupTask: NonIncrementalGlobalTa
                     parameters.require64Bit.get(),
                     versionedSdkLoader))
             }
+
+            // Need to ensure that the emulator is downloaded before the avd is created. This can
+            // cause issues when the system image does not mark the emulator as a dependency.
+            versionedSdkLoader.emulatorDirectoryProvider.get()
+
             parameters.avdService.get().avdProvider(
                 sdkImageProvider,
                 imageHash,

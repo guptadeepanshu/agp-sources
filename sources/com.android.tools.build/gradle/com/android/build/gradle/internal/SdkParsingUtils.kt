@@ -162,8 +162,20 @@ internal fun warnIfCompileSdkTooNew(
 
     val currentCompileSdk = version.asDsl()
     val maxCompileSdk = AndroidVersion(maxVersion.apiLevel).asDsl() + (if (maxVersion.isPreview) " (and ${maxVersion.asDsl()})" else "")
-    val stableOrPreview = (if (version.isPreview) "(stable or preview) " else "")
     val preview = (if (version.isPreview) "preview " else "")
+    val headline = if (version.isPreview) {
+        "$currentCompileSdk has not been tested with this version of the Android Gradle plugin."
+    } else {
+        "We recommend using a newer Android Gradle plugin to use $currentCompileSdk"
+    }
+    val recommendation = if (version.isPreview) {
+        ""
+    } else {
+        """
+        You are strongly encouraged to update your project to use a newer
+        Android Gradle plugin that has been tested with $currentCompileSdk.
+        """
+    }
     val suppressOption = if (suppressWarningIfTooNewForVersions.isNullOrEmpty()) {
         "${com.android.build.gradle.options.StringOption.SUPPRESS_UNSUPPORTED_COMPILE_SDK.propertyName}=$suppressName"
     } else {
@@ -172,13 +184,10 @@ internal fun warnIfCompileSdkTooNew(
     issueReporter.reportWarning(
         IssueReporter.Type.COMPILE_SDK_VERSION_TOO_HIGH,
         """
-        We recommend using a newer Android Gradle plugin to use $currentCompileSdk
+        $headline
 
         This Android Gradle plugin ($androidGradlePluginVersion) was tested up to $maxCompileSdk.
-
-        You are strongly encouraged to update your project to use a newer
-        ${stableOrPreview}Android Gradle plugin that has been tested with $currentCompileSdk.
-
+        $recommendation
         If you are already using the latest ${preview}version of the Android Gradle plugin,
         you may need to wait until a newer version with support for $currentCompileSdk is available.
 

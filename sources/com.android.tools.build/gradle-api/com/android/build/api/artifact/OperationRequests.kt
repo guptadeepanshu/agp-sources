@@ -29,6 +29,23 @@ import org.gradle.api.provider.ListProperty
  * [Task] is not consuming existing version of the target [SingleArtifact].
  */
 interface OutOperationRequest<FileTypeT: FileSystemLocation> {
+    /**
+     * Sets the output file or directory name for the new artifact.
+     *
+     * This name will only be used when [toAppendTo] or [toCreate] is invoked.
+     * Although you can use this method on [Directory], it will most likely not influence how
+     * the files contained in the resulting [Directory] are packaged in the APK or Bundle.
+     * This method is usually only useful for [RegularFile]
+     *
+     * Some [Artifact] have a [Artifact.name] which cannot be changed. When invoking [toAppendTo] or
+     * [toCreate] after this method will throw an exception if trying to set such a file or
+     * directory name when the target's [Artifact] [Artifact.name] is not null.
+     *
+     * @param name file or directory name
+     * @return itself
+     */
+    @Incubating
+    fun withName(name: String): OutOperationRequest<FileTypeT>
 
     /**
      * Initiates an append request to a [Artifact.Multiple] artifact type.
@@ -48,14 +65,12 @@ interface OutOperationRequest<FileTypeT: FileSystemLocation> {
      *     }
      * ```
      *
-     * and an ArtifactType defined as follows :
+     * and an ArtifactType defined as follows:
      *
      * ```kotlin
-     *     sealed class ArtifactType<T: FileSystemLocation>(
-     *          val kind: ArtifactKind
-     *     ): MultipleArtifactType {
+     *     sealed class ArtifactType<T: FileSystemLocation>(val kind: ArtifactKind) {
      *          object MULTIPLE_FILE_ARTIFACT:
-     *                  ArtifactType<RegularFile>(FILE), Appendable
+     *                  ArtifactType<RegularFile>(FILE), Multiple, Appendable
      *     }
      * ```
      *
@@ -100,7 +115,7 @@ interface OutOperationRequest<FileTypeT: FileSystemLocation> {
      *     }
      * ```
      *
-     * An [SingleArtifact] is defined as follows:
+     * A [SingleArtifact] is defined as follows:
      *
      * ```kotlin
      *     sealed class ArtifactType<T: FileSystemLocation>(val kind: ArtifactKind) {
@@ -220,6 +235,16 @@ interface MultipleArtifactTypeOutOperationRequest<FileTypeT: FileSystemLocation>
  * [Task] is consuming existing version of the target [SingleArtifact] and producing a new version.
  */
 interface InAndOutFileOperationRequest {
+
+    /**
+     * Sets the output file name for the transformed artifact.
+     *
+     * @param name file name in the output folder.
+     * @return itself
+     */
+    @Incubating
+    fun withName(name: String): InAndOutFileOperationRequest
+
     /**
      * Initiates a transform request to a single [Artifact.Transformable] artifact type.
      *
@@ -241,7 +266,7 @@ interface InAndOutFileOperationRequest {
      *     }
      * ```
      *
-     * An ArtifactType defined as follows :
+     * An ArtifactType defined as follows:
      *
      * ```kotlin
      *     sealed class ArtifactType<T: FileSystemLocation>(val kind: ArtifactKind) {
@@ -294,7 +319,7 @@ interface CombiningOperationRequest<FileTypeT: FileSystemLocation> {
      *     }
      * ```
      *
-     * An [SingleArtifact] defined as follows :
+     * A [MultipleArtifact] is defined as follows:
      *
      * ```kotlin
      *     sealed class ArtifactType<T: FileSystemLocation>(val kind: ArtifactKind) {
@@ -342,7 +367,7 @@ interface InAndOutDirectoryOperationRequest<TaskT : Task> {
      *     }
      * ```
      *
-     * An ArtifactType defined as follows :
+     * An ArtifactType defined as follows:
      *
      * ```kotlin
      *     sealed class ArtifactType<T: FileSystemLocation>(val kind: ArtifactKind) {
@@ -357,8 +382,8 @@ interface InAndOutDirectoryOperationRequest<TaskT : Task> {
      *     val taskProvider= projects.tasks.register(MyTask::class.java, "transformTask")
      *     artifacts.use(taskProvider)
      *      .wiredWithDirectories(
-     *          MyTask::inputFile,
-     *          MyTask::outputFile)
+     *          MyTask::inputDir,
+     *          MyTask::outputDir)
      *      .toTransform(ArtifactType.SINGLE_DIR_ARTIFACT)
      * ```
      */
@@ -398,10 +423,10 @@ interface InAndOutDirectoryOperationRequest<TaskT : Task> {
      * ```kotlin
      *     val taskProvider= projects.tasks.register(MyTask::class.java, "combineTask")
      *     val transformationRequest = artifacts.use(taskProvider)
-     *       .wiredWith(
+     *       .wiredWithDirectories(
      *          MyTask::inputFolder,
      *          MyTask::outputFolder)
-     *       .toTransformMany(ArtifactType.APK)
+     *       .toTransformMany(SingleArtifact.APK)
      *     taskProvider.configure { task ->
      *          task.getTransformationRequest().set(transformationRequest)
      *     }
@@ -409,5 +434,6 @@ interface InAndOutDirectoryOperationRequest<TaskT : Task> {
      */
     fun <ArtifactTypeT> toTransformMany(type: ArtifactTypeT): ArtifactTransformationRequest<TaskT>
         where ArtifactTypeT: Artifact.Single<Directory>,
-              ArtifactTypeT: Artifact.ContainsMany
+              ArtifactTypeT: Artifact.ContainsMany,
+              ArtifactTypeT: Artifact.Transformable
 }

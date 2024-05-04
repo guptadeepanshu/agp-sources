@@ -24,8 +24,10 @@ import org.gradle.api.provider.Property
  *
  * See [Component] and [Variant] for more information.
  */
+@Suppress("DEPRECATION")
 interface ApplicationVariant : GeneratesApk,
     Variant,
+    HasDeviceTests,
     HasAndroidTest,
     HasUnitTest,
     HasTestFixtures,
@@ -62,4 +64,17 @@ interface ApplicationVariant : GeneratesApk,
      */
     @get:Incubating
     val bundleConfig: BundleConfig
+
+    /**
+     * Variant's android resources processing configuration, initialized by the corresponding
+     * global DSL element.
+     */
+    @get:Incubating
+    override val androidResources: ApplicationAndroidResources
+
+    /**
+     * Variant's packagingOptions, initialized by the corresponding global DSL element.
+     */
+    @get:Incubating
+    override val packaging: TestedApkPackaging
 }

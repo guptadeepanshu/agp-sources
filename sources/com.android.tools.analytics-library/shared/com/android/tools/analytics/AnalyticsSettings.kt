@@ -377,7 +377,7 @@ object AnalyticsSettings {
         }
         scheduler?.submit {
             try {
-                val gp = WebServerDateProvider(URL("https://play.google.com/"))
+                val gp = WebServerDateProvider(URL("http://play.google.com/"))
                 dateProvider = gp
                 googlePlayDateProvider = gp
             } catch (_: IOException) {

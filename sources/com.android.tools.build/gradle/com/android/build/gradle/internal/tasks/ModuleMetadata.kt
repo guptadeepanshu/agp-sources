@@ -30,8 +30,8 @@ class ModuleMetadata(
     val versionName: String?,
     val debuggable: Boolean,
     val abiFilters: List<String>,
-    val ignoredLibraryKeepRules: Set<String>,
-    val ignoreAllLibraryKeepRules: Boolean
+    val ignoreFromInKeepRules: Set<String>,
+    val ignoreFromAllExternalDependenciesInKeepRules: Boolean
 ) {
 
     @Throws(IOException::class)

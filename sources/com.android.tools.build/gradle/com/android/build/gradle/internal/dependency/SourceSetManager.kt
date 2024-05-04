@@ -66,6 +66,7 @@ class SourceSetManager(
         val implementationName = sourceSetName.implementationConfigurationName
         val runtimeOnlyName = sourceSetName.runtimeOnlyConfigurationName
         val compileOnlyName = sourceSetName.compileOnlyConfigurationName
+        val compileOnlyApiName = sourceSetName.compileOnlyApiConfigurationName
 
         val api = if (!isTestComponent) {
             createConfiguration(apiName, getConfigDesc("API", name))
@@ -82,6 +83,9 @@ class SourceSetManager(
 
         createConfiguration(runtimeOnlyName, getConfigDesc("Runtime only", name))
         createConfiguration(compileOnlyName, getConfigDesc("Compile only", name))
+        if (!isTestComponent) {
+            createConfiguration(compileOnlyApiName, getConfigDesc("Compile only API", name))
+        }
 
         // then the secondary configurations.
         createConfiguration(

@@ -62,6 +62,7 @@ import com.android.build.gradle.internal.scope.InternalArtifactType.LINT_VITAL_P
 import com.android.build.gradle.internal.scope.InternalArtifactType.LOCAL_AAR_FOR_LINT
 import com.android.build.gradle.internal.scope.InternalArtifactType.MANIFEST_METADATA
 import com.android.build.gradle.internal.scope.InternalArtifactType.MERGED_JAVA_RES
+import com.android.build.gradle.internal.scope.InternalArtifactType.MERGED_TEST_ONLY_NATIVE_LIBS
 import com.android.build.gradle.internal.scope.InternalArtifactType.METADATA_FEATURE_DECLARATION
 import com.android.build.gradle.internal.scope.InternalArtifactType.METADATA_FEATURE_MANIFEST
 import com.android.build.gradle.internal.scope.InternalArtifactType.MODULE_AND_RUNTIME_DEPS_CLASSES
@@ -172,6 +173,7 @@ class PublishingSpecs {
                 // features when writing their lint models to be published back to the app.
                 runtime(LINT_MODEL, ArtifactType.BASE_MODULE_LINT_MODEL)
                 api(SYMBOL_LIST_WITH_PACKAGE_NAME, ArtifactType.APP_SYMBOL_LIST_FOR_DATA_BINDING)
+                api(MERGED_TEST_ONLY_NATIVE_LIBS, ArtifactType.MERGED_TEST_ONLY_NATIVE_LIBS)
             }
 
             variantSpec(ComponentTypeImpl.OPTIONAL_APK) {
@@ -223,6 +225,7 @@ class PublishingSpecs {
 
                 runtime(NAVIGATION_JSON, ArtifactType.NAVIGATION_JSON)
                 runtime(FEATURE_NAME, ArtifactType.FEATURE_NAME)
+                api(MERGED_TEST_ONLY_NATIVE_LIBS, ArtifactType.MERGED_TEST_ONLY_NATIVE_LIBS)
             }
 
 

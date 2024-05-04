@@ -18,11 +18,14 @@ package com.android.build.gradle.internal.tasks
 import com.android.SdkConstants
 import com.android.build.api.artifact.SingleArtifact.MERGED_NATIVE_LIBS
 import com.android.build.api.variant.Renderscript
+import com.android.build.api.variant.TestedComponentPackaging
 import com.android.build.gradle.internal.BuildToolsExecutableInput
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
+import com.android.build.gradle.internal.component.KmpComponentCreationConfig
+import com.android.build.gradle.internal.component.NestedComponentCreationConfig
 import com.android.build.gradle.internal.core.Abi
 import com.android.build.gradle.internal.cxx.gradle.generator.externalNativeBuildIsActive
 import com.android.build.gradle.internal.cxx.io.removeDuplicateFiles
@@ -31,6 +34,7 @@ import com.android.build.gradle.internal.packaging.ParsedPackagingOptions.Compan
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.scope.InternalArtifactType.MERGED_TEST_ONLY_NATIVE_LIBS
 import com.android.build.gradle.internal.scope.InternalArtifactType.RENDERSCRIPT_LIB
 import com.android.build.gradle.internal.scope.InternalMultipleArtifactType
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
@@ -100,17 +104,32 @@ abstract class MergeNativeLibsTask : NonIncrementalTask() {
     @get:IgnoreEmptyDirectories
     abstract val profilerNativeLibs: DirectoryProperty
 
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:SkipWhenEmpty
+    @get:IgnoreEmptyDirectories
+    abstract val testOnlyNativeLibs: ConfigurableFileCollection
+
     @get:Input
     abstract val excludes: SetProperty<String>
 
     @get:Input
     abstract val pickFirsts: SetProperty<String>
 
+    @get:Input
+    abstract val testOnly: SetProperty<String>
+
     @get:Nested
     abstract val buildTools: BuildToolsExecutableInput
 
     @get:OutputDirectory
     abstract val outputDir: DirectoryProperty
+
+    // testOnlyDir is only set for main components. It will contain the native libraries that should
+    // be packaged with the test components and excluded from the main components.
+    @get:OutputDirectory
+    @get:Optional
+    abstract val testOnlyDir: DirectoryProperty
 
     // We use unfilteredProjectNativeLibs for the task action but projectNativeLibs as the task
     // input. We use unfilteredProjectNativeLibs for the task action because we need the relative
@@ -141,6 +160,7 @@ abstract class MergeNativeLibsTask : NonIncrementalTask() {
         unfilteredProjectNativeLibs.asFileTree.visit(fileVisitor)
         subProjectNativeLibs.asFileTree.visit(fileVisitor)
         externalLibNativeLibs.asFileTree.visit(fileVisitor)
+        testOnlyNativeLibs.asFileTree.visit(fileVisitor)
         if (profilerNativeLibs.isPresent) {
             profilerNativeLibs.asFileTree.visit(fileVisitor)
         }
@@ -150,8 +170,10 @@ abstract class MergeNativeLibsTask : NonIncrementalTask() {
             it.inputFiles.set(inputFiles.toList())
             it.projectNativeLibs.set(projectNativeLibs.files)
             it.outputDirectory.set(outputDir)
+            it.testOnlyDir.set(testOnlyDir)
             it.excludes.set(excludes)
             it.pickFirsts.set(pickFirsts)
+            it.testOnly.set(testOnly)
         }
     }
 
@@ -167,26 +189,37 @@ abstract class MergeNativeLibsTask : NonIncrementalTask() {
             val excludesPathMatchers: List<PathMatcher> =
                 parameters.excludes.get().map { compileGlob(it) }
 
+            val testOnlyPathMatchers: List<PathMatcher> =
+                parameters.testOnly.get().map { compileGlob(it) }
+
             // Keep track of the files matching each relative path so we can create a useful error
             // message if necessary
             val usedRelativePaths =
                 mutableMapOf<String, MutableList<File>>().withDefault { mutableListOf() }
 
             val outputDir = parameters.outputDirectory.get().asFile
+            val testOnlyDir = parameters.testOnlyDir.orNull?.asFile
 
             for (inputFile in parameters.inputFiles.get()) {
                 val systemDependentPath =
                     Paths.get("$separatorChar${inputFile.relativePath.replace('/', separatorChar)}")
                 val pickFirstMatches =
                     pickFirstsPathMatchers.filter { it.value.matches(systemDependentPath) }.keys
+                val destinationDir =
+                    if (testOnlyDir != null
+                        && testOnlyPathMatchers.any { it.matches(systemDependentPath)}) {
+                        testOnlyDir
+                    } else {
+                        outputDir
+                    }
                 if (pickFirstMatches.isNotEmpty()) {
                     // if the path matches a pickFirst pattern, we copy the file only if the
                     // relative path hasn't already been used.
                     if (!usedRelativePaths.containsKey(inputFile.relativePath)) {
-                        copyInputFileToOutput(inputFile, outputDir, usedRelativePaths)
+                        copyInputFileToOutput(inputFile, destinationDir, usedRelativePaths)
                     }
                 } else if (excludesPathMatchers.none { it.matches(systemDependentPath) }) {
-                    copyInputFileToOutput(inputFile, outputDir, usedRelativePaths)
+                    copyInputFileToOutput(inputFile, destinationDir, usedRelativePaths)
                 }
             }
 
@@ -263,8 +296,10 @@ abstract class MergeNativeLibsTask : NonIncrementalTask() {
             //  tracking which files take precedence over others.
             abstract val projectNativeLibs: SetProperty<File>
             abstract val outputDirectory: DirectoryProperty
+            abstract val testOnlyDir: DirectoryProperty
             abstract val excludes: SetProperty<String>
             abstract val pickFirsts: SetProperty<String>
+            abstract val testOnly: SetProperty<String>
         }
     }
 
@@ -286,6 +321,12 @@ abstract class MergeNativeLibsTask : NonIncrementalTask() {
                 taskProvider,
                 MergeNativeLibsTask::outputDir
             ).withName("out").on(MERGED_NATIVE_LIBS)
+            if (creationConfig.writesTestOnlyDir()) {
+                creationConfig.artifacts.setInitialProvider(
+                    taskProvider,
+                    MergeNativeLibsTask::testOnlyDir
+                ).withName("out").on(MERGED_TEST_ONLY_NATIVE_LIBS)
+            }
         }
 
         override fun configure(
@@ -293,8 +334,14 @@ abstract class MergeNativeLibsTask : NonIncrementalTask() {
         ) {
             super.configure(task)
 
-            task.excludes.setDisallowChanges(creationConfig.packaging.jniLibs.excludes)
-            task.pickFirsts.setDisallowChanges(creationConfig.packaging.jniLibs.pickFirsts)
+            val packaging = creationConfig.packaging
+            task.excludes.setDisallowChanges(packaging.jniLibs.excludes)
+            task.pickFirsts.setDisallowChanges(packaging.jniLibs.pickFirsts)
+            if (creationConfig.writesTestOnlyDir() && packaging is TestedComponentPackaging) {
+                task.testOnly.setDisallowChanges(packaging.jniLibs.testOnly)
+            } else {
+                task.testOnly.setDisallowChanges(listOf())
+            }
 
             task.buildTools.initialize(creationConfig)
 
@@ -308,15 +355,21 @@ abstract class MergeNativeLibsTask : NonIncrementalTask() {
 
             if (creationConfig is ApkCreationConfig) {
                 task.externalLibNativeLibs.from(getExternalNativeLibs(creationConfig))
-                    .disallowChanges()
                 task.subProjectNativeLibs.from(getSubProjectNativeLibs(creationConfig))
-                    .disallowChanges()
                 if (creationConfig.shouldPackageProfilerDependencies) {
-                    task.profilerNativeLibs.setDisallowChanges(
+                    task.profilerNativeLibs.set(
                             creationConfig.artifacts.get(InternalArtifactType.PROFILERS_NATIVE_LIBS)
                     )
                 }
             }
+            task.externalLibNativeLibs.disallowChanges()
+            task.subProjectNativeLibs.disallowChanges()
+            task.profilerNativeLibs.disallowChanges()
+
+            if (creationConfig.componentType.isForTesting && creationConfig.componentType.isApk) {
+                task.testOnlyNativeLibs.from(getTestOnlyNativeLibs(creationConfig))
+            }
+            task.testOnlyNativeLibs.disallowChanges()
 
             task.unfilteredProjectNativeLibs
                 .from(getProjectNativeLibs(
@@ -348,33 +401,44 @@ abstract class MergeNativeLibsTask : NonIncrementalTask() {
             }
 
         /**
-         * [file] is one of these two kinds:
+         * [file] is one of these three kinds:
          *    (1) /path/to/{x86/lib.so}
-         *    (2) /path/to/x86/{lib.so}
+         *    (2) /path/to/{lib/x86/lib.so}
+         *    (3) /path/to/x86/{lib.so}
          * Where the value in {braces} is the [relativePath] from the file visitor.
-         * The first (1) is from tasks that process all ABIs in a single task.
-         * The second (2) is from tasks the where each task processes one ABI.
+         * (1) and (2) are from tasks that process all ABIs in a single task.
+         * (3) is from tasks the where each task processes one ABI.
          *
-         * This function distinguishes the two cases and returns a relative path that always
-         * starts with an ABI. So, for example, both of the cases above would return:
+         * This function distinguishes the three cases and returns a relative path that always
+         * starts with an ABI. So, for example, all the cases above would return:
          *
          *    x86/lib.so
          *
          */
         private fun toAbiRootedPath(file : File, relativePath: RelativePath) : String {
-            return if (abiTags.any { it == relativePath.segments[0] }) {
+            return when {
                 // Case (1) the relative path starts with an ABI name. Return it directly.
-                relativePath.pathString
-            } else {
-                // Case (2) the relative path does not start with an ABI name. Prepend the
-                // ABI name from the end of [file] after [relativePath] has been removed.
-                var root = file
-                repeat(relativePath.segments.size) { root = root.parentFile }
-                val abi = root.name
-                if (!abiTags.any { it == abi }) {
-                    error("$abi extracted from path $file is not an ABI")
+                abiTags.any { it == relativePath.segments[0] } -> {
+                    relativePath.pathString
                 }
-                abi + separatorChar + relativePath.pathString
+
+                // Case (2) the relative path starts with "lib" followed by an ABI name.
+                relativePath.segments.size > 1
+                        && abiTags.any { it == relativePath.segments[1] } -> {
+                    relativePath.segments.drop(1).joinToString("$separatorChar")
+                }
+
+                // Case (3) the relative path does not start with an ABI name. Prepend the
+                // ABI name from the end of [file] after [relativePath] has been removed.
+                else -> {
+                    var root = file
+                    repeat(relativePath.segments.size) { root = root.parentFile }
+                    val abi = root.name
+                    if (!abiTags.any { it == abi }) {
+                        error("$abi extracted from path $file is not an ABI")
+                    }
+                    abi + separatorChar + relativePath.pathString
+                }
             }
         }
     }
@@ -452,3 +516,34 @@ fun getExternalNativeLibs(creationConfig: ComponentCreationConfig): FileCollecti
         // Filter out directories without any file descendants so @SkipWhenEmpty works as desired.
         file.walk().any { it.isFile }
     }
+
+fun getTestOnlyNativeLibs(creationConfig: ComponentCreationConfig): FileCollection {
+    val nativeLibs = creationConfig.services.fileCollection()
+    if (creationConfig.componentType.isSeparateTestProject) {
+        nativeLibs.from(
+            creationConfig.variantDependencies.getArtifactFileCollection(
+                AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
+                AndroidArtifacts.ArtifactScope.PROJECT,
+                AndroidArtifacts.ArtifactType.MERGED_TEST_ONLY_NATIVE_LIBS
+            )
+        )
+    }
+    if (creationConfig is NestedComponentCreationConfig
+        && creationConfig.mainVariant.writesTestOnlyDir()
+        && creationConfig.componentType.isForTesting
+        && creationConfig.componentType.isApk) {
+        nativeLibs.from(
+            creationConfig.mainVariant.artifacts.get(MERGED_TEST_ONLY_NATIVE_LIBS)
+        )
+    }
+    // Filter out directories without any file descendants so @SkipWhenEmpty works as desired.
+    return nativeLibs.filter { file -> file.walk().any { it.isFile } }
+}
+
+/**
+ * Whether a creation config will create [MergeNativeLibsTask.testOnlyDir]
+ *
+ * [KmpComponentCreationConfig]s are excluded because they don't merge native libs
+ */
+private fun ConsumableCreationConfig.writesTestOnlyDir() =
+    this.packaging is TestedComponentPackaging && this !is KmpComponentCreationConfig

@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 public class JacocoOptions implements com.android.build.api.dsl.JacocoOptions, TestCoverage {
 
     /** Default JaCoCo version. */
-    public static final String DEFAULT_VERSION = "0.8.8";
+    public static final String DEFAULT_VERSION = "0.8.11";
 
     private boolean versionSetByUser = false;
 

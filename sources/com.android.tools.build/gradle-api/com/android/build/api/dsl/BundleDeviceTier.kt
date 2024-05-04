@@ -18,6 +18,11 @@ package com.android.build.api.dsl
 
 import org.gradle.api.Incubating
 
+/**
+ * DSL object for configuring the App Bundle Device Tier options
+ *
+ * This is accessed via [Bundle.deviceTier]
+ */
 @Incubating
 interface BundleDeviceTier {
     var enableSplit: Boolean?

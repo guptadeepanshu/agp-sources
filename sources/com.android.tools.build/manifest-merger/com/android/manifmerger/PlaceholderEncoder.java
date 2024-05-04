@@ -58,8 +58,14 @@ public class PlaceholderEncoder {
     private static boolean handleAttribute(Attr attr) {
         Matcher matcher = PlaceholderHandler.PATTERN.matcher(attr.getValue());
         if (matcher.matches()) {
+            String maybeSlash = "";
+            // Ensure path attribute values start with "/" (b/316057932)
+            if (matcher.group(1).isEmpty() && "path".equals(attr.getLocalName())) {
+                maybeSlash = "/";
+            }
             String encodedValue =
                     matcher.group(1)
+                            + maybeSlash
                             + "dollar_openBracket_"
                             + matcher.group(2)
                             + "_closeBracket"

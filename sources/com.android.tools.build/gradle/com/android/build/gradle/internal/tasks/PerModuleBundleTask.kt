@@ -280,10 +280,6 @@ abstract class PerModuleBundleTask: NonIncrementalTask() {
             task.dexFiles.fromDisallowChanges(
                 creationConfig.artifacts.get(
                     PrivacySandboxSdkInternalArtifactType.DEX
-                ),
-                // The RPackage dex *must* be last so it can be removed by bundle tool
-                creationConfig.artifacts.get(
-                        PrivacySandboxSdkInternalArtifactType.R_PACKAGE_DEX
                 )
             )
             task.assetsFilesDirectory.setDisallowChanges(

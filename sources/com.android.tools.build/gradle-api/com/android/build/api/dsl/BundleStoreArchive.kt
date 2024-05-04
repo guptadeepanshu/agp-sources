@@ -16,6 +16,11 @@
 
 package com.android.build.api.dsl
 
+/**
+ * DSL object for configuring the App Bundle Store Archive options
+ *
+ * This is accessed via [Bundle.storeArchive]
+ */
 interface BundleStoreArchive {
 
     /**

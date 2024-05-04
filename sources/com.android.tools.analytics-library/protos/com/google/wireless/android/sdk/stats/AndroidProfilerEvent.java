@@ -862,6 +862,30 @@ private static final long serialVersionUID = 0L;
      * <code>TPD_QUERY_LOAD_MEMORY_DATA = 713;</code>
      */
     TPD_QUERY_LOAD_MEMORY_DATA(713),
+    /**
+     * <pre>
+     * Task Stats
+     * </pre>
+     *
+     * <code>TASK_ENTERED = 800;</code>
+     */
+    TASK_ENTERED(800),
+    /**
+     * <code>TASK_FINISHED = 801;</code>
+     */
+    TASK_FINISHED(801),
+    /**
+     * <code>TASK_FAILED = 802;</code>
+     */
+    TASK_FAILED(802),
+    /**
+     * <pre>
+     * Task Configuration Stats
+     * </pre>
+     *
+     * <code>TASK_SETTINGS_OPENED = 810;</code>
+     */
+    TASK_SETTINGS_OPENED(810),
     ;
 
     /**
@@ -1319,6 +1343,30 @@ private static final long serialVersionUID = 0L;
      * <code>TPD_QUERY_LOAD_MEMORY_DATA = 713;</code>
      */
     public static final int TPD_QUERY_LOAD_MEMORY_DATA_VALUE = 713;
+    /**
+     * <pre>
+     * Task Stats
+     * </pre>
+     *
+     * <code>TASK_ENTERED = 800;</code>
+     */
+    public static final int TASK_ENTERED_VALUE = 800;
+    /**
+     * <code>TASK_FINISHED = 801;</code>
+     */
+    public static final int TASK_FINISHED_VALUE = 801;
+    /**
+     * <code>TASK_FAILED = 802;</code>
+     */
+    public static final int TASK_FAILED_VALUE = 802;
+    /**
+     * <pre>
+     * Task Configuration Stats
+     * </pre>
+     *
+     * <code>TASK_SETTINGS_OPENED = 810;</code>
+     */
+    public static final int TASK_SETTINGS_OPENED_VALUE = 810;
 
 
     public final int getNumber() {
@@ -1428,6 +1476,10 @@ private static final long serialVersionUID = 0L;
         case 711: return TPD_QUERY_PROCESS_METADATA;
         case 712: return TPD_QUERY_LOAD_CPU_DATA;
         case 713: return TPD_QUERY_LOAD_MEMORY_DATA;
+        case 800: return TASK_ENTERED;
+        case 801: return TASK_FINISHED;
+        case 802: return TASK_FAILED;
+        case 810: return TASK_SETTINGS_OPENED;
         default: return null;
       }
     }
@@ -4229,6 +4281,147 @@ private static final long serialVersionUID = 0L;
     return powerProfilerCaptureMetadata_ == null ? com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata.getDefaultInstance() : powerProfilerCaptureMetadata_;
   }
 
+  public static final int TASK_ENTERED_METADATA_FIELD_NUMBER = 28;
+  private com.google.wireless.android.sdk.stats.TaskEnteredMetadata taskEnteredMetadata_;
+  /**
+   * <pre>
+   * Set if |type| is |TASK_ENTERED|
+   * </pre>
+   *
+   * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28;</code>
+   * @return Whether the taskEnteredMetadata field is set.
+   */
+  @java.lang.Override
+  public boolean hasTaskEnteredMetadata() {
+    return ((bitField0_ & 0x08000000) != 0);
+  }
+  /**
+   * <pre>
+   * Set if |type| is |TASK_ENTERED|
+   * </pre>
+   *
+   * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28;</code>
+   * @return The taskEnteredMetadata.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.TaskEnteredMetadata getTaskEnteredMetadata() {
+    return taskEnteredMetadata_ == null ? com.google.wireless.android.sdk.stats.TaskEnteredMetadata.getDefaultInstance() : taskEnteredMetadata_;
+  }
+  /**
+   * <pre>
+   * Set if |type| is |TASK_ENTERED|
+   * </pre>
+   *
+   * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.TaskEnteredMetadataOrBuilder getTaskEnteredMetadataOrBuilder() {
+    return taskEnteredMetadata_ == null ? com.google.wireless.android.sdk.stats.TaskEnteredMetadata.getDefaultInstance() : taskEnteredMetadata_;
+  }
+
+  public static final int TASK_FINISHED_METADATA_FIELD_NUMBER = 29;
+  private com.google.wireless.android.sdk.stats.TaskFinishedMetadata taskFinishedMetadata_;
+  /**
+   * <pre>
+   * Set if |type| is |TASK_FINISHED|
+   * </pre>
+   *
+   * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29;</code>
+   * @return Whether the taskFinishedMetadata field is set.
+   */
+  @java.lang.Override
+  public boolean hasTaskFinishedMetadata() {
+    return ((bitField0_ & 0x10000000) != 0);
+  }
+  /**
+   * <pre>
+   * Set if |type| is |TASK_FINISHED|
+   * </pre>
+   *
+   * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29;</code>
+   * @return The taskFinishedMetadata.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.TaskFinishedMetadata getTaskFinishedMetadata() {
+    return taskFinishedMetadata_ == null ? com.google.wireless.android.sdk.stats.TaskFinishedMetadata.getDefaultInstance() : taskFinishedMetadata_;
+  }
+  /**
+   * <pre>
+   * Set if |type| is |TASK_FINISHED|
+   * </pre>
+   *
+   * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.TaskFinishedMetadataOrBuilder getTaskFinishedMetadataOrBuilder() {
+    return taskFinishedMetadata_ == null ? com.google.wireless.android.sdk.stats.TaskFinishedMetadata.getDefaultInstance() : taskFinishedMetadata_;
+  }
+
+  public static final int TASK_FAILED_METADATA_FIELD_NUMBER = 30;
+  private com.google.wireless.android.sdk.stats.TaskFailedMetadata taskFailedMetadata_;
+  /**
+   * <pre>
+   * Set if |type| is |TASK_FAILED|
+   * </pre>
+   *
+   * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30;</code>
+   * @return Whether the taskFailedMetadata field is set.
+   */
+  @java.lang.Override
+  public boolean hasTaskFailedMetadata() {
+    return ((bitField0_ & 0x20000000) != 0);
+  }
+  /**
+   * <pre>
+   * Set if |type| is |TASK_FAILED|
+   * </pre>
+   *
+   * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30;</code>
+   * @return The taskFailedMetadata.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.TaskFailedMetadata getTaskFailedMetadata() {
+    return taskFailedMetadata_ == null ? com.google.wireless.android.sdk.stats.TaskFailedMetadata.getDefaultInstance() : taskFailedMetadata_;
+  }
+  /**
+   * <pre>
+   * Set if |type| is |TASK_FAILED|
+   * </pre>
+   *
+   * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.TaskFailedMetadataOrBuilder getTaskFailedMetadataOrBuilder() {
+    return taskFailedMetadata_ == null ? com.google.wireless.android.sdk.stats.TaskFailedMetadata.getDefaultInstance() : taskFailedMetadata_;
+  }
+
+  public static final int IS_TASK_SETTINGS_CHANGED_FIELD_NUMBER = 31;
+  private boolean isTaskSettingsChanged_;
+  /**
+   * <pre>
+   * Set if |type| is |TASK_SETTINGS_OPENED|
+   * </pre>
+   *
+   * <code>optional bool is_task_settings_changed = 31;</code>
+   * @return Whether the isTaskSettingsChanged field is set.
+   */
+  @java.lang.Override
+  public boolean hasIsTaskSettingsChanged() {
+    return ((bitField0_ & 0x40000000) != 0);
+  }
+  /**
+   * <pre>
+   * Set if |type| is |TASK_SETTINGS_OPENED|
+   * </pre>
+   *
+   * <code>optional bool is_task_settings_changed = 31;</code>
+   * @return The isTaskSettingsChanged.
+   */
+  @java.lang.Override
+  public boolean getIsTaskSettingsChanged() {
+    return isTaskSettingsChanged_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -4323,6 +4516,18 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x04000000) != 0)) {
       output.writeMessage(27, getPowerProfilerCaptureMetadata());
+    }
+    if (((bitField0_ & 0x08000000) != 0)) {
+      output.writeMessage(28, getTaskEnteredMetadata());
+    }
+    if (((bitField0_ & 0x10000000) != 0)) {
+      output.writeMessage(29, getTaskFinishedMetadata());
+    }
+    if (((bitField0_ & 0x20000000) != 0)) {
+      output.writeMessage(30, getTaskFailedMetadata());
+    }
+    if (((bitField0_ & 0x40000000) != 0)) {
+      output.writeBool(31, isTaskSettingsChanged_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -4440,6 +4645,22 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x04000000) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(27, getPowerProfilerCaptureMetadata());
+    }
+    if (((bitField0_ & 0x08000000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(28, getTaskEnteredMetadata());
+    }
+    if (((bitField0_ & 0x10000000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(29, getTaskFinishedMetadata());
+    }
+    if (((bitField0_ & 0x20000000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(30, getTaskFailedMetadata());
+    }
+    if (((bitField0_ & 0x40000000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(31, isTaskSettingsChanged_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -4588,6 +4809,26 @@ private static final long serialVersionUID = 0L;
       if (!getPowerProfilerCaptureMetadata()
           .equals(other.getPowerProfilerCaptureMetadata())) return false;
     }
+    if (hasTaskEnteredMetadata() != other.hasTaskEnteredMetadata()) return false;
+    if (hasTaskEnteredMetadata()) {
+      if (!getTaskEnteredMetadata()
+          .equals(other.getTaskEnteredMetadata())) return false;
+    }
+    if (hasTaskFinishedMetadata() != other.hasTaskFinishedMetadata()) return false;
+    if (hasTaskFinishedMetadata()) {
+      if (!getTaskFinishedMetadata()
+          .equals(other.getTaskFinishedMetadata())) return false;
+    }
+    if (hasTaskFailedMetadata() != other.hasTaskFailedMetadata()) return false;
+    if (hasTaskFailedMetadata()) {
+      if (!getTaskFailedMetadata()
+          .equals(other.getTaskFailedMetadata())) return false;
+    }
+    if (hasIsTaskSettingsChanged() != other.hasIsTaskSettingsChanged()) return false;
+    if (hasIsTaskSettingsChanged()) {
+      if (getIsTaskSettingsChanged()
+          != other.getIsTaskSettingsChanged()) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -4706,6 +4947,23 @@ private static final long serialVersionUID = 0L;
     if (hasPowerProfilerCaptureMetadata()) {
       hash = (37 * hash) + POWER_PROFILER_CAPTURE_METADATA_FIELD_NUMBER;
       hash = (53 * hash) + getPowerProfilerCaptureMetadata().hashCode();
+    }
+    if (hasTaskEnteredMetadata()) {
+      hash = (37 * hash) + TASK_ENTERED_METADATA_FIELD_NUMBER;
+      hash = (53 * hash) + getTaskEnteredMetadata().hashCode();
+    }
+    if (hasTaskFinishedMetadata()) {
+      hash = (37 * hash) + TASK_FINISHED_METADATA_FIELD_NUMBER;
+      hash = (53 * hash) + getTaskFinishedMetadata().hashCode();
+    }
+    if (hasTaskFailedMetadata()) {
+      hash = (37 * hash) + TASK_FAILED_METADATA_FIELD_NUMBER;
+      hash = (53 * hash) + getTaskFailedMetadata().hashCode();
+    }
+    if (hasIsTaskSettingsChanged()) {
+      hash = (37 * hash) + IS_TASK_SETTINGS_CHANGED_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getIsTaskSettingsChanged());
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -4862,6 +5120,9 @@ private static final long serialVersionUID = 0L;
         getPerfettoSdkHandshakeMetadataFieldBuilder();
         getResolveComposeTracingCodeLocationMetadataFieldBuilder();
         getPowerProfilerCaptureMetadataFieldBuilder();
+        getTaskEnteredMetadataFieldBuilder();
+        getTaskFinishedMetadataFieldBuilder();
+        getTaskFailedMetadataFieldBuilder();
       }
     }
     @java.lang.Override
@@ -5013,6 +5274,26 @@ private static final long serialVersionUID = 0L;
         powerProfilerCaptureMetadataBuilder_.clear();
       }
       bitField0_ = (bitField0_ & ~0x04000000);
+      if (taskEnteredMetadataBuilder_ == null) {
+        taskEnteredMetadata_ = null;
+      } else {
+        taskEnteredMetadataBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x08000000);
+      if (taskFinishedMetadataBuilder_ == null) {
+        taskFinishedMetadata_ = null;
+      } else {
+        taskFinishedMetadataBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x10000000);
+      if (taskFailedMetadataBuilder_ == null) {
+        taskFailedMetadata_ = null;
+      } else {
+        taskFailedMetadataBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x20000000);
+      isTaskSettingsChanged_ = false;
+      bitField0_ = (bitField0_ & ~0x40000000);
       return this;
     }
 
@@ -5241,6 +5522,34 @@ private static final long serialVersionUID = 0L;
         }
         to_bitField0_ |= 0x04000000;
       }
+      if (((from_bitField0_ & 0x08000000) != 0)) {
+        if (taskEnteredMetadataBuilder_ == null) {
+          result.taskEnteredMetadata_ = taskEnteredMetadata_;
+        } else {
+          result.taskEnteredMetadata_ = taskEnteredMetadataBuilder_.build();
+        }
+        to_bitField0_ |= 0x08000000;
+      }
+      if (((from_bitField0_ & 0x10000000) != 0)) {
+        if (taskFinishedMetadataBuilder_ == null) {
+          result.taskFinishedMetadata_ = taskFinishedMetadata_;
+        } else {
+          result.taskFinishedMetadata_ = taskFinishedMetadataBuilder_.build();
+        }
+        to_bitField0_ |= 0x10000000;
+      }
+      if (((from_bitField0_ & 0x20000000) != 0)) {
+        if (taskFailedMetadataBuilder_ == null) {
+          result.taskFailedMetadata_ = taskFailedMetadata_;
+        } else {
+          result.taskFailedMetadata_ = taskFailedMetadataBuilder_.build();
+        }
+        to_bitField0_ |= 0x20000000;
+      }
+      if (((from_bitField0_ & 0x40000000) != 0)) {
+        result.isTaskSettingsChanged_ = isTaskSettingsChanged_;
+        to_bitField0_ |= 0x40000000;
+      }
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -5370,6 +5679,18 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasPowerProfilerCaptureMetadata()) {
         mergePowerProfilerCaptureMetadata(other.getPowerProfilerCaptureMetadata());
+      }
+      if (other.hasTaskEnteredMetadata()) {
+        mergeTaskEnteredMetadata(other.getTaskEnteredMetadata());
+      }
+      if (other.hasTaskFinishedMetadata()) {
+        mergeTaskFinishedMetadata(other.getTaskFinishedMetadata());
+      }
+      if (other.hasTaskFailedMetadata()) {
+        mergeTaskFailedMetadata(other.getTaskFailedMetadata());
+      }
+      if (other.hasIsTaskSettingsChanged()) {
+        setIsTaskSettingsChanged(other.getIsTaskSettingsChanged());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -5599,6 +5920,32 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x04000000;
               break;
             } // case 218
+            case 226: {
+              input.readMessage(
+                  getTaskEnteredMetadataFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x08000000;
+              break;
+            } // case 226
+            case 234: {
+              input.readMessage(
+                  getTaskFinishedMetadataFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x10000000;
+              break;
+            } // case 234
+            case 242: {
+              input.readMessage(
+                  getTaskFailedMetadataFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x20000000;
+              break;
+            } // case 242
+            case 248: {
+              isTaskSettingsChanged_ = input.readBool();
+              bitField0_ |= 0x40000000;
+              break;
+            } // case 248
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -9445,6 +9792,529 @@ private static final long serialVersionUID = 0L;
         powerProfilerCaptureMetadata_ = null;
       }
       return powerProfilerCaptureMetadataBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.TaskEnteredMetadata taskEnteredMetadata_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.TaskEnteredMetadata, com.google.wireless.android.sdk.stats.TaskEnteredMetadata.Builder, com.google.wireless.android.sdk.stats.TaskEnteredMetadataOrBuilder> taskEnteredMetadataBuilder_;
+    /**
+     * <pre>
+     * Set if |type| is |TASK_ENTERED|
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28;</code>
+     * @return Whether the taskEnteredMetadata field is set.
+     */
+    public boolean hasTaskEnteredMetadata() {
+      return ((bitField0_ & 0x08000000) != 0);
+    }
+    /**
+     * <pre>
+     * Set if |type| is |TASK_ENTERED|
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28;</code>
+     * @return The taskEnteredMetadata.
+     */
+    public com.google.wireless.android.sdk.stats.TaskEnteredMetadata getTaskEnteredMetadata() {
+      if (taskEnteredMetadataBuilder_ == null) {
+        return taskEnteredMetadata_ == null ? com.google.wireless.android.sdk.stats.TaskEnteredMetadata.getDefaultInstance() : taskEnteredMetadata_;
+      } else {
+        return taskEnteredMetadataBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * Set if |type| is |TASK_ENTERED|
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28;</code>
+     */
+    public Builder setTaskEnteredMetadata(com.google.wireless.android.sdk.stats.TaskEnteredMetadata value) {
+      if (taskEnteredMetadataBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        taskEnteredMetadata_ = value;
+        onChanged();
+      } else {
+        taskEnteredMetadataBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x08000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Set if |type| is |TASK_ENTERED|
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28;</code>
+     */
+    public Builder setTaskEnteredMetadata(
+        com.google.wireless.android.sdk.stats.TaskEnteredMetadata.Builder builderForValue) {
+      if (taskEnteredMetadataBuilder_ == null) {
+        taskEnteredMetadata_ = builderForValue.build();
+        onChanged();
+      } else {
+        taskEnteredMetadataBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x08000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Set if |type| is |TASK_ENTERED|
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28;</code>
+     */
+    public Builder mergeTaskEnteredMetadata(com.google.wireless.android.sdk.stats.TaskEnteredMetadata value) {
+      if (taskEnteredMetadataBuilder_ == null) {
+        if (((bitField0_ & 0x08000000) != 0) &&
+            taskEnteredMetadata_ != null &&
+            taskEnteredMetadata_ != com.google.wireless.android.sdk.stats.TaskEnteredMetadata.getDefaultInstance()) {
+          taskEnteredMetadata_ =
+            com.google.wireless.android.sdk.stats.TaskEnteredMetadata.newBuilder(taskEnteredMetadata_).mergeFrom(value).buildPartial();
+        } else {
+          taskEnteredMetadata_ = value;
+        }
+        onChanged();
+      } else {
+        taskEnteredMetadataBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x08000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Set if |type| is |TASK_ENTERED|
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28;</code>
+     */
+    public Builder clearTaskEnteredMetadata() {
+      if (taskEnteredMetadataBuilder_ == null) {
+        taskEnteredMetadata_ = null;
+        onChanged();
+      } else {
+        taskEnteredMetadataBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x08000000);
+      return this;
+    }
+    /**
+     * <pre>
+     * Set if |type| is |TASK_ENTERED|
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28;</code>
+     */
+    public com.google.wireless.android.sdk.stats.TaskEnteredMetadata.Builder getTaskEnteredMetadataBuilder() {
+      bitField0_ |= 0x08000000;
+      onChanged();
+      return getTaskEnteredMetadataFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Set if |type| is |TASK_ENTERED|
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28;</code>
+     */
+    public com.google.wireless.android.sdk.stats.TaskEnteredMetadataOrBuilder getTaskEnteredMetadataOrBuilder() {
+      if (taskEnteredMetadataBuilder_ != null) {
+        return taskEnteredMetadataBuilder_.getMessageOrBuilder();
+      } else {
+        return taskEnteredMetadata_ == null ?
+            com.google.wireless.android.sdk.stats.TaskEnteredMetadata.getDefaultInstance() : taskEnteredMetadata_;
+      }
+    }
+    /**
+     * <pre>
+     * Set if |type| is |TASK_ENTERED|
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.TaskEnteredMetadata, com.google.wireless.android.sdk.stats.TaskEnteredMetadata.Builder, com.google.wireless.android.sdk.stats.TaskEnteredMetadataOrBuilder> 
+        getTaskEnteredMetadataFieldBuilder() {
+      if (taskEnteredMetadataBuilder_ == null) {
+        taskEnteredMetadataBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.TaskEnteredMetadata, com.google.wireless.android.sdk.stats.TaskEnteredMetadata.Builder, com.google.wireless.android.sdk.stats.TaskEnteredMetadataOrBuilder>(
+                getTaskEnteredMetadata(),
+                getParentForChildren(),
+                isClean());
+        taskEnteredMetadata_ = null;
+      }
+      return taskEnteredMetadataBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.TaskFinishedMetadata taskFinishedMetadata_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.TaskFinishedMetadata, com.google.wireless.android.sdk.stats.TaskFinishedMetadata.Builder, com.google.wireless.android.sdk.stats.TaskFinishedMetadataOrBuilder> taskFinishedMetadataBuilder_;
+    /**
+     * <pre>
+     * Set if |type| is |TASK_FINISHED|
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29;</code>
+     * @return Whether the taskFinishedMetadata field is set.
+     */
+    public boolean hasTaskFinishedMetadata() {
+      return ((bitField0_ & 0x10000000) != 0);
+    }
+    /**
+     * <pre>
+     * Set if |type| is |TASK_FINISHED|
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29;</code>
+     * @return The taskFinishedMetadata.
+     */
+    public com.google.wireless.android.sdk.stats.TaskFinishedMetadata getTaskFinishedMetadata() {
+      if (taskFinishedMetadataBuilder_ == null) {
+        return taskFinishedMetadata_ == null ? com.google.wireless.android.sdk.stats.TaskFinishedMetadata.getDefaultInstance() : taskFinishedMetadata_;
+      } else {
+        return taskFinishedMetadataBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * Set if |type| is |TASK_FINISHED|
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29;</code>
+     */
+    public Builder setTaskFinishedMetadata(com.google.wireless.android.sdk.stats.TaskFinishedMetadata value) {
+      if (taskFinishedMetadataBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        taskFinishedMetadata_ = value;
+        onChanged();
+      } else {
+        taskFinishedMetadataBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x10000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Set if |type| is |TASK_FINISHED|
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29;</code>
+     */
+    public Builder setTaskFinishedMetadata(
+        com.google.wireless.android.sdk.stats.TaskFinishedMetadata.Builder builderForValue) {
+      if (taskFinishedMetadataBuilder_ == null) {
+        taskFinishedMetadata_ = builderForValue.build();
+        onChanged();
+      } else {
+        taskFinishedMetadataBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x10000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Set if |type| is |TASK_FINISHED|
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29;</code>
+     */
+    public Builder mergeTaskFinishedMetadata(com.google.wireless.android.sdk.stats.TaskFinishedMetadata value) {
+      if (taskFinishedMetadataBuilder_ == null) {
+        if (((bitField0_ & 0x10000000) != 0) &&
+            taskFinishedMetadata_ != null &&
+            taskFinishedMetadata_ != com.google.wireless.android.sdk.stats.TaskFinishedMetadata.getDefaultInstance()) {
+          taskFinishedMetadata_ =
+            com.google.wireless.android.sdk.stats.TaskFinishedMetadata.newBuilder(taskFinishedMetadata_).mergeFrom(value).buildPartial();
+        } else {
+          taskFinishedMetadata_ = value;
+        }
+        onChanged();
+      } else {
+        taskFinishedMetadataBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x10000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Set if |type| is |TASK_FINISHED|
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29;</code>
+     */
+    public Builder clearTaskFinishedMetadata() {
+      if (taskFinishedMetadataBuilder_ == null) {
+        taskFinishedMetadata_ = null;
+        onChanged();
+      } else {
+        taskFinishedMetadataBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x10000000);
+      return this;
+    }
+    /**
+     * <pre>
+     * Set if |type| is |TASK_FINISHED|
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29;</code>
+     */
+    public com.google.wireless.android.sdk.stats.TaskFinishedMetadata.Builder getTaskFinishedMetadataBuilder() {
+      bitField0_ |= 0x10000000;
+      onChanged();
+      return getTaskFinishedMetadataFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Set if |type| is |TASK_FINISHED|
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29;</code>
+     */
+    public com.google.wireless.android.sdk.stats.TaskFinishedMetadataOrBuilder getTaskFinishedMetadataOrBuilder() {
+      if (taskFinishedMetadataBuilder_ != null) {
+        return taskFinishedMetadataBuilder_.getMessageOrBuilder();
+      } else {
+        return taskFinishedMetadata_ == null ?
+            com.google.wireless.android.sdk.stats.TaskFinishedMetadata.getDefaultInstance() : taskFinishedMetadata_;
+      }
+    }
+    /**
+     * <pre>
+     * Set if |type| is |TASK_FINISHED|
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.TaskFinishedMetadata, com.google.wireless.android.sdk.stats.TaskFinishedMetadata.Builder, com.google.wireless.android.sdk.stats.TaskFinishedMetadataOrBuilder> 
+        getTaskFinishedMetadataFieldBuilder() {
+      if (taskFinishedMetadataBuilder_ == null) {
+        taskFinishedMetadataBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.TaskFinishedMetadata, com.google.wireless.android.sdk.stats.TaskFinishedMetadata.Builder, com.google.wireless.android.sdk.stats.TaskFinishedMetadataOrBuilder>(
+                getTaskFinishedMetadata(),
+                getParentForChildren(),
+                isClean());
+        taskFinishedMetadata_ = null;
+      }
+      return taskFinishedMetadataBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.TaskFailedMetadata taskFailedMetadata_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.TaskFailedMetadata, com.google.wireless.android.sdk.stats.TaskFailedMetadata.Builder, com.google.wireless.android.sdk.stats.TaskFailedMetadataOrBuilder> taskFailedMetadataBuilder_;
+    /**
+     * <pre>
+     * Set if |type| is |TASK_FAILED|
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30;</code>
+     * @return Whether the taskFailedMetadata field is set.
+     */
+    public boolean hasTaskFailedMetadata() {
+      return ((bitField0_ & 0x20000000) != 0);
+    }
+    /**
+     * <pre>
+     * Set if |type| is |TASK_FAILED|
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30;</code>
+     * @return The taskFailedMetadata.
+     */
+    public com.google.wireless.android.sdk.stats.TaskFailedMetadata getTaskFailedMetadata() {
+      if (taskFailedMetadataBuilder_ == null) {
+        return taskFailedMetadata_ == null ? com.google.wireless.android.sdk.stats.TaskFailedMetadata.getDefaultInstance() : taskFailedMetadata_;
+      } else {
+        return taskFailedMetadataBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * Set if |type| is |TASK_FAILED|
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30;</code>
+     */
+    public Builder setTaskFailedMetadata(com.google.wireless.android.sdk.stats.TaskFailedMetadata value) {
+      if (taskFailedMetadataBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        taskFailedMetadata_ = value;
+        onChanged();
+      } else {
+        taskFailedMetadataBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x20000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Set if |type| is |TASK_FAILED|
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30;</code>
+     */
+    public Builder setTaskFailedMetadata(
+        com.google.wireless.android.sdk.stats.TaskFailedMetadata.Builder builderForValue) {
+      if (taskFailedMetadataBuilder_ == null) {
+        taskFailedMetadata_ = builderForValue.build();
+        onChanged();
+      } else {
+        taskFailedMetadataBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x20000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Set if |type| is |TASK_FAILED|
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30;</code>
+     */
+    public Builder mergeTaskFailedMetadata(com.google.wireless.android.sdk.stats.TaskFailedMetadata value) {
+      if (taskFailedMetadataBuilder_ == null) {
+        if (((bitField0_ & 0x20000000) != 0) &&
+            taskFailedMetadata_ != null &&
+            taskFailedMetadata_ != com.google.wireless.android.sdk.stats.TaskFailedMetadata.getDefaultInstance()) {
+          taskFailedMetadata_ =
+            com.google.wireless.android.sdk.stats.TaskFailedMetadata.newBuilder(taskFailedMetadata_).mergeFrom(value).buildPartial();
+        } else {
+          taskFailedMetadata_ = value;
+        }
+        onChanged();
+      } else {
+        taskFailedMetadataBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x20000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Set if |type| is |TASK_FAILED|
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30;</code>
+     */
+    public Builder clearTaskFailedMetadata() {
+      if (taskFailedMetadataBuilder_ == null) {
+        taskFailedMetadata_ = null;
+        onChanged();
+      } else {
+        taskFailedMetadataBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x20000000);
+      return this;
+    }
+    /**
+     * <pre>
+     * Set if |type| is |TASK_FAILED|
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30;</code>
+     */
+    public com.google.wireless.android.sdk.stats.TaskFailedMetadata.Builder getTaskFailedMetadataBuilder() {
+      bitField0_ |= 0x20000000;
+      onChanged();
+      return getTaskFailedMetadataFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Set if |type| is |TASK_FAILED|
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30;</code>
+     */
+    public com.google.wireless.android.sdk.stats.TaskFailedMetadataOrBuilder getTaskFailedMetadataOrBuilder() {
+      if (taskFailedMetadataBuilder_ != null) {
+        return taskFailedMetadataBuilder_.getMessageOrBuilder();
+      } else {
+        return taskFailedMetadata_ == null ?
+            com.google.wireless.android.sdk.stats.TaskFailedMetadata.getDefaultInstance() : taskFailedMetadata_;
+      }
+    }
+    /**
+     * <pre>
+     * Set if |type| is |TASK_FAILED|
+     * </pre>
+     *
+     * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.TaskFailedMetadata, com.google.wireless.android.sdk.stats.TaskFailedMetadata.Builder, com.google.wireless.android.sdk.stats.TaskFailedMetadataOrBuilder> 
+        getTaskFailedMetadataFieldBuilder() {
+      if (taskFailedMetadataBuilder_ == null) {
+        taskFailedMetadataBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.TaskFailedMetadata, com.google.wireless.android.sdk.stats.TaskFailedMetadata.Builder, com.google.wireless.android.sdk.stats.TaskFailedMetadataOrBuilder>(
+                getTaskFailedMetadata(),
+                getParentForChildren(),
+                isClean());
+        taskFailedMetadata_ = null;
+      }
+      return taskFailedMetadataBuilder_;
+    }
+
+    private boolean isTaskSettingsChanged_ ;
+    /**
+     * <pre>
+     * Set if |type| is |TASK_SETTINGS_OPENED|
+     * </pre>
+     *
+     * <code>optional bool is_task_settings_changed = 31;</code>
+     * @return Whether the isTaskSettingsChanged field is set.
+     */
+    @java.lang.Override
+    public boolean hasIsTaskSettingsChanged() {
+      return ((bitField0_ & 0x40000000) != 0);
+    }
+    /**
+     * <pre>
+     * Set if |type| is |TASK_SETTINGS_OPENED|
+     * </pre>
+     *
+     * <code>optional bool is_task_settings_changed = 31;</code>
+     * @return The isTaskSettingsChanged.
+     */
+    @java.lang.Override
+    public boolean getIsTaskSettingsChanged() {
+      return isTaskSettingsChanged_;
+    }
+    /**
+     * <pre>
+     * Set if |type| is |TASK_SETTINGS_OPENED|
+     * </pre>
+     *
+     * <code>optional bool is_task_settings_changed = 31;</code>
+     * @param value The isTaskSettingsChanged to set.
+     * @return This builder for chaining.
+     */
+    public Builder setIsTaskSettingsChanged(boolean value) {
+      bitField0_ |= 0x40000000;
+      isTaskSettingsChanged_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Set if |type| is |TASK_SETTINGS_OPENED|
+     * </pre>
+     *
+     * <code>optional bool is_task_settings_changed = 31;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearIsTaskSettingsChanged() {
+      bitField0_ = (bitField0_ & ~0x40000000);
+      isTaskSettingsChanged_ = false;
+      onChanged();
+      return this;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

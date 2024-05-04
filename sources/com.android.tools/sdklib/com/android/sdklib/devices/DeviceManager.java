@@ -50,11 +50,9 @@ import com.google.common.collect.Table;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
-import com.google.common.io.Closeables;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -86,7 +84,8 @@ public class DeviceManager {
         Pattern.compile('^' + PkgProps.EXTRA_PATH + '=' + DEVICE_PROFILES_PROP + '$');
     @Nullable private final Path mAndroidFolder;
     private final ILogger mLog;
-    private Table<String, String, Device> mVendorDevices;
+    private final VendorDevices mVendorDevices;
+    private Table<String, String, Device> mSdkVendorDevices;
     private Table<String, String, Device> mSysImgDevices;
     private Table<String, String, Device> mUserDevices;
     private final DefaultDevices mDefaultDevices;
@@ -161,6 +160,7 @@ public class DeviceManager {
                         : sdkHandler.getAndroidFolder();
         mLog = log;
         mDefaultDevices = new DefaultDevices(mLog);
+        mVendorDevices = new VendorDevices(mLog);
     }
 
     /**
@@ -224,7 +224,11 @@ public class DeviceManager {
         if (d != null) {
             return d;
         }
-        d = mVendorDevices.get(id, manufacturer);
+        d = mVendorDevices.getDevice(id, manufacturer);
+        if (d != null) {
+            return d;
+        }
+        d = mSdkVendorDevices.get(id, manufacturer);
         return d;
     }
 
@@ -256,8 +260,11 @@ public class DeviceManager {
         if (mDefaultDevices.getDevices() != null && (deviceFilter.contains(DeviceFilter.DEFAULT))) {
             devices.putAll(mDefaultDevices.getDevices());
         }
-        if (mVendorDevices != null && (deviceFilter.contains(DeviceFilter.VENDOR))) {
-            devices.putAll(mVendorDevices);
+        if (mVendorDevices.getDevices() != null && (deviceFilter.contains(DeviceFilter.VENDOR))) {
+            devices.putAll(mVendorDevices.getDevices());
+        }
+        if (mSdkVendorDevices != null && (deviceFilter.contains(DeviceFilter.VENDOR))) {
+            devices.putAll(mSdkVendorDevices);
         }
         if (mSysImgDevices != null && (deviceFilter.contains(DeviceFilter.SYSTEM_IMAGES))) {
             devices.putAll(mSysImgDevices);
@@ -268,7 +275,8 @@ public class DeviceManager {
 
     private void initDevicesLists() {
         boolean changed = mDefaultDevices.init();
-        changed |= initVendorDevices();
+        changed |= mVendorDevices.init();
+        changed |= initSdkVendorDevices();
         changed |= initSysImgDevices();
         changed |= initUserDevices();
         if (changed) {
@@ -277,34 +285,17 @@ public class DeviceManager {
     }
 
     /**
-     * Vendor-provided device files to parse. See {@link #initVendorDevices()}. Each entry
-     * corresponds to an ".xml" file located in this same package.
-     */
-    private static final String[] DEVICE_FILES = {"nexus", "wear", "tv", "automotive", "desktop"};
-
-    /**
-     * Initializes all vendor-provided {@link Device}s: the bundled nexus.xml devices
-     * as well as all those coming from extra packages.
+     * Initializes SDK vendor-provided {@link Device}s.
+     *
      * @return True if the list has changed.
      */
-    private boolean initVendorDevices() {
+    private boolean initSdkVendorDevices() {
         synchronized (mLock) {
-            if (mVendorDevices != null) {
+            if (mSdkVendorDevices != null) {
                 return false;
             }
 
-            mVendorDevices = HashBasedTable.create();
-
-            for (String deviceFile : DEVICE_FILES) {
-                InputStream stream = DeviceManager.class.getResourceAsStream(deviceFile + ".xml");
-                try {
-                    mVendorDevices.putAll(DeviceParser.parse(stream));
-                } catch (Exception e) {
-                    mLog.error(e, "Could not load " + deviceFile + " devices");
-                } finally {
-                    Closeables.closeQuietly(stream);
-                }
-            }
+            mSdkVendorDevices = HashBasedTable.create();
 
             if (mOsSdkPath != null) {
                 // Load devices from vendor extras
@@ -313,7 +304,7 @@ public class DeviceManager {
                 for (Path deviceDir : deviceDirs) {
                     Path deviceXml = deviceDir.resolve(SdkConstants.FN_DEVICES_XML);
                     if (Files.isRegularFile(deviceXml)) {
-                        mVendorDevices.putAll(loadDevices(deviceXml));
+                        mSdkVendorDevices.putAll(loadDevices(deviceXml));
                     }
                 }
                 return true;

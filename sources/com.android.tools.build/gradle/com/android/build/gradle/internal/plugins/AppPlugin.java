@@ -55,7 +55,6 @@ import com.android.build.gradle.internal.tasks.factory.TaskManagerConfig;
 import com.android.build.gradle.internal.testing.ManagedDeviceRegistry;
 import com.android.build.gradle.internal.variant.ApplicationVariantFactory;
 import com.android.build.gradle.internal.variant.ComponentInfo;
-import com.android.build.gradle.internal.variant.VariantModel;
 import com.android.build.gradle.options.BooleanOption;
 import com.android.builder.model.v2.ide.ProjectType;
 import java.util.Collection;
@@ -63,6 +62,7 @@ import javax.inject.Inject;
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Project;
 import org.gradle.api.component.SoftwareComponentFactory;
+import org.gradle.api.configuration.BuildFeatures;
 import org.gradle.api.reflect.TypeOf;
 import org.gradle.build.event.BuildEventsListenerRegistry;
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry;
@@ -86,8 +86,9 @@ public class AppPlugin
     public AppPlugin(
             ToolingModelBuilderRegistry registry,
             SoftwareComponentFactory componentFactory,
-            BuildEventsListenerRegistry listenerRegistry) {
-        super(registry, componentFactory, listenerRegistry);
+            BuildEventsListenerRegistry listenerRegistry,
+            BuildFeatures buildFeatures) {
+        super(registry, componentFactory, listenerRegistry, buildFeatures);
     }
 
     @Override

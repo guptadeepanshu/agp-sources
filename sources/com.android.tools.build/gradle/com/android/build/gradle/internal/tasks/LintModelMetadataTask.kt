@@ -17,6 +17,7 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants.MAVEN_ARTIFACT_ID_PROPERTY
 import com.android.SdkConstants.MAVEN_GROUP_ID_PROPERTY
+import com.android.SdkConstants.MAVEN_VERSION_PROPERTY
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
@@ -57,11 +58,19 @@ abstract class LintModelMetadataTask : NonIncrementalTask() {
     @get:Input
     abstract val mavenArtifactId: Property<String>
 
+    @get:Input
+    abstract val mavenVersion: Property<String>
+
     override fun doTaskAction() {
         val lintModelMetadataFile = outputFile.get().asFile
         FileUtils.deleteIfExists(lintModelMetadataFile)
         Files.createParentDirs(lintModelMetadataFile)
-        writeLintModelMetadataFile(lintModelMetadataFile, mavenGroupId.get(), mavenArtifactId.get())
+        writeLintModelMetadataFile(
+            lintModelMetadataFile,
+            mavenGroupId.get(),
+            mavenArtifactId.get(),
+            mavenVersion.get()
+        )
     }
 
     class CreationAction(
@@ -85,6 +94,7 @@ abstract class LintModelMetadataTask : NonIncrementalTask() {
             val projectInfo = creationConfig.services.projectInfo
             task.mavenGroupId.setDisallowChanges(projectInfo.group)
             task.mavenArtifactId.setDisallowChanges(projectInfo.name)
+            task.mavenVersion.setDisallowChanges(projectInfo.version)
         }
     }
 
@@ -94,6 +104,7 @@ abstract class LintModelMetadataTask : NonIncrementalTask() {
         this.analyticsService.setDisallowChanges(getBuildService(project.gradle.sharedServices))
         this.mavenGroupId.setDisallowChanges(project.group.toString())
         this.mavenArtifactId.setDisallowChanges(project.name)
+        this.mavenVersion.setDisallowChanges(project.version.toString())
     }
 
     companion object {
@@ -109,7 +120,12 @@ abstract class LintModelMetadataTask : NonIncrementalTask() {
 }
 
 /** Writes a lint model metadata file with the given parameters */
-fun writeLintModelMetadataFile(file: File, groupId: String, artifactId: String) {
+fun writeLintModelMetadataFile(
+    file: File,
+    groupId: String,
+    artifactId: String,
+    version: String
+) {
     // We write the file manually instead of using the java.util.Properties API because (1) that API
     // doesn't guarantee the order of properties in the file and (2) that API writes an unnecessary
     // timestamp in the file.
@@ -117,6 +133,7 @@ fun writeLintModelMetadataFile(file: File, groupId: String, artifactId: String) 
         """
             $MAVEN_ARTIFACT_ID_PROPERTY=$artifactId
             $MAVEN_GROUP_ID_PROPERTY=$groupId
+            $MAVEN_VERSION_PROPERTY=$version
         """.trimIndent()
     )
 }

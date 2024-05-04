@@ -181,7 +181,7 @@ fun <VariantBuilderT : ComponentBuilder, VariantT : VariantCreationConfig> creat
                         createRepublishCxxBuildTask(
                             configuration,
                             variant,
-                            variant.computeTaskName("externalNativeBuild")
+                            variant.computeTaskNameInternal("externalNativeBuild")
                         )
                     )
                     variant.taskContainer.cxxConfigurationModel = configuration
@@ -354,10 +354,10 @@ private fun List<CxxAbiModel>.toConfigurationModel() =
  * Return the name of the prefab[Variant]Package task.
  */
 private fun ComponentCreationConfig.prefabPackageTaskName() =
-    computeTaskName("prefab", "Package")
+    computeTaskNameInternal("prefab", "Package")
 
 /**
  * Return the name of the prefab[ConfigurePackage]Package task.
  */
 private fun ComponentCreationConfig.prefabConfigurePackageTaskName() =
-    computeTaskName("prefab", "ConfigurePackage")
+    computeTaskNameInternal("prefab", "ConfigurePackage")

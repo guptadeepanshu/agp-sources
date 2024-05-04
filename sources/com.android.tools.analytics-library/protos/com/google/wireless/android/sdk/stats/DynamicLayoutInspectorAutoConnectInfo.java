@@ -216,7 +216,7 @@ private static final long serialVersionUID = 0L;
     UNKNOWN_TO_NOT_SUPPORTED(1),
     /**
      * <pre>
-     * A device with UNKNOWN support state was unplugged bevore converting
+     * A device with UNKNOWN support state was unplugged before converting
      * </pre>
      *
      * <code>UNKNOWN_NOT_RESOLVED = 2;</code>
@@ -242,7 +242,7 @@ private static final long serialVersionUID = 0L;
     public static final int UNKNOWN_TO_NOT_SUPPORTED_VALUE = 1;
     /**
      * <pre>
-     * A device with UNKNOWN support state was unplugged bevore converting
+     * A device with UNKNOWN support state was unplugged before converting
      * </pre>
      *
      * <code>UNKNOWN_NOT_RESOLVED = 2;</code>
@@ -645,7 +645,7 @@ private static final long serialVersionUID = 0L;
   private int handshakeResult_;
   /**
    * <pre>
-   * The result of the handsthake. Does the device support auto connect?
+   * The result of the handshake. Does the device support auto connect?
    * </pre>
    *
    * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeResult handshake_result = 1;</code>
@@ -656,7 +656,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * The result of the handsthake. Does the device support auto connect?
+   * The result of the handshake. Does the device support auto connect?
    * </pre>
    *
    * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeResult handshake_result = 1;</code>
@@ -1253,7 +1253,7 @@ private static final long serialVersionUID = 0L;
     private int handshakeResult_ = 0;
     /**
      * <pre>
-     * The result of the handsthake. Does the device support auto connect?
+     * The result of the handshake. Does the device support auto connect?
      * </pre>
      *
      * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeResult handshake_result = 1;</code>
@@ -1264,7 +1264,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * The result of the handsthake. Does the device support auto connect?
+     * The result of the handshake. Does the device support auto connect?
      * </pre>
      *
      * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeResult handshake_result = 1;</code>
@@ -1278,7 +1278,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * The result of the handsthake. Does the device support auto connect?
+     * The result of the handshake. Does the device support auto connect?
      * </pre>
      *
      * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeResult handshake_result = 1;</code>
@@ -1296,7 +1296,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * The result of the handsthake. Does the device support auto connect?
+     * The result of the handshake. Does the device support auto connect?
      * </pre>
      *
      * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeResult handshake_result = 1;</code>

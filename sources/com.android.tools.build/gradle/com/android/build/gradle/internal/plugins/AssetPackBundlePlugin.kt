@@ -21,12 +21,14 @@ import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.dsl.AssetPackBundleExtension
 import com.android.build.api.dsl.SigningConfig
 import com.android.build.gradle.internal.SdkComponentsBuildService
+import com.android.build.gradle.internal.configurationCacheActive
 import com.android.build.gradle.internal.errors.DeprecationReporterImpl
 import com.android.build.gradle.internal.errors.SyncIssueReporterImpl
 import com.android.build.gradle.internal.lint.LintFromMaven
 import com.android.build.gradle.internal.profile.AnalyticsConfiguratorService
 import com.android.build.gradle.internal.profile.AnalyticsService
 import com.android.build.gradle.internal.profile.NoOpAnalyticsService
+import com.android.build.gradle.internal.projectIsolationActive
 import com.android.build.gradle.internal.res.Aapt2FromMaven.Companion.create
 import com.android.build.gradle.internal.scope.ProjectInfo
 import com.android.build.gradle.internal.services.Aapt2DaemonBuildService
@@ -51,6 +53,7 @@ import com.android.builder.errors.IssueReporter
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
+import org.gradle.api.configuration.BuildFeatures
 import org.gradle.build.event.BuildEventsListenerRegistry
 import javax.inject.Inject
 
@@ -70,6 +73,9 @@ abstract class AssetPackBundlePlugin : Plugin<Project> {
     @Suppress("UnstableApiUsage")
     @get:Inject
     abstract val listenerRegistry: BuildEventsListenerRegistry
+
+    @get:Inject
+    abstract val buildFeatures: BuildFeatures
 
     override fun apply(project: Project) {
         val projectOptions = ProjectOptionService.RegistrationAction(project)
@@ -96,7 +102,6 @@ abstract class AssetPackBundlePlugin : Plugin<Project> {
             projectOptions,
             project.gradle.sharedServices,
             LintFromMaven.from(project, projectOptions, syncIssueHandler),
-            null,
             create(project, projectOptions::get),
             project.gradle.startParameter.maxWorkerCount,
             ProjectInfo(project),
@@ -127,8 +132,13 @@ abstract class AssetPackBundlePlugin : Plugin<Project> {
         if (projectOptions.isAnalyticsEnabled) {
             val configuratorService =
                 AnalyticsConfiguratorService.RegistrationAction(project).execute().get()
-            AnalyticsService.RegistrationAction(project, configuratorService, listenerRegistry)
-                .execute()
+            AnalyticsService.RegistrationAction(
+                project,
+                configuratorService,
+                listenerRegistry,
+                buildFeatures.configurationCacheActive(),
+                buildFeatures.projectIsolationActive()
+            ).execute()
         } else {
             NoOpAnalyticsService.RegistrationAction(project).execute()
         }

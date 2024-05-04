@@ -57,7 +57,6 @@ import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.tasks.AnalyzeDependenciesTask
 import com.android.build.gradle.tasks.registerDataBindingOutputs
 import com.android.builder.core.ComponentType
-import com.android.builder.dexing.isLegacyMultiDexMode
 import com.android.builder.errors.IssueReporter
 import com.android.utils.usLocaleCapitalize
 import com.google.common.base.MoreObjects
@@ -159,8 +158,7 @@ abstract class VariantTaskManager<VariantBuilderT : VariantBuilder, VariantT : V
         val variant = componentInfo.variant
         val componentType = variant.componentType
         val variantDependencies = variant.variantDependencies
-        if (variant is ApkCreationConfig &&
-            variant.dexing.dexingType.isLegacyMultiDexMode()) {
+        if (variant is ApkCreationConfig && variant.dexing.dexingType.isLegacyMultiDex) {
             val multiDexDependency =
                 if (variant
                         .services
@@ -259,8 +257,6 @@ abstract class VariantTaskManager<VariantBuilderT : VariantBuilder, VariantT : V
                 task.description = "Displays the signing info for the base and test modules"
                 task.setComponents(signingReportComponents)
                 task.group = ANDROID_GROUP
-                task.notCompatibleWithConfigurationCache(
-                    "SigningReportTask is not compatible with config caching")
             }
         }
         createDependencyAnalyzerTask()
@@ -307,7 +303,7 @@ abstract class VariantTaskManager<VariantBuilderT : VariantBuilder, VariantT : V
 
         }
         if (testVariant.componentType.isApk) { // ANDROID_TEST
-            if ((testVariant as ApkCreationConfig).dexing.dexingType.isLegacyMultiDexMode()) {
+            if ((testVariant as ApkCreationConfig).dexing.dexingType.isLegacyMultiDex) {
                 val multiDexInstrumentationDep = if (testVariant
                         .services
                         .projectOptions[BooleanOption.USE_ANDROID_X])
@@ -538,7 +534,7 @@ abstract class VariantTaskManager<VariantBuilderT : VariantBuilder, VariantT : V
         // Find a matching variant and configure each Kapt task. Note: The task's name could be
         // kapt${variant}Kotlin, or kapt${variant}KotlinAndroid in KMP projects.
         val kaptTaskNameOrPrefixToVariant =
-            allPropertiesList.associateBy { it.computeTaskName("kapt", "Kotlin") }
+            allPropertiesList.associateBy { it.computeTaskNameInternal("kapt", "Kotlin") }
         project.tasks.withType(kaptTaskClass) { kaptTask: Task ->
             val variant = kaptTaskNameOrPrefixToVariant
                 .keys.firstOrNull { kaptTask.name.startsWith(it) }

@@ -18,7 +18,9 @@ package com.android.build.api.artifact
 
 import com.android.build.api.variant.BuiltArtifactsLoader
 import com.android.build.api.variant.ScopedArtifacts
+import org.gradle.api.Incubating
 import org.gradle.api.Task
+import org.gradle.api.file.Directory
 import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.TaskProvider
@@ -64,10 +66,24 @@ interface Artifacts {
      * @param type Type of the multiple artifact.
      * @param artifact is an existing static [FileTypeT]
      */
+    @Deprecated("Use addStaticDirectory instead", replaceWith = ReplaceWith("addStaticDirectory"))
     fun <FileTypeT: FileSystemLocation> add(
             type: MultipleArtifact<FileTypeT>,
             artifact: FileTypeT
     )
+
+    /**
+     * Add existing directory of type [MultipleArtifactT] to be combined with project artifact.
+     * Do not use this for generated files, use the [use] API instead.
+     *
+     * @param type type of the multiple artifact.
+     * @param inputLocation is an existing static file
+     */
+    fun <MultipleArtifactT> addStaticDirectory(
+        type: MultipleArtifactT,
+        inputLocation: Directory
+    ) where MultipleArtifactT: MultipleArtifact<Directory>,
+            MultipleArtifactT: Artifact.Appendable
 
     /**
      * Access [Task] based operations.

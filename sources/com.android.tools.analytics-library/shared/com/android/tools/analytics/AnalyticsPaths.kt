@@ -25,47 +25,74 @@ import java.nio.file.Paths
  * Helpers to get paths used to configure analytics reporting.
  */
 object AnalyticsPaths {
-  /**
-   * Gets the spooling directory used for temporary storage of analytics data.
-   */
-  @JvmStatic
-  val spoolDirectory: String
-    get() = Paths.get(getAndEnsureAndroidSettingsHome(), "metrics", "spool").toString()
 
-  /**
-   * Gets the directory used to store android related settings (usually ~/.android).
-   */
-  @JvmStatic
-  fun getAndEnsureAndroidSettingsHome(): String {
-    val prefsRoot = getAndroidSettingsHome()
+    private var androidSettingsHomeDirectoryOverride: String? = null
 
-    File(prefsRoot).mkdirs()
-    return prefsRoot
-  }
-
-  @JvmStatic
-  private fun getAndroidSettingsHome(): String {
-    // currently can't be shared with AndroidLocation see b/37123089
-    return getEnvOrPropValue(EnvironmentVariable.ANDROID_PREFS_ROOT, SystemProperty.ANDROID_PREFS_ROOT)
-      ?: getEnvOrPropValue(EnvironmentVariable.ANDROID_SDK_HOME, SystemProperty.ANDROID_SDK_HOME)
-      ?: Paths.get(Environment.instance.getSystemProperty(SystemProperty.USER_HOME)!!, ".android").toString()
-  }
-
-  private fun getEnvOrPropValue(
-    envVar: EnvironmentVariable,
-    sysProp: SystemProperty
-  ): String? {
-    val v1 = Environment.instance.getVariable(envVar)
-    if (!v1.isNullOrEmpty()) {
-      return v1
+    /**
+     * Overrides the android settings home directory for tests
+     */
+    fun overrideAndroidSettingsHomeDirectory(directory: String) {
+        androidSettingsHomeDirectoryOverride = directory
     }
 
-    val v2 = Environment.instance.getSystemProperty(sysProp)
-    if (!v2.isNullOrEmpty()) {
-      return v2
+    /**
+     * Clears the override of the android settings home directory
+     */
+    fun restoreAndroidSettingsHomeDirectory() {
+        androidSettingsHomeDirectoryOverride = null
     }
 
-    return null
-  }
+    /**
+     * Gets the spooling directory used for temporary storage of analytics data.
+     */
+    @JvmStatic
+    val spoolDirectory: String
+        get() = Paths.get(getAndEnsureAndroidSettingsHome(), "metrics", "spool").toString()
+
+    /**
+     * Gets the directory used to store android related settings (usually ~/.android).
+     */
+    @JvmStatic
+    fun getAndEnsureAndroidSettingsHome(): String {
+        val prefsRoot = getAndroidSettingsHome()
+
+        File(prefsRoot).mkdirs()
+        return prefsRoot
+    }
+
+    @JvmStatic
+    private fun getAndroidSettingsHome(): String {
+        androidSettingsHomeDirectoryOverride?.let { return it }
+        // currently can't be shared with AndroidLocation see b/37123089
+        return getEnvOrPropValue(
+            EnvironmentVariable.ANDROID_PREFS_ROOT,
+            SystemProperty.ANDROID_PREFS_ROOT
+        )
+            ?: getEnvOrPropValue(
+                EnvironmentVariable.ANDROID_SDK_HOME,
+                SystemProperty.ANDROID_SDK_HOME
+            )
+            ?: Paths.get(
+                Environment.instance.getSystemProperty(SystemProperty.USER_HOME)!!,
+                ".android"
+            ).toString()
+    }
+
+    private fun getEnvOrPropValue(
+        envVar: EnvironmentVariable,
+        sysProp: SystemProperty
+    ): String? {
+        val v1 = Environment.instance.getVariable(envVar)
+        if (!v1.isNullOrEmpty()) {
+            return v1
+        }
+
+        val v2 = Environment.instance.getSystemProperty(sysProp)
+        if (!v2.isNullOrEmpty()) {
+            return v2
+        }
+
+        return null
+    }
 }
 

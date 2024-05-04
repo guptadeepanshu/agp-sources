@@ -15,8 +15,13 @@
  */
 package com.android.sdklib;
 
+import com.android.repository.api.RepoPackage;
+import com.android.repository.impl.meta.TypeDetails;
 import com.android.sdklib.repository.IdDisplay;
+import com.android.sdklib.repository.meta.DetailsTypes;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import java.util.Collection;
 import java.util.Set;
 
 public class SystemImageTags {
@@ -42,6 +47,11 @@ public class SystemImageTags {
     /** Tag to apply to system images for Android Automotive that have Google Play Store. */
     public static final IdDisplay AUTOMOTIVE_PLAY_STORE_TAG =
             IdDisplay.create("android-automotive-playstore", "Android Automotive with Google Play");
+
+    /** Tag to apply to system images for Android Automotive Distant Display. */
+    public static final IdDisplay AUTOMOTIVE_DISTANT_DISPLAY_TAG =
+            IdDisplay.create(
+                    "android-automotive-distantdisplay", "Android Automotive Distant Display");
 
     /** Tag to apply to system images for Chrome OS device. */
     public static final IdDisplay CHROMEOS_TAG = IdDisplay.create("chromeos", "Chrome OS Device");
@@ -81,5 +91,44 @@ public class SystemImageTags {
                     DESKTOP_TAG,
                     CHROMEOS_TAG,
                     AUTOMOTIVE_TAG,
-                    AUTOMOTIVE_PLAY_STORE_TAG);
+                    AUTOMOTIVE_PLAY_STORE_TAG,
+                    AUTOMOTIVE_DISTANT_DISPLAY_TAG);
+
+    private static final Set<IdDisplay> TV_TAGS = ImmutableSet.of(ANDROID_TV_TAG, GOOGLE_TV_TAG);
+
+    public static boolean hasGoogleApi(Collection<IdDisplay> tags) {
+        // Multi-tagged packages only need this check
+        // While we could force multi-tagged packages to list Play and Google APIs separately,
+        // it's safe to say that Play implies Google APIs, and this makes things tidier.
+        if (tags.contains(GOOGLE_APIS_TAG) || tags.contains(PLAY_STORE_TAG)) {
+            return true;
+        }
+        // Fallback logic for old non-multi-tagged packages
+        return tags.size() == 1 && TAGS_WITH_GOOGLE_API.contains(tags.iterator().next());
+    }
+
+    public static boolean isWearImage(Collection<IdDisplay> tags) {
+        return tags.contains(SystemImageTags.WEAR_TAG);
+    }
+
+    public static boolean isTvImage(Collection<IdDisplay> tags) {
+        return tags.stream().anyMatch(TV_TAGS::contains);
+    }
+
+    public static boolean isAutomotiveImage(Collection<IdDisplay> tags) {
+        return tags.contains(AUTOMOTIVE_TAG)
+                || tags.contains(AUTOMOTIVE_PLAY_STORE_TAG)
+                || tags.contains(AUTOMOTIVE_DISTANT_DISPLAY_TAG);
+    }
+
+    public static ImmutableList<IdDisplay> getTags(RepoPackage pkg) {
+        TypeDetails details = pkg.getTypeDetails();
+        if (details instanceof DetailsTypes.SysImgDetailsType) {
+            return ImmutableList.copyOf(((DetailsTypes.SysImgDetailsType) details).getTags());
+        } else if (details instanceof DetailsTypes.AddonDetailsType) {
+            return ImmutableList.of(((DetailsTypes.AddonDetailsType) details).getTag());
+        } else {
+            return ImmutableList.of();
+        }
+    }
 }

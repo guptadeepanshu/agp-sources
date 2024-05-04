@@ -15,6 +15,7 @@
  */
 package com.android.build.gradle.internal.variant
 
+import com.android.build.VariantOutput
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.dsl.BuildFeatures
 import com.android.build.api.dsl.CommonExtension
@@ -46,6 +47,7 @@ import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantBuilderServices
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
+import com.android.build.gradle.internal.utils.restrictRenderScriptOnRiscv
 import com.android.build.gradle.options.ProjectOptions
 import com.android.builder.core.BuilderConstants
 import com.android.builder.core.ComponentTypeImpl
@@ -87,7 +89,7 @@ class LibraryVariantFactory(
         taskCreationServices: TaskCreationServices,
         globalConfig: GlobalTaskCreationConfig,
     ): LibraryCreationConfig {
-        return dslServices
+        val libraryVariant = dslServices
             .newInstance(
                 LibraryVariantImpl::class.java,
                 variantBuilder,
@@ -103,6 +105,8 @@ class LibraryVariantFactory(
                 taskCreationServices,
                 globalConfig
             )
+        restrictRenderScriptOnRiscv(dslServices, libraryVariant, buildFeatures, globalConfig)
+        return libraryVariant
     }
 
     override fun createBuildFeatureValues(

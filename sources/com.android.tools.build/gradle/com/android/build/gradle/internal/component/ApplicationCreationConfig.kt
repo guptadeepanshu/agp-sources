@@ -17,6 +17,7 @@
 package com.android.build.gradle.internal.component
 
 import com.android.build.api.variant.VariantOutputConfiguration
+import com.android.build.api.variant.impl.ApplicationAndroidResourcesImpl
 import com.android.build.api.variant.impl.BundleConfigImpl
 import com.android.build.api.variant.impl.VariantOutputList
 
@@ -25,10 +26,9 @@ interface ApplicationCreationConfig: ApkCreationConfig, VariantCreationConfig, P
     val consumesFeatureJars: Boolean
     val needAssetPackTasks: Boolean
     val isWearAppUnbundled: Boolean?
-    val generateLocaleConfig: Boolean
     val includeVcsInfo: Boolean?
     override val bundleConfig: BundleConfigImpl
-
+    override val androidResources: ApplicationAndroidResourcesImpl
     val outputs: VariantOutputList
 
     fun addVariantOutput(variantOutputConfiguration: VariantOutputConfiguration)

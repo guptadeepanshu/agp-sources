@@ -454,6 +454,35 @@ private static final long serialVersionUID = 0L;
     return isEmbeddedLayoutInspector_;
   }
 
+  public static final int ATTACH_DURATION_MS_FIELD_NUMBER = 10;
+  private long attachDurationMs_;
+  /**
+   * <pre>
+   * The time it took for attach to start and end.
+   * It can end because of success, error or cancellation.
+   * </pre>
+   *
+   * <code>optional int64 attach_duration_ms = 10;</code>
+   * @return Whether the attachDurationMs field is set.
+   */
+  @java.lang.Override
+  public boolean hasAttachDurationMs() {
+    return ((bitField0_ & 0x00000200) != 0);
+  }
+  /**
+   * <pre>
+   * The time it took for attach to start and end.
+   * It can end because of success, error or cancellation.
+   * </pre>
+   *
+   * <code>optional int64 attach_duration_ms = 10;</code>
+   * @return The attachDurationMs.
+   */
+  @java.lang.Override
+  public long getAttachDurationMs() {
+    return attachDurationMs_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -494,6 +523,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00000100) != 0)) {
       output.writeBool(9, isEmbeddedLayoutInspector_);
+    }
+    if (((bitField0_ & 0x00000200) != 0)) {
+      output.writeInt64(10, attachDurationMs_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -539,6 +571,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000100) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeBoolSize(9, isEmbeddedLayoutInspector_);
+    }
+    if (((bitField0_ & 0x00000200) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt64Size(10, attachDurationMs_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -598,6 +634,11 @@ private static final long serialVersionUID = 0L;
       if (getIsEmbeddedLayoutInspector()
           != other.getIsEmbeddedLayoutInspector()) return false;
     }
+    if (hasAttachDurationMs() != other.hasAttachDurationMs()) return false;
+    if (hasAttachDurationMs()) {
+      if (getAttachDurationMs()
+          != other.getAttachDurationMs()) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -650,6 +691,11 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + IS_EMBEDDED_LAYOUT_INSPECTOR_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getIsEmbeddedLayoutInspector());
+    }
+    if (hasAttachDurationMs()) {
+      hash = (37 * hash) + ATTACH_DURATION_MS_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getAttachDurationMs());
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -811,6 +857,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000080);
       isEmbeddedLayoutInspector_ = false;
       bitField0_ = (bitField0_ & ~0x00000100);
+      attachDurationMs_ = 0L;
+      bitField0_ = (bitField0_ & ~0x00000200);
       return this;
     }
 
@@ -878,6 +926,10 @@ private static final long serialVersionUID = 0L;
       if (((from_bitField0_ & 0x00000100) != 0)) {
         result.isEmbeddedLayoutInspector_ = isEmbeddedLayoutInspector_;
         to_bitField0_ |= 0x00000100;
+      }
+      if (((from_bitField0_ & 0x00000200) != 0)) {
+        result.attachDurationMs_ = attachDurationMs_;
+        to_bitField0_ |= 0x00000200;
       }
       result.bitField0_ = to_bitField0_;
       onBuilt();
@@ -954,6 +1006,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasIsEmbeddedLayoutInspector()) {
         setIsEmbeddedLayoutInspector(other.getIsEmbeddedLayoutInspector());
+      }
+      if (other.hasAttachDurationMs()) {
+        setAttachDurationMs(other.getAttachDurationMs());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -1042,6 +1097,11 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000100;
               break;
             } // case 72
+            case 80: {
+              attachDurationMs_ = input.readInt64();
+              bitField0_ |= 0x00000200;
+              break;
+            } // case 80
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -1659,6 +1719,65 @@ private static final long serialVersionUID = 0L;
     public Builder clearIsEmbeddedLayoutInspector() {
       bitField0_ = (bitField0_ & ~0x00000100);
       isEmbeddedLayoutInspector_ = false;
+      onChanged();
+      return this;
+    }
+
+    private long attachDurationMs_ ;
+    /**
+     * <pre>
+     * The time it took for attach to start and end.
+     * It can end because of success, error or cancellation.
+     * </pre>
+     *
+     * <code>optional int64 attach_duration_ms = 10;</code>
+     * @return Whether the attachDurationMs field is set.
+     */
+    @java.lang.Override
+    public boolean hasAttachDurationMs() {
+      return ((bitField0_ & 0x00000200) != 0);
+    }
+    /**
+     * <pre>
+     * The time it took for attach to start and end.
+     * It can end because of success, error or cancellation.
+     * </pre>
+     *
+     * <code>optional int64 attach_duration_ms = 10;</code>
+     * @return The attachDurationMs.
+     */
+    @java.lang.Override
+    public long getAttachDurationMs() {
+      return attachDurationMs_;
+    }
+    /**
+     * <pre>
+     * The time it took for attach to start and end.
+     * It can end because of success, error or cancellation.
+     * </pre>
+     *
+     * <code>optional int64 attach_duration_ms = 10;</code>
+     * @param value The attachDurationMs to set.
+     * @return This builder for chaining.
+     */
+    public Builder setAttachDurationMs(long value) {
+      bitField0_ |= 0x00000200;
+      attachDurationMs_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * The time it took for attach to start and end.
+     * It can end because of success, error or cancellation.
+     * </pre>
+     *
+     * <code>optional int64 attach_duration_ms = 10;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearAttachDurationMs() {
+      bitField0_ = (bitField0_ & ~0x00000200);
+      attachDurationMs_ = 0L;
       onChanged();
       return this;
     }

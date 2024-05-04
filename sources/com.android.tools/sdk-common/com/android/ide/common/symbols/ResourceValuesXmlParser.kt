@@ -22,6 +22,7 @@ import com.android.SdkConstants
 import com.android.SdkConstants.ANDROID_NS_NAME_PREFIX
 import com.android.SdkConstants.ANDROID_NS_NAME_PREFIX_LEN
 import com.android.SdkConstants.TAG_EAT_COMMENT
+import com.android.SdkConstants.TAG_SKIP
 import com.android.resources.ResourceType
 import com.android.utils.XmlUtils.toXml
 import com.google.common.collect.ImmutableList
@@ -203,7 +204,7 @@ private fun parseChild(
         enumSymbols: MutableList<Symbol>,
         platformAttrSymbols: SymbolTable?,
         validation: Boolean = true) {
-    if (child.tagName == SdkConstants.TAG_EAT_COMMENT) {
+    if (child.tagName == TAG_EAT_COMMENT || child.tagName == TAG_SKIP) {
         return
     }
 

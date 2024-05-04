@@ -32,7 +32,6 @@ import com.android.build.api.variant.ApkPackaging
 import com.android.build.api.variant.BuildConfigField
 import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.ResValue
-import com.android.build.api.variant.SigningConfig
 import com.android.build.api.variant.impl.AndroidResourcesImpl
 import com.android.build.api.variant.impl.ApkPackagingImpl
 import com.android.build.api.variant.impl.KmpVariantImpl
@@ -51,6 +50,7 @@ import com.android.build.gradle.internal.component.features.RenderscriptCreation
 import com.android.build.gradle.internal.component.features.ShadersCreationConfig
 import com.android.build.gradle.internal.core.dsl.impl.KmpAndroidTestDslInfoImpl
 import com.android.build.gradle.internal.dependency.VariantDependencies
+import com.android.build.gradle.internal.dsl.ModulePropertyKey
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.TaskCreationServices
@@ -221,7 +221,7 @@ open class KmpAndroidTestImpl @Inject constructor(
         get() = optimizationCreationConfig.proguardFiles
 
     override val androidResources: AndroidResourcesImpl =
-        initializeAaptOptionsFromDsl(dslInfo.androidResourcesDsl.androidResources, internalServices)
+        initializeAaptOptionsFromDsl(dslInfo.androidResourcesDsl.androidResources, buildFeatures, internalServices)
 
     override fun makeResValueKey(type: String, name: String): ResValue.Key =
         ResValueKeyImpl(type, name)
@@ -257,6 +257,11 @@ open class KmpAndroidTestImpl @Inject constructor(
     override fun setAsmFramesComputationMode(mode: FramesComputationMode) {
         instrumentation.setAsmFramesComputationMode(mode)
     }
+
+    override val isForceAotCompilation: Boolean
+        get() = mainVariant.experimentalProperties.map {
+            ModulePropertyKey.BooleanWithDefault.FORCE_AOT_COMPILATION.getValue(it)
+        }.getOrElse(false)
 
     // unsupported features
     override val shouldPackageProfilerDependencies: Boolean = false

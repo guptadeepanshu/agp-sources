@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.ide.v2
 
+import com.android.builder.core.ComponentTypeImpl
 import com.android.builder.model.v2.ide.AndroidArtifact
 import com.android.builder.model.v2.ide.JavaArtifact
 import com.android.builder.model.v2.ide.TestedTargetVariant
@@ -30,14 +31,19 @@ data class VariantImpl(
     override val name: String,
     override val displayName: String,
     override val mainArtifact: AndroidArtifact,
-    override val androidTestArtifact: AndroidArtifact?,
-    override val unitTestArtifact: JavaArtifact?,
+    override val deviceTestArtifacts: Map<String, AndroidArtifact>,
+    override val hostTestArtifacts: Map<String, JavaArtifact>,
     override val testFixturesArtifact: AndroidArtifact?,
     override val testedTargetVariant: TestedTargetVariant?,
     override val runTestInSeparateProcess: Boolean,
     override val isInstantAppCompatible: Boolean,
     override val desugaredMethods: List<File>
 ) : Variant, Serializable {
+    override val androidTestArtifact: AndroidArtifact?
+        get() = deviceTestArtifacts[ComponentTypeImpl.ANDROID_TEST.artifactName]
+    override val unitTestArtifact: JavaArtifact?
+        get() = hostTestArtifacts[ComponentTypeImpl.UNIT_TEST.artifactName]
+
     companion object {
         @JvmStatic
         private val serialVersionUID: Long = 2L

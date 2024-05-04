@@ -22,13 +22,13 @@ import com.android.SdkConstants.FN_API_JAR
 import com.android.SdkConstants.FN_CLASSES_JAR
 import com.android.SdkConstants.FN_RESOURCE_TEXT
 import com.android.SdkConstants.LIBS_FOLDER
+import com.android.build.gradle.internal.caching.DisabledCachingReason
 import com.android.builder.packaging.JarCreator
 import com.android.builder.packaging.JarFlinger
 import com.android.builder.symbols.exportToCompiledJava
 import com.android.ide.common.symbols.rTxtToSymbolTable
 import com.android.ide.common.xml.AndroidManifestParser
 import com.google.common.annotations.VisibleForTesting
-import org.gradle.api.artifacts.transform.CacheableTransform
 import org.gradle.api.artifacts.transform.InputArtifact
 import org.gradle.api.artifacts.transform.TransformAction
 import org.gradle.api.artifacts.transform.TransformOutputs
@@ -39,6 +39,7 @@ import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
+import org.gradle.work.DisableCachingByDefault
 import java.nio.file.Path
 import java.util.zip.Deflater.NO_COMPRESSION
 import java.util.zip.ZipEntry
@@ -47,7 +48,7 @@ import java.util.zip.ZipFile
 /**
  * A Gradle Artifact [TransformAction] from a processed AAR to a single classes JAR file.
  */
-@CacheableTransform
+@DisableCachingByDefault(because = DisabledCachingReason.FAST_TRANSFORM)
 abstract class AarToClassTransform : TransformAction<AarToClassTransform.Params> {
 
     interface Params : TransformParameters {

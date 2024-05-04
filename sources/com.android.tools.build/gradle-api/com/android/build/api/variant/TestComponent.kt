@@ -37,7 +37,7 @@ import org.gradle.api.provider.MapProperty
  * ```
  *
  * Not all subtype of [Variant] will have access to all sub-types of [TestComponent], this
- * is handled via [HasUnitTest], and [HasAndroidTest].
+ * is handled via [HasUnitTest], and [HasDeviceTests].
  *
  * The test components are also part of [Variant.nestedComponents]
  *

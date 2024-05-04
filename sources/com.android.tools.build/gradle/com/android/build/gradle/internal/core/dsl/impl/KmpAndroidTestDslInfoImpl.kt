@@ -39,7 +39,6 @@ import com.android.build.gradle.internal.services.VariantServices
 import com.android.builder.core.ComponentTypeImpl
 import com.android.builder.core.DefaultVectorDrawablesOptions
 import com.android.builder.dexing.DexingType
-import com.android.builder.dexing.isLegacyMultiDexMode
 import com.android.builder.model.VectorDrawablesOptions
 import com.google.common.collect.ImmutableSet
 import org.gradle.api.provider.Provider
@@ -131,7 +130,7 @@ class KmpAndroidTestDslInfoImpl(
         } // else return the value from the Manifest
             ?: dataProvider.manifestData.map {
                 it.instrumentationRunner
-                    ?: if (dexingType.isLegacyMultiDexMode()) {
+                    ?: if (dexingType.isLegacyMultiDex) {
                         MULTIDEX_TEST_RUNNER
                     } else {
                         DEFAULT_TEST_RUNNER

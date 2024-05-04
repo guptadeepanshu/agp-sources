@@ -25,6 +25,7 @@ data class AndroidSourceSetName(
 
     companion object {
         const val CONFIG_NAME_COMPILE_ONLY = "compileOnly"
+        const val CONFIG_NAME_COMPILE_ONLY_API = "compileOnlyApi"
 
         private const val CONFIG_NAME_COMPILE = "compile"
         private const val CONFIG_NAME_PUBLISH = "publish"
@@ -50,6 +51,9 @@ data class AndroidSourceSetName(
 
     val compileOnlyConfigurationName: String
         get() = getName(CONFIG_NAME_COMPILE_ONLY)
+
+    val compileOnlyApiConfigurationName: String
+        get() = getName(CONFIG_NAME_COMPILE_ONLY_API)
 
     val implementationConfigurationName: String
         get() = getName(CONFIG_NAME_IMPLEMENTATION)

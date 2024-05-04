@@ -22,6 +22,7 @@ import com.android.resources.Keyboard;
 import com.android.resources.Navigation;
 import com.android.resources.UiMode;
 import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableList;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,7 +45,8 @@ public class Hardware {
     private List<Storage> mRemovableStorage = new ArrayList<Storage>();
     private String mCpu;
     private String mGpu;
-    private EnumSet<Abi> mAbis = EnumSet.noneOf(Abi.class);
+    private List<Abi> mAbis = new ArrayList<>();
+    private List<Abi> mTranslatedAbis = new ArrayList<>();
     private EnumSet<UiMode> mUiModes = EnumSet.noneOf(UiMode.class);
     private PowerType mPluggedIn;
     private File mSkinFile;
@@ -206,8 +208,8 @@ public class Hardware {
     }
 
     @NonNull
-    public Set<Abi> getSupportedAbis() {
-        return mAbis;
+    public List<Abi> getSupportedAbis() {
+        return ImmutableList.copyOf(mAbis);
     }
 
     public void addSupportedAbi(@NonNull Abi abi) {
@@ -216,6 +218,19 @@ public class Hardware {
 
     public void addAllSupportedAbis(@NonNull Collection<Abi> abis) {
         mAbis.addAll(abis);
+    }
+
+    @NonNull
+    public List<Abi> getTranslatedAbis() {
+        return ImmutableList.copyOf(mTranslatedAbis);
+    }
+
+    public void addTranslatedAbi(@NonNull Abi abi) {
+        mTranslatedAbis.add(abi);
+    }
+
+    public void addAllTranslatedAbis(@NonNull Collection<Abi> abis) {
+        mTranslatedAbis.addAll(abis);
     }
 
     @NonNull
@@ -276,19 +291,14 @@ public class Hardware {
         }
         hw.mKeyboard = mKeyboard;
         hw.mNav = mNav;
-        hw.mRam = mRam != null ? mRam.deepCopy() : null;
+        hw.mRam = mRam;
         hw.mButtons = mButtons;
-        hw.mInternalStorage = new ArrayList<Storage>();
-        for (Storage s : mInternalStorage) {
-            hw.mInternalStorage.add(s.deepCopy());
-        }
-        hw.mRemovableStorage = new ArrayList<Storage>();
-        for (Storage s : mRemovableStorage) {
-            hw.mRemovableStorage.add(s.deepCopy());
-        }
+        hw.mInternalStorage = new ArrayList<>(mInternalStorage);
+        hw.mRemovableStorage = new ArrayList<>(mRemovableStorage);
         hw.mCpu = mCpu;
         hw.mGpu = mGpu;
-        hw.mAbis = mAbis.clone();
+        hw.mAbis = new ArrayList<>(mAbis);
+        hw.mTranslatedAbis = new ArrayList<>(mTranslatedAbis);
         hw.mUiModes = mUiModes.clone();
         hw.mPluggedIn = mPluggedIn;
         hw.mSkinFile = mSkinFile;
@@ -320,6 +330,7 @@ public class Hardware {
                 && mCpu.equals(hw.getCpu())
                 && mGpu.equals(hw.getGpu())
                 && mAbis.equals(hw.getSupportedAbis())
+                && mTranslatedAbis.equals(hw.getTranslatedAbis())
                 && mUiModes.equals(hw.getSupportedUiModes())
                 && mPluggedIn == hw.getChargeType()
                 && Objects.equal(mSkinFile, hw.getSkinFile());
@@ -372,6 +383,12 @@ public class Hardware {
         hash = 31 * hash + temp;
 
         temp = 0;
+        for (Abi a : mTranslatedAbis) {
+            temp |= 1 << a.ordinal();
+        }
+        hash = 31 * hash + temp;
+
+        temp = 0;
         for (UiMode ui : mUiModes) {
             temp |= 1 << ui.ordinal();
         }
@@ -413,6 +430,8 @@ public class Hardware {
         sb.append(mGpu);
         sb.append(", mAbis=");
         sb.append(mAbis);
+        sb.append(", mTranslatedAbis=");
+        sb.append(mTranslatedAbis);
         sb.append(", mUiModes=");
         sb.append(mUiModes);
         sb.append(", mPluggedIn=");

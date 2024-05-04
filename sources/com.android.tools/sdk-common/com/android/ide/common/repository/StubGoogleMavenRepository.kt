@@ -20,7 +20,8 @@ class StubGoogleMavenRepository @JvmOverloads constructor(
     private val urls: Map<String, String> = emptyMap(),
     cacheDir: Path? = null
 ) : GoogleMavenRepository(cacheDir = cacheDir) {
-    override fun readUrlData(url: String, timeout: Int): ByteArray? = urls[url]?.toByteArray()
+    override fun readUrlData(url: String, timeout: Int, lastModified: Long) =
+        ReadUrlDataResult(urls[url]?.toByteArray(), true)
     override fun error(throwable: Throwable, message: String?) = throw throwable
     override fun readDefaultData(relative: String) = builtInData[relative]?.byteInputStream()
 }

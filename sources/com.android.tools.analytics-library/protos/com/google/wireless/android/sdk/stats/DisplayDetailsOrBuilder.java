@@ -47,7 +47,7 @@ public interface DisplayDetailsOrBuilder extends
 
   /**
    * <pre>
-   * Densitiy of the pixels on the screen horiziontally.
+   * Density of the pixels on the screen horiziontally.
    * </pre>
    *
    * <code>optional int32 dots_per_inch_horizontal = 3;</code>
@@ -56,7 +56,7 @@ public interface DisplayDetailsOrBuilder extends
   boolean hasDotsPerInchHorizontal();
   /**
    * <pre>
-   * Densitiy of the pixels on the screen horiziontally.
+   * Density of the pixels on the screen horiziontally.
    * </pre>
    *
    * <code>optional int32 dots_per_inch_horizontal = 3;</code>

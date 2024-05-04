@@ -20,6 +20,11 @@ import org.gradle.api.Incubating
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
+/**
+ * The plugin applied with 'com.android.fused-library'
+ *
+ * @suppress Do not use from production code. Only exposed for prototype.
+ */
 @Incubating
 class FusedLibraryPlugin: Plugin<Project> {
     override fun apply(project: Project) {

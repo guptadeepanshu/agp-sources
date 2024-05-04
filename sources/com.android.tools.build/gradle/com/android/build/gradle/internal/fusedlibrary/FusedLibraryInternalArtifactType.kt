@@ -52,5 +52,5 @@ FusedLibraryInternalArtifactType<T : FileSystemLocation>(
     object MERGED_JNI: FusedLibraryInternalArtifactType<Directory>(DIRECTORY), Replaceable
     object MERGED_NAVIGATION_JSON: FusedLibraryInternalArtifactType<RegularFile>(FILE), Replaceable
     object MERGED_AAR_METADATA: FusedLibraryInternalArtifactType<RegularFile>(FILE), Replaceable
-    object MERGED_JAVA_RES: FusedLibraryInternalArtifactType<RegularFile>(FILE), Replaceable
+    object MERGED_JAVA_RES: FusedLibraryInternalArtifactType<RegularFile>(FILE), Replaceable, Transformable
 }

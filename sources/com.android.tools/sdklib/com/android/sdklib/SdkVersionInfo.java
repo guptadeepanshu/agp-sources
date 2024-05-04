@@ -74,13 +74,13 @@ public class SdkVersionInfo {
      * The highest known API level for Wearables. Note the tools at the downloadable system images
      * for wearables to see if there are more recent versions.
      */
-    public static final int HIGHEST_KNOWN_API_WEAR = 30;
+    public static final int HIGHEST_KNOWN_API_WEAR = 33;
 
     /**
      * The lowest active api for wearables. This number will change over time as the distribution of
      * older platforms decreases.
      */
-    public static final int LOWEST_ACTIVE_API_WEAR = 25;
+    public static final int LOWEST_ACTIVE_API_WEAR = 28;
 
     /**
      * The highest known API level for desktop. Note the tools at the
@@ -94,7 +94,7 @@ public class SdkVersionInfo {
      * downloadable system images for TV to see if there are more recent
      * versions.
      */
-    public static final int HIGHEST_KNOWN_API_TV = 24;
+    public static final int HIGHEST_KNOWN_API_TV = 34;
 
     /**
      * The highest known API level for Android Auto. To find out if this value needs to be updated,

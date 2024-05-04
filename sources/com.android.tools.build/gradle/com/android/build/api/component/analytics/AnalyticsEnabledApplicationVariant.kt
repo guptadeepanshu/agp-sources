@@ -16,18 +16,19 @@
 
 package com.android.build.api.component.analytics
 
-import com.android.build.api.variant.AndroidResources
 import com.android.build.api.variant.AndroidTest
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.GeneratesApk
-import com.android.build.api.variant.ApkPackaging
+import com.android.build.api.variant.ApplicationAndroidResources
 import com.android.build.api.variant.ApplicationVariant
 import com.android.build.api.variant.BundleConfig
 import com.android.build.api.variant.DependenciesInfo
+import com.android.build.api.variant.DeviceTest
 import com.android.build.api.variant.Dexing
 import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.SigningConfig
 import com.android.build.api.variant.TestFixtures
+import com.android.build.api.variant.TestedApkPackaging
 import com.android.build.api.variant.VariantOutput
 import com.android.tools.build.gradle.internal.profile.VariantPropertiesMethodType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
@@ -120,14 +121,30 @@ open class AnalyticsEnabledApplicationVariant @Inject constructor(
         )
     }
 
-    override val androidResources: AndroidResources
-        get() = generatesApk.androidResources
+    override val androidResources: ApplicationAndroidResources
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.AAPT_OPTIONS_VALUE
+            return delegate.androidResources
+        }
 
     override val renderscript: Renderscript?
         get() = generatesApk.renderscript
 
-    override val packaging: ApkPackaging
-        get() = generatesApk.packaging
+    private val userVisiblePackaging: TestedApkPackaging by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
+        objectFactory.newInstance(
+            AnalyticsEnabledTestedApkPackaging::class.java,
+            delegate.packaging,
+            stats
+        )
+    }
+
+    override val packaging: TestedApkPackaging
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.PACKAGING_OPTIONS_VALUE
+            return userVisiblePackaging
+        }
 
     private val userVisibleBundleConfig: BundleConfig by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
         objectFactory.newInstance(
@@ -167,4 +184,19 @@ open class AnalyticsEnabledApplicationVariant @Inject constructor(
 
     override val dexing: Dexing
         get() = generatesApk.dexing
+
+    override val deviceTests: List<DeviceTest>
+        get()  {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.DEVICE_TESTS_VALUE
+            // return a new list everytime as items may eventually be added through future APIs.
+            // we may consider returning a live list instead.
+            return  delegate.deviceTests.map {
+                if (it is AndroidTest) {
+                    AnalyticsEnabledAndroidTest(it, stats, objectFactory)
+                } else {
+                    AnalyticsEnabledDeviceTest(it, stats, objectFactory)
+                }
+            }
+        }
 }

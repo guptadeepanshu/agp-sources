@@ -26,6 +26,7 @@ import com.android.build.gradle.internal.databinding.configureFrom
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.build.gradle.options.BooleanOption
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.packaging.JarCreator
 import com.android.builder.packaging.JarFlinger
@@ -318,9 +319,11 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
                 creationConfig.artifacts.get(InternalArtifactType.MERGED_JAVA_RES)
             )
 
-            // if minification is enabled, local deps will be processed by the R8 Task and do not
-            // need to be individually repackaged in the resulting AAR.
-            if (!minifyEnabled) {
+            // If local dependencies are minified, it will be included in the classes.jar during
+            // the minification process which means we don't need to add them again.
+            val disableMinifyLocalDepForLibraries = creationConfig.services.projectOptions.get(
+                BooleanOption.DISABLE_MINIFY_LOCAL_DEPENDENCIES_FOR_LIBRARIES)
+            if (!minifyEnabled || disableMinifyLocalDepForLibraries) {
                 task.localScopeInputFiles.from(
                     creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.LOCAL_DEPS)
                         .getFinalArtifacts(ScopedArtifact.CLASSES)

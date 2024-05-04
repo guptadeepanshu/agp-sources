@@ -18,14 +18,13 @@ package com.android.build.api.variant.impl
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.component.analytics.AnalyticsEnabledDynamicFeatureVariant
-import com.android.build.api.component.impl.AndroidTestImpl
 import com.android.build.api.component.impl.TestFixturesImpl
 import com.android.build.api.component.impl.features.DexingImpl
 import com.android.build.api.component.impl.features.OptimizationCreationConfigImpl
 import com.android.build.api.component.impl.isTestApk
 import com.android.build.api.variant.AndroidVersion
-import com.android.build.api.variant.ApkPackaging
 import com.android.build.api.variant.Component
+import com.android.build.api.variant.DeviceTest
 import com.android.build.api.variant.DynamicFeatureVariant
 import com.android.build.api.variant.Renderscript
 import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig
@@ -33,6 +32,7 @@ import com.android.build.gradle.internal.component.features.DexingCreationConfig
 import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.core.dsl.DynamicFeatureVariantDslInfo
 import com.android.build.gradle.internal.dependency.VariantDependencies
+import com.android.build.gradle.internal.dsl.ModulePropertyKey
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType
@@ -78,7 +78,7 @@ open class DynamicFeatureVariantImpl @Inject constructor(
     internalServices,
     taskCreationServices,
     globalTaskCreationConfig
-), DynamicFeatureVariant, DynamicFeatureCreationConfig, HasDeviceTests, HasTestFixtures {
+), DynamicFeatureVariant, DynamicFeatureCreationConfig, InternalHasDeviceTests, HasTestFixtures {
 
     init {
         // TODO: Should be removed once we stop implementing all build type interfaces in one class
@@ -110,15 +110,15 @@ open class DynamicFeatureVariantImpl @Inject constructor(
         getAndroidResources(dslInfo.androidResourcesDsl.androidResources)
     }
 
-    override val packaging: ApkPackaging by lazy {
-        ApkPackagingImpl(
+    override val packaging: TestedApkPackagingImpl by lazy {
+        TestedApkPackagingImpl(
             dslInfo.packaging,
             internalServices,
             minSdk.apiLevel
         )
     }
 
-    override var androidTest: AndroidTestImpl? = null
+    override val deviceTests = mutableListOf<DeviceTest>()
 
     override var testFixtures: TestFixturesImpl? = null
 
@@ -300,4 +300,9 @@ open class DynamicFeatureVariantImpl @Inject constructor(
         super.finalizeAndLock()
         dexing.finalizeAndLock()
     }
+
+    override val isForceAotCompilation: Boolean
+        get() = experimentalProperties.map {
+            ModulePropertyKey.BooleanWithDefault.FORCE_AOT_COMPILATION.getValue(it)
+        }.getOrElse(false)
 }

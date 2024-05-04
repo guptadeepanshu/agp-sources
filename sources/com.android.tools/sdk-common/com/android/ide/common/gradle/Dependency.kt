@@ -125,6 +125,7 @@ data class Dependency(
          * (and a string with no `:` before any `@` denotes a [Dependency] with no [group],
          * [version] or [classifier].
          */
+        @JvmStatic
         fun parse(string: String): Dependency {
             val lastAt = string.lastIndexOf('@').takeIf { it != -1 }
             val extension = lastAt?.let { string.substring(1+lastAt) }

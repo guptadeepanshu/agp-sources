@@ -32,6 +32,8 @@ import java.util.regex.Pattern;
  * a default value and a validator for its values.
  */
 class AttributeModel {
+    private static final Pattern PACKAGE_NAME_PATTERN =
+            Pattern.compile("([A-Za-z][A-Za-z\\d_]*\\.)*[A-Za-z][A-Za-z\\d_]*");
 
     @NonNull private final XmlNode.NodeName mXmlNodeName;
     private final boolean mIsPackageDependent;
@@ -369,8 +371,13 @@ class AttributeModel {
     static class BooleanValidator implements Validator {
 
         // TODO: check with @xav where to find the acceptable values by runtime.
-        private static final Pattern TRUE_PATTERN = Pattern.compile("true|True|TRUE");
-        private static final Pattern FALSE_PATTERN = Pattern.compile("false|False|FALSE");
+
+        private static final Pattern BOOL_RESOURCE_REF_PATTERN =
+                Pattern.compile("[@?]" + "(" + PACKAGE_NAME_PATTERN + ":)" + "?bool/\\w+");
+        private static final Pattern TRUE_PATTERN =
+                Pattern.compile("true|True|TRUE|" + BOOL_RESOURCE_REF_PATTERN);
+        private static final Pattern FALSE_PATTERN =
+                Pattern.compile("false|False|FALSE|" + BOOL_RESOURCE_REF_PATTERN);
 
         private static boolean isTrue(@NonNull String value) {
             return TRUE_PATTERN.matcher(value).matches();
@@ -392,41 +399,6 @@ class AttributeModel {
                                 attribute.getId(), attribute.printPosition(), value));
             }
             return matches;
-        }
-    }
-
-    /**
-     * A {@link com.android.manifmerger.AttributeModel.Validator} for verifying that a proposed
-     * value is part of the acceptable list of possible values.
-     */
-    static class MultiValueValidator implements Validator {
-
-        @NonNull
-        private final String[] multiValues;
-        @NonNull
-        private final String allValues;
-
-        MultiValueValidator(@NonNull String... multiValues) {
-            this.multiValues = multiValues;
-            allValues = Joiner.on(',').join(multiValues);
-        }
-
-        @Override
-        public boolean validates(@NonNull MergingReport.Builder mergingReport,
-                @NonNull XmlAttribute attribute, @NonNull String value) {
-            for (String multiValue : multiValues) {
-                if (multiValue.equals(value)) {
-                    return true;
-                }
-            }
-            mergingReport.addMessage(
-                    attribute,
-                    MergingReport.Record.Severity.ERROR,
-                    String.format(
-                            "Invalid value for attribute %1$s at %2$s, value=(%3$s), "
-                                    + "acceptable values are (%4$s)",
-                            attribute.getId(), attribute.printPosition(), value, allValues));
-            return false;
         }
     }
 
@@ -482,6 +454,8 @@ class AttributeModel {
      * value is a numerical integer value.
      */
     static class IntegerValueValidator implements Validator {
+        private static final Pattern INTEGER_RESOURCE_REF_PATTERN =
+                Pattern.compile("[@?]" + "(" + PACKAGE_NAME_PATTERN + ":)" + "?integer/\\w+");
 
         @Override
         public boolean validates(@NonNull MergingReport.Builder mergingReport,
@@ -489,6 +463,9 @@ class AttributeModel {
             try {
                 return Integer.parseInt(value) > 0;
             } catch (NumberFormatException e) {
+                if (INTEGER_RESOURCE_REF_PATTERN.matcher(value).matches()) {
+                    return true;
+                }
                 mergingReport.addMessage(
                         attribute,
                         MergingReport.Record.Severity.ERROR,

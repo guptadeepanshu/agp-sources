@@ -22,6 +22,7 @@ import java.io.InputStream
 import java.nio.file.Files
 import java.nio.file.NoSuchFileException
 import java.nio.file.Path
+import java.nio.file.attribute.FileTime
 import java.util.concurrent.TimeUnit
 
 /**
@@ -52,9 +53,20 @@ abstract class NetworkCache constructor(
 ) {
     protected var lastReadSourceType: DataSourceType = DataSourceType.UNKNOWN_SOURCE
 
-    /** Reads the given query URL in, with the given time out, and returns the bytes found. */
+    @Suppress("ArrayInDataClass")
+    data class ReadUrlDataResult(
+        val data: ByteArray?,
+        /** true if the data (if any) should be treated as fresh. */
+        val modifiedSince: Boolean
+    )
+
+    /**
+     * Reads the given query URL in, with the given time out, and returns the bytes found.  The
+     * second element of the pair is false if the remote source reported an unmodified resource
+     * and true otherwise.
+     */
     @Slow
-    protected abstract fun readUrlData(url: String, timeout: Int): ByteArray?
+    protected abstract fun readUrlData(url: String, timeout: Int, lastModified: Long): ReadUrlDataResult
 
     /** Provides the data from offline/local storage, if possible. */
     protected abstract fun readDefaultData(relative: String): InputStream?
@@ -66,10 +78,11 @@ abstract class NetworkCache constructor(
     @Slow
     protected open fun findData(relative: String): InputStream? {
         if (cacheDir != null) {
+            var lastModified = 0L
             synchronized(cacheDir) {
                 val file = cacheDir.resolve(relative.ifEmpty { cacheKey })
                 try {
-                    val lastModified = CancellableFileIo.getLastModifiedTime(file).toMillis()
+                    lastModified = CancellableFileIo.getLastModifiedTime(file).toMillis()
                     val now = System.currentTimeMillis()
                     val expiryMs = TimeUnit.HOURS.toMillis(cacheExpiryHours.toLong())
 
@@ -95,12 +108,20 @@ abstract class NetworkCache constructor(
 
                 if (networkEnabled) {
                     try {
-                        lastReadSourceType = DataSourceType.CACHE_FILE_NEW
-                        val data = readUrlData("$baseUrl$relative", networkTimeoutMs)
-                        if (data != null) {
-                            file.parent?.let { Files.createDirectories(it) }
-                            Files.write(file, data)
-                            return ByteArrayInputStream(data)
+                        val time = FileTime.fromMillis(System.currentTimeMillis())
+                        val result = readUrlData("$baseUrl$relative", networkTimeoutMs, lastModified)
+                        if (result.modifiedSince) {
+                            result.data?.let { data ->
+                                lastReadSourceType = DataSourceType.CACHE_FILE_NEW
+                                file.parent?.let { Files.createDirectories(it) }
+                                Files.write(file, data)
+                                return ByteArrayInputStream(data)
+                            }
+                        }
+                        else {
+                            lastReadSourceType = DataSourceType.CACHE_FILE_NOT_MODIIFED_SINCE
+                            Files.setLastModifiedTime(file, time)
+                            return CancellableFileIo.newInputStream(file)
                         }
                     }
                     catch (e: AssertionError) {
@@ -138,8 +159,10 @@ abstract class NetworkCache constructor(
         CACHE_FILE_EXPIRED_UNKNOWN,
         // Cache file exists and has not expired
         CACHE_FILE_RECENT,
-        // Cache file and was just downloaded
+        // Cache file was just downloaded
         CACHE_FILE_NEW,
+        // Cache file expired but server reports resource is unchanged
+        CACHE_FILE_NOT_MODIIFED_SINCE,
         // Default data was used
         DEFAULT_DATA,
     }

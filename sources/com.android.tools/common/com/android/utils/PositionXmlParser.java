@@ -63,9 +63,8 @@ public class PositionXmlParser {
     public static final String CONTENT_KEY = "contents";
     private static final String POS_KEY = "offsets";
     private static final int CDATA_PREFIX_LENGTH = CDATA_PREFIX.length();
-    /** See http://www.w3.org/TR/REC-xml/#NT-EncodingDecl */
-    private static final Pattern ENCODING_PATTERN =
-            Pattern.compile("encoding=['\"](\\S*)['\"]");
+    /** See <a href="http://www.w3.org/TR/REC-xml/#NT-EncodingDecl">...</a> */
+    private static final Pattern ENCODING_PATTERN = Pattern.compile("encoding=['\"](\\S*)['\"]");
 
     private static final DocumentBuilderFactory DOCUMENT_BUILDER_FACTORY;
     private static final SAXParserFactory SAX_PARSER_FACTORY;
@@ -144,9 +143,7 @@ public class PositionXmlParser {
         return parse(input, true, factory);
     }
 
-    /**
-     * @see #parse(byte[], boolean)
-     */
+    /** @see #parse(byte[], boolean, DocumentBuilderFactory) */
     @NonNull
     public static Document parse(@NonNull byte[] data)
             throws ParserConfigurationException, SAXException, IOException {
@@ -487,15 +484,19 @@ public class PositionXmlParser {
     /**
      * Finds the leaf node at the given offset.
      *
-     * @param document root node
-     * @param offset   offset to look for
+     * @param node the root node (or document)
+     * @param offset offset to look for
      * @return the leaf node at that offset, if any
      */
     @Nullable
-    public static Node findNodeAtOffset(@NonNull Document document, int offset) {
-        Element root = document.getDocumentElement();
-        if (root != null) {
-            return findNodeAtOffset(root, offset);
+    public static Node findNodeAt(@NonNull Node node, int offset) {
+        if (node instanceof Document) {
+            Element root = ((Document) node).getDocumentElement();
+            if (root != null) {
+                return findNodeAtOffset(root, offset);
+            }
+        } else {
+            return findNodeAtOffset(node, offset);
         }
 
         return null;
@@ -634,34 +635,82 @@ public class PositionXmlParser {
                 // Locate the name=value attribute in the source text.
                 // Fast string check first for the common occurrence.
                 String name = attr.getName();
-                Pattern pattern = Pattern.compile(attr.getPrefix() != null
-                    ? String.format("(%1$s\\s*=\\s*((\".*?\")|('.*?')))", name)
-                    : String.format("[^:](%1$s\\s*=\\s*((\".*?\")|('.*?')))", name));
-                Matcher matcher = pattern.matcher(contents);
-                if (matcher.find(startOffset) && matcher.start(1) <= endOffset) {
-                    int index = matcher.start(1);
-                    // Adjust the line and column to this new offset.
-                    int line = pos.getLine();
-                    int column = pos.getColumn();
-                    for (int offset = pos.getOffset(); offset < index; offset++) {
-                        char t = contents.charAt(offset);
-                        if (t == '\n') {
-                            line++;
-                            column = 0;
-                        } else {
-                            column++;
-                        }
+                int nameLength = name.length();
+                int curr = startOffset;
+
+                // Skip out of element name token
+                while (curr < endOffset) {
+                    char c = contents.charAt(curr);
+                    if (Character.isWhitespace(c) || c == '/' || c == '>') {
+                        break;
+                    }
+                    curr++;
+                }
+
+                while (curr < endOffset) {
+                    // Look for the attribute name (and make sure we don't find it inside an
+                    // attribute value)
+                    while (curr < endOffset && Character.isWhitespace(contents.charAt(curr))) {
+                        curr++;
                     }
 
-                    Position attributePosition = new Position(line, column, index);
-                    // Also set end range for retrieval in getLocation.
-                    attributePosition.setEnd(
-                            new Position(line, column + matcher.end(1) - index, matcher.end(1)));
-                    return attributePosition;
-                } else {
-                    // No regexp match either: just fall back to element position.
-                    return pos;
+                    // No more attributes?
+                    if (curr == endOffset) {
+                        break;
+                    } else if (contents.charAt(curr) == '>' || contents.charAt(curr) == '/') {
+                        break;
+                    }
+                    int attributeStart = curr;
+                    // Find attribute value
+                    int attributeEnd = -1;
+                    while (curr < endOffset) {
+                        char c = contents.charAt(curr);
+                        if (c == '"' || c == '\'') {
+                            // Found attribute begin; find corresponding end
+                            attributeEnd = contents.indexOf(c, curr + 1);
+                            break;
+                        }
+                        curr++;
+                    }
+
+                    if (attributeEnd != -1) {
+                        attributeEnd++;
+                        boolean match =
+                                contents.regionMatches(attributeStart, name, 0, nameLength)
+                                        && (Character.isWhitespace(
+                                                        contents.charAt(
+                                                                attributeStart + nameLength))
+                                                || contents.charAt(attributeStart + nameLength)
+                                                        == '=');
+                        if (match) {
+                            // Adjust the line and column to this new offset.
+                            int line = pos.getLine();
+                            int column = pos.getColumn();
+                            for (int offset = pos.getOffset(); offset < attributeStart; offset++) {
+                                char t = contents.charAt(offset);
+                                if (t == '\n') {
+                                    line++;
+                                    column = 0;
+                                } else {
+                                    column++;
+                                }
+                            }
+
+                            Position attributePosition = new Position(line, column, attributeStart);
+                            // Also set end range for retrieval in getLocation.
+                            int attributeColumnEnd = column + attributeEnd - attributeStart;
+                            attributePosition.setEnd(
+                                    new Position(line, attributeColumnEnd, attributeEnd));
+                            return attributePosition;
+                        }
+                        curr = attributeEnd + 1;
+                    } else {
+                        break;
+                    }
                 }
+
+                // Attribute not found: just fall back to element position.
+                return pos;
             }
         } else if (node instanceof Text) { // includes CharacterData
             // Position of parent element, if any.

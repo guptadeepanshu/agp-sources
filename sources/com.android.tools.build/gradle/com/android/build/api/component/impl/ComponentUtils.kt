@@ -32,6 +32,7 @@ import com.android.build.gradle.options.OptionalBooleanOption
 import com.android.build.gradle.options.StringOption
 import com.android.builder.errors.IssueReporter
 import com.android.sdklib.AndroidTargetHash
+import com.android.utils.appendCapitalized
 import com.google.common.base.Strings
 import org.gradle.api.file.FileCollection
 
@@ -129,4 +130,10 @@ private fun getCompiledManifest(component: ComponentCreationConfig): FileCollect
     } else {
         component.services.fileCollection()
     }
+}
+
+internal fun computeTaskName(name: String, action: String, subject: String): String  {
+    require(action.isNotBlank()) { "Action parameter must not be empty or blank" }
+    require(subject.isNotBlank()) { "Subject parameter must not be empty or blank" }
+    return action.replaceFirstChar { it.lowercaseChar() } .appendCapitalized(name, subject)
 }

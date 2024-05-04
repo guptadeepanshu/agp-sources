@@ -18,8 +18,8 @@ package com.android.build.gradle.internal;
 
 import com.android.annotations.NonNull;
 import com.android.build.VariantOutput;
-import com.android.build.api.variant.impl.HasDeviceTests;
 import com.android.build.api.variant.impl.HasHostTests;
+import com.android.build.api.variant.impl.InternalHasDeviceTests;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.TestedAndroidConfig;
 import com.android.build.gradle.internal.api.ApkVariantOutputImpl;
@@ -72,8 +72,10 @@ public class ApiObjectFactory {
 
             AndroidTestCreationConfig androidTestVariantProperties = null;
 
-            if (variant instanceof HasDeviceTests) {
-                androidTestVariantProperties = ((HasDeviceTests) variant).getAndroidTest();
+            if (variant instanceof InternalHasDeviceTests) {
+                androidTestVariantProperties =
+                        (AndroidTestCreationConfig)
+                                ((InternalHasDeviceTests) variant).getDefaultDeviceTest();
             }
 
             if (androidTestVariantProperties != null) {

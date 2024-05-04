@@ -36,6 +36,7 @@ import com.android.tools.utp.plugins.deviceprovider.ddmlib.proto.AndroidDevicePr
 import com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedAndroidDeviceProviderProto.GradleManagedAndroidDeviceProviderConfig
 import com.android.tools.utp.plugins.host.additionaltestoutput.proto.AndroidAdditionalTestOutputConfigProto.AndroidAdditionalTestOutputConfig
 import com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.AndroidApkInstallerConfig
+import com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.ForceCompilation
 import com.android.tools.utp.plugins.host.coverage.proto.AndroidTestCoverageConfigProto.AndroidTestCoverageConfig
 import com.android.tools.utp.plugins.host.emulatorcontrol.proto.EmulatorControlPluginProto.EmulatorControlPlugin
 import com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto
@@ -117,6 +118,7 @@ class UtpConfigFactory {
         retentionConfig: RetentionConfig,
         coverageOutputDir: File,
         useOrchestrator: Boolean,
+        forceCompilation: Boolean,
         additionalTestOutputDir: File?,
         testResultListenerServerPort: Int,
         resultListenerClientCert: File,
@@ -144,6 +146,7 @@ class UtpConfigFactory {
                     emulatorControlConfig,
                     retentionConfig,
                     useOrchestrator,
+                    forceCompilation,
                     additionalTestOutputDir,
                     additionalTestOutputDir?.let {
                         findAdditionalTestOutputDirectoryOnDevice(device, testData)
@@ -212,6 +215,7 @@ class UtpConfigFactory {
         coverageOutputDir: File,
         additionalTestOutputDir: File?,
         useOrchestrator: Boolean,
+        forceCompilation: Boolean,
         testResultListenerServerMetadata: UtpTestResultListenerServerMetadata,
         emulatorGpuFlag: String,
         showEmulatorKernelLogging: Boolean,
@@ -231,6 +235,7 @@ class UtpConfigFactory {
                     null, targetApkConfigBundle, additionalInstallOptions, helperApks, testData,
                     utpDependencies, versionedSdkLoader,
                     outputDir, tmpDir, emulatorControlConfig, retentionConfig, useOrchestrator,
+                    forceCompilation,
                     additionalTestOutputDir,
                     additionalTestOutputDir?.let {
                         findAdditionalTestOutputDirectoryOnManagedDevice(device, testData)
@@ -354,6 +359,7 @@ class UtpConfigFactory {
         emulatorControlConfig: EmulatorControlConfig,
         retentionConfig: RetentionConfig,
         useOrchestrator: Boolean,
+        forceCompilation: Boolean,
         additionalTestOutputDir: File?,
         additionalTestOutputOnDeviceDir: String?,
         coverageOutputDir: File,
@@ -465,6 +471,7 @@ class UtpConfigFactory {
                     uninstallApksAfterTest,
                     utpDependencies,
                     reinstallIncompatibleApksBeforeTest,
+                    forceCompilation,
                 )
             )
             // This line is required since AndroidTestPlugin sends event message to context after
@@ -760,6 +767,7 @@ class UtpConfigFactory {
         uninstallApksAfterTest: Boolean,
         utpDependencies: UtpDependencies,
         reinstallIncompatibleApksBeforeTest: Boolean,
+        forceCompilation: Boolean,
     ): ExtensionProto.Extension {
         return ANDROID_TEST_PLUGIN_APK_INSTALLER.toExtensionProto(
             utpDependencies, AndroidApkInstallerConfig::newBuilder
@@ -775,6 +783,7 @@ class UtpConfigFactory {
                             if (installApkTimeout != null) setInstallApkTimeout(
                                 installApkTimeout
                             )
+                            this.forceCompilation = getForceCompilationEnum(forceCompilation)
                         }.build()
                         uninstallAfterTest = uninstallApksAfterTest
                         forceReinstallBeforeTest = reinstallIncompatibleApksBeforeTest
@@ -789,6 +798,7 @@ class UtpConfigFactory {
                         addAllCommandLineParameter(additionalInstallOptions)
                         installAsSplitApk = targetApkConfigBundle.isSplitApk
                         if (installApkTimeout != null) setInstallApkTimeout(installApkTimeout)
+                        this.forceCompilation = getForceCompilationEnum(forceCompilation)
                     }.build()
                     uninstallAfterTest = uninstallApksAfterTest
                     addAllApksPackageName(
@@ -808,6 +818,7 @@ class UtpConfigFactory {
                         addAllCommandLineParameter(additionalInstallOptions)
                         if (installApkTimeout != null) setInstallApkTimeout(installApkTimeout)
                         installAsTestService = true
+                        this.forceCompilation = getForceCompilationEnum(forceCompilation)
                     }.build()
                     uninstallAfterTest = uninstallApksAfterTest
                     forceReinstallBeforeTest = reinstallIncompatibleApksBeforeTest
@@ -820,11 +831,20 @@ class UtpConfigFactory {
                     installOptionsBuilder.apply {
                         addAllCommandLineParameter(additionalInstallOptions)
                         if (installApkTimeout != null) setInstallApkTimeout(installApkTimeout)
+                        this.forceCompilation = getForceCompilationEnum(forceCompilation)
                     }.build()
                     uninstallAfterTest = uninstallApksAfterTest
                     forceReinstallBeforeTest = reinstallIncompatibleApksBeforeTest
                 }.build()
             }
+        }
+    }
+
+    private fun getForceCompilationEnum(forceAotCompilation: Boolean): ForceCompilation {
+        return if (forceAotCompilation) {
+            ForceCompilation.FULL_COMPILATION
+        } else {
+            ForceCompilation.NO_FORCE_COMPILATION
         }
     }
 

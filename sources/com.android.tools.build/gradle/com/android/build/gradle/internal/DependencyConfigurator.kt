@@ -128,7 +128,6 @@ class DependencyConfigurator(
         }
         return this
     }
-
     fun configureDependencyChecks(): DependencyConfigurator {
         val useAndroidX = projectServices.projectOptions.get(BooleanOption.USE_ANDROID_X)
         val enableJetifier = projectServices.projectOptions.get(BooleanOption.ENABLE_JETIFIER)
@@ -491,7 +490,7 @@ class DependencyConfigurator(
                                 experimentalPropertiesApiGenerator
                                         ?: project.dependencies.create(
                                                 projectServices.projectOptions.get(StringOption.ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR)
-                                                        ?: "androidx.privacysandbox.tools:tools-apigenerator:1.0.0-alpha03"
+                                                        ?: MavenCoordinates.ANDROIDX_PRIVACY_SANDBOX_SDK_API_GENERATOR.toString()
                                         ) as Dependency
 
                         val experimentalPropertiesRuntimeApigeneratorDependencies =
@@ -501,7 +500,7 @@ class DependencyConfigurator(
                                         ?: (projectServices.projectOptions
                                                 .get(StringOption.ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR_GENERATED_RUNTIME_DEPENDENCIES)
                                                 ?.split(",")
-                                                ?: listOf("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")).map {
+                                                ?: listOf(MavenCoordinates.ORG_JETBRAINS_KOTLINX_KOTLINX_COROUTINES_ANDROID.toString())).map {
                                             project.dependencies.create(it)
                                         }
 
@@ -520,7 +519,7 @@ class DependencyConfigurator(
                         params.bootstrapClasspath.from(bootstrapCreationConfig.fullBootClasspath)
 
                         val kotlinCompiler = project.configurations.detachedConfiguration(
-                                project.dependencies.create("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.7.10")
+                                project.dependencies.create(MavenCoordinates.KOTLIN_COMPILER.toString())
                         )
                         kotlinCompiler.isCanBeConsumed = false
                         kotlinCompiler.isCanBeResolved = true

@@ -127,7 +127,7 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
             variantSources.customSourceList.forEach{ (_, srcEntries) ->
                 srcEntries.forEach { customSourceDirectory ->
                     sourcesImpl.extras.maybeCreate(customSourceDirectory.sourceTypeName).also {
-                        (it as FlatSourceDirectoriesImpl).addSource(
+                        (it as FlatSourceDirectoriesImpl).addStaticSource(
                                 FileBasedDirectoryEntryImpl(
                                     customSourceDirectory.sourceTypeName,
                                     customSourceDirectory.directory,
@@ -159,10 +159,12 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
 
     override val lifecycleTasks = LifecycleTasksImpl()
 
+    override fun computeTaskName(action: String, subject: String): String  =
+        computeTaskName(name, action, subject)
+
     // ---------------------------------------------------------------------------------------------
     // INTERNAL API
     // ---------------------------------------------------------------------------------------------
-
     override val componentType: ComponentType
         get() = dslInfo.componentType
 
@@ -180,11 +182,12 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
     // Private stuff
     // ---------------------------------------------------------------------------------------------
 
-    override fun computeTaskName(prefix: String): String =
+    override fun computeTaskNameInternal(prefix: String): String =
         prefix.appendCapitalized(name)
 
-    override fun computeTaskName(prefix: String, suffix: String): String =
-        prefix.appendCapitalized(name, suffix)
+    override fun computeTaskNameInternal(prefix: String, suffix: String): String  {
+        return prefix.appendCapitalized(name, suffix)
+    }
 
     // -------------------------
     // File location computation. Previously located in VariantScope, these are here
@@ -323,7 +326,7 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
     override val androidResources: AndroidResourcesImpl? = null
 
     internal fun getAndroidResources(androidResources: AndroidResources): AndroidResourcesImpl =
-        initializeAaptOptionsFromDsl(androidResources, internalServices)
+        initializeAaptOptionsFromDsl(androidResources, buildFeatures, internalServices,)
 
     override val privacySandboxCreationConfig: PrivacySandboxCreationConfig? by lazy(LazyThreadSafetyMode.PUBLICATION) {
         if (dslInfo.privacySandboxDsl.enable) {

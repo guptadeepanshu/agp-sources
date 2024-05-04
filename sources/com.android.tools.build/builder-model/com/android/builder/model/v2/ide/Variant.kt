@@ -40,12 +40,24 @@ interface Variant: AndroidModel {
     /**
      * The AndroidTest artifact for this variant, if applicable.
      */
+    @Deprecated("Contained in deviceTestArtifacts")
     val androidTestArtifact: AndroidArtifact?
+
+    /**
+     * The device test components for this variant, e.g., androidTest
+     */
+    val deviceTestArtifacts: Map<String,  AndroidArtifact>
 
     /**
      * The Unit Test artifact for this variant, if applicable.
      */
+    @Deprecated("Contained in hostTestArtifacts")
     val unitTestArtifact: JavaArtifact?
+
+    /**
+     * The host test components for this variant, e.g., unitTest
+     */
+    val hostTestArtifacts: Map<String, JavaArtifact>
 
     /**
      * The TestFixtures artifact for this variant, if applicable.

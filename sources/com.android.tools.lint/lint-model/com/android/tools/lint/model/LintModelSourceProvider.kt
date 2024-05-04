@@ -48,7 +48,7 @@ class DefaultLintModelSourceProvider(
   private val debugOnly: Boolean,
   private val unitTestOnly: Boolean,
   private val instrumentationTestOnly: Boolean,
-  private val testFixture: Boolean
+  private val testFixture: Boolean,
 ) : LintModelSourceProvider {
   override fun isUnitTest(): Boolean = unitTestOnly
 

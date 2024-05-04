@@ -88,6 +88,18 @@ public enum VariantMethodType
    * <code>PROFILEABLE_ENABLED = 18;</code>
    */
   PROFILEABLE_ENABLED(18),
+  /**
+   * <code>ANDROID_RESOURCES_BUILDER = 19;</code>
+   */
+  ANDROID_RESOURCES_BUILDER(19),
+  /**
+   * <code>GENERATE_LOCALE_CONFIG_BUILDER = 20;</code>
+   */
+  GENERATE_LOCALE_CONFIG_BUILDER(20),
+  /**
+   * <code>DEVICE_TESTS_BUILDER = 21;</code>
+   */
+  DEVICE_TESTS_BUILDER(21),
   UNRECOGNIZED(-1),
   ;
 
@@ -171,6 +183,18 @@ public enum VariantMethodType
    * <code>PROFILEABLE_ENABLED = 18;</code>
    */
   public static final int PROFILEABLE_ENABLED_VALUE = 18;
+  /**
+   * <code>ANDROID_RESOURCES_BUILDER = 19;</code>
+   */
+  public static final int ANDROID_RESOURCES_BUILDER_VALUE = 19;
+  /**
+   * <code>GENERATE_LOCALE_CONFIG_BUILDER = 20;</code>
+   */
+  public static final int GENERATE_LOCALE_CONFIG_BUILDER_VALUE = 20;
+  /**
+   * <code>DEVICE_TESTS_BUILDER = 21;</code>
+   */
+  public static final int DEVICE_TESTS_BUILDER_VALUE = 21;
 
 
   public final int getNumber() {
@@ -216,6 +240,9 @@ public enum VariantMethodType
       case 16: return ENABLE_MULTI_DEX;
       case 17: return ANDROID_TEST_BUILDER;
       case 18: return PROFILEABLE_ENABLED;
+      case 19: return ANDROID_RESOURCES_BUILDER;
+      case 20: return GENERATE_LOCALE_CONFIG_BUILDER;
+      case 21: return DEVICE_TESTS_BUILDER;
       default: return null;
     }
   }

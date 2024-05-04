@@ -79,7 +79,7 @@ public interface EmulatorAvdInfoOrBuilder extends
 
   /**
    * <pre>
-   * When was this AVD created, UTC Unix timespamp.
+   * When was this AVD created, UTC Unix timestamp.
    * </pre>
    *
    * <code>optional int64 creation_timestamp = 4;</code>
@@ -88,7 +88,7 @@ public interface EmulatorAvdInfoOrBuilder extends
   boolean hasCreationTimestamp();
   /**
    * <pre>
-   * When was this AVD created, UTC Unix timespamp.
+   * When was this AVD created, UTC Unix timestamp.
    * </pre>
    *
    * <code>optional int64 creation_timestamp = 4;</code>

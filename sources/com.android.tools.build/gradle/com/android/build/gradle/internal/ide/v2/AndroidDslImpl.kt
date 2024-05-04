@@ -21,6 +21,7 @@ import com.android.builder.model.v2.dsl.DependenciesInfo
 import com.android.builder.model.v2.dsl.ProductFlavor
 import com.android.builder.model.v2.dsl.SigningConfig
 import com.android.builder.model.v2.ide.AaptOptions
+import com.android.builder.model.v2.ide.Installation
 import com.android.builder.model.v2.ide.LintOptions
 import com.android.builder.model.v2.models.AndroidDsl
 import java.io.Serializable
@@ -35,8 +36,9 @@ data class AndroidDslImpl(
     override val signingConfigs: Collection<SigningConfig>,
     override val aaptOptions: AaptOptions,
     override val lintOptions: LintOptions,
+    override val installation: Installation,
     override val buildToolsVersion: String,
-    override val dependenciesInfo: DependenciesInfo?
+    override val dependenciesInfo: DependenciesInfo?,
 ): AndroidDsl, Serializable {
     companion object {
         @JvmStatic

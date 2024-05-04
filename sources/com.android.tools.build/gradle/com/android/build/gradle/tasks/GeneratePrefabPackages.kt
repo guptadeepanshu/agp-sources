@@ -362,6 +362,8 @@ private val errorMatchers : List<Pair<Regex, ErrorMatchBehavior>> = run {
                     to fatal,
             "^.*IllegalArgumentException: (version must be compatible with CMake, if present.*)"
                     to fatal,
+            "^.*Error: (invalid value for --stl: invalid choice:.*)"
+                    to fatal,
             "^.*Error: (Invalid value for \".*\".*)"
                     to fatal,
             "^.*(Unknown ABI: .*)"

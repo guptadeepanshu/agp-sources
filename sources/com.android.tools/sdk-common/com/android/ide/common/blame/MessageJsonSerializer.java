@@ -97,6 +97,8 @@ import java.io.IOException;
  */
 public class MessageJsonSerializer extends TypeAdapter<Message> {
 
+    public static final String STDOUT_ERROR_TAG = "AGPBI: ";
+
     private static final String KIND = "kind";
 
     private static final String TEXT = "text";

@@ -28,7 +28,7 @@ import com.android.build.api.dsl.TestBuildFeatures;
 import com.android.build.api.dsl.TestExtension;
 import com.android.build.api.variant.ComponentIdentity;
 import com.android.build.api.variant.TestVariantBuilder;
-import com.android.build.api.variant.impl.AndroidTestBuilderImpl;
+import com.android.build.api.variant.impl.DeviceTestBuilderImpl;
 import com.android.build.api.variant.impl.GlobalVariantBuilderConfig;
 import com.android.build.api.variant.impl.TestVariantBuilderImpl;
 import com.android.build.api.variant.impl.TestVariantImpl;
@@ -216,6 +216,25 @@ public class TestVariantFactory
 
     @NonNull
     @Override
+    public HostTestCreationConfig createScreenshotTest(
+            @NonNull ComponentIdentity componentIdentity,
+            @NonNull BuildFeatureValues buildFeatures,
+            @NonNull HostTestComponentDslInfo dslInfo,
+            @NonNull VariantDependencies variantDependencies,
+            @NonNull VariantSources variantSources,
+            @NonNull VariantPathHelper paths,
+            @NonNull ArtifactsImpl artifacts,
+            @NonNull TestVariantData variantData,
+            @NonNull MutableTaskContainer taskContainer,
+            @NonNull VariantCreationConfig testedVariant,
+            @NonNull VariantServices variantServices,
+            @NonNull TaskCreationServices taskCreationServices,
+            @NonNull GlobalTaskCreationConfig globalConfig) {
+        throw new RuntimeException("cannot instantiate screenshot-test properties in test plugin");
+    }
+
+    @NonNull
+    @Override
     public AndroidTestCreationConfig createAndroidTest(
             @NonNull ComponentIdentity componentIdentity,
             @NonNull BuildFeatureValues buildFeatures,
@@ -230,7 +249,7 @@ public class TestVariantFactory
             @NonNull VariantServices variantServices,
             @NonNull TaskCreationServices taskCreationServices,
             @NonNull GlobalTaskCreationConfig globalConfig,
-            @NonNull AndroidTestBuilderImpl androidTestBuilder) {
+            @NonNull DeviceTestBuilderImpl defaultDeviceTestBuilder) {
         throw new RuntimeException("cannot instantiate android-test properties in test plugin");
     }
 

@@ -138,7 +138,7 @@ abstract class ExtractVersionControlInfoTask: NonIncrementalTask() {
         ) {
 
         override val name: String
-            get() = creationConfig.computeTaskName("extract", "VersionControlInfo")
+            get() = creationConfig.computeTaskNameInternal("extract", "VersionControlInfo")
 
         override val type: Class<ExtractVersionControlInfoTask>
             get() = ExtractVersionControlInfoTask::class.java

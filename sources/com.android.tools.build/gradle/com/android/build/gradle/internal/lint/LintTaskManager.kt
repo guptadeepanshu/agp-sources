@@ -1,5 +1,7 @@
 package com.android.build.gradle.internal.lint
 
+import com.android.build.api.component.impl.ScreenshotTestImpl
+import com.android.build.api.component.impl.UnitTestImpl
 import com.android.build.api.dsl.Lint
 import com.android.build.api.variant.impl.HasTestFixtures
 import com.android.build.gradle.internal.TaskManager
@@ -8,7 +10,6 @@ import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
 import com.android.build.gradle.internal.component.TestCreationConfig
-import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.tasks.LintModelMetadataTask
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
@@ -324,7 +325,7 @@ class LintTaskManager constructor(
                             current.testFixtures
                         )
                 }
-                is HostTestCreationConfig -> {
+                is UnitTestImpl -> {
                     check(current.unitTest == null) {
                         "Component ${current.main} appears to have two conflicting unit test components ${current.unitTest} and $testComponent"
                     }
@@ -335,6 +336,9 @@ class LintTaskManager constructor(
                             testComponent,
                             current.testFixtures
                         )
+                }
+                is ScreenshotTestImpl -> {
+                    // TODO(karimai): add Screenshot Test support for Lint variant.
                 }
                 else -> throw IllegalStateException("Unexpected test component type")
             }

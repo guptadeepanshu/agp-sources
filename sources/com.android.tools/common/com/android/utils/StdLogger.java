@@ -59,14 +59,6 @@ public class StdLogger implements ILogger {
     }
 
     /**
-     * Returns the logger's log {@link Level}.
-     * @return the log level.
-     */
-    public Level getLevel() {
-        return mLevel;
-    }
-
-    /**
      * <p>
      * Prints an error message.
      * </p>

@@ -199,7 +199,7 @@ abstract class CompileArtProfileTask: NonIncrementalTask() {
     ) : VariantTaskCreationAction<CompileArtProfileTask, ApkCreationConfig>(creationConfig) {
 
         override val name: String
-            get() = creationConfig.computeTaskName("compile", "ArtProfile")
+            get() = computeTaskName("compile", "ArtProfile")
         override val type: Class<CompileArtProfileTask>
             get() = CompileArtProfileTask::class.java
 

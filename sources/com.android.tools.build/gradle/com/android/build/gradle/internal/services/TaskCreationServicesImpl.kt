@@ -17,7 +17,6 @@
 package com.android.build.gradle.internal.services
 
 import com.android.build.gradle.internal.lint.LintFromMaven
-import com.android.build.gradle.internal.transforms.LayoutlibFromMaven
 import org.gradle.api.Action
 import org.gradle.api.Named
 import org.gradle.api.artifacts.ConfigurationContainer
@@ -83,8 +82,6 @@ class TaskCreationServicesImpl(projectServices: ProjectServices) : BaseServicesI
         projectServices.objectFactory.named(type, name)
 
     override val lintFromMaven: LintFromMaven get() = projectServices.lintFromMaven
-
-    override val layoutlibFromMaven: LayoutlibFromMaven get() = projectServices.layoutlibFromMaven!!
 
     override val configurations: ConfigurationContainer
         get() = projectServices.configurationContainer

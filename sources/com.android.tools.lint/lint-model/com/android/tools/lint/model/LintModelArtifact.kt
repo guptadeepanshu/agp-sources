@@ -47,13 +47,13 @@ interface LintModelAndroidArtifact : LintModelArtifact {
 open class DefaultLintModelArtifact(
   override val dependencies: LintModelDependencies,
   override val classOutputs: List<File>,
-  override val type: LintModelArtifactType
+  override val type: LintModelArtifactType,
 ) : LintModelArtifact
 
 class DefaultLintModelJavaArtifact(
   dependencies: LintModelDependencies,
   classFolders: List<File>,
-  type: LintModelArtifactType
+  type: LintModelArtifactType,
 ) : DefaultLintModelArtifact(dependencies, classFolders, type), LintModelJavaArtifact
 
 class DefaultLintModelAndroidArtifact(
@@ -63,7 +63,7 @@ class DefaultLintModelAndroidArtifact(
   override val desugaredMethodsFiles: Collection<File>,
   dependencies: LintModelDependencies,
   classOutputs: List<File>,
-  type: LintModelArtifactType
+  type: LintModelArtifactType,
 ) : DefaultLintModelArtifact(dependencies, classOutputs, type), LintModelAndroidArtifact
 
 enum class LintModelArtifactType {

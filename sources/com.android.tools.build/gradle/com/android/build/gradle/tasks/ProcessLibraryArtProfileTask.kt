@@ -64,7 +64,7 @@ abstract class ProcessLibraryArtProfileTask: MergeFileTask() {
             creationConfig) {
 
         override val name: String
-            get() = creationConfig.computeTaskName("prepare", "ArtProfile")
+            get() = computeTaskName("prepare", "ArtProfile")
         override val type: Class<ProcessLibraryArtProfileTask>
             get() = ProcessLibraryArtProfileTask::class.java
 

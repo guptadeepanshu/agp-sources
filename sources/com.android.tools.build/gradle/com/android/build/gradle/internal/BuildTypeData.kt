@@ -31,7 +31,13 @@ class BuildTypeData<BuildTypeT : BuildType>(
     testFixturesSourceSet: LazyAndroidSourceSet?,
     androidTestSourceSet: LazyAndroidSourceSet?,
     unitTestSourceSet: LazyAndroidSourceSet?,
+    screenshotTestSourceSet: LazyAndroidSourceSet?,
     lazySourceSetCreation: Boolean
 ) : VariantDimensionData(
-    sourceSet, testFixturesSourceSet, androidTestSourceSet, unitTestSourceSet, lazySourceSetCreation
+    sourceSet,
+    testFixturesSourceSet,
+    androidTestSourceSet,
+    unitTestSourceSet,
+    screenshotTestSourceSet,
+    lazySourceSetCreation
 )

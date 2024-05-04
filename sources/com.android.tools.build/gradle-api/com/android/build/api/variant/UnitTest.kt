@@ -16,6 +16,10 @@
 
 package com.android.build.api.variant
 
+import org.gradle.api.Incubating
+import org.gradle.api.tasks.TaskProvider
+import org.gradle.api.tasks.testing.Test
+
 /**
  * Model for Unit Test components that contains build-time properties
  *
@@ -25,4 +29,28 @@ package com.android.build.api.variant
  * The presence of this component in a variant is controlled by [HasUnitTestBuilder.enableUnitTest]
  * which is accessible on subtypes of [VariantBuilder] that implement [HasUnitTestBuilder]
  */
-interface UnitTest: TestComponent
+interface UnitTest: TestComponent {
+
+    /**
+     * Runs some action to configure the Variant's unit test [Test] task.
+     *
+     * The action will only run if the task is configured. In particular the
+     * [HasUnitTestBuilder.enableUnitTest]] must be set to true (it is true by default).
+     *
+     * Example :
+     * ```(kotlin)
+     *  androidComponents {
+     *      onVariants { variant ->
+     *          variant.unitTest?.configureTestTask { testTask ->
+     *              testTask.beforeTest { descriptor ->
+     *                  println("Running test: " + descriptor)
+     *              }
+     *          }
+     *      }
+     *  }
+     * ```
+     * @param action to configure the [Test] task.
+     */
+    @Incubating
+    fun configureTestTask(action: (Test)-> Unit)
+}

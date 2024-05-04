@@ -304,6 +304,20 @@ public class HardwareConfigHelper {
         return deviceId.equals("7.4in Rollable");
     }
 
+    public static boolean isPhone(@NonNull Device device) {
+        return device.getTagId() == null && !hasTabletScreen(device);
+    }
+
+    public static boolean isTablet(@NonNull Device device) {
+        return device.getTagId() == null && hasTabletScreen(device);
+    }
+
+    // TODO: http://b/326289372 -  Declare this in XML
+    private static boolean hasTabletScreen(@NonNull Device device) {
+        Screen screen = device.getDefaultHardware().getScreen();
+        return screen.getDiagonalLength() >= Device.MINIMUM_TABLET_SIZE && !screen.isFoldable();
+    }
+
     /**
      * Whether the given device is a wear device
      */
@@ -331,7 +345,8 @@ public class HardwareConfigHelper {
     public static boolean isAutomotive(@Nullable Device device) {
         return device != null
                 && ("android-automotive".equals(device.getTagId())
-                        || "android-automotive-playstore".equals(device.getTagId()));
+                        || "android-automotive-playstore".equals(device.getTagId())
+                        || "android-automotive-distantdisplay".equals(device.getTagId()));
     }
 
     /** Whether the given device is a PC device */

@@ -18,6 +18,7 @@ package com.android.build.api.component.impl.features
 
 import com.android.build.api.variant.CanMinifyAndroidResourcesBuilder
 import com.android.build.api.variant.CanMinifyCodeBuilder
+import com.android.build.gradle.ProguardFiles
 import com.android.build.gradle.internal.PostprocessingFeatures
 import com.android.build.gradle.internal.ProguardFileType
 import com.android.build.gradle.internal.component.AndroidTestCreationConfig
@@ -26,9 +27,9 @@ import com.android.build.gradle.internal.component.LibraryCreationConfig
 import com.android.build.gradle.internal.component.TestCreationConfig
 import com.android.build.gradle.internal.component.features.OptimizationCreationConfig
 import com.android.build.gradle.internal.core.dsl.features.OptimizationDslInfo
+import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.ModuleMetadata
-import com.android.build.gradle.internal.utils.immutableListBuilder
 import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Provider
@@ -58,8 +59,30 @@ class OptimizationCreationConfigImpl(
         }
     }
 
-    override val consumerProguardFiles: List<File> by lazy(LazyThreadSafetyMode.NONE) {
-        immutableListBuilder<File> {
+    override val consumerProguardFiles: Provider<List<RegularFile>> by lazy(LazyThreadSafetyMode.NONE) {
+        val consumerProguardFilePaths: List<File> = consumerProguardFilePaths
+        val consumerProguardFilesProperty: ListProperty<RegularFile> =
+            internalServices.listPropertyOf(RegularFile::class.java) { list ->
+                consumerProguardFilePaths.forEach {
+                    list.add(internalServices.toRegularFileProvider(it))
+                }
+            }
+
+        val defaultProguardFiles: Set<File> = ProguardFiles.KNOWN_FILE_NAMES.map {
+            ProguardFiles.getDefaultProguardFile(it, internalServices.projectInfo.buildDirectory)
+        }.toSet()
+
+        // If default Proguard files are used, we need to attach task dependencies (see b/295666695)
+        if (consumerProguardFilePaths.any { it in defaultProguardFiles }) {
+            component.global.globalArtifacts.get(InternalArtifactType.DEFAULT_PROGUARD_FILES)
+                .zip(consumerProguardFilesProperty) { _, right -> right }
+        } else {
+            consumerProguardFilesProperty
+        }
+    }
+
+    override val consumerProguardFilePaths: List<File> by lazy(LazyThreadSafetyMode.NONE) {
+        buildList {
             addAll(dslInfo.gatherProguardFiles(ProguardFileType.CONSUMER))
             // We include proguardFiles if we're in a dynamic-feature module.
             if (component.componentType.isDynamicFeature) {
@@ -68,14 +91,15 @@ class OptimizationCreationConfigImpl(
         }
     }
 
-    override val ignoredLibraryKeepRules: Provider<Set<String>> =
-        baseModuleMetadata?.map { it.ignoredLibraryKeepRules }
+    override val ignoreFromInKeepRules: Provider<Set<String>> =
+        baseModuleMetadata?.map { it.ignoreFromInKeepRules }
             ?: internalServices.setPropertyOf(
                 String::class.java,
-                dslInfo.ignoredLibraryKeepRules
+                dslInfo.ignoreFromInKeepRules
             )
 
-    override val ignoreAllLibraryKeepRules: Boolean = dslInfo.ignoreAllLibraryKeepRules
+    override val ignoreFromAllExternalDependenciesInKeepRules: Boolean =
+        dslInfo.ignoreFromAllExternalDependenciesInKeepRules
 
     override val ignoreFromInBaselineProfile: Provider<Set<String>> =
         internalServices.setPropertyOf(

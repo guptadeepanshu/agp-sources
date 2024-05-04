@@ -80,7 +80,7 @@ class DefaultAndroidSourceDirectorySet(
                 isUserAdded = false,
                 isGenerated = false,
             )
-            lateAdditionsDelegates.forEach { it.addSource(directoryEntry) }
+            lateAdditionsDelegates.forEach { it.addStaticSource(directoryEntry) }
         }
         return this
     }
@@ -119,7 +119,7 @@ class DefaultAndroidSourceDirectorySet(
                     isUserAdded = false,
                     isGenerated = false,
                 )
-                lateAdditionsDelegates.forEach { it.addSource(directoryEntry) }
+                lateAdditionsDelegates.forEach { it.addStaticSource(directoryEntry) }
             }
         }
         source.clear()

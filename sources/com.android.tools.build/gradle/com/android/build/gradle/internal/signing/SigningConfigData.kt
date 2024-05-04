@@ -103,7 +103,7 @@ data class SigningConfigData(
                             experimentalProperties.get()) ?: DefaultSigningConfig.DEFAULT_PASSWORD,
                     ModulePropertyKey.OptionalString.ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_KEY_ALIAS.getValue(
                             experimentalProperties.get()) ?: DefaultSigningConfig.DEFAULT_ALIAS,
-                    ModulePropertyKey.OptionalString.ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_KEY_PASSOWRD.getValue(
+                    ModulePropertyKey.OptionalString.ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_KEY_PASSWORD.getValue(
                             experimentalProperties.get()) ?: DefaultSigningConfig.DEFAULT_PASSWORD
             )
         }

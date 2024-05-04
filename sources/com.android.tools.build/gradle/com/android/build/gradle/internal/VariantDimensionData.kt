@@ -26,6 +26,7 @@ abstract class VariantDimensionData(
     private val testFixturesSourceSet: LazyAndroidSourceSet?,
     private val androidTestSourceSet: LazyAndroidSourceSet?,
     private val unitTestSourceSet: LazyAndroidSourceSet?,
+    private val screenshotTestSourceSet: LazyAndroidSourceSet?,
     lazySourceSetCreation: Boolean
 ) {
     init {
@@ -41,6 +42,7 @@ abstract class VariantDimensionData(
         ComponentTypeImpl.TEST_FIXTURES -> testFixturesSourceSet
         ComponentTypeImpl.ANDROID_TEST -> androidTestSourceSet
         ComponentTypeImpl.UNIT_TEST -> unitTestSourceSet
+        ComponentTypeImpl.SCREENSHOT_TEST -> screenshotTestSourceSet
         else -> {
             throw IllegalArgumentException(
                 "Unknown component type $type"

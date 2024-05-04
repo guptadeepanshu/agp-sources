@@ -93,7 +93,7 @@ public interface GradleBuildSplitsOrBuilder extends
    * e.g. 480, 560, 640
    * See
    * https://android.googlesource.com/platform/tools/base/+/studio-master-dev/layoutlib-api/src/main/java/com/android/resources/Density.java
-   * for a comprensive list of possible values.
+   * for a comprehensive list of possible values.
    * </pre>
    *
    * <code>repeated int32 density_values = 4;</code>
@@ -107,7 +107,7 @@ public interface GradleBuildSplitsOrBuilder extends
    * e.g. 480, 560, 640
    * See
    * https://android.googlesource.com/platform/tools/base/+/studio-master-dev/layoutlib-api/src/main/java/com/android/resources/Density.java
-   * for a comprensive list of possible values.
+   * for a comprehensive list of possible values.
    * </pre>
    *
    * <code>repeated int32 density_values = 4;</code>
@@ -121,7 +121,7 @@ public interface GradleBuildSplitsOrBuilder extends
    * e.g. 480, 560, 640
    * See
    * https://android.googlesource.com/platform/tools/base/+/studio-master-dev/layoutlib-api/src/main/java/com/android/resources/Density.java
-   * for a comprensive list of possible values.
+   * for a comprehensive list of possible values.
    * </pre>
    *
    * <code>repeated int32 density_values = 4;</code>

@@ -38,12 +38,12 @@ abstract class OptimizationImpl@Inject constructor(
     }
 
     fun initWith(that: OptimizationImpl) {
-        (keepRules as KeepRulesImpl).ignoreAllDependencies =
-                (that.keepRules as KeepRulesImpl).ignoreAllDependencies
+        (keepRules as KeepRulesImpl).ignoreFromAllExternalDependencies =
+                (that.keepRules as KeepRulesImpl).ignoreFromAllExternalDependencies
 
-        (keepRules as KeepRulesImpl).dependencies.clear()
-        (keepRules as KeepRulesImpl).dependencies.addAll(
-                (that.keepRules as KeepRulesImpl).dependencies)
+        (keepRules as KeepRulesImpl).ignoreFrom.clear()
+        (keepRules as KeepRulesImpl).ignoreFrom.addAll(
+                (that.keepRules as KeepRulesImpl).ignoreFrom)
 
         (baselineProfile as BaselineProfileImpl).ignoreFromAllExternalDependencies =
                 (that.baselineProfile as BaselineProfileImpl).ignoreFromAllExternalDependencies

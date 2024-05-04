@@ -5481,6 +5481,21 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
      */
     com.google.wireless.android.sdk.stats.HistogramOrBuilder getLatenciesMsOrBuilder();
+
+    /**
+     * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+     * @return Whether the notAcceptedShownDurationsMs field is set.
+     */
+    boolean hasNotAcceptedShownDurationsMs();
+    /**
+     * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+     * @return The notAcceptedShownDurationsMs.
+     */
+    com.google.wireless.android.sdk.stats.Histogram getNotAcceptedShownDurationsMs();
+    /**
+     * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+     */
+    com.google.wireless.android.sdk.stats.HistogramOrBuilder getNotAcceptedShownDurationsMsOrBuilder();
   }
   /**
    * Protobuf type {@code android_studio.SmlCompletionEvent.CompletionAggregateEvent}
@@ -5797,6 +5812,32 @@ private static final long serialVersionUID = 0L;
       return latenciesMs_ == null ? com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance() : latenciesMs_;
     }
 
+    public static final int NOT_ACCEPTED_SHOWN_DURATIONS_MS_FIELD_NUMBER = 7;
+    private com.google.wireless.android.sdk.stats.Histogram notAcceptedShownDurationsMs_;
+    /**
+     * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+     * @return Whether the notAcceptedShownDurationsMs field is set.
+     */
+    @java.lang.Override
+    public boolean hasNotAcceptedShownDurationsMs() {
+      return ((bitField0_ & 0x00000040) != 0);
+    }
+    /**
+     * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+     * @return The notAcceptedShownDurationsMs.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.Histogram getNotAcceptedShownDurationsMs() {
+      return notAcceptedShownDurationsMs_ == null ? com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance() : notAcceptedShownDurationsMs_;
+    }
+    /**
+     * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.HistogramOrBuilder getNotAcceptedShownDurationsMsOrBuilder() {
+      return notAcceptedShownDurationsMs_ == null ? com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance() : notAcceptedShownDurationsMs_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -5829,6 +5870,9 @@ private static final long serialVersionUID = 0L;
       if (((bitField0_ & 0x00000020) != 0)) {
         output.writeMessage(6, getLatenciesMs());
       }
+      if (((bitField0_ & 0x00000040) != 0)) {
+        output.writeMessage(7, getNotAcceptedShownDurationsMs());
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -5860,6 +5904,10 @@ private static final long serialVersionUID = 0L;
       if (((bitField0_ & 0x00000020) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(6, getLatenciesMs());
+      }
+      if (((bitField0_ & 0x00000040) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(7, getNotAcceptedShownDurationsMs());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -5904,6 +5952,11 @@ private static final long serialVersionUID = 0L;
         if (!getLatenciesMs()
             .equals(other.getLatenciesMs())) return false;
       }
+      if (hasNotAcceptedShownDurationsMs() != other.hasNotAcceptedShownDurationsMs()) return false;
+      if (hasNotAcceptedShownDurationsMs()) {
+        if (!getNotAcceptedShownDurationsMs()
+            .equals(other.getNotAcceptedShownDurationsMs())) return false;
+      }
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -5938,6 +5991,10 @@ private static final long serialVersionUID = 0L;
       if (hasLatenciesMs()) {
         hash = (37 * hash) + LATENCIES_MS_FIELD_NUMBER;
         hash = (53 * hash) + getLatenciesMs().hashCode();
+      }
+      if (hasNotAcceptedShownDurationsMs()) {
+        hash = (37 * hash) + NOT_ACCEPTED_SHOWN_DURATIONS_MS_FIELD_NUMBER;
+        hash = (53 * hash) + getNotAcceptedShownDurationsMs().hashCode();
       }
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
@@ -6068,6 +6125,7 @@ private static final long serialVersionUID = 0L;
         if (com.google.protobuf.GeneratedMessageV3
                 .alwaysUseFieldBuilders) {
           getLatenciesMsFieldBuilder();
+          getNotAcceptedShownDurationsMsFieldBuilder();
         }
       }
       @java.lang.Override
@@ -6089,6 +6147,12 @@ private static final long serialVersionUID = 0L;
           latenciesMsBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000020);
+        if (notAcceptedShownDurationsMsBuilder_ == null) {
+          notAcceptedShownDurationsMs_ = null;
+        } else {
+          notAcceptedShownDurationsMsBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
 
@@ -6144,6 +6208,14 @@ private static final long serialVersionUID = 0L;
             result.latenciesMs_ = latenciesMsBuilder_.build();
           }
           to_bitField0_ |= 0x00000020;
+        }
+        if (((from_bitField0_ & 0x00000040) != 0)) {
+          if (notAcceptedShownDurationsMsBuilder_ == null) {
+            result.notAcceptedShownDurationsMs_ = notAcceptedShownDurationsMs_;
+          } else {
+            result.notAcceptedShownDurationsMs_ = notAcceptedShownDurationsMsBuilder_.build();
+          }
+          to_bitField0_ |= 0x00000040;
         }
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -6213,6 +6285,9 @@ private static final long serialVersionUID = 0L;
         }
         if (other.hasLatenciesMs()) {
           mergeLatenciesMs(other.getLatenciesMs());
+        }
+        if (other.hasNotAcceptedShownDurationsMs()) {
+          mergeNotAcceptedShownDurationsMs(other.getNotAcceptedShownDurationsMs());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
@@ -6286,6 +6361,13 @@ private static final long serialVersionUID = 0L;
                 bitField0_ |= 0x00000020;
                 break;
               } // case 50
+              case 58: {
+                input.readMessage(
+                    getNotAcceptedShownDurationsMsFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bitField0_ |= 0x00000040;
+                break;
+              } // case 58
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -6669,6 +6751,126 @@ private static final long serialVersionUID = 0L;
           latenciesMs_ = null;
         }
         return latenciesMsBuilder_;
+      }
+
+      private com.google.wireless.android.sdk.stats.Histogram notAcceptedShownDurationsMs_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.wireless.android.sdk.stats.Histogram, com.google.wireless.android.sdk.stats.Histogram.Builder, com.google.wireless.android.sdk.stats.HistogramOrBuilder> notAcceptedShownDurationsMsBuilder_;
+      /**
+       * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+       * @return Whether the notAcceptedShownDurationsMs field is set.
+       */
+      public boolean hasNotAcceptedShownDurationsMs() {
+        return ((bitField0_ & 0x00000040) != 0);
+      }
+      /**
+       * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+       * @return The notAcceptedShownDurationsMs.
+       */
+      public com.google.wireless.android.sdk.stats.Histogram getNotAcceptedShownDurationsMs() {
+        if (notAcceptedShownDurationsMsBuilder_ == null) {
+          return notAcceptedShownDurationsMs_ == null ? com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance() : notAcceptedShownDurationsMs_;
+        } else {
+          return notAcceptedShownDurationsMsBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+       */
+      public Builder setNotAcceptedShownDurationsMs(com.google.wireless.android.sdk.stats.Histogram value) {
+        if (notAcceptedShownDurationsMsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          notAcceptedShownDurationsMs_ = value;
+          onChanged();
+        } else {
+          notAcceptedShownDurationsMsBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000040;
+        return this;
+      }
+      /**
+       * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+       */
+      public Builder setNotAcceptedShownDurationsMs(
+          com.google.wireless.android.sdk.stats.Histogram.Builder builderForValue) {
+        if (notAcceptedShownDurationsMsBuilder_ == null) {
+          notAcceptedShownDurationsMs_ = builderForValue.build();
+          onChanged();
+        } else {
+          notAcceptedShownDurationsMsBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000040;
+        return this;
+      }
+      /**
+       * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+       */
+      public Builder mergeNotAcceptedShownDurationsMs(com.google.wireless.android.sdk.stats.Histogram value) {
+        if (notAcceptedShownDurationsMsBuilder_ == null) {
+          if (((bitField0_ & 0x00000040) != 0) &&
+              notAcceptedShownDurationsMs_ != null &&
+              notAcceptedShownDurationsMs_ != com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance()) {
+            notAcceptedShownDurationsMs_ =
+              com.google.wireless.android.sdk.stats.Histogram.newBuilder(notAcceptedShownDurationsMs_).mergeFrom(value).buildPartial();
+          } else {
+            notAcceptedShownDurationsMs_ = value;
+          }
+          onChanged();
+        } else {
+          notAcceptedShownDurationsMsBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000040;
+        return this;
+      }
+      /**
+       * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+       */
+      public Builder clearNotAcceptedShownDurationsMs() {
+        if (notAcceptedShownDurationsMsBuilder_ == null) {
+          notAcceptedShownDurationsMs_ = null;
+          onChanged();
+        } else {
+          notAcceptedShownDurationsMsBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000040);
+        return this;
+      }
+      /**
+       * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+       */
+      public com.google.wireless.android.sdk.stats.Histogram.Builder getNotAcceptedShownDurationsMsBuilder() {
+        bitField0_ |= 0x00000040;
+        onChanged();
+        return getNotAcceptedShownDurationsMsFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+       */
+      public com.google.wireless.android.sdk.stats.HistogramOrBuilder getNotAcceptedShownDurationsMsOrBuilder() {
+        if (notAcceptedShownDurationsMsBuilder_ != null) {
+          return notAcceptedShownDurationsMsBuilder_.getMessageOrBuilder();
+        } else {
+          return notAcceptedShownDurationsMs_ == null ?
+              com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance() : notAcceptedShownDurationsMs_;
+        }
+      }
+      /**
+       * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.wireless.android.sdk.stats.Histogram, com.google.wireless.android.sdk.stats.Histogram.Builder, com.google.wireless.android.sdk.stats.HistogramOrBuilder> 
+          getNotAcceptedShownDurationsMsFieldBuilder() {
+        if (notAcceptedShownDurationsMsBuilder_ == null) {
+          notAcceptedShownDurationsMsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.google.wireless.android.sdk.stats.Histogram, com.google.wireless.android.sdk.stats.Histogram.Builder, com.google.wireless.android.sdk.stats.HistogramOrBuilder>(
+                  getNotAcceptedShownDurationsMs(),
+                  getParentForChildren(),
+                  isClean());
+          notAcceptedShownDurationsMs_ = null;
+        }
+        return notAcceptedShownDurationsMsBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
