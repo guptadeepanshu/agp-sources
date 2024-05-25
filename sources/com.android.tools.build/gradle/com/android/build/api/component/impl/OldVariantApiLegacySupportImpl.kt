@@ -289,12 +289,6 @@ class OldVariantApiLegacySupportImpl(
                     .artifactFiles
             )
 
-            fileCollection.from(
-                component.services.fileCollection(
-                    variantData.extraGeneratedResFolders
-                ).builtBy(listOfNotNull(variantData.extraGeneratedResFolders.builtBy))
-            )
-
             component.taskContainer.generateApkDataTask?.let {
                 fileCollection.from(component.artifacts.get(InternalArtifactType.MICRO_APK_RES))
             }

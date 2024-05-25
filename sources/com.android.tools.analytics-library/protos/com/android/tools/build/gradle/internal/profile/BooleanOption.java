@@ -755,6 +755,10 @@ public enum BooleanOption
    * <code>DISABLE_KOTLIN_ATTRIBUTE_SETUP = 183;</code>
    */
   DISABLE_KOTLIN_ATTRIBUTE_SETUP(183),
+  /**
+   * <code>JAVA_COMPILE_SUPPRESS_SOURCE_TARGET_DEPRECATION_WARNING = 184;</code>
+   */
+  JAVA_COMPILE_SUPPRESS_SOURCE_TARGET_DEPRECATION_WARNING(184),
   UNRECOGNIZED(-1),
   ;
 
@@ -1494,6 +1498,10 @@ public enum BooleanOption
    * <code>DISABLE_KOTLIN_ATTRIBUTE_SETUP = 183;</code>
    */
   public static final int DISABLE_KOTLIN_ATTRIBUTE_SETUP_VALUE = 183;
+  /**
+   * <code>JAVA_COMPILE_SUPPRESS_SOURCE_TARGET_DEPRECATION_WARNING = 184;</code>
+   */
+  public static final int JAVA_COMPILE_SUPPRESS_SOURCE_TARGET_DEPRECATION_WARNING_VALUE = 184;
 
 
   public final int getNumber() {
@@ -1704,6 +1712,7 @@ public enum BooleanOption
       case 181: return PRIVACY_SANDBOX_SDK_PLUGIN_SUPPORT;
       case 182: return DISABLE_MINIFY_LOCAL_DEPENDENCIES_FOR_LIBRARIES;
       case 183: return DISABLE_KOTLIN_ATTRIBUTE_SETUP;
+      case 184: return JAVA_COMPILE_SUPPRESS_SOURCE_TARGET_DEPRECATION_WARNING;
       default: return null;
     }
   }

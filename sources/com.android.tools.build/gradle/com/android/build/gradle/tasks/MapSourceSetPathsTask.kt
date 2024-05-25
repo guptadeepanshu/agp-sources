@@ -75,10 +75,6 @@ abstract class MapSourceSetPathsTask : NonIncrementalTask() {
     @get:Input
     abstract val allGeneratedRes: ListProperty<String>
 
-    @get:Input
-    @get:Optional
-    abstract val extraGeneratedResDir: ListProperty<String>
-
     @get:OutputFile
     abstract val filepathMappingFile: RegularFileProperty
 
@@ -108,7 +104,6 @@ abstract class MapSourceSetPathsTask : NonIncrementalTask() {
         )
         return localResources.get().map { it.asFile }.asSequence()
             .plus(librarySourceSets.files)
-            .plus(extraGeneratedResDir.getOrElse(emptyList()).map(::File))
             .plus(uncreatedSourceSets.map(::File))
             .plus(additionalSourceSets.map(::File))
             .plus(generatedSourceSets.map(::File)).toList()
@@ -161,15 +156,6 @@ abstract class MapSourceSetPathsTask : NonIncrementalTask() {
                     it.asFile.absolutePath
                 }
             )
-            creationConfig.oldVariantApiLegacySupport?.let {
-                task.extraGeneratedResDir.addAll(
-                    it.variantData.extraGeneratedResFolders.elements.map { allDirs ->
-                        allDirs.map {
-                            it.asFile.absolutePath
-                        }
-                    }
-                )
-            }
 
             task.incrementalMergedDir.setDisallowChanges(
                 (creationConfig.artifacts.get(InternalArtifactType.MERGED_RES_INCREMENTAL_FOLDER)

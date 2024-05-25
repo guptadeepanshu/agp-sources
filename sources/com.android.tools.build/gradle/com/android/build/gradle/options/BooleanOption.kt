@@ -127,6 +127,12 @@ enum class BooleanOption(
             ApiStage.Stable
     ),
 
+    JAVA_COMPILE_SUPPRESS_SOURCE_TARGET_DEPRECATION_WARNING(
+        "android.javaCompile.suppressSourceTargetDeprecationWarning",
+        false,
+        ApiStage.Stable
+    ),
+
     /* ------------------
      * SUPPORTED FEATURES
      */

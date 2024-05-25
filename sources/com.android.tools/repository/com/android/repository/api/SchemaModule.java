@@ -46,6 +46,8 @@ public class SchemaModule<T> {
     /** Class used with {@link Class#getResourceAsStream(String)} to look up xsd resources. */
     private final Class<?> mResourceRoot;
 
+    private final int mMaxSupportedVersion;
+
     /**
      * @param ofPattern Fully-qualified class name of the JAXB {@code ObjectFactory} classes making
      *     up this module. Should have a single %d parameter, corresponding to the 1-indexed version
@@ -54,14 +56,22 @@ public class SchemaModule<T> {
      *     parameter, corresponding to the 1-indexed version of the schema.
      * @param resourceRoot A class instance used via {@link Class#getResource(String)} to read the
      *     XSD file.
+     * @param maxSupportedVersion the maximum version supported for this schema modules, versions
+     *     higher than the maximum supported are ignored. This is intended to be used as a fix where
+     *     some schema modules incorrectly parse the xml for some versions. It is not meant to be
+     *     used by default.
      */
     public SchemaModule(
-            @NonNull String ofPattern, @NonNull String xsdPattern, @NonNull Class<?> resourceRoot) {
+            @NonNull String ofPattern,
+            @NonNull String xsdPattern,
+            @NonNull Class<?> resourceRoot,
+            int maxSupportedVersion) {
+        mMaxSupportedVersion = maxSupportedVersion;
         if (!ofPattern.matches(".*%[0-9.$]*d.*") || !xsdPattern.matches(".*%[0-9.$]*d.*")) {
             assert false : "ofPattern and xsdPattern must contain a single %d parameter";
         }
         SchemaModuleVersion<T> version = null;
-        for (int i = 1; ; i++) {
+        for (int i = 1; i <= maxSupportedVersion; i++) {
             Class<? extends T> objectFactory;
             try {
                 objectFactory =
@@ -76,6 +86,20 @@ public class SchemaModule<T> {
         mLatestVersion = version;
         assert !mVersions.isEmpty() : "No versions found";
         mResourceRoot = resourceRoot;
+    }
+
+    /**
+     * @param ofPattern Fully-qualified class name of the JAXB {@code ObjectFactory} classes making
+     *     up this module. Should have a single %d parameter, corresponding to the 1-indexed version
+     *     of the schema.
+     * @param xsdPattern Filename pattern of the XSDs making up this module. Should have a single %d
+     *     parameter, corresponding to the 1-indexed version of the schema.
+     * @param resourceRoot A class instance used via {@link Class#getResource(String)} to read the
+     *     XSD file.
+     */
+    public SchemaModule(
+            @NonNull String ofPattern, @NonNull String xsdPattern, @NonNull Class<?> resourceRoot) {
+        this(ofPattern, xsdPattern, resourceRoot, Integer.MAX_VALUE);
     }
 
     /**

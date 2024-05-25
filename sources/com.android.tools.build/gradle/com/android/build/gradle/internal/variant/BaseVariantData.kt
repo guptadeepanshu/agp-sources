@@ -23,11 +23,9 @@ import com.android.build.gradle.internal.scope.InternalArtifactType.JAVA_RES
 import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.VariantServices
 import com.google.common.base.MoreObjects
-import org.gradle.api.Task
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.FileCollection
 import org.gradle.api.resources.TextResource
-import org.gradle.api.tasks.TaskProvider
 import java.io.File
 import java.util.Collections
 
@@ -42,7 +40,6 @@ abstract class BaseVariantData(
 
     // Storage for Old Public API
     val extraGeneratedSourceFoldersOnlyInModel: MutableList<File> = mutableListOf()
-    val extraGeneratedResFolders: ConfigurableFileCollection = services.fileCollection()
     private var preJavacGeneratedBytecodeMap: MutableMap<Any, FileCollection>? = null
     private var preJavacGeneratedBytecodeLatest: FileCollection = services.fileCollection()
     val allPreJavacGeneratedBytecode: ConfigurableFileCollection = services.fileCollection()
@@ -81,30 +78,6 @@ abstract class BaseVariantData(
 
     fun addJavaSourceFoldersToModel(generatedSourceFolders: Collection<File>) {
         extraGeneratedSourceFoldersOnlyInModel.addAll(generatedSourceFolders)
-    }
-
-    fun registerGeneratedResFolders(folders: FileCollection) {
-        extraGeneratedResFolders.from(folders)
-    }
-
-    fun registerResGeneratingTask(
-        task: Task,
-        vararg generatedResFolders: File
-    ) {
-        registerResGeneratingTask(
-            task,
-            listOf(*generatedResFolders)
-        )
-    }
-
-    fun registerResGeneratingTask(
-        task: Task,
-        generatedResFolders: Collection<File>
-    ) {
-        println(
-            "registerResGeneratingTask is deprecated, use registerGeneratedResFolders(FileCollection)"
-        )
-        registerGeneratedResFolders(services.fileCollection(generatedResFolders).builtBy(task))
     }
 
     fun registerPreJavacGeneratedBytecode(fileCollection: FileCollection): Any {

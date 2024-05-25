@@ -154,13 +154,19 @@ public class Utils {
     public static FileCollection getGeneratedResourceFoldersFileCollection(
             @NonNull ComponentCreationConfig component) {
         ConfigurableFileCollection fileCollection = component.getServices().fileCollection();
-        if (component.getOldVariantApiLegacySupport() != null) {
-            fileCollection.from(
-                    component
-                            .getOldVariantApiLegacySupport()
-                            .getVariantData()
-                            .getExtraGeneratedResFolders());
-        }
+        component
+                .getSources()
+                .res(
+                        resSources -> {
+                            fileCollection.from(
+                                    resSources.variantSourcesForModel$gradle_core(
+                                            directoryEntry ->
+                                                    directoryEntry.isUserAdded()
+                                                            && directoryEntry.isGenerated()
+                                                            && directoryEntry
+                                                                    .getShouldBeAddedToIdeModel()));
+                            return Unit.INSTANCE;
+                        });
         if (component.getBuildFeatures().getRenderScript()) {
             fileCollection.from(
                     component

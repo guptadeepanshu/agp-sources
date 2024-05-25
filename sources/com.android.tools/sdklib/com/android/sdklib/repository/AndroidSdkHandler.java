@@ -79,7 +79,7 @@ public final class AndroidSdkHandler {
     private static final SchemaModule<AddonFactory> ADDON_MODULE =
             new SchemaModule<>(
                     "com.android.sdklib.repository.generated.addon.v%d.ObjectFactory",
-                    "/xsd/sdk-addon-%02d.xsd", AndroidSdkHandler.class);
+                    "/xsd/sdk-addon-%02d.xsd", AndroidSdkHandler.class, 5);
 
     /** Schema module containing the package type information to be used in the primary repo. */
     private static final SchemaModule<RepoFactory> REPOSITORY_MODULE =
@@ -91,7 +91,7 @@ public final class AndroidSdkHandler {
     private static final SchemaModule<SysImgFactory> SYS_IMG_MODULE =
             new SchemaModule<>(
                     "com.android.sdklib.repository.generated.sysimg.v%d.ObjectFactory",
-                    "/xsd/sdk-sys-img-%02d.xsd", AndroidSdkHandler.class);
+                    "/xsd/sdk-sys-img-%02d.xsd", AndroidSdkHandler.class, 3);
 
     /** Common schema module used by the other sdk-specific modules. */
     private static final SchemaModule<SdkCommonFactory> COMMON_MODULE =
@@ -576,7 +576,7 @@ public final class AndroidSdkHandler {
             SchemaModule<?> addonListModule =
                     new SchemaModule<>(
                             "com.android.sdklib.repository.sources.generated.v%d.ObjectFactory",
-                            "/xsd/sources/sdk-sites-list-%d.xsd", RemoteSiteType.class);
+                            "/xsd/sources/sdk-sites-list-%d.xsd", RemoteSiteType.class, 5);
 
             try {
                 // Specify what modules are allowed to be used by what sites.

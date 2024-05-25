@@ -142,6 +142,19 @@ open class LayeredSourceDirectoriesImpl(
     fun getVariantSources(): List<DirectoryEntries> = variantSources.get()
 
     /**
+     * Iterates over all sources in the right order.
+     *
+     * @param action a lambda to run on each [DirectoryEntry]
+     */
+    fun forAllSources(action:(DirectoryEntry) -> Unit) {
+        getVariantSources().forEach { directoryEntries ->
+            directoryEntries.directoryEntries.forEach { directoryEntry ->
+                action(directoryEntry)
+            }
+        }
+    }
+
+    /**
      * Returns the list of local source directories matching the given [filter]
      */
     fun getVariantSourcesWithFilter(filter: (DirectoryEntry) -> Boolean = { _ -> true } ): Map<String, Provider<out Collection<Directory>>> =
