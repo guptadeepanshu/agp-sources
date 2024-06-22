@@ -15,6 +15,7 @@
  */
 package com.android.sdklib;
 
+import com.android.annotations.NonNull;
 import com.android.repository.api.RepoPackage;
 import com.android.repository.impl.meta.TypeDetails;
 import com.android.sdklib.repository.IdDisplay;
@@ -22,6 +23,7 @@ import com.android.sdklib.repository.meta.DetailsTypes;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 public class SystemImageTags {
@@ -95,6 +97,34 @@ public class SystemImageTags {
                     AUTOMOTIVE_DISTANT_DISPLAY_TAG);
 
     private static final Set<IdDisplay> TV_TAGS = ImmutableSet.of(ANDROID_TV_TAG, GOOGLE_TV_TAG);
+
+    public static boolean hasGooglePlay(
+            @NonNull List<IdDisplay> tags,
+            @NonNull AndroidVersion version,
+            @NonNull RepoPackage repoPackage) {
+        // Multi-tagged images only need this check
+        if (tags.contains(PLAY_STORE_TAG)) {
+            return true;
+        }
+
+        // Fallback logic for older, non-multi-tagged images follows
+
+        if (tags.size() != 1) {
+            return false;
+        }
+
+        IdDisplay tag = tags.get(0);
+
+        if (tag.equals(AUTOMOTIVE_PLAY_STORE_TAG)) {
+            return true;
+        }
+
+        // A Wear OS image has the Play Store if the API is recent enough, and it's not the version
+        // for China
+        return tag.equals(WEAR_TAG)
+                && version.getApiLevel() >= AndroidVersion.MIN_RECOMMENDED_WEAR_API
+                && !repoPackage.getPath().contains(ISystemImage.WEAR_CN_DIRECTORY);
+    }
 
     public static boolean hasGoogleApi(Collection<IdDisplay> tags) {
         // Multi-tagged packages only need this check

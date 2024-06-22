@@ -24,7 +24,7 @@ import com.android.build.api.instrumentation.manageddevice.DeviceTestRunInput
 import com.android.build.api.instrumentation.manageddevice.DeviceTestRunParameters
 import com.android.build.api.instrumentation.manageddevice.DeviceTestRunTaskAction
 import com.android.build.api.variant.ScopedArtifacts
-import com.android.build.gradle.internal.component.AndroidTestCreationConfig
+import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.InstrumentedTestCreationConfig
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
@@ -348,7 +348,7 @@ abstract class ManagedDeviceTestTask: NonIncrementalTask(), AndroidTestTask {
             super.configure(task)
 
             val projectOptions = creationConfig.services.projectOptions
-            val testedConfig = (creationConfig as? AndroidTestCreationConfig)?.mainVariant
+            val testedConfig = (creationConfig as? DeviceTestCreationConfig)?.mainVariant
             val variantName = testedConfig?.name ?: creationConfig.name
 
             task.description = "Installs and runs the test for $variantName " +

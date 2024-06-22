@@ -25,6 +25,7 @@ interface LibraryVariant : Variant,
     GeneratesAar,
     HasDeviceTests,
     HasAndroidTest,
+    HasHostTests,
     HasUnitTest,
     HasTestFixtures,
     CanMinifyCode {

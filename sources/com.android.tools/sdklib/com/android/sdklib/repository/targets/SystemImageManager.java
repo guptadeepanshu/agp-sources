@@ -27,6 +27,8 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -197,18 +199,21 @@ public class SystemImageManager {
     private SystemImage createSysImg(
             LocalPackage p, Path dir, Map<AndroidVersion, Path> platformSkins) {
         String containingDir = dir.getFileName().toString();
-        String abi;
+        List<String> abis, translatedAbis;
         TypeDetails details = p.getTypeDetails();
         AndroidVersion version = null;
         if (details instanceof DetailsTypes.ApiDetailsType) {
             version = ((DetailsTypes.ApiDetailsType) details).getAndroidVersion();
         }
         if (details instanceof DetailsTypes.SysImgDetailsType) {
-            abi = ((DetailsTypes.SysImgDetailsType) details).getAbi();
+            abis = ((DetailsTypes.SysImgDetailsType) details).getAbis();
+            translatedAbis = ((DetailsTypes.SysImgDetailsType) details).getTranslatedAbis();
         } else if (mValidator.isValidAbi(containingDir)) {
-            abi = containingDir;
+            abis = Collections.singletonList(containingDir);
+            translatedAbis = Collections.emptyList();
         } else {
-            abi = SdkConstants.ABI_ARMEABI;
+            abis = Collections.singletonList(SdkConstants.ABI_ARMEABI);
+            translatedAbis = Collections.emptyList();
         }
 
         IdDisplay vendor = null;
@@ -228,7 +233,8 @@ public class SystemImageManager {
         } else {
             skins = new Path[0];
         }
-        return new SystemImage(dir, SystemImageTags.getTags(p), vendor, abi, skins, p);
+        return new SystemImage(
+                dir, SystemImageTags.getTags(p), vendor, abis, translatedAbis, skins, p);
     }
 
     @Nullable

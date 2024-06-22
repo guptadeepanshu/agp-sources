@@ -35,6 +35,7 @@ class TestApplicationTestData(
     testedApksDir: Provider<Directory>,
     privacySandboxSdkApks: FileCollection?,
     privacySandboxCompatSdkApksDir: Provider<Directory>?,
+    additionalSdkSupportedApkSplits: Provider<Directory>?,
     extraInstrumentationTestRunnerArgs: Map<String, String>,
 ) : AbstractTestDataImpl(
     namespace,
@@ -43,7 +44,7 @@ class TestApplicationTestData(
     testedApksDir,
     privacySandboxSdkApks,
     privacySandboxCompatSdkApksDir,
-    null,
+    additionalSdkSupportedApkSplits,
     extraInstrumentationTestRunnerArgs
 ) {
 

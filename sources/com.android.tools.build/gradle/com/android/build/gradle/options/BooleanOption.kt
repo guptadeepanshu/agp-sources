@@ -197,6 +197,15 @@ enum class BooleanOption(
      */
     GRADLE_MANAGED_DEVICE_ALLOW_OLD_API_LEVEL_DEVICES("android.experimental.testOptions.managedDevices.allowOldApiLevelDevices", false, FeatureStage.Experimental),
 
+    /**
+     * When enabled, Gradle Managed Device test results will be included in the mergeAndroidReports task from the
+     * android-reporting plugin.
+     *
+     * This will cause all managed devices to run for all variants in all subprojects when the mergeAndroidReports
+     * task is executed.
+     */
+    GRADLE_MANAGED_DEVICE_INCLUDE_MANAGED_DEVICES_IN_REPORTING("android.experimental.testOptions.managedDevices.includeInMergedReport", false, FeatureStage.Experimental),
+
     /** When set R classes are treated as compilation classpath in libraries, rather than runtime classpath, with values set to 0. */
     ENABLE_ADDITIONAL_ANDROID_TEST_OUTPUT("android.enableAdditionalTestOutput", true, FeatureStage.Experimental),
 
@@ -293,6 +302,15 @@ enum class BooleanOption(
     @Suppress("unused")
     ENABLE_SCREENSHOT_TEST(
         "android.experimental.enableScreenshotTest",
+        false,
+        FeatureStage.Experimental
+    ),
+
+    /**
+     * Whether to enable kotlin compilation for test fixtures
+     */
+    ENABLE_TEST_FIXTURES_KOTLIN_SUPPORT(
+        "android.experimental.enableTestFixturesKotlinSupport",
         false,
         FeatureStage.Experimental
     ),

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 The Android Open Source Project
+ * Copyright (C) 2024 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,10 +21,10 @@ import com.android.tools.build.gradle.internal.profile.VariantPropertiesMethodTy
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.MapProperty
-import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.testing.Test
 import javax.inject.Inject
 
+@Suppress("DEPRECATION")
 open class AnalyticsEnabledUnitTest @Inject constructor(
     override val delegate: UnitTest,
     stats: GradleBuildVariant.Builder,

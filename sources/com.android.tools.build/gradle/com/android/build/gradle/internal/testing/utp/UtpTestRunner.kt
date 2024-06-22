@@ -75,7 +75,11 @@ class UtpTestRunner @JvmOverloads constructor(
             additionalTestOutputDir: File?,
             coverageDir: File,
             logger: ILogger): MutableList<TestResult> {
-        val runnerConfigs = apksForDevice.map { (deviceConnector, apks) ->
+
+        val runnerConfigs = apksForDevice.filter { (device, apks) ->
+            !versionedSdkLoader.adbHelper.get().isManagedDevice(
+                device.getSerialNumber(), logger)
+        }.map { (deviceConnector, apks) ->
             val utpOutputDir = File(resultsDir, deviceConnector.name).apply {
                 if (!exists()) {
                     mkdirs()

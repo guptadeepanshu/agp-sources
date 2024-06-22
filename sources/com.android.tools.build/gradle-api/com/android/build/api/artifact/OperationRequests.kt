@@ -44,7 +44,6 @@ interface OutOperationRequest<FileTypeT: FileSystemLocation> {
      * @param name file or directory name
      * @return itself
      */
-    @Incubating
     fun withName(name: String): OutOperationRequest<FileTypeT>
 
     /**
@@ -160,7 +159,7 @@ interface OutOperationRequest<FileTypeT: FileSystemLocation> {
      *          }
      *     }
      *
-     * You can register a transform to the collection of [org.gradle.api.file.RegularFile]:
+     * You can register the Task that consumes the manifest file as a [org.gradle.api.file.RegularFile]:
      *
      * ```kotlin
      *     val taskProvider= projects.tasks.register(MyTask::class.java, "verifyManifestTask")
@@ -174,7 +173,6 @@ interface OutOperationRequest<FileTypeT: FileSystemLocation> {
      *
      * @param type the [Artifact.Single] artifact identifier.
      */
-    @Incubating
     fun <ArtifactTypeT> toListenTo(type: ArtifactTypeT)
             where ArtifactTypeT : Artifact.Single<FileTypeT>
 }
@@ -204,14 +202,15 @@ interface MultipleArtifactTypeOutOperationRequest<FileTypeT: FileSystemLocation>
      *
      * ```kotlin
      *     abstract class MyTask: DefaultTask() {
-     *          @get:InputFile abstract val proguardFiles: ListProperty<RegularFile>
+     *          @get:InputFiles abstract val proguardFiles: ListProperty<RegularFile>
      *
      *          @TaskAction fun taskAction() {
      *              ... verify that those proguard files are correct ...
      *          }
      *     }
      *
-     * You can register a transform to the collection of [org.gradle.api.file.RegularFile]:
+     * You can register the Task that consumes the proguard files as a [ListProperty] of
+     * [org.gradle.api.file.RegularFile]:
      *
      * ```kotlin
      *     val taskProvider= projects.tasks.register(MyTask::class.java, "verifyKeepProguardTask")
@@ -230,7 +229,7 @@ interface MultipleArtifactTypeOutOperationRequest<FileTypeT: FileSystemLocation>
 }
 
 /**
- * Operations performed by a [Task] with a single [RegularFile] or [Directory] output.
+ * Operations performed by a [Task] with a single [RegularFile] output.
  *
  * [Task] is consuming existing version of the target [SingleArtifact] and producing a new version.
  */
@@ -242,7 +241,6 @@ interface InAndOutFileOperationRequest {
      * @param name file name in the output folder.
      * @return itself
      */
-    @Incubating
     fun withName(name: String): InAndOutFileOperationRequest
 
     /**
@@ -291,6 +289,11 @@ interface InAndOutFileOperationRequest {
               ArtifactTypeT: Artifact.Transformable
 }
 
+/**
+ * Operations performed by a [Task] with a single [Directory] or [RegularFile] output.
+ *
+ * [Task] is consuming existing version of the target [MultipleArtifact] and producing a new version.
+ */
 interface CombiningOperationRequest<FileTypeT: FileSystemLocation> {
     /**
      * Initiates a transform request to a multiple [Artifact.Transformable] artifact type.
@@ -344,6 +347,11 @@ interface CombiningOperationRequest<FileTypeT: FileSystemLocation> {
               ArtifactTypeT: Artifact.Transformable
 }
 
+/**
+ * Operations performed by a [Task] with a single [Directory] output.
+ *
+ * [Task] is consuming existing version of the target [SingleArtifact] and producing a new version.
+ */
 interface InAndOutDirectoryOperationRequest<TaskT : Task> {
 
     /**

@@ -25,6 +25,8 @@ import com.android.sdklib.ISystemImage;
 import com.android.sdklib.repository.IdDisplay;
 import com.android.sdklib.repository.meta.DetailsTypes;
 import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Comparators;
 import com.google.common.collect.ImmutableList;
 import java.nio.file.Path;
 import java.util.Comparator;
@@ -46,11 +48,11 @@ public class SystemImage implements ISystemImage {
      */
     private final IdDisplay mVendor;
 
+    /** Native ABIs (x86, armeabi-v7a, etc) of the system image. */
+    private final List<String> mAbis;
 
-    /**
-     * Abi (x86, armeabi-v7a, etc) of the system image.
-     */
-    private final String mAbi;
+    /** Translated ABIs (x86, armeabi-v7a, etc) of the system image. */
+    private final List<String> mTranslatedAbis;
 
     /** Skins contained in this system image, or in the platform/addon it's based on. */
     private final Path[] mSkins;
@@ -69,13 +71,16 @@ public class SystemImage implements ISystemImage {
             @NonNull Path location,
             @NonNull Iterable<IdDisplay> tags,
             @Nullable IdDisplay vendor,
-            @NonNull String abi,
+            @NonNull List<String> abis,
+            @NonNull List<String> translatedAbis,
             @NonNull Path[] skins,
             @NonNull RepoPackage pkg) {
+        Preconditions.checkArgument(!abis.isEmpty());
         mLocation = location;
         mTags = ImmutableList.copyOf(tags);
         mVendor = vendor;
-        mAbi = abi;
+        mAbis = ImmutableList.copyOf(abis);
+        mTranslatedAbis = ImmutableList.copyOf(translatedAbis);
         mSkins = skins;
         mPackage = pkg;
         TypeDetails details = pkg.getTypeDetails();
@@ -87,10 +92,11 @@ public class SystemImage implements ISystemImage {
             @NonNull Path location,
             @NonNull IdDisplay tag,
             @Nullable IdDisplay vendor,
-            @NonNull String abi,
+            @NonNull List<String> abi,
+            @NonNull List<String> translatedAbi,
             @NonNull Path[] skins,
             @NonNull RepoPackage pkg) {
-        this(location, ImmutableList.of(tag), vendor, abi, skins, pkg);
+        this(location, ImmutableList.of(tag), vendor, abi, translatedAbi, skins, pkg);
     }
 
     @NonNull
@@ -113,8 +119,20 @@ public class SystemImage implements ISystemImage {
 
     @NonNull
     @Override
-    public String getAbiType() {
-        return mAbi;
+    public String getPrimaryAbiType() {
+        return mAbis.get(0);
+    }
+
+    @NonNull
+    @Override
+    public List<String> getAbiTypes() {
+        return mAbis;
+    }
+
+    @NonNull
+    @Override
+    public List<String> getTranslatedAbiTypes() {
+        return mTranslatedAbis;
     }
 
     @NonNull
@@ -144,7 +162,12 @@ public class SystemImage implements ISystemImage {
     public int compareTo(@NonNull ISystemImage o) {
         int res =
                 Comparator.comparing(ISystemImage::getTag)
-                        .thenComparing(ISystemImage::getAbiType)
+                        .thenComparing(
+                                ISystemImage::getAbiTypes,
+                                Comparators.lexicographical(Comparator.<String>naturalOrder()))
+                        .thenComparing(
+                                ISystemImage::getTranslatedAbiTypes,
+                                Comparators.lexicographical(Comparator.<String>naturalOrder()))
                         .thenComparing(
                                 ISystemImage::getAddonVendor,
                                 Comparator.nullsFirst(IdDisplay::compareTo))
@@ -174,7 +197,13 @@ public class SystemImage implements ISystemImage {
     }
 
     public int hashCode() {
-        int hashCode = Objects.hashCode(getTag(), getAbiType(), getAddonVendor(), getLocation());
+        int hashCode =
+                Objects.hashCode(
+                        getTag(),
+                        getAbiTypes(),
+                        getTranslatedAbiTypes(),
+                        getAddonVendor(),
+                        getLocation());
         for (Path f : getSkins()) {
             hashCode *= 37;
             hashCode += f.hashCode();

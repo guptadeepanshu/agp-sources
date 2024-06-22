@@ -33,6 +33,7 @@ import com.android.builder.model.v2.ide.Edge
 import com.android.builder.model.v2.ide.GraphItem
 import com.android.builder.model.v2.ide.Library
 import com.android.builder.model.v2.ide.UnresolvedDependency
+import com.google.common.base.Throwables
 import org.gradle.api.artifacts.component.ComponentIdentifier
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
 import org.gradle.api.artifacts.result.DependencyResult
@@ -199,16 +200,27 @@ class FullDependencyGraphBuilder(
             dependency.selected.getDependenciesForVariant(variant)
         }
 
-        val library = getLibrary(
-            projectPath,
-            libraryService,
-            variant,
-            variantDependencies,
-            artifactMap,
-            javadocArtifacts,
-            sourceArtifacts,
-            sampleArtifacts
-        )
+        val library = try {
+            getLibrary(
+                projectPath,
+                libraryService,
+                variant,
+                variantDependencies,
+                artifactMap,
+                javadocArtifacts,
+                sourceArtifacts,
+                sampleArtifacts
+            )
+        } catch (e: Exception) {
+            val name = dependency.requested.toString()
+            if (!unresolvedDependencies.containsKey(name)) {
+                unresolvedDependencies[name] = UnresolvedDependencyImpl(
+                    name,
+                    "Internal error creating library https://issuetracker.google.com/225025703\n" + Throwables.getStackTraceAsString(e)
+                )
+            }
+            return null;
+        }
 
         if (library != null) {
             // Create GraphItem for the library first and add it to cache in order to avoid cycles.

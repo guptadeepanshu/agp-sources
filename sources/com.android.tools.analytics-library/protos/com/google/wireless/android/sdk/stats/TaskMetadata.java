@@ -69,12 +69,14 @@ private static final long serialVersionUID = 0L;
      */
     SYSTEM_TRACE(2),
     /**
-     * <code>JAVA_KOTLIN_METHOD_TRACE = 3;</code>
+     * <code>JAVA_KOTLIN_METHOD_TRACE = 3 [deprecated = true];</code>
      */
+    @java.lang.Deprecated
     JAVA_KOTLIN_METHOD_TRACE(3),
     /**
-     * <code>JAVA_KOTLIN_METHOD_SAMPLE = 4;</code>
+     * <code>JAVA_KOTLIN_METHOD_SAMPLE = 4 [deprecated = true];</code>
      */
+    @java.lang.Deprecated
     JAVA_KOTLIN_METHOD_SAMPLE(4),
     /**
      * <code>HEAP_DUMP = 5;</code>
@@ -92,6 +94,10 @@ private static final long serialVersionUID = 0L;
      * <code>LIVE_VIEW = 8;</code>
      */
     LIVE_VIEW(8),
+    /**
+     * <code>JAVA_KOTLIN_METHOD_RECORDING = 9;</code>
+     */
+    JAVA_KOTLIN_METHOD_RECORDING(9),
     ;
 
     /**
@@ -107,13 +113,13 @@ private static final long serialVersionUID = 0L;
      */
     public static final int SYSTEM_TRACE_VALUE = 2;
     /**
-     * <code>JAVA_KOTLIN_METHOD_TRACE = 3;</code>
+     * <code>JAVA_KOTLIN_METHOD_TRACE = 3 [deprecated = true];</code>
      */
-    public static final int JAVA_KOTLIN_METHOD_TRACE_VALUE = 3;
+    @java.lang.Deprecated public static final int JAVA_KOTLIN_METHOD_TRACE_VALUE = 3;
     /**
-     * <code>JAVA_KOTLIN_METHOD_SAMPLE = 4;</code>
+     * <code>JAVA_KOTLIN_METHOD_SAMPLE = 4 [deprecated = true];</code>
      */
-    public static final int JAVA_KOTLIN_METHOD_SAMPLE_VALUE = 4;
+    @java.lang.Deprecated public static final int JAVA_KOTLIN_METHOD_SAMPLE_VALUE = 4;
     /**
      * <code>HEAP_DUMP = 5;</code>
      */
@@ -130,6 +136,10 @@ private static final long serialVersionUID = 0L;
      * <code>LIVE_VIEW = 8;</code>
      */
     public static final int LIVE_VIEW_VALUE = 8;
+    /**
+     * <code>JAVA_KOTLIN_METHOD_RECORDING = 9;</code>
+     */
+    public static final int JAVA_KOTLIN_METHOD_RECORDING_VALUE = 9;
 
 
     public final int getNumber() {
@@ -161,6 +171,7 @@ private static final long serialVersionUID = 0L;
         case 6: return NATIVE_ALLOCATIONS;
         case 7: return JAVA_KOTLIN_ALLOCATIONS;
         case 8: return LIVE_VIEW;
+        case 9: return JAVA_KOTLIN_METHOD_RECORDING;
         default: return null;
       }
     }

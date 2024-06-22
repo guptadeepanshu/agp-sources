@@ -80,6 +80,16 @@ interface ModelBuilderParameter {
      * See [dontBuildRuntimeClasspath] for additional details.
      */
     var dontBuildTestFixtureRuntimeClasspath: Boolean
+
+    /**
+     * Don't build the runtime classpath for the host tests artifact. If true
+     * [ArtifactDependencies.runtimeDependencies] will be null for
+     * [VariantDependencies.hostTestArtifacts(UNIT_TEST)] or
+     * [VariantDependencies.hostTestArtifacts(SCREENSHOT_TEST)].
+     *
+     * See [dontBuildRuntimeClasspath] for additional details.
+     */
+    var dontBuildHostTestRuntimeClasspath: Map<String, Boolean>
 }
 
 /**
@@ -87,20 +97,20 @@ interface ModelBuilderParameter {
  */
 enum class ClasspathParameterConfig(
     private val mainRuntime: Boolean,
-    private val unitTestRuntime: Boolean,
     private val androidTestRuntime: Boolean,
-    private val screenshotTestRuntime: Boolean,
     private val testFixturesRuntime: Boolean,
+    private val hostTestsRuntime: Map<String, Boolean>,
 ) {
-    ALL(true, true, true, true, true),
-    ANDROID_TEST_ONLY(false, false, true, false, false),
-    NONE(false, false, false, false, false);
+    ALL(true, true, true, mapOf("UnitTest" to true, "ScreenshotTest" to true)),
+    ANDROID_TEST_ONLY(false,true, false, mapOf("UnitTest" to false, "ScreenshotTest" to false)),
+    NONE(false, false, false, mapOf("UnitTest" to false, "ScreenshotTest" to false));
 
     fun applyTo(param: ModelBuilderParameter) {
         param.dontBuildRuntimeClasspath = !mainRuntime
-        param.dontBuildUnitTestRuntimeClasspath = !unitTestRuntime
-        param.dontBuildScreenshotTestRuntimeClasspath = !screenshotTestRuntime
+        param.dontBuildUnitTestRuntimeClasspath = !hostTestsRuntime["UnitTest"]!!
+        param.dontBuildScreenshotTestRuntimeClasspath = !hostTestsRuntime["ScreenshotTest"]!!
         param.dontBuildAndroidTestRuntimeClasspath = !androidTestRuntime
         param.dontBuildTestFixtureRuntimeClasspath = !testFixturesRuntime
+        param.dontBuildHostTestRuntimeClasspath = hostTestsRuntime.mapValues { entry -> !entry.value }
     }
 }

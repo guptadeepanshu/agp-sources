@@ -230,7 +230,7 @@ private fun runUtpTestSuite(
                 java.util.logging.ConsoleHandler.level=${config.utpLoggingLevel.name}
                 java.util.logging.SimpleFormatter.format=%4${'$'}s: %5${'$'}s%n
                 java.util.logging.FileHandler.level=INFO
-                java.util.logging.FileHandler.pattern=${config.utpOutputDir.absolutePath}${File.separator}utp.%u.log
+                java.util.logging.FileHandler.pattern=${config.utpOutputDir.invariantSeparatorsPath}/utp.%u.log
                 java.util.logging.FileHandler.formatter=java.util.logging.SimpleFormatter
             """.trimIndent())
     }

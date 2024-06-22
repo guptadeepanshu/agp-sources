@@ -923,4 +923,23 @@ public interface EmulatorDetailsOrBuilder extends
    * @return The qemuPid.
    */
   int getQemuPid();
+
+  /**
+   * <pre>
+   * Vulkan backend.
+   * </pre>
+   *
+   * <code>optional .android_studio.EmulatorDetails.VulkanIcd vulkan_icd = 39;</code>
+   * @return Whether the vulkanIcd field is set.
+   */
+  boolean hasVulkanIcd();
+  /**
+   * <pre>
+   * Vulkan backend.
+   * </pre>
+   *
+   * <code>optional .android_studio.EmulatorDetails.VulkanIcd vulkan_icd = 39;</code>
+   * @return The vulkanIcd.
+   */
+  com.google.wireless.android.sdk.stats.EmulatorDetails.VulkanIcd getVulkanIcd();
 }

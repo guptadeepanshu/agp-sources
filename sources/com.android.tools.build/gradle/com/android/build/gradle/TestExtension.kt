@@ -1,5 +1,6 @@
 package com.android.build.gradle
 
+import com.android.build.api.dsl.PrivacySandbox
 import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.api.ApplicationVariant
 import com.android.build.gradle.api.BaseVariant

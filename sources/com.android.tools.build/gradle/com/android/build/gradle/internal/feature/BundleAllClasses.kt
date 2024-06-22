@@ -18,7 +18,6 @@ package com.android.build.gradle.internal.feature
 
 import com.android.SdkConstants.FN_CLASSES_JAR
 import com.android.build.api.artifact.ScopedArtifact
-import com.android.build.api.instrumentation.FramesComputationMode
 import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
@@ -181,6 +180,9 @@ abstract class BundleAllClasses : NonIncrementalTask() {
             } else {
                 task.inputDirs.from(
                     listOfNotNull(
+                        creationConfig.artifacts
+                            .get(InternalArtifactType.KOTLINC)
+                            .takeIf { creationConfig.useBuiltInKotlinSupport },
                         creationConfig.artifacts.get(InternalArtifactType.JAVAC),
                         creationConfig.oldVariantApiLegacySupport?.variantData?.allPreJavacGeneratedBytecode,
                         creationConfig.oldVariantApiLegacySupport?.variantData?.allPostJavacGeneratedBytecode

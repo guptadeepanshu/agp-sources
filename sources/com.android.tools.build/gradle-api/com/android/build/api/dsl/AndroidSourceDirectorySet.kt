@@ -16,6 +16,7 @@
 
 package com.android.build.api.dsl
 
+import org.gradle.api.Incubating
 import org.gradle.api.Named
 
 /**
@@ -36,6 +37,16 @@ interface AndroidSourceDirectorySet : Named {
      * This method has a return value for legacy reasons.
      */
     fun srcDir(srcDir: Any): Any
+
+    /**
+     * Allows to add source directories to this list. `Directories` provides `MutableList` style access to all
+     * source directories that are added via list itself or variety `srcDirs` methods.
+     *
+     * Note that tasks or buildscript may add more directories, so you should not read this property
+     * and use Variant API instead.
+     */
+    @get:Incubating
+    val directories: MutableSet<String>
 
     /**
      * Adds the given source directories to this set.

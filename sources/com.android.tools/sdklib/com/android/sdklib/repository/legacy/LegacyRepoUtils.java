@@ -109,6 +109,7 @@ public class LegacyRepoUtils {
             DetailsTypes.SysImgDetailsType details = sysImgFactory.createSysImgDetailsType();
             //noinspection ConstantConditions
             details.setAbi(desc.getPath());
+            details.getAbis().add(desc.getPath());
             assert androidVersion != null;
             details.setApiLevel(androidVersion.getApiLevel());
             details.setBaseExtension(androidVersion.isBaseExtension());

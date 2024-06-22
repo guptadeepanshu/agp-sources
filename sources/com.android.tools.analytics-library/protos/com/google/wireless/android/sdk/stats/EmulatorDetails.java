@@ -30,6 +30,7 @@ private static final long serialVersionUID = 0L;
     snapshotLoads_ = java.util.Collections.emptyList();
     snapshotSaves_ = java.util.Collections.emptyList();
     icebox_ = java.util.Collections.emptyList();
+    vulkanIcd_ = 0;
   }
 
   @java.lang.Override
@@ -912,6 +913,140 @@ private static final long serialVersionUID = 0L;
     }
 
     // @@protoc_insertion_point(enum_scope:android_studio.EmulatorDetails.EmulatorHypervisor)
+  }
+
+  /**
+   * <pre>
+   * Vulkan backend
+   * </pre>
+   *
+   * Protobuf enum {@code android_studio.EmulatorDetails.VulkanIcd}
+   */
+  public enum VulkanIcd
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>UNKNOWN_VK = 0;</code>
+     */
+    UNKNOWN_VK(0),
+    /**
+     * <code>HARDWARE_VK = 1;</code>
+     */
+    HARDWARE_VK(1),
+    /**
+     * <pre>
+     * Swiftshader software renderer
+     * </pre>
+     *
+     * <code>SWIFTSHADER_VK = 2;</code>
+     */
+    SWIFTSHADER_VK(2),
+    /**
+     * <pre>
+     * Mac only
+     * </pre>
+     *
+     * <code>MOLTEN_VK = 3;</code>
+     */
+    MOLTEN_VK(3),
+    ;
+
+    /**
+     * <code>UNKNOWN_VK = 0;</code>
+     */
+    public static final int UNKNOWN_VK_VALUE = 0;
+    /**
+     * <code>HARDWARE_VK = 1;</code>
+     */
+    public static final int HARDWARE_VK_VALUE = 1;
+    /**
+     * <pre>
+     * Swiftshader software renderer
+     * </pre>
+     *
+     * <code>SWIFTSHADER_VK = 2;</code>
+     */
+    public static final int SWIFTSHADER_VK_VALUE = 2;
+    /**
+     * <pre>
+     * Mac only
+     * </pre>
+     *
+     * <code>MOLTEN_VK = 3;</code>
+     */
+    public static final int MOLTEN_VK_VALUE = 3;
+
+
+    public final int getNumber() {
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static VulkanIcd valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static VulkanIcd forNumber(int value) {
+      switch (value) {
+        case 0: return UNKNOWN_VK;
+        case 1: return HARDWARE_VK;
+        case 2: return SWIFTSHADER_VK;
+        case 3: return MOLTEN_VK;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<VulkanIcd>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        VulkanIcd> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<VulkanIcd>() {
+            public VulkanIcd findValueByNumber(int number) {
+              return VulkanIcd.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.EmulatorDetails.getDescriptor().getEnumTypes().get(5);
+    }
+
+    private static final VulkanIcd[] VALUES = values();
+
+    public static VulkanIcd valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private VulkanIcd(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:android_studio.EmulatorDetails.VulkanIcd)
   }
 
   private int bitField0_;
@@ -2235,6 +2370,33 @@ private static final long serialVersionUID = 0L;
     return qemuPid_;
   }
 
+  public static final int VULKAN_ICD_FIELD_NUMBER = 39;
+  private int vulkanIcd_;
+  /**
+   * <pre>
+   * Vulkan backend.
+   * </pre>
+   *
+   * <code>optional .android_studio.EmulatorDetails.VulkanIcd vulkan_icd = 39;</code>
+   * @return Whether the vulkanIcd field is set.
+   */
+  @java.lang.Override public boolean hasVulkanIcd() {
+    return ((bitField1_ & 0x00000002) != 0);
+  }
+  /**
+   * <pre>
+   * Vulkan backend.
+   * </pre>
+   *
+   * <code>optional .android_studio.EmulatorDetails.VulkanIcd vulkan_icd = 39;</code>
+   * @return The vulkanIcd.
+   */
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorDetails.VulkanIcd getVulkanIcd() {
+    @SuppressWarnings("deprecation")
+    com.google.wireless.android.sdk.stats.EmulatorDetails.VulkanIcd result = com.google.wireless.android.sdk.stats.EmulatorDetails.VulkanIcd.valueOf(vulkanIcd_);
+    return result == null ? com.google.wireless.android.sdk.stats.EmulatorDetails.VulkanIcd.UNKNOWN_VK : result;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -2359,6 +2521,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField1_ & 0x00000001) != 0)) {
       output.writeInt32(38, qemuPid_);
+    }
+    if (((bitField1_ & 0x00000002) != 0)) {
+      output.writeEnum(39, vulkanIcd_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -2515,6 +2680,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField1_ & 0x00000001) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(38, qemuPid_);
+    }
+    if (((bitField1_ & 0x00000002) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(39, vulkanIcd_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -2699,6 +2868,10 @@ private static final long serialVersionUID = 0L;
       if (getQemuPid()
           != other.getQemuPid()) return false;
     }
+    if (hasVulkanIcd() != other.hasVulkanIcd()) return false;
+    if (hasVulkanIcd()) {
+      if (vulkanIcd_ != other.vulkanIcd_) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -2865,6 +3038,10 @@ private static final long serialVersionUID = 0L;
     if (hasQemuPid()) {
       hash = (37 * hash) + QEMU_PID_FIELD_NUMBER;
       hash = (53 * hash) + getQemuPid();
+    }
+    if (hasVulkanIcd()) {
+      hash = (37 * hash) + VULKAN_ICD_FIELD_NUMBER;
+      hash = (53 * hash) + vulkanIcd_;
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -3186,6 +3363,8 @@ private static final long serialVersionUID = 0L;
       bitField1_ = (bitField1_ & ~0x00000008);
       qemuPid_ = 0;
       bitField1_ = (bitField1_ & ~0x00000010);
+      vulkanIcd_ = 0;
+      bitField1_ = (bitField1_ & ~0x00000020);
       return this;
     }
 
@@ -3452,6 +3631,10 @@ private static final long serialVersionUID = 0L;
         result.qemuPid_ = qemuPid_;
         to_bitField1_ |= 0x00000001;
       }
+      if (((from_bitField1_ & 0x00000020) != 0)) {
+        to_bitField1_ |= 0x00000002;
+      }
+      result.vulkanIcd_ = vulkanIcd_;
       result.bitField0_ = to_bitField0_;
       result.bitField1_ = to_bitField1_;
       onBuilt();
@@ -3706,6 +3889,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasQemuPid()) {
         setQemuPid(other.getQemuPid());
+      }
+      if (other.hasVulkanIcd()) {
+        setVulkanIcd(other.getVulkanIcd());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -4019,6 +4205,18 @@ private static final long serialVersionUID = 0L;
               bitField1_ |= 0x00000010;
               break;
             } // case 304
+            case 312: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.EmulatorDetails.VulkanIcd tmpValue =
+                  com.google.wireless.android.sdk.stats.EmulatorDetails.VulkanIcd.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(39, tmpRaw);
+              } else {
+                vulkanIcd_ = tmpRaw;
+                bitField1_ |= 0x00000020;
+              }
+              break;
+            } // case 312
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -8778,6 +8976,65 @@ private static final long serialVersionUID = 0L;
     public Builder clearQemuPid() {
       bitField1_ = (bitField1_ & ~0x00000010);
       qemuPid_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int vulkanIcd_ = 0;
+    /**
+     * <pre>
+     * Vulkan backend.
+     * </pre>
+     *
+     * <code>optional .android_studio.EmulatorDetails.VulkanIcd vulkan_icd = 39;</code>
+     * @return Whether the vulkanIcd field is set.
+     */
+    @java.lang.Override public boolean hasVulkanIcd() {
+      return ((bitField1_ & 0x00000020) != 0);
+    }
+    /**
+     * <pre>
+     * Vulkan backend.
+     * </pre>
+     *
+     * <code>optional .android_studio.EmulatorDetails.VulkanIcd vulkan_icd = 39;</code>
+     * @return The vulkanIcd.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.EmulatorDetails.VulkanIcd getVulkanIcd() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.EmulatorDetails.VulkanIcd result = com.google.wireless.android.sdk.stats.EmulatorDetails.VulkanIcd.valueOf(vulkanIcd_);
+      return result == null ? com.google.wireless.android.sdk.stats.EmulatorDetails.VulkanIcd.UNKNOWN_VK : result;
+    }
+    /**
+     * <pre>
+     * Vulkan backend.
+     * </pre>
+     *
+     * <code>optional .android_studio.EmulatorDetails.VulkanIcd vulkan_icd = 39;</code>
+     * @param value The vulkanIcd to set.
+     * @return This builder for chaining.
+     */
+    public Builder setVulkanIcd(com.google.wireless.android.sdk.stats.EmulatorDetails.VulkanIcd value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField1_ |= 0x00000020;
+      vulkanIcd_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Vulkan backend.
+     * </pre>
+     *
+     * <code>optional .android_studio.EmulatorDetails.VulkanIcd vulkan_icd = 39;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearVulkanIcd() {
+      bitField1_ = (bitField1_ & ~0x00000020);
+      vulkanIcd_ = 0;
       onChanged();
       return this;
     }

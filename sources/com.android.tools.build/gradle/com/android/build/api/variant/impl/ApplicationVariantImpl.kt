@@ -26,9 +26,12 @@ import com.android.build.api.variant.Component
 import com.android.build.api.variant.DependenciesInfo
 import com.android.build.api.variant.DependenciesInfoBuilder
 import com.android.build.api.variant.DeviceTest
+import com.android.build.api.variant.HasHostTests
+import com.android.build.api.variant.HasUnitTest
 import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.VariantOutputConfiguration
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
+import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.component.features.DexingCreationConfig
 import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.core.dsl.ApplicationVariantDslInfo
@@ -41,6 +44,7 @@ import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
+import com.android.build.gradle.internal.utils.toImmutableMap
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
 import com.android.build.gradle.options.StringOption
@@ -76,7 +80,13 @@ open class ApplicationVariantImpl @Inject constructor(
     internalServices,
     taskCreationServices,
     globalTaskCreationConfig
-), ApplicationVariant, ApplicationCreationConfig, InternalHasDeviceTests, HasTestFixtures {
+), ApplicationVariant,
+    ApplicationCreationConfig,
+    HasDeviceTestsCreationConfig,
+    HasHostTestsCreationConfig,
+    HasTestFixtures,
+    HasHostTests,
+    HasUnitTest {
 
     // ---------------------------------------------------------------------------------------------
     // PUBLIC API
@@ -121,7 +131,12 @@ open class ApplicationVariantImpl @Inject constructor(
 
     override val publishInfo: VariantPublishingInfo?
         get() = dslInfo.publishInfo
-    override val deviceTests = mutableListOf<DeviceTest>()
+
+    override val hostTests: Map<String, HostTestCreationConfig>
+        get() = internalHostTests.toImmutableMap() // immutableMap so java users cannot modify it.
+
+    override val deviceTests: List<DeviceTest>
+        get() = internalDeviceTests
 
     override var testFixtures: TestFixturesImpl? = null
 
@@ -205,9 +220,28 @@ open class ApplicationVariantImpl @Inject constructor(
             ) ?: emptyList()
         }
 
+    /**
+     * Add a new [HostTest] to the host tests for this application.
+     *
+     * This method must be called during configuration as tasks are created to execute the testing.
+     */
+    override fun addTestComponent(testTypeName: String, testComponent: HostTestCreationConfig) {
+        internalHostTests[testTypeName] = testComponent
+    }
+
+    override fun addDeviceTest(deviceTest: DeviceTest) {
+        internalDeviceTests.add(deviceTest)
+    }
+
     // ---------------------------------------------------------------------------------------------
     // Private stuff
     // ---------------------------------------------------------------------------------------------
+
+    /**
+     * use [addTestComponent] to add a [HostTest] to the map.
+     */
+    private val internalHostTests = mutableMapOf<String, HostTestCreationConfig>()
+    private val internalDeviceTests = mutableListOf<DeviceTest>()
 
     override val consumesFeatureJars: Boolean
         get() = optimizationCreationConfig.minifiedEnabled && global.hasDynamicFeatures
@@ -269,11 +303,11 @@ open class ApplicationVariantImpl @Inject constructor(
     )
 
     override val useJacocoTransformInstrumentation: Boolean
-        get() = isAndroidTestCoverageEnabled
+        get() = codeCoverageEnabled
 
     // Apps include the jacoco agent if test coverage is enabled
     override val packageJacocoRuntime: Boolean
-        get() = isAndroidTestCoverageEnabled
+        get() = codeCoverageEnabled
 
     override val isWearAppUnbundled: Boolean?
         get() = dslInfo.isWearAppUnbundled

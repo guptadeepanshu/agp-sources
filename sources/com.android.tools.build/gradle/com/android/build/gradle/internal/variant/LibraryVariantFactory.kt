@@ -15,7 +15,6 @@
  */
 package com.android.build.gradle.internal.variant
 
-import com.android.build.VariantOutput
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.dsl.BuildFeatures
 import com.android.build.api.dsl.CommonExtension
@@ -41,7 +40,7 @@ import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.BuildFeatureValuesImpl
 import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.scope.TestFixturesBuildFeaturesValuesImpl
-import com.android.build.gradle.internal.scope.UnitTestBuildFeaturesValuesImpl
+import com.android.build.gradle.internal.scope.HostTestBuildFeaturesValuesImpl
 import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantBuilderServices
@@ -50,6 +49,7 @@ import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.utils.restrictRenderScriptOnRiscv
 import com.android.build.gradle.options.ProjectOptions
 import com.android.builder.core.BuilderConstants
+import com.android.builder.core.ComponentType
 import com.android.builder.core.ComponentTypeImpl
 import com.android.builder.errors.IssueReporter
 import org.gradle.api.Project
@@ -144,15 +144,18 @@ class LibraryVariantFactory(
         buildFeatures: BuildFeatures,
         dataBinding: DataBinding,
         projectOptions: ProjectOptions,
-        includeAndroidResources: Boolean
+        includeAndroidResources: Boolean,
+        hostTestComponentType: ComponentType
     ): BuildFeatureValues {
-        return UnitTestBuildFeaturesValuesImpl(
+        return HostTestBuildFeaturesValuesImpl(
             buildFeatures,
             projectOptions,
             dataBindingOverride = null,
             mlModelBindingOverride = false,
-            includeAndroidResources = includeAndroidResources,
-            testedComponent = componentType
+            // We only create android resources tasks for unit test components when the tested component is
+            // a library variant and the user specifies to includeAndroidResources. Otherwise, the tested
+            // resources and assets are just copied as the unit test resources and assets output.
+            includeAndroidResources = includeAndroidResources
         )
     }
 

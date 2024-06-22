@@ -26,8 +26,11 @@ import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.Component
 import com.android.build.api.variant.DeviceTest
 import com.android.build.api.variant.DynamicFeatureVariant
+import com.android.build.api.variant.HasHostTests
+import com.android.build.api.variant.HasUnitTest
 import com.android.build.api.variant.Renderscript
 import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig
+import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.component.features.DexingCreationConfig
 import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.core.dsl.DynamicFeatureVariantDslInfo
@@ -78,7 +81,13 @@ open class DynamicFeatureVariantImpl @Inject constructor(
     internalServices,
     taskCreationServices,
     globalTaskCreationConfig
-), DynamicFeatureVariant, DynamicFeatureCreationConfig, InternalHasDeviceTests, HasTestFixtures {
+), DynamicFeatureVariant,
+    DynamicFeatureCreationConfig,
+    HasDeviceTestsCreationConfig,
+    HasTestFixtures,
+    HasHostTestsCreationConfig,
+    HasHostTests,
+    HasUnitTest {
 
     init {
         // TODO: Should be removed once we stop implementing all build type interfaces in one class
@@ -118,7 +127,11 @@ open class DynamicFeatureVariantImpl @Inject constructor(
         )
     }
 
-    override val deviceTests = mutableListOf<DeviceTest>()
+    override val deviceTests: List<DeviceTest>
+        get() = internalDeviceTests
+
+    override val hostTests: Map<String, HostTestCreationConfig>
+        get() = internalHostTests
 
     override var testFixtures: TestFixturesImpl? = null
 
@@ -195,14 +208,24 @@ open class DynamicFeatureVariantImpl @Inject constructor(
     override val signingConfig: SigningConfigImpl? = null
 
     override val useJacocoTransformInstrumentation: Boolean
-        get() = isAndroidTestCoverageEnabled
+        get() = deviceTests?.any { it.codeCoverageEnabled } ?: false
 
     override val packageJacocoRuntime: Boolean
         get() = false
 
+    override fun addTestComponent(testTypeName: String, testComponent: HostTestCreationConfig) {
+        internalHostTests[testTypeName] = testComponent
+    }
+
+    override fun addDeviceTest(deviceTest: DeviceTest) {
+        internalDeviceTests.add(deviceTest)
+    }
     // ---------------------------------------------------------------------------------------------
     // Private stuff
+
     // ---------------------------------------------------------------------------------------------
+    private val internalHostTests = mutableMapOf<String, HostTestCreationConfig>()
+    private val internalDeviceTests = mutableListOf<DeviceTest>()
 
     private fun instantiateBaseModuleMetadata(
         variantDependencies: VariantDependencies

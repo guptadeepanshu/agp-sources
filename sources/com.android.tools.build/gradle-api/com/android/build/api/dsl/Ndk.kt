@@ -21,12 +21,15 @@ package com.android.build.api.dsl
  */
 interface Ndk {
     /** The module name */
+    @Deprecated("Specify module name in CMakeLists.txt or Application.mk")
     var moduleName: String?
 
     /** The C Flags */
+    @Deprecated("Specify C/C++ flags in CMakeLists.txt or Application.mk")
     var cFlags: String?
 
     /** The LD Libs */
+    @Deprecated("Specify LD libs in CMakeLists.txt or Application.mk")
     val ldLibs: MutableList<String>?
 
     /**
@@ -63,11 +66,13 @@ interface Ndk {
     /**
      * The APP_STL value
      */
+    @Deprecated("Specify stl name in CMakeLists.txt or Application.mk")
     var stl: String?
 
     /**
      * Number of parallel threads to spawn.
      */
+    @Deprecated("Use Cmake or NdkBuild DSL instead")
     var jobs: Int?
 
     /**

@@ -17,7 +17,7 @@
 package com.android.build.gradle.internal.dependency
 
 import com.android.build.api.component.impl.KmpAndroidTestImpl
-import com.android.build.api.component.impl.KmpUnitTestImpl
+import com.android.build.api.component.impl.KmpHostTestImpl
 import com.android.build.api.dsl.KotlinMultiplatformAndroidCompilation
 import com.android.builder.core.ComponentType
 import com.android.ide.common.gradle.Version
@@ -48,7 +48,7 @@ private val kotlin150Version = Version.parse("1.5.0")
  */
 internal fun configureKotlinTestDependencyForUnitTestCompilation(
     project: Project,
-    unitTestComponent: KmpUnitTestImpl,
+    unitTestComponent: KmpHostTestImpl,
     kotlinMultiplatformExtension: KotlinMultiplatformExtension,
 ) {
     configureKotlinTestDependency(

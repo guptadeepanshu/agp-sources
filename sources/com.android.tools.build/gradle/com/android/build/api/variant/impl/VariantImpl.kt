@@ -17,10 +17,8 @@ package com.android.build.api.variant.impl
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.attributes.ProductFlavorAttr
-import com.android.build.api.component.impl.DeviceTestImpl
+import com.android.build.api.component.UnitTest
 import com.android.build.api.component.impl.ComponentImpl
-import com.android.build.api.component.impl.ScreenshotTestImpl
-import com.android.build.api.component.impl.UnitTestImpl
 import com.android.build.api.component.impl.features.BuildConfigCreationConfigImpl
 import com.android.build.api.component.impl.features.NativeBuildCreationConfigImpl
 import com.android.build.api.component.impl.features.OptimizationCreationConfigImpl
@@ -34,6 +32,7 @@ import com.android.build.api.variant.CanMinifyCodeBuilder
 import com.android.build.api.variant.Component
 import com.android.build.api.variant.ExternalNativeBuild
 import com.android.build.api.variant.HasDeviceTests
+import com.android.build.api.variant.HasHostTestsBuilder
 import com.android.build.api.variant.ResValue
 import com.android.build.api.variant.Variant
 import com.android.build.gradle.internal.DependencyConfigurator
@@ -56,6 +55,7 @@ import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
+import com.android.builder.core.ComponentTypeImpl
 import com.android.utils.appendCapitalized
 import com.android.utils.capitalizeAndAppend
 import com.google.common.collect.ImmutableMap
@@ -91,7 +91,7 @@ abstract class VariantImpl<DslInfoT: VariantDslInfo>(
     variantServices,
     taskCreationServices,
     global
-), Variant, VariantCreationConfig, HasHostTests {
+), Variant, VariantCreationConfig {
 
     override val description: String
         get() = if (componentIdentity.productFlavors.isNotEmpty()) {
@@ -142,6 +142,24 @@ abstract class VariantImpl<DslInfoT: VariantDslInfo>(
 
     override val proguardFiles: ListProperty<RegularFile>
         get() = optimizationCreationConfig.proguardFiles
+
+    /**
+     * Do Not Use
+     *
+     * This API is for backward compatibility, if you need to do work with host tests, iterate
+     * over all of them using the [hostTests] API. If you only need to have access to unit tests,
+     * use [hostTests] using [HasHostTestsBuilder.UNIT_TEST_TYPE]
+     */
+    @Deprecated("Use hostTests or getByTestComponentType APIs", ReplaceWith(
+        "hostTests[HasHostTestsBuilder.UNIT_TEST_TYPE) as? UnitTestImpl",
+        "com.android.build.api.component.impl.UnitTestImpl"
+        )
+    )
+    @Suppress("DEPRECATION")
+    override val unitTest: UnitTest?
+        get() = hostTests().firstOrNull() {
+            it.componentType == ComponentTypeImpl.UNIT_TEST
+        } as? UnitTest
 
     // ---------------------------------------------------------------------------------------------
     // INTERNAL API
@@ -214,9 +232,6 @@ abstract class VariantImpl<DslInfoT: VariantDslInfo>(
 
     override fun makeResValueKey(type: String, name: String): ResValue.Key = ResValueKeyImpl(type, name)
 
-    override var unitTest: UnitTestImpl? = null
-    override var screenshotTest: ScreenshotTestImpl? = null
-
     override val pseudoLocalesEnabled: Property<Boolean> by lazy {
         androidResourcesCreationConfig?.pseudoLocalesEnabled
             ?: warnAboutAccessingVariantApiValueForDisabledFeature(
@@ -238,17 +253,20 @@ abstract class VariantImpl<DslInfoT: VariantDslInfo>(
             )
 
     override val nestedComponents: List<ComponentImpl<*>>
-        get() = listOfNotNull(
-            unitTest,
-            (this as? HasTestFixtures)?.testFixtures
-        ).plus(deviceTests())
+        get() = mutableListOf<ComponentImpl<*>>().also { list ->
+            (this as? HasTestFixtures)?.testFixtures?.let {
+                list.add(it)
+            }
+            list.addAll(deviceTests())
+            list.addAll(hostTests())
+        }
 
     override val components: List<Component>
-        get() = listOfNotNull(
+        get() = mutableListOf<Component>(
             this,
-            unitTest,
-            (this as? HasTestFixtures)?.testFixtures
-        ).plus(deviceTests())
+        ).also {
+            it.addAll(nestedComponents)
+        }
 
     override val manifestPlaceholders: MapProperty<String, String>
         get() = manifestPlaceholdersCreationConfig.placeholders
@@ -258,8 +276,8 @@ abstract class VariantImpl<DslInfoT: VariantDslInfo>(
                 dslInfo.manifestPlaceholdersDslInfo?.placeholders)
     }
 
-    override val isAndroidTestCoverageEnabled: Boolean
-        get() = ((this as? InternalHasDeviceTests)?.defaultDeviceTest as? DeviceTestImpl)?.isAndroidTestCoverageEnabled == true
+    override val codeCoverageEnabled: Boolean
+        get() = (this as? HasDeviceTests)?.deviceTests?.any { it.codeCoverageEnabled } ?: false
 
     override val isCoreLibraryDesugaringEnabledLintCheck: Boolean
         get() = if (this is ApkCreationConfig) {
@@ -293,5 +311,9 @@ abstract class VariantImpl<DslInfoT: VariantDslInfo>(
 
     private fun deviceTests(): List<ComponentImpl<*>> =
         (this as? HasDeviceTests)?.deviceTests?.map { it as ComponentImpl<*> }
+            ?: listOf()
+
+    private fun hostTests(): List<ComponentImpl<*>> =
+        (this as? HasHostTestsCreationConfig)?.hostTests?.values?.map { it as ComponentImpl<*> }
             ?: listOf()
 }

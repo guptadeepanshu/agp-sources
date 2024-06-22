@@ -124,6 +124,7 @@ public interface IDevice extends IShellEnabledDevice, IUserDataMap {
 
     /** The state of a device. */
     enum DeviceState {
+        AUTHORIZING("authorizing"), //$NON-NLS-1$
         BOOTLOADER("bootloader"), //$NON-NLS-1$
         /** bootloader mode with is-userspace = true though `adb reboot fastboot` */
         FASTBOOTD("fastbootd"), //$NON-NLS-1$
@@ -353,12 +354,12 @@ public interface IDevice extends IShellEnabledDevice, IUserDataMap {
     Client[] getClients();
 
     /**
-     * Returns a {@link Client} by its application name.
+     * Returns a {@link Client} by its process name.
      *
-     * @param applicationName the name of the application
+     * @param processName the name of the process. Process name often matches a package name.
      * @return the <code>Client</code> object or <code>null</code> if no match was found.
      */
-    Client getClient(String applicationName);
+    Client getClient(String processName);
 
     /** Returns the array of profileable clients. */
     default ProfileableClient[] getProfileableClients() {
@@ -627,7 +628,7 @@ public interface IDevice extends IShellEnabledDevice, IUserDataMap {
     }
 
     /**
-     * Returns the name of the client by pid or <code>null</code> if pid is unknown
+     * Returns the client's package name by pid or an empty string if pid is unknown
      *
      * @param pid the pid of the client.
      */

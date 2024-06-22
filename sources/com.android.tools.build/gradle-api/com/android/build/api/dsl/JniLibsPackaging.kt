@@ -68,6 +68,5 @@ interface JniLibsPackaging {
      *
      * Example: `android.packaging.jniLibs.testOnly += "**`/`testOnly.so"`
      */
-    @get:Incubating
     val testOnly: MutableSet<String>
 }

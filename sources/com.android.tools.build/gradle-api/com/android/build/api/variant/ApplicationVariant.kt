@@ -29,6 +29,7 @@ interface ApplicationVariant : GeneratesApk,
     Variant,
     HasDeviceTests,
     HasAndroidTest,
+    HasHostTests,
     HasUnitTest,
     HasTestFixtures,
     CanMinifyCode,
@@ -75,6 +76,5 @@ interface ApplicationVariant : GeneratesApk,
     /**
      * Variant's packagingOptions, initialized by the corresponding global DSL element.
      */
-    @get:Incubating
     override val packaging: TestedApkPackaging
 }

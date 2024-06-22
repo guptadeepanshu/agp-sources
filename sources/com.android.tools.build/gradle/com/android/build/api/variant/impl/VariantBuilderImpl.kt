@@ -19,10 +19,10 @@ package com.android.build.api.variant.impl
 import com.android.build.api.component.impl.ComponentBuilderImpl
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.ComponentIdentity
+import com.android.build.api.variant.HostTestBuilder
 import com.android.build.api.variant.VariantBuilder
 import com.android.build.gradle.internal.core.dsl.VariantDslInfo
 import com.android.build.gradle.internal.services.VariantBuilderServices
-import com.android.build.gradle.options.BooleanOption
 import com.android.builder.errors.IssueReporter
 
 abstract class VariantBuilderImpl(
@@ -73,6 +73,7 @@ abstract class VariantBuilderImpl(
      */
     internal var mutableTargetSdk: MutableAndroidVersion? = variantDslInfo.targetSdkVersion
 
+    @Deprecated("Will be removed in v9.0 - Use (variantBuilder as GeneratesApkBuilder).targetSdk")
     override var targetSdk: Int?
         get() {
             val target = mutableTargetSdk
@@ -93,6 +94,7 @@ abstract class VariantBuilderImpl(
             target.api = value
         }
 
+    @Deprecated("Will be removed in v9.0 - Use (variantBuilder as GeneratesApkBuilder).targetSdkPreview")
     override var targetSdkPreview: String?
         get() {
             val target = mutableTargetSdk
@@ -129,13 +131,25 @@ abstract class VariantBuilderImpl(
             return if (targetApi > minSdk) targetApi else minSdk
         }
 
-    override var enableUnitTest: Boolean =
-        !variantBuilderServices.projectOptions[BooleanOption.ENABLE_NEW_TEST_DSL]
+    // This has to be defined here until the deprecated VariantBuilder APIs below are removed,
+    // then it should be moved to the appropriate subtypes.
+    abstract val hostTests: Map<String, HostTestBuilder>
 
-    override var unitTestEnabled: Boolean
-        get() = enableUnitTest
+    private val unitTest: HostTestBuilder
+        get() = hostTests[HostTestBuilder.UNIT_TEST_TYPE]
+                ?: throw RuntimeException("Invalid component, no unit test defined")
+
+    @Deprecated("Will be removed in AGP 9.0 - Use (variantBuilder as HasHostTestsBuilder).get(HasHostTestsBuilder.UNIT_TEST_TYPE).enable")
+    override var enableUnitTest: Boolean
+        get() = unitTest.enable
         set(value) {
-            enableUnitTest = value
+            unitTest.enable = value
+        }
+    @Deprecated("Will be removed in AGP 9.0 - Use (variantBuilder as HasHostTestsBuilder).get(HasHostTestsBuilder.UNIT_TEST_TYPE).enable")
+    override var unitTestEnabled: Boolean
+        get() = unitTest.enable
+        set(value) {
+            unitTest.enable = value
         }
 
     private val registeredExtensionDelegate= lazy {

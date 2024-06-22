@@ -17,7 +17,6 @@
 package com.android.build.api.variant
 
 import org.gradle.api.Incubating
-import org.gradle.api.Named
 import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
@@ -63,4 +62,16 @@ interface DeviceTest: GeneratesTestApk, HasAndroidResources, TestComponent {
      */
     @get:Incubating
     val proguardFiles: ListProperty<RegularFile>
+
+    /**
+     * Whether test coverage is enabled for this device test.
+     *
+     * If enabled, this uses Jacoco to capture coverage and creates a report in the build
+     * directory.
+     *
+     * You cannot change the value any longer, to change it, please use
+     * [DeviceTestBuilder.enableCodeCoverage] in the [AndroidComponentsExtension.beforeVariants]
+     * callback.
+     */
+    val codeCoverageEnabled: Boolean
 }

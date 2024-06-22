@@ -129,6 +129,23 @@ public abstract class SplitApkInstallerBase {
         return sessionId;
     }
 
+    // Because installation will invoke cmd or pm on the shell, we need to sanitize the upload name
+    // we will use to not break the shell parser. Characters such as ' ', '(', ')', '+' and so on
+    // will problematic.
+    //
+    // We must also sanitiaze in a way that does not break splits (differing only by digits) and
+    // baseline profile (the .apk name must match the .dm name).
+    static String sanitizeApkFilename(@NonNull String filename) {
+        return UNSAFE_SHELL_SPLIT_NAME_CHARS.replaceFrom(filename, '_');
+    }
+
+    private static final CharMatcher UNSAFE_SHELL_SPLIT_NAME_CHARS =
+            CharMatcher.inRange('a', 'z')
+                    .or(CharMatcher.inRange('A', 'Z'))
+                    .or(CharMatcher.inRange('0', '9'))
+                    .or(CharMatcher.anyOf("_-."))
+                    .negate();
+
     protected void installCommit(@NonNull String sessionId, long timeout, @NonNull TimeUnit unit)
             throws TimeoutException, AdbCommandRejectedException, ShellCommandUnresponsiveException,
                     IOException, InstallException {

@@ -20,6 +20,7 @@ import com.android.SdkConstants.DOT_JAR
 import com.android.build.api.artifact.Artifact.Single
 import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.artifact.SingleArtifact
+import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.artifact.impl.InternalScopedArtifact
 import com.android.build.api.artifact.impl.InternalScopedArtifacts
 import com.android.build.api.dsl.Device
@@ -28,7 +29,7 @@ import com.android.build.api.instrumentation.FramesComputationMode
 import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.api.variant.impl.TaskProviderBasedDirectoryEntryImpl
 import com.android.build.gradle.api.AndroidSourceSet
-import com.android.build.gradle.internal.component.AndroidTestCreationConfig
+import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
@@ -131,6 +132,7 @@ import com.android.build.gradle.internal.test.AbstractTestDataImpl
 import com.android.build.gradle.internal.testing.utp.TEST_RESULT_PB_FILE_NAME
 import com.android.build.gradle.internal.transforms.ShrinkAppBundleResourcesTask
 import com.android.build.gradle.internal.transforms.ShrinkResourcesNewShrinkerTask
+import com.android.build.gradle.internal.utils.checkKotlinStdLibIsInDependencies
 import com.android.build.gradle.internal.utils.getProjectKotlinPluginKotlinVersion
 import com.android.build.gradle.internal.utils.isKotlinKaptPluginApplied
 import com.android.build.gradle.internal.utils.isKspPluginApplied
@@ -144,6 +146,7 @@ import com.android.build.gradle.tasks.GenerateManifestJarTask
 import com.android.build.gradle.tasks.GenerateResValues
 import com.android.build.gradle.tasks.JavaCompileCreationAction
 import com.android.build.gradle.tasks.JavaPreCompileTask
+import com.android.build.gradle.tasks.KotlinCompileCreationAction
 import com.android.build.gradle.tasks.ManifestProcessorTask
 import com.android.build.gradle.tasks.MapSourceSetPathsTask
 import com.android.build.gradle.tasks.MergeResources
@@ -459,7 +462,7 @@ abstract class TaskManager(
             processResources: Boolean,
             flags: Set<MergeResources.Flag>) {
         if (!creationConfig.buildFeatures.androidResources &&
-            creationConfig !is AndroidTestCreationConfig) {
+            creationConfig !is DeviceTestCreationConfig) {
             return
         }
         val alsoOutputNotCompiledResources = (creationConfig.componentType.isApk
@@ -525,9 +528,8 @@ abstract class TaskManager(
                 null,
                 null,
                 taskProviderCallback)
-        if (globalConfig.unitTestOptions.isIncludeAndroidResources) {
-            creationConfig.taskContainer.compileTask.dependsOn(mergeResourcesTask)
-        }
+
+        creationConfig.taskContainer.compileTask.dependsOn(mergeResourcesTask)
         return mergeResourcesTask
     }
 
@@ -643,7 +645,7 @@ abstract class TaskManager(
             mergeType: MergeType,
             baseName: Provider<String>) {
         if (!creationConfig.buildFeatures.androidResources &&
-            creationConfig !is AndroidTestCreationConfig) {
+            creationConfig !is DeviceTestCreationConfig) {
             return
         }
         creationConfig.oldVariantApiLegacySupport?.variantData?.calculateFilters(
@@ -857,7 +859,18 @@ abstract class TaskManager(
                 )
         }
 
-       creationConfig
+        if (creationConfig.useBuiltInKotlinSupport) {
+            creationConfig
+                .artifacts
+                .forScope(ScopedArtifacts.Scope.PROJECT)
+                .setInitialContent(
+                    ScopedArtifact.CLASSES,
+                    creationConfig.artifacts,
+                    InternalArtifactType.KOTLINC
+                )
+        }
+
+        creationConfig
            .artifacts
            .forScope(ScopedArtifacts.Scope.PROJECT)
            .setInitialContent(
@@ -875,6 +888,8 @@ abstract class TaskManager(
     protected fun createJavacTask(
             creationConfig: ComponentCreationConfig
     ): TaskProvider<out JavaCompile> {
+        maybeCreateKotlinTasks(creationConfig)
+
         val usingKapt = isKotlinKaptPluginApplied(project)
         val usingKsp = isKspPluginApplied(project)
         taskFactory.register(JavaPreCompileTask.CreationAction(creationConfig, usingKapt, usingKsp))
@@ -888,6 +903,14 @@ abstract class TaskManager(
             )
         postJavacCreation(creationConfig)
         return javacTask
+    }
+
+    private fun maybeCreateKotlinTasks(creationConfig: ComponentCreationConfig) {
+        if (!creationConfig.useBuiltInKotlinSupport) {
+            return
+        }
+        checkKotlinStdLibIsInDependencies(project, creationConfig)
+        KotlinCompileCreationAction(creationConfig).registerTask()
     }
 
     /**
@@ -1048,7 +1071,7 @@ abstract class TaskManager(
         // Register a test coverage report generation task to every managedDeviceCheck
         // task.
         if (creationConfig is TestComponentCreationConfig &&
-            creationConfig.isAndroidTestCoverageEnabled) {
+            creationConfig.codeCoverageEnabled) {
             val jacocoAntConfiguration = JacocoConfigurations.getJacocoAntTaskConfiguration(
                 project, JacocoTask.getJacocoVersion(creationConfig)
             )
@@ -1114,45 +1137,10 @@ abstract class TaskManager(
 
         maybeCreateTransformClassesWithAsmTask(creationConfig)
 
-        // initialize the all classes scope
-        creationConfig.artifacts.forScope(ScopedArtifacts.Scope.ALL)
-            .getScopedArtifactsContainer(ScopedArtifact.CLASSES)
-            .initialScopedContent
-            .run {
-                from(
-                    creationConfig.artifacts.forScope(ScopedArtifacts.Scope.PROJECT)
-                        .getFinalArtifacts(ScopedArtifact.CLASSES)
-                )
-                from(
-                    creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.SUB_PROJECTS)
-                        .getFinalArtifacts(ScopedArtifact.CLASSES)
-                )
-                from(
-                    creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS)
-                        .getFinalArtifacts(ScopedArtifact.CLASSES)
-                )
-            }
-
-        creationConfig.artifacts.forScope(ScopedArtifacts.Scope.ALL)
-            .getScopedArtifactsContainer(ScopedArtifact.JAVA_RES)
-            .initialScopedContent
-            .run {
-                from(
-                    creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.SUB_PROJECTS)
-                        .getFinalArtifacts(ScopedArtifact.JAVA_RES)
-                )
-                from(
-                    creationConfig.artifacts.forScope(ScopedArtifacts.Scope.PROJECT)
-                        .getFinalArtifacts(ScopedArtifact.JAVA_RES)
-                )
-                from(
-                    creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS)
-                        .getFinalArtifacts(ScopedArtifact.JAVA_RES)
-                )
-            }
+        initializeAllScope(creationConfig.artifacts)
 
         // New gradle-transform jacoco instrumentation support.
-        if (creationConfig.isAndroidTestCoverageEnabled &&
+        if (creationConfig.codeCoverageEnabled &&
             !creationConfig.componentType.isForTesting) {
             createJacocoTask(creationConfig)
         } else {
@@ -1203,6 +1191,49 @@ abstract class TaskManager(
             taskFactory.register(FeatureDexMergeTask.CreationAction(creationConfig))
         }
         createDexTasks(creationConfig, creationConfig.dexing.dexingType)
+    }
+
+    /**
+     * initialize the [ScopedArtifacts.Scope.ALL] scope from the project, sub-projects and external
+     * libraries.
+     */
+    internal fun initializeAllScope(artifacts: ArtifactsImpl) {
+        // initialize the all classes scope
+        artifacts.forScope(ScopedArtifacts.Scope.ALL)
+            .getScopedArtifactsContainer(ScopedArtifact.CLASSES)
+            .initialScopedContent
+            .run {
+                from(
+                    artifacts.forScope(ScopedArtifacts.Scope.PROJECT)
+                        .getFinalArtifacts(ScopedArtifact.CLASSES)
+                )
+                from(
+                    artifacts.forScope(InternalScopedArtifacts.InternalScope.SUB_PROJECTS)
+                        .getFinalArtifacts(ScopedArtifact.CLASSES)
+                )
+                from(
+                    artifacts.forScope(InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS)
+                        .getFinalArtifacts(ScopedArtifact.CLASSES)
+                )
+            }
+
+        artifacts.forScope(ScopedArtifacts.Scope.ALL)
+            .getScopedArtifactsContainer(ScopedArtifact.JAVA_RES)
+            .initialScopedContent
+            .run {
+                from(
+                    artifacts.forScope(InternalScopedArtifacts.InternalScope.SUB_PROJECTS)
+                        .getFinalArtifacts(ScopedArtifact.JAVA_RES)
+                )
+                from(
+                    artifacts.forScope(ScopedArtifacts.Scope.PROJECT)
+                        .getFinalArtifacts(ScopedArtifact.JAVA_RES)
+                )
+                from(
+                    artifacts.forScope(InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS)
+                        .getFinalArtifacts(ScopedArtifact.JAVA_RES)
+                )
+            }
     }
 
     /**
@@ -1780,17 +1811,23 @@ abstract class TaskManager(
             if (creationConfig.componentType.isAar) {
                 task.dependsOn(PrepareLintJarForPublish.NAME)
             }
-            creationConfig.sources.res {res ->
-                res.forAllSources { directoryEntry ->
-                    if (directoryEntry.isGenerated && directoryEntry.isUserAdded){
-                        task.dependsOn(
-                            directoryEntry.asFiles(
-                                creationConfig.services.projectInfo.buildDirectory
+            listOfNotNull(
+                creationConfig.sources.res,
+                creationConfig.sources.java,
+                creationConfig.sources.kotlin
+            )
+                .forEach { code ->
+                    code.forAllSources { directoryEntry ->
+                        if (directoryEntry.isUserAdded && directoryEntry.isGenerated) {
+                            directoryEntry.makeDependentOf(
+                                task,
+                                creationConfig.services.provider {
+                                    creationConfig.services.projectInfo.projectDirectory
+                                }
                             )
-                        )
+                        }
                     }
                 }
-            }
         }
         creationConfig
             .taskContainer
@@ -1800,7 +1837,7 @@ abstract class TaskManager(
                 .assetGenTask =
                 taskFactory.register(creationConfig.computeTaskNameInternal("generate", "Assets"))
         // Create anchor task for creating instrumentation test coverage reports
-        if (creationConfig is VariantCreationConfig && creationConfig.isAndroidTestCoverageEnabled) {
+        if (creationConfig is VariantCreationConfig && creationConfig.codeCoverageEnabled) {
             creationConfig
                     .taskContainer
                     .coverageReportTask = taskFactory.register(
@@ -1953,6 +1990,9 @@ abstract class TaskManager(
                 BuilderConstants.CONNECTED + ComponentType.ANDROID_TEST_SUFFIX
         const val ASSEMBLE_ANDROID_TEST = "assembleAndroidTest"
         const val ASSEMBLE_UNIT_TEST = "assembleUnitTest"
+        const val ASSEMBLE_SCREENSHOT_TEST = "assembleScreenshotTest"
+        const val SCREENSHOT_TEST_EXECUTION_TASK_NAME = "previewScreenshot"
+
 
         // Temporary static variables for Kotlin+Compose configuration
         const val COMPOSE_KOTLIN_COMPILER_EXTENSION_VERSION = "1.3.2"
@@ -2012,6 +2052,14 @@ abstract class TaskManager(
             ) { assembleUnitTestTask: Task ->
                 assembleUnitTestTask.group = BasePlugin.BUILD_GROUP
                 assembleUnitTestTask.description = "Assembles all the unit test applications."
+            }
+            if (globalConfig.services.projectOptions[BooleanOption.ENABLE_SCREENSHOT_TEST]) {
+                taskFactory.register(
+                    ASSEMBLE_SCREENSHOT_TEST
+                ) { assembleScreenshotTestTask: Task ->
+                    assembleScreenshotTestTask.group = BasePlugin.BUILD_GROUP
+                    assembleScreenshotTestTask.description = "Assembles all the screenshot test applications."
+                }
             }
             taskFactory.register(LintCompile.CreationAction(globalConfig))
             // Don't register global lint or lintFix tasks for dynamic features because dynamic

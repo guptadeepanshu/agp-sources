@@ -31,8 +31,6 @@ import com.android.build.gradle.internal.component.VariantCreationConfig;
 import com.android.build.gradle.internal.lint.LintMode;
 import com.android.build.gradle.internal.lint.LintTool;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
-import com.android.build.gradle.internal.services.BuildServicesKt;
-import com.android.build.gradle.internal.services.LintClassLoaderBuildService;
 import com.android.build.gradle.internal.tasks.BuildAnalyzer;
 import com.android.build.gradle.internal.tasks.NonIncrementalTask;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
@@ -74,7 +72,6 @@ import org.gradle.api.tasks.CompileClasspath;
 import org.gradle.api.tasks.IgnoreEmptyDirectories;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.InputFiles;
-import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.OutputFile;
 import org.gradle.api.tasks.PathSensitive;
@@ -169,15 +166,12 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
     @Input
     public abstract Property<String> getStrictTypedefRetention();
 
-    @Internal
-    public abstract Property<LintClassLoaderBuildService> getLintClassLoaderBuildService();
-
     @Input
     public abstract Property<Boolean> getUseK2Uast();
 
     @Override
     protected void doTaskAction() {
-        getLintClassLoaderBuildService().get().setShouldDispose(true);
+        getLintTool().getLintClassLoaderBuildService().get().setShouldDispose(true);
         SourceFileVisitor fileVisitor = new SourceFileVisitor();
         getSource().visit(fileVisitor);
         List<File> sourceFiles = fileVisitor.sourceUnits;
@@ -218,7 +212,8 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
                         getWorkerExecutor(),
                         "com.android.tools.lint.annotations.ExtractAnnotationsDriver",
                         args,
-                        LintMode.EXTRACT_ANNOTATIONS);
+                        LintMode.EXTRACT_ANNOTATIONS,
+                        getUseK2Uast().get());
     }
 
     private void addArgument(
@@ -389,12 +384,6 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
                                 return Unit.INSTANCE;
                             });
             task.sourcesFileTree = files.getAsFileTree();
-
-            HasConfigurableValuesKt.setDisallowChanges(
-                    task.getLintClassLoaderBuildService(),
-                    BuildServicesKt.getBuildService(
-                            creationConfig.getServices().getBuildServiceRegistry(),
-                            LintClassLoaderBuildService.class));
 
             if (creationConfig instanceof VariantCreationConfig) {
                 task.getUseK2Uast().set(((VariantCreationConfig) creationConfig).getUseK2Uast());

@@ -51,7 +51,7 @@ fun registerDependencyCheck(project: Project, projectOptions: ProjectOptions) {
         else -> project.gradle.taskGraph.whenReady { isResolutionAllowed.set(true) }
     }
 
-    project.configurations.all { configuration ->
+    project.configurations.configureEach { configuration ->
         configuration.incoming.beforeResolve {
             if (isResolutionAllowed.get()) {
                 return@beforeResolve

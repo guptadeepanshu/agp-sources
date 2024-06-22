@@ -251,7 +251,6 @@ interface AndroidComponentsExtension<
      *
      * @param name the name of the source type.
      */
-    @Incubating
     fun registerSourceType(
         name: String,
     )

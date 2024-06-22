@@ -16,15 +16,54 @@
 
 package com.android.build.api.variant.impl
 
+import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.DeviceTestBuilder
 import com.android.build.api.variant.PropertyAccessNotAllowedException
 import com.android.build.gradle.internal.services.VariantBuilderServices
 import com.android.build.gradle.options.BooleanOption
 
-class DeviceTestBuilderImpl(
+open class DeviceTestBuilderImpl (
     variantBuilderServices: VariantBuilderServices,
-    enableMultiDex: Boolean?
-):DeviceTestBuilder {
+    private val globalVariantBuilderConfig: GlobalVariantBuilderConfig,
+    private val variantBuilderImpl: VariantBuilderImpl,
+    enableMultiDex: Boolean?,
+    enableCodeCoverage: Boolean,
+): DeviceTestBuilder {
+
+    // target sdk version to be used in the Variant API
+    internal val targetSdkVersion: AndroidVersion
+        get() = mutableTargetSdk?.sanitize()
+            ?: globalVariantBuilderConfig.deviceTestOptions.targetSdkVersion
+            ?: variantBuilderImpl.targetSdkVersion
+
+    // backing property for [targetSdk] and [targetSdkPreview]
+    private var mutableTargetSdk: MutableAndroidVersion? = null
+
+    override var targetSdk: Int?
+        get() {
+            return mutableTargetSdk?.api
+        }
+        set(value) {
+            val target =
+                mutableTargetSdk ?: MutableAndroidVersion(null, null).also {
+                    mutableTargetSdk = it
+                }
+            target.codename = null
+            target.api = value
+        }
+
+    override var targetSdkPreview: String?
+        get() {
+            return mutableTargetSdk?.codename
+        }
+        set(value) {
+            val target =
+                mutableTargetSdk ?: MutableAndroidVersion(null, null).also {
+                    mutableTargetSdk = it
+                }
+            target.codename = value
+            target.api = null
+        }
 
     override var enable = !variantBuilderServices.projectOptions[BooleanOption.ENABLE_NEW_TEST_DSL]
 
@@ -32,6 +71,14 @@ class DeviceTestBuilderImpl(
     override var enableMultiDex: Boolean?
         get() =  throw PropertyAccessNotAllowedException("enableMultiDex", "DeviceTestBuilder")
         set(value) {
-           _enableMultiDex = value
+            _enableMultiDex = value
+        }
+
+    internal var _enableCoverage: Boolean = enableCodeCoverage
+
+    override var enableCodeCoverage: Boolean
+        get() = throw PropertyAccessNotAllowedException("enableCodeCoverage", "DeviceTestBuilder")
+        set(value) {
+            _enableCoverage = value
         }
 }

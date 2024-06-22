@@ -35,5 +35,11 @@ import java.lang.annotation.Target;
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.TYPE, ElementType.PARAMETER})
+@Target({
+    ElementType.METHOD,
+    ElementType.CONSTRUCTOR,
+    ElementType.TYPE,
+    ElementType.PARAMETER,
+    ElementType.TYPE_USE
+})
 public @interface UiThread {}

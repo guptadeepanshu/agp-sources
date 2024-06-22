@@ -43,7 +43,7 @@ import com.android.build.gradle.internal.component.TestComponentCreationConfig
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.core.dsl.VariantDslInfo
-import com.android.build.gradle.internal.core.dsl.impl.features.AndroidTestOptionsDslInfoImpl
+import com.android.build.gradle.internal.core.dsl.impl.features.DeviceTestOptionsDslInfoImpl
 import com.android.build.gradle.internal.crash.afterEvaluate
 import com.android.build.gradle.internal.crash.runAction
 import com.android.build.gradle.internal.dependency.CONFIG_NAME_ANDROID_JDK_IMAGE
@@ -206,7 +206,7 @@ abstract class BasePlugin<
     }
 
     val managedDeviceRegistry: ManagedDeviceRegistry by lazy(LazyThreadSafetyMode.NONE) {
-        ManagedDeviceRegistry(AndroidTestOptionsDslInfoImpl((newExtension as CommonExtensionImpl<*, *, *, *, *, *>)))
+        ManagedDeviceRegistry(DeviceTestOptionsDslInfoImpl((newExtension as CommonExtensionImpl<*, *, *, *, *, *>)))
     }
 
     private val globalConfig by lazy {
@@ -762,7 +762,7 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
                     // Registering Jacoco transforms causes the jacoco configuration to be created.
                     // Ensure there is at least one variant with enableAndroidTestCoverage
                     // enabled before registering the transforms.
-                    if (variants.any { it.variant.isAndroidTestCoverageEnabled }) {
+                    if (variants.any { it.variant.codeCoverageEnabled }) {
                         configureJacocoTransforms()
                     }
                 }

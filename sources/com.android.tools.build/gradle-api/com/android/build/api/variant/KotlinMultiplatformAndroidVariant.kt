@@ -25,7 +25,7 @@ import org.gradle.api.file.FileCollection
  */
 @Suppress("DEPRECATION")
 @Incubating
-interface KotlinMultiplatformAndroidVariant: HasDeviceTests, HasAndroidTest, HasUnitTest {
+interface KotlinMultiplatformAndroidVariant: HasDeviceTests, HasAndroidTest, HasUnitTest, HasHostTests {
     /**
      * The name of the variant
      */

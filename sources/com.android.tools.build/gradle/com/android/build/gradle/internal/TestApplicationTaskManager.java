@@ -29,8 +29,6 @@ import com.android.build.gradle.internal.component.TestCreationConfig;
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig;
 import com.android.build.gradle.internal.component.TestVariantCreationConfig;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts;
-import com.android.build.gradle.internal.scope.InternalArtifactType;
-import com.android.build.gradle.internal.tasks.AsarsToCompatSplitsTask;
 import com.android.build.gradle.internal.tasks.DeviceProviderInstrumentTestTask;
 import com.android.build.gradle.internal.tasks.SigningConfigVersionsWriterTask;
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig;
@@ -81,57 +79,58 @@ public class TestApplicationTaskManager
                 extension);
     }
 
+    private TestApplicationTestData getTestData(TestVariantCreationConfig testVariantProperties) {
+        Provider<Directory> testingApk =
+                testVariantProperties.getArtifacts().get(SingleArtifact.APK.INSTANCE);
+
+        FileCollection privacySandboxSdkApks =
+                testVariantProperties.getPrivacySandboxEnabled()
+                        ? testVariantProperties
+                                .getVariantDependencies()
+                                .getArtifactFileCollection(
+                                        AndroidArtifacts.ConsumedConfigType.PROVIDED_CLASSPATH,
+                                        AndroidArtifacts.ArtifactScope.ALL,
+                                        AndroidArtifacts.ArtifactType
+                                                .ANDROID_PRIVACY_SANDBOX_EXTRACTED_SDK_APKS)
+                        : null;
+
+        Provider<Directory> privacySandboxCompatSdkApks =
+                testVariantProperties.getPrivacySandboxEnabled()
+                        ? testVariantProperties.getPrivacySandboxCompatApks()
+                        : null;
+
+        Provider<Directory> additionalSdkSupportedApkSplits =
+                testVariantProperties.getPrivacySandboxEnabled()
+                        ? testVariantProperties.getUsesSdkLibrarySplitForLocalDeployment()
+                        : null;
+
+        return new TestApplicationTestData(
+                testVariantProperties.getNamespace(),
+                testVariantProperties,
+                testingApk,
+                testVariantProperties.getTestedApks(),
+                privacySandboxSdkApks,
+                privacySandboxCompatSdkApks,
+                additionalSdkSupportedApkSplits,
+                testVariantProperties
+                        .getServices()
+                        .getProjectOptions()
+                        .getExtraInstrumentationTestRunnerArgs());
+    }
+
     @Override
     protected void doCreateTasksForVariant(
             @NotNull ComponentInfo<TestVariantBuilder, TestVariantCreationConfig> variantInfo) {
         createCommonTasks(variantInfo);
 
         TestVariantCreationConfig testVariantProperties = variantInfo.getVariant();
-
-        Provider<Directory> testingApk =
-                testVariantProperties.getArtifacts().get(SingleArtifact.APK.INSTANCE);
-
-        boolean privacySandboxEnabled =
-                testVariantProperties.getPrivacySandboxCreationConfig() != null;
-
-        FileCollection privacySandboxSdkApks =
-                privacySandboxEnabled
-                        ? testVariantProperties
-                                .getVariantDependencies()
-                                .getArtifactFileCollection(
-                                        AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
-                                        AndroidArtifacts.ArtifactScope.ALL,
-                                        AndroidArtifacts.ArtifactType
-                                                .ANDROID_PRIVACY_SANDBOX_SDK_APKS)
-                        : null;
-
-        Provider<Directory> privacySandboxCompatSdkApks =
-                privacySandboxEnabled
-                        ? testVariantProperties
-                                .getArtifacts()
-                                .get(InternalArtifactType.SDK_SPLITS_APKS.INSTANCE)
-                        : null;
-
-        TestApplicationTestData testData =
-                new TestApplicationTestData(
-                        testVariantProperties.getNamespace(),
-                        testVariantProperties,
-                        testingApk,
-                        testVariantProperties.getTestedApks(),
-                        privacySandboxSdkApks,
-                        privacySandboxCompatSdkApks,
-                        testVariantProperties
-                                .getServices()
-                                .getProjectOptions()
-                                .getExtraInstrumentationTestRunnerArgs());
-
+        TestApplicationTestData testData = getTestData(testVariantProperties);
         configureTestData(testVariantProperties, testData);
 
         // create tasks to validate signing and produce signing config versions file.
         createValidateSigningTask(testVariantProperties);
         taskFactory.register(
                 new SigningConfigVersionsWriterTask.CreationAction(testVariantProperties));
-        taskFactory.register(new AsarsToCompatSplitsTask.CreationAction(testVariantProperties));
 
         // create the test connected check task.
         TaskProvider<DeviceProviderInstrumentTestTask> instrumentTestTask =

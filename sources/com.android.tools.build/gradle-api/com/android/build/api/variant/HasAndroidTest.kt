@@ -16,8 +16,6 @@
 
 package com.android.build.api.variant
 
-import org.gradle.api.Incubating
-
 /**
  * [Variant] that optionally have [AndroidTest] component.
  */
@@ -32,6 +30,5 @@ interface HasAndroidTest {
     /**
      * Variant's packagingOptions, initialized by the corresponding global DSL element.
      */
-    @get:Incubating
     val packaging: TestedComponentPackaging
 }

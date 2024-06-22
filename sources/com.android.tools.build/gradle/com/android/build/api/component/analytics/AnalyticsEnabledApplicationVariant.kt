@@ -25,6 +25,7 @@ import com.android.build.api.variant.BundleConfig
 import com.android.build.api.variant.DependenciesInfo
 import com.android.build.api.variant.DeviceTest
 import com.android.build.api.variant.Dexing
+import com.android.build.api.variant.HostTest
 import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.SigningConfig
 import com.android.build.api.variant.TestFixtures
@@ -64,7 +65,7 @@ open class AnalyticsEnabledApplicationVariant @Inject constructor(
             return delegate.dependenciesInfo
         }
 
-    val userVisibleSigningConfig: AnalyticsEnabledSigningConfig by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
+    private val userVisibleSigningConfig: AnalyticsEnabledSigningConfig by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
         objectFactory.newInstance(
             AnalyticsEnabledSigningConfig::class.java,
             delegate.signingConfig,
@@ -197,6 +198,17 @@ open class AnalyticsEnabledApplicationVariant @Inject constructor(
                 } else {
                     AnalyticsEnabledDeviceTest(it, stats, objectFactory)
                 }
+            }
+        }
+
+    override val hostTests: Map<String, HostTest>
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.HOST_TESTS_VALUE
+            // return a new list everytime as items may eventually be added through future APIs.
+            // we may consider returning a live list instead.
+            return  delegate.hostTests.mapValues {
+                AnalyticsEnabledHostTest(it.value, stats, objectFactory)
             }
         }
 }

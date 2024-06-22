@@ -18,7 +18,7 @@ package com.android.build.gradle.internal
 
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.artifact.impl.InternalScopedArtifacts
-import com.android.build.gradle.internal.component.AndroidTestCreationConfig
+import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.KmpComponentCreationConfig
 import com.android.build.gradle.internal.coverage.JacocoConfigurations
@@ -151,7 +151,7 @@ class AndroidTestTaskManager(
     }
 
     /** Creates the tasks to build android tests.  */
-    fun createTasks(androidTestProperties: AndroidTestCreationConfig) {
+    fun createTasks(androidTestProperties: DeviceTestCreationConfig) {
         createAnchorTasks(androidTestProperties)
 
         // Create all current streams (dependencies mostly at this point)
@@ -250,7 +250,7 @@ class AndroidTestTaskManager(
         createConnectedTestForVariant(androidTestProperties)
     }
 
-    private fun createPackageResourcesTask(creationConfig: AndroidTestCreationConfig) {
+    private fun createPackageResourcesTask(creationConfig: DeviceTestCreationConfig) {
         val projectOptions = creationConfig.services.projectOptions
         val appCompileRClass = projectOptions[BooleanOption.ENABLE_APP_COMPILE_TIME_R_CLASS]
 
@@ -277,7 +277,7 @@ class AndroidTestTaskManager(
     }
 
 
-    private fun createConnectedTestForVariant(androidTestProperties: AndroidTestCreationConfig) {
+    private fun createConnectedTestForVariant(androidTestProperties: DeviceTestCreationConfig) {
         val testedVariant = androidTestProperties.mainVariant
         val isLibrary = testedVariant.componentType.isAar
 
@@ -341,7 +341,7 @@ class AndroidTestTaskManager(
         taskFactory.configure(
             CONNECTED_ANDROID_TEST
         ) { connectedAndroidTest: Task -> connectedAndroidTest.dependsOn(connectedTask) }
-        if (androidTestProperties.isAndroidTestCoverageEnabled) {
+        if (androidTestProperties.codeCoverageEnabled) {
             val jacocoAntConfiguration = JacocoConfigurations.getJacocoAntTaskConfiguration(
                 project, JacocoTask.getJacocoVersion(androidTestProperties))
             val reportTask = taskFactory.register(
@@ -498,7 +498,7 @@ class AndroidTestTaskManager(
     )
 
     override fun createVariantPreBuildTask(creationConfig: ComponentCreationConfig) {
-        if (creationConfig is AndroidTestCreationConfig && // should always be true
+        if (creationConfig is DeviceTestCreationConfig && // should always be true
             creationConfig.mainVariant.componentType.isApk &&
             !creationConfig.mainVariant.componentType.isForTesting) {
 

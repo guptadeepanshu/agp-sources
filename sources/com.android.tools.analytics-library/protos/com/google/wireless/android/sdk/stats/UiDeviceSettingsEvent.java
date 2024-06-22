@@ -117,6 +117,14 @@ private static final long serialVersionUID = 0L;
      * <code>RESET = 7;</code>
      */
     RESET(7),
+    /**
+     * <pre>
+     * Gesture Navigation was changed
+     * </pre>
+     *
+     * <code>GESTURE_NAVIGATION = 8;</code>
+     */
+    GESTURE_NAVIGATION(8),
     ;
 
     /**
@@ -183,6 +191,14 @@ private static final long serialVersionUID = 0L;
      * <code>RESET = 7;</code>
      */
     public static final int RESET_VALUE = 7;
+    /**
+     * <pre>
+     * Gesture Navigation was changed
+     * </pre>
+     *
+     * <code>GESTURE_NAVIGATION = 8;</code>
+     */
+    public static final int GESTURE_NAVIGATION_VALUE = 8;
 
 
     public final int getNumber() {
@@ -213,6 +229,7 @@ private static final long serialVersionUID = 0L;
         case 5: return FONT_SIZE;
         case 6: return SCREEN_DENSITY;
         case 7: return RESET;
+        case 8: return GESTURE_NAVIGATION;
         default: return null;
       }
     }

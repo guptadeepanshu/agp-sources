@@ -266,6 +266,7 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
         return getVariantData().applicationIdTextResource;
     }
 
+    @SuppressWarnings("EagerGradleConfiguration") // suppress because it's deprecated
     @Override
     @NonNull
     public Task getPreBuild() {
@@ -285,6 +286,7 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
         return (TaskProvider<Task>) component.getTaskContainer().getPreBuildTask();
     }
 
+    @SuppressWarnings("EagerGradleConfiguration") // suppress because it's deprecated
     @Override
     @NonNull
     public Task getCheckManifest() {
@@ -306,6 +308,7 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
                 (TaskProvider<?>) component.getTaskContainer().getCheckManifestTask();
     }
 
+    @SuppressWarnings("EagerGradleConfiguration") // suppress because it's deprecated
     @Override
     @Nullable
     public AidlCompile getAidlCompile() {
@@ -341,6 +344,7 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
         return (TaskProvider<AidlCompile>) component.getTaskContainer().getAidlCompileTask();
     }
 
+    @SuppressWarnings("EagerGradleConfiguration") // suppress because it's deprecated
     @Override
     @Nullable
     public RenderscriptCompile getRenderscriptCompile() {
@@ -414,6 +418,7 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
                 component.getTaskContainer().getMergeAssetsTask();
     }
 
+    @SuppressWarnings("EagerGradleConfiguration") // suppress because it's deprecated
     @Override
     public GenerateBuildConfig getGenerateBuildConfig() {
         services.getDeprecationReporter()
@@ -433,6 +438,7 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
                 component.getTaskContainer().getGenerateBuildConfigTask();
     }
 
+    @SuppressWarnings("EagerGradleConfiguration") // suppress because it's deprecated
     @Override
     @NonNull
     public JavaCompile getJavaCompile() {
@@ -452,6 +458,7 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
         return (TaskProvider<JavaCompile>) component.getTaskContainer().getJavacTask();
     }
 
+    @SuppressWarnings("EagerGradleConfiguration") // suppress because it's deprecated
     @NonNull
     @Override
     public Task getJavaCompiler() {
@@ -539,6 +546,7 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
                                                                         .INSTANCE)));
     }
 
+    @SuppressWarnings("EagerGradleConfiguration") // suppress because it's deprecated
     @Override
     @NonNull
     public Sync getProcessJavaResources() {
@@ -560,6 +568,7 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
                 (TaskProvider<?>) component.getTaskContainer().getProcessJavaResourcesTask();
     }
 
+    @SuppressWarnings("EagerGradleConfiguration") // suppress because it's deprecated
     @Override
     @Nullable
     public Task getAssemble() {

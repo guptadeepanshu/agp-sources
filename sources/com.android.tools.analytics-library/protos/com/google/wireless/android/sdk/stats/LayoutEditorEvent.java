@@ -21,6 +21,7 @@ private static final long serialVersionUID = 0L;
   }
   private LayoutEditorEvent() {
     type_ = 0;
+    editorFileType_ = 0;
   }
 
   @java.lang.Override
@@ -1099,6 +1100,33 @@ private static final long serialVersionUID = 0L;
     return universalProblemsPanelEvent_ == null ? com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.getDefaultInstance() : universalProblemsPanelEvent_;
   }
 
+  public static final int EDITOR_FILE_TYPE_FIELD_NUMBER = 14;
+  private int editorFileType_;
+  /**
+   * <pre>
+   * Type of the file, i.e. which language the file in the editor is in
+   * </pre>
+   *
+   * <code>optional .android_studio.EditorFileType editor_file_type = 14;</code>
+   * @return Whether the editorFileType field is set.
+   */
+  @java.lang.Override public boolean hasEditorFileType() {
+    return ((bitField0_ & 0x00002000) != 0);
+  }
+  /**
+   * <pre>
+   * Type of the file, i.e. which language the file in the editor is in
+   * </pre>
+   *
+   * <code>optional .android_studio.EditorFileType editor_file_type = 14;</code>
+   * @return The editorFileType.
+   */
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EditorFileType getEditorFileType() {
+    @SuppressWarnings("deprecation")
+    com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.valueOf(editorFileType_);
+    return result == null ? com.google.wireless.android.sdk.stats.EditorFileType.UNKNOWN : result;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -1151,6 +1179,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00001000) != 0)) {
       output.writeMessage(13, getUniversalProblemsPanelEvent());
+    }
+    if (((bitField0_ & 0x00002000) != 0)) {
+      output.writeEnum(14, editorFileType_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -1212,6 +1243,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00001000) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(13, getUniversalProblemsPanelEvent());
+    }
+    if (((bitField0_ & 0x00002000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(14, editorFileType_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -1292,6 +1327,10 @@ private static final long serialVersionUID = 0L;
       if (!getUniversalProblemsPanelEvent()
           .equals(other.getUniversalProblemsPanelEvent())) return false;
     }
+    if (hasEditorFileType() != other.hasEditorFileType()) return false;
+    if (hasEditorFileType()) {
+      if (editorFileType_ != other.editorFileType_) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -1354,6 +1393,10 @@ private static final long serialVersionUID = 0L;
     if (hasUniversalProblemsPanelEvent()) {
       hash = (37 * hash) + UNIVERSAL_PROBLEMS_PANEL_EVENT_FIELD_NUMBER;
       hash = (53 * hash) + getUniversalProblemsPanelEvent().hashCode();
+    }
+    if (hasEditorFileType()) {
+      hash = (37 * hash) + EDITOR_FILE_TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + editorFileType_;
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -1578,6 +1621,8 @@ private static final long serialVersionUID = 0L;
         universalProblemsPanelEventBuilder_.clear();
       }
       bitField0_ = (bitField0_ & ~0x00001000);
+      editorFileType_ = 0;
+      bitField0_ = (bitField0_ & ~0x00002000);
       return this;
     }
 
@@ -1706,6 +1751,10 @@ private static final long serialVersionUID = 0L;
         }
         to_bitField0_ |= 0x00001000;
       }
+      if (((from_bitField0_ & 0x00002000) != 0)) {
+        to_bitField0_ |= 0x00002000;
+      }
+      result.editorFileType_ = editorFileType_;
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -1793,6 +1842,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasUniversalProblemsPanelEvent()) {
         mergeUniversalProblemsPanelEvent(other.getUniversalProblemsPanelEvent());
+      }
+      if (other.hasEditorFileType()) {
+        setEditorFileType(other.getEditorFileType());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -1916,6 +1968,18 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00001000;
               break;
             } // case 106
+            case 112: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.EditorFileType tmpValue =
+                  com.google.wireless.android.sdk.stats.EditorFileType.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(14, tmpRaw);
+              } else {
+                editorFileType_ = tmpRaw;
+                bitField0_ |= 0x00002000;
+              }
+              break;
+            } // case 112
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -3871,6 +3935,65 @@ private static final long serialVersionUID = 0L;
         universalProblemsPanelEvent_ = null;
       }
       return universalProblemsPanelEventBuilder_;
+    }
+
+    private int editorFileType_ = 0;
+    /**
+     * <pre>
+     * Type of the file, i.e. which language the file in the editor is in
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorFileType editor_file_type = 14;</code>
+     * @return Whether the editorFileType field is set.
+     */
+    @java.lang.Override public boolean hasEditorFileType() {
+      return ((bitField0_ & 0x00002000) != 0);
+    }
+    /**
+     * <pre>
+     * Type of the file, i.e. which language the file in the editor is in
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorFileType editor_file_type = 14;</code>
+     * @return The editorFileType.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.EditorFileType getEditorFileType() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.valueOf(editorFileType_);
+      return result == null ? com.google.wireless.android.sdk.stats.EditorFileType.UNKNOWN : result;
+    }
+    /**
+     * <pre>
+     * Type of the file, i.e. which language the file in the editor is in
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorFileType editor_file_type = 14;</code>
+     * @param value The editorFileType to set.
+     * @return This builder for chaining.
+     */
+    public Builder setEditorFileType(com.google.wireless.android.sdk.stats.EditorFileType value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00002000;
+      editorFileType_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Type of the file, i.e. which language the file in the editor is in
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorFileType editor_file_type = 14;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearEditorFileType() {
+      bitField0_ = (bitField0_ & ~0x00002000);
+      editorFileType_ = 0;
+      onChanged();
+      return this;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

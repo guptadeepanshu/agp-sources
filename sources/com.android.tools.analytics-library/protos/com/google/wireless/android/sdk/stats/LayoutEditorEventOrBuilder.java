@@ -352,4 +352,23 @@ public interface LayoutEditorEventOrBuilder extends
    * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
    */
   com.google.wireless.android.sdk.stats.UniversalProblemsPanelEventOrBuilder getUniversalProblemsPanelEventOrBuilder();
+
+  /**
+   * <pre>
+   * Type of the file, i.e. which language the file in the editor is in
+   * </pre>
+   *
+   * <code>optional .android_studio.EditorFileType editor_file_type = 14;</code>
+   * @return Whether the editorFileType field is set.
+   */
+  boolean hasEditorFileType();
+  /**
+   * <pre>
+   * Type of the file, i.e. which language the file in the editor is in
+   * </pre>
+   *
+   * <code>optional .android_studio.EditorFileType editor_file_type = 14;</code>
+   * @return The editorFileType.
+   */
+  com.google.wireless.android.sdk.stats.EditorFileType getEditorFileType();
 }

@@ -94,15 +94,14 @@ interface Sources {
     val manifests: ManifestFiles
 
     /**
-     * Access (and potentially creates) a new [Flat] for a custom source type that can
-     * be referenced by its [name].
+     * Access (and potentially creates) a new [SourceDirectories.Flat] for a custom source type that
+     * can be referenced by its [name].
      *
      * The first caller will create the new instance, other callers with the same [name] will get
      * the same instance returned. Any callers can obtain the final list of the folders registered
-     * under this custom source type by calling [Flat.all].
+     * under this custom source type by calling [SourceDirectories.Flat.all].
      *
      * These sources directories are attached to the variant and will be visible to Android Studio.
      */
-    @Incubating
     fun getByName(name: String): SourceDirectories.Flat
 }

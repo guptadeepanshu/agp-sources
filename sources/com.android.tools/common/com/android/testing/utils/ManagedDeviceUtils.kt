@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 The Android Open Source Project
+ * Copyright (C) 2024 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,61 +16,60 @@
 
 package com.android.testing.utils
 
-private const val SYSTEM_IMAGE_PREFIX = "system-images;"
-private const val API_PREFIX = "android-"
-private const val API_OFFSET = 1
-private const val VENDOR_OFFSET = 2
-private const val ABI_OFFSET = 3
+import java.util.regex.Pattern
 
 /**
- * Computes the system image repository hash from the information supplied on the managed
- * managed device dsl.
+ * The regex for detecting if the emulator is part of a setup task
  *
- * @param version: the API version level from the dsl
- * @param imageSource: the system image source.
- * @param abi: the abi for the system image.
- *
- * @return the hash for the system image repository with the given parameters.
- * A system image is not guaranteed to exist with the given values, but this gives the hash that the
- * sdkHandler can check.
+ * Setup Device's ids are based off the GMD AVD name format, appended with _snapshot.
+ * Because this is based off of the filename of the avd, it has a few strict requirements.
  */
-fun computeSystemImageHashFromDsl(version: Int, imageSource: String, abi: String) =
-    "$SYSTEM_IMAGE_PREFIX${computeVersionString(version)};${computeVendorString(imageSource)};$abi"
-
-private fun computeVersionString(version: Int) = "android-${version}"
-
-fun computeVendorString(imageSource: String) =
-    when (imageSource) {
-        "google" -> "google_apis"
-        "google-atd" -> "google_atd"
-        "aosp" -> "default"
-        "aosp-atd" -> "aosp_atd"
-        else -> imageSource
-    }
-
-fun isTvOrAutoSource(imageSource: String) =
-    imageSource.contains("-tv") || imageSource.contains("-auto")
-
-fun isTvOrAutoDevice(deviceName: String) =
-    deviceName.contains("TV") || deviceName.contains("Auto")
+private val setupDeviceIdRegex = Pattern.compile("""dev[0-9]+[_\-0-9a-zA-Z]*_snapshot$""")
 
 /**
- * Determine the api level of a system image hash
+ * The regex for detecting if the emulator is part of a GMD test task.
+ *
+ * Test Device's ids are based off the path of the devices test task. The only requirement
+ * Gradle has for task names is the `:` is a reserved character. The id may optionally include a
+ * shard suffix if the test is using sharding. This is simply `_` followed by an integer
+ * representing the shard index.
+ *
+ * So given these requirements, and that GMD cannot be declared at top level. We expect the
+ * task to be one of the forms:
+ *
+ * ```
+ *     <project>:<deviceName>AndroidTest
+ *     <project>:<deviceName>AndroidTest_<shardIndex>
+ * ```
  */
-fun parseApiFromHash(systemImageHash: String): Int? {
-    val apiComponent = systemImageHash.split(";")[API_OFFSET]
-    if (!apiComponent.startsWith(API_PREFIX)) {
-        return null
-    }
-    return try {
-        apiComponent.substringAfter(API_PREFIX).toInt()
-    } catch (e: NumberFormatException) {
-        null
-    }
-}
+private val androidTestDeviceIdRegex =
+    Pattern.compile("""[^:]+:[^:]+AndroidTest(_[0-9]+)?$""")
 
-fun parseVendorFromHash(systemImageHash: String): String? =
-    systemImageHash.split(";").getOrNull(VENDOR_OFFSET)
+/**
+ * Checks to see if a given device id is from a Gradle Managed Device. This is used to differentiate
+ * emulators spawned from Gradle, than those spawned from the User.
+ *
+ * In order to get the id to pass into the function. You need to use the adb command
+ * `adb -s <emulator-serial> emu avd id` or equivalent on the given emulator's serial.
+ *
+ * The device is then checked to see if the [deviceId] conforms to that of either a setup
+ * device for establishing avd snapshots or a test device that is used in Managed Device Test
+ * Tasks.
+ *
+ * @param deviceId the avd id of the given emulator instance. This can be retrieved via the adb
+ * command: `adb -s <emulator-serial> emu avd id`
+ *
+ * @return True if and only if the id is a valid GMD device id. False, otherwise.
+ */
+fun isGradleManagedDevice(deviceId: String): Boolean =
+    setupDeviceIdRegex.matcher(deviceId).find() ||
+            androidTestDeviceIdRegex.matcher(deviceId).find()
 
-fun parseAbiFromHash(systemImageHash: String): String? =
-    systemImageHash.split(";").getOrNull(ABI_OFFSET)
+/**
+ * Gets the setup device id name for the given Gradle Managed Device AVD.
+ *
+ * @param avdName the name of the Gradle Managed Device AVD.
+ *
+ * @return the device id that should be called with the emulator command.
+ */
+fun createSetupDeviceId(avdName: String) = "${avdName}_snapshot"

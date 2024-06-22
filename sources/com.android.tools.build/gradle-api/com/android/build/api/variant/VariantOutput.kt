@@ -20,37 +20,49 @@ import org.gradle.api.provider.Property
 
 /**
  * Defines a variant output.
+ *
+ * This only applies to APKs as AARs and Bundles (AABs) do not support multiple outputs.
+ *
+ * See https://developer.android.com/studio/build/configure-apk-splits.html for more information
+ * on multiple APK support.
+ *
+ * @see com.android.build.api.dsl.Splits
  */
 interface VariantOutput: VariantOutputConfiguration {
 
     /**
-     * Returns a modifiable [Property] representing the variant output version code.
-     *
+     * The version code for this output.
+
      * This will be initialized with the variant's merged flavor value or read from the manifest
      * file if unset.
+     *
+     * It is safe to modify it. When using Splits/Multi-APK output, it is generally necessary to
+     * change this value per output.
      */
     val versionCode: Property<Int?>
 
     /**
-     * Returns a modifiable [Property] representing the variant output version name.
+     * The version name for this output.
      *
      * This will be initialized with the variant's merged flavor value, or it will be read from the
      * manifest source file if it's not set via the DSL, or it will be null if it's also not set in
      * the manifest.
+     *
+     * It is safe to modify it.
      */
     val versionName: Property<String?>
 
     /**
-     * Returns a modifiable [Property] to enable or disable the production of this [VariantOutput]
+     * Flag controlling whether the output is enabled.
      *
-     * @return a [Property] to enable or disable this output.
+     * It is safe to change the value in case a specific output should be disabled
      */
     val enabled: Property<Boolean>
 
     /**
-     * Returns a modifiable [Property] to enable or disable the production of this [VariantOutput]
+     * Flag controlling whether the output is enabled.
      *
-     * @return a [Property] to enable or disable this output.
+     * It is safe to change the value in case a specific output should be disabled
      */
     @Deprecated("Replaced by enabled", ReplaceWith("enabled"))
     val enable: Property<Boolean>

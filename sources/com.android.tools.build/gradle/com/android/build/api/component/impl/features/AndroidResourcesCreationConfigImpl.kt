@@ -107,7 +107,7 @@ open class AndroidResourcesCreationConfigImpl(
                     internalServices.projectOptions[BooleanOption.ENABLE_APP_COMPILE_TIME_R_CLASS]
                 return when (val componentType = dslInfo.componentType) {
                     ComponentTypeImpl.ANDROID_TEST, ComponentTypeImpl.TEST_APK -> getRJarForTestApks(useCompileRClassInApp)
-                    ComponentTypeImpl.UNIT_TEST -> getRJarForUnitTests()
+                    ComponentTypeImpl.UNIT_TEST, ComponentTypeImpl.SCREENSHOT_TEST -> getRJarForHostTests()
                     else -> {
                         if (componentType.isAar || useCompileRClassInApp) {
                             component.artifacts.get(InternalArtifactType.COMPILE_R_CLASS_JAR)
@@ -157,10 +157,12 @@ open class AndroidResourcesCreationConfigImpl(
         }
     }
 
-    private fun getRJarForUnitTests(): Provider<RegularFile> {
+    private fun getRJarForHostTests(): Provider<RegularFile> {
         Preconditions.checkState(
-            component.componentType === ComponentTypeImpl.UNIT_TEST && component is HostTestCreationConfig,
-            "Expected unit test type but found: ${component.componentType}"
+            component is HostTestCreationConfig &&
+                    (component.componentType === ComponentTypeImpl.UNIT_TEST
+                            || component.componentType === ComponentTypeImpl.SCREENSHOT_TEST),
+            "Expected host test type but found: ${component.componentType}"
         )
         val mainVariant = (component as HostTestCreationConfig).mainVariant
         return if (mainVariant.componentType.isAar) {

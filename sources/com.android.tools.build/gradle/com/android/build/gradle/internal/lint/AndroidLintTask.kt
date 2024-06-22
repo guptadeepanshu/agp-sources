@@ -247,6 +247,7 @@ abstract class AndroidLintTask : NonIncrementalTask() {
             parameters.returnValueOutputFile.set(returnValueOutputFile)
             parameters.lintMode.set(lintMode)
             parameters.hasBaseline.set(projectInputs.lintOptions.baseline.orNull != null)
+            parameters.useK2Uast.set(useK2Uast)
         }
         if (lintMode.get() == LintMode.UPDATE_BASELINE
             && originalBaselineFileText != null
@@ -278,6 +279,7 @@ abstract class AndroidLintTask : NonIncrementalTask() {
             abstract val returnValueOutputFile: RegularFileProperty
             abstract val lintMode: Property<LintMode>
             abstract val hasBaseline: Property<Boolean>
+            abstract val useK2Uast: Property<Boolean>
         }
 
         @get:Inject
@@ -286,14 +288,15 @@ abstract class AndroidLintTask : NonIncrementalTask() {
         override fun execute() {
             val lintFixBuildService: LintFixBuildService? = parameters.lintFixBuildService.orNull
             parameters.lintTool.get().submit(
-                mainClass = "com.android.tools.lint.Main",
                 workerExecutor = workerExecutor,
+                mainClass = "com.android.tools.lint.Main",
                 arguments = parameters.arguments.get(),
                 android = parameters.android.get(),
                 fatalOnly = parameters.fatalOnly.get(),
                 await = lintFixBuildService != null, // Allow only one lintFix to execute at a time.
                 lintMode = parameters.lintMode.get(),
                 hasBaseline = parameters.hasBaseline.get(),
+                useK2Uast = parameters.useK2Uast.get(),
                 returnValueOutputFile = parameters.returnValueOutputFile.orNull?.asFile
             )
         }

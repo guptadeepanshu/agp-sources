@@ -240,18 +240,24 @@ class ResourceStore(val supportMultipackages: Boolean = false) {
      *
      * <p>If the same resource is referenced by some keep and discard rule then discard takes
      * precedence.
+     *
+     * <p>Returns the resources that was marked as kept because of the rules (excluding
+     * any that was kept, but then discarded)
      */
-    fun processToolsAttributes() {
+    fun processToolsAttributes(): List<Resource> =
         _keepAttributes.asSequence()
             .flatMap { getResourcesForKeepOrDiscardPattern(it) }
-            .forEach {
+            .onEach {
                 it.isReachable = true
                 keepResources += ResourceId(it.type, it.name, it.packageName)
             }
-        _discardAttributes.asSequence()
-            .flatMap { getResourcesForKeepOrDiscardPattern(it) }
-            .forEach { it.isReachable = false }
-    }
+            .toList()
+            .minus(
+                _discardAttributes.asSequence()
+                    .flatMap { getResourcesForKeepOrDiscardPattern(it) }
+                    .onEach { it.isReachable = false }
+            )
+
 
     fun dumpConfig(): String =
         _resources.asSequence()

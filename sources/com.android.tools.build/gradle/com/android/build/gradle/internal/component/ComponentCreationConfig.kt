@@ -74,6 +74,8 @@ interface ComponentCreationConfig : ComponentIdentity {
     val debuggable: Boolean
     val minSdk: AndroidVersion
 
+    val useBuiltInKotlinSupport: Boolean
+
     // ---------------------------------------------------------------------------------------------
     // OPTIONAL FEATURES
     // ---------------------------------------------------------------------------------------------

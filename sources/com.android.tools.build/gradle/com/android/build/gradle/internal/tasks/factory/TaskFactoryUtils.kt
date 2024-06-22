@@ -123,7 +123,7 @@ internal class TaskConfigurationActions<T: Task>(
 fun <T: Task> TaskProvider<out T>?.dependsOn(task: TaskProvider<out T>?): TaskProvider<out T>? {
     this?.letIfPresent { nonNullThis ->
         task?.letIfPresent { nonNullTask ->
-            nonNullThis.configure { it.dependsOn(nonNullTask.get()) }
+            nonNullThis.configure { it.dependsOn(nonNullTask) }
         }
     }
 
@@ -187,7 +187,7 @@ fun <T: Task> TaskProvider<out T>?.dependsOn(task: Task?): TaskProvider<out T>? 
 fun <T: Task> Task?.dependsOn(task: TaskProvider<out T>?): Task? {
     this?.let { nonNullThis ->
         task?.letIfPresent { nonNullTask ->
-            nonNullThis.dependsOn(nonNullTask.get())
+            nonNullThis.dependsOn(nonNullTask)
         }
     }
 

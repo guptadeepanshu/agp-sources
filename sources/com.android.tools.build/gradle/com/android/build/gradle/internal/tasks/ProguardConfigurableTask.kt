@@ -64,7 +64,6 @@ import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.ProjectLayout
-import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
@@ -81,7 +80,6 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.work.DisableCachingByDefault
-import org.jetbrains.kotlin.gradle.utils.`is`
 import java.io.File
 import java.util.concurrent.Callable
 import javax.inject.Inject
@@ -720,7 +718,7 @@ abstract class ProguardConfigurableTask(
                 keep("class **.R$* {*;}")
             }
 
-            if (creationConfig.isAndroidTestCoverageEnabled) {
+            if (creationConfig.codeCoverageEnabled) {
                 // when collecting coverage, don't remove the JaCoCo runtime
                 keep("class com.vladium.** {*;}")
                 keep("class org.jacoco.** {*;}")

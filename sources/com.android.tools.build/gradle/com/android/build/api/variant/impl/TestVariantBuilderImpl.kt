@@ -18,6 +18,7 @@ package com.android.build.api.variant.impl
 
 import com.android.build.api.component.analytics.AnalyticsEnabledTestVariantBuilder
 import com.android.build.api.variant.ComponentIdentity
+import com.android.build.api.variant.HostTestBuilder
 import com.android.build.api.variant.TestVariantBuilder
 import com.android.build.api.variant.VariantBuilder
 import com.android.build.gradle.internal.core.dsl.TestProjectVariantDslInfo
@@ -58,4 +59,5 @@ open class TestVariantBuilderImpl @Inject constructor(
 
     internal var _enableMultiDex = dslInfo.dexingDslInfo.isMultiDexEnabled
     override var enableMultiDex: Boolean? = _enableMultiDex
+    override val hostTests: Map<String, HostTestBuilder> = mapOf()
 }

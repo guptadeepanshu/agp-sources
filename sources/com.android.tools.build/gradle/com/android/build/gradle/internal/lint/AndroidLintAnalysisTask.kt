@@ -20,7 +20,7 @@ import com.android.Version
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.dsl.Lint
 import com.android.build.gradle.internal.SdkComponentsBuildService
-import com.android.build.gradle.internal.component.AndroidTestCreationConfig
+import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
 import com.android.build.gradle.internal.component.NestedComponentCreationConfig
@@ -136,14 +136,15 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
         lintTool.lintClassLoaderBuildService.get().shouldDispose = true
         writeLintModelFile()
         lintTool.submit(
-            mainClass = "com.android.tools.lint.Main",
             workerExecutor = workerExecutor,
+            mainClass = "com.android.tools.lint.Main",
             arguments = generateCommandLineArguments(),
             android = android.get(),
             fatalOnly = fatalOnly.get(),
             await = false,
             lintMode = LintMode.ANALYSIS,
-            hasBaseline = projectInputs.lintOptions.baseline.orNull != null
+            hasBaseline = projectInputs.lintOptions.baseline.orNull != null,
+            useK2Uast = useK2Uast.get(),
         )
     }
 
@@ -358,7 +359,7 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
             val artifactType =
                 when (creationConfig) {
                     is HostTestCreationConfig -> UNIT_TEST_LINT_PARTIAL_RESULTS
-                    is AndroidTestCreationConfig -> ANDROID_TEST_LINT_PARTIAL_RESULTS
+                    is DeviceTestCreationConfig -> ANDROID_TEST_LINT_PARTIAL_RESULTS
                     is TestFixturesCreationConfig -> TEST_FIXTURES_LINT_PARTIAL_RESULTS
                     else -> if (fatalOnly) {
                         LINT_VITAL_PARTIAL_RESULTS
@@ -421,7 +422,7 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
             task.variantInputs.initialize(
                 mainVariant,
                 creationConfig as? HostTestCreationConfig,
-                creationConfig as? AndroidTestCreationConfig,
+                creationConfig as? DeviceTestCreationConfig,
                 creationConfig as? TestFixturesCreationConfig,
                 creationConfig.services,
                 mainVariant.name,

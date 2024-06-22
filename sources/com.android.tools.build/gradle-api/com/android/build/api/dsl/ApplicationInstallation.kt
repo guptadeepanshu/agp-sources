@@ -20,7 +20,6 @@ import org.gradle.api.Incubating
 
 interface ApplicationInstallation: Installation {
     /** The list of FULL_APK installation options. */
-    @get:Incubating
     override val installOptions: MutableList<String>
 
     /** Whether to generate per-SDK level baseline profiles to install with an APK. */

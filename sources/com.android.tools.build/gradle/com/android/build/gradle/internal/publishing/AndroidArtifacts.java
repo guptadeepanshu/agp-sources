@@ -187,7 +187,12 @@ public class AndroidArtifacts {
     private static final String TYPE_ANDROID_PRIVACY_SANDBOX_SDK_ARCHIVE = "asar";
     private static final String TYPE_ANDROID_PRIVACY_SANDBOX_SDK_APKS =
             "android-privacy-sandbox-sdk-apks";
-
+    private static final String TYPE_ANDROID_PRIVACY_SANDBOX_SDK_COMPAT_SPLIT_APKS =
+            "android-privacy-sandbox-sdk-compat-apks";
+    private static final String TYPE_ANDROID_PRIVACY_SANDBOX_EXTRACTED_SDK_APKS =
+            "android-privacy-sandbox-extracted-sdk-apks";
+    private static final String TYPE_USES_SDK_LIBRARY_SPLIT_FOR_LOCAL_DEPLOYMENT =
+            "uses-sdk-library-split-for-local-deployment";
 
     private static final String TYPE_ANDROID_PRIVACY_SANDBOX_SDK_EXTRACTED_METADATA_PROTO =
             "android-privacy-sandbox-sdk-extracted-metadata";
@@ -596,6 +601,18 @@ public class AndroidArtifacts {
 
         // The artifact-transform derived APKs from a privacy sandbox SDK
         ANDROID_PRIVACY_SANDBOX_SDK_APKS(TYPE_ANDROID_PRIVACY_SANDBOX_SDK_APKS),
+
+        // The APKS extracted from privacy sandbox sdks.
+        ANDROID_PRIVACY_SANDBOX_EXTRACTED_SDK_APKS(TYPE_ANDROID_PRIVACY_SANDBOX_EXTRACTED_SDK_APKS),
+
+        // The APKS containing split APK files for backward compatibility.
+        ANDROID_PRIVACY_SANDBOX_SDK_COMPAT_SPLIT_APKS(
+                TYPE_ANDROID_PRIVACY_SANDBOX_SDK_COMPAT_SPLIT_APKS),
+
+        // use sdk library split Apk that allows us to have a single main APK that works for all
+        // versions of Android.
+        USES_SDK_LIBRARY_SPLIT_FOR_LOCAL_DEPLOYMENT(
+                TYPE_USES_SDK_LIBRARY_SPLIT_FOR_LOCAL_DEPLOYMENT),
 
         // The metadata proto from the privacy sandbox SDK, used by the package numbering task
         ANDROID_PRIVACY_SANDBOX_SDK_METADATA_PROTO(

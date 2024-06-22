@@ -93,6 +93,12 @@ interface ComponentType {
      * (testing the prod component of the same module) or a separate test-only module.
      */
     val isForTesting: Boolean
+
+    /**
+     * Returns true if the component is a ScreenshotTest component of the module.
+     */
+    val isForScreenshotPreview: Boolean
+
     /**
      * Returns true if the variant has test components
      */
@@ -142,9 +148,6 @@ interface ComponentType {
         const val UNIT_TEST_SUFFIX = "UnitTest"
         const val TEST_FIXTURES_PREFIX = "testFixtures"
         const val TEST_FIXTURES_SUFFIX = "TestFixtures"
-        const val PREVIEW_SCREENSHOT_PREFIX = "previewScreenshot"
-        const val PREVIEW_SCREENSHOT_UPDATE_PREFIX = "previewScreenshotUpdate"
-        const val PREVIEW_SCREENSHOT_RENDER_PREFIX = "previewScreenshotRender"
         const val SCREENSHOT_TEST_PREFIX = "screenshotTest"
         const val SCREENSHOT_TEST_SUFFIX = "ScreenshotTest"
 
@@ -172,6 +175,7 @@ enum class ComponentTypeImpl(
     override val publishToOtherModules: Boolean = false,
     override val isTestFixturesComponent: Boolean = false,
     override val isForTesting: Boolean = false,
+    override val isForScreenshotPreview: Boolean = false,
     override val isSeparateTestProject: Boolean = false,
     override val prefix: String,
     override val suffix: String,
@@ -248,6 +252,7 @@ enum class ComponentTypeImpl(
         analyticsVariantType = GradleBuildVariant.VariantType.UNIT_TEST),
     SCREENSHOT_TEST(
         isForTesting = true,
+        isForScreenshotPreview = true,
         prefix = ComponentType.SCREENSHOT_TEST_PREFIX,
         suffix = ComponentType.SCREENSHOT_TEST_SUFFIX,
         isSingleBuildType = true,

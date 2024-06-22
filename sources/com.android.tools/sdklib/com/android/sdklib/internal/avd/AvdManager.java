@@ -352,6 +352,17 @@ public class AvdManager {
     public static final String AVD_INI_ROLL_RADIUS = "hw.sensor.roll.radius";
     public static final String AVD_INI_ROLL_DIRECTION = "hw.sensor.roll.direction";
 
+    // Settings for Android Automotive instrument cluster display
+    public static final String AVD_INI_CLUSTER_WIDTH = "hw.display6.width";
+    public static final String AVD_INI_CLUSTER_HEIGHT = "hw.display6.height";
+    public static final String AVD_INI_CLUSTER_DENSITY = "hw.display6.density";
+    public static final String AVD_INI_CLUSTER_FLAG = "hw.display6.flag";
+    // Settings for Android Automotive distant display
+    public static final String AVD_INI_DISTANT_DISPLAY_WIDTH = "hw.display7.width";
+    public static final String AVD_INI_DISTANT_DISPLAY_HEIGHT = "hw.display7.height";
+    public static final String AVD_INI_DISTANT_DISPLAY_DENSITY = "hw.display7.density";
+    public static final String AVD_INI_DISTANT_DISPLAY_FLAG = "hw.display7.flag";
+
     /** AVD/user-settings.ini key for Preferred ABI */
     public static final String USER_SETTINGS_INI_PREFERRED_ABI = "abi.type.preferred";
 
@@ -944,7 +955,7 @@ public class AvdManager {
             configValues.put(
                     AVD_INI_TAG_DISPLAYNAMES,
                     tags.stream().map(IdDisplay::getDisplay).collect(joining(",")));
-            configValues.put(AVD_INI_ABI_TYPE, systemImage.getAbiType());
+            configValues.put(AVD_INI_ABI_TYPE, systemImage.getPrimaryAbiType());
             configValues.put(AVD_INI_PLAYSTORE_ENABLED, Boolean.toString(deviceHasPlayStore && systemImage.hasPlayStore()));
             configValues.put(
                     AVD_INI_ARC, Boolean.toString(SystemImageTags.CHROMEOS_TAG.equals(tag)));
@@ -986,7 +997,8 @@ public class AvdManager {
                                 iniFile,
                                 avdFolder,
                                 oldAvdInfo,
-                                configValues);
+                                configValues,
+                                userSettings);
             }
 
             if ((removePrevious || editExisting) &&
@@ -1055,6 +1067,8 @@ public class AvdManager {
             // Modify the ID and display name in the new config.ini
             Path configIni = destAvdFolder.resolve(CONFIG_INI);
             Map<String, String> configVals = parseIniFile(new PathFileWrapper(configIni), mLog);
+            Map<String, String> userSettingsVals =
+                    AvdInfo.parseUserSettingsFile(destAvdFolder, mLog);
             configVals.put(AVD_INI_AVD_ID, newAvdName);
             configVals.put(AVD_INI_DISPLAY_NAME, newAvdName);
             writeIniFile(configIni, configVals, true);
@@ -1077,7 +1091,8 @@ public class AvdManager {
                             newAvdName, destAvdFolder, false, systemImage.getAndroidVersion());
 
             // Create an AVD object from these files
-            return new AvdInfo(newAvdName, iniFile, destAvdFolder, systemImage, configVals);
+            return new AvdInfo(
+                    newAvdName, iniFile, destAvdFolder, systemImage, configVals, userSettingsVals);
         } catch (AndroidLocationsException | IOException e) {
             mLog.warning("Exception while duplicating an AVD: %1$s", e);
             return null;
@@ -1320,12 +1335,14 @@ public class AvdManager {
                 }
 
                 // update AVD info
-                AvdInfo info = new AvdInfo(
-                        avdInfo.getName(),
-                        avdInfo.getIniFile(),
-                        paramFolderPath,
-                        avdInfo.getSystemImage(),
-                        avdInfo.getProperties());
+                AvdInfo info =
+                        new AvdInfo(
+                                avdInfo.getName(),
+                                avdInfo.getIniFile(),
+                                paramFolderPath,
+                                avdInfo.getSystemImage(),
+                                avdInfo.getProperties(),
+                                avdInfo.getUserSettings());
                 replaceAvd(avdInfo, info);
 
                 // update the ini file
@@ -1345,12 +1362,14 @@ public class AvdManager {
                 }
 
                 // update AVD info
-                AvdInfo info = new AvdInfo(
-                        newName,
-                        avdInfo.getIniFile(),
-                        avdInfo.getDataFolderPath(),
-                        avdInfo.getSystemImage(),
-                        avdInfo.getProperties());
+                AvdInfo info =
+                        new AvdInfo(
+                                newName,
+                                avdInfo.getIniFile(),
+                                avdInfo.getDataFolderPath(),
+                                avdInfo.getSystemImage(),
+                                avdInfo.getProperties(),
+                                avdInfo.getUserSettings());
                 replaceAvd(avdInfo, info);
             }
 
@@ -1489,7 +1508,7 @@ public class AvdManager {
                 avdName = avdName.substring(0, avdName.length() - 4);
             }
             return new AvdInfo(
-                    avdName, iniPath, iniPath, null, null, AvdStatus.ERROR_CORRUPTED_INI);
+                    avdName, iniPath, iniPath, null, null, null, AvdStatus.ERROR_CORRUPTED_INI);
         }
 
         PathFileWrapper configIniFile;
@@ -1623,7 +1642,10 @@ public class AvdManager {
             }
         }
 
-        AvdInfo info = new AvdInfo(name, iniPath, avdPath, sysImage, properties, status);
+        Map<String, String> userSettings = AvdInfo.parseUserSettingsFile(avdPath, mLog);
+
+        AvdInfo info =
+                new AvdInfo(name, iniPath, avdPath, sysImage, properties, userSettings, status);
 
         if (updateHashV2) {
             try {
@@ -1853,13 +1875,16 @@ public class AvdManager {
         // finally create a new AvdInfo for this unbroken avd and add it to the list.
         // instead of creating the AvdInfo object directly we reparse it, to detect other possible
         // errors
-        // FIXME: We may want to create this AvdInfo by reparsing the AVD instead. This could detect other errors.
-        AvdInfo newAvd = new AvdInfo(
-                avd.getName(),
-                avd.getIniFile(),
-                avd.getDataFolderPath(),
-                avd.getSystemImage(),
-                newProperties);
+        // FIXME: We may want to create this AvdInfo by reparsing the AVD instead. This could detect
+        // other errors.
+        AvdInfo newAvd =
+                new AvdInfo(
+                        avd.getName(),
+                        avd.getIniFile(),
+                        avd.getDataFolderPath(),
+                        avd.getSystemImage(),
+                        newProperties,
+                        avd.getUserSettings());
 
         replaceAvd(avd, newAvd);
 
@@ -1954,7 +1979,7 @@ public class AvdManager {
         Path imageFolder = systemImage.getLocation();
         Path userdataSrc = imageFolder.resolve(USERDATA_IMG);
 
-        String abiType = systemImage.getAbiType();
+        String abiType = systemImage.getPrimaryAbiType();
 
         if (CancellableFileIo.notExists(userdataSrc)) {
             if (CancellableFileIo.isDirectory(imageFolder.resolve(DATA_FOLDER))) {
@@ -2012,7 +2037,7 @@ public class AvdManager {
             @NonNull ILogger             log)
             throws AvdMgrException {
 
-        String abiType = systemImage.getAbiType();
+        String abiType = systemImage.getPrimaryAbiType();
         Abi abi = Abi.getEnum(abiType);
         if (abi != null) {
             String arch = abi.getCpuArch();
@@ -2290,11 +2315,13 @@ public class AvdManager {
             @NonNull Path iniFile,
             @NonNull Path avdFolder,
             @Nullable AvdInfo oldAvdInfo,
-            @Nullable Map<String, String> values)
+            @Nullable Map<String, String> values,
+            @Nullable Map<String, String> userSettings)
             throws AvdMgrException {
 
         // create the AvdInfo object, and add it to the list
-        AvdInfo theAvdInfo = new AvdInfo(avdName, iniFile, avdFolder, systemImage, values);
+        AvdInfo theAvdInfo =
+                new AvdInfo(avdName, iniFile, avdFolder, systemImage, values, userSettings);
 
         synchronized (mAllAvdList) {
             if (oldAvdInfo != null && (removePrevious || editExisting)) {

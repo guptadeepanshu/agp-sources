@@ -19,6 +19,8 @@ package com.android.build.api.component.analytics
 import com.android.build.api.artifact.Artifacts
 import com.android.build.api.variant.Component
 import com.android.build.api.variant.DeviceTest
+import com.android.build.api.variant.HostTest
+import com.android.build.api.variant.HostTestBuilder
 import com.android.build.api.variant.Instrumentation
 import com.android.build.api.variant.KotlinMultiplatformAndroidVariant
 import com.android.build.api.variant.LifecycleTasks
@@ -75,18 +77,10 @@ open class AnalyticsEnabledKotlinMultiplatformAndroidVariant @Inject constructor
             return delegate.lifecycleTasks
         }
 
-    private val userVisibleUnitTest: AnalyticsEnabledUnitTest? by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
-        delegate.unitTest?.let {
-            objectFactory.newInstance(
-                AnalyticsEnabledUnitTest::class.java,
-                it,
-                stats
-            )
-        }
-    }
-
     override val unitTest: com.android.build.api.component.UnitTest?
-        get() = userVisibleUnitTest
+        get() = hostTests[HostTestBuilder.UNIT_TEST_TYPE]
+                as? com.android.build.api.component.UnitTest
+
 
     private val userVisibleAndroidTest: AnalyticsEnabledAndroidTest? by lazy(LazyThreadSafetyMode.SYNCHRONIZED){
         delegate.androidTest?.let {
@@ -126,6 +120,17 @@ open class AnalyticsEnabledKotlinMultiplatformAndroidVariant @Inject constructor
                 } else {
                     AnalyticsEnabledDeviceTest(it, stats, objectFactory)
                 }
+            }
+        }
+
+    override val hostTests: Map<String, HostTest>
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.HOST_TESTS_VALUE
+            // return a new list everytime as items may eventually be added through future APIs.
+            // we may consider returning a live list instead.
+            return  delegate.hostTests.mapValues {
+                AnalyticsEnabledHostTest(it.value, stats, objectFactory)
             }
         }
 

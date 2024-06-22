@@ -213,11 +213,13 @@ public class Hardware {
     }
 
     public void addSupportedAbi(@NonNull Abi abi) {
-        mAbis.add(abi);
+        if (!mAbis.contains(abi)) {
+            mAbis.add(abi);
+        }
     }
 
     public void addAllSupportedAbis(@NonNull Collection<Abi> abis) {
-        mAbis.addAll(abis);
+        abis.forEach(this::addSupportedAbi);
     }
 
     @NonNull

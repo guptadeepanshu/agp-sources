@@ -178,6 +178,8 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
         ProductFlavor(it.first, it.second)
     }
 
+    override val useBuiltInKotlinSupport: Boolean = false
+
     // ---------------------------------------------------------------------------------------------
     // Private stuff
     // ---------------------------------------------------------------------------------------------

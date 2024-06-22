@@ -150,8 +150,8 @@ sealed class SingleArtifact<T : FileSystemLocation>(
      * The directory containing all the native library (.so) files that will be packaged in the APK,
      * AAR, or Bundle.
      *
-     * The native libraries in this directory might undergo further processing (e.g. stripping debug
-     * symbols) before packaging.
+     * The native libraries in this directory have not yet been stripped during the current build
+     * (though some of them might already be stripped if they are from remote dependencies).
      */
     @Incubating
     object MERGED_NATIVE_LIBS: SingleArtifact<Directory>(DIRECTORY)

@@ -1088,11 +1088,11 @@ public final class DeviceImpl implements IDevice {
     }
 
     @Override
-    public Client getClient(String applicationName) {
+    public Client getClient(String processName) {
         if (mDeviceClientManagerProvider != null) {
             Client[] clients = getClients();
             for (Client c : clients) {
-                if (applicationName.equals(c.getClientData().getClientDescription())) {
+                if (processName.equals(c.getClientData().getClientDescription())) {
                     return c;
                 }
             }
@@ -1100,7 +1100,7 @@ public final class DeviceImpl implements IDevice {
         }
         synchronized (mClients) {
             for (Client c : mClients) {
-                if (applicationName.equals(c.getClientData().getClientDescription())) {
+                if (processName.equals(c.getClientData().getClientDescription())) {
                     return c;
                 }
             }
@@ -1282,7 +1282,7 @@ public final class DeviceImpl implements IDevice {
             Client[] clients = getClients();
             for (Client c : clients) {
                 if (pid == c.getClientData().getPid()) {
-                    name = c.getClientData().getClientDescription();
+                    name = c.getClientData().getPackageName();
                     break;
                 }
             }

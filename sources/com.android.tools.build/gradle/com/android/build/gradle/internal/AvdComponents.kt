@@ -19,7 +19,6 @@ package com.android.build.gradle.internal
 import com.android.build.gradle.internal.services.AndroidLocationsBuildService
 import com.android.build.gradle.internal.services.ServiceRegistrationAction
 import com.android.build.gradle.internal.services.getBuildService
-import com.android.build.gradle.internal.testing.AdbHelper
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.IntegerOption
 import com.android.build.gradle.options.ProjectOptions
@@ -64,12 +63,12 @@ abstract class AvdComponentsBuildService @Inject constructor(
         val maxConcurrentDevices: Property<Int>
     }
 
-    private val avdManager: AvdManager by lazy {
+    private val avdManager: Provider<AvdManager> = providerFactory.provider {
         val locationsService = parameters.androidLocationsService.get()
         val versionedSdkLoader = parameters.sdkService.map {
             it.sdkLoader(parameters.compileSdkVersion, parameters.buildToolsRevision)
         }
-        val adbHelper = AdbHelper(versionedSdkLoader)
+        val adbHelper = versionedSdkLoader.get().adbHelper.get()
         val snapshotTimeoutSecs = if (parameters.deviceSetupTimeoutMinutes.isPresent()) {
             parameters.deviceSetupTimeoutMinutes.get() * SECONDS_PER_MINUTE
         } else {
@@ -96,7 +95,7 @@ abstract class AvdComponentsBuildService @Inject constructor(
         )
     }
 
-    val lockManager: ManagedVirtualDeviceLockManager = avdManager.deviceLockManager
+    val lockManager: ManagedVirtualDeviceLockManager = avdManager.get().deviceLockManager
 
     /**
      * Returns the location of the shared avd folder.
@@ -116,7 +115,7 @@ abstract class AvdComponentsBuildService @Inject constructor(
     /**
      * Returns the names of all avds currently in the shared avd folder.
      */
-    fun allAvds(): List<String> = avdManager.allAvds()
+    fun allAvds(): List<String> = avdManager.get().allAvds()
 
     /**
      * Removes all the specified avds.
@@ -127,7 +126,7 @@ abstract class AvdComponentsBuildService @Inject constructor(
      * @return the avds that were deleted.
      */
     fun deleteAvds(avds: List<String>): List<String> =
-        avdManager.deleteAvds(avds)
+        avdManager.get().deleteAvds(avds)
 
     /**
      * Removes the legacy Gradle Managed Device Avd directory (.android/gradle/avd), which had
@@ -145,7 +144,8 @@ abstract class AvdComponentsBuildService @Inject constructor(
         hardwareProfile: String
     ): Provider<Directory> =
         objectFactory.directoryProperty().fileProvider(providerFactory.provider {
-            avdManager.createOrRetrieveAvd(imageProvider, imageHash, deviceName, hardwareProfile)
+            avdManager.get().createOrRetrieveAvd(
+                imageProvider, imageHash, deviceName, hardwareProfile)
         })
 
     /**
@@ -161,7 +161,7 @@ abstract class AvdComponentsBuildService @Inject constructor(
      * a call to get() on the provider returned by [avdProvider].
      */
     fun ensureLoadableSnapshot(deviceName: String, emulatorGpuMode: String) {
-        avdManager.loadSnapshotIfNeeded(deviceName, emulatorGpuMode)
+        avdManager.get().loadSnapshotIfNeeded(deviceName, emulatorGpuMode)
     }
 
     /** Closes all active emulators having an id with the given prefix. This should be used to close
@@ -171,7 +171,7 @@ abstract class AvdComponentsBuildService @Inject constructor(
      * that have an id not starting with this prefix are ignored.
      */
     fun closeOpenEmulators(idPrefix: String) {
-        avdManager.closeOpenEmulators(idPrefix)
+        avdManager.get().closeOpenEmulators(idPrefix)
     }
 
     class RegistrationAction(

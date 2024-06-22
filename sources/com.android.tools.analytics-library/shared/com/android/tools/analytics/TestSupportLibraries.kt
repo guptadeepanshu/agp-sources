@@ -37,6 +37,8 @@ private val setters = ImmutableTable.Builder<String, String, (Builder, String) -
   put("androidx.test.ext", "junit", Builder::setTestExtJunitVersion)
   put("androidx.test.ext", "junit-ktx", Builder::setTestExtJunitKtxVersion)
   put("androidx.test.ext", "truth", Builder::setTestExtTruthVersion)
+  put("androidx.test.services", "storage", Builder::setTestServicesStorageVersion)
+  put("androidx.test.services", "test-services", Builder::setTestServicesTestServicesVersion)
   put("com.android.support.test", "orchestrator", Builder::setTestSupportOrchestratorVersion)
   put("com.android.support.test", "rules", Builder::setTestSupportRulesVersion)
   put("com.android.support.test", "runner", Builder::setTestSupportLibraryVersion)

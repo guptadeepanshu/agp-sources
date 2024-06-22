@@ -28,23 +28,20 @@ private const val ANDROID_JVM_PLATFORM_TYPE = "androidJvm"
 private const val JVM_PLATFORM_TYPE = "jvm"
 private const val COMMON_TYPE = "common"
 
-object KotlinPlatformAttribute {
-    @JvmStatic
-    fun configureKotlinPlatformAttribute(configs: List<Configuration>, project: Project) {
-        val kotlinPlatformTypeAttribute =
-            Attribute.of("org.jetbrains.kotlin.platform.type", String::class.java)
+fun configureKotlinPlatformAttribute(configs: List<Configuration>, project: Project) {
+    val kotlinPlatformTypeAttribute =
+        Attribute.of("org.jetbrains.kotlin.platform.type", String::class.java)
 
-        configs.forEach {
-            it.attributes.attribute(
-                kotlinPlatformTypeAttribute,
-                ANDROID_JVM_PLATFORM_TYPE
-            )
-        }
+    configs.forEach {
+        it.attributes.attribute(
+            kotlinPlatformTypeAttribute,
+            ANDROID_JVM_PLATFORM_TYPE
+        )
+    }
 
-        project.dependencies.attributesSchema.attribute(kotlinPlatformTypeAttribute).also {
-            it.compatibilityRules.add(KotlinPlatformCompatibilityRule::class.java)
-            it.disambiguationRules.add(KotlinPlatformDisambiguationRule::class.java)
-        }
+    project.dependencies.attributesSchema.attribute(kotlinPlatformTypeAttribute).also {
+        it.compatibilityRules.add(KotlinPlatformCompatibilityRule::class.java)
+        it.disambiguationRules.add(KotlinPlatformDisambiguationRule::class.java)
     }
 }
 

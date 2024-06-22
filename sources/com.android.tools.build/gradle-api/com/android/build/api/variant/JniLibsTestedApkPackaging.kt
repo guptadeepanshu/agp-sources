@@ -16,11 +16,8 @@
 
 package com.android.build.api.variant
 
-import org.gradle.api.Incubating
-
 /**
  * Build-time properties for packaging native libraries (.so) inside a tested APK [Component].
  */
-@Incubating
 interface JniLibsTestedApkPackaging : JniLibsTestedComponentPackaging, JniLibsApkPackaging {
 }

@@ -15,11 +15,11 @@
  */
 package com.android.builder.packaging;
 
+import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.utils.PathUtils;
 import com.android.zipflinger.Entry;
-import com.android.zipflinger.NoCopyByteArrayOutputStream;
 import com.android.zipflinger.Source;
 import com.android.zipflinger.Sources;
 import com.android.zipflinger.ZipArchive;
@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.collect.ImmutableSortedSet;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.FileVisitOption;
@@ -38,21 +39,55 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
-import java.util.jar.Attributes;
-import java.util.jar.JarFile;
-import java.util.jar.Manifest;
 import java.util.zip.Deflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-public class JarFlinger implements JarCreator {
+public class JarFlinger implements Closeable {
     private final ZipArchive zipArchive;
     private final Predicate<String> filter;
 
     // Compress inputs when building the jar archive.
     private int compressionLevel = Deflater.DEFAULT_COMPRESSION;
+
+    public static final Predicate<String> CLASSES_ONLY =
+            archivePath -> archivePath.endsWith(SdkConstants.DOT_CLASS);
+    public static final Predicate<String> EXCLUDE_CLASSES =
+            archivePath -> !CLASSES_ONLY.test(archivePath);
+
+    /**
+     * A filter that keeps everything but ignores duplicate resources.
+     *
+     * <p>Stateful, hence a factory method rather than an instance.
+     */
+    public static Predicate<String> allIgnoringDuplicateResources() {
+        // Keep track of resources to avoid failing on collisions.
+        Set<String> resources = new HashSet<>();
+        return archivePath ->
+                archivePath.endsWith(SdkConstants.DOT_CLASS) || resources.add(archivePath);
+    }
+
+    public interface Transformer {
+        /**
+         * Transforms the given file.
+         *
+         * @param entryPath the path within the jar file
+         * @param input an input stream of the contents of the file
+         * @return a new input stream if the file is transformed in some way, the same input stream
+         *     if the file is to be kept as is and null if the file should not be packaged.
+         */
+        @Nullable
+        InputStream filter(@NonNull String entryPath, @NonNull InputStream input);
+    }
+
+    public interface Relocator {
+        @NonNull
+        String relocate(@NonNull String entryPath);
+    }
 
     public JarFlinger(@NonNull Path jarFile) throws IOException {
         this(jarFile, null);
@@ -73,12 +108,10 @@ public class JarFlinger implements JarCreator {
         }
     }
 
-    @Override
     public void addDirectory(@NonNull Path directory) throws IOException {
         addDirectory(directory, filter, null);
     }
 
-    @Override
     public void addDirectory(
             @NonNull Path directory,
             @Nullable Predicate<String> filterOverride,
@@ -87,7 +120,6 @@ public class JarFlinger implements JarCreator {
         addDirectory(directory, filterOverride, transformer, new NoOpRelocator());
     }
 
-    @Override
     public void addDirectory(
             @NonNull Path directory,
             @Nullable Predicate<String> filterOverride,
@@ -154,12 +186,10 @@ public class JarFlinger implements JarCreator {
         }
     }
 
-    @Override
     public void addJar(@NonNull Path file) throws IOException {
         addJar(file, filter, null);
     }
 
-    @Override
     public void addJar(@NonNull InputStream inputJar) throws IOException {
         try (ZipInputStream zis = new ZipInputStream(inputJar)) {
             ZipEntry entry;
@@ -182,7 +212,6 @@ public class JarFlinger implements JarCreator {
         }
     }
 
-    @Override
     public void addJar(
             @NonNull Path path,
             @Nullable Predicate<String> filterOverride,
@@ -209,42 +238,21 @@ public class JarFlinger implements JarCreator {
         zipArchive.add(source);
     }
 
-    @Override
     public void addFile(@NonNull String entryPath, @NonNull Path path) throws IOException {
         Source source = Sources.from(path, entryPath, compressionLevel);
         zipArchive.add(source);
     }
 
-    @Override
     public void addEntry(@NonNull String entryPath, @NonNull InputStream input) throws IOException {
         Source source = Sources.from(input, entryPath, compressionLevel);
         zipArchive.add(source);
     }
 
-    @Override
     public void setCompressionLevel(int compressionLevel) {
         this.compressionLevel = compressionLevel;
     }
 
-    @Override
     public void close() throws IOException {
         zipArchive.close();
-    }
-
-    @Override
-    public void setManifestProperties(Map<String, String> properties) throws IOException {
-        Manifest manifest = new Manifest();
-        Attributes global = manifest.getMainAttributes();
-        global.put(Attributes.Name.MANIFEST_VERSION, "1.0.0");
-        properties.forEach(
-                (attributeName, attributeValue) ->
-                        global.put(new Attributes.Name(attributeName), attributeValue));
-
-        NoCopyByteArrayOutputStream os = new NoCopyByteArrayOutputStream(200);
-        manifest.write(os);
-
-        ByteArrayInputStream is = new ByteArrayInputStream(os.buf(), 0, os.getCount());
-        Source source = Sources.from(is, JarFile.MANIFEST_NAME, Deflater.NO_COMPRESSION);
-        zipArchive.add(source);
     }
 }

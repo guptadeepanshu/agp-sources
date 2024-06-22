@@ -1,13 +1,13 @@
 package com.android.build.gradle.internal.lint
 
-import com.android.build.api.component.impl.ScreenshotTestImpl
-import com.android.build.api.component.impl.UnitTestImpl
 import com.android.build.api.dsl.Lint
+import com.android.build.api.variant.HostTest
 import com.android.build.api.variant.impl.HasTestFixtures
 import com.android.build.gradle.internal.TaskManager
-import com.android.build.gradle.internal.component.AndroidTestCreationConfig
+import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
+import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
 import com.android.build.gradle.internal.component.TestCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
@@ -17,6 +17,7 @@ import com.android.build.gradle.internal.tasks.factory.TaskFactory
 import com.android.build.gradle.internal.utils.createTargetSdkVersion
 import com.android.build.gradle.internal.variant.VariantModel
 import com.android.builder.core.ComponentType
+import com.android.builder.core.ComponentTypeImpl
 import com.android.builder.errors.IssueReporter
 import com.android.utils.appendCapitalized
 import org.gradle.api.Project
@@ -313,7 +314,8 @@ class LintTaskManager constructor(
             val key = testComponent.mainVariant.name
             val current = variantsWithTests[key]!!
             when (testComponent) {
-                is AndroidTestCreationConfig -> {
+                is DeviceTestCreationConfig -> {
+                    testComponent.componentType
                     check(current.androidTest == null) {
                         "Component ${current.main} appears to have two conflicting android test components ${current.androidTest} and $testComponent"
                     }
@@ -325,20 +327,25 @@ class LintTaskManager constructor(
                             current.testFixtures
                         )
                 }
-                is UnitTestImpl -> {
-                    check(current.unitTest == null) {
-                        "Component ${current.main} appears to have two conflicting unit test components ${current.unitTest} and $testComponent"
+                is HostTestCreationConfig -> {
+                    when (testComponent.componentType) {
+                        ComponentTypeImpl.UNIT_TEST -> {
+                            check(current.unitTest == null) {
+                                "Component ${current.main} appears to have two conflicting unit test components ${current.unitTest} and $testComponent"
+                            }
+                            variantsWithTests[key] =
+                                VariantWithTests(
+                                    current.main,
+                                    current.androidTest,
+                                    testComponent,
+                                    current.testFixtures
+                                )
+                        }
+
+                        ComponentTypeImpl.SCREENSHOT_TEST -> {
+                            // TODO(karimai): b/337867828 add Screenshot Test support for Lint variant.
+                        }
                     }
-                    variantsWithTests[key] =
-                        VariantWithTests(
-                            current.main,
-                            current.androidTest,
-                            testComponent,
-                            current.testFixtures
-                        )
-                }
-                is ScreenshotTestImpl -> {
-                    // TODO(karimai): add Screenshot Test support for Lint variant.
                 }
                 else -> throw IllegalStateException("Unexpected test component type")
             }

@@ -18,6 +18,7 @@ package com.android.build.gradle.internal.scope
 
 import com.android.SdkConstants
 import com.android.builder.core.BuilderConstants
+import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.capabilities.Capability
 import org.gradle.api.file.Directory
@@ -98,6 +99,12 @@ class ProjectInfo(private val project: Project) {
     fun createTestResources(value: String): TextResource = project.resources.text.fromString(value)
 
     fun hasPlugin(plugin: String): Boolean = project.plugins.hasPlugin(plugin)
+
+    fun <T : Plugin<*>> hasPlugin(pluginClass: Class<T>): Boolean =
+        project.plugins.hasPlugin(pluginClass)
+
+    fun <T : Plugin<*>> findPlugin(pluginClass: Class<T>): T? =
+        project.plugins.findPlugin(pluginClass)
 
     @Deprecated("Use buildDirectory instead")
     fun getBuildDir(): File {

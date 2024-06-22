@@ -63,4 +63,6 @@ PrivacySandboxSdkInternalArtifactType<T : FileSystemLocation>(
     object DEX: PrivacySandboxSdkInternalArtifactType<Directory>(ArtifactKind.DIRECTORY), Replaceable
 
     object GENERATED_PROGUARD_FILE: PrivacySandboxSdkInternalArtifactType<RegularFile>(FILE), Replaceable
+
+    object VALIDATE_PRIVACY_SANDBOX_SDK_CONFIGURATIONS: PrivacySandboxSdkInternalArtifactType<Directory>(DIRECTORY), Replaceable
 }

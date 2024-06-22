@@ -136,17 +136,13 @@ open class LayeredSourceDirectoriesImpl(
     /**
      * Returns the [List] of [DirectoryEntries] for these sources. This [List] can be
      * queried at configuration time provided it is after all variant APIs ran (during
-     * task configuration basically). It is better to use this method a execution time if
+     * task configuration basically). It is better to use this method at execution time if
      * possible.
      */
     fun getVariantSources(): List<DirectoryEntries> = variantSources.get()
 
-    /**
-     * Iterates over all sources in the right order.
-     *
-     * @param action a lambda to run on each [DirectoryEntry]
-     */
-    fun forAllSources(action:(DirectoryEntry) -> Unit) {
+
+    override fun forAllSources(action:(DirectoryEntry) -> Unit) {
         getVariantSources().forEach { directoryEntries ->
             directoryEntries.directoryEntries.forEach { directoryEntry ->
                 action(directoryEntry)

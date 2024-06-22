@@ -61,7 +61,9 @@ interface NdkBuildFlags {
      * The properties you can configure are the same as those available in your
      * [Android.mk](https://developer.android.com/ndk/guides/android_mk.html) and
      * [Application.mk](https://developer.android.com/ndk/guides/application_mk.html)
-     * scripts. The following sample specifies the `Application.mk` for the ndk-build project:
+     * scripts.
+     *
+     * See [the ndk-build script](https://developer.android.com/ndk/guides/ndk-build).
      *
      * ```
      * android {
@@ -70,8 +72,8 @@ interface NdkBuildFlags {
      *     defaultConfig {
      *         externalNativeBuild {
      *             ndkBuild {
-     *                 // Passes an optional argument to ndk-build.
-     *                 arguments "NDK_MODULE_PATH+=../../third_party/modules"
+     *                 // Set number of jobs used for each ndk-build invocation.
+     *                 arguments += "-j16"
      *             }
      *         }
      *     }

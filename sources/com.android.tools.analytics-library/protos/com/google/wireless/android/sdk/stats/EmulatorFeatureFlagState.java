@@ -466,13 +466,49 @@ private static final long serialVersionUID = 0L;
      */
     DOWNLOADABLE_SNAPSHOT(99),
     /**
-     * <pre>
-     * Next tag: 101
-     * </pre>
-     *
      * <code>SYSTEM_BLOB = 100;</code>
      */
     SYSTEM_BLOB(100),
+    /**
+     * <code>NETSIMWEBUI = 101;</code>
+     */
+    NETSIMWEBUI(101),
+    /**
+     * <code>NETSIMCLIUI = 102;</code>
+     */
+    NETSIMCLIUI(102),
+    /**
+     * <code>WIFIPACKETSTREAM = 103;</code>
+     */
+    WIFIPACKETSTREAM(103),
+    /**
+     * <code>SUPPORT_PIXEL_FOLD = 104;</code>
+     */
+    SUPPORT_PIXEL_FOLD(104),
+    /**
+     * <code>DEVICE_KEYBOARD_HAS_ASSIST_KEY = 105;</code>
+     */
+    DEVICE_KEYBOARD_HAS_ASSIST_KEY(105),
+    /**
+     * <code>VULKAN_ALLOCATE_DEVICE_MEMORY_ONLY = 106;</code>
+     */
+    VULKAN_ALLOCATE_DEVICE_MEMORY_ONLY(106),
+    /**
+     * <code>VULKAN_ALLOCATE_HOST_MEMORY = 107;</code>
+     */
+    VULKAN_ALLOCATE_HOST_MEMORY(107),
+    /**
+     * <code>DEVICE_KEYBOARD_QT_RAW_INPUT = 108;</code>
+     */
+    DEVICE_KEYBOARD_QT_RAW_INPUT(108),
+    /**
+     * <pre>
+     * Next tag: 110
+     * </pre>
+     *
+     * <code>UWB = 109;</code>
+     */
+    UWB(109),
     ;
 
     /**
@@ -880,13 +916,49 @@ private static final long serialVersionUID = 0L;
      */
     public static final int DOWNLOADABLE_SNAPSHOT_VALUE = 99;
     /**
-     * <pre>
-     * Next tag: 101
-     * </pre>
-     *
      * <code>SYSTEM_BLOB = 100;</code>
      */
     public static final int SYSTEM_BLOB_VALUE = 100;
+    /**
+     * <code>NETSIMWEBUI = 101;</code>
+     */
+    public static final int NETSIMWEBUI_VALUE = 101;
+    /**
+     * <code>NETSIMCLIUI = 102;</code>
+     */
+    public static final int NETSIMCLIUI_VALUE = 102;
+    /**
+     * <code>WIFIPACKETSTREAM = 103;</code>
+     */
+    public static final int WIFIPACKETSTREAM_VALUE = 103;
+    /**
+     * <code>SUPPORT_PIXEL_FOLD = 104;</code>
+     */
+    public static final int SUPPORT_PIXEL_FOLD_VALUE = 104;
+    /**
+     * <code>DEVICE_KEYBOARD_HAS_ASSIST_KEY = 105;</code>
+     */
+    public static final int DEVICE_KEYBOARD_HAS_ASSIST_KEY_VALUE = 105;
+    /**
+     * <code>VULKAN_ALLOCATE_DEVICE_MEMORY_ONLY = 106;</code>
+     */
+    public static final int VULKAN_ALLOCATE_DEVICE_MEMORY_ONLY_VALUE = 106;
+    /**
+     * <code>VULKAN_ALLOCATE_HOST_MEMORY = 107;</code>
+     */
+    public static final int VULKAN_ALLOCATE_HOST_MEMORY_VALUE = 107;
+    /**
+     * <code>DEVICE_KEYBOARD_QT_RAW_INPUT = 108;</code>
+     */
+    public static final int DEVICE_KEYBOARD_QT_RAW_INPUT_VALUE = 108;
+    /**
+     * <pre>
+     * Next tag: 110
+     * </pre>
+     *
+     * <code>UWB = 109;</code>
+     */
+    public static final int UWB_VALUE = 109;
 
 
     public final int getNumber() {
@@ -1010,6 +1082,15 @@ private static final long serialVersionUID = 0L;
         case 98: return EXTERNAL_BLOB;
         case 99: return DOWNLOADABLE_SNAPSHOT;
         case 100: return SYSTEM_BLOB;
+        case 101: return NETSIMWEBUI;
+        case 102: return NETSIMCLIUI;
+        case 103: return WIFIPACKETSTREAM;
+        case 104: return SUPPORT_PIXEL_FOLD;
+        case 105: return DEVICE_KEYBOARD_HAS_ASSIST_KEY;
+        case 106: return VULKAN_ALLOCATE_DEVICE_MEMORY_ONLY;
+        case 107: return VULKAN_ALLOCATE_HOST_MEMORY;
+        case 108: return DEVICE_KEYBOARD_QT_RAW_INPUT;
+        case 109: return UWB;
         default: return null;
       }
     }

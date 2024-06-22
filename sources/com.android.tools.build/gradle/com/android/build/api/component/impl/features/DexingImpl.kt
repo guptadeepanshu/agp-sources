@@ -17,7 +17,7 @@
 package com.android.build.api.component.impl.features
 
 import com.android.build.api.artifact.MultipleArtifact
-import com.android.build.gradle.internal.component.AndroidTestCreationConfig
+import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig
 import com.android.build.gradle.internal.component.features.DexingCreationConfig
@@ -77,7 +77,7 @@ class DexingImpl(
      */
     override val shouldPackageDesugarLibDex: Boolean
         get() = when (component) {
-            is AndroidTestCreationConfig -> {
+            is DeviceTestCreationConfig -> {
                 when {
                     !isCoreLibraryDesugaringEnabled -> false
                     component.mainVariant.componentType.isAar -> true
@@ -150,7 +150,7 @@ class DexingImpl(
      */
     override val isCoreLibraryDesugaringEnabled: Boolean
         get() {
-            if (component is AndroidTestCreationConfig &&
+            if (component is DeviceTestCreationConfig &&
                 component.services.projectOptions.get(
                     BooleanOption.ENABLE_INSTRUMENTATION_TEST_DESUGARING
                 )) {

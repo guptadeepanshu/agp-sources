@@ -5266,4 +5266,112 @@ public interface AndroidStudioEventOrBuilder extends
    * <code>optional .android_studio.AdbUsageEvent adb_usage_event = 188;</code>
    */
   com.google.wireless.android.sdk.stats.AdbUsageEventOrBuilder getAdbUsageEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = SML_GEOLOCATION_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlGeolocationEvent sml_geolocation_event = 189;</code>
+   * @return Whether the smlGeolocationEvent field is set.
+   */
+  boolean hasSmlGeolocationEvent();
+  /**
+   * <pre>
+   * set when kind = SML_GEOLOCATION_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlGeolocationEvent sml_geolocation_event = 189;</code>
+   * @return The smlGeolocationEvent.
+   */
+  com.google.wireless.android.sdk.stats.SmlGeolocationEvent getSmlGeolocationEvent();
+  /**
+   * <pre>
+   * set when kind = SML_GEOLOCATION_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlGeolocationEvent sml_geolocation_event = 189;</code>
+   */
+  com.google.wireless.android.sdk.stats.SmlGeolocationEventOrBuilder getSmlGeolocationEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = SML_COMPLETION_REQUEST_ERROR
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlCompletionRequestErrorEvent sml_completion_request_error = 190;</code>
+   * @return Whether the smlCompletionRequestError field is set.
+   */
+  boolean hasSmlCompletionRequestError();
+  /**
+   * <pre>
+   * set when kind = SML_COMPLETION_REQUEST_ERROR
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlCompletionRequestErrorEvent sml_completion_request_error = 190;</code>
+   * @return The smlCompletionRequestError.
+   */
+  com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEvent getSmlCompletionRequestError();
+  /**
+   * <pre>
+   * set when kind = SML_COMPLETION_REQUEST_ERROR
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlCompletionRequestErrorEvent sml_completion_request_error = 190;</code>
+   */
+  com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEventOrBuilder getSmlCompletionRequestErrorOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = ADB_DEVICE_CONNECTED
+   * </pre>
+   *
+   * <code>optional .android_studio.DeviceConnectedNotificationEvent device_connected = 191;</code>
+   * @return Whether the deviceConnected field is set.
+   */
+  boolean hasDeviceConnected();
+  /**
+   * <pre>
+   * set when kind = ADB_DEVICE_CONNECTED
+   * </pre>
+   *
+   * <code>optional .android_studio.DeviceConnectedNotificationEvent device_connected = 191;</code>
+   * @return The deviceConnected.
+   */
+  com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent getDeviceConnected();
+  /**
+   * <pre>
+   * set when kind = ADB_DEVICE_CONNECTED
+   * </pre>
+   *
+   * <code>optional .android_studio.DeviceConnectedNotificationEvent device_connected = 191;</code>
+   */
+  com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEventOrBuilder getDeviceConnectedOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = SCREENSHOT_TEST_COMPOSE_PREVIEW
+   * </pre>
+   *
+   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent screenshot_test_compose_preview_event = 192;</code>
+   * @return Whether the screenshotTestComposePreviewEvent field is set.
+   */
+  boolean hasScreenshotTestComposePreviewEvent();
+  /**
+   * <pre>
+   * set when kind = SCREENSHOT_TEST_COMPOSE_PREVIEW
+   * </pre>
+   *
+   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent screenshot_test_compose_preview_event = 192;</code>
+   * @return The screenshotTestComposePreviewEvent.
+   */
+  com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent getScreenshotTestComposePreviewEvent();
+  /**
+   * <pre>
+   * set when kind = SCREENSHOT_TEST_COMPOSE_PREVIEW
+   * </pre>
+   *
+   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent screenshot_test_compose_preview_event = 192;</code>
+   */
+  com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEventOrBuilder getScreenshotTestComposePreviewEventOrBuilder();
 }

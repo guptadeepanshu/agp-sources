@@ -23,7 +23,6 @@ import com.android.SdkConstants.FN_CLASSES_JAR
 import com.android.SdkConstants.FN_RESOURCE_TEXT
 import com.android.SdkConstants.LIBS_FOLDER
 import com.android.build.gradle.internal.caching.DisabledCachingReason
-import com.android.builder.packaging.JarCreator
 import com.android.builder.packaging.JarFlinger
 import com.android.builder.symbols.exportToCompiledJava
 import com.android.ide.common.symbols.rTxtToSymbolTable
@@ -94,9 +93,9 @@ abstract class AarToClassTransform : TransformAction<AarToClassTransform.Params>
             generateRClassJar: Boolean
         ) {
             val ignoreFilter = if (forCompileUse) {
-                JarCreator.allIgnoringDuplicateResources()
+                JarFlinger.allIgnoringDuplicateResources()
             } else {
-                JarCreator.CLASSES_ONLY
+                JarFlinger.CLASSES_ONLY
             }
             JarFlinger(outputJar, ignoreFilter).use { outputApiJar ->
                 // NO_COMPRESSION because the resulting jar isn't packaged into final APK or AAR
@@ -118,21 +117,21 @@ abstract class AarToClassTransform : TransformAction<AarToClassTransform.Params>
 
         private const val LIBS_FOLDER_SLASH = "$LIBS_FOLDER/"
 
-        internal fun ZipFile.copyAllClassesJarsTo(outputApiJar: JarCreator) {
+        internal fun ZipFile.copyAllClassesJarsTo(outputApiJar: JarFlinger) {
             entries()
                 .asSequence()
                 .filter(::isClassesJar)
                 .forEach { copyEntryTo(it, outputApiJar) }
         }
 
-        private fun ZipFile.copyEntryTo(entry: ZipEntry, outputApiJar: JarCreator) {
+        private fun ZipFile.copyEntryTo(entry: ZipEntry, outputApiJar: JarFlinger) {
             getInputStream(entry).use {
                 outputApiJar.addJar(it)
             }
         }
 
         internal fun generateRClassJarFromRTxt(
-            outputApiJar: JarCreator,
+            outputApiJar: JarFlinger,
             inputAar: ZipFile
         ) {
             val manifest = inputAar.getEntry(FN_ANDROID_MANIFEST_XML)

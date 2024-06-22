@@ -133,7 +133,7 @@ class DependencyConfigurator(
         val enableJetifier = projectServices.projectOptions.get(BooleanOption.ENABLE_JETIFIER)
 
         if (!useAndroidX && !enableJetifier) {
-            project.configurations.all { configuration ->
+            project.configurations.configureEach { configuration ->
                 if (configuration.isCanBeResolved) {
                     configuration.incoming.afterResolve(
                         AndroidXDependencyCheck.AndroidXDisabledJetifierDisabled(
@@ -396,7 +396,7 @@ class DependencyConfigurator(
         // The Kotlin Kapt plugin should query for PROCESSED_JAR, but it is currently querying for
         // JAR, so we need to have the workaround below to make it get PROCESSED_JAR. See
         // http://issuetracker.google.com/111009645.
-        project.configurations.all { configuration: Configuration ->
+        project.configurations.configureEach { configuration: Configuration ->
             if (configuration.name.startsWith("kapt")) {
                 configuration
                     .attributes
@@ -482,70 +482,88 @@ class DependencyConfigurator(
     ): DependencyConfigurator {
         fun configureExtractSdkShimTransforms(experimentalProperties: Map<String, Any>) {
             val extractSdkShimTransformParamConfig =
-                    { reg: TransformSpec<ExtractSdkShimTransform.Parameters> ->
-                        val experimentalPropertiesApiGenerator: Dependency? =
-                                ModulePropertyKey.Dependencies.ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR
-                                        .getValue(experimentalProperties)?.single()
-                        val apigeneratorArtifact: Dependency =
-                                experimentalPropertiesApiGenerator
-                                        ?: project.dependencies.create(
-                                                projectServices.projectOptions.get(StringOption.ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR)
-                                                        ?: MavenCoordinates.ANDROIDX_PRIVACY_SANDBOX_SDK_API_GENERATOR.toString()
-                                        ) as Dependency
+                { reg: TransformSpec<ExtractSdkShimTransform.Parameters> ->
+                    val experimentalPropertiesApiGenerator: Dependency? =
+                        ModulePropertyKey.Dependencies.ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR
+                            .getValue(experimentalProperties)?.single()
+                    val apigeneratorArtifact: Dependency =
+                        experimentalPropertiesApiGenerator
+                            ?: project.dependencies.create(
+                                projectServices.projectOptions.get(StringOption.ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR)
+                                    ?: MavenCoordinates.ANDROIDX_PRIVACYSANDBOX_TOOLS_TOOLS_APIGENERATOR.toString()
+                            ) as Dependency
 
-                        val experimentalPropertiesRuntimeApigeneratorDependencies =
-                                ModulePropertyKey.Dependencies.ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR_GENERATED_RUNTIME_DEPENDENCIES.getValue(experimentalProperties)
-                        val runtimeDependenciesForShimSdk: List<Dependency> =
-                                experimentalPropertiesRuntimeApigeneratorDependencies
-                                        ?: (projectServices.projectOptions
-                                                .get(StringOption.ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR_GENERATED_RUNTIME_DEPENDENCIES)
-                                                ?.split(",")
-                                                ?: listOf(MavenCoordinates.ORG_JETBRAINS_KOTLINX_KOTLINX_COROUTINES_ANDROID.toString())).map {
-                                            project.dependencies.create(it)
-                                        }
-
-                        val params = reg.parameters
-                        val apiGeneratorConfiguration =
-                            project.configurations.detachedConfiguration(apigeneratorArtifact)
-                        apiGeneratorConfiguration.isCanBeConsumed = false
-                        apiGeneratorConfiguration.isCanBeResolved = true
-                        params.apiGenerator.setFrom(apiGeneratorConfiguration)
-                        params.buildTools.initialize(
-                                projectServices.buildServiceRegistry,
-                                compileSdkHashString,
-                                buildToolsRevision)
-
-                        // For kotlin compilation
-                        params.bootstrapClasspath.from(bootstrapCreationConfig.fullBootClasspath)
-
-                        val kotlinCompiler = project.configurations.detachedConfiguration(
-                                project.dependencies.create(MavenCoordinates.KOTLIN_COMPILER.toString())
+                    val experimentalPropertiesRuntimeApigeneratorDependencies =
+                        ModulePropertyKey.Dependencies.ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR_GENERATED_RUNTIME_DEPENDENCIES.getValue(
+                            experimentalProperties
                         )
-                        kotlinCompiler.isCanBeConsumed = false
-                        kotlinCompiler.isCanBeResolved = true
-                        params.kotlinCompiler.from(kotlinCompiler)
-                        params.requireServices.set(
-                                projectServices.projectOptions[BooleanOption.PRIVACY_SANDBOX_SDK_REQUIRE_SERVICES])
-                        val configuration = project.configurations.detachedConfiguration(
-                                *runtimeDependenciesForShimSdk.toTypedArray())
-                        configuration.isCanBeConsumed = false
-                        configuration.isCanBeResolved = true
+                    val runtimeDependenciesForShimSdk: List<Dependency> =
+                        experimentalPropertiesRuntimeApigeneratorDependencies
+                            ?: (projectServices.projectOptions
+                                .get(StringOption.ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR_GENERATED_RUNTIME_DEPENDENCIES)
+                                ?.split(",")
+                                ?: listOf(
+                                    MavenCoordinates.ORG_JETBRAINS_KOTLIN_KOTLIN_STDLIB.toString(),
+                                    MavenCoordinates.ORG_JETBRAINS_KOTLINX_KOTLINX_COROUTINES_ANDROID.toString(),
+                                    MavenCoordinates.ANDROIDX_PRIVACYSANDBOX_UI_UI_CORE.toString(),
+                                    MavenCoordinates.ANDROIDX_PRIVACYSANDBOX_UI_UI_CLIENT.toString(),
+                                ))
+                                .map {
+                                    project.dependencies.create(it)
+                                }
 
-                        configuration.attributes {
-                            it.attribute(BuildTypeAttr.ATTRIBUTE,
-                                    project.objects.named(BuildTypeAttr::class.java,
-                                            BuilderConstants.RELEASE))
-                        }
-                        params.runtimeDependencies.from(configuration.incoming.artifactView {
-                            config: ArtifactView.ViewConfiguration ->
-                            config.attributes.apply {
-                                attribute(Usage.USAGE_ATTRIBUTE,
-                                        project.objects.named(Usage::class.java, Usage.JAVA_API))
-                                attribute(AndroidArtifacts.ARTIFACT_TYPE,
-                                        AndroidArtifacts.ArtifactType.CLASSES_JAR.type)
-                            }
-                        }.artifacts.artifactFiles.files)
+                    val params = reg.parameters
+                    val apiGeneratorConfiguration =
+                        project.configurations.detachedConfiguration(apigeneratorArtifact)
+                    apiGeneratorConfiguration.isCanBeConsumed = false
+                    apiGeneratorConfiguration.isCanBeResolved = true
+                    params.apiGenerator.setFrom(apiGeneratorConfiguration)
+                    params.buildTools.initialize(
+                        projectServices.buildServiceRegistry,
+                        compileSdkHashString,
+                        buildToolsRevision
+                    )
+
+                    // For kotlin compilation
+                    params.bootstrapClasspath.from(bootstrapCreationConfig.fullBootClasspath)
+
+                    val kotlinCompiler = project.configurations.detachedConfiguration(
+                        project.dependencies.create(MavenCoordinates.ORG_JETBRAINS_KOTLIN_KOTLIN_COMPILER_EMBEDDABLE.toString())
+                    )
+                    kotlinCompiler.isCanBeConsumed = false
+                    kotlinCompiler.isCanBeResolved = true
+                    params.kotlinCompiler.from(kotlinCompiler)
+                    params.requireServices.set(
+                        projectServices.projectOptions[BooleanOption.PRIVACY_SANDBOX_SDK_REQUIRE_SERVICES]
+                    )
+                    val configuration = project.configurations.detachedConfiguration(
+                        *runtimeDependenciesForShimSdk.toTypedArray()
+                    )
+                    configuration.isCanBeConsumed = false
+                    configuration.isCanBeResolved = true
+
+                    configuration.attributes {
+                        it.attribute(
+                            BuildTypeAttr.ATTRIBUTE,
+                            project.objects.named(
+                                BuildTypeAttr::class.java,
+                                BuilderConstants.RELEASE
+                            )
+                        )
                     }
+                    params.runtimeDependencies.from(configuration.incoming.artifactView { config: ArtifactView.ViewConfiguration ->
+                        config.attributes.apply {
+                            attribute(
+                                Usage.USAGE_ATTRIBUTE,
+                                project.objects.named(Usage::class.java, Usage.JAVA_API)
+                            )
+                            attribute(
+                                AndroidArtifacts.ARTIFACT_TYPE,
+                                AndroidArtifacts.ArtifactType.CLASSES_JAR.type
+                            )
+                        }
+                    }.artifacts.artifactFiles.files)
+                }
 
             fun registerExtractSdkShimTransform(usage: String) {
                 project.dependencies.registerTransform(

@@ -105,6 +105,7 @@ public abstract class BaseVariantOutputImpl implements BaseVariantOutput {
         return (TaskProvider<ProcessAndroidResources>) taskContainer.getProcessAndroidResTask();
     }
 
+    @SuppressWarnings("EagerGradleConfiguration") // suppress because it's deprecated
     @Override
     @NonNull
     public ManifestProcessorTask getProcessManifest() {
@@ -124,6 +125,7 @@ public abstract class BaseVariantOutputImpl implements BaseVariantOutput {
         return (TaskProvider<ManifestProcessorTask>) taskContainer.getProcessManifestTask();
     }
 
+    @SuppressWarnings("EagerGradleConfiguration") // suppress because it's deprecated
     @Nullable
     @Override
     public Task getAssemble() {

@@ -21,7 +21,7 @@ import android.databinding.tool.DataBindingBuilder
 import android.databinding.tool.processing.ScopedException
 import android.databinding.tool.store.LayoutInfoInput
 import android.databinding.tool.util.L
-import com.android.build.gradle.internal.component.AndroidTestCreationConfig
+import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
@@ -282,7 +282,7 @@ abstract class DataBindingGenBaseClassesTask : AndroidVariantTask() {
             // TODO(b/138780301): Since we do not generate compile time R class in android tests,
             //  we don't want to perform symbol lookups to determine R package of resources during
             //  view binding.
-            task.enableRPackageLookup = creationConfig !is AndroidTestCreationConfig
+            task.enableRPackageLookup = creationConfig !is DeviceTestCreationConfig
                     && isNonTransitiveR
 
             if (task.enableRPackageLookup) {

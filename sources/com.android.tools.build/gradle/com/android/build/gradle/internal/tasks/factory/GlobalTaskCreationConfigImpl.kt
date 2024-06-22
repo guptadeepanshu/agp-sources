@@ -34,9 +34,9 @@ import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.attribution.BuildAnalyzerIssueReporter
 import com.android.build.gradle.internal.core.SettingsOptions
-import com.android.build.gradle.internal.core.dsl.features.AndroidTestOptionsDslInfo
+import com.android.build.gradle.internal.core.dsl.features.DeviceTestOptionsDslInfo
 import com.android.build.gradle.internal.core.dsl.features.UnitTestOptionsDslInfo
-import com.android.build.gradle.internal.core.dsl.impl.features.AndroidTestOptionsDslInfoImpl
+import com.android.build.gradle.internal.core.dsl.impl.features.DeviceTestOptionsDslInfoImpl
 import com.android.build.gradle.internal.core.dsl.impl.features.UnitTestOptionsDslInfoImpl
 import com.android.build.gradle.internal.dsl.CommonExtensionImpl
 import com.android.build.gradle.internal.dsl.LanguageSplitOptions
@@ -64,7 +64,9 @@ import org.gradle.api.artifacts.Configuration
 import org.gradle.api.attributes.AttributeContainer
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
+import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.provider.Provider
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
 class GlobalTaskCreationConfigImpl(
     project: Project,
@@ -178,8 +180,8 @@ class GlobalTaskCreationConfigImpl(
     override val testCoverage: TestCoverage
         get() = extension.testCoverage
 
-    override val androidTestOptions: AndroidTestOptionsDslInfo
-        get() = AndroidTestOptionsDslInfoImpl(extension)
+    override val androidTestOptions: DeviceTestOptionsDslInfo
+        get() = DeviceTestOptionsDslInfoImpl(extension)
 
     override val unitTestOptions: UnitTestOptionsDslInfo
         get() = UnitTestOptionsDslInfoImpl(extension)
@@ -187,6 +189,9 @@ class GlobalTaskCreationConfigImpl(
 
     override val testServers: List<TestServer>
         get() = oldExtension.testServers
+
+    override val kotlinOptions: KotlinJvmOptions?
+        get() = (oldExtension as ExtensionAware).extensions.findByName("kotlinOptions") as? KotlinJvmOptions
 
     override val namespacedAndroidResources: Boolean
         get() = extension.androidResources.namespaced

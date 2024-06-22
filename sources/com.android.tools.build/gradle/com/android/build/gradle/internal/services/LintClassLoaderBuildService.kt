@@ -29,7 +29,8 @@ import java.net.URI
 import javax.annotation.concurrent.GuardedBy
 
 /**
- * Build service used to remove locks from jar files from lint's [URLClassLoader] after all lint
+ * Build service used to (1) cache lint classloader jar hashes during a build to avoid rehashing the
+ * jars repeatedly, and (2) remove locks from jar files from lint's [URLClassLoader] after all lint
  * tasks have finished executing.
  */
 abstract class LintClassLoaderBuildService :

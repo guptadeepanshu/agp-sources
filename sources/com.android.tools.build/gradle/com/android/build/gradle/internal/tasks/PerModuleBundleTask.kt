@@ -40,7 +40,6 @@ import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.dexing.DexingType
 import com.android.builder.files.NativeLibraryAbiPredicate
-import com.android.builder.packaging.JarCreator
 import com.android.builder.packaging.JarFlinger
 import com.android.bundle.RuntimeEnabledSdkConfigProto
 import org.gradle.api.file.ConfigurableFileCollection
@@ -160,7 +159,6 @@ abstract class PerModuleBundleTask: NonIncrementalTask() {
                     !path.uppercase(Locale.US).endsWith("MANIFEST.MF")
                 }
 
-
             jarCreator.addDirectory(
                 assetsFilesDirectory.get().asFile.toPath(),
                 null,
@@ -187,22 +185,26 @@ abstract class PerModuleBundleTask: NonIncrementalTask() {
                 if (hasFeatureDexFiles()) featureJavaResFiles.files else setOf(javaResJar.asFile.get())
             addHybridFolder(
                 jarCreator, javaResFilesSet, Relocator("root"),
-                JarCreator.EXCLUDE_CLASSES
+                JarFlinger.EXCLUDE_CLASSES
             )
             addHybridFolder(
                 jarCreator,
                 appMetadata.orNull?.asFile?.let { metadataFile -> setOf(metadataFile) }
                     ?: setOf(),
                 Relocator("root/META-INF/com/android/build/gradle"),
-                JarCreator.EXCLUDE_CLASSES)
+                JarFlinger.EXCLUDE_CLASSES)
             addHybridFolder(
                 jarCreator, versionControlInfoMetadata.orNull?.asFile?.let {
                     metadataFile -> setOf(metadataFile)
                 } ?: setOf(),
                 Relocator("root/META-INF/"),
-                JarCreator.EXCLUDE_CLASSES)
+                JarFlinger.EXCLUDE_CLASSES)
 
-            addHybridFolder(jarCreator, nativeLibsFiles.files, fileFilter = abiFilter)
+            addHybridFolder(
+                jarCreator,
+                nativeLibsFiles.files,
+                { entryPath -> entryPath }, // don't relocate
+                fileFilter = abiFilter)
 
             if (privacySandboxSdkRuntimeConfigFile.isPresent) {
                 val runtimeConfigFile = privacySandboxSdkRuntimeConfigFile.get().asFile
@@ -221,10 +223,11 @@ abstract class PerModuleBundleTask: NonIncrementalTask() {
     }
 
     private fun addHybridFolder(
-        jarCreator: JarCreator,
+        jarCreator: JarFlinger,
         files: Iterable<File>,
-        relocator: JarCreator.Relocator? = null,
-        fileFilter: Predicate<String>? = null ) {
+        relocator: JarFlinger.Relocator,
+        fileFilter: Predicate<String>? = null
+    ) {
         // in this case the artifact is a folder containing things to add
         // to the zip. These can be file to put directly, jars to copy the content
         // of, or folders
@@ -233,27 +236,15 @@ abstract class PerModuleBundleTask: NonIncrementalTask() {
                 if (file.name.endsWith(SdkConstants.DOT_JAR)) {
                     jarCreator.addJar(file.toPath(), fileFilter, relocator)
                 } else if (fileFilter == null || fileFilter.test(file.name)) {
-                    if (relocator != null) {
-                        jarCreator.addFile(relocator.relocate(file.name), file.toPath())
-                    } else {
-                        jarCreator.addFile(file.name, file.toPath())
-                    }
+                    jarCreator.addFile(relocator.relocate(file.name), file.toPath())
                 }
-            } else if (file.exists()){
-                if (relocator != null) {
-                    jarCreator.addDirectory(
-                        file.toPath(),
-                        fileFilter,
-                        null,
-                        relocator
-                    )
-                } else {
-                    jarCreator.addDirectory(
-                        file.toPath(),
-                        fileFilter,
-                        null
-                    )
-                }
+            } else if (file.exists()) {
+                jarCreator.addDirectory(
+                    file.toPath(),
+                    fileFilter,
+                    null,
+                    relocator
+                )
             }
         }
     }
@@ -426,7 +417,7 @@ abstract class PerModuleBundleTask: NonIncrementalTask() {
     }
 }
 
-private class Relocator(private val prefix: String): JarCreator.Relocator {
+private class Relocator(private val prefix: String): JarFlinger.Relocator {
     override fun relocate(entryPath: String) = "$prefix/$entryPath"
 }
 
@@ -443,7 +434,7 @@ private class Relocator(private val prefix: String): JarCreator.Relocator {
  * When dealing with a single feature (base) in legacy multidex, we must not rename the
  * main dex file (classes.dex) as it contains the bootstrap code for the application.
  */
-private class DexRelocator(private val prefix: String): JarCreator.Relocator {
+private class DexRelocator(private val prefix: String): JarFlinger.Relocator {
     // first valid classes.dex with an index starts at 2.
     val index = AtomicInteger(2)
     val classesDexNameUsed = AtomicBoolean(false)
@@ -465,7 +456,7 @@ private class DexRelocator(private val prefix: String): JarCreator.Relocator {
 }
 
 
-private class ResRelocator : JarCreator.Relocator {
+private class ResRelocator : JarFlinger.Relocator {
     override fun relocate(entryPath: String) = when(entryPath) {
         SdkConstants.FN_ANDROID_MANIFEST_XML -> "manifest/" + SdkConstants.FN_ANDROID_MANIFEST_XML
         else -> entryPath

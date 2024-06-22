@@ -17,7 +17,7 @@ package com.android.build.gradle.internal.test
 
 import com.android.build.api.variant.impl.BuiltArtifactsImpl
 import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
-import com.android.build.gradle.internal.component.AndroidTestCreationConfig
+import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.test.BuiltArtifactsSplitOutputMatcher.computeBestOutput
 import com.android.builder.testing.api.DeviceConfigProvider
 import org.gradle.api.file.Directory
@@ -27,11 +27,11 @@ import org.gradle.api.tasks.Input
 import java.io.File
 
 /**
- * Implementation of [TestData] on top of a [AndroidTestCreationConfig]
+ * Implementation of [TestData] on top of a [DeviceTestCreationConfig]
  */
 class TestDataImpl(
     namespace: Provider<String>,
-    testConfig: AndroidTestCreationConfig,
+    testConfig: DeviceTestCreationConfig,
     testApkDir: Provider<Directory>,
     testedApksDir: Provider<Directory>?,
     privacySandboxSdkApks: FileCollection?,

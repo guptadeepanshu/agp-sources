@@ -21,7 +21,6 @@ import com.android.SdkConstants.FN_RESOURCE_STATIC_LIBRARY
 import com.android.SdkConstants.FN_R_DEF_TXT
 import com.android.build.gradle.internal.res.runAapt2Compile
 import com.android.builder.internal.aapt.v2.Aapt2RenamingConventions
-import com.android.builder.packaging.JarCreator
 import com.android.builder.packaging.JarFlinger
 import com.android.ide.common.resources.CompileResourceRequest
 import com.android.ide.common.symbols.SymbolIo

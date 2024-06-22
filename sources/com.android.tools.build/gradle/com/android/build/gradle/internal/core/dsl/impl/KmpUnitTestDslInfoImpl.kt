@@ -18,10 +18,12 @@ package com.android.build.gradle.internal.core.dsl.impl
 
 import com.android.build.api.component.impl.ComponentIdentityImpl
 import com.android.build.api.dsl.KotlinMultiplatformAndroidExtension
+import com.android.build.api.variant.HostTestBuilder
 import com.android.build.gradle.internal.core.dsl.KmpComponentDslInfo
 import com.android.build.gradle.internal.core.dsl.KmpVariantDslInfo
 import com.android.build.gradle.internal.core.dsl.HostTestComponentDslInfo
 import com.android.build.api.variant.ResValue
+import com.android.build.gradle.internal.core.dsl.ComponentDslInfo
 import com.android.build.gradle.internal.core.dsl.features.AndroidResourcesDslInfo
 import com.android.build.gradle.internal.dsl.AaptOptions
 import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidExtensionImpl
@@ -59,13 +61,6 @@ class KmpUnitTestDslInfoImpl(
             }
     }
 
-    override val isUnitTestCoverageEnabled: Boolean
-        get() = testOnJvmConfig.enableCoverage
-
-    // This is about a UnitTest config, so ScreenshotTest coverage isn't within the scope.
-    override val isScreenshotTestCoverageEnabled: Boolean
-        get() = false
-
     override val androidResourcesDsl: AndroidResourcesDslInfo? by lazy {
         if (testOnJvmConfig.isIncludeAndroidResources) {
             object : AndroidResourcesDslInfo {
@@ -88,4 +83,18 @@ class KmpUnitTestDslInfoImpl(
             null
         }
     }
+
+    // TODO: Provide a generic setting on KMP extension for code coverage with running host tests
+    override val dslDefinedHostTests: List<ComponentDslInfo.DslDefinedHostTest>
+        get() = listOf(
+            ComponentDslInfo.DslDefinedHostTest(HostTestBuilder.UNIT_TEST_TYPE,
+                testOnJvmConfig.enableCoverage)
+        )
+
+    override val dslDefinedDeviceTests: List<ComponentDslInfo.DslDefinedDeviceTest> =
+        (extension as KotlinMultiplatformAndroidExtensionImpl).androidTestOnDeviceOptions?.let {
+            listOf(
+                ComponentDslInfo.DslDefinedDeviceTest(it.enableCoverage)
+            )
+        } ?: listOf()
 }

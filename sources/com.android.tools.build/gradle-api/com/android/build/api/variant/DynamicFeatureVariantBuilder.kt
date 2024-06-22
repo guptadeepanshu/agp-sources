@@ -24,6 +24,7 @@ package com.android.build.api.variant
 interface DynamicFeatureVariantBuilder : VariantBuilder,
     HasDeviceTestsBuilder,
     HasAndroidTestBuilder,
+    HasHostTestsBuilder,
     HasUnitTestBuilder,
     HasTestFixturesBuilder,
     GeneratesApkBuilder

@@ -106,7 +106,7 @@ abstract class AndroidComponentsExtensionImpl<
         }
 
         dslExtension.buildTypeExtensionType?.let {
-            commonExtension.buildTypes.all { buildType ->
+            commonExtension.buildTypes.configureEach { buildType ->
                 buildType.extensions.add(
                     dslExtension.dslName,
                     it
@@ -114,7 +114,7 @@ abstract class AndroidComponentsExtensionImpl<
             }
         }
         dslExtension.productFlavorExtensionType?.let {
-            commonExtension.productFlavors.all {
+            commonExtension.productFlavors.configureEach {
                 productFlavor -> productFlavor.extensions.add(
                     dslExtension.dslName,
                     it

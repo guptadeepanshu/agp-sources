@@ -35,7 +35,7 @@ import com.android.build.api.variant.impl.ApkPackagingImpl
 import com.android.build.api.variant.impl.DeviceTestBuilderImpl
 import com.android.build.api.variant.impl.ResValueKeyImpl
 import com.android.build.api.variant.impl.SigningConfigImpl
-import com.android.build.gradle.internal.component.AndroidTestCreationConfig
+import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.LibraryCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
@@ -82,7 +82,7 @@ open class DeviceTestImpl @Inject constructor(
     variantServices: VariantServices,
     taskCreationServices: TaskCreationServices,
     global: GlobalTaskCreationConfig,
-    defaultDeviceTestBuilder: DeviceTestBuilderImpl,
+    private val deviceTestBuilder: DeviceTestBuilderImpl,
 ) : TestComponentImpl<AndroidTestComponentDslInfo>(
     componentIdentity,
     buildFeatureValues,
@@ -97,7 +97,7 @@ open class DeviceTestImpl @Inject constructor(
     variantServices,
     taskCreationServices,
     global,
-), AndroidTest, AndroidTestCreationConfig {
+), AndroidTest, DeviceTestCreationConfig {
 
     // ---------------------------------------------------------------------------------------------
     // PUBLIC API
@@ -110,7 +110,7 @@ open class DeviceTestImpl @Inject constructor(
         get() = mainVariant.minSdk
 
     override val targetSdk: AndroidVersion
-        get() = global.androidTestOptions.targetSdkVersion ?: getMainTargetSdkVersion()
+        get() = deviceTestBuilder.targetSdkVersion
 
     override val targetSdkVersion: AndroidVersion
         get() = targetSdk
@@ -212,12 +212,13 @@ open class DeviceTestImpl @Inject constructor(
     override val dexing: DexingCreationConfig by lazy(LazyThreadSafetyMode.NONE) {
         DexingImpl(
             this,
-            defaultDeviceTestBuilder._enableMultiDex,
+            deviceTestBuilder._enableMultiDex,
             dslInfo.dexingDslInfo.multiDexKeepProguard,
             dslInfo.dexingDslInfo.multiDexKeepFile,
             internalServices,
         )
     }
+    override val codeCoverageEnabled: Boolean = deviceTestBuilder._enableCoverage
 
     // ---------------------------------------------------------------------------------------------
     // INTERNAL API
@@ -225,7 +226,9 @@ open class DeviceTestImpl @Inject constructor(
 
     // Even if android resources is disabled in a library project, we still need to merge and link
     // external resources to create the test apk.
-    override val androidResourcesCreationConfig: AndroidResourcesCreationConfig by lazy(LazyThreadSafetyMode.NONE) {
+    override val androidResourcesCreationConfig: AndroidResourcesCreationConfig by lazy(
+        LazyThreadSafetyMode.NONE
+    ) {
         AndroidResourcesCreationConfigImpl(
             this,
             dslInfo,
@@ -246,12 +249,17 @@ open class DeviceTestImpl @Inject constructor(
         }
     }
 
-    override val manifestPlaceholdersCreationConfig: ManifestPlaceholdersCreationConfig by lazy(LazyThreadSafetyMode.NONE) {
+    override val manifestPlaceholdersCreationConfig: ManifestPlaceholdersCreationConfig by lazy(
+        LazyThreadSafetyMode.NONE
+    ) {
         createManifestPlaceholdersCreationConfig(
-                dslInfo.manifestPlaceholdersDslInfo?.placeholders)
+            dslInfo.manifestPlaceholdersDslInfo?.placeholders
+        )
     }
 
-    override val renderscriptCreationConfig: RenderscriptCreationConfig? by lazy(LazyThreadSafetyMode.NONE) {
+    override val renderscriptCreationConfig: RenderscriptCreationConfig? by lazy(
+        LazyThreadSafetyMode.NONE
+    ) {
         if (buildFeatures.renderScript) {
             RenderscriptCreationConfigImpl(
                 dslInfo.renderscriptDslInfo!!,
@@ -272,7 +280,9 @@ open class DeviceTestImpl @Inject constructor(
         )
     }
 
-    final override val optimizationCreationConfig: OptimizationCreationConfig by lazy(LazyThreadSafetyMode.NONE) {
+    final override val optimizationCreationConfig: OptimizationCreationConfig by lazy(
+        LazyThreadSafetyMode.NONE
+    ) {
         OptimizationCreationConfigImpl(
             this,
             dslInfo.optimizationDslInfo,
@@ -302,7 +312,9 @@ open class DeviceTestImpl @Inject constructor(
             mainVariant.applicationId
         }
 
-    override val instrumentationRunnerArguments: MapProperty<String, String> by lazy(LazyThreadSafetyMode.NONE) {
+    override val instrumentationRunnerArguments: MapProperty<String, String> by lazy(
+        LazyThreadSafetyMode.NONE
+    ) {
         internalServices.mapPropertyOf(
             String::class.java,
             String::class.java,
@@ -313,9 +325,6 @@ open class DeviceTestImpl @Inject constructor(
     override val shouldPackageProfilerDependencies: Boolean = false
 
     override val advancedProfilingTransforms: List<String> = emptyList()
-
-    override val isAndroidTestCoverageEnabled: Boolean
-        get() = dslInfo.isAndroidTestCoverageEnabled
 
     // Only instrument library androidTests. In app modules, the main classes are instrumented.
     override val useJacocoTransformInstrumentation: Boolean
@@ -351,4 +360,3 @@ open class DeviceTestImpl @Inject constructor(
     // can sync all these device tests correctly.
     val artifactName = ComponentTypeImpl.ANDROID_TEST.artifactName
 }
-

@@ -16,8 +16,10 @@
 
 package com.android.build.gradle.tasks
 
+import com.android.SdkConstants
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInternalArtifactType
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
+import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.configureVariantProperties
@@ -27,23 +29,32 @@ import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.internal.packaging.IncrementalPackager
 import com.android.bundle.Config
 import com.android.bundle.SdkBundleConfigProto
+import com.android.bundle.SdkMetadataOuterClass
+import com.android.bundle.SdkMetadataOuterClass.SdkMetadata
 import com.android.bundle.SdkModulesConfigOuterClass
 import com.android.bundle.SdkModulesConfigOuterClass.SdkModulesConfig
 import com.android.tools.build.bundletool.commands.BuildSdkBundleCommand
 import com.android.tools.build.bundletool.model.version.BundleToolVersion
 import com.google.common.collect.ImmutableList
 import org.gradle.api.GradleException
+import org.gradle.api.attributes.Usage
+import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Nested
+import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.work.DisableCachingByDefault
+import java.io.File
+import java.util.zip.ZipFile
 
 /**
  * Task to invoke the bundle tool command to create the final ASB bundle for privacy sandbox sdk
@@ -74,11 +85,19 @@ abstract class PackagePrivacySandboxSdkBundle: NonIncrementalTask() {
     @get:Input
     abstract val bundleToolVersion: Property<String>
 
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.NONE)
+    @get:Optional
+    abstract val validatedSdkConfigurations: DirectoryProperty
+
     @get:Nested
     abstract val sdkBundleProperties: SdkBundleProperties
 
-    @get:Nested
-    abstract val sdkDependencies: ListProperty<SdkBundleDependencyEntry>
+    @get:Classpath
+    abstract val sdkArchives: ConfigurableFileCollection
+
+    @get:Classpath
+    abstract val requiredSdkArchives: ConfigurableFileCollection
 
     override fun doTaskAction() {
         val modulesPaths = ImmutableList.of(baseModuleZip.get().asFile.toPath())
@@ -111,21 +130,35 @@ abstract class PackagePrivacySandboxSdkBundle: NonIncrementalTask() {
                     sdkBundleProperties.compatSdkProviderClassName.get()
                 ).build()
 
+        val requiredSdkPackageNames = requiredSdkArchives.files
+                .map(this::getSdkMetadataFromAsar)
+                .map(SdkMetadata::getPackageName)
+                .toSet()
+
         val sdkBundleConfig =
-            SdkBundleConfigProto
-                .SdkBundleConfig
-                .newBuilder()
-                .addAllSdkDependencies(
-                    sdkDependencies.get().map { dep ->
-                        SdkBundleConfigProto.SdkBundle.newBuilder()
-                            .setPackageName(dep.packageName.get())
-                            .setVersionMajor(dep.version.major.get())
-                            .setVersionMinor(dep.version.minor.get())
-                            .setBuildTimeVersionPatch(dep.version.patch.get())
-                            .setCertificateDigest(dep.certificateDigest.get())
-                            .build()
-                    }
-                ).build()
+                SdkBundleConfigProto
+                        .SdkBundleConfig
+                        .newBuilder()
+                        .addAllSdkDependencies(
+                                sdkArchives.files
+                                        .map(this::getSdkMetadataFromAsar)
+                                        .map { sdkMetadata ->
+                                            SdkBundleConfigProto.SdkBundle.newBuilder()
+                                                    .setPackageName(sdkMetadata.packageName)
+                                                    .setVersionMajor(sdkMetadata.sdkVersion.major)
+                                                    .setVersionMinor(sdkMetadata.sdkVersion.minor)
+                                                    .setBuildTimeVersionPatch(sdkMetadata.sdkVersion.patch)
+                                                    .setCertificateDigest(sdkMetadata.certificateDigest)
+                                                    .setDependencyType(
+                                                            if (sdkMetadata.packageName in requiredSdkPackageNames) {
+                                                                SdkBundleConfigProto.SdkDependencyType.SDK_DEPENDENCY_TYPE_REQUIRED
+                                                            } else {
+                                                                SdkBundleConfigProto.SdkDependencyType.SDK_DEPENDENCY_TYPE_OPTIONAL
+                                                            }
+                                                    )
+                                                    .build()
+                                        }
+                        ).build()
 
         val command =
             BuildSdkBundleCommand
@@ -143,6 +176,20 @@ abstract class PackagePrivacySandboxSdkBundle: NonIncrementalTask() {
         )
 
         command.build().execute()
+    }
+
+    private fun getSdkMetadataFromAsar(sdkArchiveFile: File): SdkMetadataOuterClass.SdkMetadata {
+        if (sdkArchiveFile.extension != SdkConstants.EXT_ASAR) {
+            throw RuntimeException("${sdkArchiveFile.absolutePath} is not a valid Privacy Sandbox SDK archive file." +
+                    "File extension must be '${SdkConstants.DOT_ASAR}' rather than '.${sdkArchiveFile.extension}'")
+        }
+        ZipFile(sdkArchiveFile).use { openAsar ->
+            val sdkMetadataEntry = openAsar.getEntry("SdkMetadata.pb")
+            val sdkMetadataBytes = openAsar.getInputStream(sdkMetadataEntry).readBytes()
+            return sdkMetadataBytes.inputStream()
+                    .buffered()
+                    .use { input -> SdkMetadataOuterClass.SdkMetadata.parseFrom(input) }
+        }
     }
 
     class CreationAction(
@@ -190,11 +237,25 @@ abstract class PackagePrivacySandboxSdkBundle: NonIncrementalTask() {
                 }
             }
 
-            // TODO: Add DSL for the following
-            task.sdkDependencies.setDisallowChanges(emptyList())
+            task.requiredSdkArchives.setFrom(
+                    task.project.configurations.getByName("requiredSdk").incoming.artifactView {
+                        it.attributes.attribute(AndroidArtifacts.ARTIFACT_TYPE,
+                                AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_ARCHIVE.type)
+                    }.files
+            )
+
+            task.sdkArchives.setFrom(
+                    creationConfig.dependencies.getArtifactFileCollection(
+                            Usage.JAVA_RUNTIME,
+                            creationConfig.mergeSpec,
+                            AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_ARCHIVE))
 
             task.interfaceDescriptors.setDisallowChanges(
                     creationConfig.artifacts.get(PrivacySandboxSdkInternalArtifactType.STUB_JAR))
+
+            task.validatedSdkConfigurations.setDisallowChanges(
+                    creationConfig.artifacts.get(PrivacySandboxSdkInternalArtifactType.VALIDATE_PRIVACY_SANDBOX_SDK_CONFIGURATIONS)
+            )
         }
     }
 
@@ -207,17 +268,6 @@ abstract class PackagePrivacySandboxSdkBundle: NonIncrementalTask() {
 
         @get:Input
         val patch: Property<Int>
-    }
-
-    interface SdkBundleDependencyEntry {
-        @get:Input
-        val packageName: Property<String>
-
-        @get:Nested
-        val version: SdkVersion
-
-        @get:Input
-        val certificateDigest: Property<String>
     }
 
     interface SdkBundleProperties {

@@ -16,7 +16,6 @@
 
 package com.android.build.api.variant
 
-import org.gradle.api.Incubating
 import org.gradle.api.provider.SetProperty
 
 /**
@@ -24,7 +23,6 @@ import org.gradle.api.provider.SetProperty
  *
  * This is accessed via [TestedComponentPackaging.jniLibs]
  */
-@Incubating
 interface JniLibsTestedComponentPackaging : JniLibsPackaging {
 
     /**
@@ -33,6 +31,5 @@ interface JniLibsTestedComponentPackaging : JniLibsPackaging {
      *
      * Example: `packaging.jniLibs.testOnly.add("**`/`testOnly.so")`
      */
-    @get:Incubating
     val testOnly: SetProperty<String>
 }

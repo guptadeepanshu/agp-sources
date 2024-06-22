@@ -22,9 +22,12 @@ import com.android.build.api.variant.AarMetadata
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.Component
 import com.android.build.api.variant.DeviceTest
+import com.android.build.api.variant.HasHostTests
+import com.android.build.api.variant.HasUnitTest
 import com.android.build.api.variant.LibraryVariant
 import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.TestedComponentPackaging
+import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.component.LibraryCreationConfig
 import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.core.dsl.LibraryVariantDslInfo
@@ -71,7 +74,13 @@ open class LibraryVariantImpl @Inject constructor(
     internalServices,
     taskCreationServices,
     globalTaskCreationConfig,
-), LibraryVariant, LibraryCreationConfig, InternalHasDeviceTests, HasTestFixtures {
+), LibraryVariant,
+    LibraryCreationConfig,
+    HasDeviceTestsCreationConfig,
+    HasTestFixtures,
+    HasHostTestsCreationConfig,
+    HasHostTests,
+    HasUnitTest {
 
     // ---------------------------------------------------------------------------------------------
     // PUBLIC API
@@ -94,7 +103,11 @@ open class LibraryVariantImpl @Inject constructor(
         )
 
 
-    override val deviceTests = mutableListOf<DeviceTest>()
+    override val deviceTests: List<DeviceTest>
+        get() = internalDeviceTests
+
+    override val hostTests: Map<String, HostTestCreationConfig>
+        get() = internalHostTests
 
     override var testFixtures: TestFixturesImpl? = null
 
@@ -153,4 +166,19 @@ open class LibraryVariantImpl @Inject constructor(
 
     override val publishInfo: VariantPublishingInfo?
         get() = dslInfo.publishInfo
+
+    override fun addTestComponent(testTypeName: String, testComponent: HostTestCreationConfig) {
+        internalHostTests[testTypeName] = testComponent
+    }
+
+    override fun addDeviceTest(deviceTest: DeviceTest) {
+        internalDeviceTests.add(deviceTest)
+    }
+
+    // ---------------------------------------------------------------------------------------------
+    // Private stuff
+    // ---------------------------------------------------------------------------------------------
+
+    private val internalHostTests = mutableMapOf<String, HostTestCreationConfig>()
+    private val internalDeviceTests = mutableListOf<DeviceTest>()
 }

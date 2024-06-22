@@ -156,7 +156,6 @@ class AndroidPluginVersion private constructor(
      *
      * For example `AndroidPluginVersion(7, 0).dev()` refers to Android Gradle Plugin version 7.0.0-dev.
      */
-    @Incubating
     fun dev() : AndroidPluginVersion {
         return AndroidPluginVersion(major, minor, micro, PreviewType.DEV, preview=0)
     }

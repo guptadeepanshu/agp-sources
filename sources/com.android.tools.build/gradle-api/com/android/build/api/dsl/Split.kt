@@ -16,7 +16,9 @@
 
 package com.android.build.api.dsl
 
-/** Base data representing how an FULL_APK should be split for a given dimension (density, abi). */
+/**
+ *  Base data representing how an APK should be split for a given dimension (density, abi).
+ */
 interface Split {
     /** Whether to split in this dimension. */
     var isEnable: Boolean

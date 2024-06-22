@@ -20,7 +20,7 @@ import com.android.SdkConstants.DOT_AAR
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.component.impl.KmpAndroidTestImpl
 import com.android.build.api.component.impl.KmpComponentImpl
-import com.android.build.api.component.impl.KmpUnitTestImpl
+import com.android.build.api.component.impl.KmpHostTestImpl
 import com.android.build.api.component.impl.features.OptimizationCreationConfigImpl
 import com.android.build.api.dsl.KotlinMultiplatformAndroidCompilation
 import com.android.build.api.instrumentation.AsmClassVisitorFactory
@@ -35,6 +35,7 @@ import com.android.build.api.variant.DeviceTest
 import com.android.build.api.variant.KotlinMultiplatformAndroidVariant
 import com.android.build.api.variant.TestedComponentPackaging
 import com.android.build.gradle.internal.KotlinMultiplatformCompileOptionsImpl
+import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.component.KmpCreationConfig
 import com.android.build.gradle.internal.component.features.NativeBuildCreationConfig
 import com.android.build.gradle.internal.component.features.RenderscriptCreationConfig
@@ -78,7 +79,7 @@ open class KmpVariantImpl @Inject constructor(
     global,
     androidKotlinCompilation,
     manifestFile,
-), KotlinMultiplatformAndroidVariant, KmpCreationConfig, InternalHasDeviceTests {
+), KotlinMultiplatformAndroidVariant, KmpCreationConfig, HasDeviceTestsCreationConfig {
 
     override val aarOutputFileName: Property<String> =
         internalServices.newPropertyBackingDeprecatedApi(
@@ -115,14 +116,17 @@ open class KmpVariantImpl @Inject constructor(
         )
     }
 
-    override var unitTest: KmpUnitTestImpl? = null
+    override var unitTest: KmpHostTestImpl? = null
 
-    override val deviceTests = mutableListOf<DeviceTest>()
+    override val deviceTests: List<DeviceTest>
+        get() = internalDeviceTests
+    override val hostTests = mutableMapOf<String, HostTestCreationConfig>()
+
     override val androidDeviceTest: KmpAndroidTestImpl?
         get() = deviceTests.filterIsInstance<KmpAndroidTestImpl>().firstOrNull()
 
-    override val isAndroidTestCoverageEnabled: Boolean
-        get() = androidDeviceTest?.isAndroidTestCoverageEnabled ?: false
+    override val codeCoverageEnabled: Boolean
+        get() = androidDeviceTest?.codeCoverageEnabled ?: false
 
     override val nestedComponents: List<KmpComponentImpl<*>>
         get() = listOfNotNull(
@@ -183,5 +187,11 @@ open class KmpVariantImpl @Inject constructor(
     override val nativeBuildCreationConfig: NativeBuildCreationConfig? = null
 
     override fun finalizeAndLock() {
+    }
+
+    private val internalDeviceTests = mutableListOf<DeviceTest>()
+
+    override fun addDeviceTest(deviceTest: DeviceTest) {
+        internalDeviceTests.add(deviceTest)
     }
 }

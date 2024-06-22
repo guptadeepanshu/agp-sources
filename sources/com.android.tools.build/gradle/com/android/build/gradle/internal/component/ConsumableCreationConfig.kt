@@ -31,7 +31,7 @@ interface ConsumableCreationConfig: ComponentCreationConfig {
 
     val optimizationCreationConfig: OptimizationCreationConfig
 
-    val isAndroidTestCoverageEnabled: Boolean
+    val codeCoverageEnabled: Boolean
 
     /**
      * Used by lint to run checks related to core library desugaring.

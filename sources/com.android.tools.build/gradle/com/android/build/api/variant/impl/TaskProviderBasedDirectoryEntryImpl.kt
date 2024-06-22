@@ -16,6 +16,7 @@
 
 package com.android.build.api.variant.impl
 
+import org.gradle.api.Task
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.file.Directory
@@ -58,4 +59,8 @@ class TaskProviderBasedDirectoryEntryImpl(
             fileTreeCreator: () -> ConfigurableFileTree,
     ): List<ConfigurableFileTree> =
         listOf(fileTreeCreator().setDir(directoryProvider).builtBy(directoryProvider))
+
+    override fun makeDependentOf(task: Task, projectDir: Provider<Directory>): Unit {
+        task.dependsOn(directoryProvider)
+    }
 }

@@ -24,6 +24,7 @@ interface DependencyGraphBuilder {
         modelBuilder: DependencyModelBuilder<*>,
         artifactCollectionsProvider: ArtifactCollectionsInputs,
         withFullDependency: Boolean,
+        ignoreUnexpectedArtifactTypes: Boolean,
         issueReporter: IssueReporter
     )
 }

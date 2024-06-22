@@ -22,6 +22,7 @@ import com.android.build.api.variant.ApplicationVariantBuilder
 import com.android.build.api.variant.DependenciesInfoBuilder
 import com.android.build.api.variant.DeviceTestBuilder
 import com.android.build.api.variant.PropertyAccessNotAllowedException
+import com.android.build.api.variant.HostTestBuilder
 import com.android.tools.build.gradle.internal.profile.VariantMethodType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import javax.inject.Inject
@@ -119,6 +120,7 @@ open class AnalyticsEnabledApplicationVariantBuilder @Inject constructor(
                 VariantMethodType.ANDROID_RESOURCES_BUILDER_VALUE
             return _androidResources
         }
+
     override val deviceTests: List<DeviceTestBuilder>
         get() {
             stats.variantApiAccessBuilder.addVariantAccessBuilder().type =
@@ -138,6 +140,20 @@ open class AnalyticsEnabledApplicationVariantBuilder @Inject constructor(
                         stats
                     )
                 }
+            }
+        }
+
+    override val hostTests: Map<String, HostTestBuilder>
+        get() {
+            stats.variantApiAccessBuilder.addVariantAccessBuilder().type =
+                VariantMethodType.HOST_TESTS_BUILDER_VALUE
+            // return a copy of the list every time as new items may have
+            // been added to it since last call.
+            return delegate.hostTests.mapValues {
+                AnalyticsEnabledHostTestBuilder(
+                    it.value,
+                    stats
+                )
             }
         }
 }

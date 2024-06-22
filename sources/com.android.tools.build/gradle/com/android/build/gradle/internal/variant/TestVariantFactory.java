@@ -30,9 +30,10 @@ import com.android.build.api.variant.ComponentIdentity;
 import com.android.build.api.variant.TestVariantBuilder;
 import com.android.build.api.variant.impl.DeviceTestBuilderImpl;
 import com.android.build.api.variant.impl.GlobalVariantBuilderConfig;
+import com.android.build.api.variant.impl.HostTestBuilderImpl;
 import com.android.build.api.variant.impl.TestVariantBuilderImpl;
 import com.android.build.api.variant.impl.TestVariantImpl;
-import com.android.build.gradle.internal.component.AndroidTestCreationConfig;
+import com.android.build.gradle.internal.component.DeviceTestCreationConfig;
 import com.android.build.gradle.internal.component.HostTestCreationConfig;
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig;
 import com.android.build.gradle.internal.component.TestVariantCreationConfig;
@@ -164,7 +165,8 @@ public class TestVariantFactory
             @NonNull BuildFeatures buildFeatures,
             @NonNull DataBinding dataBinding,
             @NonNull ProjectOptions projectOptions,
-            boolean includeAndroidResources) {
+            boolean includeAndroidResources,
+            @NonNull ComponentType hostTestComponentType) {
         throw new RuntimeException("cannot instantiate test build features in test plugin");
     }
 
@@ -210,13 +212,14 @@ public class TestVariantFactory
             @NonNull VariantCreationConfig testedVariant,
             @NonNull VariantServices variantServices,
             @NonNull TaskCreationServices taskCreationServices,
-            @NonNull GlobalTaskCreationConfig globalConfig) {
+            @NonNull GlobalTaskCreationConfig globalConfig,
+            @NonNull HostTestBuilderImpl hostTestBuilder) {
         throw new RuntimeException("cannot instantiate unit-test properties in test plugin");
     }
 
     @NonNull
     @Override
-    public HostTestCreationConfig createScreenshotTest(
+    public HostTestCreationConfig createHostTest(
             @NonNull ComponentIdentity componentIdentity,
             @NonNull BuildFeatureValues buildFeatures,
             @NonNull HostTestComponentDslInfo dslInfo,
@@ -229,13 +232,14 @@ public class TestVariantFactory
             @NonNull VariantCreationConfig testedVariant,
             @NonNull VariantServices variantServices,
             @NonNull TaskCreationServices taskCreationServices,
-            @NonNull GlobalTaskCreationConfig globalConfig) {
+            @NonNull GlobalTaskCreationConfig globalConfig,
+            @NonNull HostTestBuilderImpl hostTestBuilder) {
         throw new RuntimeException("cannot instantiate screenshot-test properties in test plugin");
     }
 
     @NonNull
     @Override
-    public AndroidTestCreationConfig createAndroidTest(
+    public DeviceTestCreationConfig createAndroidTest(
             @NonNull ComponentIdentity componentIdentity,
             @NonNull BuildFeatureValues buildFeatures,
             @NonNull AndroidTestComponentDslInfo dslInfo,

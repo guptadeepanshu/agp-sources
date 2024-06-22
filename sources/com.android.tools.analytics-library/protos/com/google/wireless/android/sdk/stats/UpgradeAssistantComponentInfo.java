@@ -173,6 +173,10 @@ private static final long serialVersionUID = 0L;
      * <code>SHADERS_DEFAULT = 30;</code>
      */
     SHADERS_DEFAULT(30),
+    /**
+     * <code>MIGRATE_TEST_COVERAGE_ENABLED = 31;</code>
+     */
+    MIGRATE_TEST_COVERAGE_ENABLED(31),
     ;
 
     /**
@@ -299,6 +303,10 @@ private static final long serialVersionUID = 0L;
      * <code>SHADERS_DEFAULT = 30;</code>
      */
     public static final int SHADERS_DEFAULT_VALUE = 30;
+    /**
+     * <code>MIGRATE_TEST_COVERAGE_ENABLED = 31;</code>
+     */
+    public static final int MIGRATE_TEST_COVERAGE_ENABLED_VALUE = 31;
 
 
     public final int getNumber() {
@@ -352,6 +360,7 @@ private static final long serialVersionUID = 0L;
         case 28: return ANDROID_MANIFEST_EXTRACT_NATIVE_LIBS;
         case 29: return ANDROID_MANIFEST_USE_EMBEDDED_DEX;
         case 30: return SHADERS_DEFAULT;
+        case 31: return MIGRATE_TEST_COVERAGE_ENABLED;
         default: return null;
       }
     }

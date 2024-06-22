@@ -24,7 +24,7 @@ import com.android.SdkConstants.MIN_ANDROID_GRADLE_PLUGIN_VERSION_PROPERTY
 import com.android.SdkConstants.MIN_COMPILE_SDK_EXTENSION_PROPERTY
 import com.android.SdkConstants.MIN_COMPILE_SDK_PROPERTY
 import com.android.Version
-import com.android.build.gradle.internal.component.AndroidTestCreationConfig
+import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
@@ -207,7 +207,7 @@ abstract class CheckAarMetadataTask : NonIncrementalTask() {
             task.compileSdkVersion.setDisallowChanges(creationConfig.global.compileSdkHashString)
             task.agpVersion.setDisallowChanges(Version.ANDROID_GRADLE_PLUGIN_VERSION)
             val coreLibraryDesugaringEnabled =
-                if (creationConfig is AndroidTestCreationConfig) {
+                if (creationConfig is DeviceTestCreationConfig) {
                     creationConfig.dexing.isCoreLibraryDesugaringEnabled
                 } else {
                     creationConfig.global.compileOptions.isCoreLibraryDesugaringEnabled

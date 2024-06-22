@@ -19,6 +19,7 @@ package com.android.build.api.component.analytics
 import com.android.build.api.variant.AndroidTestBuilder
 import com.android.build.api.variant.DeviceTestBuilder
 import com.android.build.api.variant.LibraryVariantBuilder
+import com.android.build.api.variant.HostTestBuilder
 import com.android.tools.build.gradle.internal.profile.VariantMethodType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import javax.inject.Inject
@@ -91,6 +92,20 @@ open class AnalyticsEnabledLibraryVariantBuilder @Inject constructor(
                         stats
                     )
                 }
+            }
+        }
+
+    override val hostTests: Map<String, HostTestBuilder>
+        get() {
+            stats.variantApiAccessBuilder.addVariantAccessBuilder().type =
+                VariantMethodType.HOST_TESTS_BUILDER_VALUE
+            // return a copy of the list every time as new items may have
+            // been added to it since last call.
+            return delegate.hostTests.mapValues {
+                AnalyticsEnabledHostTestBuilder(
+                    it.value,
+                    stats
+                )
             }
         }
 }

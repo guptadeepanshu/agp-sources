@@ -36,5 +36,7 @@ import org.gradle.api.Incubating
 interface AndroidTest {
 
     /** Enable minification for the android test component */
+    @get:Incubating
+    @set:Incubating
     var enableMinification: Boolean
 }

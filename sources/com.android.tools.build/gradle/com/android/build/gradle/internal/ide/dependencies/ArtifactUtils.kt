@@ -71,7 +71,8 @@ interface ArtifactCollectionsInputs {
 
     fun getAllArtifacts(
         consumedConfigType: AndroidArtifacts.ConsumedConfigType,
-        dependencyFailureHandler: DependencyFailureHandler? = null
+        dependencyFailureHandler: DependencyFailureHandler? = null,
+        ignoreUnexpectedArtifactTypes: Boolean = false
     ): Set<ResolvedArtifact>
 }
 
@@ -134,7 +135,8 @@ class ArtifactCollectionsInputsImpl(
 
     override fun getAllArtifacts(
         consumedConfigType: AndroidArtifacts.ConsumedConfigType,
-        dependencyFailureHandler: DependencyFailureHandler?
+        dependencyFailureHandler: DependencyFailureHandler?,
+        ignoreUnexpectedArtifactTypes: Boolean
     ): Set<ResolvedArtifact> {
         val collections = if (consumedConfigType == AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH) {
             compileClasspath
@@ -144,7 +146,8 @@ class ArtifactCollectionsInputsImpl(
         return resolveArtifacts(
             collections.all,
             collections.aarOrAsar,
-            collections.lintJar
+            collections.lintJar,
+            ignoreUnexpectedArtifactTypes
         ) {
             if (dependencyFailureHandler != null) {
                 // compute the name of the configuration
@@ -312,6 +315,7 @@ private fun resolveArtifacts(
     allArtifacts : ArtifactCollection,
     aarOrAsar: ArtifactCollection,
     lintJar: ArtifactCollection,
+    ignoreUnexpectedArtifactTypes: Boolean = false,
     dependencyFailureHandler: () -> Any = {},
 ): Set<ResolvedArtifact> {
 
@@ -429,7 +433,11 @@ private fun resolveArtifacts(
                         )
                     }
                 }
-            else -> throw IllegalStateException("Internal error: Artifact type $artifactType not expected, only jar or aar are handled.")
+            else -> if (!ignoreUnexpectedArtifactTypes) {
+                throw IllegalStateException(
+                    "Internal error: Artifact type $artifactType not expected, only jar or aar are handled."
+                )
+            }
         }
     }
 

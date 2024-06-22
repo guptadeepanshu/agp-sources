@@ -25,7 +25,7 @@ import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
-import com.android.ide.common.resources.generateLocaleList
+import com.android.ide.common.resources.generateFolderLocaleSet
 import com.android.ide.common.resources.readResourcesPropertiesFile
 import com.android.ide.common.resources.validateLocale
 import com.android.ide.common.resources.writeSupportedLocales
@@ -48,7 +48,7 @@ import java.io.File
 abstract class ExtractSupportedLocalesTask : NonIncrementalTask() {
     // A txt file containing the list of supported languages for this variant in gradle project
     @get:OutputFile
-    abstract val localeList: RegularFileProperty
+    abstract val supportedLocales: RegularFileProperty
 
     // TODO (b/273374246): replace this with a res map
     @get:InputFiles
@@ -70,7 +70,7 @@ abstract class ExtractSupportedLocalesTask : NonIncrementalTask() {
     public override fun doTaskAction() {
         val resources = listOf(nonMainResSet.files, mainResSet.files).flatten()
 
-        val localeList = generateLocaleList(resources, pseudoLocalesEnabled.get())
+        val folderLocaleSet = generateFolderLocaleSet(resources, pseudoLocalesEnabled.get())
 
         var validatedDefaultLocale: String? = null
 
@@ -99,7 +99,7 @@ abstract class ExtractSupportedLocalesTask : NonIncrementalTask() {
                     "See https://developer.android.com/r/studio-ui/build/automatic-per-app-languages")
         }
 
-        writeSupportedLocales(this.localeList.get().asFile, localeList, validatedDefaultLocale)
+        writeSupportedLocales(supportedLocales.get().asFile, folderLocaleSet, validatedDefaultLocale)
     }
 
     class CreationAction(
@@ -118,7 +118,7 @@ abstract class ExtractSupportedLocalesTask : NonIncrementalTask() {
             super.handleProvider(taskProvider)
             creationConfig.artifacts.setInitialProvider(
                 taskProvider,
-                ExtractSupportedLocalesTask::localeList
+                ExtractSupportedLocalesTask::supportedLocales
             ).withName("supported_locales.txt")
                 .on(InternalArtifactType.SUPPORTED_LOCALE_LIST)
         }

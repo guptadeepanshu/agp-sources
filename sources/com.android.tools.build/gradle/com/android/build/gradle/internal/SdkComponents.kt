@@ -30,6 +30,7 @@ import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVaria
 import com.android.build.gradle.internal.services.AndroidLocationsBuildService
 import com.android.build.gradle.internal.services.ServiceRegistrationAction
 import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.internal.testing.AdbHelper
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.IntegerOption
@@ -232,6 +233,10 @@ abstract class SdkComponentsBuildService @Inject constructor(
 
         val additionalLibrariesProvider: Provider<List<OptionalLibrary>> = providerFactory.provider {
             sdkLoadStrategy.getAdditionalLibraries()
+        }
+
+        val adbHelper: Provider<AdbHelper> = providerFactory.provider {
+            AdbHelper(providerFactory.provider { this })
         }
 
         val coreLambdaStubsProvider: Provider<RegularFile> = objectFactory.fileProperty().fileProvider(

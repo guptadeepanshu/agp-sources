@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.dsl
 
+import com.android.build.api.dsl.PrivacySandbox
 import com.android.build.api.dsl.TestAndroidResources
 import com.android.build.api.dsl.TestBuildFeatures
 import com.android.build.api.dsl.TestBuildType
@@ -23,6 +24,7 @@ import com.android.build.api.dsl.TestDefaultConfig
 import com.android.build.api.dsl.TestExtension
 import com.android.build.api.dsl.TestInstallation
 import com.android.build.api.dsl.TestProductFlavor
+import org.gradle.api.Action
 
 /** See [InternalCommonExtension] */
 interface InternalTestExtension :
@@ -33,4 +35,6 @@ interface InternalTestExtension :
                 TestDefaultConfig,
                 TestProductFlavor,
                 TestAndroidResources,
-                TestInstallation>
+                TestInstallation> {
+    fun privacySandbox(action: Action<PrivacySandbox>)
+}

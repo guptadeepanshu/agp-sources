@@ -135,6 +135,8 @@ abstract class KmpComponentImpl<DslInfoT: KmpComponentDslInfo>(
     override val minSdk: AndroidVersion
         get() = dslInfo.minSdkVersion
 
+    final override val useBuiltInKotlinSupport = false
+
     override val sources = KmpSourcesImpl(
         dslInfo,
         internalServices,
@@ -378,18 +380,15 @@ abstract class KmpComponentImpl<DslInfoT: KmpComponentDslInfo>(
                 }
             }
         )
-
+        val projectDir = services.projectInfo.projectDirectory
         sources.resources.addStaticSources(
             services.provider {
-                androidKotlinCompilation.allKotlinSourceSets.flatMap { sourceSet ->
-                    sourceSet.resources.srcDirs.map { srcDir ->
-
-                        ProviderBasedDirectoryEntryImpl(
-                            name = "Java resources",
-                            elements = services.fileCollection(srcDir).builtBy(sourceSet.resources).getDirectories(services.projectInfo.projectDirectory),
-                            filter = PatternSet().exclude("**/*.java", "**/*.kt"),
-                        )
-                    }
+                androidKotlinCompilation.allKotlinSourceSets.map { sourceSet ->
+                    ProviderBasedDirectoryEntryImpl(
+                        name = "Java resources",
+                        elements = sourceSet.resources.sourceDirectories.getDirectories(projectDir),
+                        filter = PatternSet().exclude("**/*.java", "**/*.kt"),
+                    )
                 }
             }
         )

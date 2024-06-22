@@ -213,7 +213,7 @@ abstract class PackageApplication : PackageAndroidArtifact() {
                 val fileIndex = dmFile.parentFile.name
                 apkNames.forEach {
                     val renamedDmFile = FileUtils.join(
-                        apkDirectory, "baselineProfiles", fileIndex, "$it.dm")
+                        apkDirectory, SdkConstants.FN_OUTPUT_BASELINE_PROFILES, fileIndex, "$it.dm")
                     renamedDmFile.parentFile.mkdirs()
                     FileUtils.copyFile(dmFile, renamedDmFile)
                     baselineProfiles.add(renamedDmFile)

@@ -41,7 +41,7 @@ import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.BuildFeatureValuesImpl
 import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.scope.TestFixturesBuildFeaturesValuesImpl
-import com.android.build.gradle.internal.scope.UnitTestBuildFeaturesValuesImpl
+import com.android.build.gradle.internal.scope.HostTestBuildFeaturesValuesImpl
 import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantBuilderServices
@@ -51,6 +51,7 @@ import com.android.build.gradle.internal.utils.restrictRenderScriptOnRiscv
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.ProjectOptions
 import com.android.build.gradle.options.StringOption
+import com.android.builder.core.ComponentType
 import com.android.builder.core.ComponentTypeImpl
 import com.android.builder.errors.IssueReporter
 import com.android.ide.common.build.GenericBuiltArtifact
@@ -60,7 +61,6 @@ import com.google.common.base.Joiner
 import com.google.common.base.Strings
 import java.util.Arrays
 import java.util.function.Consumer
-import java.util.stream.Collectors
 
 class ApplicationVariantFactory(
     dslServices: DslServices,
@@ -156,12 +156,13 @@ class ApplicationVariantFactory(
         buildFeatures: BuildFeatures,
         dataBinding: DataBinding,
         projectOptions: ProjectOptions,
-        includeAndroidResources: Boolean
+        includeAndroidResources: Boolean,
+        hostTestComponentType: ComponentType
     ): BuildFeatureValues {
         buildFeatures as? ApplicationBuildFeatures
             ?: throw RuntimeException("buildFeatures not of type ApplicationBuildFeatures")
 
-        return UnitTestBuildFeaturesValuesImpl(
+        return HostTestBuildFeaturesValuesImpl(
             buildFeatures,
             projectOptions,
             dataBindingOverride = if (!dataBinding.enableForTests) {
@@ -170,8 +171,11 @@ class ApplicationVariantFactory(
                 null // means whatever is default.
             },
             mlModelBindingOverride = false,
-            includeAndroidResources = includeAndroidResources,
-            testedComponent = componentType
+            // For unit tests, we only create android resources tasks when the tested component is
+            // a library variant and the user specifies to includeAndroidResources. Otherwise, the tested
+            // resources and assets are just copied as the unit test resources and assets output.
+            // We always create android resources for Screenshot tests
+            includeAndroidResources = includeAndroidResources && hostTestComponentType != ComponentTypeImpl.UNIT_TEST
         )
     }
 

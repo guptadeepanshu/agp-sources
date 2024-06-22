@@ -766,7 +766,7 @@ abstract class LintPlugin : Plugin<Project> {
                         mainSourceSet.apiElementsConfigurationName
                     ).forEach { configurationName ->
                         project.configurations.getByName(configurationName) { configuration ->
-                            project.components.all { component: SoftwareComponent ->
+                            project.components.configureEach { component: SoftwareComponent ->
                                 if (component.name == "java" && component is AdhocComponentWithVariants) {
                                     component.withVariantsFromConfiguration(configuration) { variant: ConfigurationVariantDetails ->
                                         val category =

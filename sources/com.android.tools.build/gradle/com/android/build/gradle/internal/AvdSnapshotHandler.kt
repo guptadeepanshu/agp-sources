@@ -18,6 +18,7 @@ package com.android.build.gradle.internal
 
 import com.android.build.gradle.internal.testing.AdbHelper
 import com.android.sdklib.internal.avd.AvdManager
+import com.android.testing.utils.createSetupDeviceId
 import com.android.utils.FileUtils
 import com.android.utils.GrabProcessOutput
 import com.android.utils.ILogger
@@ -304,7 +305,7 @@ class AvdSnapshotHandler(
         emulatorGpuFlag: String,
         logger: ILogger
     ) {
-        val deviceId = "${avdName}_snapshot"
+        val deviceId = createSetupDeviceId(avdName)
 
         val processBuilder = processFactory(
             getEmulatorCommand(

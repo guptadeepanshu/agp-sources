@@ -349,6 +349,11 @@ public class HardwareConfigHelper {
                         || "android-automotive-distantdisplay".equals(device.getTagId()));
     }
 
+    /** Whether the given automotive device has distant display */
+    public static boolean isAutomotiveDistantDisplay(@Nullable Device device) {
+        return device != null && "android-automotive-distantdisplay".equals(device.getTagId());
+    }
+
     /** Whether the given device is a PC device */
     public static boolean isDesktop(@Nullable Device device) {
         return device != null && "android-desktop".equals(device.getTagId());

@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.dependency;
 
+import static com.android.build.gradle.internal.dependency.KotlinPlatformAttributeKt.configureKotlinPlatformAttribute;
 import static com.android.build.gradle.internal.dependency.VariantDependencies.CONFIG_NAME_TESTED_APKS;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.AAB_PUBLICATION;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.API_ELEMENTS;
@@ -329,11 +330,8 @@ public class VariantDependenciesBuilder {
         runtimeAttributes.attribute(
                 CATEGORY_ATTRIBUTE, factory.named(Category.class, Category.LIBRARY));
 
-        // only apply this treatment if KGP is not applied
-        if (!projectOptions.get(BooleanOption.DISABLE_KOTLIN_ATTRIBUTE_SETUP) && !kgpApplied()) {
-
-            KotlinPlatformAttribute.configureKotlinPlatformAttribute(
-                    List.of(compileClasspath, runtimeClasspath), project);
+        if (shouldConfigureKotlinPlatformAttribute(projectOptions, componentType)) {
+            configureKotlinPlatformAttribute(List.of(compileClasspath, runtimeClasspath), project);
         }
 
         boolean isLibraryConstraintApplied =
@@ -704,6 +702,18 @@ public class VariantDependenciesBuilder {
                 isSelfInstrumenting);
     }
 
+    // TODO(b/338596003) Update this method to handle built-in kotlin support
+    private boolean shouldConfigureKotlinPlatformAttribute(
+            ProjectOptions projectOptions, ComponentType componentType) {
+        if (projectOptions.get(BooleanOption.DISABLE_KOTLIN_ATTRIBUTE_SETUP)) {
+            return false;
+        }
+        if (componentType.isForScreenshotPreview() || componentType.isTestFixturesComponent()) {
+            return true;
+        }
+        return !kgpApplied();
+    }
+
     private boolean kgpApplied() {
         try {
             return isKotlinAndroidPluginApplied(project)
@@ -731,7 +741,8 @@ public class VariantDependenciesBuilder {
                 projectOptions.get(BooleanOption.EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS);
         boolean isAarTest =
                 (componentType == ComponentTypeImpl.ANDROID_TEST
-                                || componentType == ComponentTypeImpl.UNIT_TEST)
+                                || componentType == ComponentTypeImpl.UNIT_TEST
+                                || componentType == ComponentTypeImpl.SCREENSHOT_TEST)
                         && testedVariant.getComponentType().isAar();
 
         if (excludeLibraryComponents && (componentType.isAar() || isAarTest)) {

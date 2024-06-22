@@ -142,36 +142,14 @@ abstract class JetifyTransform : TransformAction<JetifyTransform.Parameters> {
                 skipLibsWithAndroidXReferences = true
             )
         } catch (exception: Exception) {
-            var message =
-                "Failed to transform '$inputFile' using Jetifier." +
-                        " Reason: ${exception.javaClass.simpleName}, message: ${exception.message}." +
-                        " (Run with --stacktrace for more details.)"
-            message += if (exception is InvalidByteCodeException /* Bug 140747218 */
-                || exception is AmbiguousStringJetifierException /* Bug 116745353 */) {
-                "\nThis is a known exception, and Jetifier won't be able to jetify this library.\n" +
-                        "Suggestions:\n" +
-                        " - If you believe this library doesn't need to be jetified (e.g., if it" +
-                        " already supports AndroidX, or if it doesn't use support" +
-                        " libraries/AndroidX at all), add" +
-                        " ${StringOption.JETIFIER_IGNORE_LIST.propertyName} = {comma-separated list" +
-                        " of regular expressions (or simply names) of the libraries that you" +
-                        " don't want to be jetified} to the gradle.properties file.\n" +
-                        " - If you believe this library needs to be jetified (e.g., if it uses" +
-                        " old support libraries and breaks your app if it isn't jetified)," +
-                        " contact the library's authors to update this library to support" +
-                        " AndroidX and use the supported version once it is released.\n" +
-                        "If you need further help, please leave a comment at" +
-                        " https://issuetracker.google.com/issues/140747218."
-            } else {
-                "\nSuggestions:\n" +
-                        " - Check out existing issues at" +
-                        " https://issuetracker.google.com/issues?q=componentid:460323&s=modified_time:desc," +
-                        " it's possible that this issue has already been filed there.\n" +
-                        " - If this issue has not been filed, please report it at" +
-                        " https://issuetracker.google.com/issues/new?component=460323 (run with" +
-                        " --stacktrace and provide a stack trace if possible)."
-            }
-            throw RuntimeException(message, exception)
+            throw RuntimeException(
+                """
+                Jetifier failed to transform: $inputFile
+                The error was: ${exception.javaClass.name} - ${exception.message}
+                To fix this issue, see https://issuetracker.google.com/issues/184622491
+                """.trimIndent(),
+                exception
+            )
         }
 
         check(result.librariesMap.size == 1)

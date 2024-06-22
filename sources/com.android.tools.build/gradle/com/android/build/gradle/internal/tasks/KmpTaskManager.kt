@@ -21,7 +21,7 @@ import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.artifact.impl.InternalScopedArtifact
 import com.android.build.api.artifact.impl.InternalScopedArtifacts
 import com.android.build.api.component.impl.KmpAndroidTestImpl
-import com.android.build.api.component.impl.KmpUnitTestImpl
+import com.android.build.api.component.impl.KmpHostTestImpl
 import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.internal.AndroidTestTaskManager
 import com.android.build.gradle.internal.TaskManager
@@ -38,6 +38,7 @@ import com.android.build.gradle.internal.services.R8ParallelBuildService
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.tasks.factory.TaskConfigAction
 import com.android.build.gradle.internal.tasks.factory.TaskProviderCallback
+import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.android.build.gradle.internal.tasks.factory.registerTask
 import com.android.build.gradle.options.IntegerOption
 import com.android.build.gradle.tasks.BundleAar
@@ -69,7 +70,7 @@ class KmpTaskManager(
     fun createTasks(
         project: Project,
         variant: KmpCreationConfig,
-        unitTest: KmpUnitTestImpl?,
+        unitTest: KmpHostTestImpl?,
         androidTest: KmpAndroidTestImpl?,
     ) {
         createMainVariantTasks(project, variant)
@@ -167,7 +168,7 @@ class KmpTaskManager(
             project.tasks.registerTask(ExportConsumerProguardFilesTask.CreationAction(variant))
         }
 
-        if (variant.isAndroidTestCoverageEnabled) {
+        if (variant.codeCoverageEnabled) {
             val jacocoTask = project.tasks.registerTask(
                 JacocoTask.CreationAction(variant)
             )
@@ -228,12 +229,12 @@ class KmpTaskManager(
                 )
             }
 
-        project.tasks.getByName("assemble").dependsOn(variant.taskContainer.assembleTask)
+        project.tasks.named("assemble").dependsOn(variant.taskContainer.assembleTask)
     }
 
     private fun createUnitTestTasks(
         project: Project,
-        component: KmpUnitTestImpl
+        component: KmpHostTestImpl
     ) {
         createAnchorTasks(project, component, false)
 

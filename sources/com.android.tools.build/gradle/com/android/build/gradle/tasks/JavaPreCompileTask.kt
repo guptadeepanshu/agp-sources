@@ -71,13 +71,14 @@ abstract class JavaPreCompileTask : NonIncrementalTask() {
 
     public override fun doTaskAction() {
         val annotationProcessorArtifacts =
-            (annotationProcessorArtifacts?.artifacts?.map { SerializableArtifact(it) } ?: emptyList()) +
-                    (kspProcessorArtifacts?.artifacts?.map { SerializableArtifact(it) }
-                        ?: emptyList())
+            annotationProcessorArtifacts?.artifacts?.map { SerializableArtifact(it) } ?: emptyList()
+        val kspProcessorArtifacts =
+            kspProcessorArtifacts?.artifacts?.map { SerializableArtifact(it) } ?: emptyList()
 
         workerExecutor.noIsolation().submit(JavaPreCompileWorkAction::class.java) {
             it.initializeFromAndroidVariantTask(this)
             it.annotationProcessorArtifacts.setDisallowChanges(annotationProcessorArtifacts)
+            it.kspProcessorArtifacts.setDisallowChanges(kspProcessorArtifacts)
             it.annotationProcessorClassNames.setDisallowChanges(annotationProcessorClassNames)
             it.annotationProcessorListFile.setDisallowChanges(annotationProcessorListFile)
         }
@@ -176,18 +177,20 @@ abstract class JavaPreCompileParameters : ProfileAwareWorkAction.Parameters() {
     abstract val annotationProcessorArtifacts: ListProperty<SerializableArtifact>
     abstract val annotationProcessorClassNames: ListProperty<String>
     abstract val annotationProcessorListFile: RegularFileProperty
+    abstract val kspProcessorArtifacts: ListProperty<SerializableArtifact>
 }
 
 abstract class JavaPreCompileWorkAction : ProfileAwareWorkAction<JavaPreCompileParameters>() {
 
     override fun run() {
-        val annotationProcessors =
-            detectAnnotationProcessors(
+        val processors =
+            detectAnnotationAndKspProcessors(
                 parameters.annotationProcessorClassNames.get(),
-                parameters.annotationProcessorArtifacts.get()
+                parameters.annotationProcessorArtifacts.get(),
+                parameters.kspProcessorArtifacts.get()
             )
         writeAnnotationProcessorsToJsonFile(
-            annotationProcessors, parameters.annotationProcessorListFile.get().asFile
+            processors, parameters.annotationProcessorListFile.get().asFile
         )
     }
 }

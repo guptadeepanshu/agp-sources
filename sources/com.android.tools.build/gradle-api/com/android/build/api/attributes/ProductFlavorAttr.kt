@@ -33,7 +33,6 @@ import org.gradle.api.Named
  *
  */
 interface ProductFlavorAttr : Named {
-    @Incubating
     companion object {
         /**
          * Returns a product flavor attribute for the given flavor dimension
@@ -41,7 +40,6 @@ interface ProductFlavorAttr : Named {
          * @param flavorDimension The name of the flavor dimension, as specified in the Android
          *                        Gradle Plugin DSL.
          */
-        @Incubating
         @JvmStatic
         fun of(flavorDimension: String) : Attribute<ProductFlavorAttr> {
             return Attribute.of("com.android.build.api.attributes.ProductFlavor:$flavorDimension", ProductFlavorAttr::class.java)

@@ -16,7 +16,7 @@
 
 package com.android.build.gradle.internal.test
 
-import com.android.build.gradle.internal.component.AndroidTestCreationConfig
+import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.tasks.getApkFiles
 import com.android.build.gradle.internal.testing.TestData
 import com.android.build.gradle.internal.utils.toImmutableList
@@ -24,7 +24,6 @@ import com.android.builder.testing.api.DeviceConfigProvider
 import com.google.common.collect.ImmutableList
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
-import org.gradle.api.file.FileTree
 import org.gradle.api.logging.Logging
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
@@ -43,7 +42,7 @@ import java.nio.file.Path
  */
 internal class BundleTestDataImpl constructor(
     namespace: Provider<String>,
-    creationConfig: AndroidTestCreationConfig,
+    creationConfig: DeviceTestCreationConfig,
     testApkDir: Provider<Directory>,
     @get:Input
     @get:Optional

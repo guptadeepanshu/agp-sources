@@ -21,9 +21,12 @@ import com.android.prefs.AndroidLocationsProvider
 import com.google.common.annotations.VisibleForTesting
 import java.io.Closeable
 import java.io.File
+import kotlin.math.max
 import kotlin.math.min
+import org.gradle.api.logging.LogLevel
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
+import java.util.concurrent.atomic.AtomicInteger
 
 private const val LOCK_COUNT_PREFIX = "MDLockCount"
 
@@ -54,13 +57,37 @@ class ManagedVirtualDeviceLockManager(
 ) {
     private val trackingFile: SynchronizedFile
 
+    /**
+     * Number of managed devices tracked by this instance of ManagedVirtualDeviceLockManager.
+     *
+     * This may be less than the total number of managed devices tracked by gradle as multiple
+     * lock managers may have open devices at the same time.
+     */
+    private val trackedDevicesInProcess: AtomicInteger
+
+    @VisibleForTesting
+    val devicesInProcess: Int
+        get() = trackedDevicesInProcess.get()
+
     init {
         val lockFile =
             androidLocationsProvider.gradleAvdLocation.toFile().resolve(TRACKING_FILE_NAME)
         if (!lockFile.parentFile.exists()) {
             lockFile.parentFile.mkdirs()
         }
+        trackedDevicesInProcess = AtomicInteger()
         trackingFile = SynchronizedFile.getInstanceWithMultiProcessLocking(lockFile)
+        /*
+         * This shutdown hook is to free any number of devices that may be left over in case
+         * a lock fails to free it's devices due to the process being interrupted. This is to help
+         * the tracking file maintain a valid state in case of the process being interrupted or
+         * cancelled.
+         */
+        Runtime.getRuntime().addShutdownHook (
+            Thread {
+                ::executeShutdown
+            }
+        )
     }
 
     private val logger: Logger = Logging.getLogger(this.javaClass)
@@ -88,21 +115,35 @@ class ManagedVirtualDeviceLockManager(
     }
 
     private fun releaseLocks(locksToRelease: Int) {
-        trackingFile.write { file ->
-            val currentLockCount = getCurrentLockCount(file)
-
-            val newlockCount = if (currentLockCount < locksToRelease) {
-                logger.error(
+        if (locksToRelease <= 0) {
+            if (locksToRelease < 0) {
+                logger.log(
+                    LogLevel.WARN,
                     """
-                        Attempting to free more locks than have been claimed.
-                        Locks to release: $locksToRelease Locks available: $currentLockCount
+                        Attempting to free a negative number of locks.
+                        Locks to release: $locksToRelease
                     """.trimIndent()
                 )
-                0
-            } else {
-                currentLockCount - locksToRelease
             }
-            writeLockCount(file, newlockCount)
+            return
+        }
+        trackingFile.write { file ->
+            val currentTotalDeviceCount = getCurrentLockCount(file)
+
+            val newTotalDevicesCount = if (devicesInProcess < locksToRelease) {
+                logger.log(
+                    LogLevel.WARN,
+                    """
+                        Attempting to free more locks than have been claimed by this lock manager.
+                        Locks to release: $locksToRelease Locks available In Process: $devicesInProcess
+                    """.trimIndent()
+                )
+                currentTotalDeviceCount - trackedDevicesInProcess.getAndSet(0)
+            } else {
+                trackedDevicesInProcess.addAndGet(-locksToRelease)
+                currentTotalDeviceCount - locksToRelease
+            }
+            writeLockCount(file, newTotalDevicesCount)
         }
     }
 
@@ -110,11 +151,12 @@ class ManagedVirtualDeviceLockManager(
         trackingFile.createIfAbsent { file -> createDefaultLockFile(file) }
         return trackingFile.write { file ->
             // Get the current lock count.
-            val currentLockCount = getCurrentLockCount(file)
+            val currentTotalDevicesCount = getCurrentLockCount(file)
             // Find out how many locks we can claim, and adjust the file if necessary.
-            val locksToClaim = min(locksRequested, maxGMDs - currentLockCount)
+            val locksToClaim = max(min(locksRequested, maxGMDs - currentTotalDevicesCount), 0)
             if (locksToClaim != 0) {
-                writeLockCount(file, currentLockCount + locksToClaim)
+                writeLockCount(file, currentTotalDevicesCount + locksToClaim)
+                trackedDevicesInProcess.addAndGet(locksToClaim)
             }
             locksToClaim
         }
@@ -153,6 +195,11 @@ class ManagedVirtualDeviceLockManager(
                 file.appendText("\n$line")
             }
         }
+    }
+
+    @VisibleForTesting
+    fun executeShutdown() {
+        releaseLocks(trackedDevicesInProcess.get())
     }
 
     /**

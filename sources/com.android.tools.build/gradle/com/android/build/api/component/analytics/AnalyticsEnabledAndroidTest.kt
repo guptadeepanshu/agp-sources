@@ -25,7 +25,6 @@ import com.android.build.api.variant.ApkPackaging
 import com.android.build.api.variant.Dexing
 import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.ResValue
-import com.android.build.api.variant.SigningConfig
 import com.android.tools.build.gradle.internal.profile.VariantPropertiesMethodType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.file.RegularFile
@@ -33,7 +32,6 @@ import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
-import org.gradle.api.provider.Provider
 import java.io.Serializable
 import javax.inject.Inject
 
@@ -137,4 +135,11 @@ open class AnalyticsEnabledAndroidTest @Inject constructor(
 
     override val targetSdkVersion: AndroidVersion
         get() = generatesApk.targetSdkVersion
+
+    override val codeCoverageEnabled: Boolean
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.DEVICE_TEST_CODE_COVERAGE_ENABLED_VALUE
+            return delegate.codeCoverageEnabled
+        }
 }

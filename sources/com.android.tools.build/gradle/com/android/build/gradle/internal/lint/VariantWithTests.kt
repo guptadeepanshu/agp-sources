@@ -16,7 +16,7 @@
 
 package com.android.build.gradle.internal.lint
 
-import com.android.build.gradle.internal.component.AndroidTestCreationConfig
+import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig
 import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
@@ -29,7 +29,7 @@ import com.android.build.gradle.internal.component.VariantCreationConfig
  */
 class VariantWithTests(
     val main: VariantCreationConfig,
-    val androidTest: AndroidTestCreationConfig? = null,
+    val androidTest: DeviceTestCreationConfig? = null,
     val unitTest: HostTestCreationConfig? = null,
     val testFixtures: TestFixturesCreationConfig? = null
 )

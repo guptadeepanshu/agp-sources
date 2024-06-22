@@ -191,6 +191,9 @@ internal fun warnIfCompileSdkTooNew(
         If you are already using the latest ${preview}version of the Android Gradle plugin,
         you may need to wait until a newer version with support for $currentCompileSdk is available.
 
+        For more information refer to the compatibility table:
+        https://d.android.com/r/tools/api-level-support
+
         To suppress this warning, add/update
             $suppressOption
         to this project's gradle.properties.

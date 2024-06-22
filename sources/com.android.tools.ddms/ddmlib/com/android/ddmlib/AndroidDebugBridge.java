@@ -131,7 +131,7 @@ public class AndroidDebugBridge {
 
     private DeviceMonitor mDeviceMonitor;
 
-    private final IDeviceManager mIDeviceManager;
+    private IDeviceManager mIDeviceManager;
 
     // lock object for synchronization
     private static final Object sLock = new Object();
@@ -856,28 +856,6 @@ public class AndroidDebugBridge {
         return false;
     }
 
-    /**
-     * Returns the number of times the {@link AndroidDebugBridge} object attempted to connect
-     * to the adb daemon.
-     */
-    public int getConnectionAttemptCount() {
-        if (mDeviceMonitor != null) {
-            return mDeviceMonitor.getConnectionAttemptCount();
-        }
-        return -1;
-    }
-
-    /**
-     * Returns the number of times the {@link AndroidDebugBridge} object attempted to restart
-     * the adb daemon.
-     */
-    public int getRestartAttemptCount() {
-        if (mDeviceMonitor != null) {
-            return mDeviceMonitor.getRestartAttemptCount();
-        }
-        return -1;
-    }
-
     @Nullable
     public IDeviceUsageTracker getiDeviceUsageTracker() {
         return iDeviceUsageTracker;
@@ -903,16 +881,8 @@ public class AndroidDebugBridge {
         }
     }
 
-    /**
-     * Creates a new bridge not linked to any particular adb executable.
-     */
-    private AndroidDebugBridge() {
-        mIDeviceManager =
-                (sIDeviceManagerFactory == null)
-                        ? null
-                        : sIDeviceManagerFactory.createIDeviceManager(
-                                this, IDeviceManagerUtils.createIDeviceManagerListener());
-    }
+    /** Creates a new bridge not linked to any particular adb executable. */
+    private AndroidDebugBridge() {}
 
     /**
      * Queries adb for its version number.
@@ -1150,7 +1120,7 @@ public class AndroidDebugBridge {
      *
      * @return true if success.
      */
-    boolean start(long timeout, @NonNull TimeUnit unit) {
+    private boolean start(long timeout, @NonNull TimeUnit unit) {
         // Skip server start check if using user managed ADB server
         if (!sUserManagedAdbMode) {
             // If we are configured correctly, check if we need to start ADB
@@ -1169,12 +1139,17 @@ public class AndroidDebugBridge {
         mStarted = true;
 
         // Start the underlying services.
-        startDeviceMonitor();
+        startMonitoringServices();
 
         return true;
     }
 
-    private void startDeviceMonitor() {
+    private void startMonitoringServices() {
+        if (sIDeviceManagerFactory != null) {
+            mIDeviceManager =
+                    sIDeviceManagerFactory.createIDeviceManager(
+                            this, IDeviceManagerUtils.createIDeviceManagerListener());
+        }
         // If `IDeviceManager` is available then it is used to process the device updates and
         // `DeviceMonitor` is used only to establish and track adb server connection, etc.
         boolean emitDeviceListUpdates = mIDeviceManager == null;
@@ -1187,7 +1162,7 @@ public class AndroidDebugBridge {
      *
      * @return {@code true} if success within the specified timeout
      */
-    boolean stop(long timeout, @NonNull TimeUnit unit) {
+    private boolean stop(long timeout, @NonNull TimeUnit unit) {
         // if we haven't started we return true (i.e. success)
         if (!mStarted) {
             return true;
@@ -1218,6 +1193,8 @@ public class AndroidDebugBridge {
             } catch (Exception e) {
                 Log.e(DDMS, "Could not close IDeviceManager:");
                 Log.e(DDMS, e);
+            } finally {
+                mIDeviceManager = null;
             }
         }
     }
@@ -1285,8 +1262,8 @@ public class AndroidDebugBridge {
                 isSuccessful = startAdb(rem.getRemainingNanos(), TimeUnit.NANOSECONDS);
             }
 
-            if (isSuccessful && mDeviceMonitor == null) {
-                startDeviceMonitor();
+            if (isSuccessful && mDeviceMonitor == null && mIDeviceManager == null) {
+                startMonitoringServices();
             }
         }
 

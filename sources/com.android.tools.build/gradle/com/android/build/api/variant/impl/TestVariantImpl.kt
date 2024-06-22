@@ -24,6 +24,7 @@ import com.android.build.api.variant.ApkPackaging
 import com.android.build.api.variant.Component
 import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.TestVariant
+import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.component.TestVariantCreationConfig
 import com.android.build.gradle.internal.component.features.DexingCreationConfig
 import com.android.build.gradle.internal.core.VariantSources
@@ -123,17 +124,35 @@ open class TestVariantImpl @Inject constructor(
         renderscriptCreationConfig?.renderscript
     }
     override val testedApks: Provider<Directory> by lazy {
+        getTestedModuleDirectoryArtifact(AndroidArtifacts.ArtifactType.APK)
+    }
+
+    override val privacySandboxCompatApks: Provider<Directory> by lazy {
+        getTestedModuleDirectoryArtifact(
+            AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_COMPAT_SPLIT_APKS)
+    }
+
+    override val usesSdkLibrarySplitForLocalDeployment: Provider<Directory> by lazy {
+        getTestedModuleDirectoryArtifact(
+            AndroidArtifacts.ArtifactType.USES_SDK_LIBRARY_SPLIT_FOR_LOCAL_DEPLOYMENT)
+    }
+
+    private fun getTestedModuleDirectoryArtifact(
+        artifactType: AndroidArtifacts.ArtifactType): Provider<Directory> {
         val projectDirectory = services.projectInfo.projectDirectory
-        variantDependencies.getArtifactFileCollection(
+        return variantDependencies.getArtifactFileCollection(
             AndroidArtifacts.ConsumedConfigType.PROVIDED_CLASSPATH,
             AndroidArtifacts.ArtifactScope.ALL,
-            AndroidArtifacts.ArtifactType.APK
+            artifactType
         ).elements.map {
             projectDirectory.dir(
                 it.single().asFile.absolutePath
             )
         }
     }
+
+    override val privacySandboxEnabled: Boolean
+        get() = dslInfo.privacySandboxDsl.enable
 
     override val dexing: DexingCreationConfig by lazy(LazyThreadSafetyMode.NONE) {
         DexingImpl(
@@ -145,7 +164,7 @@ open class TestVariantImpl @Inject constructor(
         )
     }
 
-    // ---------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------
     // INTERNAL API
     // ---------------------------------------------------------------------------------------------
 
@@ -191,15 +210,12 @@ open class TestVariantImpl @Inject constructor(
         }
     }
 
-    /**
-     * For test projects, coverage will only be effective if set by the tested project.
-     */
-    override val isAndroidTestCoverageEnabled: Boolean
-        get() = dslInfo.isAndroidTestCoverageEnabled
     override val useJacocoTransformInstrumentation: Boolean
         get() = false
     override val packageJacocoRuntime: Boolean
         get() = false
+
+    val hostTests = mapOf<String, HostTestCreationConfig>()
 
     // ---------------------------------------------------------------------------------------------
     // Private stuff

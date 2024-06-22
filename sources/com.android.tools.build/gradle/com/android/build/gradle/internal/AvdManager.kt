@@ -98,7 +98,7 @@ class AvdManager(
                     "$deviceName needs to be recreated because it is invalid " +
                             "(AvdStatus = ${info.status})"
                 )
-                deleteAvds(listOf(deviceName))
+                avdManager.deleteAvd(info)
             }
 
             val newInfo = createAvd(imageProvider, imageHash, deviceName, hardwareProfile)
@@ -110,6 +110,13 @@ class AvdManager(
     private fun <V> runWithMultiProcessLocking(deviceName: String, runnable: () -> V): V {
         return SynchronizedFile.getInstanceWithMultiProcessLocking(avdFolder.resolve(deviceName))
             .write { runnable() }
+    }
+
+    private fun deleteLockFile(deviceName: String) {
+        val lockFile = SynchronizedFile.getLockFile(avdFolder.resolve(deviceName))
+        if (lockFile.exists()) {
+            lockFile.delete()
+        }
     }
 
     internal fun createAvd(
@@ -243,16 +250,21 @@ class AvdManager(
     fun deleteAvds(avds: List<String>): List<String> {
         avdManager.reloadAvds()
         return avds.filter { avdName ->
-            val avdInfo = avdManager.getAvd(avdName, false)
-            val isDeleted = if (avdInfo != null) {
-                avdManager.deleteAvd(avdInfo)
-            } else {
-                false
+            runWithMultiProcessLocking(avdName) {
+                val avdInfo = avdManager.getAvd(avdName, false)
+                val isDeleted = if (avdInfo != null) {
+                    avdManager.deleteAvd(avdInfo)
+                } else {
+                    false
+                }
+                if (!isDeleted) {
+                    logger.warning("Failed to delete avd: $avdName.")
+                } else {
+                    logger.verbose("Deleting lock file for: $avdName")
+                    deleteLockFile(avdName)
+                }
+                isDeleted
             }
-            if (!isDeleted) {
-                logger.warning("Failed to delete avd: $avdName.")
-            }
-            isDeleted
         }
     }
 

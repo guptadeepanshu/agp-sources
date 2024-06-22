@@ -156,4 +156,12 @@ open class AnalyticsEnabledDeviceTest @Inject constructor(
 
     override val targetSdkVersion: AndroidVersion
         get() = generatesApk.targetSdkVersion
+
+
+    override val codeCoverageEnabled: Boolean
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.DEVICE_TEST_CODE_COVERAGE_ENABLED_VALUE
+            return delegate.codeCoverageEnabled
+        }
 }

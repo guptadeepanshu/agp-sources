@@ -415,7 +415,7 @@ class AvdManagerCli extends CommandLineParser {
                 } else {
                     first = false;
                 }
-                mSdkLog.info("%s/%s", si.getTag().getId(), si.getAbiType());
+                mSdkLog.info("%s/%s", si.getTag().getId(), si.getAbiTypes());
             }
             mSdkLog.info("\n");
         } else {
@@ -792,7 +792,7 @@ class AvdManagerCli extends CommandLineParser {
             if (abiType == null || abiType.isEmpty()) {
                 if (sysImgs.size() == 1) {
                     // Auto-select the single ABI available
-                    abiType = sysImgs.iterator().next().getAbiType();
+                    abiType = sysImgs.iterator().next().getPrimaryAbiType();
                     img = sysImgs.iterator().next();
                     mSdkLog.info("Auto-selecting single ABI %1$s\n", abiType);
                 } else {
@@ -803,7 +803,7 @@ class AvdManagerCli extends CommandLineParser {
                 }
             } else {
                 for (SystemImage systemImage : sysImgs) {
-                    if (systemImage.getAbiType().equals(abiType)) {
+                    if (systemImage.getPrimaryAbiType().equals(abiType)) {
                         img = systemImage;
                         break;
                     }

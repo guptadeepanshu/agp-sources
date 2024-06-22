@@ -24,5 +24,5 @@ enum class LintModelModuleType {
   INSTANT_APP,
   FEATURE,
   DYNAMIC_FEATURE,
-  JAVA_LIBRARY
+  JAVA_LIBRARY,
 }

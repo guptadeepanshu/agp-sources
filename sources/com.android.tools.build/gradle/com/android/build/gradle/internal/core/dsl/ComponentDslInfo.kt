@@ -38,6 +38,33 @@ interface ComponentDslInfo {
     val missingDimensionStrategies: Map<String, AbstractProductFlavor.DimensionRequest>
 
     /**
+     * Minimum information about host tests required to create the
+     * [com.android.build.api.variant.HostTestBuilder] instances. This is required to be available
+     * early as other DslInfo instances are not created yet and only will be when the VariantBuilder
+     * have been finalized (since variants can be turned off). However, this information is required
+     * during the lifecycle of the VariantBuilder callbacks.
+     */
+    class DslDefinedHostTest(
+        val type: String,
+        val codeCoverageEnabled: Boolean,
+    )
+
+    class DslDefinedDeviceTest(
+        val codeCoverageEnabled: Boolean,
+    )
+
+    /**
+     * Returns the list of [ComponentDslInfo.DslDefinedHostTest] pre-defined from the DSL for this
+     * component.
+     *
+     * This list will drive the initial list of [com.android.build.api.variant.HostTest] created
+     * by AGP for this Component.
+     */
+    val dslDefinedHostTests: List<DslDefinedHostTest>
+
+    val dslDefinedDeviceTests: List<DslDefinedDeviceTest>
+
+    /**
      * Returns the application ID for this variant. This could be coming from the manifest or could
      * be overridden through the product flavors and/or the build type.
      *

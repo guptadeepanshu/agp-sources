@@ -17,6 +17,7 @@
 package com.android.build.gradle.internal.testing
 
 import com.android.build.gradle.internal.SdkComponentsBuildService
+import com.android.testing.utils.isGradleManagedDevice
 import com.android.utils.GrabProcessOutput
 import com.android.utils.ILogger
 import java.io.File
@@ -82,6 +83,20 @@ class AdbHelper(
             }
         }
         return result.get()
+    }
+
+    /**
+     * Determines whether the given device is a Gradle Managed Device.
+     *
+     * This is done heuristically, by examining the [id][getIdForSerial] of the device.
+     */
+    fun isManagedDevice(serial: String, logger: ILogger): Boolean {
+        val id = getIdForSerial(serial)
+        val result = id != null && isGradleManagedDevice(id)
+        logger.verbose(
+            "$serial with id $id is${if(!result) " not" else ""} a Gradle Managed Device"
+        )
+        return result
     }
 
     /**

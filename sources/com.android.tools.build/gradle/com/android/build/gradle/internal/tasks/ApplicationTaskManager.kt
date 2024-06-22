@@ -23,7 +23,7 @@ import com.android.build.api.variant.ApplicationVariantBuilder
 import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.AbstractAppTaskManager
-import com.android.build.gradle.internal.component.AndroidTestCreationConfig
+import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
@@ -47,8 +47,6 @@ import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.tasks.BuildPrivacySandboxSdkApks
 import com.android.build.gradle.tasks.ExtractSupportedLocalesTask
 import com.android.build.gradle.tasks.GenerateLocaleConfigTask
-import com.android.builder.errors.IssueReporter
-import com.android.builder.internal.aapt.AaptUtils
 import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.Task
@@ -121,17 +119,6 @@ class ApplicationTaskManager(
         taskFactory.register(CompileArtProfileTask.CreationAction(variant))
 
         if ((variant.androidResources as? ApplicationAndroidResources)?.generateLocaleConfig == true) {
-            val resourceConfigs = variant.androidResourcesCreationConfig?.resourceConfigurations
-            if (!resourceConfigs.isNullOrEmpty() &&
-                AaptUtils.getNonDensityResConfigs(resourceConfigs).toList().isNotEmpty()) {
-                variant.services.issueReporter.reportError(
-                    IssueReporter.Type.GENERIC,
-                    "You cannot specify languages in resource configurations when " +
-                    "automatic locale generation is enabled. To use resource configurations, " +
-                    "please provide the locale config manually: " +
-                    "https://d.android.com/r/tools/locale-config"
-                )
-            }
             taskFactory.register(ExtractSupportedLocalesTask.CreationAction(variant))
             taskFactory.register(GenerateLocaleConfigTask.CreationAction(variant))
         }
@@ -391,7 +378,7 @@ class ApplicationTaskManager(
             taskFactory.register(BuildPrivacySandboxSdkApks.CreationAction(creationConfig as ApplicationCreationConfig))
         }
         if (!globalConfig.hasDynamicFeatures ||
-            creationConfig is AndroidTestCreationConfig
+            creationConfig is DeviceTestCreationConfig
         ) {
             // no dynamic features means we can just use the standard install task
             super.createInstallTask(creationConfig)

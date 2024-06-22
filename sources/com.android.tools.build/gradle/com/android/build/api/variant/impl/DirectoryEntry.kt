@@ -16,6 +16,7 @@
 
 package com.android.build.api.variant.impl
 
+import org.gradle.api.Task
 import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.file.Directory
 import org.gradle.api.provider.Provider
@@ -79,4 +80,17 @@ interface DirectoryEntry {
      * Optional filter associated with this source folder.
      */
     val filter: PatternFilterable?
+
+    /**
+     * Make this source directory entry a dependent of [task]. If [task] is scheduled,
+     * any producer of this source directory will be automatically scheduled for execution
+     * before [task]'s execution.
+     *
+     * @param task task that should depend on this source directory entry producer.
+     * @param projectDir the project directory, to be able to create a task input compatible version
+     * of this [DirectoryEntry] instance.
+     */
+    fun makeDependentOf(task: Task, projectDir: Provider<Directory>,) {
+        task.dependsOn(asFiles(projectDir))
+    }
 }

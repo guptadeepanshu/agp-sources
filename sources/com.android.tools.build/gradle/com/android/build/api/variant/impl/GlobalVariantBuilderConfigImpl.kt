@@ -19,6 +19,8 @@ package com.android.build.api.variant.impl
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.DependenciesInfo
+import com.android.build.gradle.internal.core.dsl.features.DeviceTestOptionsDslInfo
+import com.android.build.gradle.internal.core.dsl.impl.features.DeviceTestOptionsDslInfoImpl
 
 class GlobalVariantBuilderConfigImpl(
     private val extension: CommonExtension<*, *, *, *, *, *>
@@ -27,4 +29,7 @@ class GlobalVariantBuilderConfigImpl(
     override val dependenciesInfo: DependenciesInfo
         get() = (extension as? ApplicationExtension)?.dependenciesInfo
             ?: throw RuntimeException("Access to dependenciesInfo on a non Application variant")
+
+    override val deviceTestOptions: DeviceTestOptionsDslInfo
+        get() = DeviceTestOptionsDslInfoImpl(extension)
 }

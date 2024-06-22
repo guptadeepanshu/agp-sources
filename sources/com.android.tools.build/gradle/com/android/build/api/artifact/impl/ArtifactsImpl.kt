@@ -96,14 +96,6 @@ class ArtifactsImpl(
                 project::files
             )
         }
-
-        publicScopedArtifacts[ScopedArtifacts.Scope.PROJECT]?.let {
-            it.setInitialContent(
-                ScopedArtifact.JAVA_RES,
-                this,
-                InternalArtifactType.MERGED_JAVA_RES
-            )
-        }
     }
 
     override fun forScope(scope: ScopedArtifacts.Scope): ScopedArtifactsImpl =

@@ -21,21 +21,8 @@ import org.gradle.api.Task
 import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.TaskProvider
 
-@Suppress("OverridingDeprecatedMember", "DEPRECATION")
 class TaskFactoryImpl(private val taskContainer: TaskContainer):
     TaskFactory {
-
-    override fun containsKey(name: String): Boolean {
-        return taskContainer.findByName(name) != null
-    }
-
-    // --- Direct Creation ---
-
-    override fun findByName(name: String): Task? {
-        return taskContainer.findByName(name)
-    }
-
-    // --- Lazy Creation ---
 
     override fun named(name: String): TaskProvider<Task> = taskContainer.named(name)
 

@@ -27,6 +27,7 @@ import com.android.build.gradle.ProguardFiles
 import com.android.build.gradle.internal.PostprocessingFeatures
 import com.android.build.gradle.internal.ProguardFileType
 import com.android.build.gradle.internal.core.PostProcessingOptions
+import com.android.build.gradle.internal.core.dsl.ComponentDslInfo
 import com.android.build.gradle.internal.core.dsl.KmpVariantDslInfo
 import com.android.build.gradle.internal.core.dsl.features.BuildConfigDslInfo
 import com.android.build.gradle.internal.core.dsl.features.ManifestPlaceholdersDslInfo
@@ -109,6 +110,8 @@ class KmpVariantDslInfoImpl(
     override val renderscriptDslInfo: RenderscriptDslInfo? = null
     override val buildConfigDslInfo: BuildConfigDslInfo? = null
     override val manifestPlaceholdersDslInfo: ManifestPlaceholdersDslInfo? = null
+    override val dslDefinedHostTests: List<ComponentDslInfo.DslDefinedHostTest> = listOf()
+    override val dslDefinedDeviceTests: List<ComponentDslInfo.DslDefinedDeviceTest> = listOf()
 
     class KmpOptimizationDslInfoImpl(
         private val extension: KotlinMultiplatformAndroidExtension,

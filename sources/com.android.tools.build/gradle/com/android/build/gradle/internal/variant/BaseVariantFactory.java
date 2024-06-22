@@ -21,19 +21,19 @@ import com.android.annotations.Nullable;
 import com.android.build.VariantOutput;
 import com.android.build.api.artifact.impl.ArtifactsImpl;
 import com.android.build.api.component.impl.DeviceTestImpl;
-import com.android.build.api.component.impl.ScreenshotTestImpl;
+import com.android.build.api.component.impl.HostTestImpl;
 import com.android.build.api.component.impl.TestFixturesImpl;
-import com.android.build.api.component.impl.UnitTestImpl;
 import com.android.build.api.dsl.CommonExtension;
 import com.android.build.api.variant.ComponentIdentity;
 import com.android.build.api.variant.VariantBuilder;
 import com.android.build.api.variant.impl.DeviceTestBuilderImpl;
+import com.android.build.api.variant.impl.HostTestBuilderImpl;
 import com.android.build.gradle.internal.BuildTypeData;
 import com.android.build.gradle.internal.ProductFlavorData;
 import com.android.build.gradle.internal.api.BaseVariantImpl;
 import com.android.build.gradle.internal.api.ReadOnlyObjectProvider;
-import com.android.build.gradle.internal.component.AndroidTestCreationConfig;
 import com.android.build.gradle.internal.component.ComponentCreationConfig;
+import com.android.build.gradle.internal.component.DeviceTestCreationConfig;
 import com.android.build.gradle.internal.component.HostTestCreationConfig;
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig;
 import com.android.build.gradle.internal.component.VariantCreationConfig;
@@ -120,9 +120,10 @@ public abstract class BaseVariantFactory<
             @NonNull VariantCreationConfig testedVariant,
             @NonNull VariantServices variantServices,
             @NonNull TaskCreationServices taskCreationServices,
-            @NonNull GlobalTaskCreationConfig globalConfig) {
+            @NonNull GlobalTaskCreationConfig globalConfig,
+            @NonNull HostTestBuilderImpl hostTestBuilder) {
         return dslServices.newInstance(
-                UnitTestImpl.class,
+                HostTestImpl.class,
                 componentIdentity,
                 createUnitTestBuildFeatures(buildFeatures),
                 dslInfo,
@@ -135,12 +136,13 @@ public abstract class BaseVariantFactory<
                 testedVariant,
                 variantServices,
                 taskCreationServices,
-                globalConfig);
+                globalConfig,
+                hostTestBuilder);
     }
 
     @NonNull
     @Override
-    public HostTestCreationConfig createScreenshotTest(
+    public HostTestCreationConfig createHostTest(
             @NonNull ComponentIdentity componentIdentity,
             @NonNull BuildFeatureValues buildFeatures,
             @NonNull HostTestComponentDslInfo dslInfo,
@@ -153,11 +155,12 @@ public abstract class BaseVariantFactory<
             @NonNull VariantCreationConfig testedVariant,
             @NonNull VariantServices variantServices,
             @NonNull TaskCreationServices taskCreationServices,
-            @NonNull GlobalTaskCreationConfig globalConfig) {
+            @NonNull GlobalTaskCreationConfig globalConfig,
+            @NonNull HostTestBuilderImpl hostTestBuilder) {
         return dslServices.newInstance(
-                ScreenshotTestImpl.class,
+                HostTestImpl.class,
                 componentIdentity,
-                createUnitTestBuildFeatures(buildFeatures),  // TODO
+                createUnitTestBuildFeatures(buildFeatures), // TODO
                 dslInfo,
                 variantDependencies,
                 variantSources,
@@ -168,12 +171,13 @@ public abstract class BaseVariantFactory<
                 testedVariant,
                 variantServices,
                 taskCreationServices,
-                globalConfig);
+                globalConfig,
+                hostTestBuilder);
     }
 
     @NonNull
     @Override
-    public AndroidTestCreationConfig createAndroidTest(
+    public DeviceTestCreationConfig createAndroidTest(
             @NonNull ComponentIdentity componentIdentity,
             @NonNull BuildFeatureValues buildFeatures,
             @NonNull AndroidTestComponentDslInfo dslInfo,
@@ -187,7 +191,7 @@ public abstract class BaseVariantFactory<
             @NonNull VariantServices variantServices,
             @NonNull TaskCreationServices taskCreationServices,
             @NonNull GlobalTaskCreationConfig globalConfig,
-            @NonNull DeviceTestBuilderImpl defaultDeviceTestBuilder) {
+            @NonNull DeviceTestBuilderImpl deviceTestBuilder) {
         return dslServices.newInstance(
                 DeviceTestImpl.class,
                 componentIdentity,
@@ -203,7 +207,7 @@ public abstract class BaseVariantFactory<
                 variantServices,
                 taskCreationServices,
                 globalConfig,
-                defaultDeviceTestBuilder);
+                deviceTestBuilder);
     }
 
     @Nullable

@@ -28,7 +28,6 @@ import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.buildanalyzer.common.TaskCategory
-import com.android.builder.packaging.JarCreator
 import com.android.builder.packaging.JarFlinger
 import com.android.tools.lint.typedefs.TypedefRemover
 import com.android.utils.FileUtils
@@ -148,7 +147,7 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
             resourceJar: File,
             toFile: File,
             filter: Predicate<String>,
-            typedefRemover: JarCreator.Transformer?,
+            typedefRemover: JarFlinger.Transformer?,
             compressionLevel: Int?) {
 
             // process main scope.
@@ -188,7 +187,7 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
                 // been merged into the main jar.
                 JarFlinger(
                     File(localJarsLocation, jar.name).toPath(),
-                    JarCreator.CLASSES_ONLY
+                    JarFlinger.CLASSES_ONLY
                 ).use { jarCreator ->
                     compressionLevel?.let { jarCreator.setCompressionLevel(it) }
                     jarCreator.addJar(jar.toPath())
@@ -199,7 +198,7 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
             if (dirInputs.isNotEmpty()) {
                 JarFlinger(
                     File(localJarsLocation, "otherclasses.jar").toPath(),
-                    JarCreator.CLASSES_ONLY
+                    JarFlinger.CLASSES_ONLY
                 ).use { jarCreator ->
                     for (dir in dirInputs) {
                         jarCreator.addDirectory(dir.toPath())
@@ -213,10 +212,10 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
             resourceJar: File,
             toFile: File,
             filter: Predicate<String>,
-            typedefRemover: JarCreator.Transformer?,
+            typedefRemover: JarFlinger.Transformer?,
             compressionLevel: Int?
         ) {
-            val filterAndOnlyClasses = JarCreator.CLASSES_ONLY.and(filter)
+            val filterAndOnlyClasses = JarFlinger.CLASSES_ONLY.and(filter)
 
             JarFlinger(toFile.toPath(), null).use { jarFlinger ->
                 compressionLevel?.let { jarFlinger.setCompressionLevel(it) }

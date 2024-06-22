@@ -21,12 +21,12 @@ import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.DataBinding
 import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.VariantBuilder
-import com.android.build.api.variant.impl.AndroidTestBuilderImpl
 import com.android.build.api.variant.impl.DeviceTestBuilderImpl
 import com.android.build.api.variant.impl.GlobalVariantBuilderConfig
+import com.android.build.api.variant.impl.HostTestBuilderImpl
 import com.android.build.gradle.internal.api.BaseVariantImpl
 import com.android.build.gradle.internal.api.ReadOnlyObjectProvider
-import com.android.build.gradle.internal.component.AndroidTestCreationConfig
+import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig
 import com.android.build.gradle.internal.component.HostTestCreationConfig
@@ -113,9 +113,10 @@ interface VariantFactory<VariantBuilderT : VariantBuilder, VariantDslInfoT: Vari
         variantServices: VariantServices,
         taskCreationServices: TaskCreationServices,
         globalConfig: GlobalTaskCreationConfig,
+        hostTestBuilder: HostTestBuilderImpl,
     ): HostTestCreationConfig
 
-    fun createScreenshotTest(
+    fun createHostTest(
             componentIdentity: ComponentIdentity,
             buildFeatures: BuildFeatureValues,
             dslInfo: HostTestComponentDslInfo,
@@ -129,7 +130,8 @@ interface VariantFactory<VariantBuilderT : VariantBuilder, VariantDslInfoT: Vari
             variantServices: VariantServices,
             taskCreationServices: TaskCreationServices,
             globalConfig: GlobalTaskCreationConfig,
-    ): HostTestCreationConfig
+            hostTestBuilder: HostTestBuilderImpl,
+        ): HostTestCreationConfig
 
     fun createAndroidTest(
         componentIdentity: ComponentIdentity,
@@ -145,8 +147,8 @@ interface VariantFactory<VariantBuilderT : VariantBuilder, VariantDslInfoT: Vari
         variantServices: VariantServices,
         taskCreationServices: TaskCreationServices,
         globalConfig: GlobalTaskCreationConfig,
-        defaultDeviceTestBuilder: DeviceTestBuilderImpl,
-    ): AndroidTestCreationConfig
+        deviceTestBuilder: DeviceTestBuilderImpl,
+        ): DeviceTestCreationConfig
 
     fun createVariantData(
         componentIdentity: ComponentIdentity,
@@ -168,7 +170,8 @@ interface VariantFactory<VariantBuilderT : VariantBuilder, VariantDslInfoT: Vari
         buildFeatures: BuildFeatures,
         dataBinding: DataBinding,
         projectOptions: ProjectOptions,
-        includeAndroidResources: Boolean
+        includeAndroidResources: Boolean,
+        hostTestComponentType: ComponentType
     ): BuildFeatureValues
 
     fun createAndroidTestBuildFeatureValues(

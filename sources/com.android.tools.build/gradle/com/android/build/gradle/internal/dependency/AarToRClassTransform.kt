@@ -19,7 +19,6 @@ package com.android.build.gradle.internal.dependency
 import com.android.SdkConstants.DOT_JAR
 import com.android.build.gradle.internal.dependency.AarToClassTransform.Companion.copyAllClassesJarsTo
 import com.android.build.gradle.internal.dependency.AarToClassTransform.Companion.generateRClassJarFromRTxt
-import com.android.builder.packaging.JarCreator
 import com.android.builder.packaging.JarFlinger
 import org.gradle.api.artifacts.transform.CacheableTransform
 import org.gradle.api.artifacts.transform.InputArtifact
@@ -56,7 +55,7 @@ abstract class AarToRClassTransform : TransformAction<TransformParameters.None> 
         outputJar: Path,
         inputAar: ZipFile
     ) {
-        JarFlinger(outputJar, JarCreator.CLASSES_ONLY).use { outputApiJar ->
+        JarFlinger(outputJar, JarFlinger.CLASSES_ONLY).use { outputApiJar ->
             outputApiJar.setCompressionLevel(NO_COMPRESSION)
             generateRClassJarFromRTxt(outputApiJar, inputAar)
             inputAar.copyAllClassesJarsTo(outputApiJar)

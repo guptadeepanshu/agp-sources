@@ -30,7 +30,7 @@ class PrivacySandboxDslInfoImpl(private val extension: CommonExtension<*,*,*,*,*
                 is ApplicationExtension -> extension.privacySandbox.enable
                 is LibraryExtension -> extension.privacySandbox.enable
                 is DynamicFeatureExtension -> extension.privacySandbox.enable
-                is TestExtension -> false
+                is TestExtension -> extension.privacySandbox.enable
                 else -> false
             }
         }

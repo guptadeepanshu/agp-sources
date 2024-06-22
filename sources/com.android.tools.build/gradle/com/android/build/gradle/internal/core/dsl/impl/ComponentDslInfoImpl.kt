@@ -22,6 +22,7 @@ import com.android.build.api.dsl.BuildType
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.ProductFlavor
 import com.android.build.api.variant.ComponentIdentity
+import com.android.build.api.variant.HostTestBuilder
 import com.android.build.gradle.api.JavaCompileOptions
 import com.android.build.gradle.internal.core.MergedFlavor
 import com.android.build.gradle.internal.core.MergedJavaCompileOptions
@@ -124,9 +125,35 @@ internal abstract class ComponentDslInfoImpl internal constructor(
         }
         val nonEmptySuffixes = suffixes.filter { it.isNotEmpty() }
         return if (nonEmptySuffixes.isNotEmpty()) {
-            ".${nonEmptySuffixes.joinToString(separator = ".", transform = { it.removePrefix(".") })}"
+            ".${
+                nonEmptySuffixes.joinToString(
+                    separator = ".",
+                    transform = { it.removePrefix(".") })
+            }"
         } else {
             ""
         }
     }
+
+    // TODO : we should provide a generic setting in build type to enable code coverage for any
+    // host test instance.
+    override val dslDefinedHostTests: List<ComponentDslInfo.DslDefinedHostTest> =
+        listOf(
+            ComponentDslInfo.DslDefinedHostTest(
+                HostTestBuilder.UNIT_TEST_TYPE,
+                buildTypeObj.enableUnitTestCoverage || buildTypeObj.isTestCoverageEnabled
+            ),
+            ComponentDslInfo.DslDefinedHostTest(
+                HostTestBuilder.SCREENSHOT_TEST_TYPE,
+                false
+            ),
+        )
+
+    override val dslDefinedDeviceTests: List<ComponentDslInfo.DslDefinedDeviceTest> =
+        listOf(
+            ComponentDslInfo.DslDefinedDeviceTest(
+                buildTypeObj.enableAndroidTestCoverage || buildTypeObj.isTestCoverageEnabled
+            )
+        )
+
 }

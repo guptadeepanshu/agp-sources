@@ -47,6 +47,7 @@ abstract class AndroidLintWorkAction : WorkAction<AndroidLintWorkAction.LintWork
         abstract val returnValueOutputFile: RegularFileProperty
         abstract val lintMode: Property<LintMode>
         abstract val hasBaseline: Property<Boolean>
+        abstract val useK2Uast: Property<Boolean>
     }
 
     override fun execute() {
@@ -60,7 +61,7 @@ abstract class AndroidLintWorkAction : WorkAction<AndroidLintWorkAction.LintWork
                 com.android.build.gradle.options.StringOption.LINT_HEAP_SIZE.propertyName
             )
         }
-        val execResult = runLint(arguments)
+        val execResult = runLint(arguments, parameters.useK2Uast.get())
         logger.debug("Lint returned $execResult")
         parameters.returnValueOutputFile.orNull?.asFile?.let {
             it.writeText("$execResult")
@@ -80,8 +81,9 @@ abstract class AndroidLintWorkAction : WorkAction<AndroidLintWorkAction.LintWork
         )
     }
 
-    private fun runLint(arguments: List<String>): Int {
-        val classLoader = getClassloader(parameters.versionKey.get(), parameters.classpath)
+    private fun runLint(arguments: List<String>, useK2Uast: Boolean): Int {
+        // Append useK2Uast to versionKey to use a different lint classloader when using K2 UAST
+        val classLoader = getClassloader("${parameters.versionKey.get()}_$useK2Uast", parameters.classpath)
         val currentContextClassLoader = Thread.currentThread().contextClassLoader
         try {
             Thread.currentThread().contextClassLoader = null
@@ -171,7 +173,9 @@ abstract class AndroidLintWorkAction : WorkAction<AndroidLintWorkAction.LintWork
                     map.remove(otherKey)
                 }
             }
-            if (map.size <= 1) return
+            // Don't log info unless there are more than 2 lint class loaders because there will be
+            // 2 lint class loaders when lint runs with and without K2 UAST.
+            if (map.size <= 2) return
             logger.info(
                 "Android Lint: There are multiple lint class loaders in this gradle daemon, " +
                         "which can lead to jvm metaspace pressure.\n" +

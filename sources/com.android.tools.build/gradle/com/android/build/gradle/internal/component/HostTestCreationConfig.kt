@@ -16,15 +16,21 @@
 
 package com.android.build.gradle.internal.component
 
+import com.android.build.api.variant.HostTest
+import com.android.builder.core.ComponentType
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.testing.Test
 
-interface HostTestCreationConfig: TestComponentCreationConfig {
+interface HostTestCreationConfig: TestComponentCreationConfig, HostTest {
 
-    val isUnitTestCoverageEnabled: Boolean
+    /**
+     * Defines the host test name used as a key to the [HasHostTestsBuilder.hostTests] and
+     * [HasHostTests.hostTests] maps.
+     */
+    val hostTestName: String
 
     fun runTestTaskConfigurationActions(testTask: TaskProvider<out Test>)
 
-    val isScreenshotTestCoverageEnabled: Boolean
+    override val codeCoverageEnabled: Boolean
 }
 

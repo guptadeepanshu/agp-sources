@@ -33,7 +33,7 @@ import com.android.build.gradle.internal.KotlinMultiplatformCompileOptionsImpl
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.attribution.BuildAnalyzerIssueReporter
 import com.android.build.gradle.internal.core.SettingsOptions
-import com.android.build.gradle.internal.core.dsl.impl.features.KmpAndroidTestOptionsDslInfoImpl
+import com.android.build.gradle.internal.core.dsl.impl.features.KmpDeviceTestOptionsDslInfoImpl
 import com.android.build.gradle.internal.core.dsl.impl.features.KmpUnitTestOptionsDslInfoImpl
 import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidExtensionImpl
@@ -64,6 +64,7 @@ import org.gradle.api.attributes.AttributeContainer
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Provider
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
 internal class KmpGlobalTaskCreationConfigImpl(
     project: Project,
@@ -119,7 +120,7 @@ internal class KmpGlobalTaskCreationConfigImpl(
     }
 
     override val androidTestOptions by lazy(LazyThreadSafetyMode.NONE) {
-        KmpAndroidTestOptionsDslInfoImpl(extension)
+        KmpDeviceTestOptionsDslInfoImpl(extension)
     }
 
     override val unitTestOptions by lazy(LazyThreadSafetyMode.NONE) {
@@ -252,5 +253,7 @@ internal class KmpGlobalTaskCreationConfigImpl(
     override val composeOptions: ComposeOptions
         get() = throw IllegalAccessException("Not supported for kmp")
     override val dataBinding: DataBinding
+        get() = throw IllegalAccessException("Not supported for kmp")
+    override val kotlinOptions: KotlinJvmOptions
         get() = throw IllegalAccessException("Not supported for kmp")
 }

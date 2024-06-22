@@ -266,6 +266,12 @@ public class RenderSession {
      */
     public void triggerKeyEvent(KeyEvent event) {}
 
+    /**
+     * Call that releases the current rendering. After this, the {@link Result} will not be valid.
+     * until another render happens.
+     */
+    public void releaseRender() {}
+
     /** Discards the layout. No more actions can be called on this object. */
     public void dispose() {}
 

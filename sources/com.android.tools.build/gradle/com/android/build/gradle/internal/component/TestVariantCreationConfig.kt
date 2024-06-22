@@ -31,4 +31,15 @@ interface TestVariantCreationConfig: VariantCreationConfig, TestCreationConfig, 
      * each APK.
      */
     val testedApks: Provider<Directory>
+
+    /**
+     * Provide access to the privacy sandbox Sdk APKs, this is a [Directory] that can contain multiple APKs,
+     * therefore a [BuiltArtifactsLoaderImpl] must be used to load the metadata associated with
+     * each APK.
+     */
+    val privacySandboxCompatApks: Provider<Directory>
+
+    val usesSdkLibrarySplitForLocalDeployment: Provider<Directory>
+
+    val privacySandboxEnabled: Boolean
 }

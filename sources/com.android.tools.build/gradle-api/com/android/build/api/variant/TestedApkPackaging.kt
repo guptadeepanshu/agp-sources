@@ -16,12 +16,9 @@
 
 package com.android.build.api.variant
 
-import org.gradle.api.Incubating
-
 /**
  * Build-time properties for packaging inside a tested APK [Component].
  */
-@Incubating
 interface TestedApkPackaging : TestedComponentPackaging, ApkPackaging {
 
     override val jniLibs: JniLibsTestedApkPackaging

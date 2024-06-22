@@ -19,7 +19,6 @@ package com.android.ide.common.resources
 import com.android.ide.common.resources.configuration.FolderConfiguration
 import com.android.ide.common.resources.configuration.LocaleQualifier
 import com.android.SdkConstants
-import com.google.common.annotations.VisibleForTesting
 import java.io.File
 import java.io.FileInputStream
 import java.util.Properties
@@ -28,17 +27,21 @@ fun generateLocaleConfigManifestAttribute(localeConfigFileName: String): String 
     return "@xml/${localeConfigFileName}"
 }
 
-@VisibleForTesting
 fun generateLocaleString(localeQualifier: LocaleQualifier): String {
     return localeQualifier.language!! +
         (localeQualifier.script?.let { script -> "-$script" } ?: "") +
         (localeQualifier.region?.let { region -> "-$region" } ?: "")
 }
 
-fun generateLocaleList(
+/**
+ * Takes all the values folders from resources and extracts the folder locale names from them.
+ * Additionally, if pseudolocales are enabled, add the folder locale names for the pseudolocales.
+ * Returns these folder locale names as a set.
+ */
+fun generateFolderLocaleSet(
     resources: Collection<File>,
     pseudoLocalesEnabled: Boolean = false
-): List<String> {
+): Set<String> {
     // Fold all root resource directories into a one-dimensional
     // list of qualified resource directories (main/res -> main/res/values-en-rUS, etc.)
     val allResources = resources.fold(mutableListOf<File>()) { acc, it ->
@@ -49,33 +52,49 @@ fun generateLocaleList(
     }.filter {
         it.isDirectory && it.listFiles()!!.isNotEmpty() // Ignore empty folders and files
     }
-    // Then process all folder names into folder configurations, and then get the locale qualifier
-    val localeQualifiers = mutableListOf<LocaleQualifier?>()
-    allResources.forEach {
-        FolderConfiguration.getConfig(it.name.split("-"))
-            ?.let { folderConfig -> localeQualifiers.add(folderConfig.localeQualifier) }
-    }
-    // Finally, extract the locale name to be used in the configuration file
-    val supportedLocales = mutableSetOf<String>()
-    localeQualifiers.forEach {
-        it?.let { localeQualifier ->
-            supportedLocales.add(generateLocaleString(localeQualifier))
-        }
-    }
+
+    val folderLocales = mutableSetOf<String>()
+    folderLocales.addAll(
+        allResources.filter { resourceFolder ->
+            resourceFolder.name.startsWith("values-") &&
+            FolderConfiguration.getConfigFromQualifiers(
+                resourceFolder.name.substringAfter("values-").split("-")
+            )?.localeQualifier != null
+        }.map { it.name.substringAfter("values-") }
+    )
+
     // Add the pseudolocales if enabled
     if (pseudoLocalesEnabled) {
-        supportedLocales.add(SdkConstants.EN_XA)
-        supportedLocales.add(SdkConstants.AR_XB)
+        folderLocales.add(SdkConstants.EN_XA)
+        folderLocales.add(SdkConstants.AR_XB)
     }
-    return supportedLocales.toList()
+    return folderLocales
 }
 
-fun mergeLocaleLists(allLocales: Collection<Collection<String>>): Set<String> {
-    val foldedLocales = allLocales.fold(mutableSetOf<String>()) { acc, it ->
-        acc.addAll(it)
-        acc
+data class SupportedLocales(val defaultLocale: String, val folderLocales: Set<String>)
+
+private const val defaultLocaleSpecifier = "*"
+
+/**
+ * Takes the supported locales text file, and extracts the locales into SupportedLocales format.
+ * This reads the locale with the [defaultLocaleSpecifier] before it, signifying it is the default
+ * locale, and adds the rest of the locales in folder-name format.
+ *
+ * The [SupportedLocales] will then provide access to the default locales, and the folder locales
+ * by property.
+ */
+fun readSupportedLocales(input: File): SupportedLocales {
+    val lines = input.readLines()
+    var defaultLocale = ""
+    val folderLocales = mutableSetOf<String>()
+    lines.forEach {
+        if (it.startsWith(defaultLocaleSpecifier)) {
+            defaultLocale = it.split(defaultLocaleSpecifier).last()
+        } else {
+            folderLocales.add(it)
+        }
     }
-    return foldedLocales
+    return SupportedLocales(defaultLocale, folderLocales)
 }
 
 fun writeSupportedLocales(output: File, locales: Collection<String>, defaultLocale: String?) {
@@ -83,7 +102,10 @@ fun writeSupportedLocales(output: File, locales: Collection<String>, defaultLoca
         output.writeText(listOf(*(locales.toTypedArray())).joinToString("\n"))
     } else {
         output.writeText(
-            listOf(defaultLocale, *(locales.toTypedArray())).joinToString("\n")
+            listOf(
+                "$defaultLocaleSpecifier$defaultLocale",
+                *(locales.toTypedArray())
+            ).joinToString("\n")
         )
     }
 }

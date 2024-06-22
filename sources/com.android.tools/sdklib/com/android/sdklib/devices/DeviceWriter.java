@@ -241,6 +241,10 @@ public class DeviceWriter {
                 hw.getRemovableStorage());
         addElement(doc, hardware, DeviceSchema.NODE_CPU, hw.getCpu());
         addElement(doc, hardware, DeviceSchema.NODE_GPU, hw.getGpu());
+        if (hw.getSupportedAbis().size() > 0) {
+            addElement(
+                    doc, hardware, DeviceSchema.NODE_ABI, hw.getSupportedAbis().get(0).toString());
+        }
         hw.getSupportedAbis()
                 .forEach(abi -> addElement(doc, hardware, DeviceSchema.NODE_ABIS, abi.toString()));
         hw.getTranslatedAbis()

@@ -26,7 +26,7 @@ import com.android.build.gradle.internal.core.dsl.features.AndroidResourcesDslIn
  *
  * Use [DslInfoBuilder] to instantiate.
  *
- * @see [com.android.build.gradle.internal.component.AndroidTestCreationConfig]
+ * @see [com.android.build.gradle.internal.component.DeviceTestCreationConfig]
  */
 interface AndroidTestComponentDslInfo
     : TestComponentDslInfo, ApkProducingComponentDslInfo, InstrumentedTestComponentDslInfo {

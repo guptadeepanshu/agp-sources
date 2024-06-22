@@ -34,6 +34,7 @@ import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Streams;
 import java.io.File;
 import java.nio.file.Path;
@@ -73,6 +74,7 @@ public final class AvdInfo {
     @NonNull private final Path mIniFile;
     @NonNull private final Path mFolderPath;
     @NonNull private final ImmutableMap<String, String> mProperties;
+    @NonNull private final ImmutableMap<String, String> mUserSettings;
     @NonNull private final AvdStatus mStatus;
     @Nullable private final ISystemImage mSystemImage;
     private final boolean mHasPlayStore;
@@ -93,8 +95,9 @@ public final class AvdInfo {
             @NonNull Path iniFile,
             @NonNull Path folderPath,
             @NonNull ISystemImage systemImage,
-            @Nullable Map<String, String> properties) {
-        this(name, iniFile, folderPath, systemImage, properties, AvdStatus.OK);
+            @Nullable Map<String, String> properties,
+            @Nullable Map<String, String> userSettings) {
+        this(name, iniFile, folderPath, systemImage, properties, userSettings, AvdStatus.OK);
     }
 
     /**
@@ -115,12 +118,17 @@ public final class AvdInfo {
             @NonNull Path folderPath,
             @Nullable ISystemImage systemImage,
             @Nullable Map<String, String> properties,
+            @Nullable Map<String, String> userSettings,
             @NonNull AvdStatus status) {
         mName = name;
         mIniFile = iniFile;
         mFolderPath = folderPath;
         mSystemImage = systemImage;
         mProperties = properties == null ? ImmutableMap.of() : ImmutableMap.copyOf(properties);
+        mUserSettings =
+                userSettings == null
+                        ? ImmutableMap.of()
+                        : ImmutableMap.copyOf(Maps.filterValues(userSettings, Objects::nonNull));
         mStatus = status;
         String psString = mProperties.get(AvdManager.AVD_INI_PLAYSTORE_ENABLED);
         mHasPlayStore = "true".equalsIgnoreCase(psString) || "yes".equalsIgnoreCase(psString);
@@ -331,12 +339,13 @@ public final class AvdInfo {
 
     /** Helper method that returns the User Settings Path. */
     @NonNull
-    public Path getUserSettingsPath() {
-        return mFolderPath.resolve(AvdManager.USER_SETTINGS_INI);
+    public static Path getUserSettingsPath(@NonNull Path dataFolder) {
+        return dataFolder.resolve(AvdManager.USER_SETTINGS_INI);
     }
 
-    public Map<String, String> parseUserSettingsFile(@Nullable ILogger logger) {
-        PathFileWrapper settingsPath = new PathFileWrapper(getUserSettingsPath());
+    static Map<String, String> parseUserSettingsFile(
+            @NonNull Path dataFolder, @Nullable ILogger logger) {
+        PathFileWrapper settingsPath = new PathFileWrapper(getUserSettingsPath(dataFolder));
         if (settingsPath.exists()) {
             Map<String, String> parsedSettings = AvdManager.parseIniFile(settingsPath, logger);
             if (parsedSettings != null) {
@@ -344,6 +353,11 @@ public final class AvdInfo {
             }
         }
         return new HashMap<>();
+    }
+
+    @NonNull
+    public Map<String, String> getUserSettings() {
+        return mUserSettings;
     }
 
     /** Returns the Config file for this AVD. */
@@ -411,6 +425,25 @@ public final class AvdInfo {
         return null;
     }
 
+    public boolean isSameMetadata(@Nullable Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AvdInfo avdInfo = (AvdInfo) o;
+        return mName.equals(avdInfo.mName) && mUserSettings.equals(avdInfo.mUserSettings);
+    }
+
+    @NonNull
+    public AvdInfo copyMetadata(@NonNull AvdInfo other) {
+        return new AvdInfo(
+                other.getName(),
+                getIniFile(),
+                getDataFolderPath(),
+                getSystemImage(),
+                getProperties(),
+                other.getUserSettings(),
+                getStatus());
+    }
+
     @Override
     public boolean equals(@Nullable Object o) {
         if (this == o) return true;
@@ -421,6 +454,7 @@ public final class AvdInfo {
                 && mIniFile.equals(avdInfo.mIniFile)
                 && mFolderPath.equals(avdInfo.mFolderPath)
                 && mProperties.equals(avdInfo.mProperties)
+                && mUserSettings.equals(avdInfo.mUserSettings)
                 && mStatus == avdInfo.mStatus
                 && Objects.equals(mSystemImage, avdInfo.mSystemImage);
     }
@@ -432,6 +466,7 @@ public final class AvdInfo {
         hashCode = 31 * hashCode + mIniFile.hashCode();
         hashCode = 31 * hashCode + mFolderPath.hashCode();
         hashCode = 31 * hashCode + mProperties.hashCode();
+        hashCode = 31 * hashCode + mUserSettings.hashCode();
         hashCode = 31 * hashCode + mStatus.hashCode();
         hashCode = 31 * hashCode + Objects.hashCode(mSystemImage);
         hashCode = 31 * hashCode + Objects.hashCode(mHasPlayStore);
@@ -454,6 +489,9 @@ public final class AvdInfo {
                 + separator
                 + "mProperties = "
                 + mProperties
+                + separator
+                + "mUserSettings = "
+                + mUserSettings
                 + separator
                 + "mStatus = "
                 + mStatus

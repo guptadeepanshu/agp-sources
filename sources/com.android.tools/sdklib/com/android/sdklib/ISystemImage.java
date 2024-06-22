@@ -16,10 +16,6 @@
 
 package com.android.sdklib;
 
-import static com.android.sdklib.SystemImageTags.AUTOMOTIVE_PLAY_STORE_TAG;
-import static com.android.sdklib.SystemImageTags.PLAY_STORE_TAG;
-import static com.android.sdklib.SystemImageTags.WEAR_TAG;
-
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
@@ -92,12 +88,25 @@ public interface ISystemImage extends Comparable<ISystemImage> {
     IdDisplay getAddonVendor();
 
     /**
-     * Returns the ABI type.
-     * See {@link Abi} for a full list.
+     * Returns the primary natively supported ABI type. See {@link Abi} for a full list of valid
+     * values. Cannot be null nor empty.
+     */
+    @NonNull
+    String getPrimaryAbiType();
+
+    /**
+     * Returns the natively supported ABI types. See {@link Abi} for a full list of valid values.
      * Cannot be null nor empty.
      */
     @NonNull
-    String getAbiType();
+    List<String> getAbiTypes();
+
+    /**
+     * Returns the supported translated ABI types. See {@link Abi} for a full list of valid values.
+     * Cannot be null.
+     */
+    @NonNull
+    List<String> getTranslatedAbiTypes();
 
     /**
      * Returns the skins embedded in the system image. <br>
@@ -133,22 +142,7 @@ public interface ISystemImage extends Comparable<ISystemImage> {
 
     /** Returns true if this system image supports Google Play Store. */
     default boolean hasPlayStore() {
-        // Multi-tagged packages only need this check
-        if (getTags().contains(PLAY_STORE_TAG)) {
-            return true;
-        }
-        // Fallback logic for old non-multi-tagged packages
-        if (AUTOMOTIVE_PLAY_STORE_TAG.equals(getTag())) {
-            return true;
-        }
-        // A Wear system image has Play Store if it is
-        // a recent API version and is NOT Wear-for-China.
-        if (WEAR_TAG.equals(getTag())
-                && getAndroidVersion().getApiLevel() >= AndroidVersion.MIN_RECOMMENDED_WEAR_API
-                && !getPackage().getPath().contains(WEAR_CN_DIRECTORY)) {
-            return true;
-        }
-        return false;
+        return SystemImageTags.hasGooglePlay(getTags(), getAndroidVersion(), getPackage());
     }
 
     /** The sdk package containing this system image. */

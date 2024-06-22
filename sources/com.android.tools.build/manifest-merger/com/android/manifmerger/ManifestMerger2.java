@@ -678,12 +678,28 @@ public class ManifestMerger2 {
             throws MergeFailureException {
         Pair<Document, Boolean> clonedDocument =
                 document.cloneAndTransform(
-                        PlaceholderEncoder::encode, ManifestMerger2::isNavGraphs);
+                        node -> ensurePackageHasADot(node) || PlaceholderEncoder.encode(node),
+                        ManifestMerger2::isNavGraphs);
         boolean isUpdated = clonedDocument.getSecond();
         mergingReport.setAaptSafeManifestUnchanged(!isUpdated);
         if (isUpdated) {
             mergingReport.setMergedDocument(AAPT_SAFE, prettyPrint(clonedDocument.getFirst()));
         }
+    }
+
+    private static boolean ensurePackageHasADot(Node node) {
+        if (node.getParentNode() != null
+                || !node.getNodeName().equals("manifest")
+                || !(node instanceof Element)) {
+            return false;
+        }
+        Element element = (Element) node;
+        String manifestPackage = element.getAttribute(SdkConstants.ATTR_PACKAGE);
+        if (manifestPackage.contains(".")) {
+            return false;
+        }
+        element.setAttribute(SdkConstants.ATTR_PACKAGE, manifestPackage + ".for.verification");
+        return true;
     }
 
     /**

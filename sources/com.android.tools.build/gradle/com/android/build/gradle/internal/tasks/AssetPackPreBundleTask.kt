@@ -25,7 +25,6 @@ import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.buildanalyzer.common.TaskCategory
-import com.android.builder.packaging.JarCreator
 import com.android.builder.packaging.JarFlinger
 import com.android.utils.FileUtils
 import org.gradle.api.file.ConfigurableFileCollection
@@ -41,7 +40,6 @@ import org.gradle.api.tasks.TaskProvider
 import org.gradle.work.DisableCachingByDefault
 import java.io.File
 import java.nio.file.Paths
-import java.util.function.Predicate
 import java.util.zip.Deflater
 
 /**
@@ -146,11 +144,7 @@ abstract class AssetPackPreBundleTask : NonIncrementalTask() {
     }
 }
 
-private class AssetRelocator(private val prefix: String): JarCreator.Relocator {
-    override fun relocate(entryPath: String) = "$prefix/$entryPath"
-}
-
-private class ManifestRelocator : JarCreator.Relocator {
+private class ManifestRelocator : JarFlinger.Relocator {
     override fun relocate(entryPath: String) = when(entryPath) {
         SdkConstants.FN_ANDROID_MANIFEST_XML -> "manifest/" + SdkConstants.FN_ANDROID_MANIFEST_XML
         else -> entryPath
@@ -173,14 +167,13 @@ abstract class AssetPackPreBundleTaskRunnable :
                 it.addDirectory(
                     Paths.get(parameters.assetsFilesPath.get()),
                     null,
-                    null,
-                    AssetRelocator(FD_ASSETS)
-                )
+                    null
+                ) { entryPath -> "$FD_ASSETS/$entryPath" }
             }
 
             it.addJar(
                 parameters.manifestFile.asFile.get().toPath(),
-                Predicate { file -> file.endsWith(SdkConstants.FN_ANDROID_MANIFEST_XML) },
+                { file -> file.endsWith(SdkConstants.FN_ANDROID_MANIFEST_XML) },
                 ManifestRelocator()
             )
         }

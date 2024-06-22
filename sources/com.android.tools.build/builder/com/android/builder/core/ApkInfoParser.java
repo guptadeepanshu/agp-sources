@@ -27,11 +27,13 @@ import com.android.ide.common.process.ProcessInfoBuilder;
 import com.android.utils.LineCollector;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Splitter;
 import java.io.File;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Class to parse an APK with aapt to gather information
@@ -40,6 +42,7 @@ public class ApkInfoParser {
 
     private static final Pattern PATTERN = Pattern.compile(
             "^package: name='([^']+)' versionCode='([0-9]*)' versionName='([^']*)'.*$");
+    private static final Pattern PATTERN_LOCALES = Pattern.compile("^locales\\W*:[^'](.+)$");
 
     @NonNull private final File aapt2File;
     @NonNull
@@ -202,5 +205,27 @@ public class ApkInfoParser {
         output.processStandardOutputLines(lineCollector);
 
         return lineCollector.getResult();
+    }
+
+    /**
+     * Returns the locales of an apk as found in the badging information or null if no locales found
+     *
+     * @param apkContents the apk contents in a list of strings
+     * @return the list of locales or null
+     */
+    @Nullable
+    public static List<String> getLocalesFromApkContents(@NonNull List<String> apkContents) {
+        for (String line : apkContents) {
+            Matcher m = PATTERN_LOCALES.matcher(line.trim());
+            if (m.matches()) {
+                List<String> list = Splitter.on(' ').splitToList(m.group(1).trim());
+                return list.stream()
+                        // remove the '' on each side, if any present
+                        .map(local -> local.replaceAll("^'", "").replaceAll("'$", ""))
+                        .collect(Collectors.toList());
+            }
+        }
+
+        return null;
     }
 }

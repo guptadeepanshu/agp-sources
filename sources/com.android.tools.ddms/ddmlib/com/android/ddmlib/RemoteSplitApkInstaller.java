@@ -84,6 +84,7 @@ public class RemoteSplitApkInstaller extends SplitApkInstallerBase {
                         ? filePath.substring(filePath.lastIndexOf('/'), filePath.length())
                         : filePath;
 
+        baseName = sanitizeApkFilename(baseName);
         String command =
                 String.format(
                         getPrefix() + " install-write %s %s %s", sessionId, baseName, filePath);

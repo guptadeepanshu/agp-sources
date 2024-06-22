@@ -16,9 +16,7 @@
 
 package com.android.build.gradle.tasks
 
-import com.android.build.api.variant.Variant
 import com.android.build.gradle.internal.MavenCoordinates
-import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.dsl.ModulePropertyKey
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInternalArtifactType
@@ -135,7 +133,7 @@ abstract class PrivacySandboxSdkGenerateJarStubsTask : DefaultTask() {
                             ?: (creationConfig.services.projectOptions
                                     .get(StringOption.ANDROID_PRIVACY_SANDBOX_SDK_API_PACKAGER)
                                     ?.split(",")
-                                    ?: listOf(MavenCoordinates.ANDROIDX_PRIVACYSANDBOX_TOOLS_TOOLS_API_PACKAGER.toString())).map {
+                                    ?: listOf(MavenCoordinates.ANDROIDX_PRIVACYSANDBOX_TOOLS_TOOLS_APIPACKAGER.toString())).map {
                                 creationConfig.services.dependencies.create(it)
                             }
             val apiPackager = creationConfig.services.configurations.detachedConfiguration()

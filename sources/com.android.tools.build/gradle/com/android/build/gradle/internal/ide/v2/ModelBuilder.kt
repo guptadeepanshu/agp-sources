@@ -20,8 +20,6 @@ import com.android.SdkConstants
 import com.android.Version
 import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.component.impl.DeviceTestImpl
-import com.android.build.api.component.impl.ScreenshotTestImpl
-import com.android.build.api.component.impl.UnitTestImpl
 import com.android.build.api.dsl.AndroidResources
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.BuildFeatures
@@ -34,10 +32,10 @@ import com.android.build.api.dsl.TestExtension
 import com.android.build.api.variant.ScopedArtifacts.Scope.ALL
 import com.android.build.api.variant.ScopedArtifacts.Scope.PROJECT
 import com.android.build.api.variant.impl.BuiltArtifactsImpl
-import com.android.build.api.variant.impl.HasHostTests
 import com.android.build.api.variant.impl.HasTestFixtures
-import com.android.build.api.variant.impl.InternalHasDeviceTests
-import com.android.build.gradle.internal.component.AndroidTestCreationConfig
+import com.android.build.api.variant.impl.HasDeviceTestsCreationConfig
+import com.android.build.api.variant.impl.HasHostTestsCreationConfig
+import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
@@ -286,10 +284,14 @@ class ModelBuilder<
         // Not doing this is confusing to users as they see folders marked as source that aren't
         // used by anything.
         val variantDimensionInfo = DimensionInformation.createFrom(variants)
-        val androidTests = DimensionInformation.createFrom(variantModel.testComponents.filterIsInstance<AndroidTestCreationConfig>())
-        val unitTests = DimensionInformation.createFrom(variantModel.testComponents.filterIsInstance<UnitTestImpl>())
+        val androidTests = DimensionInformation.createFrom(variantModel.testComponents.filterIsInstance<DeviceTestCreationConfig>())
+        val unitTests = DimensionInformation.createFrom(variantModel.testComponents.filter {
+            it.componentType == ComponentTypeImpl.UNIT_TEST
+        })
         val testFixtures = DimensionInformation.createFrom(variants.mapNotNull { (it as? HasTestFixtures)?.testFixtures })
-        val screenshotTests = DimensionInformation.createFrom(variantModel.testComponents.filterIsInstance<ScreenshotTestImpl>())
+        val screenshotTests = DimensionInformation.createFrom(variantModel.testComponents.filter {
+            it.componentType == ComponentTypeImpl.SCREENSHOT_TEST
+        })
 
         // for now grab the first buildFeatureValues as they cannot be different.
         val buildFeatures = variantModel.buildFeatures
@@ -433,7 +435,7 @@ class ModelBuilder<
         var testFixturesNamespace: String? = null
         val variantList = variants.map {
             namespace = it.namespace.get()
-            if (androidTestNamespace == null && it is InternalHasDeviceTests) {
+            if (androidTestNamespace == null && it is HasDeviceTestsCreationConfig) {
                 it.defaultDeviceTest?.let { androidTest ->
                     androidTestNamespace = androidTest.namespace.get()
                 }
@@ -590,7 +592,7 @@ class ModelBuilder<
 
         if (adjacencyList) {
             val deviceTestArtifacts = mutableMapOf<String, ArtifactDependenciesAdjacencyList>()
-            (variant as? InternalHasDeviceTests)?.deviceTests?.filterIsInstance<DeviceTestImpl>()?.forEach {
+            (variant as? HasDeviceTestsCreationConfig)?.deviceTests?.filterIsInstance<DeviceTestImpl>()?.forEach {
                 deviceTestArtifacts[it.artifactName] =
                     createDependenciesWithAdjacencyList(
                         it,
@@ -600,28 +602,16 @@ class ModelBuilder<
                     )
             }
             val hostTestArtifacts = mutableMapOf<String, ArtifactDependenciesAdjacencyList>()
-            (variant as? HasHostTests)?.unitTest?.let {
-                hostTestArtifacts.put(
-                    it.componentType.artifactName,
+            (variant as? HasHostTestsCreationConfig)?.hostTests?.values?.forEach { hostTest ->
+                hostTestArtifacts[hostTest.componentType.artifactName] =
                     createDependenciesWithAdjacencyList(
-                            it,
-                            libraryService,
-                            graphEdgeCache,
-                            parameter.dontBuildUnitTestRuntimeClasspath
-                    )
-                )
-            }
-            (variant as? HasHostTests)?.screenshotTest?.let {
-                hostTestArtifacts.put(
-                    it.componentType.artifactName,
-                    createDependenciesWithAdjacencyList(
-                        it,
+                        hostTest,
                         libraryService,
                         graphEdgeCache,
-                        parameter.dontBuildScreenshotTestRuntimeClasspath
+                        parameter.dontBuildUnitTestRuntimeClasspath
                     )
-                )
             }
+
             return VariantDependenciesAdjacencyListImpl(
                     name = variantName,
                     mainArtifact = createDependenciesWithAdjacencyList(
@@ -644,7 +634,7 @@ class ModelBuilder<
             )
         } else {
             val deviceTestArtifacts = mutableMapOf<String, ArtifactDependencies>()
-            (variant as? InternalHasDeviceTests)?.deviceTests?.filterIsInstance<DeviceTestImpl>()?.forEach {
+            (variant as? HasDeviceTestsCreationConfig)?.deviceTests?.filterIsInstance<DeviceTestImpl>()?.forEach {
                 deviceTestArtifacts[it.artifactName] =
                     createDependencies(
                         it,
@@ -653,23 +643,11 @@ class ModelBuilder<
                     )
             }
             val hostTestArtifacts = mutableMapOf<String, ArtifactDependencies>()
-            (variant as? HasHostTests)?.unitTest?.let {
-                hostTestArtifacts.put(
-                        it.componentType.artifactName,
-                        createDependencies(
-                            it,
-                            libraryService,
-                            parameter.dontBuildUnitTestRuntimeClasspath
-                        ))
-            }
-            (variant as? HasHostTests)?.screenshotTest?.let {
-                hostTestArtifacts.put(
-                        it.componentType.artifactName,
-                        createDependencies(
-                                it,
-                                libraryService,
-                                parameter.dontBuildScreenshotTestRuntimeClasspath
-                        )
+            (variant as? HasHostTestsCreationConfig)?.hostTests?.values?.forEach {
+                hostTestArtifacts[it.componentType.artifactName] = createDependencies(
+                    it,
+                    libraryService,
+                    parameter.dontBuildHostTestRuntimeClasspath[it.componentType.suffix] ?: false,
                 )
             }
             return VariantDependenciesImpl(
@@ -698,15 +676,14 @@ class ModelBuilder<
         features: BuildFeatureValues
     ): BasicVariantImpl {
         val deviceTestArtifacts = mutableMapOf<String, BasicArtifact>()
-        (variant as? InternalHasDeviceTests)?.deviceTests?.filterIsInstance<DeviceTestImpl>()?.forEach {
+        (variant as? HasDeviceTestsCreationConfig)?.deviceTests?.filterIsInstance<DeviceTestImpl>()?.forEach {
             deviceTestArtifacts[it.artifactName] = createBasicArtifact(it, features)
         }
         val hostTestArtifacts = mutableMapOf<String, BasicArtifact>()
-        (variant as? HasHostTests)?.unitTest?.let {
-            hostTestArtifacts.put(it.componentType.artifactName, createBasicArtifact(it, features))
-        }
-        (variant as? HasHostTests)?.screenshotTest?.let {
-            hostTestArtifacts.put(it.componentType.artifactName, createBasicArtifact(it, features))
+        (variant as? HasHostTestsCreationConfig)?.hostTests?.values?.forEach { hostTest ->
+            hostTestArtifacts[hostTest.componentType.artifactName] =
+                createBasicArtifact(hostTest, features)
+
         }
         return BasicVariantImpl(
             name = variant.name,
@@ -740,15 +717,14 @@ class ModelBuilder<
         instantAppResultMap: MutableMap<File, Boolean>
     ): VariantImpl {
         val deviceTestArtifacts = mutableMapOf<String, AndroidArtifact>()
-        (variant as? InternalHasDeviceTests)?.deviceTests?.filterIsInstance<DeviceTestImpl>()?.forEach {
+        (variant as? HasDeviceTestsCreationConfig)?.deviceTests?.filterIsInstance<DeviceTestImpl>()?.forEach {
             deviceTestArtifacts[it.artifactName] = createAndroidArtifact(it)
         }
         val hostTestArtifacts = mutableMapOf<String, JavaArtifact>()
-        (variant as? HasHostTests)?.unitTest?.let {
-            hostTestArtifacts.put(it.componentType.artifactName, createJavaArtifact(it))
-        }
-        (variant as? HasHostTests)?.screenshotTest?.let {
-            hostTestArtifacts.put(it.componentType.artifactName, createJavaArtifact(it))
+        (variant as? HasHostTestsCreationConfig)?.hostTests?.values?.forEach { hostTest ->
+            hostTestArtifacts[hostTest.componentType.artifactName] =
+                createJavaArtifact(hostTest)
+
         }
         return VariantImpl(
             name = variant.name,
@@ -815,11 +791,16 @@ class ModelBuilder<
         component.androidResourcesCreationConfig?.compiledRClassArtifact?.get()?.asFile?.let {
             classesFolders.add(it)
         }
+        if (component.useBuiltInKotlinSupport) {
+            classesFolders.add(
+                component.artifacts.get(InternalArtifactType.KOTLINC).get().asFile
+            )
+        }
 
         val generatedClassPaths = addGeneratedClassPaths(component, classesFolders)
 
         val testInfo: TestInfo? = when(component) {
-            is TestVariantCreationConfig, is AndroidTestCreationConfig -> {
+            is TestVariantCreationConfig, is DeviceTestCreationConfig -> {
                 val runtimeApks: Collection<File> = project
                     .configurations
                     .findByName(SdkConstants.GRADLE_ANDROID_TEST_UTIL_CONFIGURATION)?.files
@@ -956,12 +937,16 @@ class ModelBuilder<
         // steps that create bytecode
         val classesFolders = mutableSetOf<File>()
         classesFolders.add(component.artifacts.get(InternalArtifactType.JAVAC).get().asFile)
-        component.oldVariantApiLegacySupport?.let{
+        component.oldVariantApiLegacySupport?.let {
             classesFolders.addAll(it.variantData.allPreJavacGeneratedBytecode.files)
             classesFolders.addAll(it.variantData.allPostJavacGeneratedBytecode.files)
         }
+        if (component.useBuiltInKotlinSupport) {
+            classesFolders.add(component.artifacts.get(InternalArtifactType.KOTLINC).get().asFile)
+        }
         // The separately compile R class, if applicable.
-        if (extension.testOptions.unitTests.isIncludeAndroidResources) {
+        if (extension.testOptions.unitTests.isIncludeAndroidResources ||
+            component.componentType.isForScreenshotPreview) {
             classesFolders.add(component.artifacts.get(UNIT_TEST_CONFIG_DIRECTORY).get().asFile)
         }
         // TODO(b/111168382): When namespaced resources is on, then the provider returns null, so let's skip for now and revisit later

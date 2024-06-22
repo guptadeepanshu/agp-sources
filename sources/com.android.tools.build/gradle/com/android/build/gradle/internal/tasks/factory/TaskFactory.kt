@@ -24,21 +24,6 @@ import org.gradle.api.tasks.TaskProvider
  * Interface for a container that can create Task.
  */
 interface TaskFactory {
-    /** Returns true if this collection contains an item with the given name.  */
-    fun containsKey(name: String): Boolean
-
-    // --- Direct Actions ---
-
-    /**
-     * Returns the [Task] named name from the current set of defined tasks.
-     *
-     * @param name the name of the requested [Task]
-     * @return the [Task] instance or null if not found.
-     */
-    @Deprecated("Use lazyFindByName(...)")
-    fun findByName(name: String): Task?
-
-    // --- Lazy Actions ---
 
     fun named(name: String): TaskProvider<Task>
 

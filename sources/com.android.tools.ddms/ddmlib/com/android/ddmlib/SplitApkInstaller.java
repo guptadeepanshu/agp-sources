@@ -115,12 +115,13 @@ public class SplitApkInstaller extends SplitApkInstallerBase {
             return false;
         }
 
+        String uploadName = sanitizeApkFilename(fileToUpload.getName());
         String command =
                 String.format(
                         getPrefix() + " install-write -S %d %s %s -",
                         fileToUpload.length(),
                         sessionId,
-                        fileToUpload.getName());
+                        uploadName);
 
         Log.d(LOG_TAG, String.format("Executing : %1$s", command));
         InputStream inputStream = null;

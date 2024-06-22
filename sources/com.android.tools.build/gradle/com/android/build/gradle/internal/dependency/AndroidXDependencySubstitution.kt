@@ -44,12 +44,12 @@ object AndroidXDependencySubstitution {
      * Replaces old support libraries with AndroidX.
      */
     fun replaceOldSupportLibraries(project: Project, reasonToReplace: String) {
-        project.configurations.all { configuration ->
+        project.configurations.configureEach { configuration ->
             // Apply the rules just before the configurations are resolved because too many rules
             // could significantly impact memory usage and build speed. (Many configurations are not
             // resolvable or resolvable but not actually resolved during a build.)
             if (!configuration.isCanBeResolved) {
-                return@all
+                return@configureEach
             }
             configuration.incoming.beforeResolve {
                 configuration.resolutionStrategy.dependencySubstitution {

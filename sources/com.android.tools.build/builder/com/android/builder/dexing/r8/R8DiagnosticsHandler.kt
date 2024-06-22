@@ -20,6 +20,7 @@ import com.android.builder.dexing.D8DiagnosticsHandler
 import com.android.ide.common.blame.Message
 import com.android.ide.common.blame.MessageReceiver
 import com.android.tools.r8.Diagnostic
+import com.android.tools.r8.DiagnosticsLevel
 import com.android.tools.r8.diagnostic.MissingDefinitionsDiagnostic
 import com.android.tools.r8.errors.UnsupportedMainDexListUsageDiagnostic
 import java.nio.file.Path
@@ -31,6 +32,7 @@ class R8DiagnosticsHandler(
         tool: String,
 ) : D8DiagnosticsHandler(messageReceiver, tool) {
 
+    // TODO(b/181858113): Remove this when main dex list support is removed from AGP.
     override fun warning(warning: Diagnostic?) {
         if (warning is UnsupportedMainDexListUsageDiagnostic) {
             messageReceiver.receiveMessage(
@@ -51,6 +53,15 @@ class R8DiagnosticsHandler(
         }
 
         super.error(warning)
+    }
+
+    // TODO(b/181858113): Remove this when main dex list support is removed from AGP.
+    override fun modifyDiagnosticsLevel(level: DiagnosticsLevel?, diagnostic: Diagnostic?): DiagnosticsLevel? {
+      if (diagnostic is UnsupportedMainDexListUsageDiagnostic) {
+        return DiagnosticsLevel.WARNING
+      }
+
+      return level
     }
 
     private fun generateMissingRulesFile(warning: MissingDefinitionsDiagnostic, messageKind: Message.Kind) {

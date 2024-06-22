@@ -178,6 +178,12 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
                                                 .map(Path::toFile)
                                                 .collect(Collectors.toUnmodifiableList());
                                 try {
+                                    logger.lifecycle(
+                                            "Installing Privacy Sandbox APK '{}' on '{}' for {}:{}",
+                                            FileUtils.getNamesAsCommaSeparatedList(sdkApkFiles),
+                                            device.getName(),
+                                            projectPath,
+                                            variantName);
                                     device.installPackages(
                                             sdkApkFiles, extraArgs, timeOutInMs, iLogger);
                                 } catch (DeviceException e) {
@@ -189,30 +195,23 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
                                 }
                             });
                     if (additionalSupportedSdkApkSplits.isPresent()) {
-                        BuiltArtifactsImpl privacySandboxSupportedApkSplitsBuiltArtifacts =
-                                new BuiltArtifactsLoaderImpl()
-                                        .load(additionalSupportedSdkApkSplits);
-                        if (privacySandboxSupportedApkSplitsBuiltArtifacts != null) {
-                            for (BuiltArtifactImpl split
-                                    : privacySandboxSupportedApkSplitsBuiltArtifacts.getElements()) {
-                                apkFiles.add(new File(split.getOutputFile()));
-                            }
-                        }
+                        List<File> splitApks = additionalSupportedSdkApkSplits.get()
+                                .getAsFileTree()
+                                .getFiles()
+                                .stream()
+                                .filter(file -> file.getName().endsWith(SdkConstants.DOT_ANDROID_PACKAGE))
+                                .collect(Collectors.toList());
+                        apkFiles.addAll(splitApks);
                     }
-                }
-
-                BuiltArtifactsImpl privacySandboxLegacySplitbuiltArtifacts = null;
-                if (privacySandboxSdkSplitApksForLegacy.getOrNull() != null) {
-                    privacySandboxLegacySplitbuiltArtifacts =
-                            new BuiltArtifactsLoaderImpl()
-                                    .load(privacySandboxSdkSplitApksForLegacy);
-                }
-
-                if (!device.getSupportsPrivacySandbox()
-                        && privacySandboxLegacySplitbuiltArtifacts != null) {
-                    for (BuiltArtifactImpl sdkBuiltArtifact :
-                            privacySandboxLegacySplitbuiltArtifacts.getElements()) {
-                        apkFiles.add(new File(sdkBuiltArtifact.getOutputFile()));
+                } else {
+                    if (privacySandboxSdkSplitApksForLegacy.isPresent()) {
+                        List<File> splitApks = privacySandboxSdkSplitApksForLegacy.get()
+                                .getAsFileTree()
+                                .getFiles()
+                                .stream()
+                                .filter(file -> file.getName().endsWith(SdkConstants.DOT_ANDROID_PACKAGE))
+                                .collect(Collectors.toList());
+                        apkFiles.addAll(splitApks);
                     }
                 }
 
@@ -298,7 +297,7 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
                     File renamedBaselineProfile =
                             FileUtils.join(
                                     apkDirectory.getAsFile(),
-                                    "baselineProfiles",
+                                    SdkConstants.FN_OUTPUT_BASELINE_PROFILES,
                                     fileIndex,
                                     apkName + ".dm");
                     if (!renamedBaselineProfile.exists()) {

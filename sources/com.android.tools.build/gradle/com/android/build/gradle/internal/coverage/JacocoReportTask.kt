@@ -35,6 +35,7 @@ import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.logging.Logging
 import org.gradle.api.plugins.JavaPlugin
@@ -74,8 +75,8 @@ import java.util.Locale
 import org.gradle.api.provider.Provider
 
 /**
- * For generating unit test coverage reports using jacoco. Provides separate CreateActions for
- * generating unit test and connected test reports.
+ * For generating host test coverage reports using jacoco. Provides separate CreateActions for
+ * generating host test and connected test reports.
  */
 @DisableCachingByDefault
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.TEST)
@@ -90,7 +91,7 @@ abstract class JacocoReportTask : NonIncrementalTask() {
     @get:InputFile
     @get:PathSensitive(PathSensitivity.NAME_ONLY)
     @get:Optional
-    abstract val jacocoUnitTestCoverageFile: RegularFileProperty
+    abstract val jacocoHostTestCoverageFile: RegularFileProperty
 
     @get:Input
     abstract val reportName: Property<String>
@@ -112,13 +113,13 @@ abstract class JacocoReportTask : NonIncrementalTask() {
     abstract val outputReportDir: DirectoryProperty
 
     override fun doTaskAction() {
-        if (!jacocoConnectedTestsCoverageDir.isPresent && !jacocoUnitTestCoverageFile.isPresent) {
+        if (!jacocoConnectedTestsCoverageDir.isPresent && !jacocoHostTestCoverageFile.isPresent) {
             throw IOException("No coverage data found. " +
                     "Please enable code coverage for this build type in build.gradle.")
         }
-        val coverageFiles: Set<File> = if (jacocoUnitTestCoverageFile.isPresent) {
-            // Unit test coverage:
-            setOf(jacocoUnitTestCoverageFile.get().asFile)
+        val coverageFiles: Set<File> = if (jacocoHostTestCoverageFile.isPresent) {
+            // Host test coverage:
+            setOf(jacocoHostTestCoverageFile.get().asFile)
         } else {
             // Connected android test coverage:
             val connectedTestJacocoFiles =
@@ -196,19 +197,23 @@ abstract class JacocoReportTask : NonIncrementalTask() {
         }
     }
 
-    internal class CreateActionUnitTest(
+    internal class CreateActionHostTest(
         testComponentProperties: TestComponentCreationConfig,
-        override val jacocoAntConfiguration: Configuration? = null
+        override val jacocoAntConfiguration: Configuration? = null,
+        private val testTaskName: String,
+        private val internalArtifactType: InternalArtifactType<RegularFile>
     ) : BaseCreationAction(testComponentProperties, jacocoAntConfiguration) {
 
         override fun configure(task: JacocoReportTask) {
             super.configure(task)
-            task.description = "Generates a Jacoco code coverage report from unit tests."
+            val testName = if (creationConfig.componentType.isForScreenshotPreview) "screenshot" else "unit"
+            task.description = "Generates a Jacoco code coverage report from $testName tests."
             creationConfig.artifacts.setTaskInputToFinalProduct(
-                InternalArtifactType.UNIT_TEST_CODE_COVERAGE, task.jacocoUnitTestCoverageFile)
+                internalArtifactType,
+                task.jacocoHostTestCoverageFile
+            )
             /** Jacoco coverage files are generated from [AndroidUnitTest] */
-            task.dependsOn(
-                "${JavaPlugin.TEST_TASK_NAME}${creationConfig.name.usLocaleCapitalize()}")
+            task.dependsOn("${testTaskName}${creationConfig.name.usLocaleCapitalize()}")
         }
     }
 

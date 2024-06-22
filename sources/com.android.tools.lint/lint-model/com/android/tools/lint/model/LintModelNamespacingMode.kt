@@ -31,5 +31,5 @@ enum class LintModelNamespacingMode {
    *
    * Projects using this *cannot* consume non-namespaced dependencies.
    */
-  REQUIRED
+  REQUIRED,
 }

@@ -30,7 +30,7 @@ import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 
-internal abstract class HostTestComponentDslInfoImpl(
+internal open class HostTestComponentDslInfoImpl(
     componentIdentity: ComponentIdentity,
     componentType: ComponentType,
     defaultConfig: DefaultConfig,

@@ -248,7 +248,6 @@ private fun createPrefabPackageTask(
                 libraryVariant.prefabPackageTaskName(),
                 libraryVariant))
         packageTask
-            .get()
             .dependsOn(libraryVariant.prefabConfigurePackageTaskName())
             .dependsOn(buildTask)
     }

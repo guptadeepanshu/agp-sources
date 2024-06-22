@@ -30,14 +30,17 @@ import com.android.build.gradle.internal.services.DslServicesImpl;
 import com.android.build.gradle.internal.services.ProjectServices;
 import com.android.build.gradle.internal.tasks.AndroidReportTask;
 import com.android.build.gradle.internal.tasks.DeviceProviderInstrumentTestTask;
+import com.android.build.gradle.internal.tasks.ManagedDeviceInstrumentationTestTask;
+import com.android.build.gradle.internal.tasks.ManagedDeviceTestTask;
 import com.android.build.gradle.internal.test.report.ReportType;
+import com.android.build.gradle.options.BooleanOption;
 import com.android.build.gradle.options.ProjectOptionService;
 import com.android.build.gradle.options.ProjectOptions;
 import com.android.build.gradle.options.SyncOptions;
 import com.android.utils.FileUtils;
+import java.util.stream.Stream;
 import org.gradle.api.Project;
 import org.gradle.api.plugins.JavaBasePlugin;
-import org.gradle.api.tasks.TaskCollection;
 
 /**
  * Gradle plugin class for 'reporting' projects.
@@ -143,21 +146,33 @@ class ReportingPlugin implements org.gradle.api.Plugin<Project> {
                                 }));
 
         // gather the subprojects
-        project.afterEvaluate(prj -> {
-            for (Project p : prj.getSubprojects()) {
-                TaskCollection<AndroidReportTask> tasks = p.getTasks().withType(
-                        AndroidReportTask.class);
-                for (AndroidReportTask task : tasks) {
-                    mergeReportsTask.addTask(task);
-                }
+        project.afterEvaluate(
+                prj -> {
+                    boolean includeManagedDevices =
+                            projectOptions.get(
+                                    BooleanOption
+                                            .GRADLE_MANAGED_DEVICE_INCLUDE_MANAGED_DEVICES_IN_REPORTING);
 
-                TaskCollection<DeviceProviderInstrumentTestTask> tasks2 =
-                        p.getTasks().withType(DeviceProviderInstrumentTestTask.class);
-                for (DeviceProviderInstrumentTestTask task : tasks2) {
-                    mergeReportsTask.addTask(task);
-                }
-            }
-        });
+                    for (Project p : prj.getSubprojects()) {
+
+                        Stream.of(
+                                        p.getTasks().withType(AndroidReportTask.class),
+                                        p.getTasks()
+                                                .withType(DeviceProviderInstrumentTestTask.class),
+                                        includeManagedDevices
+                                                ? p.getTasks()
+                                                        .withType(
+                                                                ManagedDeviceInstrumentationTestTask
+                                                                        .class)
+                                                : null,
+                                        includeManagedDevices
+                                                ? p.getTasks().withType(ManagedDeviceTestTask.class)
+                                                : null)
+                                .filter(collection -> collection != null)
+                                .flatMap(collection -> collection.stream())
+                                .forEach(task -> mergeReportsTask.addTask(task));
+                    }
+                });
 
         // If gradle is launched with --continue, we want to run all tests and generate an
         // aggregate report (to help with the fact that we may have several build variants).

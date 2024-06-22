@@ -205,6 +205,14 @@ private static final long serialVersionUID = 0L;
       CONNECTION_CLOSED_ERROR(3),
       /**
        * <pre>
+       * Other `IOException`
+       * </pre>
+       *
+       * <code>IO_EXCEPTION = 5;</code>
+       */
+      IO_EXCEPTION(5),
+      /**
+       * <pre>
        * All other errors
        * </pre>
        *
@@ -248,6 +256,14 @@ private static final long serialVersionUID = 0L;
       public static final int CONNECTION_CLOSED_ERROR_VALUE = 3;
       /**
        * <pre>
+       * Other `IOException`
+       * </pre>
+       *
+       * <code>IO_EXCEPTION = 5;</code>
+       */
+      public static final int IO_EXCEPTION_VALUE = 5;
+      /**
+       * <pre>
        * All other errors
        * </pre>
        *
@@ -280,6 +296,7 @@ private static final long serialVersionUID = 0L;
           case 1: return NO_RESPONSE;
           case 2: return CLOSED_CHANNEL_EXCEPTION;
           case 3: return CONNECTION_CLOSED_ERROR;
+          case 5: return IO_EXCEPTION;
           case 4: return OTHER_ERROR;
           default: return null;
         }

@@ -117,11 +117,11 @@ abstract class TestOptions @Inject constructor(
         override var isIncludeAndroidResources: Boolean = false
 
         fun all(configAction: Action<Test>) {
-            testTasks.all(configAction)
+            testTasks.configureEach(configAction)
         }
 
         override fun all(configAction: (Test) -> Unit) {
-            testTasks.all(configAction)
+            testTasks.configureEach(configAction)
         }
 
         /**

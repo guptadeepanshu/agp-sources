@@ -34,13 +34,14 @@ import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.BuildFeatureValuesImpl
 import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.scope.TestFixturesBuildFeaturesValuesImpl
-import com.android.build.gradle.internal.scope.UnitTestBuildFeaturesValuesImpl
+import com.android.build.gradle.internal.scope.HostTestBuildFeaturesValuesImpl
 import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantBuilderServices
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.options.ProjectOptions
+import com.android.builder.core.ComponentType
 import com.android.builder.core.ComponentTypeImpl
 
 internal class DynamicFeatureVariantFactory(
@@ -126,12 +127,13 @@ internal class DynamicFeatureVariantFactory(
         buildFeatures: BuildFeatures,
         dataBinding: DataBinding,
         projectOptions: ProjectOptions,
-        includeAndroidResources: Boolean
+        includeAndroidResources: Boolean,
+        hostTestComponentType: ComponentType
     ): BuildFeatureValues {
         buildFeatures as? DynamicFeatureBuildFeatures
             ?: throw RuntimeException("buildFeatures not of type DynamicFeatureBuildFeatures")
 
-        return UnitTestBuildFeaturesValuesImpl(
+        return HostTestBuildFeaturesValuesImpl(
             buildFeatures,
             projectOptions,
             dataBindingOverride = if (!dataBinding.enableForTests) {
@@ -140,8 +142,11 @@ internal class DynamicFeatureVariantFactory(
                 null // means whatever is default.
             },
             mlModelBindingOverride = false,
-            includeAndroidResources = includeAndroidResources,
-            testedComponent = componentType
+            // For unit tests, we only create android resources tasks when the tested component is
+            // a library variant and the user specifies to includeAndroidResources. Otherwise, the tested
+            // resources and assets are just copied as the unit test resources and assets output.
+            // We always create android resources for Screenshot tests
+            includeAndroidResources = includeAndroidResources && hostTestComponentType != ComponentTypeImpl.UNIT_TEST
         )
     }
 

@@ -27,7 +27,7 @@ import com.android.build.api.variant.ResValue
 import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.api.variant.impl.FlatSourceDirectoriesImpl
 import com.android.build.api.variant.impl.LayeredSourceDirectoriesImpl
-import com.android.build.gradle.internal.component.AndroidTestCreationConfig
+import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
@@ -231,7 +231,8 @@ abstract class LintTool {
         workerExecutor: WorkerExecutor,
         mainClass: String,
         arguments: List<String>,
-        lintMode: LintMode
+        lintMode: LintMode,
+        useK2Uast: Boolean,
     ) {
         submit(
             workerExecutor,
@@ -240,8 +241,9 @@ abstract class LintTool {
             android = true,
             fatalOnly = false,
             await = false,
+            lintMode = lintMode,
             hasBaseline = false,
-            lintMode = lintMode
+            useK2Uast = useK2Uast,
         )
     }
 
@@ -254,6 +256,7 @@ abstract class LintTool {
         await: Boolean,
         lintMode: LintMode,
         hasBaseline: Boolean,
+        useK2Uast: Boolean,
         returnValueOutputFile: File? = null
     ) {
         val workQueue = if (runInProcess.get()) {
@@ -281,6 +284,7 @@ abstract class LintTool {
             parameters.returnValueOutputFile.set(returnValueOutputFile)
             parameters.lintMode.set(lintMode)
             parameters.hasBaseline.set(hasBaseline)
+            parameters.useK2Uast.set(useK2Uast)
         }
         if (await) {
             workQueue.await()
@@ -358,6 +362,10 @@ abstract class ProjectInputs {
     @get:PathSensitive(PathSensitivity.NONE)
     abstract val lintConfigFiles: ConfigurableFileCollection
 
+    @get:InputFile
+    @get:PathSensitive(PathSensitivity.NONE)
+    abstract val buildFile: RegularFileProperty
+
     internal fun initialize(variant: VariantWithTests, lintMode: LintMode) {
         initialize(variant.main, lintMode)
     }
@@ -420,6 +428,8 @@ abstract class ProjectInputs {
         projectDirectoryPathInput.disallowChanges()
         buildDirectoryPathInput.disallowChanges()
         initializeLintConfigFiles(projectInfo)
+        buildFile.set(projectInfo.buildFile)
+        buildFile.disallowChanges()
     }
 
     internal fun convertToLintModelModule(): LintModelModule {
@@ -856,7 +866,7 @@ abstract class VariantInputs {
 
     @get:Nested
     @get:Optional
-    abstract val unitTestSourceProvider: Property<SourceProviderInput>
+    abstract val hostTestSourceProvider: Property<SourceProviderInput>
 
     @get:Nested
     @get:Optional
@@ -926,8 +936,8 @@ abstract class VariantInputs {
 
     fun initialize(
         variantCreationConfig: VariantCreationConfig,
-        unitTestCreationConfig: HostTestCreationConfig?,
-        androidTestCreationConfig: AndroidTestCreationConfig?,
+        hostTestCreationConfig: HostTestCreationConfig?,
+        deviceTestCreationConfig: DeviceTestCreationConfig?,
         testFixturesCreationConfig: TestFixturesCreationConfig?,
         services: TaskCreationServices,
         variantName: String,
@@ -958,10 +968,10 @@ abstract class VariantInputs {
         mainArtifact.disallowChanges()
 
         testArtifact.setDisallowChanges(
-            unitTestCreationConfig?.let { unitTest ->
+            hostTestCreationConfig?.let { hostTest ->
                 services.newInstance(JavaArtifactInput::class.java)
                     .initialize(
-                        unitTest,
+                        hostTest,
                         lintMode,
                         useModuleDependencyLintModels = false,
                         addBaseModuleLintModel,
@@ -975,7 +985,7 @@ abstract class VariantInputs {
         )
 
         androidTestArtifact.setDisallowChanges(
-            androidTestCreationConfig?.let { androidTest ->
+            deviceTestCreationConfig?.let { androidTest ->
                 services.newInstance(AndroidArtifactInput::class.java)
                     .initialize(
                         androidTest,
@@ -1078,8 +1088,8 @@ abstract class VariantInputs {
         extractedProguardFiles.disallowChanges()
         consumerProguardFiles.disallowChanges()
 
-        unitTestCreationConfig?.let {
-            unitTestSourceProvider.set(
+        hostTestCreationConfig?.let {
+            hostTestSourceProvider.set(
                 variantCreationConfig.services
                     .newInstance(SourceProviderInput::class.java)
                     .initialize(
@@ -1091,7 +1101,7 @@ abstract class VariantInputs {
             )
         }
 
-        androidTestCreationConfig?.let {
+        deviceTestCreationConfig?.let {
             androidTestSourceProvider.set(
                 variantCreationConfig.services
                     .newInstance(SourceProviderInput::class.java)
@@ -1116,7 +1126,7 @@ abstract class VariantInputs {
                     )
             )
         }
-        unitTestSourceProvider.disallowChanges()
+        hostTestSourceProvider.disallowChanges()
         androidTestSourceProvider.disallowChanges()
         testFixturesSourceProvider.disallowChanges()
         debuggable.setDisallowChanges(variantCreationConfig.debuggable)
@@ -1238,7 +1248,7 @@ abstract class VariantInputs {
                     )
             )
             if (!fatalOnly) {
-                unitTestSourceProvider.set(
+                hostTestSourceProvider.set(
                     project.objects
                         .newInstance(SourceProviderInput::class.java)
                         .initializeForStandalone(
@@ -1250,7 +1260,7 @@ abstract class VariantInputs {
             }
         }
         testArtifact.disallowChanges()
-        unitTestSourceProvider.disallowChanges()
+        hostTestSourceProvider.disallowChanges()
         androidTestArtifact.disallowChanges()
         testFixturesArtifact.disallowChanges()
         namespace.setDisallowChanges("")
@@ -1348,7 +1358,7 @@ abstract class VariantInputs {
                         fileCollection.from(it.kotlin.sourceDirectories)
                     }
                 }
-            unitTestSourceProvider.set(
+            hostTestSourceProvider.set(
                 project.objects
                     .newInstance(SourceProviderInput::class.java)
                     .initializeForStandaloneWithKotlinMultiplatform(
@@ -1359,7 +1369,7 @@ abstract class VariantInputs {
             )
         }
         testArtifact.disallowChanges()
-        unitTestSourceProvider.disallowChanges()
+        hostTestSourceProvider.disallowChanges()
         androidTestArtifact.disallowChanges()
         testFixturesArtifact.disallowChanges()
         namespace.setDisallowChanges("")
@@ -1425,7 +1435,7 @@ abstract class VariantInputs {
             consumerProguardFiles = consumerProguardFiles.orNull?.map { it.asFile } ?: listOf(),
             sourceProviders = mainSourceProvider.orNull?.toLintModels() ?: emptyList(),
             testSourceProviders = listOfNotNull(
-                unitTestSourceProvider.orNull?.toLintModels(),
+                hostTestSourceProvider.orNull?.toLintModels(),
                 androidTestSourceProvider.orNull?.toLintModels(),
             ).flatten(),
             testFixturesSourceProviders = testFixturesSourceProvider.orNull?.toLintModels() ?: emptyList(),
@@ -1781,6 +1791,9 @@ abstract class AndroidArtifactInput : ArtifactInput() {
                 )
             } else {
                 classesOutputDirectories.from(creationConfig.artifacts.get(InternalArtifactType.JAVAC))
+                if (creationConfig.useBuiltInKotlinSupport) {
+                    classesOutputDirectories.from(creationConfig.artifacts.get(InternalArtifactType.KOTLINC))
+                }
             }
             creationConfig.oldVariantApiLegacySupport?.variantData?.let {
                 classesOutputDirectories.from(
@@ -1798,6 +1811,7 @@ abstract class AndroidArtifactInput : ArtifactInput() {
         }
         classesOutputDirectories.disallowChanges()
         this.warnIfProjectTreatedAsExternalDependency.setDisallowChanges(warnIfProjectTreatedAsExternalDependency)
+        this.ignoreUnexpectedArtifactTypes.setDisallowChanges(false)
         initializeProjectDependencyLintArtifacts(
             useModuleDependencyLintModels,
             creationConfig.variantDependencies,
@@ -1863,6 +1877,7 @@ abstract class AndroidArtifactInput : ArtifactInput() {
         desugaredMethodsFiles.disallowChanges()
         classesOutputDirectories.fromDisallowChanges(sourceSet.output.classesDirs)
         warnIfProjectTreatedAsExternalDependency.setDisallowChanges(false)
+        ignoreUnexpectedArtifactTypes.setDisallowChanges(true)
         val variantDependencies = VariantDependencies(
             variantName = sourceSet.name,
             componentType = ComponentTypeImpl.JAVA_LIBRARY,
@@ -1915,6 +1930,7 @@ abstract class AndroidArtifactInput : ArtifactInput() {
         desugaredMethodsFiles.disallowChanges()
         classesOutputDirectories.fromDisallowChanges(compilation.output.classesDirs)
         warnIfProjectTreatedAsExternalDependency.setDisallowChanges(false)
+        ignoreUnexpectedArtifactTypes.setDisallowChanges(true)
         val variantDependencies = VariantDependencies(
             variantName = compilation.name,
             componentType = ComponentTypeImpl.JAVA_LIBRARY,
@@ -2011,6 +2027,7 @@ abstract class JavaArtifactInput : ArtifactInput() {
         }
         classesOutputDirectories.disallowChanges()
         this.warnIfProjectTreatedAsExternalDependency.setDisallowChanges(warnIfProjectTreatedAsExternalDependency)
+        this.ignoreUnexpectedArtifactTypes.setDisallowChanges(false)
         initializeProjectDependencyLintArtifacts(
             useModuleDependencyLintModels,
             creationConfig.variantDependencies,
@@ -2067,6 +2084,7 @@ abstract class JavaArtifactInput : ArtifactInput() {
         classesOutputDirectories.disallowChanges()
         // Only ever used within the model builder in the standalone plugin
         warnIfProjectTreatedAsExternalDependency.setDisallowChanges(false)
+        ignoreUnexpectedArtifactTypes.setDisallowChanges(true)
 
         // Use custom compile and runtime classpath configurations for unit tests for the
         // standalone lint plugin because the existing testCompileClasspath and testRuntimeClasspath
@@ -2149,6 +2167,7 @@ abstract class JavaArtifactInput : ArtifactInput() {
         }
         classesOutputDirectories.disallowChanges()
         warnIfProjectTreatedAsExternalDependency.setDisallowChanges(false)
+        ignoreUnexpectedArtifactTypes.setDisallowChanges(true)
 
         // Use custom compile and runtime dependency configurations for unit tests for the
         // standalone lint plugin because the existing compile and runtime dependency
@@ -2315,6 +2334,13 @@ abstract class ArtifactInput {
     @get:Internal
     abstract val warnIfProjectTreatedAsExternalDependency: Property<Boolean>
 
+    /**
+     * Whether to ignore unexpected artifact types when resolving dependencies. This should be true
+     * when running lint via the standalone plugin (b/198048896).
+     */
+    @get:Internal
+    abstract val ignoreUnexpectedArtifactTypes: Property<Boolean>
+
     protected fun initializeProjectDependencyLintArtifacts(
         useModuleDependencyLintModels: Boolean,
         variantDependencies: VariantDependencies,
@@ -2473,6 +2499,7 @@ abstract class ArtifactInput {
             modelBuilder = modelBuilder,
             artifactCollectionsProvider = artifactCollectionsInputs,
             withFullDependency = true,
+            ignoreUnexpectedArtifactTypes = ignoreUnexpectedArtifactTypes.get(),
             issueReporter = issueReporter
         )
 

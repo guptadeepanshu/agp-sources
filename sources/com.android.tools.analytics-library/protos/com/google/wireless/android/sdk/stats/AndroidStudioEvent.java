@@ -2970,6 +2970,38 @@ private static final long serialVersionUID = 0L;
      * <code>ADB_USAGE_EVENT = 305;</code>
      */
     ADB_USAGE_EVENT(305),
+    /**
+     * <pre>
+     * Event related to geolocation checks for Studio Bot.
+     * </pre>
+     *
+     * <code>SML_GEOLOCATION_EVENT = 306;</code>
+     */
+    SML_GEOLOCATION_EVENT(306),
+    /**
+     * <pre>
+     * Event related to Studio Bot completion request errors.
+     * </pre>
+     *
+     * <code>SML_COMPLETION_REQUEST_ERROR = 307;</code>
+     */
+    SML_COMPLETION_REQUEST_ERROR(307),
+    /**
+     * <pre>
+     * Event fired every time Studio detects a new device (via adb)
+     * </pre>
+     *
+     * <code>ADB_DEVICE_CONNECTED = 308;</code>
+     */
+    ADB_DEVICE_CONNECTED(308),
+    /**
+     * <pre>
+     * Event related to screenshot test with Compose Preview.
+     * </pre>
+     *
+     * <code>SCREENSHOT_TEST_COMPOSE_PREVIEW = 309;</code>
+     */
+    SCREENSHOT_TEST_COMPOSE_PREVIEW(309),
     ;
 
     /**
@@ -5246,6 +5278,38 @@ private static final long serialVersionUID = 0L;
      * <code>ADB_USAGE_EVENT = 305;</code>
      */
     public static final int ADB_USAGE_EVENT_VALUE = 305;
+    /**
+     * <pre>
+     * Event related to geolocation checks for Studio Bot.
+     * </pre>
+     *
+     * <code>SML_GEOLOCATION_EVENT = 306;</code>
+     */
+    public static final int SML_GEOLOCATION_EVENT_VALUE = 306;
+    /**
+     * <pre>
+     * Event related to Studio Bot completion request errors.
+     * </pre>
+     *
+     * <code>SML_COMPLETION_REQUEST_ERROR = 307;</code>
+     */
+    public static final int SML_COMPLETION_REQUEST_ERROR_VALUE = 307;
+    /**
+     * <pre>
+     * Event fired every time Studio detects a new device (via adb)
+     * </pre>
+     *
+     * <code>ADB_DEVICE_CONNECTED = 308;</code>
+     */
+    public static final int ADB_DEVICE_CONNECTED_VALUE = 308;
+    /**
+     * <pre>
+     * Event related to screenshot test with Compose Preview.
+     * </pre>
+     *
+     * <code>SCREENSHOT_TEST_COMPOSE_PREVIEW = 309;</code>
+     */
+    public static final int SCREENSHOT_TEST_COMPOSE_PREVIEW_VALUE = 309;
 
 
     public final int getNumber() {
@@ -5569,6 +5633,10 @@ private static final long serialVersionUID = 0L;
         case 303: return WEAR_HEALTH_SERVICES_TOOL_WINDOW_EVENT;
         case 304: return UI_DEVICE_SETTINGS_EVENT;
         case 305: return ADB_USAGE_EVENT;
+        case 306: return SML_GEOLOCATION_EVENT;
+        case 307: return SML_COMPLETION_REQUEST_ERROR;
+        case 308: return ADB_DEVICE_CONNECTED;
+        case 309: return SCREENSHOT_TEST_COMPOSE_PREVIEW;
         default: return null;
       }
     }
@@ -21762,6 +21830,158 @@ private static final long serialVersionUID = 0L;
     return adbUsageEvent_ == null ? com.google.wireless.android.sdk.stats.AdbUsageEvent.getDefaultInstance() : adbUsageEvent_;
   }
 
+  public static final int SML_GEOLOCATION_EVENT_FIELD_NUMBER = 189;
+  private com.google.wireless.android.sdk.stats.SmlGeolocationEvent smlGeolocationEvent_;
+  /**
+   * <pre>
+   * set when kind = SML_GEOLOCATION_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlGeolocationEvent sml_geolocation_event = 189;</code>
+   * @return Whether the smlGeolocationEvent field is set.
+   */
+  @java.lang.Override
+  public boolean hasSmlGeolocationEvent() {
+    return ((bitField5_ & 0x00400000) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = SML_GEOLOCATION_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlGeolocationEvent sml_geolocation_event = 189;</code>
+   * @return The smlGeolocationEvent.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.SmlGeolocationEvent getSmlGeolocationEvent() {
+    return smlGeolocationEvent_ == null ? com.google.wireless.android.sdk.stats.SmlGeolocationEvent.getDefaultInstance() : smlGeolocationEvent_;
+  }
+  /**
+   * <pre>
+   * set when kind = SML_GEOLOCATION_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlGeolocationEvent sml_geolocation_event = 189;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.SmlGeolocationEventOrBuilder getSmlGeolocationEventOrBuilder() {
+    return smlGeolocationEvent_ == null ? com.google.wireless.android.sdk.stats.SmlGeolocationEvent.getDefaultInstance() : smlGeolocationEvent_;
+  }
+
+  public static final int SML_COMPLETION_REQUEST_ERROR_FIELD_NUMBER = 190;
+  private com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEvent smlCompletionRequestError_;
+  /**
+   * <pre>
+   * set when kind = SML_COMPLETION_REQUEST_ERROR
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlCompletionRequestErrorEvent sml_completion_request_error = 190;</code>
+   * @return Whether the smlCompletionRequestError field is set.
+   */
+  @java.lang.Override
+  public boolean hasSmlCompletionRequestError() {
+    return ((bitField5_ & 0x00800000) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = SML_COMPLETION_REQUEST_ERROR
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlCompletionRequestErrorEvent sml_completion_request_error = 190;</code>
+   * @return The smlCompletionRequestError.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEvent getSmlCompletionRequestError() {
+    return smlCompletionRequestError_ == null ? com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEvent.getDefaultInstance() : smlCompletionRequestError_;
+  }
+  /**
+   * <pre>
+   * set when kind = SML_COMPLETION_REQUEST_ERROR
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlCompletionRequestErrorEvent sml_completion_request_error = 190;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEventOrBuilder getSmlCompletionRequestErrorOrBuilder() {
+    return smlCompletionRequestError_ == null ? com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEvent.getDefaultInstance() : smlCompletionRequestError_;
+  }
+
+  public static final int DEVICE_CONNECTED_FIELD_NUMBER = 191;
+  private com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent deviceConnected_;
+  /**
+   * <pre>
+   * set when kind = ADB_DEVICE_CONNECTED
+   * </pre>
+   *
+   * <code>optional .android_studio.DeviceConnectedNotificationEvent device_connected = 191;</code>
+   * @return Whether the deviceConnected field is set.
+   */
+  @java.lang.Override
+  public boolean hasDeviceConnected() {
+    return ((bitField5_ & 0x01000000) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = ADB_DEVICE_CONNECTED
+   * </pre>
+   *
+   * <code>optional .android_studio.DeviceConnectedNotificationEvent device_connected = 191;</code>
+   * @return The deviceConnected.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent getDeviceConnected() {
+    return deviceConnected_ == null ? com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent.getDefaultInstance() : deviceConnected_;
+  }
+  /**
+   * <pre>
+   * set when kind = ADB_DEVICE_CONNECTED
+   * </pre>
+   *
+   * <code>optional .android_studio.DeviceConnectedNotificationEvent device_connected = 191;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEventOrBuilder getDeviceConnectedOrBuilder() {
+    return deviceConnected_ == null ? com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent.getDefaultInstance() : deviceConnected_;
+  }
+
+  public static final int SCREENSHOT_TEST_COMPOSE_PREVIEW_EVENT_FIELD_NUMBER = 192;
+  private com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent screenshotTestComposePreviewEvent_;
+  /**
+   * <pre>
+   * set when kind = SCREENSHOT_TEST_COMPOSE_PREVIEW
+   * </pre>
+   *
+   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent screenshot_test_compose_preview_event = 192;</code>
+   * @return Whether the screenshotTestComposePreviewEvent field is set.
+   */
+  @java.lang.Override
+  public boolean hasScreenshotTestComposePreviewEvent() {
+    return ((bitField5_ & 0x02000000) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = SCREENSHOT_TEST_COMPOSE_PREVIEW
+   * </pre>
+   *
+   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent screenshot_test_compose_preview_event = 192;</code>
+   * @return The screenshotTestComposePreviewEvent.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent getScreenshotTestComposePreviewEvent() {
+    return screenshotTestComposePreviewEvent_ == null ? com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.getDefaultInstance() : screenshotTestComposePreviewEvent_;
+  }
+  /**
+   * <pre>
+   * set when kind = SCREENSHOT_TEST_COMPOSE_PREVIEW
+   * </pre>
+   *
+   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent screenshot_test_compose_preview_event = 192;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEventOrBuilder getScreenshotTestComposePreviewEventOrBuilder() {
+    return screenshotTestComposePreviewEvent_ == null ? com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.getDefaultInstance() : screenshotTestComposePreviewEvent_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -22339,6 +22559,18 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField5_ & 0x00200000) != 0)) {
       output.writeMessage(188, getAdbUsageEvent());
+    }
+    if (((bitField5_ & 0x00400000) != 0)) {
+      output.writeMessage(189, getSmlGeolocationEvent());
+    }
+    if (((bitField5_ & 0x00800000) != 0)) {
+      output.writeMessage(190, getSmlCompletionRequestError());
+    }
+    if (((bitField5_ & 0x01000000) != 0)) {
+      output.writeMessage(191, getDeviceConnected());
+    }
+    if (((bitField5_ & 0x02000000) != 0)) {
+      output.writeMessage(192, getScreenshotTestComposePreviewEvent());
     }
     getUnknownFields().writeTo(output);
   }
@@ -23106,6 +23338,22 @@ private static final long serialVersionUID = 0L;
     if (((bitField5_ & 0x00200000) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(188, getAdbUsageEvent());
+    }
+    if (((bitField5_ & 0x00400000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(189, getSmlGeolocationEvent());
+    }
+    if (((bitField5_ & 0x00800000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(190, getSmlCompletionRequestError());
+    }
+    if (((bitField5_ & 0x01000000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(191, getDeviceConnected());
+    }
+    if (((bitField5_ & 0x02000000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(192, getScreenshotTestComposePreviewEvent());
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -24033,6 +24281,26 @@ private static final long serialVersionUID = 0L;
       if (!getAdbUsageEvent()
           .equals(other.getAdbUsageEvent())) return false;
     }
+    if (hasSmlGeolocationEvent() != other.hasSmlGeolocationEvent()) return false;
+    if (hasSmlGeolocationEvent()) {
+      if (!getSmlGeolocationEvent()
+          .equals(other.getSmlGeolocationEvent())) return false;
+    }
+    if (hasSmlCompletionRequestError() != other.hasSmlCompletionRequestError()) return false;
+    if (hasSmlCompletionRequestError()) {
+      if (!getSmlCompletionRequestError()
+          .equals(other.getSmlCompletionRequestError())) return false;
+    }
+    if (hasDeviceConnected() != other.hasDeviceConnected()) return false;
+    if (hasDeviceConnected()) {
+      if (!getDeviceConnected()
+          .equals(other.getDeviceConnected())) return false;
+    }
+    if (hasScreenshotTestComposePreviewEvent() != other.hasScreenshotTestComposePreviewEvent()) return false;
+    if (hasScreenshotTestComposePreviewEvent()) {
+      if (!getScreenshotTestComposePreviewEvent()
+          .equals(other.getScreenshotTestComposePreviewEvent())) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -24798,6 +25066,22 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + ADB_USAGE_EVENT_FIELD_NUMBER;
       hash = (53 * hash) + getAdbUsageEvent().hashCode();
     }
+    if (hasSmlGeolocationEvent()) {
+      hash = (37 * hash) + SML_GEOLOCATION_EVENT_FIELD_NUMBER;
+      hash = (53 * hash) + getSmlGeolocationEvent().hashCode();
+    }
+    if (hasSmlCompletionRequestError()) {
+      hash = (37 * hash) + SML_COMPLETION_REQUEST_ERROR_FIELD_NUMBER;
+      hash = (53 * hash) + getSmlCompletionRequestError().hashCode();
+    }
+    if (hasDeviceConnected()) {
+      hash = (37 * hash) + DEVICE_CONNECTED_FIELD_NUMBER;
+      hash = (53 * hash) + getDeviceConnected().hashCode();
+    }
+    if (hasScreenshotTestComposePreviewEvent()) {
+      hash = (37 * hash) + SCREENSHOT_TEST_COMPOSE_PREVIEW_EVENT_FIELD_NUMBER;
+      hash = (53 * hash) + getScreenshotTestComposePreviewEvent().hashCode();
+    }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -25091,6 +25375,10 @@ private static final long serialVersionUID = 0L;
         getWearHealthServicesEventFieldBuilder();
         getUiDeviceSettingsEventFieldBuilder();
         getAdbUsageEventFieldBuilder();
+        getSmlGeolocationEventFieldBuilder();
+        getSmlCompletionRequestErrorFieldBuilder();
+        getDeviceConnectedFieldBuilder();
+        getScreenshotTestComposePreviewEventFieldBuilder();
       }
     }
     @java.lang.Override
@@ -26135,6 +26423,30 @@ private static final long serialVersionUID = 0L;
         adbUsageEventBuilder_.clear();
       }
       bitField5_ = (bitField5_ & ~0x08000000);
+      if (smlGeolocationEventBuilder_ == null) {
+        smlGeolocationEvent_ = null;
+      } else {
+        smlGeolocationEventBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x10000000);
+      if (smlCompletionRequestErrorBuilder_ == null) {
+        smlCompletionRequestError_ = null;
+      } else {
+        smlCompletionRequestErrorBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x20000000);
+      if (deviceConnectedBuilder_ == null) {
+        deviceConnected_ = null;
+      } else {
+        deviceConnectedBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x40000000);
+      if (screenshotTestComposePreviewEventBuilder_ == null) {
+        screenshotTestComposePreviewEvent_ = null;
+      } else {
+        screenshotTestComposePreviewEventBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x80000000);
       return this;
     }
 
@@ -27591,6 +27903,38 @@ private static final long serialVersionUID = 0L;
         }
         to_bitField5_ |= 0x00200000;
       }
+      if (((from_bitField5_ & 0x10000000) != 0)) {
+        if (smlGeolocationEventBuilder_ == null) {
+          result.smlGeolocationEvent_ = smlGeolocationEvent_;
+        } else {
+          result.smlGeolocationEvent_ = smlGeolocationEventBuilder_.build();
+        }
+        to_bitField5_ |= 0x00400000;
+      }
+      if (((from_bitField5_ & 0x20000000) != 0)) {
+        if (smlCompletionRequestErrorBuilder_ == null) {
+          result.smlCompletionRequestError_ = smlCompletionRequestError_;
+        } else {
+          result.smlCompletionRequestError_ = smlCompletionRequestErrorBuilder_.build();
+        }
+        to_bitField5_ |= 0x00800000;
+      }
+      if (((from_bitField5_ & 0x40000000) != 0)) {
+        if (deviceConnectedBuilder_ == null) {
+          result.deviceConnected_ = deviceConnected_;
+        } else {
+          result.deviceConnected_ = deviceConnectedBuilder_.build();
+        }
+        to_bitField5_ |= 0x01000000;
+      }
+      if (((from_bitField5_ & 0x80000000) != 0)) {
+        if (screenshotTestComposePreviewEventBuilder_ == null) {
+          result.screenshotTestComposePreviewEvent_ = screenshotTestComposePreviewEvent_;
+        } else {
+          result.screenshotTestComposePreviewEvent_ = screenshotTestComposePreviewEventBuilder_.build();
+        }
+        to_bitField5_ |= 0x02000000;
+      }
       result.bitField0_ = to_bitField0_;
       result.bitField1_ = to_bitField1_;
       result.bitField2_ = to_bitField2_;
@@ -28312,6 +28656,18 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasAdbUsageEvent()) {
         mergeAdbUsageEvent(other.getAdbUsageEvent());
+      }
+      if (other.hasSmlGeolocationEvent()) {
+        mergeSmlGeolocationEvent(other.getSmlGeolocationEvent());
+      }
+      if (other.hasSmlCompletionRequestError()) {
+        mergeSmlCompletionRequestError(other.getSmlCompletionRequestError());
+      }
+      if (other.hasDeviceConnected()) {
+        mergeDeviceConnected(other.getDeviceConnected());
+      }
+      if (other.hasScreenshotTestComposePreviewEvent()) {
+        mergeScreenshotTestComposePreviewEvent(other.getScreenshotTestComposePreviewEvent());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -29723,6 +30079,34 @@ private static final long serialVersionUID = 0L;
               bitField5_ |= 0x08000000;
               break;
             } // case 1506
+            case 1514: {
+              input.readMessage(
+                  getSmlGeolocationEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x10000000;
+              break;
+            } // case 1514
+            case 1522: {
+              input.readMessage(
+                  getSmlCompletionRequestErrorFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x20000000;
+              break;
+            } // case 1522
+            case 1530: {
+              input.readMessage(
+                  getDeviceConnectedFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x40000000;
+              break;
+            } // case 1530
+            case 1538: {
+              input.readMessage(
+                  getScreenshotTestComposePreviewEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField5_ |= 0x80000000;
+              break;
+            } // case 1538
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -58352,6 +58736,630 @@ private static final long serialVersionUID = 0L;
         adbUsageEvent_ = null;
       }
       return adbUsageEventBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.SmlGeolocationEvent smlGeolocationEvent_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.SmlGeolocationEvent, com.google.wireless.android.sdk.stats.SmlGeolocationEvent.Builder, com.google.wireless.android.sdk.stats.SmlGeolocationEventOrBuilder> smlGeolocationEventBuilder_;
+    /**
+     * <pre>
+     * set when kind = SML_GEOLOCATION_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlGeolocationEvent sml_geolocation_event = 189;</code>
+     * @return Whether the smlGeolocationEvent field is set.
+     */
+    public boolean hasSmlGeolocationEvent() {
+      return ((bitField5_ & 0x10000000) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = SML_GEOLOCATION_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlGeolocationEvent sml_geolocation_event = 189;</code>
+     * @return The smlGeolocationEvent.
+     */
+    public com.google.wireless.android.sdk.stats.SmlGeolocationEvent getSmlGeolocationEvent() {
+      if (smlGeolocationEventBuilder_ == null) {
+        return smlGeolocationEvent_ == null ? com.google.wireless.android.sdk.stats.SmlGeolocationEvent.getDefaultInstance() : smlGeolocationEvent_;
+      } else {
+        return smlGeolocationEventBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = SML_GEOLOCATION_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlGeolocationEvent sml_geolocation_event = 189;</code>
+     */
+    public Builder setSmlGeolocationEvent(com.google.wireless.android.sdk.stats.SmlGeolocationEvent value) {
+      if (smlGeolocationEventBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        smlGeolocationEvent_ = value;
+        onChanged();
+      } else {
+        smlGeolocationEventBuilder_.setMessage(value);
+      }
+      bitField5_ |= 0x10000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = SML_GEOLOCATION_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlGeolocationEvent sml_geolocation_event = 189;</code>
+     */
+    public Builder setSmlGeolocationEvent(
+        com.google.wireless.android.sdk.stats.SmlGeolocationEvent.Builder builderForValue) {
+      if (smlGeolocationEventBuilder_ == null) {
+        smlGeolocationEvent_ = builderForValue.build();
+        onChanged();
+      } else {
+        smlGeolocationEventBuilder_.setMessage(builderForValue.build());
+      }
+      bitField5_ |= 0x10000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = SML_GEOLOCATION_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlGeolocationEvent sml_geolocation_event = 189;</code>
+     */
+    public Builder mergeSmlGeolocationEvent(com.google.wireless.android.sdk.stats.SmlGeolocationEvent value) {
+      if (smlGeolocationEventBuilder_ == null) {
+        if (((bitField5_ & 0x10000000) != 0) &&
+            smlGeolocationEvent_ != null &&
+            smlGeolocationEvent_ != com.google.wireless.android.sdk.stats.SmlGeolocationEvent.getDefaultInstance()) {
+          smlGeolocationEvent_ =
+            com.google.wireless.android.sdk.stats.SmlGeolocationEvent.newBuilder(smlGeolocationEvent_).mergeFrom(value).buildPartial();
+        } else {
+          smlGeolocationEvent_ = value;
+        }
+        onChanged();
+      } else {
+        smlGeolocationEventBuilder_.mergeFrom(value);
+      }
+      bitField5_ |= 0x10000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = SML_GEOLOCATION_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlGeolocationEvent sml_geolocation_event = 189;</code>
+     */
+    public Builder clearSmlGeolocationEvent() {
+      if (smlGeolocationEventBuilder_ == null) {
+        smlGeolocationEvent_ = null;
+        onChanged();
+      } else {
+        smlGeolocationEventBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x10000000);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = SML_GEOLOCATION_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlGeolocationEvent sml_geolocation_event = 189;</code>
+     */
+    public com.google.wireless.android.sdk.stats.SmlGeolocationEvent.Builder getSmlGeolocationEventBuilder() {
+      bitField5_ |= 0x10000000;
+      onChanged();
+      return getSmlGeolocationEventFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = SML_GEOLOCATION_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlGeolocationEvent sml_geolocation_event = 189;</code>
+     */
+    public com.google.wireless.android.sdk.stats.SmlGeolocationEventOrBuilder getSmlGeolocationEventOrBuilder() {
+      if (smlGeolocationEventBuilder_ != null) {
+        return smlGeolocationEventBuilder_.getMessageOrBuilder();
+      } else {
+        return smlGeolocationEvent_ == null ?
+            com.google.wireless.android.sdk.stats.SmlGeolocationEvent.getDefaultInstance() : smlGeolocationEvent_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = SML_GEOLOCATION_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlGeolocationEvent sml_geolocation_event = 189;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.SmlGeolocationEvent, com.google.wireless.android.sdk.stats.SmlGeolocationEvent.Builder, com.google.wireless.android.sdk.stats.SmlGeolocationEventOrBuilder> 
+        getSmlGeolocationEventFieldBuilder() {
+      if (smlGeolocationEventBuilder_ == null) {
+        smlGeolocationEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.SmlGeolocationEvent, com.google.wireless.android.sdk.stats.SmlGeolocationEvent.Builder, com.google.wireless.android.sdk.stats.SmlGeolocationEventOrBuilder>(
+                getSmlGeolocationEvent(),
+                getParentForChildren(),
+                isClean());
+        smlGeolocationEvent_ = null;
+      }
+      return smlGeolocationEventBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEvent smlCompletionRequestError_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEvent, com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEvent.Builder, com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEventOrBuilder> smlCompletionRequestErrorBuilder_;
+    /**
+     * <pre>
+     * set when kind = SML_COMPLETION_REQUEST_ERROR
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlCompletionRequestErrorEvent sml_completion_request_error = 190;</code>
+     * @return Whether the smlCompletionRequestError field is set.
+     */
+    public boolean hasSmlCompletionRequestError() {
+      return ((bitField5_ & 0x20000000) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = SML_COMPLETION_REQUEST_ERROR
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlCompletionRequestErrorEvent sml_completion_request_error = 190;</code>
+     * @return The smlCompletionRequestError.
+     */
+    public com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEvent getSmlCompletionRequestError() {
+      if (smlCompletionRequestErrorBuilder_ == null) {
+        return smlCompletionRequestError_ == null ? com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEvent.getDefaultInstance() : smlCompletionRequestError_;
+      } else {
+        return smlCompletionRequestErrorBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = SML_COMPLETION_REQUEST_ERROR
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlCompletionRequestErrorEvent sml_completion_request_error = 190;</code>
+     */
+    public Builder setSmlCompletionRequestError(com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEvent value) {
+      if (smlCompletionRequestErrorBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        smlCompletionRequestError_ = value;
+        onChanged();
+      } else {
+        smlCompletionRequestErrorBuilder_.setMessage(value);
+      }
+      bitField5_ |= 0x20000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = SML_COMPLETION_REQUEST_ERROR
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlCompletionRequestErrorEvent sml_completion_request_error = 190;</code>
+     */
+    public Builder setSmlCompletionRequestError(
+        com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEvent.Builder builderForValue) {
+      if (smlCompletionRequestErrorBuilder_ == null) {
+        smlCompletionRequestError_ = builderForValue.build();
+        onChanged();
+      } else {
+        smlCompletionRequestErrorBuilder_.setMessage(builderForValue.build());
+      }
+      bitField5_ |= 0x20000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = SML_COMPLETION_REQUEST_ERROR
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlCompletionRequestErrorEvent sml_completion_request_error = 190;</code>
+     */
+    public Builder mergeSmlCompletionRequestError(com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEvent value) {
+      if (smlCompletionRequestErrorBuilder_ == null) {
+        if (((bitField5_ & 0x20000000) != 0) &&
+            smlCompletionRequestError_ != null &&
+            smlCompletionRequestError_ != com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEvent.getDefaultInstance()) {
+          smlCompletionRequestError_ =
+            com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEvent.newBuilder(smlCompletionRequestError_).mergeFrom(value).buildPartial();
+        } else {
+          smlCompletionRequestError_ = value;
+        }
+        onChanged();
+      } else {
+        smlCompletionRequestErrorBuilder_.mergeFrom(value);
+      }
+      bitField5_ |= 0x20000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = SML_COMPLETION_REQUEST_ERROR
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlCompletionRequestErrorEvent sml_completion_request_error = 190;</code>
+     */
+    public Builder clearSmlCompletionRequestError() {
+      if (smlCompletionRequestErrorBuilder_ == null) {
+        smlCompletionRequestError_ = null;
+        onChanged();
+      } else {
+        smlCompletionRequestErrorBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x20000000);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = SML_COMPLETION_REQUEST_ERROR
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlCompletionRequestErrorEvent sml_completion_request_error = 190;</code>
+     */
+    public com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEvent.Builder getSmlCompletionRequestErrorBuilder() {
+      bitField5_ |= 0x20000000;
+      onChanged();
+      return getSmlCompletionRequestErrorFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = SML_COMPLETION_REQUEST_ERROR
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlCompletionRequestErrorEvent sml_completion_request_error = 190;</code>
+     */
+    public com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEventOrBuilder getSmlCompletionRequestErrorOrBuilder() {
+      if (smlCompletionRequestErrorBuilder_ != null) {
+        return smlCompletionRequestErrorBuilder_.getMessageOrBuilder();
+      } else {
+        return smlCompletionRequestError_ == null ?
+            com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEvent.getDefaultInstance() : smlCompletionRequestError_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = SML_COMPLETION_REQUEST_ERROR
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlCompletionRequestErrorEvent sml_completion_request_error = 190;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEvent, com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEvent.Builder, com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEventOrBuilder> 
+        getSmlCompletionRequestErrorFieldBuilder() {
+      if (smlCompletionRequestErrorBuilder_ == null) {
+        smlCompletionRequestErrorBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEvent, com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEvent.Builder, com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEventOrBuilder>(
+                getSmlCompletionRequestError(),
+                getParentForChildren(),
+                isClean());
+        smlCompletionRequestError_ = null;
+      }
+      return smlCompletionRequestErrorBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent deviceConnected_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent, com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent.Builder, com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEventOrBuilder> deviceConnectedBuilder_;
+    /**
+     * <pre>
+     * set when kind = ADB_DEVICE_CONNECTED
+     * </pre>
+     *
+     * <code>optional .android_studio.DeviceConnectedNotificationEvent device_connected = 191;</code>
+     * @return Whether the deviceConnected field is set.
+     */
+    public boolean hasDeviceConnected() {
+      return ((bitField5_ & 0x40000000) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = ADB_DEVICE_CONNECTED
+     * </pre>
+     *
+     * <code>optional .android_studio.DeviceConnectedNotificationEvent device_connected = 191;</code>
+     * @return The deviceConnected.
+     */
+    public com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent getDeviceConnected() {
+      if (deviceConnectedBuilder_ == null) {
+        return deviceConnected_ == null ? com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent.getDefaultInstance() : deviceConnected_;
+      } else {
+        return deviceConnectedBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = ADB_DEVICE_CONNECTED
+     * </pre>
+     *
+     * <code>optional .android_studio.DeviceConnectedNotificationEvent device_connected = 191;</code>
+     */
+    public Builder setDeviceConnected(com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent value) {
+      if (deviceConnectedBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        deviceConnected_ = value;
+        onChanged();
+      } else {
+        deviceConnectedBuilder_.setMessage(value);
+      }
+      bitField5_ |= 0x40000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = ADB_DEVICE_CONNECTED
+     * </pre>
+     *
+     * <code>optional .android_studio.DeviceConnectedNotificationEvent device_connected = 191;</code>
+     */
+    public Builder setDeviceConnected(
+        com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent.Builder builderForValue) {
+      if (deviceConnectedBuilder_ == null) {
+        deviceConnected_ = builderForValue.build();
+        onChanged();
+      } else {
+        deviceConnectedBuilder_.setMessage(builderForValue.build());
+      }
+      bitField5_ |= 0x40000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = ADB_DEVICE_CONNECTED
+     * </pre>
+     *
+     * <code>optional .android_studio.DeviceConnectedNotificationEvent device_connected = 191;</code>
+     */
+    public Builder mergeDeviceConnected(com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent value) {
+      if (deviceConnectedBuilder_ == null) {
+        if (((bitField5_ & 0x40000000) != 0) &&
+            deviceConnected_ != null &&
+            deviceConnected_ != com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent.getDefaultInstance()) {
+          deviceConnected_ =
+            com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent.newBuilder(deviceConnected_).mergeFrom(value).buildPartial();
+        } else {
+          deviceConnected_ = value;
+        }
+        onChanged();
+      } else {
+        deviceConnectedBuilder_.mergeFrom(value);
+      }
+      bitField5_ |= 0x40000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = ADB_DEVICE_CONNECTED
+     * </pre>
+     *
+     * <code>optional .android_studio.DeviceConnectedNotificationEvent device_connected = 191;</code>
+     */
+    public Builder clearDeviceConnected() {
+      if (deviceConnectedBuilder_ == null) {
+        deviceConnected_ = null;
+        onChanged();
+      } else {
+        deviceConnectedBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x40000000);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = ADB_DEVICE_CONNECTED
+     * </pre>
+     *
+     * <code>optional .android_studio.DeviceConnectedNotificationEvent device_connected = 191;</code>
+     */
+    public com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent.Builder getDeviceConnectedBuilder() {
+      bitField5_ |= 0x40000000;
+      onChanged();
+      return getDeviceConnectedFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = ADB_DEVICE_CONNECTED
+     * </pre>
+     *
+     * <code>optional .android_studio.DeviceConnectedNotificationEvent device_connected = 191;</code>
+     */
+    public com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEventOrBuilder getDeviceConnectedOrBuilder() {
+      if (deviceConnectedBuilder_ != null) {
+        return deviceConnectedBuilder_.getMessageOrBuilder();
+      } else {
+        return deviceConnected_ == null ?
+            com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent.getDefaultInstance() : deviceConnected_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = ADB_DEVICE_CONNECTED
+     * </pre>
+     *
+     * <code>optional .android_studio.DeviceConnectedNotificationEvent device_connected = 191;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent, com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent.Builder, com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEventOrBuilder> 
+        getDeviceConnectedFieldBuilder() {
+      if (deviceConnectedBuilder_ == null) {
+        deviceConnectedBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent, com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent.Builder, com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEventOrBuilder>(
+                getDeviceConnected(),
+                getParentForChildren(),
+                isClean());
+        deviceConnected_ = null;
+      }
+      return deviceConnectedBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent screenshotTestComposePreviewEvent_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent, com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.Builder, com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEventOrBuilder> screenshotTestComposePreviewEventBuilder_;
+    /**
+     * <pre>
+     * set when kind = SCREENSHOT_TEST_COMPOSE_PREVIEW
+     * </pre>
+     *
+     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent screenshot_test_compose_preview_event = 192;</code>
+     * @return Whether the screenshotTestComposePreviewEvent field is set.
+     */
+    public boolean hasScreenshotTestComposePreviewEvent() {
+      return ((bitField5_ & 0x80000000) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = SCREENSHOT_TEST_COMPOSE_PREVIEW
+     * </pre>
+     *
+     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent screenshot_test_compose_preview_event = 192;</code>
+     * @return The screenshotTestComposePreviewEvent.
+     */
+    public com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent getScreenshotTestComposePreviewEvent() {
+      if (screenshotTestComposePreviewEventBuilder_ == null) {
+        return screenshotTestComposePreviewEvent_ == null ? com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.getDefaultInstance() : screenshotTestComposePreviewEvent_;
+      } else {
+        return screenshotTestComposePreviewEventBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = SCREENSHOT_TEST_COMPOSE_PREVIEW
+     * </pre>
+     *
+     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent screenshot_test_compose_preview_event = 192;</code>
+     */
+    public Builder setScreenshotTestComposePreviewEvent(com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent value) {
+      if (screenshotTestComposePreviewEventBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        screenshotTestComposePreviewEvent_ = value;
+        onChanged();
+      } else {
+        screenshotTestComposePreviewEventBuilder_.setMessage(value);
+      }
+      bitField5_ |= 0x80000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = SCREENSHOT_TEST_COMPOSE_PREVIEW
+     * </pre>
+     *
+     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent screenshot_test_compose_preview_event = 192;</code>
+     */
+    public Builder setScreenshotTestComposePreviewEvent(
+        com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.Builder builderForValue) {
+      if (screenshotTestComposePreviewEventBuilder_ == null) {
+        screenshotTestComposePreviewEvent_ = builderForValue.build();
+        onChanged();
+      } else {
+        screenshotTestComposePreviewEventBuilder_.setMessage(builderForValue.build());
+      }
+      bitField5_ |= 0x80000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = SCREENSHOT_TEST_COMPOSE_PREVIEW
+     * </pre>
+     *
+     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent screenshot_test_compose_preview_event = 192;</code>
+     */
+    public Builder mergeScreenshotTestComposePreviewEvent(com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent value) {
+      if (screenshotTestComposePreviewEventBuilder_ == null) {
+        if (((bitField5_ & 0x80000000) != 0) &&
+            screenshotTestComposePreviewEvent_ != null &&
+            screenshotTestComposePreviewEvent_ != com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.getDefaultInstance()) {
+          screenshotTestComposePreviewEvent_ =
+            com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.newBuilder(screenshotTestComposePreviewEvent_).mergeFrom(value).buildPartial();
+        } else {
+          screenshotTestComposePreviewEvent_ = value;
+        }
+        onChanged();
+      } else {
+        screenshotTestComposePreviewEventBuilder_.mergeFrom(value);
+      }
+      bitField5_ |= 0x80000000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = SCREENSHOT_TEST_COMPOSE_PREVIEW
+     * </pre>
+     *
+     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent screenshot_test_compose_preview_event = 192;</code>
+     */
+    public Builder clearScreenshotTestComposePreviewEvent() {
+      if (screenshotTestComposePreviewEventBuilder_ == null) {
+        screenshotTestComposePreviewEvent_ = null;
+        onChanged();
+      } else {
+        screenshotTestComposePreviewEventBuilder_.clear();
+      }
+      bitField5_ = (bitField5_ & ~0x80000000);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = SCREENSHOT_TEST_COMPOSE_PREVIEW
+     * </pre>
+     *
+     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent screenshot_test_compose_preview_event = 192;</code>
+     */
+    public com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.Builder getScreenshotTestComposePreviewEventBuilder() {
+      bitField5_ |= 0x80000000;
+      onChanged();
+      return getScreenshotTestComposePreviewEventFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = SCREENSHOT_TEST_COMPOSE_PREVIEW
+     * </pre>
+     *
+     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent screenshot_test_compose_preview_event = 192;</code>
+     */
+    public com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEventOrBuilder getScreenshotTestComposePreviewEventOrBuilder() {
+      if (screenshotTestComposePreviewEventBuilder_ != null) {
+        return screenshotTestComposePreviewEventBuilder_.getMessageOrBuilder();
+      } else {
+        return screenshotTestComposePreviewEvent_ == null ?
+            com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.getDefaultInstance() : screenshotTestComposePreviewEvent_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = SCREENSHOT_TEST_COMPOSE_PREVIEW
+     * </pre>
+     *
+     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent screenshot_test_compose_preview_event = 192;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent, com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.Builder, com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEventOrBuilder> 
+        getScreenshotTestComposePreviewEventFieldBuilder() {
+      if (screenshotTestComposePreviewEventBuilder_ == null) {
+        screenshotTestComposePreviewEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent, com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.Builder, com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEventOrBuilder>(
+                getScreenshotTestComposePreviewEvent(),
+                getParentForChildren(),
+                isClean());
+        screenshotTestComposePreviewEvent_ = null;
+      }
+      return screenshotTestComposePreviewEventBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

@@ -20,6 +20,7 @@ import static com.android.SdkConstants.FN_ANDROID_MANIFEST_XML;
 import static com.android.SdkConstants.FN_RESOURCE_TEXT;
 
 import com.android.annotations.NonNull;
+import com.android.build.gradle.internal.caching.DisabledCachingReason;
 import com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask;
 import com.android.ide.common.symbols.SymbolIo;
 import com.android.ide.common.symbols.SymbolTable;
@@ -31,13 +32,13 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import javax.xml.parsers.ParserConfigurationException;
-import org.gradle.api.artifacts.transform.CacheableTransform;
 import org.gradle.api.artifacts.transform.InputArtifact;
 import org.gradle.api.artifacts.transform.TransformAction;
 import org.gradle.api.artifacts.transform.TransformOutputs;
 import org.gradle.api.file.FileSystemLocation;
 import org.gradle.api.provider.Provider;
 import org.gradle.api.tasks.Classpath;
+import org.gradle.work.DisableCachingByDefault;
 import org.xml.sax.SAXException;
 
 /**
@@ -47,7 +48,7 @@ import org.xml.sax.SAXException;
  * <p>This means that one artifact contains all the information needed to build a {@link
  * SymbolTable} for {@link LinkApplicationAndroidResourcesTask}
  */
-@CacheableTransform
+@DisableCachingByDefault(because = DisabledCachingReason.FAST_TRANSFORM)
 public abstract class LibrarySymbolTableTransform
         implements TransformAction<GenericTransformParameters> {
 

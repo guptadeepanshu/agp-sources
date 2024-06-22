@@ -172,4 +172,8 @@ open class FlatSourceDirectoriesImpl(
         fileCollection.disallowChanges()
         return fileCollection
     }
+
+    override fun forAllSources(action:(DirectoryEntry) -> Unit) {
+        getVariantSources().forEach(action::invoke)
+    }
 }

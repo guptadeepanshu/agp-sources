@@ -26,4 +26,7 @@ public interface IDeviceManagerListener {
 
     @WorkerThread
     void removedDevices(@NonNull List<IDevice> deviceList);
+
+    @WorkerThread
+    void deviceStateChanged(@NonNull IDevice device);
 }

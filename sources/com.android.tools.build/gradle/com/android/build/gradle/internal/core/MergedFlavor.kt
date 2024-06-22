@@ -193,11 +193,11 @@ class MergedFlavor(
         }
 
         val message = """$fieldName cannot be set on a mergedFlavor directly.
-                |$outputFieldName can instead be set for variant outputs using the following syntax:
-                |android {
-                |    applicationVariants.all { variant ->
-                |        variant.outputs.each { output ->
-                |            output.$outputFieldName = $formattedFieldValue
+                |$outputFieldName can instead be set for variant outputs using the following kts syntax:
+                |androidComponents {
+                |    onVariants { variant ->
+                |        variant.outputs.forEach { output ->
+                |            output.$fieldName.set($formattedFieldValue)
                 |        }
                 |    }
                 |}""".trimMargin()

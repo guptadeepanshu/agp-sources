@@ -31,7 +31,6 @@ import com.android.build.gradle.internal.core.dsl.LibraryVariantDslInfo
 import com.android.build.gradle.internal.core.dsl.TestFixturesComponentDslInfo
 import com.android.build.gradle.internal.core.dsl.TestProjectVariantDslInfo
 import com.android.build.gradle.internal.core.dsl.TestedVariantDslInfo
-import com.android.build.gradle.internal.core.dsl.HostTestComponentDslInfo
 import com.android.build.gradle.internal.dsl.ApplicationPublishingImpl
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import com.android.build.gradle.internal.dsl.InternalApplicationExtension
@@ -248,8 +247,8 @@ class DslInfoBuilder<CommonExtensionT: CommonExtension<*, *, *, *, *, *>, DslInf
         )
     }
 
-    private fun createUnitTestComponentDslInfo(): HostTestComponentDslInfo {
-        return UnitTestComponentDslInfoImpl(
+    internal fun createHostTestComponentDslInfo(): HostTestComponentDslInfoImpl {
+        return HostTestComponentDslInfoImpl(
             componentIdentity = createComponentIdentity(),
             componentType = componentType,
             defaultConfig = defaultConfig,
@@ -262,21 +261,7 @@ class DslInfoBuilder<CommonExtensionT: CommonExtension<*, *, *, *, *, *>, DslInf
         )
     }
 
-    private fun createScreenshotTestComponentDslInfo(): HostTestComponentDslInfoImpl {
-        return ScreenshotTestComponentDslInfoImpl(
-                componentIdentity = createComponentIdentity(),
-                componentType = componentType,
-                defaultConfig = defaultConfig,
-                buildTypeObj = buildType,
-                productFlavorList = flavors.map { it.first },
-                services = variantServices,
-                buildDirectory = buildDirectory,
-                mainVariantDslInfo = productionVariant!!,
-                extension = extension as InternalTestedExtension<*, *, *, *, *, *>
-        )
-    }
-
-    private fun createAndroidTestComponentDslInfo(): AndroidTestComponentDslInfo {
+    internal fun createAndroidTestComponentDslInfo(): AndroidTestComponentDslInfo {
         return AndroidTestComponentDslInfoImpl(
             componentIdentity = createComponentIdentity(),
             componentType = componentType,
@@ -299,9 +284,7 @@ class DslInfoBuilder<CommonExtensionT: CommonExtension<*, *, *, *, *, *>, DslInf
             ComponentTypeImpl.OPTIONAL_APK -> createDynamicFeatureVariantDslInfo()
             ComponentTypeImpl.TEST_APK -> createTestProjectVariantDslInfo()
             ComponentTypeImpl.TEST_FIXTURES -> createTestFixturesComponentDslInfo()
-            ComponentTypeImpl.UNIT_TEST -> createUnitTestComponentDslInfo()
             ComponentTypeImpl.ANDROID_TEST -> createAndroidTestComponentDslInfo()
-            ComponentTypeImpl.SCREENSHOT_TEST -> createScreenshotTestComponentDslInfo()
             else -> {
                 throw RuntimeException("Unknown component type ${componentType.name}")
             }

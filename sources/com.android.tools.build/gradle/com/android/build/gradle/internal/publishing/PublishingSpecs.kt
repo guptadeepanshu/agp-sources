@@ -21,6 +21,7 @@ import com.android.build.api.artifact.SingleArtifact.APK
 import com.android.build.api.artifact.SingleArtifact.MERGED_MANIFEST
 import com.android.build.api.artifact.SingleArtifact.METADATA_LIBRARY_DEPENDENCIES_REPORT
 import com.android.build.api.artifact.SingleArtifact.OBFUSCATION_MAPPING_FILE
+import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInternalArtifactType
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.API_ELEMENTS
@@ -149,6 +150,9 @@ class PublishingSpecs {
 
                 api(RES_STATIC_LIBRARY, ArtifactType.RES_STATIC_LIBRARY)
                 api(FEATURE_RESOURCE_PKG, ArtifactType.FEATURE_RESOURCE_PKG)
+                runtime(InternalArtifactType.EXTRACTED_APKS_FROM_PRIVACY_SANDBOX_SDKs, ArtifactType.ANDROID_PRIVACY_SANDBOX_EXTRACTED_SDK_APKS)
+                runtime(InternalArtifactType.EXTRACTED_SDK_APKS, ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_COMPAT_SPLIT_APKS)
+                runtime(InternalArtifactType.USES_SDK_LIBRARY_SPLIT_FOR_LOCAL_DEPLOYMENT, ArtifactType.USES_SDK_LIBRARY_SPLIT_FOR_LOCAL_DEPLOYMENT)
 
                 // FIXME: need data binding artifacts as well for Dynamic apps.
 

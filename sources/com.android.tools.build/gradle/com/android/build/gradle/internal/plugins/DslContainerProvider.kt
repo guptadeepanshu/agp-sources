@@ -48,11 +48,14 @@ interface DslContainerProvider<
 
     fun lock() {
         (defaultConfig as Lockable).lock()
-        buildTypeContainer.all { (it as Lockable).lock() }
-        productFlavorContainer.all { (it as Lockable).lock() }
-        signingConfigContainer.all { (it as Lockable).lock() }
+        buildTypeContainer.configureEach { (it as Lockable).lock() }
+        productFlavorContainer.configureEach { (it as Lockable).lock() }
+        signingConfigContainer.configureEach { (it as Lockable).lock() }
+        @Suppress("EagerGradleConfiguration") // need to fail when object added.
         buildTypeContainer.whenObjectAdded { failLocked("build types") }
+        @Suppress("EagerGradleConfiguration") // need to fail when object added.
         productFlavorContainer.whenObjectAdded { failLocked("product flavors") }
+        @Suppress("EagerGradleConfiguration") // need to fail when object added.
         signingConfigContainer.whenObjectAdded { failLocked("signing configs") }
     }
 

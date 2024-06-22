@@ -20,6 +20,7 @@ import com.android.build.api.component.impl.ComponentIdentityImpl
 import com.android.build.api.dsl.KotlinMultiplatformAndroidExtension
 import com.android.build.api.variant.ResValue
 import com.android.build.gradle.internal.core.dsl.AndroidTestComponentDslInfo
+import com.android.build.gradle.internal.core.dsl.ComponentDslInfo
 import com.android.build.gradle.internal.core.dsl.KmpComponentDslInfo
 import com.android.build.gradle.internal.core.dsl.KmpVariantDslInfo
 import com.android.build.gradle.internal.core.dsl.features.AndroidResourcesDslInfo
@@ -57,7 +58,6 @@ class KmpAndroidTestDslInfoImpl(
 ), AndroidTestComponentDslInfo, KmpComponentDslInfo {
 
     private val testOnDeviceConfig = (extension as KotlinMultiplatformAndroidExtensionImpl).androidTestOnDeviceOptions!!
-
     override val componentType = ComponentTypeImpl.ANDROID_TEST
     override val componentIdentity = ComponentIdentityImpl(
         (extension as KotlinMultiplatformAndroidExtensionImpl).androidTestOnDeviceBuilder!!.compilationName.getNamePrefixedWithAndroidTarget()
@@ -169,4 +169,6 @@ class KmpAndroidTestDslInfoImpl(
     override val buildConfigDslInfo: BuildConfigDslInfo? = null
     override val renderscriptDslInfo: RenderscriptDslInfo? = null
     override val manifestPlaceholdersDslInfo: ManifestPlaceholdersDslInfo? = null
+    override val dslDefinedHostTests: List<ComponentDslInfo.DslDefinedHostTest> = listOf()
+    override val dslDefinedDeviceTests: List<ComponentDslInfo.DslDefinedDeviceTest> = listOf()
 }

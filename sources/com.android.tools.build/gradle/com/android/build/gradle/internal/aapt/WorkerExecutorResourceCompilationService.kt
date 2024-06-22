@@ -35,7 +35,8 @@ class WorkerExecutorResourceCompilationService(
     private val taskOwner: String,
     private val workerExecutor: WorkerExecutor,
     private val analyticsService: Provider<AnalyticsService>,
-    private val aapt2Input: Aapt2Input
+    private val aapt2Input: Aapt2Input,
+    private val await: Boolean = false
 ) : ResourceCompilationService {
 
     /** Temporary workaround for b/73804575 / https://github.com/gradle/gradle/issues/4502
@@ -80,11 +81,14 @@ class WorkerExecutorResourceCompilationService(
             jvmRequests.groupByTo(HashMap(maxWorkersCount)) { (ord++) % maxWorkersCount }
 
         jvmBuckets.values.forEach { bucket ->
-            workerExecutor.noIsolation()
-                .submit(ResourceCompilerRunnable::class.java) {
-                    it.initializeWith(projectPath = projectPath, taskOwner = taskOwner, analyticsService = analyticsService)
-                    it.request.set(bucket)
-                }
+            val workQueue = workerExecutor.noIsolation()
+            workQueue.submit(ResourceCompilerRunnable::class.java) {
+                it.initializeWith(projectPath = projectPath, taskOwner = taskOwner, analyticsService = analyticsService)
+                it.request.set(bucket)
+            }
+            if (await) {
+                workQueue.await()
+            }
         }
 
 
@@ -99,13 +103,15 @@ class WorkerExecutorResourceCompilationService(
                 i.rem(buckets) == bucket
             }
             // b/73804575
-            workerExecutor.noIsolation().submit(
-                Aapt2CompileRunnable::class.java
-            ) {
+            val workQueue = workerExecutor.noIsolation()
+            workQueue.submit(Aapt2CompileRunnable::class.java) {
                 it.initializeWith(projectPath = projectPath, taskOwner = taskOwner, analyticsService = analyticsService)
                 it.aapt2Input.set(aapt2Input)
                 it.requests.set(bucketRequests)
                 it.enableBlame.set(true)
+            }
+            if (await) {
+                workQueue.await()
             }
         }
         requests.clear()

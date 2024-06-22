@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2024 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.android.sdklib.repository.generated.sysimg.v4;
 
 import com.android.repository.impl.meta.TrimStringAdapter;
@@ -31,6 +46,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *       &lt;sequence&gt;
  *         &lt;element name="tag" type="{http://schemas.android.com/sdk/android/repo/common/03}idDisplayType" maxOccurs="unbounded" minOccurs="0"/&gt;
  *         &lt;element name="vendor" type="{http://schemas.android.com/sdk/android/repo/common/03}idDisplayType" minOccurs="0"/&gt;
+ *         &lt;element name="abi" type="{http://schemas.android.com/sdk/android/repo/sys-img2/04}abiType" minOccurs="0"/&gt;
  *         &lt;element name="abis" type="{http://schemas.android.com/sdk/android/repo/sys-img2/04}abiType" maxOccurs="unbounded"/&gt;
  *         &lt;element name="translatedAbis" type="{http://schemas.android.com/sdk/android/repo/sys-img2/04}abiType" maxOccurs="unbounded" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
@@ -42,20 +58,21 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(
         name = "sysImgDetailsType",
-        propOrder = {"tags", "vendor", "abis", "translatedAbis"})
+        propOrder = {"tags", "vendor", "abi", "abis", "translatedAbis"})
 @SuppressWarnings({"override", "unchecked"})
 public class SysImgDetailsType extends ApiDetailsType
         implements com.android.sdklib.repository.meta.DetailsTypes.SysImgDetailsType {
 
     @XmlElement(name = "tag")
     protected List<IdDisplayType> tags;
-
     protected IdDisplayType vendor;
+
+    @XmlJavaTypeAdapter(TrimStringAdapter.class)
+    protected String abi;
 
     @XmlElement(required = true)
     @XmlJavaTypeAdapter(TrimStringAdapter.class)
     protected List<String> abis;
-
     @XmlJavaTypeAdapter(TrimStringAdapter.class)
     protected List<String> translatedAbis;
 
@@ -97,6 +114,24 @@ public class SysImgDetailsType extends ApiDetailsType
      */
     public void setVendorInternal(IdDisplayType value) {
         this.vendor = value;
+    }
+
+    /**
+     * Gets the value of the abi property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getAbi() {
+        return abi;
+    }
+
+    /**
+     * Sets the value of the abi property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setAbi(String value) {
+        this.abi = value;
     }
 
     /**
@@ -143,6 +178,12 @@ public class SysImgDetailsType extends ApiDetailsType
         return this.translatedAbis;
     }
 
+    public boolean isValidAbi(String value) {
+        return ((value == null)
+                || (value.matches(
+                        "^(armeabi|armeabi-v7a|arm64-v8a|x86|x86_64|mips|mips64|riscv64)$")));
+    }
+
     public boolean isValidAbis(String value) {
         return ((value != null)
                 && (value.matches(
@@ -166,4 +207,5 @@ public class SysImgDetailsType extends ApiDetailsType
     public ObjectFactory createFactory() {
         return new ObjectFactory();
     }
+
 }

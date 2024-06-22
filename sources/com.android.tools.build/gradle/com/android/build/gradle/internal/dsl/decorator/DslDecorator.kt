@@ -412,7 +412,7 @@ class DslDecorator(supportedPropertyTypes: List<SupportedPropertyType>) {
             Opcodes.ACC_PRIVATE,
             LOCK_FIELD_NAME,
             Type.BOOLEAN_TYPE.descriptor,
-            "",
+            null,
             false
         ).visitEnd()
     }
@@ -450,7 +450,7 @@ class DslDecorator(supportedPropertyTypes: List<SupportedPropertyType>) {
             Opcodes.ACC_PRIVATE,
             managedProperty.backingFieldName,
             managedProperty.supportedPropertyType.implementationType.descriptor,
-            "",
+            null,
             null
         ).visitEnd()
     }

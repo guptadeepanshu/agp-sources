@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.dsl
 
+import com.android.build.api.dsl.PrivacySandbox
 import com.android.build.api.dsl.TestAndroidResources
 import com.android.build.api.dsl.TestBuildFeatures
 import com.android.build.api.dsl.TestBuildType

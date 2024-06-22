@@ -26,7 +26,6 @@ interface Installation {
     var timeOutInMs: Int
 
     /** The list of FULL_APK installation options. */
-    @get:Incubating
     val installOptions: MutableList<String>
 
     /** Sets the list of FULL_APK installation options */

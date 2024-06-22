@@ -38,7 +38,7 @@ import com.android.build.api.variant.impl.KmpVariantImpl
 import com.android.build.api.variant.impl.ResValueKeyImpl
 import com.android.build.api.variant.impl.SigningConfigImpl
 import com.android.build.api.variant.impl.initializeAaptOptionsFromDsl
-import com.android.build.gradle.internal.component.AndroidTestCreationConfig
+import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.component.features.AndroidResourcesCreationConfig
 import com.android.build.gradle.internal.component.features.DexingCreationConfig
@@ -91,7 +91,7 @@ open class KmpAndroidTestImpl @Inject constructor(
     global,
     androidKotlinCompilation,
     manifestFile
-), AndroidTestCreationConfig, AndroidTest {
+), DeviceTestCreationConfig, AndroidTest {
 
     override val testOnlyApk: Boolean
         get() = true
@@ -118,7 +118,7 @@ open class KmpAndroidTestImpl @Inject constructor(
         )
     }
 
-    override val isAndroidTestCoverageEnabled: Boolean
+    override val codeCoverageEnabled: Boolean
         get() = dslInfo.isAndroidTestCoverageEnabled
     override val useJacocoTransformInstrumentation: Boolean
         get() = dslInfo.isAndroidTestCoverageEnabled

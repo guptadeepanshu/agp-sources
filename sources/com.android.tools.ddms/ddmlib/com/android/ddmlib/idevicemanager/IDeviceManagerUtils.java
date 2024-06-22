@@ -41,6 +41,12 @@ public class IDeviceManagerUtils {
                     AndroidDebugBridge.deviceDisconnected(device);
                 }
             }
+
+            @Override
+            @WorkerThread
+            public void deviceStateChanged(@NotNull IDevice device) {
+                AndroidDebugBridge.deviceChanged(device, IDevice.CHANGE_STATE);
+            }
         };
     }
 }

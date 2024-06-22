@@ -49,6 +49,8 @@ InternalArtifactType<T : FileSystemLocation>(
     // module: InternalArtifactType<RegularFile>(FILE), Replaceable use AnchorOutputType.ALL_CLASSES
     // Javac task output.
     object JAVAC: InternalArtifactType<Directory>(DIRECTORY), Replaceable
+    // Kotlin Built-in Support compile task output
+    object KOTLINC: InternalArtifactType<Directory>(DIRECTORY), Replaceable
 
     // --- Published classes ---
     // Class-type task output for tasks that generate published classes.
@@ -133,6 +135,8 @@ InternalArtifactType<T : FileSystemLocation>(
     object CODE_COVERAGE: InternalArtifactType<Directory>(DIRECTORY, Category.OUTPUTS), Replaceable
     // The jacoco code coverage from unit tests
     object UNIT_TEST_CODE_COVERAGE: InternalArtifactType<RegularFile>(FILE, Category.OUTPUTS), Replaceable
+    // The jacoco code coverage from screenshot tests
+    object SCREENSHOT_TEST_CODE_COVERAGE: InternalArtifactType<RegularFile>(FILE, Category.OUTPUTS), Replaceable
     // The jacoco code coverage from the device provider tasks.
     object DEVICE_PROVIDER_CODE_COVERAGE: InternalArtifactType<Directory>(DIRECTORY, Category.OUTPUTS)
     // The jacoco code coverage from the managed device instrumentation test tasks.

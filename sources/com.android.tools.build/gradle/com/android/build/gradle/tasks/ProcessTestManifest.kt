@@ -21,7 +21,7 @@ import com.android.build.api.variant.impl.BuiltArtifactImpl
 import com.android.build.api.variant.impl.BuiltArtifactsImpl
 import com.android.build.api.variant.impl.getApiString
 import com.android.build.gradle.internal.LoggerWrapper
-import com.android.build.gradle.internal.component.AndroidTestCreationConfig
+import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.InstrumentedTestCreationConfig
 import com.android.build.gradle.internal.component.TestCreationConfig
@@ -531,7 +531,7 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
                 )
             }
             when (creationConfig) {
-                is AndroidTestCreationConfig -> {
+                is DeviceTestCreationConfig -> {
                     task.extractNativeLibs.setDisallowChanges(
                         creationConfig.packaging.jniLibs.useLegacyPackaging
                     )

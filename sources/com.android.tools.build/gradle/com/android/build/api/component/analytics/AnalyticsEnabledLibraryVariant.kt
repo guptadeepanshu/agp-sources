@@ -18,6 +18,7 @@ package com.android.build.api.component.analytics
 
 import com.android.build.api.variant.AarMetadata
 import com.android.build.api.variant.DeviceTest
+import com.android.build.api.variant.HostTest
 import com.android.build.api.variant.LibraryVariant
 import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.TestFixtures
@@ -121,6 +122,17 @@ open class AnalyticsEnabledLibraryVariant @Inject constructor(
                 } else {
                     AnalyticsEnabledDeviceTest(it, stats, objectFactory)
                 }
+            }
+        }
+
+    override val hostTests: Map<String, HostTest>
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.HOST_TESTS_VALUE
+            // return a new list everytime as items may eventually be added through future APIs.
+            // we may consider returning a live list instead.
+            return  delegate.hostTests.mapValues {
+                AnalyticsEnabledHostTest(it.value, stats, objectFactory)
             }
         }
 

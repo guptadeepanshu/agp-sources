@@ -53,6 +53,7 @@ import kotlin.Unit;
 import org.gradle.api.artifacts.ArtifactCollection;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.Directory;
+import org.gradle.api.file.RegularFile;
 import org.gradle.api.file.RegularFileProperty;
 import org.gradle.api.plugins.JavaBasePlugin;
 import org.gradle.api.provider.ListProperty;
@@ -75,7 +76,8 @@ import org.gradle.testing.jacoco.plugins.JacocoPluginExtension;
 import org.gradle.testing.jacoco.plugins.JacocoTaskExtension;
 import org.jetbrains.annotations.NotNull;
 
-/** Patched version of {@link Test} that we need to use for local unit tests support. */
+/** Patched version of {@link Test} that we need to use for local host tests support. */
+// TODO(b/330843002): This class should be renamed after the bug is fixed.
 @CacheableTask
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.TEST)
 public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
@@ -164,16 +166,20 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
     public static class CreationAction
             extends VariantTaskCreationAction<AndroidUnitTest, ComponentCreationConfig> {
 
-        @NonNull private final HostTestCreationConfig unitTestCreationConfig;
+        @NonNull private final HostTestCreationConfig hostTestCreationConfig;
 
         private final String jacocoVersion;
 
+        private final InternalArtifactType<RegularFile> internalArtifactType;
+
         public CreationAction(
-                @NonNull HostTestCreationConfig unitTestCreationConfig,
-                @NonNull String jacocoVersion) {
-            super(unitTestCreationConfig);
-            this.unitTestCreationConfig = unitTestCreationConfig;
+                @NonNull HostTestCreationConfig hostTestCreationConfig,
+                @NonNull String jacocoVersion,
+                @NonNull InternalArtifactType<RegularFile> internalArtifactType) {
+            super(hostTestCreationConfig);
+            this.hostTestCreationConfig = hostTestCreationConfig;
             this.jacocoVersion = jacocoVersion;
+            this.internalArtifactType = internalArtifactType;
         }
 
         @NonNull
@@ -191,13 +197,13 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
         @Override
         public void handleProvider(@NotNull TaskProvider<AndroidUnitTest> taskProvider) {
             super.handleProvider(taskProvider);
-            if (unitTestCreationConfig.isUnitTestCoverageEnabled()) {
-                unitTestCreationConfig
+            if (hostTestCreationConfig.getCodeCoverageEnabled()) {
+                hostTestCreationConfig
                         .getArtifacts()
-                        .setInitialProvider(taskProvider,
-                                AndroidUnitTest::getJacocoCoverageOutputFile)
+                        .setInitialProvider(
+                                taskProvider, AndroidUnitTest::getJacocoCoverageOutputFile)
                         .withName(taskProvider.getName() + SdkConstants.DOT_EXEC)
-                        .on(InternalArtifactType.UNIT_TEST_CODE_COVERAGE.INSTANCE);
+                        .on(internalArtifactType);
             }
         }
 
@@ -211,9 +217,9 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
                 pluginExtension.setToolVersion(jacocoVersion);
             }
 
-            unitTestCreationConfig.onTestedVariant(
+            hostTestCreationConfig.onTestedVariant(
                     testedConfig -> {
-                        if (unitTestCreationConfig.isUnitTestCoverageEnabled()) {
+                        if (hostTestCreationConfig.getCodeCoverageEnabled()) {
                             task.getProject()
                                     .getPlugins()
                                     .withType(
@@ -231,8 +237,8 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
                         return null;
                     });
 
-            VariantCreationConfig testedVariant = unitTestCreationConfig.getMainVariant();
-            unitTestCreationConfig
+            VariantCreationConfig testedVariant = hostTestCreationConfig.getMainVariant();
+            hostTestCreationConfig
                     .getSources()
                     .jniLibs(
                             layeredSourceDirectories -> {
@@ -242,8 +248,12 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
                             });
 
             UnitTestOptionsDslInfo testOptions = creationConfig.getGlobal().getUnitTestOptions();
-
-            boolean includeAndroidResources = testOptions.isIncludeAndroidResources();
+            boolean includeAndroidResources;
+            if (hostTestCreationConfig.getComponentType().isForScreenshotPreview()) {
+                includeAndroidResources = true;
+            } else {
+                includeAndroidResources = testOptions.isIncludeAndroidResources();
+            }
 
             ProjectOptions configOptions = creationConfig.getServices().getProjectOptions();
 
@@ -254,7 +264,12 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
             task.systemProperty("java.awt.headless", "true");
 
             task.setGroup(JavaBasePlugin.VERIFICATION_GROUP);
-            task.setDescription("Run unit tests for the " + testedVariant.getName() + " build.");
+            String testType =
+                    hostTestCreationConfig.getComponentType().isForScreenshotPreview()
+                            ? "screenshot"
+                            : "unit";
+            task.setDescription(
+                    "Run " + testType + " tests for the " + testedVariant.getName() + " build.");
 
             task.setTestClassesDirs(
                     creationConfig
@@ -272,7 +287,7 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
                 // Since this task also depends on the indirect inputs to the GenerateTestConfig
                 // task, we also need to register those inputs with Gradle.
                 task.testConfigInputs =
-                        new GenerateTestConfig.TestConfigInputs(unitTestCreationConfig);
+                        new GenerateTestConfig.TestConfigInputs(hostTestCreationConfig);
             }
 
             // Put the variant name in the report path, so that different testing tasks don't

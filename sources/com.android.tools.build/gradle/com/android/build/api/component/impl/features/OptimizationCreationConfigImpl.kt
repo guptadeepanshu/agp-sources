@@ -21,7 +21,7 @@ import com.android.build.api.variant.CanMinifyCodeBuilder
 import com.android.build.gradle.ProguardFiles
 import com.android.build.gradle.internal.PostprocessingFeatures
 import com.android.build.gradle.internal.ProguardFileType
-import com.android.build.gradle.internal.component.AndroidTestCreationConfig
+import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
 import com.android.build.gradle.internal.component.LibraryCreationConfig
 import com.android.build.gradle.internal.component.TestCreationConfig
@@ -115,7 +115,7 @@ class OptimizationCreationConfigImpl(
 
     override val minifiedEnabled: Boolean
         get() {
-            return if (component is AndroidTestCreationConfig) {
+            return if (component is DeviceTestCreationConfig) {
                 val hasPostprocessingOptions =
                     dslInfo.postProcessingOptions.hasPostProcessingConfiguration()
                 when {
@@ -135,7 +135,7 @@ class OptimizationCreationConfigImpl(
     override val resourcesShrink: Boolean
         get() {
             return when (component) {
-                is AndroidTestCreationConfig -> {
+                is DeviceTestCreationConfig -> {
                     when {
                         component.mainVariant.componentType.isAar -> false
                         !dslInfo.postProcessingOptions.hasPostProcessingConfiguration() ->

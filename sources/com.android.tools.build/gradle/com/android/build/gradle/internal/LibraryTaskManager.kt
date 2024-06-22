@@ -193,7 +193,7 @@ class LibraryTaskManager(
             taskFactory.register(ExtractAnnotations.CreationAction(libraryVariant))
         }
 
-        val instrumented = libraryVariant.isAndroidTestCoverageEnabled
+        val instrumented = libraryVariant.codeCoverageEnabled
 
         maybeCreateTransformClassesWithAsmTask(libraryVariant)
         if (instrumented) {

@@ -21,6 +21,8 @@ import com.android.build.api.variant.impl.SourceDirectoriesImpl
 import com.android.build.gradle.api.AndroidSourceDirectorySet
 import com.android.build.gradle.internal.api.artifact.SourceArtifactType
 import com.android.build.gradle.internal.scope.getDirectories
+import com.android.build.gradle.internal.services.DslServices
+import com.android.builder.errors.IssueReporter
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
@@ -30,12 +32,12 @@ import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.FileTree
 import org.gradle.api.file.FileTreeElement
+import org.gradle.api.provider.Provider
 import org.gradle.api.specs.Spec
 import org.gradle.api.tasks.util.PatternFilterable
 import org.gradle.api.tasks.util.PatternSet
 import java.io.File
 import java.nio.file.Path
-import java.util.ArrayList
 import java.util.concurrent.Callable
 
 /**
@@ -127,6 +129,19 @@ class DefaultAndroidSourceDirectorySet(
             source.add(dir)
         }
         return this
+    }
+
+    override val directories = object : AbstractMutableSet<String>() {
+        override fun add(element: String) = source.add(element)
+        override val size: Int
+            get() = source.size
+
+        override fun iterator(): MutableIterator<String> = object: MutableIterator<String> {
+            val baseIterator = source.iterator()
+            override fun hasNext(): Boolean = baseIterator.hasNext()
+            override fun next(): String  = baseIterator.next().toString()
+            override fun remove() = baseIterator.remove()
+        }
     }
 
     override fun getSourceFiles(): FileTree {

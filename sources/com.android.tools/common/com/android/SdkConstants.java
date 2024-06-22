@@ -158,14 +158,14 @@ public final class SdkConstants {
     public static final String FN_BUILD_GRADLE = "build.gradle";
     /** An SDK Project's build.gradle Kotlin script file */
     public static final String FN_BUILD_GRADLE_KTS = "build.gradle.kts";
-    /** An SDK Project's build.gradle.toml declarative file */
-    public static final String FN_DECLARATIVE_BUILD_GRADLE = "build.gradle.toml";
+    /** An SDK Project's build.gradle.dcl declarative file */
+    public static final String FN_BUILD_GRADLE_DECLARATIVE = "build.gradle.dcl";
     /** An SDK Project's settings.gradle file */
     public static final String FN_SETTINGS_GRADLE = "settings.gradle";
     /** An SDK Project's settings.gradle Kotlin script file */
     public static final String FN_SETTINGS_GRADLE_KTS = "settings.gradle.kts";
-    /** An SDK Project's settings.gradle toml file */
-    public static final String FN_SETTINGS_GRADLE_TOML = "settings.gradle.toml";
+    /** An SDK Project's settings.gradle.dcl declarative file */
+    public static final String FN_SETTINGS_GRADLE_DECLARATIVE = "settings.gradle.dcl";
     /** An SDK Project's gradle.properties file */
     public static final String FN_GRADLE_PROPERTIES = "gradle.properties";
     /** An SDK Project's Gradle cache config.properties file */
@@ -2091,8 +2091,8 @@ public final class SdkConstants {
     public static final String VALUE_DELIMITER_PIPE = "|";
 
     // Pseudolocale Values
-    public static final String EN_XA = "en-XA";
-    public static final String AR_XB = "ar-XB";
+    public static final String EN_XA = "en-rXA";
+    public static final String AR_XB = "ar-rXB";
 
     // Menus
     public static final String ATTR_CHECKABLE = "checkable";
@@ -2141,6 +2141,7 @@ public final class SdkConstants {
     public static final String DOT_SRCJAR = ".srcjar";
     public static final String DOT_KLIB = ".klib";
     public static final String DOT_GRADLE = ".gradle";
+    public static final String DOT_DECLARATIVE = ".dcl";
     public static final String DOT_PROPERTIES = ".properties";
     public static final String DOT_JSON = ".json";
     public static final String DOT_PSD = ".psd";
@@ -2176,8 +2177,8 @@ public final class SdkConstants {
     public static final String EXT_GRADLE = "gradle";
     /** Extension of Kotlin gradle files, i.e. "gradle.kts" */
     public static final String EXT_GRADLE_KTS = "gradle.kts";
-    /** Extension of declarative gradle files, i.e. "gradle.toml" */
-    public static final String EXT_GRADLE_TOML = "gradle.toml";
+    /** Extension of Kotlin gradle files, i.e. "gradle.dcl" */
+    public static final String EXT_GRADLE_DECLARATIVE = "gradle.dcl";
     /** Extension of jar files, i.e. "jar" */
     public static final String EXT_JAR = "jar";
     /** Extension of ZIP files, i.e. "zip" */
@@ -2871,7 +2872,7 @@ public final class SdkConstants {
      * Studio product. It need not actually be the latest version of Gradle, but it will most likely
      * be fairly recent.
      */
-    public static final String GRADLE_LATEST_VERSION = "8.6";
+    public static final String GRADLE_LATEST_VERSION = "8.7";
 
     /**
      * The minimum released version of the Android Gradle Plugin that this version of Studio will

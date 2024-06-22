@@ -30,7 +30,7 @@ import com.android.build.api.dsl.TestCoverage
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.attribution.BuildAnalyzerIssueReporter
 import com.android.build.gradle.internal.core.SettingsOptions
-import com.android.build.gradle.internal.core.dsl.features.AndroidTestOptionsDslInfo
+import com.android.build.gradle.internal.core.dsl.features.DeviceTestOptionsDslInfo
 import com.android.build.gradle.internal.core.dsl.features.UnitTestOptionsDslInfo
 import com.android.build.gradle.internal.dsl.LanguageSplitOptions
 import com.android.build.gradle.internal.publishing.AarOrJarTypeToConsume
@@ -45,6 +45,7 @@ import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Provider
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
 /**
  * Creation config for global tasks that are not variant-based.
@@ -89,9 +90,11 @@ interface GlobalTaskCreationConfig: BootClasspathConfig {
     val resourcePrefix: String?
     val splits: Splits
     val testCoverage: TestCoverage
-    val androidTestOptions: AndroidTestOptionsDslInfo
+    val androidTestOptions: DeviceTestOptionsDslInfo
     val unitTestOptions: UnitTestOptionsDslInfo
     val testServers: List<TestServer>
+
+    val kotlinOptions: KotlinJvmOptions?
 
     // processed access to some DSL values
 

@@ -21,8 +21,10 @@ import com.android.build.api.variant.AndroidTestBuilder
 import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.DeviceTestBuilder
 import com.android.build.api.variant.DynamicFeatureVariantBuilder
+import com.android.build.api.variant.HostTestBuilder
 import com.android.build.api.variant.PropertyAccessNotAllowedException
 import com.android.build.api.variant.VariantBuilder
+import com.android.build.gradle.internal.core.dsl.AndroidTestComponentDslInfo
 import com.android.build.gradle.internal.core.dsl.DynamicFeatureVariantDslInfo
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.VariantBuilderServices
@@ -77,11 +79,27 @@ open class DynamicFeatureVariantBuilderImpl @Inject constructor(
             _enableMultiDex = value
         }
 
-    private val defaultDeviceTestBuilder = DeviceTestBuilderImpl(
-        variantBuilderServices,
-        _enableMultiDex,
-    )
-    override val androidTest: AndroidTestBuilder = AndroidTestBuilderImpl(defaultDeviceTestBuilder)
-    override val deviceTests: List<DeviceTestBuilder>
-        get() = listOf(defaultDeviceTestBuilder)
+    override val deviceTests: List<DeviceTestBuilderImpl> =
+        dslInfo.dslDefinedDeviceTests.map { deviceTest ->
+            DeviceTestBuilderImpl(
+                variantBuilderServices,
+                globalVariantBuilderConfig,
+                this,
+                _enableMultiDex,
+                deviceTest.codeCoverageEnabled
+            )
+        }
+
+    override val androidTest: AndroidTestBuilder by lazy(LazyThreadSafetyMode.NONE) {
+        AndroidTestBuilderImpl(
+            deviceTests.single()
+        )
+    }
+
+    override val hostTests: Map<String, HostTestBuilder> =
+        HostTestBuilderImpl.create(
+            dslInfo.dslDefinedHostTests,
+            variantBuilderServices,
+            dslInfo.experimentalProperties,
+        )
 }

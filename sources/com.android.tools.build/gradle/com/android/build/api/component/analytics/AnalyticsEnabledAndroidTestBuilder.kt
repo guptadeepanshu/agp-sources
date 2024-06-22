@@ -44,4 +44,28 @@ open class AnalyticsEnabledAndroidTestBuilder(
             @Suppress("DEPRECATION")
             delegate.enableMultiDex = value
         }
+
+    override var enableCodeCoverage: Boolean
+        get() =  throw PropertyAccessNotAllowedException("enableCodeCoverage", "AndroidTestBuilder")
+        set(value) {
+            stats.variantApiAccessBuilder.addVariantAccessBuilder().type =
+                VariantMethodType.DEVICE_TEST_ENABLE_CODE_COVERAGE_VALUE
+            delegate.enableCodeCoverage = value
+        }
+
+    override var targetSdk: Int?
+        get() = delegate.targetSdk
+        set(value) {
+            stats.variantApiAccessBuilder.addVariantAccessBuilder().type =
+                VariantMethodType.TARGET_SDK_VERSION_VALUE_VALUE
+            delegate.targetSdk = value
+        }
+
+    override var targetSdkPreview: String?
+        get() = delegate.targetSdkPreview
+        set(value) {
+            stats.variantApiAccessBuilder.addVariantAccessBuilder().type =
+                VariantMethodType.TARGET_SDK_PREVIEW_VALUE
+            delegate.targetSdkPreview = value
+        }
 }

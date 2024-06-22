@@ -18,7 +18,7 @@ package com.android.build.gradle.internal.lint
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.dsl.Lint
-import com.android.build.gradle.internal.component.AndroidTestCreationConfig
+import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
 import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig
@@ -26,7 +26,6 @@ import com.android.build.gradle.internal.component.NestedComponentCreationConfig
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig
 import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
-import com.android.build.gradle.internal.lint.AndroidLintAnalysisTask.Companion.PARTIAL_RESULTS_DIR_NAME
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.ANDROID_TEST_LINT_MODEL
 import com.android.build.gradle.internal.scope.InternalArtifactType.ANDROID_TEST_LINT_PARTIAL_RESULTS
@@ -54,9 +53,7 @@ import com.android.tools.lint.model.LintModelSerialization
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.plugins.JavaPluginExtension
-import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
@@ -258,7 +255,7 @@ abstract class LintModelWriterTask : NonIncrementalTask() {
                 val artifactType =
                     when (creationConfig) {
                         is HostTestCreationConfig -> UNIT_TEST_LINT_MODEL
-                        is AndroidTestCreationConfig -> ANDROID_TEST_LINT_MODEL
+                        is DeviceTestCreationConfig -> ANDROID_TEST_LINT_MODEL
                         is TestFixturesCreationConfig -> TEST_FIXTURES_LINT_MODEL
                         else -> if (fatalOnly) {
                             LINT_VITAL_LINT_MODEL
@@ -284,7 +281,7 @@ abstract class LintModelWriterTask : NonIncrementalTask() {
             task.variantInputs.initialize(
                 mainVariant,
                 creationConfig as? HostTestCreationConfig,
-                creationConfig as? AndroidTestCreationConfig,
+                creationConfig as? DeviceTestCreationConfig,
                 creationConfig as? TestFixturesCreationConfig,
                 creationConfig.services,
                 mainVariant.name,
@@ -300,7 +297,7 @@ abstract class LintModelWriterTask : NonIncrementalTask() {
                 mainVariant.artifacts.get(
                     when (creationConfig) {
                         is HostTestCreationConfig -> UNIT_TEST_LINT_PARTIAL_RESULTS
-                        is AndroidTestCreationConfig -> ANDROID_TEST_LINT_PARTIAL_RESULTS
+                        is DeviceTestCreationConfig -> ANDROID_TEST_LINT_PARTIAL_RESULTS
                         is TestFixturesCreationConfig -> TEST_FIXTURES_LINT_PARTIAL_RESULTS
                         else -> if (fatalOnly) {
                             LINT_VITAL_PARTIAL_RESULTS

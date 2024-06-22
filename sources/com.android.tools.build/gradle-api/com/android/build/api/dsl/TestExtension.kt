@@ -36,4 +36,8 @@ interface TestExtension :
      * The Gradle path of the project that this test project tests.
      */
     var targetProjectPath: String?
+
+    /** Options related to the consumption of privacy sandbox libraries */
+    val privacySandbox: PrivacySandbox
+    fun privacySandbox(action: PrivacySandbox.() -> Unit)
 }
