@@ -49,6 +49,7 @@ interface SyncIssue {
     val multiLineMessage: List<String>?
 
     companion object {
+
         const val SEVERITY_WARNING = 1
         const val SEVERITY_ERROR = 2
 
@@ -300,6 +301,12 @@ interface SyncIssue {
 
         /** Indicates that the namespace is missing  */
         const val TYPE_NAMESPACE_NOT_SET = 54;
+
+        /**
+         * Indicates an inconsistent usage of build feature settings in regard to other DSL settings
+         * or plugins applied.
+         */
+        const val TYPE_INCONSISTENT_BUILD_FEATURE_SETTING = 55
 
         // NOTE: When adding a new type here, increment the index by 1. This index may not be consistent
         // with the corresponding value in studio_stats.proto (e.g., it could be lower by 1), because of

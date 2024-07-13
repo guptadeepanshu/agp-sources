@@ -8382,6 +8382,15 @@ private static final long serialVersionUID = 0L;
      * <code>TYPE_NAMESPACE_NOT_SET = 64;</code>
      */
     TYPE_NAMESPACE_NOT_SET(64),
+    /**
+     * <pre>
+     * Inconsistent usage of build feature setting with regards to other DSL
+     * Settings or plugins applied
+     * </pre>
+     *
+     * <code>TYPE_INCONSISTENT_BUILD_FEATURE_SETTING = 65;</code>
+     */
+    TYPE_INCONSISTENT_BUILD_FEATURE_SETTING(65),
     ;
 
     /**
@@ -8845,6 +8854,15 @@ private static final long serialVersionUID = 0L;
      * <code>TYPE_NAMESPACE_NOT_SET = 64;</code>
      */
     public static final int TYPE_NAMESPACE_NOT_SET_VALUE = 64;
+    /**
+     * <pre>
+     * Inconsistent usage of build feature setting with regards to other DSL
+     * Settings or plugins applied
+     * </pre>
+     *
+     * <code>TYPE_INCONSISTENT_BUILD_FEATURE_SETTING = 65;</code>
+     */
+    public static final int TYPE_INCONSISTENT_BUILD_FEATURE_SETTING_VALUE = 65;
 
 
     public final int getNumber() {
@@ -8932,6 +8950,7 @@ private static final long serialVersionUID = 0L;
         case 62: return TYPE_EMPTY_FLAVOR_DIMENSION;
         case 63: return TYPE_EXCEPTION;
         case 64: return TYPE_NAMESPACE_NOT_SET;
+        case 65: return TYPE_INCONSISTENT_BUILD_FEATURE_SETTING;
         default: return null;
       }
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 The Android Open Source Project
+ * Copyright (C) 2015 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,27 +15,26 @@
  */
 package com.android.build.gradle.internal.test
 
-import com.android.build.gradle.internal.component.DeviceTestCreationConfig
+import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
+import com.android.build.gradle.internal.component.TestVariantCreationConfig
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
 
-/**
- * Implementation of [TestData] on top of a [DeviceTestCreationConfig]
- */
-class TestDataImpl(
+/** Implementation of [TestData] for separate test modules.  */
+class SeparateTestModuleTestData(
     namespace: Provider<String>,
-    testConfig: DeviceTestCreationConfig,
+    creationConfig: TestVariantCreationConfig,
     testApkDir: Provider<Directory>,
-    testedApksDir: Provider<Directory>?,
+    testedApksDir: Provider<Directory>,
     privacySandboxSdkApks: FileCollection?,
     privacySandboxCompatSdkApksDir: Provider<Directory>?,
     additionalSdkSupportedApkSplits: Provider<Directory>?,
-    extraInstrumentationTestRunnerArgs: Map<String, String>
+    extraInstrumentationTestRunnerArgs: Map<String, String>,
 ) : AbstractTestDataImpl(
     namespace,
-    testConfig,
+    creationConfig,
     testApkDir,
     testedApksDir,
     privacySandboxSdkApks,
@@ -43,11 +42,21 @@ class TestDataImpl(
     additionalSdkSupportedApkSplits,
     extraInstrumentationTestRunnerArgs
 ) {
+
     @get: Input
-    override val supportedAbis: Set<String> =
-        testConfig.nativeBuildCreationConfig?.supportedAbis ?: emptySet()
+    override val supportedAbis: Set<String> = emptySet()
 
+    override val libraryType = creationConfig.services.provider { false }
 
-    override val libraryType =
-        testConfig.services.provider { testConfig.mainVariant.componentType.isAar }
+    // AbstractTestDataImpl.testedApplicationId relies on creationConfig.testedApplicationId,
+    // which returns the instrumentation target application name. If
+    // ModulePropertyKeys.SELF_INSTRUMENTING is enabled, the instrumentation targets to the test
+    // application instead of tested application. To always return the tested application ID from
+    // this method, we override this method.
+    override val testedApplicationId: Provider<String> =
+        testedApksDir.map {
+            BuiltArtifactsLoaderImpl().load(it)?.applicationId!!
+        }
 }
+
+

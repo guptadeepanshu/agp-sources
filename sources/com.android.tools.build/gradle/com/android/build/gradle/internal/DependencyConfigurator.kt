@@ -460,7 +460,13 @@ class DependencyConfigurator(
         )
     }
 
-    fun configurePrivacySandboxSdkConsumerTransforms(): DependencyConfigurator {
+    fun configurePrivacySandboxSdkConsumerTransforms(
+        compileSdkHashString: String,
+        buildToolsRevision: Revision,
+        bootstrapCreationConfig: BootClasspathConfig,
+        variants: List<VariantCreationConfig> = emptyList()
+    )
+    : DependencyConfigurator {
         for (from in AsarTransform.supportedAsarTransformTypes) {
             registerTransform(
                     AsarTransform::class.java,
@@ -471,21 +477,14 @@ class DependencyConfigurator(
             }
         }
 
-        return this
-    }
-
-    fun configurePrivacySandboxSdkVariantTransforms(
-        variants: List<VariantCreationConfig>,
-        compileSdkHashString: String,
-        buildToolsRevision: Revision,
-        bootstrapCreationConfig: BootClasspathConfig
-    ): DependencyConfigurator {
-        fun configureExtractSdkShimTransforms(experimentalProperties: Map<String, Any>) {
+        fun configureExtractSdkShimTransforms(experimentalProperties: Map<String, Any>?) {
             val extractSdkShimTransformParamConfig =
                 { reg: TransformSpec<ExtractSdkShimTransform.Parameters> ->
                     val experimentalPropertiesApiGenerator: Dependency? =
-                        ModulePropertyKey.Dependencies.ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR
-                            .getValue(experimentalProperties)?.single()
+                        experimentalProperties?.let {
+                            ModulePropertyKey.Dependencies.ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR
+                                .getValue(it)?.single()
+                        }
                     val apigeneratorArtifact: Dependency =
                         experimentalPropertiesApiGenerator
                             ?: project.dependencies.create(
@@ -494,9 +493,11 @@ class DependencyConfigurator(
                             ) as Dependency
 
                     val experimentalPropertiesRuntimeApigeneratorDependencies =
-                        ModulePropertyKey.Dependencies.ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR_GENERATED_RUNTIME_DEPENDENCIES.getValue(
-                            experimentalProperties
-                        )
+                        experimentalProperties?.let {
+                            ModulePropertyKey.Dependencies.ANDROID_PRIVACY_SANDBOX_SDK_API_GENERATOR_GENERATED_RUNTIME_DEPENDENCIES.getValue(
+                                it
+                            )
+                        }
                     val runtimeDependenciesForShimSdk: List<Dependency> =
                         experimentalPropertiesRuntimeApigeneratorDependencies
                             ?: (projectServices.projectOptions
@@ -526,7 +527,6 @@ class DependencyConfigurator(
 
                     // For kotlin compilation
                     params.bootstrapClasspath.from(bootstrapCreationConfig.fullBootClasspath)
-
                     val kotlinCompiler = project.configurations.detachedConfiguration(
                         project.dependencies.create(MavenCoordinates.ORG_JETBRAINS_KOTLIN_KOTLIN_COMPILER_EMBEDDABLE.toString())
                     )
@@ -567,24 +567,24 @@ class DependencyConfigurator(
 
             fun registerExtractSdkShimTransform(usage: String) {
                 project.dependencies.registerTransform(
-                        ExtractCompileSdkShimTransform::class.java,
+                    ExtractCompileSdkShimTransform::class.java,
                 ) { reg ->
                     val usageObj: Usage = project.objects.named(Usage::class.java, usage)
                     reg.from.attribute(
-                            ARTIFACT_TYPE_ATTRIBUTE,
-                            AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_INTERFACE_DESCRIPTOR.type
+                        ARTIFACT_TYPE_ATTRIBUTE,
+                        AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_INTERFACE_DESCRIPTOR.type
                     )
                     reg.from.attribute(
-                            Usage.USAGE_ATTRIBUTE,
-                            usageObj
+                        Usage.USAGE_ATTRIBUTE,
+                        usageObj
                     )
                     reg.to.attribute(
-                            ARTIFACT_TYPE_ATTRIBUTE,
-                            AndroidArtifacts.ArtifactType.CLASSES_JAR.type
+                        ARTIFACT_TYPE_ATTRIBUTE,
+                        AndroidArtifacts.ArtifactType.CLASSES_JAR.type
                     )
                     reg.to.attribute(
-                            Usage.USAGE_ATTRIBUTE,
-                            usageObj
+                        Usage.USAGE_ATTRIBUTE,
+                        usageObj
                     )
                     extractSdkShimTransformParamConfig(reg)
                 }
@@ -600,13 +600,20 @@ class DependencyConfigurator(
             }
         }.distinct()
 
-        when(properties.size) {
-            0 -> {} // No variants, problem will be reported elsewhere.
-            1 -> configureExtractSdkShimTransforms(properties.single())
-            else -> error("It is not possible to override Privacy Sandbox experimental properties per variant.\n" +
-                    "Properties with different values defined across multiple variants: ${properties.joinToString()} ")
+        if (properties.count() > 1) {
+            error(
+                "It is not possible to override Privacy Sandbox experimental properties per variant.\n" +
+                        "Properties with different values defined across multiple variants: ${properties.joinToString()} "
+            )
         }
+        configureExtractSdkShimTransforms(properties.singleOrNull())
 
+        return this
+    }
+
+    fun configurePrivacySandboxSdkVariantTransforms(
+        variants: List<VariantCreationConfig>,
+    ): DependencyConfigurator {
         fun registerAsarToApksTransform(variants: List<VariantCreationConfig>) {
             // For signing privacy sandbox artifacts we allow per project signing configuration
             // by the use of experimental properties. To reduce the expense of registering per

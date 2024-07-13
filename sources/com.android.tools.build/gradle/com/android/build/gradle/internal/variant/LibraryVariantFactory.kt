@@ -42,6 +42,7 @@ import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.scope.TestFixturesBuildFeaturesValuesImpl
 import com.android.build.gradle.internal.scope.HostTestBuildFeaturesValuesImpl
 import com.android.build.gradle.internal.services.DslServices
+import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantBuilderServices
 import com.android.build.gradle.internal.services.VariantServices
@@ -110,11 +111,13 @@ class LibraryVariantFactory(
     }
 
     override fun createBuildFeatureValues(
-            buildFeatures: BuildFeatures, projectOptions: ProjectOptions): BuildFeatureValues {
+        buildFeatures: BuildFeatures,
+        projectServices: ProjectServices,
+    ): BuildFeatureValues {
         return if (buildFeatures is LibraryBuildFeatures) {
             BuildFeatureValuesImpl(
                     buildFeatures,
-                    projectOptions,
+                    projectServices,
                     null /*dataBindingOverride*/,
                     null /*mlModelBindingOverride*/)
         } else {
@@ -124,13 +127,13 @@ class LibraryVariantFactory(
 
     override fun createTestFixturesBuildFeatureValues(
         buildFeatures: BuildFeatures,
-        projectOptions: ProjectOptions,
+        projectServices: ProjectServices,
         androidResourcesEnabled: Boolean
     ): BuildFeatureValues {
         return if (buildFeatures is LibraryBuildFeatures) {
             TestFixturesBuildFeaturesValuesImpl(
                 buildFeatures,
-                projectOptions,
+                projectServices,
                 androidResourcesEnabled,
                 dataBindingOverride = null,
                 mlModelBindingOverride = null
@@ -143,13 +146,13 @@ class LibraryVariantFactory(
     override fun createHostTestBuildFeatureValues(
         buildFeatures: BuildFeatures,
         dataBinding: DataBinding,
-        projectOptions: ProjectOptions,
+        projectServices: ProjectServices,
         includeAndroidResources: Boolean,
         hostTestComponentType: ComponentType
     ): BuildFeatureValues {
         return HostTestBuildFeaturesValuesImpl(
             buildFeatures,
-            projectOptions,
+            projectServices,
             dataBindingOverride = null,
             mlModelBindingOverride = false,
             // We only create android resources tasks for unit test components when the tested component is
@@ -162,11 +165,11 @@ class LibraryVariantFactory(
     override fun createAndroidTestBuildFeatureValues(
         buildFeatures: BuildFeatures,
         dataBinding: DataBinding,
-        projectOptions: ProjectOptions
+        projectServices: ProjectServices,
     ): BuildFeatureValues {
         return AndroidTestBuildFeatureValuesImpl(
             buildFeatures,
-            projectOptions,
+            projectServices,
             dataBindingOverride = null,
             mlModelBindingOverride = false
         )

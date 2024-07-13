@@ -103,7 +103,8 @@ abstract class AndroidPluginBaseServices(
                 project.configurations,
                 project.dependencies,
                 project.extensions.extraProperties,
-                { name: String -> project.tasks.register(name) }
+                { name: String -> project.tasks.register(name) },
+                project.pluginManager,
             )
         }
     }

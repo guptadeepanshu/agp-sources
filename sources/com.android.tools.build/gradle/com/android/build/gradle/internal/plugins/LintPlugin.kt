@@ -894,6 +894,7 @@ abstract class LintPlugin : Plugin<Project> {
             dependencyHandler = project.dependencies,
             extraProperties = project.extensions.extraProperties,
             emptyTaskCreator = { name -> project.tasks.register(name) },
+            project.pluginManager,
         )
         projectOptions
             .allOptions

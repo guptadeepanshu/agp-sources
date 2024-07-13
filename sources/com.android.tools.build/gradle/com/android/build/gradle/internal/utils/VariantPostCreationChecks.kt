@@ -17,12 +17,7 @@
 package com.android.build.gradle.internal.utils
 
 import com.android.SdkConstants
-import com.android.build.VariantOutput
-import com.android.build.api.variant.FilterConfiguration
-import com.android.build.api.variant.impl.VariantOutputImpl
-import com.android.build.api.variant.impl.VariantOutputList
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
-import com.android.build.gradle.internal.component.features.NativeBuildCreationConfig
 import com.android.build.gradle.internal.cxx.configure.AbiConfigurationKey
 import com.android.build.gradle.internal.cxx.configure.AbiConfigurator
 import com.android.build.gradle.internal.cxx.configure.NdkAbiFile
@@ -30,17 +25,9 @@ import com.android.build.gradle.internal.cxx.configure.ndkMetaAbisFile
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
-import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.StringOption
 import com.android.builder.errors.IssueReporter
-import com.android.ide.common.build.GenericBuiltArtifact
-import com.android.ide.common.build.GenericBuiltArtifactsSplitOutputMatcher
-import com.android.ide.common.build.GenericFilterConfiguration
-import com.google.common.base.Joiner
-import com.google.common.base.Strings
-import java.util.Arrays
-import java.util.stream.Collectors
 
 /**
  * This function checks if the build is targeting Riscv platform and fails the build if the project

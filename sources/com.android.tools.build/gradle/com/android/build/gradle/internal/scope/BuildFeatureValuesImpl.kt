@@ -20,15 +20,20 @@ import com.android.build.api.dsl.ApplicationBuildFeatures
 import com.android.build.api.dsl.BuildFeatures
 import com.android.build.api.dsl.DynamicFeatureBuildFeatures
 import com.android.build.api.dsl.LibraryBuildFeatures
+import com.android.build.gradle.internal.services.ProjectServices
+import com.android.build.gradle.internal.utils.COMPOSE_COMPILER_PLUGIN_ID
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.ProjectOptions
+import com.android.builder.errors.IssueReporter
 
 open class BuildFeatureValuesImpl constructor(
     buildFeatures: BuildFeatures,
-    projectOptions: ProjectOptions,
+    projectServices: ProjectServices,
     dataBindingOverride: Boolean? = null,
-    mlModelBindingOverride: Boolean? = null
+    mlModelBindingOverride: Boolean? = null,
 ) : BuildFeatureValues {
+
+    private val projectOptions: ProjectOptions = projectServices.projectOptions
 
     // add new flags here with computation:
     // dslFeatures.flagX ?: projectOptions[BooleanOption.FlagX]
@@ -36,9 +41,23 @@ open class BuildFeatureValuesImpl constructor(
     // ------------------
     // Common flags
 
+    init {
+        if (projectServices.plugins.hasPlugin(COMPOSE_COMPILER_PLUGIN_ID) && buildFeatures.compose == false) {
+            projectServices.issueReporter.reportWarning(
+                IssueReporter.Type.INCONSISTENT_BUILD_FEATURE_SETTING,
+                "Plugin `$COMPOSE_COMPILER_PLUGIN_ID` is applied but android.buildFeatures.compose " +
+                        "is set to false and will be ignored : Compose feature will be turned on." +
+                        "Remove android.buildFeatures.compose flag to silence this warning.",
+                "buildFeatures.compose"
+            )
+        }
+    }
+
     override val aidl: Boolean = buildFeatures.aidl ?: projectOptions[BooleanOption.BUILD_FEATURE_AIDL]
 
-    override val compose: Boolean = buildFeatures.compose ?: false
+    override val compose: Boolean =
+            projectServices.plugins.hasPlugin(COMPOSE_COMPILER_PLUGIN_ID) || (buildFeatures.compose
+                ?: false)
 
     override val buildConfig: Boolean = buildFeatures.buildConfig ?: projectOptions[BooleanOption.BUILD_FEATURE_BUILDCONFIG]
 

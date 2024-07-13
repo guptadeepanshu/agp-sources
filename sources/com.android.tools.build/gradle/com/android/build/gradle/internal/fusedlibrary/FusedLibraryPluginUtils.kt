@@ -62,14 +62,10 @@ internal fun createTasks(
     }
 }
 
-internal fun configureTransforms(project: Project, projectServices: ProjectServices) {
-    DependencyConfigurator(project, projectServices).configureGeneralTransforms(
-            NAMESPACED_ANDROID_RESOURCES_FOR_PRIVACY_SANDBOX_ENABLED,
-            getAarOrJarTypeToConsume(
-                    projectServices.projectOptions,
-                    NAMESPACED_ANDROID_RESOURCES_FOR_PRIVACY_SANDBOX_ENABLED)
-    )
-
+internal fun configureTransformsForFusedLibrary(
+    project: Project,
+    projectServices: ProjectServices
+): DependencyConfigurator {
     if (projectServices.projectOptions[BooleanOption.ENABLE_PROGUARD_RULES_EXTRACTION]) {
         project.dependencies.registerTransform(
             FilterShrinkerRulesTransform::class.java
@@ -90,6 +86,13 @@ internal fun configureTransforms(project: Project, projectServices: ProjectServi
             }
         }
     }
+    return DependencyConfigurator(project, projectServices).configureGeneralTransforms(
+        NAMESPACED_ANDROID_RESOURCES_FOR_PRIVACY_SANDBOX_ENABLED,
+        getAarOrJarTypeToConsume(
+            projectServices.projectOptions,
+            NAMESPACED_ANDROID_RESOURCES_FOR_PRIVACY_SANDBOX_ENABLED
+        )
+    )
 }
 
 internal fun getDslServices(project: Project, projectServices: ProjectServices): DslServices {

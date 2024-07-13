@@ -1199,38 +1199,40 @@ abstract class PackageAndroidArtifact : NewIncrementalTask() {
             }
             return acceptedAbis
         }
+    }
+}
 
-        private fun getPageSize(creationConfig: ApkCreationConfig): Provider<Long> {
-            val experimentalProperties: MapProperty<String, Any>
-            val defaultPageSize = ApkFlinger.PAGE_SIZE_16K
-            experimentalProperties = when (creationConfig) {
-                is VariantCreationConfig -> {
-                    (creationConfig as VariantCreationConfig).experimentalProperties
-                }
-                is NestedComponentCreationConfig -> {
-                    (creationConfig as NestedComponentCreationConfig)
-                        .mainVariant
-                        .experimentalProperties
-                }
-                else -> {
-                    return creationConfig.services.provider { defaultPageSize }
-                }
-            }
-            return experimentalProperties.map {
-                val pageSize =
-                    OptionalString.NATIVE_LIBRARY_PAGE_SIZE.getValue(it)
-                        ?: return@map defaultPageSize
-                val lowercasePageSize = pageSize.lowercase(Locale.US)
-                when (lowercasePageSize) {
-                    "4k" -> return@map ApkFlinger.PAGE_SIZE_4K
-                    "16k" -> return@map ApkFlinger.PAGE_SIZE_16K
-                    "64k" -> return@map ApkFlinger.PAGE_SIZE_64K
-                    else -> throw java.lang.RuntimeException(
-                        "Invalid value for ${OptionalString.NATIVE_LIBRARY_PAGE_SIZE.key}. " +
-                            "Supported values are \"4k\", \"16k\", and \"64k\"."
-                    )
-                }
-            }
+internal fun getPageSize(creationConfig: ApkCreationConfig): Provider<Long> {
+    val experimentalProperties: MapProperty<String, Any>
+    val defaultPageSize = ApkFlinger.PAGE_SIZE_16K
+    experimentalProperties = when (creationConfig) {
+        is VariantCreationConfig -> {
+            (creationConfig as VariantCreationConfig).experimentalProperties
+        }
+
+        is NestedComponentCreationConfig -> {
+            (creationConfig as NestedComponentCreationConfig)
+                .mainVariant
+                .experimentalProperties
+        }
+
+        else -> {
+            return creationConfig.services.provider { defaultPageSize }
+        }
+    }
+    return experimentalProperties.map {
+        val pageSize =
+            OptionalString.NATIVE_LIBRARY_PAGE_SIZE.getValue(it)
+                ?: return@map defaultPageSize
+        val lowercasePageSize = pageSize.lowercase(Locale.US)
+        when (lowercasePageSize) {
+            "4k" -> return@map ApkFlinger.PAGE_SIZE_4K
+            "16k" -> return@map ApkFlinger.PAGE_SIZE_16K
+            "64k" -> return@map ApkFlinger.PAGE_SIZE_64K
+            else -> throw java.lang.RuntimeException(
+                "Invalid value for ${OptionalString.NATIVE_LIBRARY_PAGE_SIZE.key}. " +
+                        "Supported values are \"4k\", \"16k\", and \"64k\"."
+            )
         }
     }
 }

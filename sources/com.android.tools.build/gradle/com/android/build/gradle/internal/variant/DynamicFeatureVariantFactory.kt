@@ -36,6 +36,7 @@ import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.scope.TestFixturesBuildFeaturesValuesImpl
 import com.android.build.gradle.internal.scope.HostTestBuildFeaturesValuesImpl
 import com.android.build.gradle.internal.services.DslServices
+import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantBuilderServices
 import com.android.build.gradle.internal.services.VariantServices
@@ -100,17 +101,17 @@ internal class DynamicFeatureVariantFactory(
 
     override fun createBuildFeatureValues(
         buildFeatures: BuildFeatures,
-        projectOptions: ProjectOptions
+        projectServices: ProjectServices,
     ): BuildFeatureValues {
         buildFeatures as? DynamicFeatureBuildFeatures
             ?: throw RuntimeException("buildFeatures not of type DynamicFeatureBuildFeatures")
 
-        return BuildFeatureValuesImpl(buildFeatures, projectOptions)
+        return BuildFeatureValuesImpl(buildFeatures, projectServices)
     }
 
     override fun createTestFixturesBuildFeatureValues(
         buildFeatures: BuildFeatures,
-        projectOptions: ProjectOptions,
+        projectServices: ProjectServices,
         androidResourcesEnabled: Boolean
     ): BuildFeatureValues {
         buildFeatures as? DynamicFeatureBuildFeatures
@@ -118,7 +119,7 @@ internal class DynamicFeatureVariantFactory(
 
         return TestFixturesBuildFeaturesValuesImpl(
             buildFeatures,
-            projectOptions,
+            projectServices,
             androidResourcesEnabled
         )
     }
@@ -126,7 +127,7 @@ internal class DynamicFeatureVariantFactory(
     override fun createHostTestBuildFeatureValues(
         buildFeatures: BuildFeatures,
         dataBinding: DataBinding,
-        projectOptions: ProjectOptions,
+        projectServices: ProjectServices,
         includeAndroidResources: Boolean,
         hostTestComponentType: ComponentType
     ): BuildFeatureValues {
@@ -135,7 +136,7 @@ internal class DynamicFeatureVariantFactory(
 
         return HostTestBuildFeaturesValuesImpl(
             buildFeatures,
-            projectOptions,
+            projectServices,
             dataBindingOverride = if (!dataBinding.enableForTests) {
                 false
             } else {
@@ -153,14 +154,14 @@ internal class DynamicFeatureVariantFactory(
     override fun createAndroidTestBuildFeatureValues(
         buildFeatures: BuildFeatures,
         dataBinding: DataBinding,
-        projectOptions: ProjectOptions
+        projectServices: ProjectServices,
     ): BuildFeatureValues {
         buildFeatures as? DynamicFeatureBuildFeatures
             ?: throw RuntimeException("buildFeatures not of type DynamicFeatureBuildFeatures")
 
         return AndroidTestBuildFeatureValuesImpl(
             buildFeatures,
-            projectOptions,
+            projectServices,
             dataBindingOverride = if (!dataBinding.enableForTests) {
                 false
             } else {

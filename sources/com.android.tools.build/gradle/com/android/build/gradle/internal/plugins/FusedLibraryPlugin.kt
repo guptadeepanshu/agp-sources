@@ -24,7 +24,7 @@ import com.android.build.gradle.internal.fusedlibrary.FusedLibraryVariantScope
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryVariantScopeImpl
 import com.android.build.gradle.internal.fusedlibrary.SegregatingConstraintHandler
 import com.android.build.gradle.internal.fusedlibrary.configureElements
-import com.android.build.gradle.internal.fusedlibrary.configureTransforms
+import com.android.build.gradle.internal.fusedlibrary.configureTransformsForFusedLibrary
 import com.android.build.gradle.internal.fusedlibrary.createTasks
 import com.android.build.gradle.internal.fusedlibrary.getDslServices
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
@@ -252,7 +252,7 @@ class FusedLibraryPlugin @Inject constructor(
     }
 
     override fun createTasks(project: Project) {
-        configureTransforms(project, projectServices)
+        configureTransformsForFusedLibrary(project, projectServices)
         createTasks(
                 project,
                 variantScope.artifacts,

@@ -696,7 +696,7 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
 
         // create the build feature object that will be re-used everywhere
         val buildFeatureValues = variantFactory.createBuildFeatureValues(
-            extension.buildFeatures, projectServices.projectOptions
+            extension.buildFeatures, projectServices
         )
 
         // create all registered custom source sets from the user on each AndroidSourceSet
@@ -771,12 +771,14 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
                     // configurations for tools it uses. Only register them if privacy sandbox
                     // consumption is enabled.
                     if (anyVariantSupportsSdkConsumption) {
-                        configurePrivacySandboxSdkConsumerTransforms()
+                        configurePrivacySandboxSdkConsumerTransforms(
+                            globalConfig.compileSdkHashString,
+                            globalConfig.buildToolsRevision,
+                            globalConfig,
+                            variants.map { it.variant }
+                        )
                         configurePrivacySandboxSdkVariantTransforms(
                                 variants.map { it.variant },
-                                globalConfig.compileSdkHashString,
-                                globalConfig.buildToolsRevision,
-                                globalConfig
                         )
                     }
                 }

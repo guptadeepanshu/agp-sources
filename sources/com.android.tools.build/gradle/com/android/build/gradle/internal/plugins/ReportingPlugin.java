@@ -38,9 +38,11 @@ import com.android.build.gradle.options.ProjectOptionService;
 import com.android.build.gradle.options.ProjectOptions;
 import com.android.build.gradle.options.SyncOptions;
 import com.android.utils.FileUtils;
-import java.util.stream.Stream;
+
 import org.gradle.api.Project;
 import org.gradle.api.plugins.JavaBasePlugin;
+
+import java.util.stream.Stream;
 
 /**
  * Gradle plugin class for 'reporting' projects.
@@ -94,7 +96,8 @@ class ReportingPlugin implements org.gradle.api.Plugin<Project> {
                         project.getConfigurations(),
                         project.getDependencies(),
                         project.getExtensions().getExtraProperties(),
-                        project.getTasks()::register);
+                        project.getTasks()::register,
+                        project.getPluginManager());
 
         DslServices dslServices =
                 new DslServicesImpl(

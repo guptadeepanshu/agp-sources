@@ -18,11 +18,11 @@ package com.android.build.gradle.internal.plugins
 
 import com.android.build.api.attributes.BuildTypeAttr
 import com.android.build.api.dsl.PrivacySandboxSdkExtension
+import com.android.build.gradle.internal.crash.afterEvaluate
 import com.android.build.gradle.internal.dependency.configureKotlinPlatformAttribute
 import com.android.build.gradle.internal.dsl.InternalPrivacySandboxSdkExtension
 import com.android.build.gradle.internal.dsl.PrivacySandboxSdkExtensionImpl
 import com.android.build.gradle.internal.fusedlibrary.configureElements
-import com.android.build.gradle.internal.fusedlibrary.configureTransforms
 import com.android.build.gradle.internal.fusedlibrary.createTasks
 import com.android.build.gradle.internal.fusedlibrary.getDslServices
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInternalArtifactType
@@ -50,12 +50,12 @@ import com.android.build.gradle.tasks.FusedLibraryMergeArtifactTask
 import com.android.build.gradle.tasks.FusedLibraryMergeClasses
 import com.android.build.gradle.tasks.GeneratePrivacySandboxAsar
 import com.android.build.gradle.tasks.PackagePrivacySandboxSdkBundle
-import com.android.build.gradle.tasks.PrivacySandboxValidateConfigurationTask
 import com.android.build.gradle.tasks.PrivacySandboxSdkGenerateJarStubsTask
 import com.android.build.gradle.tasks.PrivacySandboxSdkGenerateRClassTask
 import com.android.build.gradle.tasks.PrivacySandboxSdkManifestGeneratorTask
 import com.android.build.gradle.tasks.PrivacySandboxSdkManifestMergerTask
 import com.android.build.gradle.tasks.PrivacySandboxSdkMergeResourcesTask
+import com.android.build.gradle.tasks.PrivacySandboxValidateConfigurationTask
 import com.android.repository.Revision
 import com.google.wireless.android.sdk.stats.GradleBuildProject
 import org.gradle.api.GradleException
@@ -293,7 +293,11 @@ class PrivacySandboxSdkPlugin @Inject constructor(
     }
 
     override fun createTasks(project: Project) {
-        configureTransforms(project, projectServices)
+        project.afterEvaluate(
+            afterEvaluate {
+                configureTransforms(project)
+            }
+        )
         createTasks(
                 project,
                 variantScope.artifacts,
@@ -318,6 +322,29 @@ class PrivacySandboxSdkPlugin @Inject constructor(
                         ValidateSigningTask.PrivacySandboxSdkCreationAction(variantScope),
                 ) + FusedLibraryMergeArtifactTask.getCreationActions(variantScope)
         )
+    }
+
+    private fun configureTransforms(project: Project) {
+        com.android.build.gradle.internal.fusedlibrary.configureTransformsForFusedLibrary(
+            project,
+            projectServices
+        )
+            .configurePrivacySandboxSdkConsumerTransforms(
+                variantScope.compileSdkVersion,
+                Revision.parseRevision(
+                    extension.buildToolsVersion,
+                    Revision.Precision.MICRO
+                ),
+                BootClasspathConfigImpl(
+                    project,
+                    projectServices,
+                    versionedSdkLoaderService,
+                    emptyList(),
+                    { true },
+                    { false },
+                    false
+                ),
+            )
     }
 
     override fun getAnalyticsPluginType(): GradleBuildProject.PluginType =

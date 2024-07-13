@@ -258,12 +258,6 @@ class ModelBuilder<
     }
 
     private fun buildBasicAndroidProjectModel(project: Project): BasicAndroidProject {
-        // Cannot be injected, as the project might not be the same as the project used to construct
-        // the model builder e.g. when lint explicitly builds the model.
-        val projectOptions =
-            getBuildService(project.gradle.sharedServices, ProjectOptionService::class.java)
-                .get().projectOptions
-
         val sdkSetupCorrectly = variantModel.versionedSdkLoader.get().sdkSetupCorrectly.get()
 
         // Get the boot classpath. This will ensure the target is configured.

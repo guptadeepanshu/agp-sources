@@ -16,9 +16,12 @@
 package com.android.build.gradle.internal.test
 
 import com.android.SdkConstants
+import com.android.build.api.variant.impl.BuiltArtifactsImpl
+import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
 import com.android.build.gradle.internal.component.InstrumentedTestCreationConfig
 import com.android.build.gradle.internal.tasks.databinding.DATA_BINDING_TRIGGER_CLASS
 import com.android.build.gradle.internal.tasks.extractApkFilesBypassingBundleTool
+import com.android.build.gradle.internal.test.BuiltArtifactsSplitOutputMatcher.computeBestOutput
 import com.android.build.gradle.internal.testing.StaticTestData
 import com.android.build.gradle.internal.testing.TestData
 import com.android.builder.testing.api.DeviceConfigProvider
@@ -89,8 +92,59 @@ abstract class AbstractTestDataImpl(
 
     private var _privacyInstallBundlesFinder: ApkBundlesFinder? = null
 
+    @get:Input
+    abstract val supportedAbis: Set<String>
+
     @get:Internal
-    abstract val testedApksFinder: ApksFinder
+    open val testedApksFinder: ApksFinder
+        get() = _testedApksFinder ?:
+            TestedApksFinder(
+                testedApksDir?.let { BuiltArtifactsLoaderImpl().load(it) },
+                privacySandboxCompatSdkApks?.let {
+                    if (it.isPresent) {
+                        BuiltArtifactsLoaderImpl().load(it)
+                    } else {
+                        null
+                    }
+                },
+                additionalSdkSupportedSplitApks?.let {
+                    if (it.isPresent) {
+                        BuiltArtifactsLoaderImpl().load(it)
+                    } else {
+                        null
+                    }
+                },
+                supportedAbis
+            ).also {
+                _testedApksFinder = it
+            }
+
+    private var _testedApksFinder: ApksFinder? = null
+
+    internal class TestedApksFinder(
+        private val testedApkBuiltArtifacts: BuiltArtifactsImpl?,
+        private val privacySandboxCompatSdkApksBuiltArtifacts: BuiltArtifactsImpl?,
+        private val additionalSdkSupportApkSplitsBuiltArtifacts: BuiltArtifactsImpl?,
+        private val supportedAbis: Set<String>
+    ) : ApksFinder {
+
+        override fun findApks(deviceConfigProvider: DeviceConfigProvider): List<File> {
+            testedApkBuiltArtifacts ?: return emptyList()
+            val apks = mutableListOf<File>()
+            apks += computeBestOutput(deviceConfigProvider, testedApkBuiltArtifacts, supportedAbis)
+            // Add additional splits
+            if (deviceConfigProvider.supportsPrivacySandbox) {
+                additionalSdkSupportApkSplitsBuiltArtifacts?.let {
+                    apks += it.elements.map { File(it.outputFile) }
+                }
+            } else {
+                privacySandboxCompatSdkApksBuiltArtifacts?.let {
+                    apks += it.elements.map { File(it.outputFile) }
+                }
+            }
+            return apks
+        }
+    }
 
     override val applicationId = creationConfig.applicationId
 

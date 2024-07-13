@@ -44,6 +44,7 @@ import com.android.build.gradle.internal.dsl.SigningConfig
 import com.android.build.gradle.internal.plugins.DslContainerProvider
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.MutableTaskContainer
+import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantBuilderServices
 import com.android.build.gradle.internal.services.VariantServices
@@ -158,18 +159,20 @@ interface VariantFactory<VariantBuilderT : VariantBuilder, VariantDslInfoT: Vari
     ): BaseVariantData
 
     fun createBuildFeatureValues(
-            buildFeatures: BuildFeatures, projectOptions: ProjectOptions): BuildFeatureValues
+        buildFeatures: BuildFeatures,
+        projectServices: ProjectServices,
+    ): BuildFeatureValues
 
     fun createTestFixturesBuildFeatureValues(
         buildFeatures: BuildFeatures,
-        projectOptions: ProjectOptions,
+        projectServices: ProjectServices,
         androidResourcesEnabled: Boolean
     ): BuildFeatureValues
 
     fun createHostTestBuildFeatureValues(
         buildFeatures: BuildFeatures,
         dataBinding: DataBinding,
-        projectOptions: ProjectOptions,
+        projectServices: ProjectServices,
         includeAndroidResources: Boolean,
         hostTestComponentType: ComponentType
     ): BuildFeatureValues
@@ -177,7 +180,8 @@ interface VariantFactory<VariantBuilderT : VariantBuilder, VariantDslInfoT: Vari
     fun createAndroidTestBuildFeatureValues(
         buildFeatures: BuildFeatures,
         dataBinding: DataBinding,
-        projectOptions: ProjectOptions): BuildFeatureValues
+        projectServices: ProjectServices,
+    ): BuildFeatureValues
 
     val variantImplementationClass: Class<out BaseVariantImpl?>
 

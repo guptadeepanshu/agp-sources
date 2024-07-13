@@ -32,10 +32,13 @@ import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
+import com.android.build.gradle.tasks.getPageSize
 import com.android.buildanalyzer.common.TaskCategory
+import com.android.builder.internal.packaging.ApkFlinger
 import com.android.builder.internal.packaging.IncrementalPackager.APP_METADATA_FILE_NAME
 import com.android.builder.packaging.PackagingUtils
 import com.android.bundle.Config
+import com.android.bundle.Config.UncompressNativeLibraries.PageAlignment
 import com.android.tools.build.bundletool.commands.BuildBundleCommand
 import com.android.utils.FileUtils
 import com.google.common.base.Preconditions
@@ -135,6 +138,10 @@ abstract class PackageBundleTask : NonIncrementalTask() {
     @get:Input
     abstract val compressNativeLibs: Property<Boolean>
 
+    @get:Input
+    @get:Optional
+    abstract val pageSize: Property<Long>
+
     @get:Nested
     @get:Optional
     abstract val assetPackOptionsForAssetPackBundle: Property<AssetPackOptionsForAssetPackBundle>
@@ -184,6 +191,7 @@ abstract class PackageBundleTask : NonIncrementalTask() {
             it.aaptOptionsNoCompress.set(aaptOptionsNoCompress)
             it.bundleOptions.set(bundleOptions)
             it.compressNativeLibs.set(compressNativeLibs)
+            it.pageSize.set(pageSize)
             it.assetPackOptionsForAssetPackBundle.set(assetPackOptionsForAssetPackBundle)
             it.bundleFile.set(bundleFile)
             it.bundleDeps.set(bundleDeps)
@@ -214,6 +222,7 @@ abstract class PackageBundleTask : NonIncrementalTask() {
         abstract val aaptOptionsNoCompress: ListProperty<String>
         abstract val bundleOptions: Property<BundleOptions>
         abstract val compressNativeLibs: Property<Boolean>
+        abstract val pageSize: Property<Long>
         abstract val assetPackOptionsForAssetPackBundle: Property<AssetPackOptionsForAssetPackBundle>
         abstract val bundleFile: RegularFileProperty
         abstract val bundleDeps: RegularFileProperty
@@ -289,8 +298,17 @@ abstract class PackageBundleTask : NonIncrementalTask() {
                 )
             }
 
+            val pageAlignment = when(parameters.pageSize.orNull) {
+                null -> PageAlignment.PAGE_ALIGNMENT_UNSPECIFIED
+                ApkFlinger.PAGE_SIZE_4K -> PageAlignment.PAGE_ALIGNMENT_4K
+                ApkFlinger.PAGE_SIZE_16K -> PageAlignment.PAGE_ALIGNMENT_16K
+                ApkFlinger.PAGE_SIZE_64K -> PageAlignment.PAGE_ALIGNMENT_64K
+                else -> throw IllegalStateException("Unexpected page size ${parameters.pageSize.get()}, only 4k, 16k and 64k are supported")
+            }
+
             val uncompressNativeLibrariesConfig = Config.UncompressNativeLibraries.newBuilder()
                 .setEnabled(!parameters.compressNativeLibs.get())
+                .setAlignment(pageAlignment)
 
             val bundleOptimizations = Config.Optimizations.newBuilder()
                 .setSplitsConfig(splitsConfig)
@@ -513,6 +531,7 @@ abstract class PackageBundleTask : NonIncrementalTask() {
             )
             task.bundleOptions = assetPackBundle.convert();
             task.compressNativeLibs.setDisallowChanges(true)
+            task.pageSize.disallowChanges()
             task.assetPackOptionsForAssetPackBundle.set(
                 AssetPackOptionsForAssetPackBundle(
                     versionCodes = assetPackBundle.versionCodes.toList(),
@@ -607,6 +626,7 @@ abstract class PackageBundleTask : NonIncrementalTask() {
                 componentProperties.packaging.jniLibs.useLegacyPackagingFromBundle
             )
             task.compressNativeLibs.disallowChanges()
+            task.pageSize.set(getPageSize(creationConfig))
 
             if (creationConfig.dexing.needsMainDexListForBundle) {
                 creationConfig.artifacts.setTaskInputToFinalProduct(

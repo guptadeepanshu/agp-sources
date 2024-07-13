@@ -71,7 +71,8 @@ data class StaticTestData(
      * Returns APK files to install based on given density and abis. If none match,
      * empty list is returned.
      */
-    override val testedApkFinder: (DeviceConfigProvider) -> List<File>
+    override val
+            testedApkFinder: (DeviceConfigProvider) -> List<File>
         get() = testedApks::findApks
 
     /**

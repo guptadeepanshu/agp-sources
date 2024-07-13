@@ -558,7 +558,7 @@ class VariantManager<
         val taskContainer = MutableTaskContainer()
         val testFixturesBuildFeatureValues = variantFactory.createTestFixturesBuildFeatureValues(
             dslExtension.buildFeatures,
-            dslServices.projectOptions,
+            projectServices,
             testFixturesComponentDslInfo.testFixturesAndroidResourcesEnabled
         )
 
@@ -714,7 +714,7 @@ class VariantManager<
                     variantFactory.createAndroidTestBuildFeatureValues(
                         dslExtension.buildFeatures,
                         dslExtension.dataBinding,
-                        dslServices.projectOptions
+                        projectServices,
                     ),
                     testComponentDslInfo as AndroidTestComponentDslInfo,
                     variantDependencies,
@@ -736,7 +736,7 @@ class VariantManager<
                     variantFactory.createHostTestBuildFeatureValues(
                         dslExtension.buildFeatures,
                         dslExtension.dataBinding,
-                        dslServices.projectOptions,
+                        projectServices,
                         globalTaskCreationConfig.unitTestOptions.isIncludeAndroidResources,
                         ComponentTypeImpl.UNIT_TEST
                     ),
@@ -759,7 +759,7 @@ class VariantManager<
                     variantFactory.createHostTestBuildFeatureValues(
                         dslExtension.buildFeatures,
                         dslExtension.dataBinding,
-                        dslServices.projectOptions,
+                        projectServices,
                         includeAndroidResources = true,
                         ComponentTypeImpl.SCREENSHOT_TEST
                     ),

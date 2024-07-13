@@ -43,6 +43,7 @@ import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.scope.TestFixturesBuildFeaturesValuesImpl
 import com.android.build.gradle.internal.scope.HostTestBuildFeaturesValuesImpl
 import com.android.build.gradle.internal.services.DslServices
+import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantBuilderServices
 import com.android.build.gradle.internal.services.VariantServices
@@ -129,17 +130,17 @@ class ApplicationVariantFactory(
 
     override fun createBuildFeatureValues(
         buildFeatures: BuildFeatures,
-        projectOptions: ProjectOptions
+        projectServices: ProjectServices,
     ): BuildFeatureValues {
         buildFeatures as? ApplicationBuildFeatures
             ?: throw RuntimeException("buildFeatures not of type ApplicationBuildFeatures")
 
-        return BuildFeatureValuesImpl(buildFeatures, projectOptions)
+        return BuildFeatureValuesImpl(buildFeatures, projectServices)
     }
 
     override fun createTestFixturesBuildFeatureValues(
         buildFeatures: BuildFeatures,
-        projectOptions: ProjectOptions,
+        projectServices: ProjectServices,
         androidResourcesEnabled: Boolean
     ): BuildFeatureValues {
         buildFeatures as? ApplicationBuildFeatures
@@ -147,7 +148,7 @@ class ApplicationVariantFactory(
 
         return TestFixturesBuildFeaturesValuesImpl(
             buildFeatures,
-            projectOptions,
+            projectServices,
             androidResourcesEnabled
         )
     }
@@ -155,7 +156,7 @@ class ApplicationVariantFactory(
     override fun createHostTestBuildFeatureValues(
         buildFeatures: BuildFeatures,
         dataBinding: DataBinding,
-        projectOptions: ProjectOptions,
+        projectServices: ProjectServices,
         includeAndroidResources: Boolean,
         hostTestComponentType: ComponentType
     ): BuildFeatureValues {
@@ -164,7 +165,7 @@ class ApplicationVariantFactory(
 
         return HostTestBuildFeaturesValuesImpl(
             buildFeatures,
-            projectOptions,
+            projectServices,
             dataBindingOverride = if (!dataBinding.enableForTests) {
                 false
             } else {
@@ -182,14 +183,14 @@ class ApplicationVariantFactory(
     override fun createAndroidTestBuildFeatureValues(
         buildFeatures: BuildFeatures,
         dataBinding: DataBinding,
-        projectOptions: ProjectOptions
+        projectServices: ProjectServices,
     ): BuildFeatureValues {
         buildFeatures as? ApplicationBuildFeatures
             ?: throw RuntimeException("buildFeatures not of type ApplicationBuildFeatures")
 
         return AndroidTestBuildFeatureValuesImpl(
             buildFeatures,
-            projectOptions,
+            projectServices,
             dataBindingOverride = if (!dataBinding.enableForTests) {
                 false
             } else {
