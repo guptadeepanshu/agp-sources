@@ -16,23 +16,22 @@
 
 package com.android.build.gradle.internal.api
 
+import com.android.build.api.variant.impl.FileBasedDirectoryEntryImpl
 import com.android.build.api.variant.impl.ProviderBasedDirectoryEntryImpl
 import com.android.build.api.variant.impl.SourceDirectoriesImpl
 import com.android.build.gradle.api.AndroidSourceDirectorySet
 import com.android.build.gradle.internal.api.artifact.SourceArtifactType
 import com.android.build.gradle.internal.scope.getDirectories
-import com.android.build.gradle.internal.services.DslServices
-import com.android.builder.errors.IssueReporter
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
 import groovy.lang.Closure
 import org.gradle.api.Project
 import org.gradle.api.file.ConfigurableFileTree
+import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.FileTree
 import org.gradle.api.file.FileTreeElement
-import org.gradle.api.provider.Provider
 import org.gradle.api.specs.Spec
 import org.gradle.api.tasks.util.PatternFilterable
 import org.gradle.api.tasks.util.PatternSet
@@ -75,14 +74,37 @@ class DefaultAndroidSourceDirectorySet(
         }
         source.add(srcDir)
         if (lateAdditionsDelegates.isNotEmpty()) {
-            val directoryEntry = ProviderBasedDirectoryEntryImpl(
-                sourceSetName,
-                project.files(srcDir).getDirectories(project.layout.projectDirectory),
-                filter,
-                isUserAdded = false,
-                isGenerated = false,
-            )
-            lateAdditionsDelegates.forEach { it.addStaticSource(directoryEntry) }
+            val entry = when(srcDir) {
+                // srcDir can be anything, including a Provider<> that we must not resolve. At least
+                // treat File and Directory differently, so we don't do any I/O during configuration
+                // as project.file(srcDir).getDirectories(project.layout.projectDirectory) will
+                // get eagerly resolved during configuration as it is a resolvable provider.
+                is File ->
+                    FileBasedDirectoryEntryImpl(
+                        sourceSetName,
+                        srcDir,
+                        filter,
+                        isUserAdded = false,
+                        shouldBeAddedToIdeModel = true,
+                    )
+                is Directory ->
+                    ProviderBasedDirectoryEntryImpl(
+                        sourceSetName,
+                        project.provider { listOf(srcDir) },
+                        filter,
+                        isUserAdded = false,
+                        isGenerated = false,
+                    )
+                else ->
+                    ProviderBasedDirectoryEntryImpl(
+                        sourceSetName,
+                        project.files(srcDir).getDirectories(project.layout.projectDirectory),
+                        filter,
+                        isUserAdded = false,
+                        isGenerated = false,
+                    )
+            }
+            lateAdditionsDelegates.forEach { it.addStaticSource(entry) }
         }
         return this
     }

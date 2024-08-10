@@ -40,11 +40,6 @@ open class LayeredSourceDirectoriesImpl(
     protected val variantSources: ListProperty<DirectoryEntries> =
         variantServices.newListPropertyForInternalUse(DirectoryEntries::class.java)
 
-    // need this to support layered structure for non generated/source directories
-    @Suppress("UNCHECKED_CAST")
-    private val variantStaticSources: ListProperty<DirectoryEntries> =
-        variantServices.newListPropertyForInternalUse(DirectoryEntries::class.java)
-
     // this will contain all the directories
     @Suppress("UNCHECKED_CAST")
     private val directories: ListProperty<Collection<Directory>> =
@@ -67,12 +62,11 @@ open class LayeredSourceDirectoriesImpl(
     // Internal APIs
     //
     override fun addSource(directoryEntry: DirectoryEntry) {
-        checkAndAdd(directoryEntry, variantSources, directories)
+        checkAndAdd(directoryEntry, false)
     }
 
     override fun addStaticSource(directoryEntry: DirectoryEntry) {
-        addSource(directoryEntry)
-        checkAndAdd(directoryEntry, variantStaticSources, staticDirectories)
+        checkAndAdd(directoryEntry, true)
     }
 
     /**
@@ -84,21 +78,18 @@ open class LayeredSourceDirectoriesImpl(
      * otherwise, we just add a new one.
      *
      * @param directoryEntry - directory to add
-     * @param sources - list of existing `DirectoryEntries` to find by name and add there or to add
-     * new Directory Entry if there is no entry with such name
-     * @param directories - collection of directories we need to update if entry with such name is new
+     * @param isStatic - whether the directory is static or not
      */
     private fun checkAndAdd(
         directoryEntry: DirectoryEntry,
-        sources: ListProperty<DirectoryEntries>,
-        directories: ListProperty<Collection<Directory>>
+        isStatic: Boolean,
     ) {
         val existingDirectories =
-            sources.get().find { entries -> entries.name == directoryEntry.name }
+            variantSources.get().find { entries -> entries.name == directoryEntry.name }
         if (existingDirectories != null) {
             existingDirectories.directoryEntries.add(directoryEntry)
         } else {
-            sources.add(
+            variantSources.add(
                 DirectoryEntries(
                     directoryEntry.name, mutableListOf(directoryEntry)
                 )
@@ -106,6 +97,9 @@ open class LayeredSourceDirectoriesImpl(
             variantServices.newListPropertyForInternalUse(Directory::class.java).also {
                 it.addAll(directoryEntry)
                 directories.add(it)
+                if (isStatic) {
+                    staticDirectories.add(it)
+                }
             }
         }
     }
@@ -122,7 +116,6 @@ open class LayeredSourceDirectoriesImpl(
 
     internal fun addStaticSources(sources: DirectoryEntries) {
         variantSources.add(sources)
-        variantStaticSources.add(sources)
 
         variantServices.newListPropertyForInternalUse(Directory::class.java).also {
             sources.directoryEntries.forEach { directoryEntry ->

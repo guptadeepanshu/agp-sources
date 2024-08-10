@@ -34,6 +34,7 @@ import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
+import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.component.InstrumentedTestCreationConfig
 import com.android.build.gradle.internal.component.KmpComponentCreationConfig
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
@@ -529,7 +530,9 @@ abstract class TaskManager(
                 null,
                 taskProviderCallback)
 
-        creationConfig.taskContainer.compileTask.dependsOn(mergeResourcesTask)
+        if (creationConfig is HostTestCreationConfig && globalConfig.unitTestOptions.isIncludeAndroidResources) {
+            creationConfig.taskContainer.compileTask.dependsOn(mergeResourcesTask)
+        }
         return mergeResourcesTask
     }
 
