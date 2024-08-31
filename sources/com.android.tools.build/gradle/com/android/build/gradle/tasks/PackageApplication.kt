@@ -123,14 +123,14 @@ abstract class PackageApplication : PackageAndroidArtifact() {
                 )
 
                 useResourcesShrinker -> operationRequest.toTransformMany(
-                    InternalArtifactType.SHRUNK_PROCESSED_RES,
+                    InternalArtifactType.SHRUNK_RESOURCES_BINARY_FORMAT,
                     SingleArtifact.APK,
                     outputDirectory.absolutePath,
                     ::customizeBuiltArtifacts
                 )
 
                 else -> operationRequest.toTransformMany(
-                    InternalArtifactType.PROCESSED_RES,
+                    InternalArtifactType.LINKED_RESOURCES_BINARY_FORMAT,
                     SingleArtifact.APK,
                     outputDirectory.absolutePath,
                     ::customizeBuiltArtifacts

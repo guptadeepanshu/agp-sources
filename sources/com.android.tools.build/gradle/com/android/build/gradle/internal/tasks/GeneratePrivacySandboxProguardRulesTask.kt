@@ -19,7 +19,7 @@ package com.android.build.gradle.internal.tasks
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInternalArtifactType
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
-import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import org.gradle.api.file.RegularFileProperty
@@ -81,7 +81,7 @@ abstract class GeneratePrivacySandboxProguardRulesTask : NonIncrementalTask() {
     }
 
     class CreationAction(val creationConfig: PrivacySandboxSdkVariantScope) :
-        TaskCreationAction<GeneratePrivacySandboxProguardRulesTask>() {
+        AndroidVariantTaskCreationAction<GeneratePrivacySandboxProguardRulesTask>() {
 
         override val name: String
             get() = "generatePrivacySandboxProguardRules"
@@ -99,7 +99,8 @@ abstract class GeneratePrivacySandboxProguardRulesTask : NonIncrementalTask() {
         }
 
         override fun configure(task: GeneratePrivacySandboxProguardRulesTask) {
-            task.configureVariantProperties("", task.project.gradle.sharedServices)
+            super.configure(task)
+
             task.compatSdkProviderClassName.setDisallowChanges(creationConfig.bundle.compatSdkProviderClassName)
             task.sdkProviderClassName.setDisallowChanges(creationConfig.bundle.sdkProviderClassName)
             task.applicationId.setDisallowChanges(creationConfig.bundle.applicationId)

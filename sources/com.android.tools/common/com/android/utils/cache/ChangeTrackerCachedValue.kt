@@ -59,7 +59,7 @@ fun ChangeTracker(vararg trackers: ChangeTracker): ChangeTracker =
   ChangeTracker { trackers.sumOf { it.count() } }
 
 /**
- * Class that caches a value until one of the dependencies changes, or it's collected by the garage collection.
+ * Class that caches a value until one of the dependencies changes, or it's collected by the garbage collection.
  * This class provides similar capabilities to the `CachedValuesManager` but avoids depending on any IntelliJ platform. For cases
  * where the value only depends on trackers, this is a more lightweight solution that does not hold references to the project.
  */

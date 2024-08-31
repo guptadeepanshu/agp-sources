@@ -141,6 +141,8 @@ enum class StringOption(
 
     ANDROID_PRIVACY_SANDBOX_SDK_API_PACKAGER("android.privacySandboxSdk.apiPackager", ApiStage.Experimental),
 
+    ANDROID_PRIVACY_SANDBOX_SDK_KOTLIN_COMPILER_EMBEDDABLE("android.privacySandboxSdk.kotlinCompilerEmbeddable", ApiStage.Experimental),
+
     /**
      * Normally, a minSdkVersion that is too low results in an error from NDK code:
      *

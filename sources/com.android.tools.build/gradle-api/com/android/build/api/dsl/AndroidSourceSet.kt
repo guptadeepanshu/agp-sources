@@ -134,6 +134,7 @@ interface AndroidSourceSet : Named {
     /**
      * Returns the name of the wearApp configuration for this source set.
      */
+    @Deprecated("Deprecated configuration - to be removed in AGP 9.0")
     val wearAppConfigurationName: String
 
     /**

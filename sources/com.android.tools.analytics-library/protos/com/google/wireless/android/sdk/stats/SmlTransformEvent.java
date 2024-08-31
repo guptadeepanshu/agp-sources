@@ -16,6 +16,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private SmlTransformEvent() {
+    transformKind_ = 0;
   }
 
   @java.lang.Override
@@ -43,20 +44,158 @@ private static final long serialVersionUID = 0L;
             com.google.wireless.android.sdk.stats.SmlTransformEvent.class, com.google.wireless.android.sdk.stats.SmlTransformEvent.Builder.class);
   }
 
+  /**
+   * Protobuf enum {@code android_studio.SmlTransformEvent.TransformKind}
+   */
+  public enum TransformKind
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>UNKNOWN = 0;</code>
+     */
+    UNKNOWN(0),
+    /**
+     * <code>CUSTOM = 1;</code>
+     */
+    CUSTOM(1),
+    /**
+     * <code>DOCUMENT = 2;</code>
+     */
+    DOCUMENT(2),
+    ;
+
+    /**
+     * <code>UNKNOWN = 0;</code>
+     */
+    public static final int UNKNOWN_VALUE = 0;
+    /**
+     * <code>CUSTOM = 1;</code>
+     */
+    public static final int CUSTOM_VALUE = 1;
+    /**
+     * <code>DOCUMENT = 2;</code>
+     */
+    public static final int DOCUMENT_VALUE = 2;
+
+
+    public final int getNumber() {
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static TransformKind valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static TransformKind forNumber(int value) {
+      switch (value) {
+        case 0: return UNKNOWN;
+        case 1: return CUSTOM;
+        case 2: return DOCUMENT;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<TransformKind>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        TransformKind> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<TransformKind>() {
+            public TransformKind findValueByNumber(int number) {
+              return TransformKind.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.SmlTransformEvent.getDescriptor().getEnumTypes().get(0);
+    }
+
+    private static final TransformKind[] VALUES = values();
+
+    public static TransformKind valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private TransformKind(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:android_studio.SmlTransformEvent.TransformKind)
+  }
+
   public interface TransformRequestOrBuilder extends
       // @@protoc_insertion_point(interface_extends:android_studio.SmlTransformEvent.TransformRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Full file size if it's attached to a request.
+     * In case of multiple files it would be a sum of all sizes.
+     * </pre>
+     *
      * <code>optional uint32 context_length = 1;</code>
      * @return Whether the contextLength field is set.
      */
     boolean hasContextLength();
     /**
+     * <pre>
+     * Full file size if it's attached to a request.
+     * In case of multiple files it would be a sum of all sizes.
+     * </pre>
+     *
      * <code>optional uint32 context_length = 1;</code>
      * @return The contextLength.
      */
     int getContextLength();
+
+    /**
+     * <pre>
+     * A size of a code snippet passed to models:
+     * It could be a user selection in case of simple transform,
+     * or a region extended to the closest declaration.
+     * </pre>
+     *
+     * <code>optional uint32 selection_length = 2;</code>
+     * @return Whether the selectionLength field is set.
+     */
+    boolean hasSelectionLength();
+    /**
+     * <pre>
+     * A size of a code snippet passed to models:
+     * It could be a user selection in case of simple transform,
+     * or a region extended to the closest declaration.
+     * </pre>
+     *
+     * <code>optional uint32 selection_length = 2;</code>
+     * @return The selectionLength.
+     */
+    int getSelectionLength();
   }
   /**
    * Protobuf type {@code android_studio.SmlTransformEvent.TransformRequest}
@@ -102,6 +241,11 @@ private static final long serialVersionUID = 0L;
     public static final int CONTEXT_LENGTH_FIELD_NUMBER = 1;
     private int contextLength_;
     /**
+     * <pre>
+     * Full file size if it's attached to a request.
+     * In case of multiple files it would be a sum of all sizes.
+     * </pre>
+     *
      * <code>optional uint32 context_length = 1;</code>
      * @return Whether the contextLength field is set.
      */
@@ -110,12 +254,48 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
+     * <pre>
+     * Full file size if it's attached to a request.
+     * In case of multiple files it would be a sum of all sizes.
+     * </pre>
+     *
      * <code>optional uint32 context_length = 1;</code>
      * @return The contextLength.
      */
     @java.lang.Override
     public int getContextLength() {
       return contextLength_;
+    }
+
+    public static final int SELECTION_LENGTH_FIELD_NUMBER = 2;
+    private int selectionLength_;
+    /**
+     * <pre>
+     * A size of a code snippet passed to models:
+     * It could be a user selection in case of simple transform,
+     * or a region extended to the closest declaration.
+     * </pre>
+     *
+     * <code>optional uint32 selection_length = 2;</code>
+     * @return Whether the selectionLength field is set.
+     */
+    @java.lang.Override
+    public boolean hasSelectionLength() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <pre>
+     * A size of a code snippet passed to models:
+     * It could be a user selection in case of simple transform,
+     * or a region extended to the closest declaration.
+     * </pre>
+     *
+     * <code>optional uint32 selection_length = 2;</code>
+     * @return The selectionLength.
+     */
+    @java.lang.Override
+    public int getSelectionLength() {
+      return selectionLength_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -135,6 +315,9 @@ private static final long serialVersionUID = 0L;
       if (((bitField0_ & 0x00000001) != 0)) {
         output.writeUInt32(1, contextLength_);
       }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        output.writeUInt32(2, selectionLength_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -147,6 +330,10 @@ private static final long serialVersionUID = 0L;
       if (((bitField0_ & 0x00000001) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(1, contextLength_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, selectionLength_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -168,6 +355,11 @@ private static final long serialVersionUID = 0L;
         if (getContextLength()
             != other.getContextLength()) return false;
       }
+      if (hasSelectionLength() != other.hasSelectionLength()) return false;
+      if (hasSelectionLength()) {
+        if (getSelectionLength()
+            != other.getSelectionLength()) return false;
+      }
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -182,6 +374,10 @@ private static final long serialVersionUID = 0L;
       if (hasContextLength()) {
         hash = (37 * hash) + CONTEXT_LENGTH_FIELD_NUMBER;
         hash = (53 * hash) + getContextLength();
+      }
+      if (hasSelectionLength()) {
+        hash = (37 * hash) + SELECTION_LENGTH_FIELD_NUMBER;
+        hash = (53 * hash) + getSelectionLength();
       }
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
@@ -313,6 +509,8 @@ private static final long serialVersionUID = 0L;
         super.clear();
         contextLength_ = 0;
         bitField0_ = (bitField0_ & ~0x00000001);
+        selectionLength_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -344,6 +542,10 @@ private static final long serialVersionUID = 0L;
         if (((from_bitField0_ & 0x00000001) != 0)) {
           result.contextLength_ = contextLength_;
           to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.selectionLength_ = selectionLength_;
+          to_bitField0_ |= 0x00000002;
         }
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -397,6 +599,9 @@ private static final long serialVersionUID = 0L;
         if (other.hasContextLength()) {
           setContextLength(other.getContextLength());
         }
+        if (other.hasSelectionLength()) {
+          setSelectionLength(other.getSelectionLength());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
@@ -428,6 +633,11 @@ private static final long serialVersionUID = 0L;
                 bitField0_ |= 0x00000001;
                 break;
               } // case 8
+              case 16: {
+                selectionLength_ = input.readUInt32();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 16
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -447,6 +657,11 @@ private static final long serialVersionUID = 0L;
 
       private int contextLength_ ;
       /**
+       * <pre>
+       * Full file size if it's attached to a request.
+       * In case of multiple files it would be a sum of all sizes.
+       * </pre>
+       *
        * <code>optional uint32 context_length = 1;</code>
        * @return Whether the contextLength field is set.
        */
@@ -455,6 +670,11 @@ private static final long serialVersionUID = 0L;
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
+       * <pre>
+       * Full file size if it's attached to a request.
+       * In case of multiple files it would be a sum of all sizes.
+       * </pre>
+       *
        * <code>optional uint32 context_length = 1;</code>
        * @return The contextLength.
        */
@@ -463,6 +683,11 @@ private static final long serialVersionUID = 0L;
         return contextLength_;
       }
       /**
+       * <pre>
+       * Full file size if it's attached to a request.
+       * In case of multiple files it would be a sum of all sizes.
+       * </pre>
+       *
        * <code>optional uint32 context_length = 1;</code>
        * @param value The contextLength to set.
        * @return This builder for chaining.
@@ -474,12 +699,80 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
+       * <pre>
+       * Full file size if it's attached to a request.
+       * In case of multiple files it would be a sum of all sizes.
+       * </pre>
+       *
        * <code>optional uint32 context_length = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearContextLength() {
         bitField0_ = (bitField0_ & ~0x00000001);
         contextLength_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int selectionLength_ ;
+      /**
+       * <pre>
+       * A size of a code snippet passed to models:
+       * It could be a user selection in case of simple transform,
+       * or a region extended to the closest declaration.
+       * </pre>
+       *
+       * <code>optional uint32 selection_length = 2;</code>
+       * @return Whether the selectionLength field is set.
+       */
+      @java.lang.Override
+      public boolean hasSelectionLength() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <pre>
+       * A size of a code snippet passed to models:
+       * It could be a user selection in case of simple transform,
+       * or a region extended to the closest declaration.
+       * </pre>
+       *
+       * <code>optional uint32 selection_length = 2;</code>
+       * @return The selectionLength.
+       */
+      @java.lang.Override
+      public int getSelectionLength() {
+        return selectionLength_;
+      }
+      /**
+       * <pre>
+       * A size of a code snippet passed to models:
+       * It could be a user selection in case of simple transform,
+       * or a region extended to the closest declaration.
+       * </pre>
+       *
+       * <code>optional uint32 selection_length = 2;</code>
+       * @param value The selectionLength to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSelectionLength(int value) {
+        bitField0_ |= 0x00000002;
+        selectionLength_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * A size of a code snippet passed to models:
+       * It could be a user selection in case of simple transform,
+       * or a region extended to the closest declaration.
+       * </pre>
+       *
+       * <code>optional uint32 selection_length = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearSelectionLength() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        selectionLength_ = 0;
         onChanged();
         return this;
       }
@@ -4182,6 +4475,35 @@ private static final long serialVersionUID = 0L;
     return com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformAccepted.getDefaultInstance();
   }
 
+  public static final int TRANSFORM_KIND_FIELD_NUMBER = 5;
+  private int transformKind_;
+  /**
+   * <pre>
+   * The kind of transform, which will be used to differentiate
+   * metrics for Document action, Custom transforms etc.
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlTransformEvent.TransformKind transform_kind = 5;</code>
+   * @return Whether the transformKind field is set.
+   */
+  @java.lang.Override public boolean hasTransformKind() {
+    return ((bitField0_ & 0x00000010) != 0);
+  }
+  /**
+   * <pre>
+   * The kind of transform, which will be used to differentiate
+   * metrics for Document action, Custom transforms etc.
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlTransformEvent.TransformKind transform_kind = 5;</code>
+   * @return The transformKind.
+   */
+  @java.lang.Override public com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformKind getTransformKind() {
+    @SuppressWarnings("deprecation")
+    com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformKind result = com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformKind.valueOf(transformKind_);
+    return result == null ? com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformKind.UNKNOWN : result;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -4208,6 +4530,9 @@ private static final long serialVersionUID = 0L;
     if (transformCase_ == 4) {
       output.writeMessage(4, (com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformAccepted) transform_);
     }
+    if (((bitField0_ & 0x00000010) != 0)) {
+      output.writeEnum(5, transformKind_);
+    }
     getUnknownFields().writeTo(output);
   }
 
@@ -4233,6 +4558,10 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(4, (com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformAccepted) transform_);
     }
+    if (((bitField0_ & 0x00000010) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(5, transformKind_);
+    }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
@@ -4248,6 +4577,10 @@ private static final long serialVersionUID = 0L;
     }
     com.google.wireless.android.sdk.stats.SmlTransformEvent other = (com.google.wireless.android.sdk.stats.SmlTransformEvent) obj;
 
+    if (hasTransformKind() != other.hasTransformKind()) return false;
+    if (hasTransformKind()) {
+      if (transformKind_ != other.transformKind_) return false;
+    }
     if (!getTransformCase().equals(other.getTransformCase())) return false;
     switch (transformCase_) {
       case 1:
@@ -4280,6 +4613,10 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
+    if (hasTransformKind()) {
+      hash = (37 * hash) + TRANSFORM_KIND_FIELD_NUMBER;
+      hash = (53 * hash) + transformKind_;
+    }
     switch (transformCase_) {
       case 1:
         hash = (37 * hash) + REQUEST_FIELD_NUMBER;
@@ -4440,6 +4777,8 @@ private static final long serialVersionUID = 0L;
       if (acceptedBuilder_ != null) {
         acceptedBuilder_.clear();
       }
+      transformKind_ = 0;
+      bitField0_ = (bitField0_ & ~0x00000010);
       transformCase_ = 0;
       transform_ = null;
       return this;
@@ -4498,6 +4837,10 @@ private static final long serialVersionUID = 0L;
           result.transform_ = acceptedBuilder_.build();
         }
       }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        to_bitField0_ |= 0x00000010;
+      }
+      result.transformKind_ = transformKind_;
       result.bitField0_ = to_bitField0_;
       result.transformCase_ = transformCase_;
       onBuilt();
@@ -4548,6 +4891,9 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.SmlTransformEvent other) {
       if (other == com.google.wireless.android.sdk.stats.SmlTransformEvent.getDefaultInstance()) return this;
+      if (other.hasTransformKind()) {
+        setTransformKind(other.getTransformKind());
+      }
       switch (other.getTransformCase()) {
         case REQUEST: {
           mergeRequest(other.getRequest());
@@ -4623,6 +4969,18 @@ private static final long serialVersionUID = 0L;
               transformCase_ = 4;
               break;
             } // case 34
+            case 40: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformKind tmpValue =
+                  com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformKind.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(5, tmpRaw);
+              } else {
+                transformKind_ = tmpRaw;
+                bitField0_ |= 0x00000010;
+              }
+              break;
+            } // case 40
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -5217,6 +5575,69 @@ private static final long serialVersionUID = 0L;
       transformCase_ = 4;
       onChanged();;
       return acceptedBuilder_;
+    }
+
+    private int transformKind_ = 0;
+    /**
+     * <pre>
+     * The kind of transform, which will be used to differentiate
+     * metrics for Document action, Custom transforms etc.
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlTransformEvent.TransformKind transform_kind = 5;</code>
+     * @return Whether the transformKind field is set.
+     */
+    @java.lang.Override public boolean hasTransformKind() {
+      return ((bitField0_ & 0x00000010) != 0);
+    }
+    /**
+     * <pre>
+     * The kind of transform, which will be used to differentiate
+     * metrics for Document action, Custom transforms etc.
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlTransformEvent.TransformKind transform_kind = 5;</code>
+     * @return The transformKind.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformKind getTransformKind() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformKind result = com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformKind.valueOf(transformKind_);
+      return result == null ? com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformKind.UNKNOWN : result;
+    }
+    /**
+     * <pre>
+     * The kind of transform, which will be used to differentiate
+     * metrics for Document action, Custom transforms etc.
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlTransformEvent.TransformKind transform_kind = 5;</code>
+     * @param value The transformKind to set.
+     * @return This builder for chaining.
+     */
+    public Builder setTransformKind(com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformKind value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00000010;
+      transformKind_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * The kind of transform, which will be used to differentiate
+     * metrics for Document action, Custom transforms etc.
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlTransformEvent.TransformKind transform_kind = 5;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearTransformKind() {
+      bitField0_ = (bitField0_ & ~0x00000010);
+      transformKind_ = 0;
+      onChanged();
+      return this;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

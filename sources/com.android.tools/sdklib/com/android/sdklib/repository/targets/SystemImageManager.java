@@ -227,11 +227,11 @@ public class SystemImageManager {
         if (CancellableFileIo.notExists(skinDir) && version != null) {
             skinDir = platformSkins.get(version);
         }
-        Path[] skins;
+        List<Path> skins;
         if (skinDir != null) {
-            skins = PackageParserUtils.parseSkinFolder(skinDir).toArray(new Path[0]);
+            skins = PackageParserUtils.parseSkinFolder(skinDir);
         } else {
-            skins = new Path[0];
+            skins = ImmutableList.of();
         }
         return new SystemImage(
                 dir, SystemImageTags.getTags(p), vendor, abis, translatedAbis, skins, p);

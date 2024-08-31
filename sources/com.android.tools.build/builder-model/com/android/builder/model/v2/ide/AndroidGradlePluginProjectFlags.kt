@@ -96,6 +96,8 @@ interface AndroidGradlePluginProjectFlags {
          */
         BUILD_FEATURE_ANDROID_RESOURCES(true),
 
+        /** Whether constraints for library components are disabled */
+        EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS(false),
         ;
 
         /**

@@ -15,46 +15,45 @@
  */
 package com.android.utils.sleep
 
-import com.android.utils.time.toDurationUnit
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 import kotlin.time.toDuration
+import kotlin.time.toDurationUnit
 
 /** Object that wraps calls to `Thread.sleep` so they can be tested. See [TestThreadSleeper]. */
 sealed class ThreadSleeper {
-    protected abstract fun doSleep(millis: Long, nanos: Int)
+  protected abstract fun doSleep(millis: Long, nanos: Int)
 
-    @OptIn(ExperimentalTime::class) // For Duration which is no longer experimental
-    @JvmSynthetic
-    fun sleep(duration: Duration) {
-        if (duration > Duration.ZERO) duration.toMillisAndNanos().let { (m, n) -> sleep(m, n)}
-    }
+  @OptIn(ExperimentalTime::class) // For Duration which is no longer experimental
+  @JvmSynthetic
+  fun sleep(duration: Duration) {
+    if (duration > Duration.ZERO) duration.toMillisAndNanos().let { (m, n) -> sleep(m, n) }
+  }
 
-    fun sleep(millis: Long, nanos: Int) {
-        if(millis > 0 || nanos > 0) doSleep(millis, nanos)
-    }
+  fun sleep(millis: Long, nanos: Int) {
+    if (millis > 0 || nanos > 0) doSleep(millis, nanos)
+  }
 
-    fun sleep(millis: Long) {
-        sleep(millis, 0)
-    }
+  fun sleep(millis: Long) {
+    sleep(millis, 0)
+  }
 
-    @OptIn(ExperimentalTime::class) // For DurationUnit which is no longer experimental
-    fun sleep(num: Long, unit: TimeUnit) {
-        if (num > 0) sleep(num.toDuration(unit.toDurationUnit()))
-    }
+  @OptIn(ExperimentalTime::class) // For DurationUnit which is no longer experimental
+  fun sleep(num: Long, unit: TimeUnit) {
+    if (num > 0) sleep(num.toDuration(unit.toDurationUnit()))
+  }
 
-    /** Standard implementation of [ThreadSleeper] using `Thread.sleep`. */
-    companion object INSTANCE : ThreadSleeper() {
-        override fun doSleep(millis: Long, nanos: Int) {
-            Thread.sleep(millis, nanos)
-        }
+  /** Standard implementation of [ThreadSleeper] using `Thread.sleep`. */
+  companion object INSTANCE : ThreadSleeper() {
+    override fun doSleep(millis: Long, nanos: Int) {
+      Thread.sleep(millis, nanos)
     }
+  }
 }
 
-@OptIn(ExperimentalTime::class)  // For Duration which is no longer experimental
+@OptIn(ExperimentalTime::class) // For Duration which is no longer experimental
 private fun Duration.toMillisAndNanos(): Pair<Long, Int> =
-    // toComponents returns SECONDS and nanoseconds, so we need to use modulus to ignore
-    // the portion of the nanoseconds value that is >= 1 millisecond.
-    inWholeMilliseconds to toComponents {_, n -> n % 1_000_000 }
-
+  // toComponents returns SECONDS and nanoseconds, so we need to use modulus to ignore
+  // the portion of the nanoseconds value that is >= 1 millisecond.
+  inWholeMilliseconds to toComponents { _, n -> n % 1_000_000 }

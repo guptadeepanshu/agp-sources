@@ -197,6 +197,10 @@ public enum StringOption
    * <code>JACOCO_TOOL_VERSION = 46;</code>
    */
   JACOCO_TOOL_VERSION(46),
+  /**
+   * <code>ANDROID_PRIVACY_SANDBOX_SDK_KOTLIN_COMPILER_EMBEDDABLE = 47;</code>
+   */
+  ANDROID_PRIVACY_SANDBOX_SDK_KOTLIN_COMPILER_EMBEDDABLE(47),
   UNRECOGNIZED(-1),
   ;
 
@@ -388,6 +392,10 @@ public enum StringOption
    * <code>JACOCO_TOOL_VERSION = 46;</code>
    */
   public static final int JACOCO_TOOL_VERSION_VALUE = 46;
+  /**
+   * <code>ANDROID_PRIVACY_SANDBOX_SDK_KOTLIN_COMPILER_EMBEDDABLE = 47;</code>
+   */
+  public static final int ANDROID_PRIVACY_SANDBOX_SDK_KOTLIN_COMPILER_EMBEDDABLE_VALUE = 47;
 
 
   public final int getNumber() {
@@ -461,6 +469,7 @@ public enum StringOption
       case 44: return LINT_RESERVED_MEMORY_PER_TASK;
       case 45: return NDK_SUPPRESS_MIN_SDK_VERSION_ERROR;
       case 46: return JACOCO_TOOL_VERSION;
+      case 47: return ANDROID_PRIVACY_SANDBOX_SDK_KOTLIN_COMPILER_EMBEDDABLE;
       default: return null;
     }
   }

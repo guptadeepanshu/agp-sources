@@ -30,13 +30,26 @@ fun ProjectComponentIdentifier.getIdString(): String {
 }
 
 /**
- * Gets the build tree path of the Gradle build for the project. This relies on the fact that the
+ * Gets the build tree path of the project. This relies on the fact that the
  * current project is always the root of resolved configuration.
  */
-fun getBuildTreePath(variantDependencies: VariantDependencies): Provider<String> {
+fun getProjectBuildTreePath(variantDependencies: VariantDependencies): Provider<String> {
    return variantDependencies.getResolutionResult(
         AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH
     ).rootComponent.map {
         (it.id as? ProjectComponentIdentifier)?.buildTreePath ?: UNKNOWN_BUILD_NAME
+    }
+}
+
+/**
+ * Gets the build path of the Gradle build that contains the project. This relies on the fact that
+ * the current project is always the root of resolved configuration.
+ */
+@Deprecated("Use getProjectBuildTreePath instead of getting the build path in isolation")
+fun getBuildPath(variantDependencies: VariantDependencies): Provider<String> {
+    return variantDependencies.getResolutionResult(
+        AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH
+    ).rootComponent.map {
+        (it.id as? ProjectComponentIdentifier)?.build?.buildPath ?: UNKNOWN_BUILD_NAME
     }
 }

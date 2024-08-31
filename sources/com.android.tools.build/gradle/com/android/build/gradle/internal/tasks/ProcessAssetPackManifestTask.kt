@@ -20,7 +20,7 @@ import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.featuresplit.toIdString
 import com.android.build.gradle.internal.utils.setDisallowChanges
@@ -80,7 +80,7 @@ abstract class ProcessAssetPackManifestTask : NonIncrementalTask() {
         private val artifacts: ArtifactsImpl,
         private val applicationId: String,
         private val assetPackManifestFileCollection: ArtifactCollection
-    ) : TaskCreationAction<ProcessAssetPackManifestTask>() {
+    ) : AndroidVariantTaskCreationAction<ProcessAssetPackManifestTask>() {
 
         override val type = ProcessAssetPackManifestTask::class.java
         override val name = "processAssetPackManifests"
@@ -93,7 +93,8 @@ abstract class ProcessAssetPackManifestTask : NonIncrementalTask() {
         }
 
         override fun configure(task: ProcessAssetPackManifestTask) {
-            task.configureVariantProperties(variantName = "", task.project.gradle.sharedServices)
+            super.configure(task)
+
             task.applicationId.setDisallowChanges(applicationId)
             task.assetPackManifests = assetPackManifestFileCollection
         }

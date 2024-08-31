@@ -25,6 +25,12 @@ import org.gradle.api.provider.Provider
 interface TestCreationConfig: ComponentCreationConfig {
 
     /**
+     * Returns true if the user has enabled code coverage for this test component.
+     */
+    val codeCoverageEnabled: Boolean
+
+
+    /**
      * In unit tests, we don't produce an apk. However, we still need to set the target sdk version
      * in the test manifest as robolectric depends on it. Sdk version may be taken from test options
      * if version defined there.

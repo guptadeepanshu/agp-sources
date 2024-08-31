@@ -39,7 +39,7 @@ import javax.inject.Inject
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.JAVA_RESOURCES)
 abstract class ProcessJavaResTask @Inject constructor(
     private val archiveOperations: ArchiveOperations
-): Sync(), VariantAwareTask {
+): Sync(), VariantTask {
 
     fun zipTree(jarFile: File): FileTree = archiveOperations.zipTree(jarFile)
 

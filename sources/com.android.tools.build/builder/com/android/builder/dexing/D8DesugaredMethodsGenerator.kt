@@ -24,11 +24,15 @@ import java.io.File
 
 /**
  * Generates backported desugared methods handled by D8, which will be consumed by Lint.
+ *
+ * Note: minSdkVersion should be the value specified from DSL which is the also one we pass to lint,
+ * rather than [DexingCreationConfig.minSdkVersionForDexing] which is affected by the device.
  */
 object D8DesugaredMethodsGenerator {
     fun generate(
         coreLibDesugarConfig: String?,
-        bootclasspath: Set<File>
+        bootclasspath: Set<File>,
+        minSdkVersion: Int,
     ): List<String> {
         val consumer = CustomStringConsumer()
         val commandBuilder = BackportedMethodListCommand.builder()
@@ -40,7 +44,7 @@ object D8DesugaredMethodsGenerator {
         }
 
         BackportedMethodList.run(
-            commandBuilder.setConsumer(consumer).build())
+            commandBuilder.setConsumer(consumer).setMinApiLevel(minSdkVersion).build())
         return consumer.strings
     }
 

@@ -50,7 +50,6 @@ import javax.xml.bind.JAXBException;
  * Utility class that loads {@link Repository}s from {@link RepositorySource}s.
  */
 public class RemoteRepoLoaderImpl implements RemoteRepoLoader {
-
     /**
      * Timeout to wait for the packages to be fetched. Each time the timeout is reached, a warning
      * will be logged but waiting for the thread pool termination will continue. It is expected that
@@ -260,6 +259,8 @@ public class RemoteRepoLoaderImpl implements RemoteRepoLoader {
 
         Repository repo = null;
         try {
+            // Note that we might not get an exception from the below if the xml is invalid, even
+            // though we're requesting strict validation--see doc for SchemaModuleUtil.unmarshal.
             repo =
                     (Repository)
                             SchemaModuleUtil.unmarshal(

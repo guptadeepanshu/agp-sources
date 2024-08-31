@@ -120,10 +120,8 @@ open class KmpAndroidTestImpl @Inject constructor(
 
     override val codeCoverageEnabled: Boolean
         get() = dslInfo.isAndroidTestCoverageEnabled
-    override val useJacocoTransformInstrumentation: Boolean
-        get() = dslInfo.isAndroidTestCoverageEnabled
-    override val packageJacocoRuntime: Boolean
-        get() = dslInfo.isAndroidTestCoverageEnabled
+    override val requiresJacocoTransformation: Boolean
+        get() = codeCoverageEnabled
 
     override val applicationId: Property<String>
         get() = dslInfo.applicationId

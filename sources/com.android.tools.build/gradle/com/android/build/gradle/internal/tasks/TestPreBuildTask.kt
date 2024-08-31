@@ -67,10 +67,7 @@ See https://d.android.com/r/tools/test-apk-dependency-conflicts.html for details
                     compileClasspath.toVersionMap()
                 }
             )
-            task.fakeOutputDirectory = File(
-                creationConfig.services.projectInfo.getIntermediatesDir(),
-                "prebuild/${creationConfig.dirName}"
-            )
+            task.fakeOutputDirectory = creationConfig.services.projectInfo.intermediatesDirectory.map { it.dir("prebuild").dir(creationConfig.dirName) }
         }
     }
 }

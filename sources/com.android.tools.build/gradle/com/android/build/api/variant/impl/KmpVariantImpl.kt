@@ -125,7 +125,7 @@ open class KmpVariantImpl @Inject constructor(
     override val androidDeviceTest: KmpAndroidTestImpl?
         get() = deviceTests.filterIsInstance<KmpAndroidTestImpl>().firstOrNull()
 
-    override val codeCoverageEnabled: Boolean
+    override val requiresJacocoTransformation: Boolean
         get() = androidDeviceTest?.codeCoverageEnabled ?: false
 
     override val nestedComponents: List<KmpComponentImpl<*>>

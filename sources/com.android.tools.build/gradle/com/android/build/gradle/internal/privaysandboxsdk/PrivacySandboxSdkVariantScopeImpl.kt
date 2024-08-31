@@ -33,8 +33,7 @@ import com.android.build.gradle.internal.services.TaskCreationServicesImpl
 import com.android.build.gradle.internal.services.VariantServicesImpl
 import com.android.build.gradle.internal.tasks.factory.BootClasspathConfig
 import com.android.build.gradle.internal.utils.validatePreviewTargetValue
-import com.android.builder.core.DefaultApiVersion
-import com.android.builder.model.ApiVersion
+import com.android.sdklib.AndroidVersion
 import org.gradle.api.Project
 import org.gradle.api.artifacts.component.ComponentIdentifier
 import org.gradle.api.file.ProjectLayout
@@ -44,11 +43,11 @@ import org.gradle.api.provider.Provider
 import org.gradle.api.specs.Spec
 
 class PrivacySandboxSdkVariantScopeImpl(
-        project: Project,
-        val dslServices: DslServices,
-        private val projectServices: ProjectServices,
-        private val extensionProvider: () -> PrivacySandboxSdkExtension,
-        private val bootClasspathConfigProvider: () -> BootClasspathConfig
+    project: Project,
+    val dslServices: DslServices,
+    private val projectServices: ProjectServices,
+    private val extensionProvider: () -> PrivacySandboxSdkExtension,
+    private val bootClasspathConfigProvider: () -> BootClasspathConfig
 ): PrivacySandboxSdkVariantScope{
 
     override val services: TaskCreationServices
@@ -70,19 +69,16 @@ class PrivacySandboxSdkVariantScopeImpl(
     }
 
     override val compileSdkVersion: String by lazy {
-        extension.compileSdkPreview?.let { validatePreviewTargetValue(it) }?.let { "android-$it" } ?:
-        extension.compileSdkExtension?.let { "android-${extension.compileSdk}-ext$it" } ?:
-        extension.compileSdk?.let {"android-$it"} ?: throw RuntimeException(
-            "compileSdk version is not set"
-        )
+        "android-${getCompileSdkApiVersion(extension).getApiStringWithOptionalExtension()}"
     }
-    override val minSdkVersion: ApiVersion by lazy {
-        extension.minSdkPreview?.let { DefaultApiVersion(it) } ?:
-        extension.minSdk?.let { DefaultApiVersion(it) } ?:
-        DefaultApiVersion(34)
+
+    override val minSdkVersion: AndroidVersion by lazy {
+        extension.minSdkPreview?.let { AndroidVersion(it) } ?:
+        AndroidVersion(extension.minSdk ?: 34)
     }
+
     override val bootClasspath: Provider<List<RegularFile>>
-            get() = bootClasspathConfigProvider.invoke().bootClasspath
+        get() = bootClasspathConfigProvider.invoke().bootClasspath
     override val bundle: PrivacySandboxSdkBundleImpl
         get() = extension.bundle as PrivacySandboxSdkBundleImpl
     override val signingConfig: SigningConfig
@@ -91,13 +87,38 @@ class PrivacySandboxSdkVariantScopeImpl(
         get() = extension.optimization as PrivacySandboxSdkOptimizationImpl
     override val experimentalProperties: MapProperty<String, Any>
         get() = internalServices.mapPropertyOf(
-                String::class.java,
-                Any::class.java,
-                extension.experimentalProperties
+            String::class.java,
+            Any::class.java,
+            extension.experimentalProperties
         )
     override val aarOrJarTypeToConsume: AarOrJarTypeToConsume
         get() = getAarOrJarTypeToConsume(
-                projectServices.projectOptions,
-                namespacedAndroidResources = NAMESPACED_ANDROID_RESOURCES_FOR_PRIVACY_SANDBOX_ENABLED
+            projectServices.projectOptions,
+            namespacedAndroidResources = NAMESPACED_ANDROID_RESOURCES_FOR_PRIVACY_SANDBOX_ENABLED
         )
+
+    private fun getCompileSdkApiVersion(extension: PrivacySandboxSdkExtension): AndroidVersion {
+        return maybeGetCompileSdkPreview(extension)
+            ?: maybeGetCompileSdk(extension)
+            ?: throw RuntimeException("compileSdk version is not set")
+    }
+
+    private fun maybeGetCompileSdk(extension: PrivacySandboxSdkExtension): AndroidVersion? {
+        return extension.compileSdk?.let {
+            AndroidVersion(
+                it,
+                null,
+                extension.compileSdkExtension,
+                false
+            )
+        }
+    }
+
+    private fun maybeGetCompileSdkPreview(extension: PrivacySandboxSdkExtension): AndroidVersion? {
+        return extension.compileSdkPreview?.let { validatePreviewTargetValue(it) }
+            ?.let { AndroidVersion(it) }
+    }
 }
+
+private fun AndroidVersion.getApiStringWithOptionalExtension(): String =
+    if (extensionLevel == null) apiStringWithoutExtension else apiStringWithExtension

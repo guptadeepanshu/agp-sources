@@ -27,7 +27,7 @@ import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.signing.SigningConfigData
 import com.android.build.gradle.internal.signing.SigningConfigDataProvider
 import com.android.build.gradle.internal.signing.SigningConfigProviderParams
-import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.StringOption
@@ -202,7 +202,7 @@ abstract class FinalizeBundleTask : NonIncrementalTask() {
         private val artifacts: ArtifactsImpl,
         private val signingConfig: SigningConfig,
         private val isSigningReady: Boolean
-    ) : TaskCreationAction<FinalizeBundleTask>() {
+    ) : AndroidVariantTaskCreationAction<FinalizeBundleTask>() {
 
         override val type = FinalizeBundleTask::class.java
         override val name = "signBundle"
@@ -224,7 +224,8 @@ abstract class FinalizeBundleTask : NonIncrementalTask() {
         override fun configure(
             task: FinalizeBundleTask
         ) {
-            task.configureVariantProperties(variantName = "", projectServices.buildServiceRegistry)
+            super.configure(task)
+
             artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.INTERMEDIARY_BUNDLE,
                 task.intermediaryBundleFile

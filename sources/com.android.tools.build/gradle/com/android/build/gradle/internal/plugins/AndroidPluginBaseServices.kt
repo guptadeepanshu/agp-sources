@@ -41,7 +41,7 @@ import com.android.build.gradle.internal.scope.ProjectInfo
 import com.android.build.gradle.internal.services.AndroidLocationsBuildService
 import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.services.ProjectServices
-import com.android.build.gradle.internal.utils.MINIMUM_INTEGRATED_KOTLIN_VERSION
+import com.android.build.gradle.internal.utils.MINIMUM_BUILT_IN_KOTLIN_VERSION
 import com.android.build.gradle.internal.utils.MUTUALLY_EXCLUSIVE_ANDROID_GRADLE_PLUGINS
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.ProjectOptionService
@@ -150,7 +150,7 @@ abstract class AndroidPluginBaseServices(
                     val message =
                         """
                             The Kotlin Gradle plugin was not found on the project's buildscript
-                            classpath. Add "org.jetbrains.kotlin:kotlin-gradle-plugin:$MINIMUM_INTEGRATED_KOTLIN_VERSION" to the
+                            classpath. Add "org.jetbrains.kotlin:kotlin-gradle-plugin:$MINIMUM_BUILT_IN_KOTLIN_VERSION" to the
                             buildscript classpath in order to use any of the following Gradle
                             properties:
 

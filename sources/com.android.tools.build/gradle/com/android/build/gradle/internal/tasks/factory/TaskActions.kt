@@ -17,10 +17,11 @@
 package com.android.build.gradle.internal.tasks.factory
 
 import com.android.build.gradle.internal.component.ComponentCreationConfig
-import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.internal.tasks.AndroidVariantTask
 import com.android.build.gradle.internal.tasks.BaseTask
-import com.android.build.gradle.internal.tasks.VariantAwareTask
+import com.android.build.gradle.internal.tasks.GlobalTask
+import com.android.build.gradle.internal.tasks.VariantTask
 import com.android.build.gradle.internal.tasks.configureVariantProperties
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import org.gradle.api.Task
@@ -37,13 +38,9 @@ interface TaskInformation<TaskT: Task> {
     val type: Class<TaskT>
 }
 
-/** Lazy Creation Action for non variant aware tasks
- *
- * This contains both meta-data to create the task ([name], [type])
- * and actions to configure the task ([preConfigure], [configure], [handleProvider])
- */
-abstract class TaskCreationAction<TaskT : Task> : TaskInformation<TaskT>, PreConfigAction,
-    TaskConfigAction<TaskT>, TaskProviderCallback<TaskT> {
+/** Creation action for a [Task]. */
+abstract class TaskCreationAction<TaskT : Task> :
+    TaskInformation<TaskT>, PreConfigAction, TaskProviderCallback<TaskT>, TaskConfigAction<TaskT> {
 
     override fun preConfigure(taskName: String) {
         // default does nothing
@@ -52,24 +49,36 @@ abstract class TaskCreationAction<TaskT : Task> : TaskInformation<TaskT>, PreCon
     override fun handleProvider(taskProvider: TaskProvider<TaskT>) {
         // default does nothing
     }
+
+    override fun configure(task: TaskT) {
+        // default does nothing
+    }
 }
 
-/** Lazy Creation Action for variant aware tasks.
- *
- * Tasks must implement [VariantAwareTask]. The simplest way to do this is to extend
- * [AndroidVariantTask].
- *
- * This contains both meta-data to create the task ([name], [type])
- * and actions to configure the task ([preConfigure], [configure], [handleProvider])
- */
-abstract class VariantTaskCreationAction<TaskT, CreationConfigT: ComponentCreationConfig>(
-    @JvmField protected val creationConfig: CreationConfigT,
-    private val dependsOnPreBuildTask: Boolean
-) : TaskCreationAction<TaskT>() where TaskT: Task, TaskT: VariantAwareTask {
+/** [TaskCreationAction] for [BaseTask]. */
+abstract class BaseTaskCreationAction<TaskT: BaseTask> : TaskCreationAction<TaskT>() {
 
+    override fun configure(task: TaskT) {
+        super.configure(task)
+
+        configureBaseTask(task)
+    }
+
+    companion object {
+
+        fun configureBaseTask(task: BaseTask) {
+            task.projectPath.setDisallowChanges(task.project.path)
+        }
+    }
+}
+
+/** [TaskCreationAction] for a [VariantTask]. */
+abstract class VariantTaskCreationAction<TaskT, CreationConfigT : ComponentCreationConfig>
+    @JvmOverloads
     constructor(
-        creationConfig: CreationConfigT
-    ): this(creationConfig, true)
+        @JvmField protected val creationConfig: CreationConfigT,
+        private val dependsOnPreBuildTask: Boolean = true
+    ) : TaskCreationAction<TaskT>() where TaskT : Task, TaskT : VariantTask {
 
     protected fun computeTaskName(prefix: String, suffix: String): String =
         creationConfig.computeTaskNameInternal(prefix, suffix)
@@ -77,54 +86,54 @@ abstract class VariantTaskCreationAction<TaskT, CreationConfigT: ComponentCreati
     protected fun computeTaskName(prefix: String): String =
         creationConfig.computeTaskNameInternal(prefix)
 
-    override fun preConfigure(taskName: String) {
-        // default does nothing
-    }
-    override fun handleProvider(taskProvider: TaskProvider<TaskT>) {
-        // default does nothing
-    }
-
     override fun configure(task: TaskT) {
-        if (dependsOnPreBuildTask) {
-            val taskContainer: MutableTaskContainer = creationConfig.taskContainer
-            task.dependsOn(taskContainer.preBuildTask)
+        super.configure(task)
+
+        if (task is BaseTask) {
+            BaseTaskCreationAction.configureBaseTask(task)
         }
 
-        task.configureVariantProperties(
-            creationConfig.name,
-            creationConfig.services.buildServiceRegistry
-        )
-        if (task is BaseTask) {
-            task.projectPath.setDisallowChanges(creationConfig.services.projectInfo.path)
+        task.configureVariantProperties(creationConfig.name, creationConfig.services.buildServiceRegistry)
+
+        if (dependsOnPreBuildTask) {
+            task.dependsOn(creationConfig.taskContainer.preBuildTask)
         }
     }
 }
 
 /**
- * Lazy Creation Action for non variant aware tasks.
+ * [TaskCreationAction] for an [AndroidVariantTask].
  *
- * Tasks must implement [BaseTask]
- *
- * This contains both meta-data to create the task ([name], [type])
- * and actions to configure the task ([preConfigure], [configure], [handleProvider])
+ * IMPORTANT: Use [VariantTaskCreationAction] instead if possible, which allows using
+ * [ComponentCreationConfig] to configure the task.
  */
-abstract class GlobalTaskCreationAction<TaskT>(
-    @JvmField protected val creationConfig: GlobalTaskCreationConfig
-) : TaskCreationAction<TaskT>() where TaskT: Task, TaskT: BaseTask {
-
-    override fun preConfigure(taskName: String) {
-        // default does nothing
-    }
-    override fun handleProvider(taskProvider: TaskProvider<TaskT>) {
-        // default does nothing
-    }
+abstract class AndroidVariantTaskCreationAction<TaskT: AndroidVariantTask> : BaseTaskCreationAction<TaskT>() {
 
     override fun configure(task: TaskT) {
+        super.configure(task)
+
+        task.configureVariantProperties("", task.project.gradle.sharedServices)
+    }
+}
+
+/** [TaskCreationAction] for a [GlobalTask]. */
+abstract class GlobalTaskCreationAction<TaskT>(
+    @JvmField protected val creationConfig: GlobalTaskCreationConfig
+) : TaskCreationAction<TaskT>() where TaskT: Task, TaskT: GlobalTask {
+
+    override fun configure(task: TaskT) {
+        super.configure(task)
+
+        if (task is BaseTask) {
+            BaseTaskCreationAction.configureBaseTask(task)
+        }
+
         task.analyticsService.setDisallowChanges(
             getBuildService(creationConfig.services.buildServiceRegistry)
         )
     }
 }
+
 /**
  * Configuration Action for tasks.
  */

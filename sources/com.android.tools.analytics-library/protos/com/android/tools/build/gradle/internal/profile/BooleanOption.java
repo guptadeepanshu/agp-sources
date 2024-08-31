@@ -720,9 +720,10 @@ public enum BooleanOption
    */
   LINT_BASELINE_OMIT_LINE_NUMBERS(174),
   /**
-   * <code>LINT_USE_K2_UAST = 175;</code>
+   * <code>DEPRECATED_LINT_USE_K2_UAST = 175 [deprecated = true];</code>
    */
-  LINT_USE_K2_UAST(175),
+  @java.lang.Deprecated
+  DEPRECATED_LINT_USE_K2_UAST(175),
   /**
    * <code>USE_FULL_CLASSPATH_FOR_DEXING_TRANSFORM = 176;</code>
    */
@@ -767,6 +768,10 @@ public enum BooleanOption
    * <code>ENABLE_TEST_FIXTURES_KOTLIN_SUPPORT = 186;</code>
    */
   ENABLE_TEST_FIXTURES_KOTLIN_SUPPORT(186),
+  /**
+   * <code>SUPPRESS_MANIFEST_PACKAGE_WARNING = 187;</code>
+   */
+  SUPPRESS_MANIFEST_PACKAGE_WARNING(187),
   UNRECOGNIZED(-1),
   ;
 
@@ -1471,9 +1476,9 @@ public enum BooleanOption
    */
   public static final int LINT_BASELINE_OMIT_LINE_NUMBERS_VALUE = 174;
   /**
-   * <code>LINT_USE_K2_UAST = 175;</code>
+   * <code>DEPRECATED_LINT_USE_K2_UAST = 175 [deprecated = true];</code>
    */
-  public static final int LINT_USE_K2_UAST_VALUE = 175;
+  @java.lang.Deprecated public static final int DEPRECATED_LINT_USE_K2_UAST_VALUE = 175;
   /**
    * <code>USE_FULL_CLASSPATH_FOR_DEXING_TRANSFORM = 176;</code>
    */
@@ -1518,6 +1523,10 @@ public enum BooleanOption
    * <code>ENABLE_TEST_FIXTURES_KOTLIN_SUPPORT = 186;</code>
    */
   public static final int ENABLE_TEST_FIXTURES_KOTLIN_SUPPORT_VALUE = 186;
+  /**
+   * <code>SUPPRESS_MANIFEST_PACKAGE_WARNING = 187;</code>
+   */
+  public static final int SUPPRESS_MANIFEST_PACKAGE_WARNING_VALUE = 187;
 
 
   public final int getNumber() {
@@ -1719,7 +1728,7 @@ public enum BooleanOption
       case 172: return LINT_ANALYSIS_PER_COMPONENT;
       case 173: return ENABLE_VCS_INFO;
       case 174: return LINT_BASELINE_OMIT_LINE_NUMBERS;
-      case 175: return LINT_USE_K2_UAST;
+      case 175: return DEPRECATED_LINT_USE_K2_UAST;
       case 176: return USE_FULL_CLASSPATH_FOR_DEXING_TRANSFORM;
       case 177: return ANDROID_TEST_LEAVE_APKS_INSTALLED_AFTER_RUN;
       case 178: return IDE_AVOID_TASK_REGISTRATION;
@@ -1731,6 +1740,7 @@ public enum BooleanOption
       case 184: return JAVA_COMPILE_SUPPRESS_SOURCE_TARGET_DEPRECATION_WARNING;
       case 185: return GRADLE_MANAGED_DEVICE_INCLUDE_MANAGED_DEVICES_IN_REPORTING;
       case 186: return ENABLE_TEST_FIXTURES_KOTLIN_SUPPORT;
+      case 187: return SUPPRESS_MANIFEST_PACKAGE_WARNING;
       default: return null;
     }
   }

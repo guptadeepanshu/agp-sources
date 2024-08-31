@@ -42,7 +42,7 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedCon
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.GENERATED_PROGUARD_FILE
-import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.features.OptimizationTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.features.OptimizationTaskCreationActionImpl
@@ -219,7 +219,7 @@ abstract class ProguardConfigurableTask(
     internal constructor(
         private val creationConfig: CreationConfigT,
         private val addCompileRClass: Boolean
-    ): TaskCreationAction<TaskT>() {
+    ): AndroidVariantTaskCreationAction<TaskT>() {
 
         private val classes: FileCollection
         private val referencedClasses: FileCollection
@@ -276,11 +276,8 @@ abstract class ProguardConfigurableTask(
         override fun configure(
             task: TaskT
         ) {
-            task.configureVariantProperties(
-                "",
-                creationConfig.services.buildServiceRegistry
-            )
-            task.projectPath.setDisallowChanges(creationConfig.services.projectInfo.path)
+            super.configure(task)
+
             task.componentType.set(ComponentTypeImpl.BASE_APK)
             task.includeFeaturesInScopes.set(false)
 
@@ -636,28 +633,18 @@ abstract class ProguardConfigurableTask(
                     // This is an androidTest variant inside an app/library.
                     if (testedConfig.componentType.isAar) {
                         // only provide option to enable minify in androidTest component in library
-                        applyProguardDefaultsForTest(optimizationCreationConfig.minifiedEnabled)
+                        applyProguardConfigForTest(
+                            task,
+                            optimizationCreationConfig.minifiedEnabled,
+                            creationConfig
+                        )
                     } else {
-                        applyProguardDefaultsForTest(false)
+                        applyProguardConfigForTest(task, false, creationConfig)
                     }
-
-                    // All -dontwarn rules for test dependencies should go in here:
-                    val configurationFiles = task.project.files(
-                        optimizationCreationConfig.proguardFiles,
-                        task.libraryKeepRulesFileCollection
-                    )
-                    task.configurationFiles.from(configurationFiles)
                 }
                 creationConfig.componentType.isForTesting && !creationConfig.componentType.isTestComponent -> {
                     // This is a test-only module and the app being tested was obfuscated with ProGuard.
-                    applyProguardDefaultsForTest(false)
-
-                    // All -dontwarn rules for test dependen]cies should go in here:
-                    val configurationFiles = task.project.files(
-                        optimizationCreationConfig.proguardFiles,
-                        task.libraryKeepRulesFileCollection
-                    )
-                    task.configurationFiles.from(configurationFiles)
+                    applyProguardConfigForTest(task, false, creationConfig)
                 }
                 else -> // This is a "normal" variant in an app/library.
                     applyProguardConfigForNonTest(task, creationConfig)
@@ -668,20 +655,23 @@ abstract class ProguardConfigurableTask(
             }
         }
 
-        private fun applyProguardDefaultsForTest(minifyEnabled: Boolean) {
-            // Don't remove any code in tested app.
-            // Obfuscate is disabled by default.
+        private fun applyProguardConfigForTest(
+            task: ProguardConfigurableTask,
+            minifyEnabled: Boolean,
+            creationConfig: ConsumableCreationConfig,
+        ) {
             setActions(PostprocessingFeatures(
                 isRemoveUnusedCode = minifyEnabled,
                 isObfuscate = minifyEnabled,
                 isOptimize = minifyEnabled
             ))
-            if (!minifyEnabled) {
-                keep("class * {*;}")
-                keep("interface * {*;}")
-                keep("enum * {*;}")
-                keepAttributes()
+            if (minifyEnabled) {
+                applyGeneratedProguardFiles(task, creationConfig)
+            } else {
+                keepAllForTest()
             }
+            applyInheritedProguardFiles(task)
+            task.configurationFiles.disallowChanges()
         }
 
         private fun applyProguardConfigForNonTest(
@@ -691,13 +681,20 @@ abstract class ProguardConfigurableTask(
             val postprocessingFeatures = optimizationCreationConfig.postProcessingFeatures
             postprocessingFeatures?.let { setActions(postprocessingFeatures) }
 
+            applyGeneratedProguardFiles(task, creationConfig)
+            applyInheritedProguardFiles(task)
+            applyProguardDefaultForNonTest(creationConfig)
+            task.configurationFiles.disallowChanges()
+        }
+
+        private fun applyGeneratedProguardFiles(
+            task: ProguardConfigurableTask,
+            creationConfig: ConsumableCreationConfig
+        ) {
             task.generatedProguardFile.fromDisallowChanges(
                 creationConfig.artifacts.get(GENERATED_PROGUARD_FILE)
             )
-
             task.configurationFiles.apply {
-                from(optimizationCreationConfig.proguardFiles)
-                from(task.libraryKeepRulesFileCollection)
                 if (task.includeFeaturesInScopes.get()) {
                     from(creationConfig.artifacts.get(InternalArtifactType.MERGED_AAPT_PROGUARD_FILE))
                     from(getFeatureProguardRules(creationConfig))
@@ -710,21 +707,41 @@ abstract class ProguardConfigurableTask(
                             .takeIf { it.isPresent }
                     })
                 }
-                disallowChanges()
             }
+        }
 
+        private fun applyInheritedProguardFiles(
+            task: ProguardConfigurableTask
+        ) {
+            // All -dontwarn rules for test dependen]cies should go in here
+            task.configurationFiles.apply {
+                from(optimizationCreationConfig.proguardFiles)
+                from(task.libraryKeepRulesFileCollection)
+            }
+        }
+
+        private fun applyProguardDefaultForNonTest(
+            creationConfig: ConsumableCreationConfig
+        ) {
             if (creationConfig.componentType.isAar) {
                 keep("class **.R")
                 keep("class **.R$* {*;}")
             }
 
-            if (creationConfig.codeCoverageEnabled) {
+            if (creationConfig.requiresJacocoTransformation) {
                 // when collecting coverage, don't remove the JaCoCo runtime
                 keep("class com.vladium.** {*;}")
                 keep("class org.jacoco.** {*;}")
                 keep("interface org.jacoco.** {*;}")
                 dontWarn("org.jacoco.**")
             }
+        }
+
+        private fun keepAllForTest() {
+            keep("class * {*;}")
+            keep("interface * {*;}")
+            keep("enum * {*;}")
+            keepAttributes()
         }
 
         private fun getFeatureProguardRules(creationConfig: ConsumableCreationConfig): FileCollection {

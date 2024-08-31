@@ -29,6 +29,7 @@ import com.android.sdklib.repository.PackageParserUtils;
 import com.android.sdklib.repository.legacy.LegacyRepoUtils;
 import com.android.sdklib.repository.meta.DetailsTypes;
 import com.android.sdklib.repository.meta.Library;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import java.io.File;
@@ -53,7 +54,7 @@ public class AddonTarget implements IAndroidTarget {
      * All skins included in this target, including those in this addon, the base package, and
      * associated system images.
      */
-    private final Path[] mSkins;
+    private final List<Path> mSkins;
 
     /** The default skin for this package, as (optionally) specified in the package xml. */
     private final Path mDefaultSkin;
@@ -89,7 +90,7 @@ public class AddonTarget implements IAndroidTarget {
                         p.getLocation().resolve(SdkConstants.FD_SKINS))) {
             skins.put(skin.getFileName().toString(), skin);
         }
-        mSkins = skins.values().toArray(new Path[0]);
+        mSkins = ImmutableList.copyOf(skins.values());
 
         String defaultSkinName = mDetails.getDefaultSkin();
         if (defaultSkinName != null) {
@@ -97,8 +98,8 @@ public class AddonTarget implements IAndroidTarget {
         } else {
             // No default skin name specified, use the first one from the addon
             // or the default from the platform.
-            if (getSkins().length == 1) {
-                mDefaultSkin = getSkins()[0];
+            if (getSkins().size() == 1) {
+                mDefaultSkin = getSkins().get(0);
             } else {
                 mDefaultSkin = mBasePlatform.getDefaultSkin();
             }
@@ -233,7 +234,7 @@ public class AddonTarget implements IAndroidTarget {
 
     @Override
     @NonNull
-    public Path[] getSkins() {
+    public List<Path> getSkins() {
         return mSkins;
     }
 

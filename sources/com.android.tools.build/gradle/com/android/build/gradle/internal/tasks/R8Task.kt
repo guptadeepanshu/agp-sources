@@ -24,6 +24,7 @@ import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.core.ToolExecutionOptions
+import com.android.build.gradle.internal.dependency.ShrinkerVersion
 import com.android.build.gradle.internal.dsl.ModulePropertyKey
 import com.android.build.gradle.internal.errors.MessageReceiverImpl
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType
@@ -49,7 +50,6 @@ import com.android.builder.dexing.ProguardConfig
 import com.android.builder.dexing.ProguardOutputFiles
 import com.android.builder.dexing.R8OutputType
 import com.android.builder.dexing.ToolConfig
-import com.android.builder.dexing.getR8Version
 import com.android.builder.dexing.runR8
 import com.android.utils.FileUtils
 import com.android.zipflinger.ZipArchive
@@ -407,7 +407,7 @@ abstract class R8Task @Inject constructor(
                     }
                 }
             }
-            if (creationConfig is VariantCreationConfig) {
+            if (creationConfig is VariantCreationConfig && !creationConfig.debuggable) {
                 creationConfig.artifacts
                     .use(taskProvider)
                     .wiredWithFiles(R8Task::inputArtProfile, R8Task::outputArtProfile)
@@ -428,9 +428,11 @@ abstract class R8Task @Inject constructor(
                         ModulePropertyKey.BooleanWithDefault.ART_PROFILE_R8_REWRITING.getValue(it)
                     }
                 )
-                task.inputProfileForDexStartupOptimization.set(
-                    artifacts.get(InternalArtifactType.MERGED_STARTUP_PROFILE)
-                )
+                if (!creationConfig.debuggable) {
+                    task.inputProfileForDexStartupOptimization.set(
+                        artifacts.get(InternalArtifactType.MERGED_STARTUP_PROFILE)
+                    )
+                }
             } else {
                 task.artProfileRewriting.set(false)
             }
@@ -593,7 +595,7 @@ abstract class R8Task @Inject constructor(
                 """
                 |R8 is a new Android code shrinker. If you experience any issues, please file a bug at
                 |https://issuetracker.google.com, using 'Shrinker (R8)' as component name.
-                |Current version is: ${getR8Version()}.
+                |Current version is: ${ShrinkerVersion.R8.asString()}.
                 |""".trimMargin()
             )
 

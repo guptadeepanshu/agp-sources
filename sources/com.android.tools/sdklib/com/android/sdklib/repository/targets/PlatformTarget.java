@@ -15,6 +15,8 @@
  */
 package com.android.sdklib.repository.targets;
 
+import static com.google.common.collect.ImmutableList.toImmutableList;
+
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
@@ -35,7 +37,6 @@ import com.android.sdklib.repository.meta.DetailsTypes;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
@@ -49,7 +50,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Represents a platform target in the SDK.
@@ -83,7 +83,7 @@ public class PlatformTarget implements IAndroidTarget {
      * The emulator skins for this target, including those included in the package as well as those
      * from associated system images.
      */
-    private final Set<Path> mSkins;
+    private final List<Path> mSkins;
 
     /**
      * Parsed version of the {@code build.prop} file in {@link #mPackage}.
@@ -135,7 +135,11 @@ public class PlatformTarget implements IAndroidTarget {
         }
         mBuildToolInfo = sdkHandler.getLatestBuildTool(progress, null, getVersion().isPreview());
 
-        mSkins = Sets.newTreeSet(PackageParserUtils.parseSkinFolder(getPath(IAndroidTarget.SKINS)));
+        mSkins =
+                PackageParserUtils.parseSkinFolder(getPath(IAndroidTarget.SKINS)).stream()
+                        .distinct()
+                        .sorted()
+                        .collect(toImmutableList());
     }
 
     public void setSources(@Nullable Path location) {
@@ -337,8 +341,8 @@ public class PlatformTarget implements IAndroidTarget {
 
     @Override
     @NonNull
-    public Path[] getSkins() {
-        return mSkins.toArray(new Path[0]);
+    public List<Path> getSkins() {
+        return mSkins;
     }
 
     public int getLayoutlibApi() {

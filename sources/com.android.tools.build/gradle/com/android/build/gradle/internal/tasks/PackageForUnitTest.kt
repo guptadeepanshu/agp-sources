@@ -20,7 +20,7 @@ import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
 import com.android.build.gradle.internal.caching.DisabledCachingReason.SIMPLE_MERGING_TASK
 import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.InternalArtifactType.PROCESSED_RES
+import com.android.build.gradle.internal.scope.InternalArtifactType.LINKED_RESOURCES_BINARY_FORMAT
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationActionImpl
@@ -164,7 +164,7 @@ abstract class PackageForHostTest : NonIncrementalTask() {
         ) {
             super.configure(task)
             val artifacts = creationConfig.artifacts
-            artifacts.setTaskInputToFinalProduct(PROCESSED_RES, task.resApk)
+            artifacts.setTaskInputToFinalProduct(LINKED_RESOURCES_BINARY_FORMAT, task.resApk)
             task.mergedAssetsDirectory.setDisallowChanges(artifacts.get(SingleArtifact.ASSETS))
             creationConfig.androidResources?.let {
                 task.noCompress.setDisallowChanges(it.noCompress)

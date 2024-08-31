@@ -23,9 +23,8 @@ import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifa
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryVariantScope
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
+import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
-import com.android.build.gradle.internal.tasks.configureVariantProperties
-import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.tasks.manifest.ManifestProviderImpl
 import com.android.build.gradle.internal.tasks.manifest.mergeManifests
 import com.android.build.gradle.internal.utils.setDisallowChanges
@@ -148,7 +147,7 @@ abstract class FusedLibraryManifestMergerTask : ManifestProcessorTask() {
     }
 
     class CreationAction(private val creationConfig: FusedLibraryVariantScope) :
-            TaskCreationAction<FusedLibraryManifestMergerTask>() {
+            AndroidVariantTaskCreationAction<FusedLibraryManifestMergerTask>() {
 
         override val name: String
             get() = "mergeManifest"
@@ -175,7 +174,8 @@ abstract class FusedLibraryManifestMergerTask : ManifestProcessorTask() {
         }
 
         override fun configure(task: FusedLibraryManifestMergerTask) {
-            task.configureVariantProperties("", task.project.gradle.sharedServices)
+            super.configure(task)
+
             val libraryManifests = creationConfig.dependencies.getArtifactCollection(
                     Usage.JAVA_RUNTIME,
                     creationConfig.mergeSpec,

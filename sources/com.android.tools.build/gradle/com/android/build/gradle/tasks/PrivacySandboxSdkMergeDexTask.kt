@@ -18,12 +18,11 @@ package com.android.build.gradle.tasks
 
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInternalArtifactType
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
+import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.DexMergingTask
 import com.android.build.gradle.internal.tasks.DexMergingTaskDelegate
 import com.android.build.gradle.internal.tasks.NewIncrementalTask
-import com.android.build.gradle.internal.tasks.configureVariantProperties
-import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.SyncOptions
@@ -82,7 +81,7 @@ abstract class PrivacySandboxSdkMergeDexTask: NewIncrementalTask() {
 
     class CreationAction constructor(
         private val creationConfig: PrivacySandboxSdkVariantScope,
-    ) : TaskCreationAction<PrivacySandboxSdkMergeDexTask>() {
+    ) : AndroidVariantTaskCreationAction<PrivacySandboxSdkMergeDexTask>() {
 
         override val name = "mergeDex"
         override val type = PrivacySandboxSdkMergeDexTask::class.java
@@ -97,7 +96,8 @@ abstract class PrivacySandboxSdkMergeDexTask: NewIncrementalTask() {
         }
 
         override fun configure(task: PrivacySandboxSdkMergeDexTask) {
-            task.configureVariantProperties("", task.project.gradle.sharedServices)
+            super.configure(task)
+
             val minSdk = creationConfig.minSdkVersion.apiLevel
             task.sharedParams.apply {
                 dexingType.setDisallowChanges(

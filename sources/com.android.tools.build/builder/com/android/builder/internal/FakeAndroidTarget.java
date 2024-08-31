@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -172,8 +173,8 @@ public class FakeAndroidTarget implements IAndroidTarget {
 
     @NonNull
     @Override
-    public Path[] getSkins() {
-        return new Path[0];
+    public List<Path> getSkins() {
+        return Collections.emptyList();
     }
 
     @Nullable

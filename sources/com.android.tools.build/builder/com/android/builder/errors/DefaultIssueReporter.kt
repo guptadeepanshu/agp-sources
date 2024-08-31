@@ -36,7 +36,7 @@ class DefaultIssueReporter(
         // code that check for them would not be reachable.
         warnings.add(type)
         val stringBuilder = StringBuilder(exception.message)
-        exception.multlineMessage?.joinTo(buffer = stringBuilder, separator = "\n")
+        exception.multilineMessage?.joinTo(buffer = stringBuilder, separator = "\n")
         logger.warning(stringBuilder.toString())
     }
 

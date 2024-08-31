@@ -178,6 +178,9 @@ public class SchemaModuleUtil {
      *
      * @param xml The XML to read. The stream will be closed after being read.
      * @param possibleModules The {@link SchemaModule}s that are available to parse the XML.
+     * @param strict Whether parsing should be stopped when an error (e.g. unexpected element) is
+     *               encountered. Note that this will be ignored (defaulting to false) after many
+     *               errors have been encountered in a short time.
      * @param progress For logging.
      * @param fileDescription Xml file name to make log messages concrete.
      * @return The unmarshalled object.
@@ -279,7 +282,12 @@ public class SchemaModuleUtil {
 
     /**
      * Creates a {@link ValidationEventHandler} that delegates logging to the given {@link
-     * ProgressIndicator}.
+     * ProgressIndicator}. This is also responsible for determining whether parsing should continue
+     * after an error.
+     * NOTE: if there are many errors during parsing, jaxb will eventually stop showing them, and
+     * this will stop getting called. At that point parsing will always be "non-strict," that is,
+     * parsing will continue after e.g. and unrecognized element is seen, with the unrecognized
+     * element being silently ignored.
      */
     @NonNull
     private static ValidationEventHandler createValidationEventHandler(

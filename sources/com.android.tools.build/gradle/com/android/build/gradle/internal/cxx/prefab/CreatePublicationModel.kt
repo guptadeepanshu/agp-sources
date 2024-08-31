@@ -66,7 +66,7 @@ fun createPrefabPublication(
         )
     }
     return PrefabPublication(
-        installationFolder = libraryVariant.services.projectInfo.getIntermediatesDir()
+        installationFolder = libraryVariant.services.projectInfo.intermediatesDirectory.get().asFile
             .resolve(PREFAB_PACKAGE)
             .resolve(libraryVariant.name).resolve("prefab").absoluteFile,
         gradlePath = configurationModel.variant.module.gradleModulePathName,

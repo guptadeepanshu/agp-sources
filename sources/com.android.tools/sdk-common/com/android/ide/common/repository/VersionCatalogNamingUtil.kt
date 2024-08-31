@@ -165,10 +165,6 @@ fun pickPluginVariableName(
     return generateWithSuffix(fullName + "X", reserved, transform)
 }
 
-private fun maybeLowCamelTransform(name: String):String =
-    if (name.contains("-")) CaseFormat.LOWER_HYPHEN.to(CaseFormat.LOWER_CAMEL, name)
-    else name
-
 @VisibleForTesting
 internal fun String.toSafeKey(): String {
     fun Char.isSafe() = isLowerCase() || isDigit()
@@ -185,12 +181,14 @@ internal fun String.toSafeKey(): String {
     val sb = StringBuilder()
     this[0].lowercaseChar().let { c -> sb.append(if (c.isLowerCase()) c else 'x') }
     for (c in this.substring(1)) {
+        val afterSeparator = sb[sb.length-1].isSeparator()
         when {
+            c.isDigit() && afterSeparator -> sb.append('x')
             c.isSafe() -> sb.append(c)
             c.lowercaseChar().isSafe() -> sb.append(c.lowercaseChar())
-            c.isSeparator() -> if (!sb[sb.length-1].isSeparator()) sb.append(c)
-            c == '.' -> if (!sb[sb.length-1].isSeparator()) sb.append('-')
-            else -> if (!sb[sb.length-1].isSeparator()) sb.append('_')
+            c.isSeparator() -> if (!afterSeparator) sb.append(c)
+            c == '.' -> if (!afterSeparator) sb.append('-')
+            else -> if (!afterSeparator) sb.append('_')
         }
     }
     if (sb.length == 1 || sb[sb.length-1].isSeparator()) sb.append('z')
@@ -383,17 +381,32 @@ fun pickPluginVersionVariableName(
     return generateWithSuffix(fullName, reserved, transform)
 }
 
-fun keysMatch(s1: String?, s2: String): Boolean {
-    s1 ?: return false
-    if (s1.length != s2.length) {
+fun keysMatch(keyText: String?, reference: String): Boolean {
+    keyText ?: return false
+    if (keyText.length != reference.length) {
         return false
     }
-    for (i in s1.indices) {
-        if (s1[i].normalize() != s2[i].normalize()) {
+    for (i in keyText.indices) {
+        if(isAfterDelimiter(i, keyText)){
+            // first character may be capital after `-_.` symbols in TOML
+            // it still makes it equal to low case reference - Gradle implementation detail
+            if(keyText[i].normalizeIgnoreCase() != reference[i].normalize())
+                return false
+        } else if (keyText[i].normalize() != reference[i].normalize()) {
             return false
         }
     }
     return true
+}
+
+private fun isAfterDelimiter(index: Int, s:String):Boolean =
+    index > 0 && s[index-1].normalize() == '.'
+
+private fun Char.normalizeIgnoreCase(): Char {
+    if (this == '-' || this == '_') {
+        return '.'
+    }
+    return this.lowercaseChar()
 }
 
 // Gradle converts dashed-keys or dashed_keys into dashed.keys

@@ -52,6 +52,10 @@ public enum OptionalBooleanOption
    * <code>ENABLE_API_MODELING_AND_GLOBAL_SYNTHETICS = 10;</code>
    */
   ENABLE_API_MODELING_AND_GLOBAL_SYNTHETICS(10),
+  /**
+   * <code>LINT_USE_K2_UAST = 11;</code>
+   */
+  LINT_USE_K2_UAST(11),
   UNRECOGNIZED(-1),
   ;
 
@@ -99,6 +103,10 @@ public enum OptionalBooleanOption
    * <code>ENABLE_API_MODELING_AND_GLOBAL_SYNTHETICS = 10;</code>
    */
   public static final int ENABLE_API_MODELING_AND_GLOBAL_SYNTHETICS_VALUE = 10;
+  /**
+   * <code>LINT_USE_K2_UAST = 11;</code>
+   */
+  public static final int LINT_USE_K2_UAST_VALUE = 11;
 
 
   public final int getNumber() {
@@ -136,6 +144,7 @@ public enum OptionalBooleanOption
       case 8: return INTERNAL_ONLY_ENABLE_R8;
       case 9: return DISABLE_AUTOMATIC_COMPONENT_CREATION;
       case 10: return ENABLE_API_MODELING_AND_GLOBAL_SYNTHETICS;
+      case 11: return LINT_USE_K2_UAST;
       default: return null;
     }
   }

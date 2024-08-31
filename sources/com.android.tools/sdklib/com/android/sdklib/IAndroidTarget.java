@@ -204,7 +204,7 @@ public interface IAndroidTarget extends Comparable<IAndroidTarget> {
      * The array can be empty but not null.
      */
     @NonNull
-    Path[] getSkins();
+    List<Path> getSkins();
 
     /**
      * Returns the default skin folder for this target.

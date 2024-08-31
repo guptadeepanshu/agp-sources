@@ -76,19 +76,6 @@ class TypedStorageProvider<T :FileSystemLocation>(private val propertyAllocator:
             }
         }
     }
-    internal fun add(
-            objects: ObjectFactory,
-            type: Artifact.Multiple<T>,
-            artifact: T,
-            prepareTask: TaskProvider<*>) {
-        val property = propertyAllocator(objects)
-        property.set(artifact)
-        val mappedValue = prepareTask.map {
-            property.get()
-        }
-        val container = getArtifact(objects, type)
-        container.addInitialProvider(prepareTask, mappedValue)
-    }
 
     internal fun copy(type: Artifact.Single<T>,
         container: SingleArtifactContainer<T>) {

@@ -103,15 +103,12 @@ fun <VariantBuilderT : ComponentBuilder, VariantT : VariantCreationConfig> creat
 
         val taskModel = createFoldedCxxTaskDependencyModel(abis)
 
-        val globalConfig = variants.first().variant.global
-
         for ((name, task) in taskModel.tasks) {
             when (task) {
                 is Configure -> {
                     val variant = variantMap.getValue(task.representative.variant.variantName)
                     val configureTask = taskFactory.register(createCxxConfigureTask(
                         project,
-                        globalConfig,
                         variant,
                         task.representative,
                         name))
@@ -155,7 +152,6 @@ fun <VariantBuilderT : ComponentBuilder, VariantT : VariantCreationConfig> creat
                     val coveredVariantConfigurations =  task.coveredVariants.map { variantMap.getValue(it.variantName) }
                     val buildTask = taskFactory.register(createWorkingCxxBuildTask(
                         coveredVariantConfigurations,
-                        globalConfig,
                         task.representative,
                         name))
                     for(variant in task.coveredVariants) {

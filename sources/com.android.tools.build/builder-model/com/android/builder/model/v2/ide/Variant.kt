@@ -87,4 +87,9 @@ interface Variant: AndroidModel {
      * Desugared methods supported by D8 and core library desugaring.
      */
     val desugaredMethods: List<File>
+
+    /**
+     * Experimental flags set on a variant.
+     */
+    val experimentalProperties: Map<String, String>
 }

@@ -21,7 +21,7 @@ import com.android.annotations.Nullable;
 /**
  * Describes the GPU mode settings supported by the emulator.
  */
-public enum GpuMode {
+public enum GpuMode implements ConfigEnum {
     AUTO("auto"),
     HOST("host"),
     SWIFT("software"),
@@ -58,5 +58,11 @@ public enum GpuMode {
 
     public String getGpuSetting() {
         return mySetting;
+    }
+
+    @Override
+    @NonNull
+    public String getAsParameter() {
+        return getGpuSetting();
     }
 }

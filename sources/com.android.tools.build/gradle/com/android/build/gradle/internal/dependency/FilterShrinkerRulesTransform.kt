@@ -18,7 +18,6 @@ package com.android.build.gradle.internal.dependency
 
 import com.android.SdkConstants
 import com.android.SdkConstants.COM_ANDROID_TOOLS_FOLDER
-import com.android.ide.common.repository.GradleVersion
 import com.android.utils.FileUtils
 import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.artifacts.transform.InputArtifact
@@ -39,7 +38,7 @@ abstract class FilterShrinkerRulesTransform :
     TransformAction<FilterShrinkerRulesTransform.Parameters> {
     interface Parameters : GenericTransformParameters {
         @get:Input
-        val shrinker: Property<VersionedCodeShrinker>
+        val shrinker: Property<ShrinkerVersion>
     }
 
     @get:InputArtifact
@@ -111,29 +110,17 @@ private val configDirRegex = """r8(?:-from-([^:@]+?))?(?:-upto-([^:@]+?))?""".to
 @VisibleForTesting
 internal fun configDirMatchesVersion(
     dirName: String,
-    versionedShrinker: VersionedCodeShrinker
+    version: ShrinkerVersion
 ): Boolean {
-    configDirRegex.matchEntire(dirName.lowercase(Locale.US))?.let { matchResult ->
-        val (from, upto) = matchResult.destructured
-
-        if (from.isEmpty() && upto.isEmpty()) {
-            return true
-        }
-
-        val shrinkerCoord =
-            GradleVersion.tryParse(versionedShrinker.version) ?: return false
-        if (from.isNotEmpty()) {
-            val minCoord = GradleVersion.tryParse(from) ?: return false
-            if (minCoord.compareTo(shrinkerCoord) > 0) {
-                return false
-            }
-        }
-        if (upto.isNotEmpty()) {
-            val maxCoord = GradleVersion.tryParse(upto) ?: return false
-            if (maxCoord.compareTo(shrinkerCoord) <= 0) {
-                return false
-            }
-        }
+    val matchResult = configDirRegex.matchEntire(dirName.lowercase(Locale.US)) ?: return false
+    val (minVersionString, maxVersionString) = matchResult.destructured
+    if (minVersionString.isEmpty() && maxVersionString.isEmpty()) {
         return true
-    } ?: return false
+    }
+    val minVersion = ShrinkerVersion.parse(minVersionString)
+    if (minVersion != null && version < minVersion) {
+        return false
+    }
+    val maxVersion = ShrinkerVersion.parse(maxVersionString)
+    return maxVersion == null || maxVersion > version
 }

@@ -15,17 +15,9 @@
  */
 package com.android.sdklib.devices;
 
-import static com.android.sdklib.internal.avd.AvdManager.AVD_INI_FOLD_AT_POSTURE;
-import static com.android.sdklib.internal.avd.AvdManager.AVD_INI_HINGE;
-import static com.android.sdklib.internal.avd.AvdManager.AVD_INI_HINGE_ANGLES_POSTURE_DEFINITIONS;
-import static com.android.sdklib.internal.avd.AvdManager.AVD_INI_HINGE_AREAS;
-import static com.android.sdklib.internal.avd.AvdManager.AVD_INI_HINGE_COUNT;
-import static com.android.sdklib.internal.avd.AvdManager.AVD_INI_HINGE_DEFAULTS;
-import static com.android.sdklib.internal.avd.AvdManager.AVD_INI_HINGE_RANGES;
-import static com.android.sdklib.internal.avd.AvdManager.AVD_INI_HINGE_SUB_TYPE;
-import static com.android.sdklib.internal.avd.AvdManager.AVD_INI_HINGE_TYPE;
-import static com.android.sdklib.internal.avd.AvdManager.AVD_INI_POSTURE_LISTS;
-import static com.android.sdklib.internal.avd.AvdManager.AVD_INI_RAM_SIZE;
+import static com.android.sdklib.devices.Device.isAutomotive;
+import static com.android.sdklib.devices.Device.isAutomotiveDistantDisplay;
+import static com.android.sdklib.devices.Device.isRollable;
 
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
@@ -37,12 +29,14 @@ import com.android.repository.api.RepoManager;
 import com.android.resources.KeyboardState;
 import com.android.resources.Navigation;
 import com.android.sdklib.internal.avd.AvdManager;
+import com.android.sdklib.internal.avd.ConfigKey;
 import com.android.sdklib.internal.avd.HardwareProperties;
 import com.android.sdklib.repository.AndroidSdkHandler;
 import com.android.sdklib.repository.LoggerProgressIndicatorWrapper;
 import com.android.sdklib.repository.PkgProps;
 import com.android.sdklib.repository.meta.DetailsTypes;
 import com.android.utils.ILogger;
+
 import com.google.common.base.Charsets;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableSet;
@@ -50,6 +44,9 @@ import com.google.common.collect.Table;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
+
+import org.xml.sax.SAXException;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -70,10 +67,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactoryConfigurationError;
-import org.xml.sax.SAXException;
 
 /**
  * Manager class for interacting with {@link Device}s within the SDK
@@ -85,6 +82,7 @@ public class DeviceManager {
     @Nullable private final Path mAndroidFolder;
     private final ILogger mLog;
     private final VendorDevices mVendorDevices;
+    // These are keyed by (device ID, manufacturer)
     private Table<String, String, Device> mSdkVendorDevices;
     private Table<String, String, Device> mSysImgDevices;
     private Table<String, String, Device> mUserDevices;
@@ -349,20 +347,23 @@ public class DeviceManager {
                                 Path deviceXml =
                                         pkg.getLocation().resolve(SdkConstants.FN_DEVICES_XML);
                                 if (CancellableFileIo.isRegularFile(deviceXml)) {
-                                    mSysImgDevices.putAll(loadDevices(deviceXml));
+                                    for (Device device : loadDevices(deviceXml).values()) {
+                                        if (isDeprecatedWearSkin(device)) {
+                                            Device.Builder builder = new Device.Builder(device);
+                                            builder.setDeprecated(true);
+                                            device = builder.build();
+                                        }
+                                        mSysImgDevices.put(
+                                                device.getId(), device.getManufacturer(), device);
+                                    }
                                 }
                             });
-            markDeprecatedWearSkins();
             return true;
         }
     }
 
-    private void markDeprecatedWearSkins() {
-        mSysImgDevices.values().forEach(device -> {
-            if ("android-wear".equals(device.getTagId())) {
-                device.setIsDeprecated(!device.getId().startsWith("wearos"));
-            }
-        });
+    private static boolean isDeprecatedWearSkin(Device device) {
+        return "android-wear".equals(device.getTagId()) && !device.getId().startsWith("wearos");
     }
 
     /**
@@ -572,18 +573,18 @@ public class DeviceManager {
         Hinge hinge = hw.getHinge();
 
         if (hinge != null) {
-            props.put(AVD_INI_HINGE, hinge.getCount() > 0 ? "yes" : "no");
-            props.put(AVD_INI_HINGE_COUNT, Integer.toString(hinge.getCount()));
-            props.put(AVD_INI_HINGE_TYPE, Integer.toString(hinge.getType()));
-            props.put(AVD_INI_HINGE_SUB_TYPE, Integer.toString(hinge.getSubtype()));
-            props.put(AVD_INI_HINGE_RANGES, hinge.getRanges());
-            props.put(AVD_INI_HINGE_DEFAULTS, Integer.toString(hinge.getDefaults()));
-            props.put(AVD_INI_HINGE_AREAS, hinge.getAreas());
+            props.put(ConfigKey.HINGE, hinge.getCount() > 0 ? "yes" : "no");
+            props.put(ConfigKey.HINGE_COUNT, Integer.toString(hinge.getCount()));
+            props.put(ConfigKey.HINGE_TYPE, Integer.toString(hinge.getType()));
+            props.put(ConfigKey.HINGE_SUB_TYPE, Integer.toString(hinge.getSubtype()));
+            props.put(ConfigKey.HINGE_RANGES, hinge.getRanges());
+            props.put(ConfigKey.HINGE_DEFAULTS, Integer.toString(hinge.getDefaults()));
+            props.put(ConfigKey.HINGE_AREAS, hinge.getAreas());
             hinge.getFoldAtPosture()
-                    .ifPresent(fold -> props.put(AVD_INI_FOLD_AT_POSTURE, Integer.toString(fold)));
-            props.put(AVD_INI_POSTURE_LISTS, hinge.getPostureList());
+                    .ifPresent(fold -> props.put(ConfigKey.FOLD_AT_POSTURE, Integer.toString(fold)));
+            props.put(ConfigKey.POSTURE_LISTS, hinge.getPostureList());
             props.put(
-                    AVD_INI_HINGE_ANGLES_POSTURE_DEFINITIONS,
+                    ConfigKey.HINGE_ANGLES_POSTURE_DEFINITIONS,
                     hinge.getHingeAnglePostureDefinitions());
         }
         return props;
@@ -605,7 +606,7 @@ public class DeviceManager {
         for (State s : d.getAllStates()) {
             final Storage ramSize = s.getHardware().getRam();
             if (ramSize.getSize() > 0) {
-                props.put(AVD_INI_RAM_SIZE, Long.toString(ramSize.getSizeAsUnit(Storage.Unit.MiB)));
+                props.put(ConfigKey.RAM_SIZE, Long.toString(ramSize.getSizeAsUnit(Storage.Unit.MiB)));
             }
             if (s.getKeyState().equals(KeyboardState.HIDDEN)) {
                 props.put("hw.keyboard.lid", getBooleanVal(true));
@@ -626,11 +627,53 @@ public class DeviceManager {
         }
         // store the hash method for potential future compatibility
         String hash = "MD5:" + hasher.hash().toString();
-        props.put(AvdManager.AVD_INI_DEVICE_HASH_V2, hash);
-        props.remove(AvdManager.AVD_INI_DEVICE_HASH_V1);
+        props.put(ConfigKey.DEVICE_HASH_V2, hash);
+        props.remove(ConfigKey.DEVICE_HASH_V1);
 
-        props.put(AvdManager.AVD_INI_DEVICE_NAME, d.getId());
-        props.put(AvdManager.AVD_INI_DEVICE_MANUFACTURER, d.getManufacturer());
+        props.put(ConfigKey.DEVICE_NAME, d.getId());
+        props.put(ConfigKey.DEVICE_MANUFACTURER, d.getManufacturer());
+
+        // Special-case hacks to support specific device types.
+
+        if (d.getId().equals("13.5in Freeform")) {
+            props.put(ConfigKey.DISPLAY_SETTINGS_FILE, "freeform");
+        }
+        if (isRollable(d.getId())) {
+            props.put(ConfigKey.ROLL, "yes");
+            props.put(ConfigKey.ROLL_COUNT, "1");
+            props.put(ConfigKey.HINGE_TYPE, "3");
+            props.put(ConfigKey.ROLL_RANGES, "58.55-100");
+            props.put(ConfigKey.ROLL_DEFAULTS, "67.5");
+            props.put(ConfigKey.ROLL_RADIUS, "3");
+            props.put(ConfigKey.ROLL_DIRECTION, "1");
+            props.put(ConfigKey.ROLL_RESIZE_1_AT_POSTURE, "1");
+            props.put(ConfigKey.ROLL_RESIZE_2_AT_POSTURE, "2");
+            props.put(ConfigKey.POSTURE_LISTS, "1, 2, 3");
+            props.put(
+                    ConfigKey.ROLL_PERCENTAGES_POSTURE_DEFINITIONS,
+                    "58.55-76.45, 76.45-94.35, 94.35-100");
+        }
+        if (d.getId().equals("resizable")) {
+            props.put(
+                    ConfigKey.RESIZABLE_CONFIG,
+                    "phone-0-1080-2400-420, foldable-1-2208-1840-420, tablet-2-1920-1200-240,"
+                            + " desktop-3-1920-1080-160");
+        }
+        // TODO: Remove hard coded config when the runtime configuration is available (b/337978287,
+        // b/337980217)
+        if (isAutomotive(d)) {
+            props.put(ConfigKey.CLUSTER_WIDTH, "400");
+            props.put(ConfigKey.CLUSTER_HEIGHT, "600");
+            props.put(ConfigKey.CLUSTER_DENSITY, "120");
+            props.put(ConfigKey.CLUSTER_FLAG, "0");
+        }
+        if (isAutomotiveDistantDisplay(d)) {
+            props.put(ConfigKey.DISTANT_DISPLAY_WIDTH, "3000");
+            props.put(ConfigKey.DISTANT_DISPLAY_HEIGHT, "600");
+            props.put(ConfigKey.DISTANT_DISPLAY_DENSITY, "120");
+            props.put(ConfigKey.DISTANT_DISPLAY_FLAG, "0");
+        }
+
         return props;
     }
 
@@ -642,13 +685,13 @@ public class DeviceManager {
      * new hash, indicating it would be best to update it.
      *
      * @param d The device.
-     * @param hashV2 The previous saved AvdManager.AVD_INI_DEVICE_HASH_V2 property.
+     * @param hashV2 The previous saved AvdManager.DEVICE_HASH_V2 property.
      * @return Null if the same, otherwise returns the new and different hash.
      */
     @Nullable
     public static String hasHardwarePropHashChanged(@NonNull Device d, @NonNull String hashV2) {
         Map<String, String> props = getHardwareProperties(d);
-        String newHash = props.get(AvdManager.AVD_INI_DEVICE_HASH_V2);
+        String newHash = props.get(ConfigKey.DEVICE_HASH_V2);
 
         // Implementation detail: don't just return the hash and let the caller decide whether
         // the hash is the same. That's because the hash contains the digest method so if in

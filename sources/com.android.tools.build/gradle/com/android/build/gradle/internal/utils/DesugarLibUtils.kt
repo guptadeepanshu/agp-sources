@@ -68,7 +68,7 @@ const val DESUGAR_LIB_CONFIG = "_internal-desugar-lib-config"
 private const val DESUGAR_LIB_COMPONENT_NAME = "desugar_jdk_libs_configuration"
 private const val DESUGAR_LIB_LINT = "_internal-desugar-lib-lint"
 const val D8_DESUGAR_METHODS = "_internal-d8-desugar-methods"
-private val ATTR_LINT_MIN_SDK: Attribute<String> = Attribute.of("lint-min-sdk", String::class.java)
+val ATTR_LINT_MIN_SDK: Attribute<String> = Attribute.of("lint-min-sdk", String::class.java)
 private val ATTR_LINT_COMPILE_SDK: Attribute<String> =
     Attribute.of("lint-compile-sdk", String::class.java)
 val ATTR_ENABLE_CORE_LIBRARY_DESUGARING: Attribute<String> =
@@ -181,9 +181,8 @@ fun getDesugaredMethods(
 ): FileCollection {
 
     val desugaredMethodsFiles = services.fileCollection()
-
+    val minSdk = minSdkVersion.getFeatureLevel()
     if (coreLibDesugar && global.compileSdkHashString != null) {
-        val minSdk = minSdkVersion.getFeatureLevel()
         val compileSdk = AndroidTargetHash.getPlatformVersion(global.compileSdkHashString)!!.featureLevel
         registerDesugarLibLintTransform(services, minSdk, compileSdk)
         desugaredMethodsFiles.from(
@@ -192,7 +191,7 @@ fun getDesugaredMethods(
     }
 
     desugaredMethodsFiles.fromDisallowChanges(
-        getD8DesugarMethodFileFromTransform(global.fakeDependency, coreLibDesugar)
+        getD8DesugarMethodFileFromTransform(global.fakeDependency, coreLibDesugar, minSdk)
     )
     return desugaredMethodsFiles
 }
@@ -288,12 +287,14 @@ private fun getDesugarLibLintFromTransform(
 
 private fun getD8DesugarMethodFileFromTransform(
     configuration: Configuration,
-    coreLibDesugar: Boolean
+    coreLibDesugar: Boolean,
+    minSdkVersion: Int,
 ): FileCollection {
     return configuration.incoming.artifactView { configuration ->
         configuration.attributes {
             it.attribute(ARTIFACT_TYPE_ATTRIBUTE, D8_DESUGAR_METHODS)
             it.attribute(ATTR_ENABLE_CORE_LIBRARY_DESUGARING, coreLibDesugar.toString())
+            it.attribute(ATTR_LINT_MIN_SDK, minSdkVersion.toString())
         }
     }.artifacts.artifactFiles
 }
@@ -390,6 +391,9 @@ abstract class D8BackportedMethodsGenerator
         @get:Input
         val d8Version: Property<String>
 
+        @get:Input
+        val minSdkVersion: Property<Int>
+
         @get:InputFiles
         @get:PathSensitive(PathSensitivity.NONE)
         val desugarLibConfigFiles: ConfigurableFileCollection
@@ -408,7 +412,8 @@ abstract class D8BackportedMethodsGenerator
         outputFile.printWriter().use {
             D8DesugaredMethodsGenerator.generate(
                 combineFileContents(parameters.desugarLibConfigFiles.files),
-                parameters.bootclasspath.files
+                parameters.bootclasspath.files,
+                parameters.minSdkVersion.get(),
             ).forEach { method ->
                 it.println(method)
             }

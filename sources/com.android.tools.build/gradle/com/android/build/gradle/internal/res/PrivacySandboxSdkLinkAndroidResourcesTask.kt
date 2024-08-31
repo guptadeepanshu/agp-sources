@@ -29,10 +29,9 @@ import com.android.build.gradle.internal.res.namespaced.Aapt2LinkRunnable
 import com.android.build.gradle.internal.services.Aapt2Input
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.services.getLeasingAapt2
+import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
-import com.android.build.gradle.internal.tasks.configureVariantProperties
-import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.core.ComponentTypeImpl
@@ -149,7 +148,7 @@ abstract class PrivacySandboxSdkLinkAndroidResourcesTask : NonIncrementalTask() 
     }
 
     class CreationAction(val creationConfig: PrivacySandboxSdkVariantScope) :
-            TaskCreationAction<PrivacySandboxSdkLinkAndroidResourcesTask>() {
+            AndroidVariantTaskCreationAction<PrivacySandboxSdkLinkAndroidResourcesTask>() {
 
         override val name: String
             get() = "linkPrivacySandboxResources"
@@ -170,7 +169,8 @@ abstract class PrivacySandboxSdkLinkAndroidResourcesTask : NonIncrementalTask() 
         }
 
         override fun configure(task: PrivacySandboxSdkLinkAndroidResourcesTask) {
-            task.configureVariantProperties("", task.project.gradle.sharedServices)
+            super.configure(task)
+
             task.aapt2.let { aapt2Input ->
                 aapt2Input.buildService.setDisallowChanges(
                         getBuildService(task.project.gradle.sharedServices)

@@ -54,9 +54,8 @@ interface ApkCreationConfig: ConsumableCreationConfig {
     val bundleConfig: BundleConfigImpl?
         get() = null
 
-    val useJacocoTransformInstrumentation: Boolean
-
     val packageJacocoRuntime: Boolean
+        get() = requiresJacocoTransformation
 
     val dexing: DexingCreationConfig
 

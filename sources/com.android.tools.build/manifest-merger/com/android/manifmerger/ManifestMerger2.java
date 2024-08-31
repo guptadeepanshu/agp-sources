@@ -37,6 +37,7 @@ import com.android.utils.FileUtils;
 import com.android.utils.ILogger;
 import com.android.utils.Pair;
 import com.android.utils.XmlUtils;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
@@ -48,6 +49,12 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -63,10 +70,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * merges android manifest files, idempotent.
@@ -211,17 +214,20 @@ public class ManifestMerger2 {
         if (mOptionalFeatures.contains(Invoker.Feature.CHECK_IF_PACKAGE_IN_MAIN_MANIFEST)
                 && originalMainManifestPackageName != null) {
             if (originalMainManifestPackageName.equals(mNamespace)) {
-                String message =
-                        String.format(
-                                "package=\"%1$s\" found in source AndroidManifest.xml: %2$s.\n"
-                                        + "Setting the namespace via the package attribute in the "
-                                        + "source AndroidManifest.xml is no longer supported, "
-                                        + "and the value is ignored.\n"
-                                        + "Recommendation: remove package=\"%1$s\" from the source "
-                                        + "AndroidManifest.xml: %2$s.",
-                                originalMainManifestPackageName,
-                                loadedMainManifestInfo.getLocation().getAbsolutePath());
-                mLogger.warning(message);
+                if (!mOptionalFeatures.contains(
+                        Invoker.Feature.SUPPRESS_MANIFEST_PACKAGE_WARNING)) {
+                    String message =
+                            String.format(
+                                    "package=\"%1$s\" found in source AndroidManifest.xml: %2$s.\n"
+                                        + "Setting the namespace via the package attribute in the"
+                                        + " source AndroidManifest.xml is no longer supported, and"
+                                        + " the value is ignored.\n"
+                                        + "Recommendation: remove package=\"%1$s\" from the source"
+                                        + " AndroidManifest.xml: %2$s.",
+                                    originalMainManifestPackageName,
+                                    loadedMainManifestInfo.getLocation().getAbsolutePath());
+                    mLogger.warning(message);
+                }
             } else {
                 String message =
                         String.format(
@@ -299,22 +305,26 @@ public class ManifestMerger2 {
                 String message =
                         mMergeType == MergeType.APPLICATION
                                 ? String.format(
-                                        "Overlay manifest:package attribute declared at %1$s value=(%2$s)\n"
-                                                + "\tdoes not match the module's namespace (%3$s).\n"
-                                                + "\tSuggestion: remove the package=\"%2$s\" declaration at %4$s.\n"
-                                                + "\tIf you want to customize the applicationId for a "
-                                                + "buildType or productFlavor, consider setting "
-                                                + "applicationIdSuffix or using the Variant API.\n"
-                                                + "\tFor more information, see "
-                                                + "https://developer.android.com/studio/build/build-variants",
+                                        "Overlay manifest:package attribute declared at %1$s"
+                                            + " value=(%2$s)\n"
+                                            + "\tdoes not match the module's namespace (%3$s).\n"
+                                            + "\tSuggestion: remove the package=\"%2$s\""
+                                            + " declaration at %4$s.\n"
+                                            + "\tIf you want to customize the applicationId for a"
+                                            + " buildType or productFlavor, consider setting"
+                                            + " applicationIdSuffix or using the Variant API.\n"
+                                            + "\tFor more information, see "
+                                            + "https://developer.android.com/studio/build/build-variants",
                                         packageAttribute.get().printPosition(),
                                         packageAttribute.get().getValue(),
                                         loadedMainManifestInfo.getNamespace(),
                                         packageAttribute.get().getSourceFile().print(false))
                                 : String.format(
-                                        "Overlay manifest:package attribute declared at %1$s value=(%2$s)\n"
-                                                + "\tdoes not match the module's namespace (%3$s).\n"
-                                                + "\tSuggestion: remove the package=\"%2$s\" declaration at %4$s.",
+                                        "Overlay manifest:package attribute declared at %1$s"
+                                            + " value=(%2$s)\n"
+                                            + "\tdoes not match the module's namespace (%3$s).\n"
+                                            + "\tSuggestion: remove the package=\"%2$s\""
+                                            + " declaration at %4$s.",
                                         packageAttribute.get().printPosition(),
                                         packageAttribute.get().getValue(),
                                         loadedMainManifestInfo.getNamespace(),
@@ -792,8 +802,9 @@ public class ManifestMerger2 {
                             .hasAttributeNS(
                                     SdkConstants.ANDROID_URI, SdkConstants.ATTR_LOCALE_CONFIG)) {
                         String message =
-                                "Locale config generation was requested but user locale config is present in manifest. "
-                                        + "See https://developer.android.com/r/studio-ui/build/automatic-per-app-languages";
+                                "Locale config generation was requested but user locale config is"
+                                    + " present in manifest. See"
+                                    + " https://developer.android.com/r/studio-ui/build/automatic-per-app-languages";
                         mLogger.error(null, message);
                         throw new RuntimeException(message);
                     } else {
@@ -1338,9 +1349,9 @@ public class ManifestMerger2 {
                                             + e.getKey()
                                             + "' is used in multiple modules and/or libraries: "
                                             + Joiner.on(", ").join(offendingTargets)
-                                            + ". Please ensure that all modules and libraries have a "
-                                            + "unique namespace."
-                                            + " For more information, See https://developer.android.com/studio/build/configure-app-module#set-namespace";
+                                            + ". Please ensure that all modules and libraries have"
+                                            + " a unique namespace. For more information, See"
+                                            + " https://developer.android.com/studio/build/configure-app-module#set-namespace";
                             // We know that there is at least one because of the
                             // filter check.
                             LoadedManifestInfo info = e.getValue().stream().findFirst().get();
@@ -1571,9 +1582,12 @@ public class ManifestMerger2 {
                         element,
                         MergingReport.Record.Severity.ERROR,
                         String.format(
-                                "android:exported needs to be explicitly specified for element <%s>. Apps targeting Android 12 and higher are required to specify an explicit value "
-                                        + "for `android:exported` when the corresponding component has an intent filter defined. "
-                                        + "See https://developer.android.com/guide/topics/manifest/activity-element#exported for details.",
+                                "android:exported needs to be explicitly specified for element"
+                                    + " <%s>. Apps targeting Android 12 and higher are required to"
+                                    + " specify an explicit value for `android:exported` when the"
+                                    + " corresponding component has an intent filter defined. See"
+                                    + " https://developer.android.com/guide/topics/manifest/activity-element#exported"
+                                    + " for details.",
                                 element.getId()));
             }
         }
@@ -1832,7 +1846,13 @@ public class ManifestMerger2 {
              * Warn if the {@link SdkConstants#ATTR_EXTRACT_NATIVE_LIBS} attribute is set to true in
              * a dependency manifest but not set to true in the merged manifest.
              */
-            VALIDATE_EXTRACT_NATIVE_LIBS_FROM_DEPENDENCIES
+            VALIDATE_EXTRACT_NATIVE_LIBS_FROM_DEPENDENCIES,
+
+            /**
+             * Suppresses the warning shown when package attribute is present in the main manifest,
+             * and is equal to the component's namespace.
+             */
+            SUPPRESS_MANIFEST_PACKAGE_WARNING,
         }
 
         /**

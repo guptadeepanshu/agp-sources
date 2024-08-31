@@ -163,7 +163,6 @@ class AvdManager(
                 systemImage,
                 null,
                 null,
-                null,
                 hardwareConfig,
                 null,
                 device.bootProps,
@@ -199,12 +198,9 @@ class AvdManager(
         // It fails to generate a snapshot image if you try to create a snapshot for two
         // AVD with a same name simultaneously. https://issuetracker.google.com/issues/206798666
         runWithMultiProcessLocking(deviceName) {
-            val emulatorProvider = versionedSdkLoader.get().emulatorDirectoryProvider
-            val emulatorExecutable = snapshotHandler.getEmulatorExecutable(emulatorProvider)
 
             if (snapshotHandler.checkSnapshotLoadable(
                     deviceName,
-                    emulatorExecutable,
                     avdFolder,
                     emulatorGpuFlag,
                     logger
@@ -217,7 +213,6 @@ class AvdManager(
             deviceLockManager.lock(1).use {
                 snapshotHandler.generateSnapshot(
                     deviceName,
-                    emulatorExecutable,
                     avdFolder,
                     emulatorGpuFlag,
                     avdManager,
@@ -266,6 +261,16 @@ class AvdManager(
                 isDeleted
             }
         }
+    }
+
+    /**
+     * Deletes the tracking file for open managed devices
+     *
+     * This deletes the tracking file for all managed devices. It does not check if managed
+     * devices are currently running. Should be used if the tracking file becomes stale.
+     */
+    fun deleteDeviceLockTrackingFile() {
+        deviceLockManager.deleteLockFile()
     }
 
     /**

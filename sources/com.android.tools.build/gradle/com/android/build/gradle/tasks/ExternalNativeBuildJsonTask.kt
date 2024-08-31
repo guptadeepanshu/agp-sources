@@ -29,8 +29,7 @@ import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.UnsafeOutputsTask
-import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationAction
-import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
+import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.errors.DefaultIssueReporter
 import com.android.build.gradle.internal.utils.setDisallowChanges
@@ -97,17 +96,15 @@ abstract class ExternalNativeBuildJsonTask @Inject constructor(
  */
 fun createCxxConfigureTask(
     project: Project,
-    globalConfig: GlobalTaskCreationConfig,
     creationConfig: VariantCreationConfig,
     abi: CxxAbiModel,
     name: String
-) = object : GlobalTaskCreationAction<ExternalNativeBuildJsonTask>(globalConfig) {
+) = object : VariantTaskCreationAction<ExternalNativeBuildJsonTask, VariantCreationConfig>(creationConfig) {
     override val name = name
     override val type = ExternalNativeBuildJsonTask::class.java
     override fun configure(task: ExternalNativeBuildJsonTask) {
         super.configure(task)
         task.abi = abi
-        task.variantName = abi.variant.variantName
         task.nativeLocationsBuildService.setDisallowChanges(getBuildService(project.gradle.sharedServices))
         if (creationConfig.renderscriptCreationConfig?.dslRenderscriptNdkModeEnabled == true) {
             creationConfig

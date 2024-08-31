@@ -350,11 +350,7 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
                 ProcessApplicationManifest::reportFile
             )
                 .atLocation(
-                    FileUtils.join(
-                        creationConfig.services.projectInfo.getOutputsDir(),
-                        "logs"
-                    )
-                        .absolutePath
+                    creationConfig.services.projectInfo.getOutputsDir().map { it.dir("logs") },
                 )
                 .withName("manifest-merger-" + creationConfig.baseName + "-report.txt")
                 .on(MANIFEST_MERGE_REPORT)
@@ -544,6 +540,9 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
             }
             if (!projectOptions[BooleanOption.SUPPRESS_EXTRACT_NATIVE_LIBS_WARNINGS]) {
                 features.add(Invoker.Feature.VALIDATE_EXTRACT_NATIVE_LIBS_FROM_DEPENDENCIES)
+            }
+            if (projectOptions[BooleanOption.SUPPRESS_MANIFEST_PACKAGE_WARNING]) {
+                features.add(Invoker.Feature.SUPPRESS_MANIFEST_PACKAGE_WARNING)
             }
             return if (features.isEmpty())
                 EnumSet.noneOf(Invoker.Feature::class.java)

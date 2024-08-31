@@ -23,7 +23,6 @@ import static com.android.apksig.apk.ApkUtils.getTargetSdkVersionFromBinaryAndro
 import static com.android.apksig.internal.apk.ApkSigningBlockUtils.VERSION_APK_SIGNATURE_SCHEME_V2;
 import static com.android.apksig.internal.apk.ApkSigningBlockUtils.VERSION_APK_SIGNATURE_SCHEME_V3;
 import static com.android.apksig.internal.apk.ApkSigningBlockUtils.VERSION_APK_SIGNATURE_SCHEME_V31;
-import static com.android.apksig.internal.apk.ApkSigningBlockUtils.VERSION_APK_SIGNATURE_SCHEME_V31;
 import static com.android.apksig.internal.apk.ApkSigningBlockUtils.VERSION_APK_SIGNATURE_SCHEME_V4;
 import static com.android.apksig.internal.apk.ApkSigningBlockUtils.VERSION_JAR_SIGNATURE_SCHEME;
 import static com.android.apksig.internal.apk.ApkSigningBlockUtils.VERSION_SOURCE_STAMP;
@@ -1039,10 +1038,13 @@ public class ApkVerifier {
         SigningCertificateLineage lineage = firstSignerInfo.mSigningCertificateLineage;
         if (lineage == null && firstSignerInfo.getCertificate() != null) {
             try {
-                lineage = new SigningCertificateLineage.Builder(
-                        new SignerConfig.Builder(
-                                /* privateKey= */ null, firstSignerInfo.getCertificate())
-                                .build()).build();
+                lineage =
+                        new SigningCertificateLineage.Builder(
+                                        new SignerConfig.Builder(
+                                                        /* keyConfig= */ (KeyConfig) null,
+                                                        firstSignerInfo.getCertificate())
+                                                .build())
+                                .build();
             } catch (Exception e) {
                 return null;
             }
@@ -3339,6 +3341,15 @@ public class ApkVerifier {
                         + " timestamp attribute has an invalid value: %1$d"),
 
         /**
+         * A signature scheme version that is not in the source stamp was provided to the verifier.
+         * <ul>
+         *     <li>Parameter 1: An int value representing the signature scheme version.
+         * </ul>
+         */
+        SOURCE_STAMP_SIGNATURE_SCHEME_NOT_AVAILABLE(
+                "No digests are available in the source stamp for signature scheme: %1$d"),
+
+        /**
          * The APK could not be properly parsed due to a ZIP or APK format exception.
          * <ul>
          *     <li>Parameter 1: The {@code Exception} caught when attempting to parse the APK.
@@ -3636,6 +3647,9 @@ public class ApkVerifier {
                     Issue.JAR_SIG_PARSE_EXCEPTION);
             sVerificationIssueIdToIssue.put(ApkVerificationIssue.SOURCE_STAMP_INVALID_TIMESTAMP,
                     Issue.SOURCE_STAMP_INVALID_TIMESTAMP);
+            sVerificationIssueIdToIssue.put(
+                    ApkVerificationIssue.SOURCE_STAMP_SIGNATURE_SCHEME_NOT_AVAILABLE,
+                    Issue.SOURCE_STAMP_SIGNATURE_SCHEME_NOT_AVAILABLE);
         }
 
         /**

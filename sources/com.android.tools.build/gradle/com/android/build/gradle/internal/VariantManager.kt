@@ -839,7 +839,7 @@ class VariantManager<
                 }
                 if (buildTypeData.buildType.isDebuggable && buildTypeData.buildType.isMinifyEnabled) {
                     val warningMsg = """BuildType '${buildType.name}' is both debuggable and has 'isMinifyEnabled' set to true.
-                    |Debuggable builds are no longer name minified and all code optimizations and obfuscation will be disabled.
+                    |All code optimizations and obfuscation are disabled for debuggable builds.
                 """.trimMargin()
                     dslServices.issueReporter.reportWarning(
                         IssueReporter.Type.GENERIC,

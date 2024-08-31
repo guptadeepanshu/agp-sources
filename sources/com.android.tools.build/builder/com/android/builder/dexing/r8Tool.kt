@@ -80,8 +80,6 @@ fun isToolsConfigurationFile(name: String): Boolean {
             || lowerCaseName.startsWith("/$TOOLS_CONFIGURATION_FOLDER/")
 }
 
-fun getR8Version(): String = Version.getVersionString()
-
 /**
  * Converts the specified inputs, according to the configuration, and writes dex or classes to
  * output path.

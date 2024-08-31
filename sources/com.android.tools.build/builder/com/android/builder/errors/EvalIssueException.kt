@@ -28,18 +28,18 @@ package com.android.builder.errors
  * @param data a data representing the source of the error. This goes hand in hand with the
  * <var>type</var>, and is not meant to be readable. Instead a (possibly translated) message
  * is created from this data and type.
- * @param multlineMessage a human readable error that spans through multiple lines (might require
+ * @param multilineMessage a human readable error that spans through multiple lines (might require
  * special IDE treatment.)
  */
 class EvalIssueException private constructor(
     override val message: String,
     cause: Throwable? = null,
     val data: String? = null,
-    val multlineMessage: List<String>? = null) : RuntimeException(message, cause) {
+    val multilineMessage: List<String>? = null) : RuntimeException(message, cause) {
 
     @JvmOverloads
-    constructor(message: String, data: String? = null, multlineMessage: List<String>? = null) :
-            this(message, null, data, multlineMessage)
+    constructor(message: String, data: String? = null, multilineMessage: List<String>? = null) :
+            this(message, null, data, multilineMessage)
 
     constructor(cause: Throwable) : this(cause.message ?: cause.localizedMessage, cause)
 }

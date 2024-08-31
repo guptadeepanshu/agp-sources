@@ -111,6 +111,10 @@ private static final long serialVersionUID = 0L;
      * <code>CONFIGURATION_CACHE = 13;</code>
      */
     CONFIGURATION_CACHE(13),
+    /**
+     * <code>JAVA_NOT_SUPPORTED_LANGUAGE_LEVEL = 14;</code>
+     */
+    JAVA_NOT_SUPPORTED_LANGUAGE_LEVEL(14),
     ;
 
     /**
@@ -169,6 +173,10 @@ private static final long serialVersionUID = 0L;
      * <code>CONFIGURATION_CACHE = 13;</code>
      */
     public static final int CONFIGURATION_CACHE_VALUE = 13;
+    /**
+     * <code>JAVA_NOT_SUPPORTED_LANGUAGE_LEVEL = 14;</code>
+     */
+    public static final int JAVA_NOT_SUPPORTED_LANGUAGE_LEVEL_VALUE = 14;
 
 
     public final int getNumber() {
@@ -205,6 +213,7 @@ private static final long serialVersionUID = 0L;
         case 11: return GENERAL_ANDROID_GRADLE_PLUGIN;
         case 12: return INVALID_TOML_DEFINITION;
         case 13: return CONFIGURATION_CACHE;
+        case 14: return JAVA_NOT_SUPPORTED_LANGUAGE_LEVEL;
         default: return null;
       }
     }

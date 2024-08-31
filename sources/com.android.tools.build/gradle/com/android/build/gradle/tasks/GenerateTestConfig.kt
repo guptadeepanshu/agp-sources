@@ -138,8 +138,7 @@ abstract class GenerateTestConfig @Inject constructor(objectFactory: ObjectFacto
     class TestConfigInputs(creationConfig: HostTestCreationConfig) {
         @get:InputFiles
         @get:PathSensitive(PathSensitivity.RELATIVE)
-        @get:Optional
-        val resourceApk: Provider<RegularFile>?
+        val resourceApk: Provider<RegularFile>
 
         @get:InputFiles
         @get:PathSensitive(PathSensitivity.RELATIVE)
@@ -187,7 +186,7 @@ abstract class GenerateTestConfig @Inject constructor(objectFactory: ObjectFacto
             val manifestFile = manifestsOutputs.getMainSplit(targetConfiguration).outputFile
 
             return TestConfigProperties(
-                resourceApk?.get()?.asFile?.relativeTo(projectDir)?.toString(),
+                resourceApk.get().asFile.relativeTo(projectDir).toString(),
                 mergedAssets.get().asFile.relativeTo(projectDir).toString(),
                 File(manifestFile).relativeTo(projectDir).toString(),
                 packageNameOfFinalRClass.get()
@@ -195,8 +194,8 @@ abstract class GenerateTestConfig @Inject constructor(objectFactory: ObjectFacto
         }
     }
 
-    class TestConfigProperties constructor(
-        val resourceApkFile: String?,
+    class TestConfigProperties(
+        val resourceApkFile: String,
         val mergedAssetsDir: String,
         val mergedManifestDir: String,
         val customPackage: String
@@ -216,9 +215,7 @@ abstract class GenerateTestConfig @Inject constructor(objectFactory: ObjectFacto
         @Throws(IOException::class)
         fun generateTestConfigFile(config: TestConfigProperties, outputDir: Path) {
             val properties = Properties()
-            if (config.resourceApkFile != null) {
-                properties.setProperty(ANDROID_RESOURCE_APK, config.resourceApkFile)
-            }
+            properties.setProperty(ANDROID_RESOURCE_APK, config.resourceApkFile)
             properties.setProperty(ANDROID_MERGED_ASSETS, config.mergedAssetsDir)
             properties.setProperty(ANDROID_MERGED_MANIFEST, config.mergedManifestDir)
             properties.setProperty(ANDROID_CUSTOM_PACKAGE, config.customPackage)

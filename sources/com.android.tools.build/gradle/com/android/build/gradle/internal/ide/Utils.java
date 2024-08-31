@@ -146,13 +146,6 @@ public class Utils {
     @NonNull
     public static List<File> getGeneratedResourceFolders(
             @NonNull ComponentCreationConfig component) {
-        return Streams.stream(getGeneratedResourceFoldersFileCollection(component))
-                .collect(Collectors.toList());
-    }
-
-    @NonNull
-    public static FileCollection getGeneratedResourceFoldersFileCollection(
-            @NonNull ComponentCreationConfig component) {
         ConfigurableFileCollection fileCollection = component.getServices().fileCollection();
         component
                 .getSources()
@@ -182,7 +175,6 @@ public class Utils {
                         component.getArtifacts().get(InternalArtifactType.GENERATED_RES.INSTANCE));
             }
         }
-        fileCollection.disallowChanges();
-        return fileCollection;
+        return Streams.stream(fileCollection).collect(Collectors.toList());
     }
 }

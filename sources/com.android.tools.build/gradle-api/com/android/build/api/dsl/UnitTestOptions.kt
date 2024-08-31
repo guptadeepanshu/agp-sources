@@ -40,13 +40,6 @@ interface UnitTestOptions {
      *
      * `android_resource_apk`: the path to the APK-like zip file containing merged resources, which
      * includes all the resources from the current subproject and all its dependencies.
-     * This property is available by default, or if the Gradle property
-     * `android.enableUnitTestBinaryResources` is set to `true`.
-     *
-     * `android_merged_resources`: the path to the directory containing merged resources, which
-     * includes all the resources from the current subproject and all its dependencies.
-     * This property is available only if the Gradle property
-     * `android.enableUnitTestBinaryResources` is set to `false`.
      *
      * `android_merged_assets`: the path to the directory containing merged assets. For app
      * subprojects, the merged assets directory contains assets from the current subproject and its
@@ -57,14 +50,10 @@ interface UnitTestOptions {
      * the manifest merged from their dependencies. Library subprojects do not include manifest
      * components from their dependencies.
      *
-     * `android_custom_package`: the package name of the final R class. If you modify the
-     * application ID in your build scripts, this package name may not match the `package` attribute
-     * in the final app manifest.
+     * `android_custom_package`: the package name (namespace) of the final R class.
      *
-     * Note that starting with version 3.5.0, if the Gradle property
-     * `android.testConfig.useRelativePath` is set to `true`, the paths above will be relative paths
-     * (relative to the current project directory, not the root project directory); otherwise,
-     * they will be absolute paths. Prior to version 3.5.0, the paths are all absolute paths.
+     * Note that the paths above are relative paths (relative to the current project directory, not
+     * the root project directory).
      *
      * since 3.0.0
      */

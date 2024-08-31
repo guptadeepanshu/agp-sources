@@ -52,7 +52,6 @@ import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.BooleanOption.LINT_ANALYSIS_PER_COMPONENT
-import com.android.build.gradle.options.BooleanOption.LINT_USE_K2_UAST
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.utils.FileUtils
 import com.google.common.annotations.VisibleForTesting
@@ -211,8 +210,8 @@ abstract class AndroidLintTask : NonIncrementalTask() {
     @get:Input
     abstract val baselineOmitLineNumbers: Property<Boolean>
 
-    @get:Input
-    abstract val useK2Uast: Property<Boolean>
+    @get:Nested
+    abstract val uastInputs: UastInputs
 
     override fun doTaskAction() {
         lintTool.lintClassLoaderBuildService.get().shouldDispose = true
@@ -247,7 +246,7 @@ abstract class AndroidLintTask : NonIncrementalTask() {
             parameters.returnValueOutputFile.set(returnValueOutputFile)
             parameters.lintMode.set(lintMode)
             parameters.hasBaseline.set(projectInputs.lintOptions.baseline.orNull != null)
-            parameters.useK2Uast.set(useK2Uast)
+            parameters.useK2Uast.set(uastInputs.useK2Uast)
         }
         if (lintMode.get() == LintMode.UPDATE_BASELINE
             && originalBaselineFileText != null
@@ -406,7 +405,7 @@ abstract class AndroidLintTask : NonIncrementalTask() {
         if (baselineOmitLineNumbers.get()) {
             arguments += "--baseline-omit-line-numbers"
         }
-        if (useK2Uast.get()) {
+        if (uastInputs.useK2Uast) {
             arguments += "--XuseK2Uast"
         }
 
@@ -463,27 +462,27 @@ abstract class AndroidLintTask : NonIncrementalTask() {
                 taskProvider: TaskProvider<AndroidLintTask>,
                 artifacts: ArtifactsImpl,
                 variantName: String?,
-                reportsDirectory: File,
+                reportsDirectory: Provider<Directory>,
             ) {
                 val name = "lint-results" + if (variantName != null) "-$variantName" else ""
                 artifacts
                     .setInitialProvider(taskProvider, AndroidLintTask::textReportOutputFile)
-                    .atLocation(reportsDirectory.absolutePath)
+                    .atLocation(reportsDirectory)
                     .withName("$name.txt")
                     .on(InternalArtifactType.LINT_TEXT_REPORT)
                 artifacts
                     .setInitialProvider(taskProvider, AndroidLintTask::htmlReportOutputFile)
-                    .atLocation(reportsDirectory.absolutePath)
+                    .atLocation(reportsDirectory)
                     .withName("$name.html")
                     .on(InternalArtifactType.LINT_HTML_REPORT)
                 artifacts
                     .setInitialProvider(taskProvider, AndroidLintTask::xmlReportOutputFile)
-                    .atLocation(reportsDirectory.absolutePath)
+                    .atLocation(reportsDirectory)
                     .withName("$name.xml")
                     .on(InternalArtifactType.LINT_XML_REPORT)
                 artifacts
                     .setInitialProvider(taskProvider, AndroidLintTask::sarifReportOutputFile)
-                    .atLocation(reportsDirectory.absolutePath)
+                    .atLocation(reportsDirectory)
                     .withName("$name.sarif")
                     .on(InternalArtifactType.LINT_SARIF_REPORT)
             }
@@ -804,7 +803,7 @@ abstract class AndroidLintTask : NonIncrementalTask() {
                         .projectOptions
                         .getProvider(BooleanOption.LINT_BASELINE_OMIT_LINE_NUMBERS)
                 )
-            task.useK2Uast.setDisallowChanges(creationConfig.useK2Uast)
+            task.uastInputs.initialize(task.project, variant.main)
         }
 
         abstract fun configureOutputSettings(task: AndroidLintTask)
@@ -911,6 +910,7 @@ abstract class AndroidLintTask : NonIncrementalTask() {
         unitTestPartialResults: Provider<List<Directory>>?,
         unitTestLintModel: Provider<List<Directory>>?,
         lintMode: LintMode,
+        uastReferenceKotlinCompileTaskName: String,
         fatalOnly: Boolean = false,
         autoFix: Boolean = false,
     ) {
@@ -979,9 +979,11 @@ abstract class AndroidLintTask : NonIncrementalTask() {
                 taskCreationServices.projectOptions
                     .getProvider(BooleanOption.LINT_BASELINE_OMIT_LINE_NUMBERS)
             )
-        this.useK2Uast
-            .setDisallowChanges(
-                taskCreationServices.projectOptions.getProvider(LINT_USE_K2_UAST)
+        this.uastInputs
+            .initializeForStandalone(
+                project,
+                taskCreationServices,
+                uastReferenceKotlinCompileTaskName
             )
     }
 

@@ -33,7 +33,6 @@ import com.android.sdklib.AndroidVersionUtils;
 import com.android.sdklib.IAndroidTarget;
 import com.android.sdklib.ISystemImage;
 import com.android.sdklib.OptionalLibrary;
-import com.android.sdklib.PathFileWrapper;
 import com.android.sdklib.SystemImageTags;
 import com.android.sdklib.devices.Device;
 import com.android.sdklib.devices.DeviceManager;
@@ -43,9 +42,16 @@ import com.android.sdklib.internal.avd.AvdInfo;
 import com.android.sdklib.internal.avd.AvdManager;
 import com.android.sdklib.internal.avd.AvdNetworkLatency;
 import com.android.sdklib.internal.avd.AvdNetworkSpeed;
+import com.android.sdklib.internal.avd.ConfigKey;
 import com.android.sdklib.internal.avd.EmulatedProperties;
+import com.android.sdklib.internal.avd.EmulatorPackage;
+import com.android.sdklib.internal.avd.EmulatorPackages;
 import com.android.sdklib.internal.avd.GpuMode;
 import com.android.sdklib.internal.avd.HardwareProperties;
+import com.android.sdklib.internal.avd.OnDiskSkin;
+import com.android.sdklib.internal.avd.SdCard;
+import com.android.sdklib.internal.avd.SdCards;
+import com.android.sdklib.internal.avd.Skin;
 import com.android.sdklib.repository.AndroidSdkHandler;
 import com.android.sdklib.repository.IdDisplay;
 import com.android.sdklib.repository.meta.DetailsTypes;
@@ -453,8 +459,8 @@ class AvdManagerCli extends CommandLineParser {
             }
             mSdkLog.info("    Name: %s\n", info.getName());
 
-            String deviceName = info.getProperties().get(AvdManager.AVD_INI_DEVICE_NAME);
-            String deviceMfctr = info.getProperties().get(AvdManager.AVD_INI_DEVICE_MANUFACTURER);
+            String deviceName = info.getProperties().get(ConfigKey.DEVICE_NAME);
+            String deviceMfctr = info.getProperties().get(ConfigKey.DEVICE_MANUFACTURER);
             if (deviceName != null) {
                 mSdkLog.info("  Device: %s", deviceName);
                 if (deviceMfctr != null) {
@@ -491,18 +497,18 @@ class AvdManagerCli extends CommandLineParser {
 
             // display some extra values.
             Map<String, String> properties = info.getProperties();
-            String skin = properties.get(AvdManager.AVD_INI_SKIN_NAME);
+            String skin = properties.get(ConfigKey.SKIN_NAME);
             if (skin != null) {
                 mSdkLog.info("    Skin: %s\n", skin);
             }
-            String sdcard = properties.get(AvdManager.AVD_INI_SDCARD_SIZE);
+            String sdcard = properties.get(ConfigKey.SDCARD_SIZE);
             if (sdcard == null) {
-                sdcard = properties.get(AvdManager.AVD_INI_SDCARD_PATH);
+                sdcard = properties.get(ConfigKey.SDCARD_PATH);
             }
             if (sdcard != null) {
                 mSdkLog.info("  Sdcard: %s\n", sdcard);
             }
-            String snapshot = properties.get(AvdManager.AVD_INI_SNAPSHOT_PRESENT);
+            String snapshot = properties.get(ConfigKey.SNAPSHOT_PRESENT);
             if (snapshot != null) {
                 mSdkLog.info("Snapshot: %s\n", snapshot);
             }
@@ -870,23 +876,28 @@ class AvdManagerCli extends CommandLineParser {
             }
             updateUninitializedDynamicParameters(hardwareConfig);
             String skinName = getParamSkin();
-            Path skinPath = null;
+            Skin skin = null;
             if (skinName != null) {
-                skinPath =
+                Path skinPath =
                         mSdkHandler.getLocation().resolve(SdkConstants.FD_SKINS).resolve(skinName);
                 if (Files.notExists(skinPath)) {
                     errorAndExit("Skin " + skinName + " not found at " + skinPath);
+                } else {
+                    skin = new OnDiskSkin(skinPath);
                 }
             }
+
+            String sdCardParam = getParamSdCard();
+            SdCard sdCard = sdCardParam == null ? null : SdCards.parseSdCard(sdCardParam);
+
             @SuppressWarnings("unused") // newAvdInfo is never read, yet useful for debugging
             AvdInfo newAvdInfo =
                     avdManager.createAvd(
                             avdFolder,
                             avdName,
                             img,
-                            skinPath,
-                            skinName,
-                            getParamSdCard(),
+                            skin,
+                            sdCard,
                             hardwareConfig,
                             null,
                             device == null ? null : device.getBootProps(),
@@ -1045,7 +1056,7 @@ class AvdManagerCli extends CommandLineParser {
 
             if (newName != null) {
                 Map<String, String> properties = new HashMap<>(info.getProperties());
-                properties.put(AvdManager.AVD_INI_DISPLAY_NAME, newName);
+                properties.put(ConfigKey.DISPLAY_NAME, newName);
                 avdManager.updateAvd(info, properties);
             }
             avdManager.moveAvd(info, newName, paramFolderPath);
@@ -1061,26 +1072,24 @@ class AvdManagerCli extends CommandLineParser {
     private Map<String, String> defaultHardwareConfig() {
         // Get the defaults of all the user-modifiable properties.
         // The file is in the emulator component
-        LocalPackage emulatorPackage = mSdkHandler.getLocalPackage(SdkConstants.FD_EMULATOR,
-                                                                   new ProgressIndicatorAdapter() { });
+        EmulatorPackage emulatorPackage =
+                EmulatorPackages.getEmulatorPackage(mSdkHandler, new ProgressIndicatorAdapter() { });
         if (emulatorPackage == null) {
             errorAndExit("\"emulator\" package must be installed!");
         }
-        Path libDir = emulatorPackage.getLocation().resolve(SdkConstants.FD_LIB);
-        Path hardwareDefs = libDir.resolve(SdkConstants.FN_HARDWARE_INI);
+
         Map<String, HardwareProperties.HardwareProperty> hwMap =
-                HardwareProperties.parseHardwareDefinitions(
-                        new PathFileWrapper(hardwareDefs), mSdkLog);
+                emulatorPackage.getHardwareProperties(mSdkLog);
+        if (hwMap == null) {
+            errorAndExit("\"hardware-properties.ini\" could not be read");
+        }
 
         // Get the generic default values
         Map<String, String> hwConfigMap = defaultEmulatorPropertiesMap();
 
-        HardwareProperties.HardwareProperty[] hwProperties = hwMap.values().toArray(
-          new HardwareProperties.HardwareProperty[0]);
-
         // Loop through all the HardwareProperties and get the
         // values specified for this device.
-        for (HardwareProperties.HardwareProperty property : hwProperties) {
+        for (HardwareProperties.HardwareProperty property : hwMap.values()) {
             String defaultValue = property.getDefault();
             if (defaultValue != null && !defaultValue.isEmpty()) {
                 hwConfigMap.put(property.getName(), defaultValue);
@@ -1123,20 +1132,13 @@ class AvdManagerCli extends CommandLineParser {
 
         // get the list of possible hardware properties
         // The file is in the emulator component
-        LocalPackage emulatorPackage =
-                mSdkHandler.getLocalPackage(
-                        SdkConstants.FD_EMULATOR,
-                        new ProgressIndicatorAdapter() {
-                            // don't log anything
-                        });
+        EmulatorPackage emulatorPackage =
+                EmulatorPackages.getEmulatorPackage(mSdkHandler, new ProgressIndicatorAdapter() {});
         if (emulatorPackage == null) {
             errorAndExit("\"emulator\" package must be installed!");
         }
-        Path libDir = emulatorPackage.getLocation().resolve(SdkConstants.FD_LIB);
-        Path hardwareDefs = libDir.resolve(SdkConstants.FN_HARDWARE_INI);
         Map<String, HardwareProperties.HardwareProperty> hwMap =
-                HardwareProperties.parseHardwareDefinitions(
-                        new PathFileWrapper(hardwareDefs), mSdkLog);
+                emulatorPackage.getHardwareProperties(mSdkLog);
 
         HashMap<String, String> map = new HashMap<>();
 

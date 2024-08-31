@@ -1,7 +1,6 @@
 package com.android.build.gradle.internal.lint
 
 import com.android.build.api.dsl.Lint
-import com.android.build.api.variant.HostTest
 import com.android.build.api.variant.impl.HasTestFixtures
 import com.android.build.gradle.internal.TaskManager
 import com.android.build.gradle.internal.component.DeviceTestCreationConfig

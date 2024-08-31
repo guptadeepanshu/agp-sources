@@ -19,15 +19,16 @@ package com.android.build.gradle.internal.dependency
 import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.internal.api.AndroidSourceSetName
 import com.android.build.gradle.internal.api.LazyAndroidSourceSet
-import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.dsl.AndroidSourceSetFactory
 import com.android.build.gradle.internal.scope.DelayedActionsExecutor
+import com.android.build.gradle.internal.services.DslServices
 import com.android.builder.errors.IssueReporter
 import org.gradle.api.Action
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ConfigurationContainer
+import org.gradle.api.artifacts.UnknownConfigurationException
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
 
@@ -148,5 +149,19 @@ class SourceSetManager(
 
     fun runBuildableArtifactsActions() {
         buildArtifactActions.runAll()
+    }
+
+    fun checkForWearAppConfigurationUsage() {
+        sourceSetsContainer.forEach { sourceSet ->
+            try {
+                if (configurations.getByName(sourceSet.wearAppConfigurationName).allDependencies.isNotEmpty()) {
+                    val message =
+                        "${sourceSet.wearAppConfigurationName} configuration is deprecated and planned to be removed in AGP 9.0. Please do not add any dependencies to it. "
+                    dslServices.issueReporter.reportWarning(IssueReporter.Type.GENERIC, message)
+                }
+            } catch (e: UnknownConfigurationException) {
+                // do nothing
+            }
+        }
     }
 }

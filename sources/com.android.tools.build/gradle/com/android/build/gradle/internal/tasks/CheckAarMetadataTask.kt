@@ -117,6 +117,9 @@ abstract class CheckAarMetadataTask : NonIncrementalTask() {
     abstract val compileSdkVersion: Property<String>
 
     @get:Input
+    abstract val checkCoreLibraryDesugaring: Property<Boolean>
+
+    @get:Input
     abstract val coreLibraryDesugaringEnabled: Property<Boolean>
 
     @get:Input
@@ -156,6 +159,7 @@ abstract class CheckAarMetadataTask : NonIncrementalTask() {
             it.aarFormatVersion.set(aarFormatVersion)
             it.aarMetadataVersion.set(aarMetadataVersion)
             it.compileSdkVersion.set(compileSdkVersion)
+            it.checkCoreLibraryDesugaring.set(checkCoreLibraryDesugaring)
             it.coreLibraryDesugaringEnabled.set(coreLibraryDesugaringEnabled)
             it.platformSdkExtension.set(platformSdkExtension)
             it.platformSdkApiLevel.set(platformSdkApiLevel)
@@ -206,6 +210,9 @@ abstract class CheckAarMetadataTask : NonIncrementalTask() {
             task.aarMetadataVersion.setDisallowChanges(AarMetadataTask.AAR_METADATA_VERSION)
             task.compileSdkVersion.setDisallowChanges(creationConfig.global.compileSdkHashString)
             task.agpVersion.setDisallowChanges(Version.ANDROID_GRADLE_PLUGIN_VERSION)
+            // Only enforcing core library desugaring for components producing apk to ensure
+            // it runs with old versions of android.
+            task.checkCoreLibraryDesugaring.setDisallowChanges(creationConfig.componentType.isApk)
             val coreLibraryDesugaringEnabled =
                 if (creationConfig is DeviceTestCreationConfig) {
                     creationConfig.dexing.isCoreLibraryDesugaringEnabled
@@ -556,7 +563,7 @@ abstract class CheckAarMetadataWorkAction: WorkAction<CheckAarMetadataWorkParame
 
         val coreLibraryDesugaringEnabled = aarMetadataReader.coreLibraryDesugaringEnabled
 
-        if (coreLibraryDesugaringEnabled != null) {
+        if (coreLibraryDesugaringEnabled != null && parameters.checkCoreLibraryDesugaring.get()) {
             if (coreLibraryDesugaringEnabled.toBoolean()
                 && !parameters.coreLibraryDesugaringEnabled.get())
             {
@@ -640,6 +647,7 @@ abstract class CheckAarMetadataWorkParameters: WorkParameters {
     abstract val projectPath: Property<String>
     abstract val disableCompileSdkChecks: Property<Boolean>
     abstract val disallowedAsarArtifacts: ListProperty<String>
+    abstract val checkCoreLibraryDesugaring: Property<Boolean>
 }
 
 data class AarMetadataReader(val inputStream: InputStream) {

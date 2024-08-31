@@ -24,7 +24,7 @@ import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInternalArtifactType
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.ProjectOptions
@@ -98,7 +98,7 @@ abstract class AppMetadataTask : NonIncrementalTask() {
 
     class PrivacySandboxSdkCreationAction(
         private val creationConfig: PrivacySandboxSdkVariantScope
-    ) : TaskCreationAction<AppMetadataTask>() {
+    ) : AndroidVariantTaskCreationAction<AppMetadataTask>() {
         override val type = AppMetadataTask::class.java
         override val name = "writeAppMetadata"
 
@@ -111,7 +111,7 @@ abstract class AppMetadataTask : NonIncrementalTask() {
         }
 
         override fun configure(task: AppMetadataTask) {
-            task.configureVariantProperties("", task.project.gradle.sharedServices)
+            super.configure(task)
             task.configureTaskInputs(creationConfig.services.projectOptions)
         }
     }
@@ -120,7 +120,7 @@ abstract class AppMetadataTask : NonIncrementalTask() {
     class CreationForAssetPackBundleAction(
         private val artifacts: ArtifactsImpl,
         private val projectOptions: ProjectOptions,
-    ) : TaskCreationAction<AppMetadataTask>() {
+    ) : AndroidVariantTaskCreationAction<AppMetadataTask>() {
         override val type = AppMetadataTask::class.java
         override val name = "writeAppMetadata"
 
@@ -130,7 +130,7 @@ abstract class AppMetadataTask : NonIncrementalTask() {
         }
 
         override fun configure(task: AppMetadataTask) {
-            task.configureVariantProperties("", task.project.gradle.sharedServices)
+            super.configure(task)
             task.configureTaskInputs(projectOptions)
         }
     }

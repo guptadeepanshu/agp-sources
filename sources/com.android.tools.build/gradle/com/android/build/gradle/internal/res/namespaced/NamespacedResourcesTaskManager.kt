@@ -100,7 +100,7 @@ class NamespacedResourcesTaskManager(
            )
        )
         if (packageOutputType != null) {
-            creationConfig.artifacts.republish(InternalArtifactType.PROCESSED_RES, packageOutputType)
+            creationConfig.artifacts.republish(InternalArtifactType.LINKED_RESOURCES_BINARY_FORMAT, packageOutputType)
         }
     }
 
@@ -108,7 +108,7 @@ class NamespacedResourcesTaskManager(
             packageOutputType: Artifact.Single<Directory>?) {
         taskFactory.register(ProcessAndroidAppResourcesTask.CreationAction(creationConfig))
         if (packageOutputType != null) {
-            creationConfig.artifacts.republish(InternalArtifactType.PROCESSED_RES, packageOutputType)
+            creationConfig.artifacts.republish(InternalArtifactType.LINKED_RESOURCES_BINARY_FORMAT, packageOutputType)
         }
     }
 

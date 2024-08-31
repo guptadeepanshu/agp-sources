@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.res
 
+import com.android.SdkConstants
 import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
 import com.android.build.gradle.internal.AndroidJarInput
 import com.android.build.gradle.internal.component.ApkCreationConfig
@@ -38,7 +39,6 @@ import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.internal.utils.toImmutableList
 import com.android.build.gradle.options.BooleanOption
-import com.android.build.gradle.options.StringOption
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.core.ComponentTypeImpl
 import com.android.builder.internal.aapt.AaptOptions
@@ -88,7 +88,7 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
     abstract val manifestMergeBlameFile: RegularFileProperty
 
     @get:OutputFile
-    abstract val bundledResFile: RegularFileProperty
+    abstract val linkedResourcesOutputFile: RegularFileProperty
 
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
@@ -126,7 +126,7 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
 
         val manifestFile = manifestFile.get().asFile
 
-        val outputFile = bundledResFile.get().asFile
+        val outputFile = linkedResourcesOutputFile.get().asFile
         FileUtils.mkdirs(outputFile.parentFile)
 
         val featurePackagesBuilder = ImmutableList.builder<File>()
@@ -232,8 +232,9 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
             super.handleProvider(taskProvider)
             creationConfig.artifacts.setInitialProvider(
                 taskProvider,
-                LinkAndroidResForBundleTask::bundledResFile
-            ).withName("bundled-res.ap_").on(InternalArtifactType.LINKED_RES_FOR_BUNDLE)
+                LinkAndroidResForBundleTask::linkedResourcesOutputFile
+            ).withName("linked-resources-proto-format${SdkConstants.DOT_RES}")
+                .on(InternalArtifactType.LINKED_RESOURCES_FOR_BUNDLE_PROTO_FORMAT)
         }
 
         override fun configure(

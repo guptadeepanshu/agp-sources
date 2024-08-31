@@ -191,12 +191,12 @@ private fun CxxAbiModel.calculateConfigurationHash() : CxxAbiModel {
         .replace(NDK_ABI.ref, "\$ABI")
         .replace(NDK_CONFIGURATION_HASH.ref, "\$HASH")
 
-    if (variant.module.cmake != null) {
+    if (variant.module.cmake?.cmakeExe != null) {
         header +=             """
             #   - ${'$'}CMAKE is the path to CMake ${variant.module.cmake.minimumCmakeVersion}.
 
             """.trimIndent()
-        arguments = arguments.replace(variant.module.cmake.cmakeExe!!.path, "\$CMAKE")
+        arguments = arguments.replace(variant.module.cmake.cmakeExe.path, "\$CMAKE")
 
     }
 
@@ -217,7 +217,7 @@ private fun CxxAbiModel.calculateConfigurationHash() : CxxAbiModel {
 }
 
 /**
- * Finally, expand all of the post-hash macros.
+ * Finally, expand all the post-hash macros.
  */
 private fun CxxAbiModel.expandConfigurationHashMacros() : CxxAbiModel {
     val result = rewrite { _, value ->
@@ -460,7 +460,7 @@ private fun CxxProjectModel.rewrite(rewrite : (property: ModelField, value: Stri
 )
 
 // Rewriter for CxxCmakeModuleModel
-private fun CxxCmakeModuleModel.rewrite(rewrite : (property: ModelField, String: String) -> String) = copy(
+private fun CxxCmakeModuleModel.rewrite(rewrite : (property: ModelField, string: String) -> String) = copy(
         cmakeExe = rewrite.fileOrNull(CXX_CMAKE_MODULE_MODEL_CMAKE_EXE, cmakeExe),
 )
 

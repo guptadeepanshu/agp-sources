@@ -35,11 +35,13 @@ import com.android.build.gradle.internal.core.ProductFlavor
 import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.BuildFeatureValues
+import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.variant.VariantPathHelper
 import com.android.builder.core.ComponentType
+import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Provider
 import java.io.File
@@ -146,6 +148,12 @@ interface ComponentCreationConfig : ComponentIdentity {
 
     /** Publish intermediate artifacts in the BuildArtifactsHolder based on PublishingSpecs.  */
     fun publishBuildArtifacts()
+
+    /**
+     * Returns the Kotlinc output directory if built-in Kotlin support is enabled, or null if not.
+     */
+    fun getBuiltInKotlincOutput(): Provider<Directory>? =
+        artifacts.get(InternalArtifactType.KOTLINC).takeIf { useBuiltInKotlinSupport }
 
     // ---------------------------------------------------------------------------------------------
     // LEGACY SUPPORT

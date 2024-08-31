@@ -18,7 +18,7 @@ package com.android.build.gradle.internal.component
 
 import com.android.build.api.variant.Component
 import com.android.build.gradle.internal.dsl.ModulePropertyKey.OptionalBoolean
-import com.android.build.gradle.options.BooleanOption
+import com.android.build.gradle.options.OptionalBooleanOption
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Provider
@@ -35,14 +35,18 @@ interface VariantCreationConfig: ConsumableCreationConfig {
     ): T
 
     /**
-     * Whether to use K2 UAST when running lint for this component or its nested components.
+     * Whether to use K2 UAST when running lint for this component or its nested components. This
+     * provider will only be set if [OptionalBooleanOption.LINT_USE_K2_UAST] or
+     * [OptionalBoolean.LINT_USE_K2_UAST] is set.
+     *
+     * If unset, K2 UAST will be used when running lint iff the corresponding kotlin language
+     * version is at least 2.0.
      */
-    val useK2Uast: Provider<Boolean>
-        get() =
-            experimentalProperties.zip(
-                services.projectOptions.getProvider(BooleanOption.LINT_USE_K2_UAST)
-            ) { experimentalProperties, lintUseK2UastBooleanOption ->
-                OptionalBoolean.LINT_USE_K2_UAST.getValue(experimentalProperties)
-                    ?: lintUseK2UastBooleanOption
-            }
+    val lintUseK2UastManualSetting: Provider<Boolean> get() {
+        // Ignore the type mismatch warning because the Gradle docs say "May return null"
+        return experimentalProperties.map {
+            OptionalBoolean.LINT_USE_K2_UAST.getValue(it) ?:
+                services.projectOptions.get(OptionalBooleanOption.LINT_USE_K2_UAST)
+        }
+    }
 }

@@ -27,6 +27,7 @@ import com.android.build.gradle.internal.services.AndroidLocationsBuildService
 import com.android.build.gradle.internal.services.BaseServices
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.signing.SigningConfigData
+import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
@@ -217,7 +218,7 @@ abstract class ValidateSigningTask : NonIncrementalTask() {
     class PrivacySandboxSdkCreationAction(
             private val artifacts: ArtifactsImpl,
             private val services: BaseServices
-    ) : TaskCreationAction<ValidateSigningTask>() {
+    ) : AndroidVariantTaskCreationAction<ValidateSigningTask>() {
 
         constructor(config: GlobalTaskCreationConfig) : this(config.globalArtifacts, config.services)
         constructor(scope: PrivacySandboxSdkVariantScope): this(scope.artifacts, scope.services)
@@ -241,8 +242,7 @@ abstract class ValidateSigningTask : NonIncrementalTask() {
         override fun configure(
                 task: ValidateSigningTask
         ) {
-            task.configureVariantProperties("", task.project.gradle.sharedServices)
-
+            super.configure(task)
 
             val signingConfigDataProvider: Provider<SigningConfigData> = getBuildService(
                     services.buildServiceRegistry,

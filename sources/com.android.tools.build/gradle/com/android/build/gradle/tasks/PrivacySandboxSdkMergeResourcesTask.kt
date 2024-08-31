@@ -24,11 +24,10 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.res.Aapt2FromMaven
 import com.android.build.gradle.internal.services.Aapt2Input
 import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.Workers
-import com.android.build.gradle.internal.tasks.configureVariantProperties
-import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.ide.common.workers.WorkerExecutorFacade
@@ -113,7 +112,7 @@ abstract class PrivacySandboxSdkMergeResourcesTask : NonIncrementalTask() {
     }
 
     class CreationAction(val creationConfig: PrivacySandboxSdkVariantScope) :
-            TaskCreationAction<PrivacySandboxSdkMergeResourcesTask>() {
+            AndroidVariantTaskCreationAction<PrivacySandboxSdkMergeResourcesTask>() {
 
         override val name: String
             get() = "mergeAndCompileResources"
@@ -137,7 +136,8 @@ abstract class PrivacySandboxSdkMergeResourcesTask : NonIncrementalTask() {
         }
 
         override fun configure(task: PrivacySandboxSdkMergeResourcesTask) {
-            task.configureVariantProperties("", task.project.gradle.sharedServices)
+            super.configure(task)
+
             task.aapt2.let { aapt2Input ->
                 aapt2Input.buildService.setDisallowChanges(
                         getBuildService(task.project.gradle.sharedServices)

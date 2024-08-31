@@ -71,6 +71,7 @@ import com.android.build.gradle.options.ProjectOptionService
 import com.android.build.gradle.options.ProjectOptions
 import com.android.build.gradle.options.SyncOptions
 import com.android.tools.lint.model.LintModelArtifactType
+import com.android.utils.appendCapitalized
 import com.android.utils.usLocaleCapitalize
 import com.google.wireless.android.sdk.stats.GradleBuildProject
 import org.gradle.api.Action
@@ -198,6 +199,27 @@ abstract class LintPlugin : Plugin<Project> {
             val isPerComponentLintAnalysis =
                 kotlinExtensionWrapper != null
                         || taskCreationServices.projectOptions.get(LINT_ANALYSIS_PER_COMPONENT)
+            val kmpJvmTargetNames: List<String>? =
+                kotlinExtensionWrapper?.kotlinExtension
+                    ?.targets
+                    ?.filter {
+                        it.platformType == KotlinPlatformType.jvm
+                                && it.name != KotlinMultiplatformAndroidPlugin.ANDROID_TARGET_NAME
+                    }
+                    ?.map { it.name }
+                    ?.sorted()
+            // uastReferenceKotlinCompileTaskName is the name of KotlinCompile task used as a
+            // reference when deciding whether to use K2 UAST.
+            // There can be multiple "main" kotlin compile tasks if it's a KMP project. If
+            // different kotlin compile tasks use different language versions, we use the
+            // language version of the first kotlin compile task instead of potentially mixing
+            // versions of UAST in the lint tasks.
+            val uastReferenceKotlinCompileTaskName =
+                if (!kmpJvmTargetNames.isNullOrEmpty()) {
+                    "compileKotlin".appendCapitalized(kmpJvmTargetNames[0])
+                } else {
+                    "compileKotlin"
+                }
             val updateLintBaselineJvmTask =
                 project.tasks.register("updateLintBaselineJvm", AndroidLintTask::class.java) { task ->
                     task.description = "Updates the JVM lint baseline for project `${project.name}`."
@@ -220,7 +242,8 @@ abstract class LintPlugin : Plugin<Project> {
                         } else {
                             null
                         },
-                        LintMode.UPDATE_BASELINE
+                        LintMode.UPDATE_BASELINE,
+                        uastReferenceKotlinCompileTaskName
                     )
                 }
             updateLintBaselineTask.dependsOn(updateLintBaselineJvmTask)
@@ -246,7 +269,8 @@ abstract class LintPlugin : Plugin<Project> {
                     } else {
                         null
                     },
-                    LintMode.REPORTING
+                    LintMode.REPORTING,
+                    uastReferenceKotlinCompileTaskName
                 )
                 task.mustRunAfter(updateLintBaselineJvmTask)
             }.also {
@@ -258,7 +282,7 @@ abstract class LintPlugin : Plugin<Project> {
                     it,
                     artifacts,
                     null,
-                    project.buildDir.resolve("reports")
+                    projectServices.projectInfo.buildDirectory.dir("reports")
                 )
             }
 
@@ -285,6 +309,7 @@ abstract class LintPlugin : Plugin<Project> {
                     unitTestPartialResults = null,
                     unitTestLintModel = null,
                     LintMode.REPORTING,
+                    uastReferenceKotlinCompileTaskName,
                     fatalOnly = true
                 )
                 task.mustRunAfter(updateLintBaselineTask)
@@ -320,21 +345,14 @@ abstract class LintPlugin : Plugin<Project> {
                             null
                         },
                         LintMode.REPORTING,
+                        uastReferenceKotlinCompileTaskName,
                         autoFix = true
                     )
                     task.mustRunAfter(updateLintBaselineJvmTask)
                 }
             lintFixTask.dependsOn(lintFixJvmTask)
 
-            val jvmTargetNames: List<String> =
-                kotlinExtensionWrapper?.kotlinExtension
-                    ?.targets
-                    ?.filter {
-                        it.platformType == KotlinPlatformType.jvm
-                                && it.name != KotlinMultiplatformAndroidPlugin.ANDROID_TARGET_NAME
-                    }
-                    ?.map { it.name }
-                    ?: listOf("jvm")
+            val jvmTargetNames = kmpJvmTargetNames ?: listOf("jvm")
 
             if (isPerComponentLintAnalysis) {
                 for (jvmTargetName in jvmTargetNames) {
@@ -353,7 +371,8 @@ abstract class LintPlugin : Plugin<Project> {
                                 lintOptions!!,
                                 LintModelArtifactType.MAIN,
                                 fatalOnly = false,
-                                jvmTargetName
+                                jvmTargetName,
+                                uastReferenceKotlinCompileTaskName
                             )
                         }
                     AndroidLintAnalysisTask.registerOutputArtifacts(
@@ -470,6 +489,7 @@ abstract class LintPlugin : Plugin<Project> {
                                     LintModelArtifactType.UNIT_TEST,
                                     fatalOnly = false,
                                     jvmTargetName,
+                                    uastReferenceKotlinCompileTaskName,
                                     testCompileClasspath,
                                     testRuntimeClasspath
                                 )
@@ -538,7 +558,8 @@ abstract class LintPlugin : Plugin<Project> {
                                 lintOptions!!,
                                 LintModelArtifactType.MAIN,
                                 fatalOnly = true,
-                                jvmTargetName
+                                jvmTargetName,
+                                uastReferenceKotlinCompileTaskName
                             )
                         }
                     AndroidLintAnalysisTask.registerOutputArtifacts(
@@ -603,7 +624,8 @@ abstract class LintPlugin : Plugin<Project> {
                             lintOptions!!,
                             lintModelArtifactType = null,
                             fatalOnly = false,
-                            jvmTargetName = null
+                            jvmTargetName = null,
+                            uastReferenceKotlinCompileTaskName
                         )
                     }
                 AndroidLintAnalysisTask.registerOutputArtifacts(
@@ -634,7 +656,8 @@ abstract class LintPlugin : Plugin<Project> {
                             lintOptions!!,
                             lintModelArtifactType = null,
                             fatalOnly = true,
-                            jvmTargetName = null
+                            jvmTargetName = null,
+                            uastReferenceKotlinCompileTaskName
                         )
                     }
                 AndroidLintAnalysisTask.registerOutputArtifacts(

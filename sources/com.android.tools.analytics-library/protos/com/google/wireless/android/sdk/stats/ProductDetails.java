@@ -503,6 +503,14 @@ private static final long serialVersionUID = 0L;
      * <code>CUSTOM = 7;</code>
      */
     CUSTOM(7),
+    /**
+     * <code>DARK = 8;</code>
+     */
+    DARK(8),
+    /**
+     * <code>LIGHT_WITH_LIGHT_HEADER = 9;</code>
+     */
+    LIGHT_WITH_LIGHT_HEADER(9),
     ;
 
     /**
@@ -537,6 +545,14 @@ private static final long serialVersionUID = 0L;
      * <code>CUSTOM = 7;</code>
      */
     public static final int CUSTOM_VALUE = 7;
+    /**
+     * <code>DARK = 8;</code>
+     */
+    public static final int DARK_VALUE = 8;
+    /**
+     * <code>LIGHT_WITH_LIGHT_HEADER = 9;</code>
+     */
+    public static final int LIGHT_WITH_LIGHT_HEADER_VALUE = 9;
 
 
     public final int getNumber() {
@@ -567,6 +583,8 @@ private static final long serialVersionUID = 0L;
         case 5: return GTK;
         case 6: return HIGH_CONTRAST;
         case 7: return CUSTOM;
+        case 8: return DARK;
+        case 9: return LIGHT_WITH_LIGHT_HEADER;
         default: return null;
       }
     }

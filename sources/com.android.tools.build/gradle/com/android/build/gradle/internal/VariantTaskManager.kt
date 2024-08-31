@@ -358,12 +358,13 @@ abstract class VariantTaskManager<VariantBuilderT : VariantBuilder, VariantT : V
                     .services
                     .issueReporter
                     .reportError(
-                        IssueReporter.Type.GENERIC,
+                        IssueReporter.Type.MISSING_COMPOSE_COMPILER_GRADLE_PLUGIN,
                         """
                             Starting in Kotlin 2.0, the Compose Compiler Gradle plugin is required
                             when compose is enabled. See the following link for more information:
                             https://d.android.com/r/studio-ui/compose-compiler
-                        """.trimIndent()
+                        """.trimIndent(),
+                        kotlinVersion.toString()
                     )
         }
 

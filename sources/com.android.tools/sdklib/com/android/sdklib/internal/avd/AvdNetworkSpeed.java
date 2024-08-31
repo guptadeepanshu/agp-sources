@@ -22,7 +22,7 @@ import java.util.Locale;
 /**
  * A list of supported Network standards, which, if set, dictate maximum emulator network speeds.
  */
-public enum AvdNetworkSpeed {
+public enum AvdNetworkSpeed implements ConfigEnum {
   FULL("Full"),  // Emulator won't restrict network speed
   LTE("LTE"), // Long Term Evolution (4G)
   HSDPA("HSDPA"), // High-Speed Downlink Packet Access (3.5G)
@@ -50,6 +50,7 @@ public enum AvdNetworkSpeed {
   /**
    * The value needs to be converted before sent off to the emulator as a valid parameter
    */
+  @Override
   @NonNull
   public String getAsParameter() {
     return myName.toLowerCase(Locale.US);

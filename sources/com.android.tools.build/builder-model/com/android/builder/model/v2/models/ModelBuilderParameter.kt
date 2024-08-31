@@ -91,26 +91,3 @@ interface ModelBuilderParameter {
      */
     var dontBuildHostTestRuntimeClasspath: Map<String, Boolean>
 }
-
-/**
- * Utility enum for pre-set values for which runtime classpaths to build in the model builder.
- */
-enum class ClasspathParameterConfig(
-    private val mainRuntime: Boolean,
-    private val androidTestRuntime: Boolean,
-    private val testFixturesRuntime: Boolean,
-    private val hostTestsRuntime: Map<String, Boolean>,
-) {
-    ALL(true, true, true, mapOf("UnitTest" to true, "ScreenshotTest" to true)),
-    ANDROID_TEST_ONLY(false,true, false, mapOf("UnitTest" to false, "ScreenshotTest" to false)),
-    NONE(false, false, false, mapOf("UnitTest" to false, "ScreenshotTest" to false));
-
-    fun applyTo(param: ModelBuilderParameter) {
-        param.dontBuildRuntimeClasspath = !mainRuntime
-        param.dontBuildUnitTestRuntimeClasspath = !hostTestsRuntime["UnitTest"]!!
-        param.dontBuildScreenshotTestRuntimeClasspath = !hostTestsRuntime["ScreenshotTest"]!!
-        param.dontBuildAndroidTestRuntimeClasspath = !androidTestRuntime
-        param.dontBuildTestFixtureRuntimeClasspath = !testFixturesRuntime
-        param.dontBuildHostTestRuntimeClasspath = hostTestsRuntime.mapValues { entry -> !entry.value }
-    }
-}

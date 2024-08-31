@@ -20,16 +20,19 @@ import com.android.build.api.dsl.AarMetadata
 import com.android.build.gradle.internal.tasks.AarMetadataReader
 import com.android.build.gradle.internal.tasks.AarMetadataTask
 import com.android.build.gradle.internal.tasks.writeAarMetadataFile
-import org.gradle.internal.impldep.org.eclipse.jgit.util.FileUtils
 import org.gradle.util.GradleVersion
 import java.io.File
-import java.util.zip.ZipEntry
-import java.util.zip.ZipFile
-import java.util.zip.ZipOutputStream
 import kotlin.math.max
 
-internal fun writeMergedMetadata(metadataFiles: Collection<File>, outputFile: File) {
+internal fun writeMergedMetadata(
+    metadataFiles: Collection<File>,
+    outputFile: File,
+    overrideMinAgp: String?,
+    overrideMinCompileSdk: Int?,
+    overrideMinCompileExt: Int?
+) {
     val parsedAarsMetadata = metadataFiles.map { AarMetadataReader(it) }
+
     val mergedMetadata = object : AarMetadata {
         override var minCompileSdk: Int? = 0 // No minimum restriction.
         override var minCompileSdkExtension: Int? =
@@ -54,6 +57,11 @@ internal fun writeMergedMetadata(metadataFiles: Collection<File>, outputFile: Fi
         mergedMetadata.minCompileSdkExtension = max(
                 mergedMetadata.minCompileSdkExtension!!,
                 metadataFile.minCompileSdkExtension!!.toInt())
+    }
+    if (overrideMinAgp != null || overrideMinCompileSdk != null || overrideMinCompileExt != null) {
+        mergedMetadata.minAgpVersion = overrideMinAgp
+        mergedMetadata.minCompileSdk = overrideMinCompileSdk
+        mergedMetadata.minCompileSdkExtension = overrideMinCompileExt
     }
     writeAarMetadataFile(
             outputFile,

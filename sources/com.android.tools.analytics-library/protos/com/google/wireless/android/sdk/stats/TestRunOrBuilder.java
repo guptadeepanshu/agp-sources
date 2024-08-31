@@ -238,4 +238,48 @@ public interface TestRunOrBuilder extends
    * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
    */
   com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRunOrBuilder getPreviewScreenshotRunOrBuilder();
+
+  /**
+   * <pre>
+   * Only set when test_kind=INSTRUMENTATION_TEST
+   * </pre>
+   *
+   * <code>repeated .android_studio.DeviceTestSpanProfile device_test_span_profiles = 11;</code>
+   */
+  java.util.List<com.google.wireless.android.sdk.stats.DeviceTestSpanProfile> 
+      getDeviceTestSpanProfilesList();
+  /**
+   * <pre>
+   * Only set when test_kind=INSTRUMENTATION_TEST
+   * </pre>
+   *
+   * <code>repeated .android_studio.DeviceTestSpanProfile device_test_span_profiles = 11;</code>
+   */
+  com.google.wireless.android.sdk.stats.DeviceTestSpanProfile getDeviceTestSpanProfiles(int index);
+  /**
+   * <pre>
+   * Only set when test_kind=INSTRUMENTATION_TEST
+   * </pre>
+   *
+   * <code>repeated .android_studio.DeviceTestSpanProfile device_test_span_profiles = 11;</code>
+   */
+  int getDeviceTestSpanProfilesCount();
+  /**
+   * <pre>
+   * Only set when test_kind=INSTRUMENTATION_TEST
+   * </pre>
+   *
+   * <code>repeated .android_studio.DeviceTestSpanProfile device_test_span_profiles = 11;</code>
+   */
+  java.util.List<? extends com.google.wireless.android.sdk.stats.DeviceTestSpanProfileOrBuilder> 
+      getDeviceTestSpanProfilesOrBuilderList();
+  /**
+   * <pre>
+   * Only set when test_kind=INSTRUMENTATION_TEST
+   * </pre>
+   *
+   * <code>repeated .android_studio.DeviceTestSpanProfile device_test_span_profiles = 11;</code>
+   */
+  com.google.wireless.android.sdk.stats.DeviceTestSpanProfileOrBuilder getDeviceTestSpanProfilesOrBuilder(
+      int index);
 }

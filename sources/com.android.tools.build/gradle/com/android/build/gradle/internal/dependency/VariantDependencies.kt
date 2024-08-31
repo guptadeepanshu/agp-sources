@@ -562,7 +562,7 @@ class VariantDependencies internal constructor(
                 ConsumedConfigType.PROVIDED_CLASSPATH ->
                     check(artifactType == PACKAGED_DEPENDENCIES
                             || artifactType == APK
-                            || artifactType == AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_EXTRACTED_SDK_APKS
+                            || artifactType == AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_APKS
                             || artifactType == AndroidArtifacts.ArtifactType.USES_SDK_LIBRARY_SPLIT_FOR_LOCAL_DEPLOYMENT
                             || artifactType == AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_COMPAT_SPLIT_APKS) {
                         "Provided classpath must only be used for from the PACKAGED_DEPENDENCIES, APKS, ANDROID_PRIVACY_SANDBOX_EXTRACTED_SDK_APKS and ANDROID_PRIVACY_SANDBOX_SDK_COMPAT_SPLIT_APKS"

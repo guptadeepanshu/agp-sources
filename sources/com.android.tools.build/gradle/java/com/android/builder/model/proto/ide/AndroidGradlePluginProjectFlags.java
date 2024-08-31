@@ -140,6 +140,14 @@ private static final long serialVersionUID = 0L;
      * <code>BUILD_FEATURE_ANDROID_RESOURCES = 8;</code>
      */
     BUILD_FEATURE_ANDROID_RESOURCES(8),
+    /**
+     * <pre>
+     * Whether constraints for library components are disabled
+     * </pre>
+     *
+     * <code>EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS = 9;</code>
+     */
+    EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS(9),
     UNRECOGNIZED(-1),
     ;
 
@@ -222,6 +230,14 @@ private static final long serialVersionUID = 0L;
      * <code>BUILD_FEATURE_ANDROID_RESOURCES = 8;</code>
      */
     public static final int BUILD_FEATURE_ANDROID_RESOURCES_VALUE = 8;
+    /**
+     * <pre>
+     * Whether constraints for library components are disabled
+     * </pre>
+     *
+     * <code>EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS = 9;</code>
+     */
+    public static final int EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS_VALUE = 9;
 
 
     public final int getNumber() {
@@ -257,6 +273,7 @@ private static final long serialVersionUID = 0L;
         case 6: return USE_ANDROID_X;
         case 7: return ENABLE_VCS_INFO;
         case 8: return BUILD_FEATURE_ANDROID_RESOURCES;
+        case 9: return EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS;
         default: return null;
       }
     }

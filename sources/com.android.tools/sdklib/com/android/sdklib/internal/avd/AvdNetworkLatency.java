@@ -24,7 +24,7 @@ import java.util.Locale;
  *
  * @see AvdNetworkSpeed
  */
-public enum AvdNetworkLatency {
+public enum AvdNetworkLatency implements ConfigEnum {
   NONE("None"), // No latency restriction
   UMTS("UMTS"),
   EDGE("EDGE"),
@@ -48,6 +48,7 @@ public enum AvdNetworkLatency {
   /**
    * The value needs to be converted before sent off to the emulator as a valid parameter
    */
+  @Override
   @NonNull
   public String getAsParameter() {
     return myName.toLowerCase(Locale.US);

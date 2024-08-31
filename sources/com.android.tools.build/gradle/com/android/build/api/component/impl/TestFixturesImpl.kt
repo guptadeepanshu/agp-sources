@@ -84,12 +84,12 @@ open class TestFixturesImpl @Inject constructor(
     override val description: String
         get() = if (productFlavorList.isNotEmpty()) {
             val sb = StringBuilder(50)
-            dslInfo.componentIdentity.buildType?.let { sb.appendCapitalized(it) }
+            componentIdentity.buildType?.let { sb.appendCapitalized(it) }
             sb.append(" build for flavor ")
-            dslInfo.componentIdentity.flavorName?.let { sb.appendCapitalized(it) }
+            componentIdentity.flavorName?.let { sb.appendCapitalized(it) }
             sb.toString()
         } else {
-            dslInfo.componentIdentity.buildType!!.capitalizeAndAppend(" build")
+            componentIdentity.buildType!!.capitalizeAndAppend(" build")
         }
 
     // test fixtures doesn't exist in the old variant api

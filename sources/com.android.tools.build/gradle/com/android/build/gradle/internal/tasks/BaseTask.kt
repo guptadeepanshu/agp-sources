@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.tasks
 
+import com.android.build.gradle.internal.caching.DisabledCachingReason
 import com.android.build.gradle.internal.profile.AnalyticsService
 import com.google.wireless.android.sdk.stats.GradleBuildProfileSpan
 import org.gradle.api.DefaultTask
@@ -33,7 +34,7 @@ import javax.inject.Inject
  * - [NonIncrementalTask] -- variant aware task
  * - [NonIncrementalGlobalTask] -- non variant aware task
  */
-@DisableCachingByDefault
+@DisableCachingByDefault(because = DisabledCachingReason.BASE_TASK)
 abstract class BaseTask : DefaultTask() {
     @get:Internal("only for task execution")
     abstract val projectPath: Property<String>

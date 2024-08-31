@@ -16,7 +16,7 @@
 
 package com.android.build.gradle.internal.tasks
 
-import com.android.buildanalyzer.common.TaskCategory
+import com.android.build.gradle.internal.caching.DisabledCachingReason
 import org.gradle.api.tasks.TaskAction
 import org.gradle.work.DisableCachingByDefault
 
@@ -34,8 +34,7 @@ import org.gradle.work.DisableCachingByDefault
  * This means that the task implementation is responsible for ensuring that the outputs are correct
  * in that case.
  */
-@DisableCachingByDefault
-@BuildAnalyzer(primaryTaskCategory = TaskCategory.HELP)
+@DisableCachingByDefault(because = DisabledCachingReason.BASE_TASK)
 abstract class UnsafeOutputsTask(reasonToLog: String) : AndroidVariantTask() {
 
     init {
@@ -45,7 +44,6 @@ abstract class UnsafeOutputsTask(reasonToLog: String) : AndroidVariantTask() {
         }
     }
 
-    @Throws(Exception::class)
     protected abstract fun doTaskAction()
 
     @TaskAction
@@ -56,3 +54,23 @@ abstract class UnsafeOutputsTask(reasonToLog: String) : AndroidVariantTask() {
     }
 }
 
+/** Similar to [UnsafeOutputsTask] but for an [AndroidGlobalTask]. */
+@DisableCachingByDefault(because = DisabledCachingReason.BASE_TASK)
+abstract class UnsafeOutputsGlobalTask(reasonToLog: String) : AndroidGlobalTask() {
+
+    init {
+        outputs.upToDateWhen { task ->
+            task.logger.debug(reasonToLog)
+            return@upToDateWhen false
+        }
+    }
+
+    protected abstract fun doTaskAction()
+
+    @TaskAction
+    fun taskAction() {
+        recordTaskAction(analyticsService.get()) {
+            doTaskAction()
+        }
+    }
+}

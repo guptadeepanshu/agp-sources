@@ -94,6 +94,7 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
             value = dslInfo.namespace
         )
 
+    @Deprecated("Will be removed in v9.0, use the instrumentation block.")
     override fun <ParamT : InstrumentationParameters> transformClassesWith(
         classVisitorFactoryImplClass: Class<out AsmClassVisitorFactory<ParamT>>,
         scope: InstrumentationScope,
@@ -106,6 +107,7 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
         )
     }
 
+    @Deprecated("Will be removed in v9.0, use the instrumentation block.")
     override fun setAsmFramesComputationMode(mode: FramesComputationMode) {
         instrumentation.setAsmFramesComputationMode(mode)
     }
@@ -165,8 +167,7 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
     // ---------------------------------------------------------------------------------------------
     // INTERNAL API
     // ---------------------------------------------------------------------------------------------
-    override val componentType: ComponentType
-        get() = dslInfo.componentType
+    override val componentType: ComponentType = dslInfo.componentType
 
     override val dirName: String
         get() = paths.dirName

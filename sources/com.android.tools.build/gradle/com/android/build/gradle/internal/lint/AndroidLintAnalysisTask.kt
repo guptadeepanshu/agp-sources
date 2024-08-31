@@ -129,8 +129,8 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
     @get:Optional
     abstract val desugaredMethodsFiles: ConfigurableFileCollection
 
-    @get:Input
-    abstract val useK2Uast: Property<Boolean>
+    @get:Nested
+    abstract val uastInputs: UastInputs
 
     override fun doTaskAction() {
         lintTool.lintClassLoaderBuildService.get().shouldDispose = true
@@ -144,7 +144,7 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
             await = false,
             lintMode = LintMode.ANALYSIS,
             hasBaseline = projectInputs.lintOptions.baseline.orNull != null,
-            useK2Uast = useK2Uast.get(),
+            useK2Uast = uastInputs.useK2Uast,
         )
     }
 
@@ -196,7 +196,7 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
             arguments += "--stacktrace"
         }
         arguments += lintTool.initializeLintCacheDir()
-        if (useK2Uast.get()) {
+        if (uastInputs.useK2Uast) {
             arguments += "--XuseK2Uast"
         }
 
@@ -330,7 +330,7 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
                 )
             )
             task.desugaredMethodsFiles.disallowChanges()
-            task.useK2Uast.setDisallowChanges(variant.main.useK2Uast)
+            task.uastInputs.initialize(task.project, variant.main)
         }
     }
 
@@ -446,7 +446,7 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
                 )
             )
             task.desugaredMethodsFiles.disallowChanges()
-            task.useK2Uast.setDisallowChanges(mainVariant.useK2Uast)
+            task.uastInputs.initialize(task.project, mainVariant)
         }
     }
 
@@ -514,6 +514,7 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
         lintModelArtifactType: LintModelArtifactType?,
         fatalOnly: Boolean = false,
         jvmTargetName: String?,
+        uastReferenceKotlinCompileTaskName: String,
         testCompileClasspath: Configuration? = null,
         testRuntimeClasspath: Configuration? = null
     ) {
@@ -552,9 +553,11 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
             .setDisallowChanges(
                 project.layout.buildDirectory.dir("intermediates/${this.name}/android-lint-model")
             )
-        this.useK2Uast
-            .setDisallowChanges(
-                taskCreationServices.projectOptions.getProvider(BooleanOption.LINT_USE_K2_UAST)
+        this.uastInputs
+            .initializeForStandalone(
+                project,
+                taskCreationServices,
+                uastReferenceKotlinCompileTaskName
             )
     }
 

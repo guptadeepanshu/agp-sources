@@ -94,10 +94,9 @@ abstract class AppPreBuildTask : NonIncrementalTask() {
             task.runtimeDependencies.setDisallowChanges(
                     creationConfig.variantDependencies.runtimeClasspath.toIdStrings()
             )
-            task.fakeOutputDirectory.set(File(
-                creationConfig.services.projectInfo.getIntermediatesDir(),
-                "prebuild/${creationConfig.dirName}"
-            ))
+            task.fakeOutputDirectory.fileProvider(
+                creationConfig.services.projectInfo.intermediatesDirectory.map { it.dir("prebuild/${creationConfig.dirName}").asFile }
+            )
             task.fakeOutputDirectory.disallowChanges()
         }
     }

@@ -386,6 +386,38 @@ private static final long serialVersionUID = 0L;
      * @return The renderTimeMillis.
      */
     int getRenderTimeMillis();
+
+    /**
+     * <pre>
+     * Simple class name of the exception thrown in a render error, e.g.
+     * IllegalStateException or ClassNotFoundException
+     * </pre>
+     *
+     * <code>optional string render_exception_simple_name = 5;</code>
+     * @return Whether the renderExceptionSimpleName field is set.
+     */
+    boolean hasRenderExceptionSimpleName();
+    /**
+     * <pre>
+     * Simple class name of the exception thrown in a render error, e.g.
+     * IllegalStateException or ClassNotFoundException
+     * </pre>
+     *
+     * <code>optional string render_exception_simple_name = 5;</code>
+     * @return The renderExceptionSimpleName.
+     */
+    java.lang.String getRenderExceptionSimpleName();
+    /**
+     * <pre>
+     * Simple class name of the exception thrown in a render error, e.g.
+     * IllegalStateException or ClassNotFoundException
+     * </pre>
+     *
+     * <code>optional string render_exception_simple_name = 5;</code>
+     * @return The bytes for renderExceptionSimpleName.
+     */
+    com.google.protobuf.ByteString
+        getRenderExceptionSimpleNameBytes();
   }
   /**
    * Protobuf type {@code android_studio.PreviewRefreshEvent.SinglePreviewRender}
@@ -401,6 +433,7 @@ private static final long serialVersionUID = 0L;
     }
     private SinglePreviewRender() {
       result_ = 0;
+      renderExceptionSimpleName_ = "";
     }
 
     @java.lang.Override
@@ -634,6 +667,69 @@ private static final long serialVersionUID = 0L;
       return renderTimeMillis_;
     }
 
+    public static final int RENDER_EXCEPTION_SIMPLE_NAME_FIELD_NUMBER = 5;
+    private volatile java.lang.Object renderExceptionSimpleName_;
+    /**
+     * <pre>
+     * Simple class name of the exception thrown in a render error, e.g.
+     * IllegalStateException or ClassNotFoundException
+     * </pre>
+     *
+     * <code>optional string render_exception_simple_name = 5;</code>
+     * @return Whether the renderExceptionSimpleName field is set.
+     */
+    @java.lang.Override
+    public boolean hasRenderExceptionSimpleName() {
+      return ((bitField0_ & 0x00000010) != 0);
+    }
+    /**
+     * <pre>
+     * Simple class name of the exception thrown in a render error, e.g.
+     * IllegalStateException or ClassNotFoundException
+     * </pre>
+     *
+     * <code>optional string render_exception_simple_name = 5;</code>
+     * @return The renderExceptionSimpleName.
+     */
+    @java.lang.Override
+    public java.lang.String getRenderExceptionSimpleName() {
+      java.lang.Object ref = renderExceptionSimpleName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          renderExceptionSimpleName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Simple class name of the exception thrown in a render error, e.g.
+     * IllegalStateException or ClassNotFoundException
+     * </pre>
+     *
+     * <code>optional string render_exception_simple_name = 5;</code>
+     * @return The bytes for renderExceptionSimpleName.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getRenderExceptionSimpleNameBytes() {
+      java.lang.Object ref = renderExceptionSimpleName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        renderExceptionSimpleName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -660,6 +756,9 @@ private static final long serialVersionUID = 0L;
       if (((bitField0_ & 0x00000008) != 0)) {
         output.writeInt32(4, renderTimeMillis_);
       }
+      if (((bitField0_ & 0x00000010) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, renderExceptionSimpleName_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -684,6 +783,9 @@ private static final long serialVersionUID = 0L;
       if (((bitField0_ & 0x00000008) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(4, renderTimeMillis_);
+      }
+      if (((bitField0_ & 0x00000010) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, renderExceptionSimpleName_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -720,6 +822,11 @@ private static final long serialVersionUID = 0L;
         if (getRenderTimeMillis()
             != other.getRenderTimeMillis()) return false;
       }
+      if (hasRenderExceptionSimpleName() != other.hasRenderExceptionSimpleName()) return false;
+      if (hasRenderExceptionSimpleName()) {
+        if (!getRenderExceptionSimpleName()
+            .equals(other.getRenderExceptionSimpleName())) return false;
+      }
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -748,6 +855,10 @@ private static final long serialVersionUID = 0L;
       if (hasRenderTimeMillis()) {
         hash = (37 * hash) + RENDER_TIME_MILLIS_FIELD_NUMBER;
         hash = (53 * hash) + getRenderTimeMillis();
+      }
+      if (hasRenderExceptionSimpleName()) {
+        hash = (37 * hash) + RENDER_EXCEPTION_SIMPLE_NAME_FIELD_NUMBER;
+        hash = (53 * hash) + getRenderExceptionSimpleName().hashCode();
       }
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
@@ -885,6 +996,8 @@ private static final long serialVersionUID = 0L;
         bitField0_ = (bitField0_ & ~0x00000004);
         renderTimeMillis_ = 0;
         bitField0_ = (bitField0_ & ~0x00000008);
+        renderExceptionSimpleName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -929,6 +1042,10 @@ private static final long serialVersionUID = 0L;
           result.renderTimeMillis_ = renderTimeMillis_;
           to_bitField0_ |= 0x00000008;
         }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.renderExceptionSimpleName_ = renderExceptionSimpleName_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -990,6 +1107,11 @@ private static final long serialVersionUID = 0L;
         if (other.hasRenderTimeMillis()) {
           setRenderTimeMillis(other.getRenderTimeMillis());
         }
+        if (other.hasRenderExceptionSimpleName()) {
+          bitField0_ |= 0x00000010;
+          renderExceptionSimpleName_ = other.renderExceptionSimpleName_;
+          onChanged();
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
@@ -1043,6 +1165,11 @@ private static final long serialVersionUID = 0L;
                 bitField0_ |= 0x00000008;
                 break;
               } // case 32
+              case 42: {
+                renderExceptionSimpleName_ = input.readBytes();
+                bitField0_ |= 0x00000010;
+                break;
+              } // case 42
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -1264,6 +1391,120 @@ private static final long serialVersionUID = 0L;
       public Builder clearRenderTimeMillis() {
         bitField0_ = (bitField0_ & ~0x00000008);
         renderTimeMillis_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object renderExceptionSimpleName_ = "";
+      /**
+       * <pre>
+       * Simple class name of the exception thrown in a render error, e.g.
+       * IllegalStateException or ClassNotFoundException
+       * </pre>
+       *
+       * <code>optional string render_exception_simple_name = 5;</code>
+       * @return Whether the renderExceptionSimpleName field is set.
+       */
+      public boolean hasRenderExceptionSimpleName() {
+        return ((bitField0_ & 0x00000010) != 0);
+      }
+      /**
+       * <pre>
+       * Simple class name of the exception thrown in a render error, e.g.
+       * IllegalStateException or ClassNotFoundException
+       * </pre>
+       *
+       * <code>optional string render_exception_simple_name = 5;</code>
+       * @return The renderExceptionSimpleName.
+       */
+      public java.lang.String getRenderExceptionSimpleName() {
+        java.lang.Object ref = renderExceptionSimpleName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            renderExceptionSimpleName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Simple class name of the exception thrown in a render error, e.g.
+       * IllegalStateException or ClassNotFoundException
+       * </pre>
+       *
+       * <code>optional string render_exception_simple_name = 5;</code>
+       * @return The bytes for renderExceptionSimpleName.
+       */
+      public com.google.protobuf.ByteString
+          getRenderExceptionSimpleNameBytes() {
+        java.lang.Object ref = renderExceptionSimpleName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          renderExceptionSimpleName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Simple class name of the exception thrown in a render error, e.g.
+       * IllegalStateException or ClassNotFoundException
+       * </pre>
+       *
+       * <code>optional string render_exception_simple_name = 5;</code>
+       * @param value The renderExceptionSimpleName to set.
+       * @return This builder for chaining.
+       */
+      public Builder setRenderExceptionSimpleName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        renderExceptionSimpleName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Simple class name of the exception thrown in a render error, e.g.
+       * IllegalStateException or ClassNotFoundException
+       * </pre>
+       *
+       * <code>optional string render_exception_simple_name = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearRenderExceptionSimpleName() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        renderExceptionSimpleName_ = getDefaultInstance().getRenderExceptionSimpleName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Simple class name of the exception thrown in a render error, e.g.
+       * IllegalStateException or ClassNotFoundException
+       * </pre>
+       *
+       * <code>optional string render_exception_simple_name = 5;</code>
+       * @param value The bytes for renderExceptionSimpleName to set.
+       * @return This builder for chaining.
+       */
+      public Builder setRenderExceptionSimpleNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        renderExceptionSimpleName_ = value;
         onChanged();
         return this;
       }

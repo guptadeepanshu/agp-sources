@@ -30,6 +30,7 @@ import com.android.build.gradle.internal.component.NestedComponentCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig;
 import com.android.build.gradle.internal.lint.LintMode;
 import com.android.build.gradle.internal.lint.LintTool;
+import com.android.build.gradle.internal.lint.UastInputs;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
 import com.android.build.gradle.internal.tasks.BuildAnalyzer;
 import com.android.build.gradle.internal.tasks.NonIncrementalTask;
@@ -166,8 +167,8 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
     @Input
     public abstract Property<String> getStrictTypedefRetention();
 
-    @Input
-    public abstract Property<Boolean> getUseK2Uast();
+    @Nested
+    public abstract UastInputs getUastInputs();
 
     @Override
     protected void doTaskAction() {
@@ -204,7 +205,7 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
         }
         args.add("--skip-class-retention");
         args.add("--no-sort");
-        if (getUseK2Uast().get()) {
+        if (getUastInputs().getUseK2Uast()) {
             args.add("--XuseK2Uast");
         }
         getLintTool()
@@ -213,7 +214,7 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
                         "com.android.tools.lint.annotations.ExtractAnnotationsDriver",
                         args,
                         LintMode.EXTRACT_ANNOTATIONS,
-                        getUseK2Uast().get());
+                        getUastInputs().getUseK2Uast());
     }
 
     private void addArgument(
@@ -386,17 +387,16 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
             task.sourcesFileTree = files.getAsFileTree();
 
             if (creationConfig instanceof VariantCreationConfig) {
-                task.getUseK2Uast().set(((VariantCreationConfig) creationConfig).getUseK2Uast());
+                task.getUastInputs()
+                        .initialize(task.getProject(), (VariantCreationConfig) creationConfig);
             } else if (creationConfig instanceof NestedComponentCreationConfig) {
-                task.getUseK2Uast()
-                        .set(
-                                ((NestedComponentCreationConfig) creationConfig)
-                                        .getMainVariant()
-                                        .getUseK2Uast());
+                task.getUastInputs()
+                        .initialize(
+                                task.getProject(),
+                                ((NestedComponentCreationConfig) creationConfig).getMainVariant());
             } else {
                 throw new RuntimeException("Unexpected instance of ComponentCreationConfig.");
             }
-            task.getUseK2Uast().disallowChanges();
         }
     }
 

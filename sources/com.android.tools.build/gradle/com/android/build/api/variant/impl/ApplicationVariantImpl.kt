@@ -94,8 +94,7 @@ open class ApplicationVariantImpl @Inject constructor(
 
     override val applicationId: Property<String> = dslInfo.applicationId
 
-    override val embedsMicroApp: Boolean
-        get() = dslInfo.isEmbedMicroApp
+    override val embedsMicroApp: Boolean = dslInfo.isEmbedMicroApp
 
     override val dependenciesInfo: DependenciesInfo by lazy {
         DependenciesInfoImpl(
@@ -129,12 +128,10 @@ open class ApplicationVariantImpl @Inject constructor(
         )
     }
 
-    override val publishInfo: VariantPublishingInfo?
-        get() = dslInfo.publishInfo
+    override val publishInfo: VariantPublishingInfo? = dslInfo.publishInfo
 
     override val hostTests: Map<String, HostTestCreationConfig>
         get() = internalHostTests.toImmutableMap() // immutableMap so java users cannot modify it.
-
     override val deviceTests: List<DeviceTest>
         get() = internalDeviceTests
 
@@ -205,8 +202,7 @@ open class ApplicationVariantImpl @Inject constructor(
     override val needAssetPackTasks: Boolean
         get() = global.assetPacks.isNotEmpty()
 
-    override val debuggable: Boolean
-        get() = dslInfo.isDebuggable
+    override val debuggable: Boolean = dslInfo.isDebuggable
     override val profileable: Boolean
         get() = variantBuilder._profileable
 
@@ -302,15 +298,7 @@ open class ApplicationVariantImpl @Inject constructor(
         internalServices,
     )
 
-    override val useJacocoTransformInstrumentation: Boolean
-        get() = codeCoverageEnabled
-
-    // Apps include the jacoco agent if test coverage is enabled
-    override val packageJacocoRuntime: Boolean
-        get() = codeCoverageEnabled
-
-    override val isWearAppUnbundled: Boolean?
-        get() = dslInfo.isWearAppUnbundled
+    override val isWearAppUnbundled: Boolean? = dslInfo.isWearAppUnbundled
 
     override val enableApiModeling: Boolean
         get() = isApiModelingEnabled()
@@ -318,8 +306,7 @@ open class ApplicationVariantImpl @Inject constructor(
     override val enableGlobalSynthetics: Boolean
         get() = isGlobalSyntheticsEnabled()
 
-    override val includeVcsInfo: Boolean?
-        get() = dslInfo.includeVcsInfo
+    override val includeVcsInfo: Boolean? = dslInfo.includeVcsInfo
 
     override val isForceAotCompilation: Boolean
         get() = experimentalProperties.map {

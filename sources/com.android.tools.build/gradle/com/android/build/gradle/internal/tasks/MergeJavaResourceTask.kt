@@ -28,7 +28,7 @@ import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVaria
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.JAVA_RES
-import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
@@ -272,7 +272,7 @@ abstract class MergeJavaResourceTask
 
     class FusedLibraryCreationAction(
             val creationConfig: FusedLibraryVariantScope
-    ) : TaskCreationAction<MergeJavaResourceTask>() {
+    ) : AndroidVariantTaskCreationAction<MergeJavaResourceTask>() {
 
         override val name: String
             get() = "mergeLibraryJavaResources"
@@ -289,7 +289,8 @@ abstract class MergeJavaResourceTask
         }
 
         override fun configure(task: MergeJavaResourceTask) {
-            task.configureVariantProperties("", task.project.gradle.sharedServices)
+            super.configure(task)
+
             task.subProjectJavaRes.from(
                     creationConfig.dependencies.getArtifactFileCollection(
                             Usage.JAVA_RUNTIME,
@@ -323,7 +324,7 @@ abstract class MergeJavaResourceTask
 
     class PrivacySandboxSdkCreationAction(
             val creationConfig: PrivacySandboxSdkVariantScope
-    ) : TaskCreationAction<MergeJavaResourceTask>() {
+    ) : AndroidVariantTaskCreationAction<MergeJavaResourceTask>() {
 
         override val name: String
             get() = "mergeLibraryJavaResources"
@@ -340,7 +341,8 @@ abstract class MergeJavaResourceTask
         }
 
         override fun configure(task: MergeJavaResourceTask) {
-            task.configureVariantProperties("", task.project.gradle.sharedServices)
+            super.configure(task)
+
             task.subProjectJavaRes.from(
                     creationConfig.dependencies.getArtifactFileCollection(
                             Usage.JAVA_RUNTIME,

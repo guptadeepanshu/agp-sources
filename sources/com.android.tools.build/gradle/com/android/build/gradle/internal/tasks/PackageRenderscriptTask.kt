@@ -31,7 +31,7 @@ import java.io.File
 /** task packaging the rs headers */
 @DisableCachingByDefault
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.RENDERSCRIPT, secondaryTaskCategories = [TaskCategory.ZIPPING])
-abstract class PackageRenderscriptTask : Sync(), VariantAwareTask {
+abstract class PackageRenderscriptTask : Sync(), VariantTask {
 
     @get:OutputDirectory
     abstract val headersDir: DirectoryProperty

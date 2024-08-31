@@ -27,7 +27,9 @@ import org.apache.commons.io.Charsets
 import org.gradle.api.GradleException
 import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
+import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
+import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputDirectory
@@ -50,7 +52,7 @@ abstract class CheckMultiApkLibrariesTask : NonIncrementalTask() {
 
     // include fakeOutputDir to allow up-to-date checking
     @get:OutputDirectory
-    lateinit var fakeOutputDir: File
+    lateinit var fakeOutputDir: Provider<Directory>
         private set
 
     override fun doTaskAction() {
@@ -120,12 +122,7 @@ abstract class CheckMultiApkLibrariesTask : NonIncrementalTask() {
                         AndroidArtifacts.ArtifactScope.PROJECT,
                         AndroidArtifacts.ArtifactType.PACKAGED_DEPENDENCIES
                     )
-            task.fakeOutputDir =
-                    FileUtils.join(
-                        creationConfig.services.projectInfo.getIntermediatesDir(),
-                        "check-libraries",
-                        creationConfig.dirName
-                    )
+            task.fakeOutputDir = creationConfig.services.projectInfo.intermediatesDirectory.map { it.dir("check-libraries").dir(creationConfig.dirName) }
         }
     }
 

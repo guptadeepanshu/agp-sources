@@ -218,7 +218,7 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
         private set
 
     @get:OutputDirectory
-    abstract val resPackageOutputFolder: DirectoryProperty
+    abstract val linkedResourcesOutputDir: DirectoryProperty
 
     @get:Input
     abstract val projectBaseName: Property<String>
@@ -325,7 +325,7 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
             parameters.outputStableIdsFile.set(stableIdsOutputFileProperty)
             parameters.proguardOutputFile.set(proguardOutputFile)
             parameters.rClassOutputJar.set(rClassOutputJar)
-            parameters.resPackageOutputDirectory.set(resPackageOutputFolder)
+            parameters.linkedResourcesOutputDir.set(linkedResourcesOutputDir)
             parameters.sourceOutputDirectory.set(sourceOutputDirProperty)
             parameters.symbolsWithPackageNameOutputFile.set(symbolsWithPackageNameOutputFile)
             parameters.textSymbolOutputFile.set(textSymbolOutputFileProperty)
@@ -370,7 +370,7 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
         abstract val outputStableIdsFile: RegularFileProperty
         abstract val proguardOutputFile: RegularFileProperty
         abstract val rClassOutputJar: RegularFileProperty
-        abstract val resPackageOutputDirectory: DirectoryProperty
+        abstract val linkedResourcesOutputDir: DirectoryProperty
         abstract val sourceOutputDirectory: DirectoryProperty
         abstract val symbolsWithPackageNameOutputFile: RegularFileProperty
         abstract val textSymbolOutputFile: RegularFileProperty
@@ -416,7 +416,7 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
             val manifestBuiltArtifacts = BuiltArtifactsLoaderImpl().load(parameters.manifestFiles)
                 ?: throw RuntimeException("Cannot load processed manifest files, please file a bug.")
             // 'Incremental' runs should only preserve the stable IDs file.
-            FileUtils.deleteDirectoryContents(parameters.resPackageOutputDirectory.get().asFile)
+            FileUtils.deleteDirectoryContents(parameters.linkedResourcesOutputDir.get().asFile)
 
             val outputsHandler = parameters.outputsHandler.get()
 
@@ -518,8 +518,8 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
             creationConfig.taskContainer.processAndroidResTask = taskProvider
             creationConfig.artifacts.setInitialProvider(
                 taskProvider,
-                LinkApplicationAndroidResourcesTask::resPackageOutputFolder
-            ).withName("out").on(InternalArtifactType.PROCESSED_RES)
+                LinkApplicationAndroidResourcesTask::linkedResourcesOutputDir
+            ).on(InternalArtifactType.LINKED_RESOURCES_BINARY_FORMAT)
 
             if (generatesProguardOutputFile(creationConfig)) {
                 creationConfig.artifacts.setInitialProvider(
@@ -806,7 +806,7 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
         ) {
             (BuiltArtifactsLoaderImpl.loadFromDirectory(resPackageOutputFolder)?.addElement(output)
                     ?: BuiltArtifactsImpl(
-                        artifactType = InternalArtifactType.PROCESSED_RES,
+                        artifactType = InternalArtifactType.LINKED_RESOURCES_BINARY_FORMAT,
                         applicationId = applicationId,
                         variantName = variantName,
                         elements = listOf(output)
@@ -844,9 +844,9 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
                 RES_QUALIFIER_SEP + variantOutput.fullName
             } else ""
 
-            val resOutBaseNameFile = File(
-                parameters.resPackageOutputDirectory.get().asFile,
-                FN_RES_BASE + variantName + SdkConstants.DOT_RES
+            val linkedResourcesOutputFile = File(
+                parameters.linkedResourcesOutputDir.get().asFile,
+                "linked-resources-binary-format" + variantName + SdkConstants.DOT_RES
             )
 
             val manifestFile = manifestOutput.outputFile
@@ -886,7 +886,8 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
                         .setCustomPackageForR(packageForR)
                         .setSymbolOutputDir(symbolOutputDir)
                         .setSourceOutputDir(srcOut)
-                        .setResourceOutputApk(resOutBaseNameFile)
+                        .setResourceOutputApk(linkedResourcesOutputFile)
+                        .setGenerateProtos(false)
                         .setProguardOutputFile(proguardOutputFile)
                         .setMainDexListProguardOutputFile(mainDexListProguardOutputFile)
                         .setComponentType(parameters.componentType.get())
@@ -948,7 +949,7 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
                     )
 
                     if (LOG.isInfoEnabled) {
-                        LOG.info("Aapt output file {}", resOutBaseNameFile.absolutePath)
+                        LOG.info("Aapt output file {}", linkedResourcesOutputFile.absolutePath)
                     }
                 }
 
@@ -965,10 +966,8 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
                 appendOutput(
                     parameters.applicationId.get().orEmpty(),
                     parameters.variantName.get(),
-                    manifestOutput.newOutput(
-                        resOutBaseNameFile.toPath()
-                    ),
-                    parameters.resPackageOutputDirectory.get().asFile
+                    manifestOutput.newOutput(linkedResourcesOutputFile.toPath()),
+                    parameters.linkedResourcesOutputDir.get().asFile
                 )
             } catch (e: ProcessException) {
                 throw BuildException(

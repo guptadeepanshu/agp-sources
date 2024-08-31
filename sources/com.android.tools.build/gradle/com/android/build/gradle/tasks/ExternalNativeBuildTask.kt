@@ -29,19 +29,18 @@ import com.android.build.gradle.internal.cxx.model.CxxVariantModel
 import com.android.build.gradle.internal.scope.InternalMultipleArtifactType
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.UnsafeOutputsTask
-import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationAction
-import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
+import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.errors.DefaultIssueReporter
 import com.android.utils.cxx.CxxDiagnosticCode.CONFIGURE_MORE_THAN_ONE_SO_FOLDER
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
-import org.gradle.process.ExecOperations
-import javax.inject.Inject
-import org.gradle.work.DisableCachingByDefault
-import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.tasks.TaskProvider
+import org.gradle.process.ExecOperations
+import org.gradle.work.DisableCachingByDefault
+import javax.inject.Inject
 
 /**
  * Task that performs a C/C++ build action or refers to a build from a different task.
@@ -114,10 +113,9 @@ fun createRepublishCxxBuildTask(
  */
 fun createWorkingCxxBuildTask(
     coveredVariantConfigurations: List<VariantCreationConfig>,
-    creationConfig: GlobalTaskCreationConfig,
     abi: CxxAbiModel,
     name: String
-) = object : GlobalTaskCreationAction<ExternalNativeBuildTask>(creationConfig) {
+) = object : AndroidVariantTaskCreationAction<ExternalNativeBuildTask>() {
     override val name = name
     override val type = ExternalNativeBuildTask::class.java
     override fun handleProvider(
@@ -132,8 +130,9 @@ fun createWorkingCxxBuildTask(
 
     override fun configure(task: ExternalNativeBuildTask) {
         super.configure(task)
-        task.builder = CxxRegularBuilder(abi)
         task.variantName = abi.variant.variantName
+
+        task.builder = CxxRegularBuilder(abi)
         task.variant = abi.variant
         task.soFolder.set(abi.soFolder)
     }

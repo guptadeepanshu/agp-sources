@@ -45,10 +45,6 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.process.CommandLineArgumentProvider
 
-// KAPT resolving artifacts at configuration time was fixed in version 1.5.20. For versions older
-// than that we need to workaround the issue by merging R files in a separate task.
-val KAPT_FIX_KOTLIN_VERSION: KotlinVersion = KotlinVersion(1, 5, 20)
-
 /**
  * Arguments passed to data binding. This class mimics the [CompilerArguments] class except that it
  * also implements [CommandLineArgumentProvider] for input/output annotations.
@@ -135,12 +131,6 @@ class DataBindingCompilerArguments constructor(
     @get:Input
     var isNonTransitiveR: Boolean,
 
-    // TODO(183423660): Remove after KAPT issue is fixed.
-    @get:Optional
-    @get:InputFiles
-    @get:PathSensitive(PathSensitivity.NONE)
-    val mergedDependenciesRFile: Provider<RegularFile>?,
-
     @get:Optional
     @get:InputFiles
     @get:Classpath
@@ -178,7 +168,6 @@ class DataBindingCompilerArguments constructor(
             isEnableV2 = isEnableV2,
             localR = localRFile?.orNull?.asFile,
             dependenciesRFiles = dependenciesLocalRFiles?.files?.toList(),
-            mergedDependenciesRFile = mergedDependenciesRFile?.orNull?.asFile
         ).toMap()
 
         // Don't need to sort the returned list as the order shouldn't matter to Gradle.
@@ -194,8 +183,6 @@ class DataBindingCompilerArguments constructor(
             creationConfig: ComponentCreationConfig,
             enableDebugLogs: Boolean,
             printEncodedErrorLogs: Boolean,
-            isKaptPluginApplied: Boolean,
-            projectKotlinVersion: KotlinVersion?
         ): DataBindingCompilerArguments {
             val artifacts = creationConfig.artifacts
 
@@ -206,24 +193,12 @@ class DataBindingCompilerArguments constructor(
                         artifacts.get(InternalArtifactType.LOCAL_ONLY_SYMBOL_LIST)
                     else null
 
-            // TODO(183423660): Re-enable this fully and removed merged dependencies R file after
-            //  KAPT min version is higher or equal to 1.5.20.
-            val kaptWorkaroundNeeded =
-                    isKaptPluginApplied
-                            && projectKotlinVersion != null
-                            && projectKotlinVersion < KAPT_FIX_KOTLIN_VERSION
-
             val dependenciesLocalRFiles =
-                    if (isNonTransitiveR && !kaptWorkaroundNeeded)
+                    if (isNonTransitiveR)
                         creationConfig.variantDependencies.getArtifactFileCollection(
                                 AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                                 AndroidArtifacts.ArtifactScope.ALL,
                                 AndroidArtifacts.ArtifactType.SYMBOL_LIST_WITH_PACKAGE_NAME)
-                    else null
-
-            val mergedDependenciesRFile =
-                    if (isNonTransitiveR && kaptWorkaroundNeeded)
-                        artifacts.get(InternalArtifactType.MERGED_DEPENDENCIES_SYMBOL_LIST)
                     else null
 
             return DataBindingCompilerArguments(
@@ -254,7 +229,6 @@ class DataBindingCompilerArguments constructor(
                 isEnabledForTests = creationConfig.global.dataBinding.isEnabledForTests,
                 isEnableV2 = true,
                 isNonTransitiveR = isNonTransitiveR,
-                mergedDependenciesRFile = mergedDependenciesRFile,
                 dependenciesLocalRFiles = dependenciesLocalRFiles,
                 localRFile = localRFile
             )

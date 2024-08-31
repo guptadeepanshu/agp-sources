@@ -21,13 +21,12 @@ import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.dsl.AssetPackBundleExtension
 import com.android.build.api.variant.impl.MetadataRecord
-import com.android.build.api.variant.impl.getFeatureLevel
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.ProjectServices
-import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
@@ -505,7 +504,7 @@ abstract class PackageBundleTask : NonIncrementalTask() {
         private val projectServices: ProjectServices,
         private val artifacts: ArtifactsImpl,
         private val assetPackBundle: AssetPackBundleExtension
-    ) : TaskCreationAction<PackageBundleTask>() {
+    ) : AndroidVariantTaskCreationAction<PackageBundleTask>() {
 
         override val type = PackageBundleTask::class.java
         override val name = "packageBundle"
@@ -523,7 +522,8 @@ abstract class PackageBundleTask : NonIncrementalTask() {
         override fun configure(
             task: PackageBundleTask
         ) {
-            task.configureVariantProperties(variantName = "", projectServices.buildServiceRegistry)
+            super.configure(task)
+
             task.bundleType.set(Config.BundleConfig.BundleType.ASSET_ONLY)
             task.featureZips = projectServices.objectFactory.fileCollection()
             artifacts.setTaskInputToFinalProduct(

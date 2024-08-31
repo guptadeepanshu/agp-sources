@@ -241,14 +241,35 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
                     testApplicationId,
                     instrumentationRunner)
             }
-            if (testManifestFile != null && testManifestFile.exists()) {
+
+            // There can be three types of input that combine into making the main manifest and
+            // its overlays :
+            // 1. the `testManifestFile` which is the main source file (possibly nonexistent)
+            // 2. the overlays coming from the build-type/product flavor specific source folders.
+            // 3. generated manifest files added through the variant API as a Variant specific source
+            // (1), (2) and (3) can all be null/empty or nonexistent in the file system.
+            // In case (1) does not exist, we still need to do the merging if (2) or (3) exists and
+            // in that case, we consider that the first overlay becomes the main Manifest (variant one),
+            // and we remove it from the list of overlays.
+            val overlays: List<File> = manifestOverlayFilePaths.get().filter(File::isFile)
+            // Pair of main manifest (possibly null or nonexistent) and overlays (possibly empty)
+            val mainManifestAndOverlays: Pair<File?, List<File>> =
+                if (testManifestFile == null || !testManifestFile.exists()) {
+                    Pair(overlays.firstOrNull(), if (overlays.isNotEmpty()) overlays.drop(1) else emptyList())
+                }  else {
+                    Pair(testManifestFile, overlays)
+                }
+
+            val mainManifestFile = mainManifestAndOverlays.first
+            if (mainManifestFile != null && mainManifestFile.exists()) {
                 val intermediateInvoker = ManifestMerger2.newMerger(
-                    testManifestFile,
+                    mainManifestFile,
                     logger,
                     ManifestMerger2.MergeType.APPLICATION
                 )
                     .setPlaceHolderValues(manifestPlaceholders)
-                    .addFlavorAndBuildTypeManifests(*manifestOverlayFilePaths.get().filter(File::isFile).toTypedArray())
+                    .addFlavorAndBuildTypeManifests(
+                        *mainManifestAndOverlays.second.toTypedArray())
                     .addLibraryManifest(generatedTestManifest)
                     .addAllowedNonUniqueNamespace(namespace)
                     .setOverride(ManifestSystemProperty.Document.PACKAGE, testApplicationId)

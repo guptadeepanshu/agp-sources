@@ -67,5 +67,26 @@ public interface SmlTransformEventOrBuilder extends
    */
   com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformAcceptedOrBuilder getAcceptedOrBuilder();
 
+  /**
+   * <pre>
+   * The kind of transform, which will be used to differentiate
+   * metrics for Document action, Custom transforms etc.
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlTransformEvent.TransformKind transform_kind = 5;</code>
+   * @return Whether the transformKind field is set.
+   */
+  boolean hasTransformKind();
+  /**
+   * <pre>
+   * The kind of transform, which will be used to differentiate
+   * metrics for Document action, Custom transforms etc.
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlTransformEvent.TransformKind transform_kind = 5;</code>
+   * @return The transformKind.
+   */
+  com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformKind getTransformKind();
+
   public com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformCase getTransformCase();
 }

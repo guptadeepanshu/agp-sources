@@ -22,7 +22,6 @@ import com.android.build.api.artifact.impl.InternalScopedArtifact
 import com.android.build.api.artifact.impl.InternalScopedArtifacts
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.component.ApkCreationConfig
-import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.crash.PluginCrashReporter
 import com.android.build.gradle.internal.dependency.AndroidAttributes
 import com.android.build.gradle.internal.dependency.DexingRegistration
@@ -353,9 +352,11 @@ abstract class DexMergingTask : NewIncrementalTask() {
                 )
             }
 
-            task.inputProfileForDexStartupOptimization.set(
-                creationConfig.artifacts.get(InternalArtifactType.MERGED_STARTUP_PROFILE)
-            )
+            if (!creationConfig.debuggable) {
+                task.inputProfileForDexStartupOptimization.set(
+                    creationConfig.artifacts.get(InternalArtifactType.MERGED_STARTUP_PROFILE)
+                )
+            }
         }
 
         private fun getDexDirs(

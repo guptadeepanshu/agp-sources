@@ -24,6 +24,7 @@ private static final long serialVersionUID = 0L;
     testKind_ = 0;
     gradleVersion_ = "";
     testExecution_ = 0;
+    deviceTestSpanProfiles_ = java.util.Collections.emptyList();
   }
 
   @java.lang.Override
@@ -2403,6 +2404,66 @@ private static final long serialVersionUID = 0L;
     return previewScreenshotRun_ == null ? com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun.getDefaultInstance() : previewScreenshotRun_;
   }
 
+  public static final int DEVICE_TEST_SPAN_PROFILES_FIELD_NUMBER = 11;
+  private java.util.List<com.google.wireless.android.sdk.stats.DeviceTestSpanProfile> deviceTestSpanProfiles_;
+  /**
+   * <pre>
+   * Only set when test_kind=INSTRUMENTATION_TEST
+   * </pre>
+   *
+   * <code>repeated .android_studio.DeviceTestSpanProfile device_test_span_profiles = 11;</code>
+   */
+  @java.lang.Override
+  public java.util.List<com.google.wireless.android.sdk.stats.DeviceTestSpanProfile> getDeviceTestSpanProfilesList() {
+    return deviceTestSpanProfiles_;
+  }
+  /**
+   * <pre>
+   * Only set when test_kind=INSTRUMENTATION_TEST
+   * </pre>
+   *
+   * <code>repeated .android_studio.DeviceTestSpanProfile device_test_span_profiles = 11;</code>
+   */
+  @java.lang.Override
+  public java.util.List<? extends com.google.wireless.android.sdk.stats.DeviceTestSpanProfileOrBuilder> 
+      getDeviceTestSpanProfilesOrBuilderList() {
+    return deviceTestSpanProfiles_;
+  }
+  /**
+   * <pre>
+   * Only set when test_kind=INSTRUMENTATION_TEST
+   * </pre>
+   *
+   * <code>repeated .android_studio.DeviceTestSpanProfile device_test_span_profiles = 11;</code>
+   */
+  @java.lang.Override
+  public int getDeviceTestSpanProfilesCount() {
+    return deviceTestSpanProfiles_.size();
+  }
+  /**
+   * <pre>
+   * Only set when test_kind=INSTRUMENTATION_TEST
+   * </pre>
+   *
+   * <code>repeated .android_studio.DeviceTestSpanProfile device_test_span_profiles = 11;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.DeviceTestSpanProfile getDeviceTestSpanProfiles(int index) {
+    return deviceTestSpanProfiles_.get(index);
+  }
+  /**
+   * <pre>
+   * Only set when test_kind=INSTRUMENTATION_TEST
+   * </pre>
+   *
+   * <code>repeated .android_studio.DeviceTestSpanProfile device_test_span_profiles = 11;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.DeviceTestSpanProfileOrBuilder getDeviceTestSpanProfilesOrBuilder(
+      int index) {
+    return deviceTestSpanProfiles_.get(index);
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -2446,6 +2507,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00000200) != 0)) {
       output.writeMessage(10, getPreviewScreenshotRun());
+    }
+    for (int i = 0; i < deviceTestSpanProfiles_.size(); i++) {
+      output.writeMessage(11, deviceTestSpanProfiles_.get(i));
     }
     getUnknownFields().writeTo(output);
   }
@@ -2494,6 +2558,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000200) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(10, getPreviewScreenshotRun());
+    }
+    for (int i = 0; i < deviceTestSpanProfiles_.size(); i++) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(11, deviceTestSpanProfiles_.get(i));
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -2557,6 +2625,8 @@ private static final long serialVersionUID = 0L;
       if (!getPreviewScreenshotRun()
           .equals(other.getPreviewScreenshotRun())) return false;
     }
+    if (!getDeviceTestSpanProfilesList()
+        .equals(other.getDeviceTestSpanProfilesList())) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -2609,6 +2679,10 @@ private static final long serialVersionUID = 0L;
     if (hasPreviewScreenshotRun()) {
       hash = (37 * hash) + PREVIEW_SCREENSHOT_RUN_FIELD_NUMBER;
       hash = (53 * hash) + getPreviewScreenshotRun().hashCode();
+    }
+    if (getDeviceTestSpanProfilesCount() > 0) {
+      hash = (37 * hash) + DEVICE_TEST_SPAN_PROFILES_FIELD_NUMBER;
+      hash = (53 * hash) + getDeviceTestSpanProfilesList().hashCode();
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -2745,6 +2819,7 @@ private static final long serialVersionUID = 0L;
         getTestLibrariesFieldBuilder();
         getAutomaticSnapshotOnFailureFieldBuilder();
         getPreviewScreenshotRunFieldBuilder();
+        getDeviceTestSpanProfilesFieldBuilder();
       }
     }
     @java.lang.Override
@@ -2782,6 +2857,13 @@ private static final long serialVersionUID = 0L;
         previewScreenshotRunBuilder_.clear();
       }
       bitField0_ = (bitField0_ & ~0x00000200);
+      if (deviceTestSpanProfilesBuilder_ == null) {
+        deviceTestSpanProfiles_ = java.util.Collections.emptyList();
+      } else {
+        deviceTestSpanProfiles_ = null;
+        deviceTestSpanProfilesBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000400);
       return this;
     }
 
@@ -2861,6 +2943,15 @@ private static final long serialVersionUID = 0L;
           result.previewScreenshotRun_ = previewScreenshotRunBuilder_.build();
         }
         to_bitField0_ |= 0x00000200;
+      }
+      if (deviceTestSpanProfilesBuilder_ == null) {
+        if (((bitField0_ & 0x00000400) != 0)) {
+          deviceTestSpanProfiles_ = java.util.Collections.unmodifiableList(deviceTestSpanProfiles_);
+          bitField0_ = (bitField0_ & ~0x00000400);
+        }
+        result.deviceTestSpanProfiles_ = deviceTestSpanProfiles_;
+      } else {
+        result.deviceTestSpanProfiles_ = deviceTestSpanProfilesBuilder_.build();
       }
       result.bitField0_ = to_bitField0_;
       onBuilt();
@@ -2942,6 +3033,32 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasPreviewScreenshotRun()) {
         mergePreviewScreenshotRun(other.getPreviewScreenshotRun());
+      }
+      if (deviceTestSpanProfilesBuilder_ == null) {
+        if (!other.deviceTestSpanProfiles_.isEmpty()) {
+          if (deviceTestSpanProfiles_.isEmpty()) {
+            deviceTestSpanProfiles_ = other.deviceTestSpanProfiles_;
+            bitField0_ = (bitField0_ & ~0x00000400);
+          } else {
+            ensureDeviceTestSpanProfilesIsMutable();
+            deviceTestSpanProfiles_.addAll(other.deviceTestSpanProfiles_);
+          }
+          onChanged();
+        }
+      } else {
+        if (!other.deviceTestSpanProfiles_.isEmpty()) {
+          if (deviceTestSpanProfilesBuilder_.isEmpty()) {
+            deviceTestSpanProfilesBuilder_.dispose();
+            deviceTestSpanProfilesBuilder_ = null;
+            deviceTestSpanProfiles_ = other.deviceTestSpanProfiles_;
+            bitField0_ = (bitField0_ & ~0x00000400);
+            deviceTestSpanProfilesBuilder_ = 
+              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                 getDeviceTestSpanProfilesFieldBuilder() : null;
+          } else {
+            deviceTestSpanProfilesBuilder_.addAllMessages(other.deviceTestSpanProfiles_);
+          }
+        }
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -3046,6 +3163,19 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000200;
               break;
             } // case 82
+            case 90: {
+              com.google.wireless.android.sdk.stats.DeviceTestSpanProfile m =
+                  input.readMessage(
+                      com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.PARSER,
+                      extensionRegistry);
+              if (deviceTestSpanProfilesBuilder_ == null) {
+                ensureDeviceTestSpanProfilesIsMutable();
+                deviceTestSpanProfiles_.add(m);
+              } else {
+                deviceTestSpanProfilesBuilder_.addMessage(m);
+              }
+              break;
+            } // case 90
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -4001,6 +4131,318 @@ private static final long serialVersionUID = 0L;
         previewScreenshotRun_ = null;
       }
       return previewScreenshotRunBuilder_;
+    }
+
+    private java.util.List<com.google.wireless.android.sdk.stats.DeviceTestSpanProfile> deviceTestSpanProfiles_ =
+      java.util.Collections.emptyList();
+    private void ensureDeviceTestSpanProfilesIsMutable() {
+      if (!((bitField0_ & 0x00000400) != 0)) {
+        deviceTestSpanProfiles_ = new java.util.ArrayList<com.google.wireless.android.sdk.stats.DeviceTestSpanProfile>(deviceTestSpanProfiles_);
+        bitField0_ |= 0x00000400;
+       }
+    }
+
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.DeviceTestSpanProfile, com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.Builder, com.google.wireless.android.sdk.stats.DeviceTestSpanProfileOrBuilder> deviceTestSpanProfilesBuilder_;
+
+    /**
+     * <pre>
+     * Only set when test_kind=INSTRUMENTATION_TEST
+     * </pre>
+     *
+     * <code>repeated .android_studio.DeviceTestSpanProfile device_test_span_profiles = 11;</code>
+     */
+    public java.util.List<com.google.wireless.android.sdk.stats.DeviceTestSpanProfile> getDeviceTestSpanProfilesList() {
+      if (deviceTestSpanProfilesBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(deviceTestSpanProfiles_);
+      } else {
+        return deviceTestSpanProfilesBuilder_.getMessageList();
+      }
+    }
+    /**
+     * <pre>
+     * Only set when test_kind=INSTRUMENTATION_TEST
+     * </pre>
+     *
+     * <code>repeated .android_studio.DeviceTestSpanProfile device_test_span_profiles = 11;</code>
+     */
+    public int getDeviceTestSpanProfilesCount() {
+      if (deviceTestSpanProfilesBuilder_ == null) {
+        return deviceTestSpanProfiles_.size();
+      } else {
+        return deviceTestSpanProfilesBuilder_.getCount();
+      }
+    }
+    /**
+     * <pre>
+     * Only set when test_kind=INSTRUMENTATION_TEST
+     * </pre>
+     *
+     * <code>repeated .android_studio.DeviceTestSpanProfile device_test_span_profiles = 11;</code>
+     */
+    public com.google.wireless.android.sdk.stats.DeviceTestSpanProfile getDeviceTestSpanProfiles(int index) {
+      if (deviceTestSpanProfilesBuilder_ == null) {
+        return deviceTestSpanProfiles_.get(index);
+      } else {
+        return deviceTestSpanProfilesBuilder_.getMessage(index);
+      }
+    }
+    /**
+     * <pre>
+     * Only set when test_kind=INSTRUMENTATION_TEST
+     * </pre>
+     *
+     * <code>repeated .android_studio.DeviceTestSpanProfile device_test_span_profiles = 11;</code>
+     */
+    public Builder setDeviceTestSpanProfiles(
+        int index, com.google.wireless.android.sdk.stats.DeviceTestSpanProfile value) {
+      if (deviceTestSpanProfilesBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureDeviceTestSpanProfilesIsMutable();
+        deviceTestSpanProfiles_.set(index, value);
+        onChanged();
+      } else {
+        deviceTestSpanProfilesBuilder_.setMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Only set when test_kind=INSTRUMENTATION_TEST
+     * </pre>
+     *
+     * <code>repeated .android_studio.DeviceTestSpanProfile device_test_span_profiles = 11;</code>
+     */
+    public Builder setDeviceTestSpanProfiles(
+        int index, com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.Builder builderForValue) {
+      if (deviceTestSpanProfilesBuilder_ == null) {
+        ensureDeviceTestSpanProfilesIsMutable();
+        deviceTestSpanProfiles_.set(index, builderForValue.build());
+        onChanged();
+      } else {
+        deviceTestSpanProfilesBuilder_.setMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Only set when test_kind=INSTRUMENTATION_TEST
+     * </pre>
+     *
+     * <code>repeated .android_studio.DeviceTestSpanProfile device_test_span_profiles = 11;</code>
+     */
+    public Builder addDeviceTestSpanProfiles(com.google.wireless.android.sdk.stats.DeviceTestSpanProfile value) {
+      if (deviceTestSpanProfilesBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureDeviceTestSpanProfilesIsMutable();
+        deviceTestSpanProfiles_.add(value);
+        onChanged();
+      } else {
+        deviceTestSpanProfilesBuilder_.addMessage(value);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Only set when test_kind=INSTRUMENTATION_TEST
+     * </pre>
+     *
+     * <code>repeated .android_studio.DeviceTestSpanProfile device_test_span_profiles = 11;</code>
+     */
+    public Builder addDeviceTestSpanProfiles(
+        int index, com.google.wireless.android.sdk.stats.DeviceTestSpanProfile value) {
+      if (deviceTestSpanProfilesBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureDeviceTestSpanProfilesIsMutable();
+        deviceTestSpanProfiles_.add(index, value);
+        onChanged();
+      } else {
+        deviceTestSpanProfilesBuilder_.addMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Only set when test_kind=INSTRUMENTATION_TEST
+     * </pre>
+     *
+     * <code>repeated .android_studio.DeviceTestSpanProfile device_test_span_profiles = 11;</code>
+     */
+    public Builder addDeviceTestSpanProfiles(
+        com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.Builder builderForValue) {
+      if (deviceTestSpanProfilesBuilder_ == null) {
+        ensureDeviceTestSpanProfilesIsMutable();
+        deviceTestSpanProfiles_.add(builderForValue.build());
+        onChanged();
+      } else {
+        deviceTestSpanProfilesBuilder_.addMessage(builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Only set when test_kind=INSTRUMENTATION_TEST
+     * </pre>
+     *
+     * <code>repeated .android_studio.DeviceTestSpanProfile device_test_span_profiles = 11;</code>
+     */
+    public Builder addDeviceTestSpanProfiles(
+        int index, com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.Builder builderForValue) {
+      if (deviceTestSpanProfilesBuilder_ == null) {
+        ensureDeviceTestSpanProfilesIsMutable();
+        deviceTestSpanProfiles_.add(index, builderForValue.build());
+        onChanged();
+      } else {
+        deviceTestSpanProfilesBuilder_.addMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Only set when test_kind=INSTRUMENTATION_TEST
+     * </pre>
+     *
+     * <code>repeated .android_studio.DeviceTestSpanProfile device_test_span_profiles = 11;</code>
+     */
+    public Builder addAllDeviceTestSpanProfiles(
+        java.lang.Iterable<? extends com.google.wireless.android.sdk.stats.DeviceTestSpanProfile> values) {
+      if (deviceTestSpanProfilesBuilder_ == null) {
+        ensureDeviceTestSpanProfilesIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, deviceTestSpanProfiles_);
+        onChanged();
+      } else {
+        deviceTestSpanProfilesBuilder_.addAllMessages(values);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Only set when test_kind=INSTRUMENTATION_TEST
+     * </pre>
+     *
+     * <code>repeated .android_studio.DeviceTestSpanProfile device_test_span_profiles = 11;</code>
+     */
+    public Builder clearDeviceTestSpanProfiles() {
+      if (deviceTestSpanProfilesBuilder_ == null) {
+        deviceTestSpanProfiles_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000400);
+        onChanged();
+      } else {
+        deviceTestSpanProfilesBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Only set when test_kind=INSTRUMENTATION_TEST
+     * </pre>
+     *
+     * <code>repeated .android_studio.DeviceTestSpanProfile device_test_span_profiles = 11;</code>
+     */
+    public Builder removeDeviceTestSpanProfiles(int index) {
+      if (deviceTestSpanProfilesBuilder_ == null) {
+        ensureDeviceTestSpanProfilesIsMutable();
+        deviceTestSpanProfiles_.remove(index);
+        onChanged();
+      } else {
+        deviceTestSpanProfilesBuilder_.remove(index);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Only set when test_kind=INSTRUMENTATION_TEST
+     * </pre>
+     *
+     * <code>repeated .android_studio.DeviceTestSpanProfile device_test_span_profiles = 11;</code>
+     */
+    public com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.Builder getDeviceTestSpanProfilesBuilder(
+        int index) {
+      return getDeviceTestSpanProfilesFieldBuilder().getBuilder(index);
+    }
+    /**
+     * <pre>
+     * Only set when test_kind=INSTRUMENTATION_TEST
+     * </pre>
+     *
+     * <code>repeated .android_studio.DeviceTestSpanProfile device_test_span_profiles = 11;</code>
+     */
+    public com.google.wireless.android.sdk.stats.DeviceTestSpanProfileOrBuilder getDeviceTestSpanProfilesOrBuilder(
+        int index) {
+      if (deviceTestSpanProfilesBuilder_ == null) {
+        return deviceTestSpanProfiles_.get(index);  } else {
+        return deviceTestSpanProfilesBuilder_.getMessageOrBuilder(index);
+      }
+    }
+    /**
+     * <pre>
+     * Only set when test_kind=INSTRUMENTATION_TEST
+     * </pre>
+     *
+     * <code>repeated .android_studio.DeviceTestSpanProfile device_test_span_profiles = 11;</code>
+     */
+    public java.util.List<? extends com.google.wireless.android.sdk.stats.DeviceTestSpanProfileOrBuilder> 
+         getDeviceTestSpanProfilesOrBuilderList() {
+      if (deviceTestSpanProfilesBuilder_ != null) {
+        return deviceTestSpanProfilesBuilder_.getMessageOrBuilderList();
+      } else {
+        return java.util.Collections.unmodifiableList(deviceTestSpanProfiles_);
+      }
+    }
+    /**
+     * <pre>
+     * Only set when test_kind=INSTRUMENTATION_TEST
+     * </pre>
+     *
+     * <code>repeated .android_studio.DeviceTestSpanProfile device_test_span_profiles = 11;</code>
+     */
+    public com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.Builder addDeviceTestSpanProfilesBuilder() {
+      return getDeviceTestSpanProfilesFieldBuilder().addBuilder(
+          com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.getDefaultInstance());
+    }
+    /**
+     * <pre>
+     * Only set when test_kind=INSTRUMENTATION_TEST
+     * </pre>
+     *
+     * <code>repeated .android_studio.DeviceTestSpanProfile device_test_span_profiles = 11;</code>
+     */
+    public com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.Builder addDeviceTestSpanProfilesBuilder(
+        int index) {
+      return getDeviceTestSpanProfilesFieldBuilder().addBuilder(
+          index, com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.getDefaultInstance());
+    }
+    /**
+     * <pre>
+     * Only set when test_kind=INSTRUMENTATION_TEST
+     * </pre>
+     *
+     * <code>repeated .android_studio.DeviceTestSpanProfile device_test_span_profiles = 11;</code>
+     */
+    public java.util.List<com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.Builder> 
+         getDeviceTestSpanProfilesBuilderList() {
+      return getDeviceTestSpanProfilesFieldBuilder().getBuilderList();
+    }
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.DeviceTestSpanProfile, com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.Builder, com.google.wireless.android.sdk.stats.DeviceTestSpanProfileOrBuilder> 
+        getDeviceTestSpanProfilesFieldBuilder() {
+      if (deviceTestSpanProfilesBuilder_ == null) {
+        deviceTestSpanProfilesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.DeviceTestSpanProfile, com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.Builder, com.google.wireless.android.sdk.stats.DeviceTestSpanProfileOrBuilder>(
+                deviceTestSpanProfiles_,
+                ((bitField0_ & 0x00000400) != 0),
+                getParentForChildren(),
+                isClean());
+        deviceTestSpanProfiles_ = null;
+      }
+      return deviceTestSpanProfilesBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

@@ -282,7 +282,7 @@ public class DefaultApkSignerEngine implements ApkSignerEngine {
                     V1SchemeSigner.getSuggestedSignatureDigestAlgorithm(publicKey, minSdkVersion);
             V1SchemeSigner.SignerConfig v1SignerConfig = new V1SchemeSigner.SignerConfig();
             v1SignerConfig.name = v1SignerName;
-            v1SignerConfig.privateKey = signerConfig.getPrivateKey();
+            v1SignerConfig.keyConfig = signerConfig.getKeyConfig();
             v1SignerConfig.certificates = certificates;
             v1SignerConfig.signatureDigestAlgorithm = v1SignatureDigestAlgorithm;
             v1SignerConfig.deterministicDsaSigning = signerConfig.getDeterministicDsaSigning();
@@ -533,7 +533,7 @@ public class DefaultApkSignerEngine implements ApkSignerEngine {
         PublicKey publicKey = certificates.get(0).getPublicKey();
 
         ApkSigningBlockUtils.SignerConfig newSignerConfig = new ApkSigningBlockUtils.SignerConfig();
-        newSignerConfig.privateKey = signerConfig.getPrivateKey();
+        newSignerConfig.keyConfig = signerConfig.getKeyConfig();
         newSignerConfig.certificates = certificates;
         newSignerConfig.minSdkVersion = signerConfig.getMinSdkVersion();
         newSignerConfig.signerTargetsDevRelease = signerConfig.getSignerTargetsDevRelease();
@@ -1638,7 +1638,7 @@ public class DefaultApkSignerEngine implements ApkSignerEngine {
      */
     public static class SignerConfig {
         private final String mName;
-        private final PrivateKey mPrivateKey;
+        private final KeyConfig mKeyConfig;
         private final List<X509Certificate> mCertificates;
         private final boolean mDeterministicDsaSigning;
         private final int mMinSdkVersion;
@@ -1647,7 +1647,7 @@ public class DefaultApkSignerEngine implements ApkSignerEngine {
 
         private SignerConfig(Builder builder) {
             mName = builder.mName;
-            mPrivateKey = builder.mPrivateKey;
+            mKeyConfig = builder.mKeyConfig;
             mCertificates = Collections.unmodifiableList(new ArrayList<>(builder.mCertificates));
             mDeterministicDsaSigning = builder.mDeterministicDsaSigning;
             mMinSdkVersion = builder.mMinSdkVersion;
@@ -1660,9 +1660,20 @@ public class DefaultApkSignerEngine implements ApkSignerEngine {
             return mName;
         }
 
-        /** Returns the signing key of this signer. */
+        /**
+         * Returns the signing key of this signer.
+         *
+         * @deprecated Use {@link #getKeyConfig()} instead of accessing a {@link PrivateKey}
+         *     directly. If the user of ApkSigner is signing with a KMS instead of JCA, this method
+         *     will return null.
+         */
+        @Deprecated
         public PrivateKey getPrivateKey() {
-            return mPrivateKey;
+            return mKeyConfig.match(jca -> jca.privateKey, kms -> null);
+        }
+
+        public KeyConfig getKeyConfig() {
+            return mKeyConfig;
         }
 
         /**
@@ -1698,7 +1709,7 @@ public class DefaultApkSignerEngine implements ApkSignerEngine {
         /** Builder of {@link SignerConfig} instances. */
         public static class Builder {
             private final String mName;
-            private final PrivateKey mPrivateKey;
+            private final KeyConfig mKeyConfig;
             private final List<X509Certificate> mCertificates;
             private final boolean mDeterministicDsaSigning;
             private int mMinSdkVersion;
@@ -1708,12 +1719,14 @@ public class DefaultApkSignerEngine implements ApkSignerEngine {
             /**
              * Constructs a new {@code Builder}.
              *
+             * @deprecated use {@link #Builder(String, KeyConfig, List)} instead
              * @param name signer's name. The name is reflected in the name of files comprising the
              *     JAR signature of the APK.
              * @param privateKey signing key
              * @param certificates list of one or more X.509 certificates. The subject public key of
              *     the first certificate must correspond to the {@code privateKey}.
              */
+            @Deprecated
             public Builder(String name, PrivateKey privateKey, List<X509Certificate> certificates) {
                 this(name, privateKey, certificates, false);
             }
@@ -1721,21 +1734,64 @@ public class DefaultApkSignerEngine implements ApkSignerEngine {
             /**
              * Constructs a new {@code Builder}.
              *
+             * @deprecated use {@link #Builder(String, KeyConfig, List, boolean)} instead
              * @param name signer's name. The name is reflected in the name of files comprising the
              *     JAR signature of the APK.
              * @param privateKey signing key
              * @param certificates list of one or more X.509 certificates. The subject public key of
              *     the first certificate must correspond to the {@code privateKey}.
              * @param deterministicDsaSigning When signing using DSA, whether or not the
-             * deterministic signing algorithm variant (RFC6979) should be used.
+             *     deterministic signing algorithm variant (RFC6979) should be used.
              */
-            public Builder(String name, PrivateKey privateKey, List<X509Certificate> certificates,
+            @Deprecated
+            public Builder(
+                    String name,
+                    PrivateKey privateKey,
+                    List<X509Certificate> certificates,
                     boolean deterministicDsaSigning) {
                 if (name.isEmpty()) {
                     throw new IllegalArgumentException("Empty name");
                 }
                 mName = name;
-                mPrivateKey = privateKey;
+                mKeyConfig = new KeyConfig.Jca(privateKey);
+                mCertificates = new ArrayList<>(certificates);
+                mDeterministicDsaSigning = deterministicDsaSigning;
+            }
+
+            /**
+             * Constructs a new {@code Builder}.
+             *
+             * @param name signer's name. The name is reflected in the name of files comprising the
+             *     JAR signature of the APK.
+             * @param keyConfig signing key configuration.
+             * @param certificates list of one or more X.509 certificates. The subject public key of
+             *     the first certificate must correspond to the {@code privateKey}.
+             */
+            public Builder(String name, KeyConfig keyConfig, List<X509Certificate> certificates) {
+                this(name, keyConfig, certificates, false);
+            }
+
+            /**
+             * Constructs a new {@code Builder}.
+             *
+             * @param name signer's name. The name is reflected in the name of files comprising the
+             *     JAR signature of the APK.
+             * @param keyConfig signing key configuration
+             * @param certificates list of one or more X.509 certificates. The subject public key of
+             *     the first certificate must correspond to the {@code privateKey}.
+             * @param deterministicDsaSigning When signing using DSA, whether or not the
+             *     deterministic signing algorithm variant (RFC6979) should be used.
+             */
+            public Builder(
+                    String name,
+                    KeyConfig keyConfig,
+                    List<X509Certificate> certificates,
+                    boolean deterministicDsaSigning) {
+                if (name.isEmpty()) {
+                    throw new IllegalArgumentException("Empty name");
+                }
+                mName = name;
+                mKeyConfig = keyConfig;
                 mCertificates = new ArrayList<>(certificates);
                 mDeterministicDsaSigning = deterministicDsaSigning;
             }
@@ -1950,10 +2006,12 @@ public class DefaultApkSignerEngine implements ApkSignerEngine {
                 // Get the last signer in the lineage, create a new targeted signer from it,
                 // and add it as a targeted signer config.
                 SignerConfig rotatedSignerConfig = mSignerConfigs.remove(mSignerConfigs.size() - 1);
-                SignerConfig.Builder rotatedConfigBuilder = new SignerConfig.Builder(
-                        rotatedSignerConfig.getName(), rotatedSignerConfig.getPrivateKey(),
-                        rotatedSignerConfig.getCertificates(),
-                        rotatedSignerConfig.getDeterministicDsaSigning());
+                SignerConfig.Builder rotatedConfigBuilder =
+                        new SignerConfig.Builder(
+                                rotatedSignerConfig.getName(),
+                                rotatedSignerConfig.getKeyConfig(),
+                                rotatedSignerConfig.getCertificates(),
+                                rotatedSignerConfig.getDeterministicDsaSigning());
                 rotatedConfigBuilder.setLineageForMinSdkVersion(mSigningCertificateLineage,
                         mRotationMinSdkVersion);
                 rotatedConfigBuilder.setSignerTargetsDevRelease(mRotationTargetsDevRelease);
@@ -1989,13 +2047,15 @@ public class DefaultApkSignerEngine implements ApkSignerEngine {
                 // a single element lineage to verify the signer is part of the merged lineage.
                 if (signerLineage == null) {
                     try {
-                        signerLineage = new SigningCertificateLineage.Builder(
-                                new SigningCertificateLineage.SignerConfig.Builder(
-                                        signerConfig.mPrivateKey,
-                                        signerConfig.mCertificates.get(0))
-                                        .build())
-                                .build();
-                    } catch (CertificateEncodingException | NoSuchAlgorithmException
+                        signerLineage =
+                                new SigningCertificateLineage.Builder(
+                                                new SigningCertificateLineage.SignerConfig.Builder(
+                                                                signerConfig.mKeyConfig,
+                                                                signerConfig.mCertificates.get(0))
+                                                        .build())
+                                        .build();
+                    } catch (CertificateEncodingException
+                            | NoSuchAlgorithmException
                             | SignatureException e) {
                         throw new IllegalStateException(
                                 "Unable to create a SignerConfig for signer from certificate "

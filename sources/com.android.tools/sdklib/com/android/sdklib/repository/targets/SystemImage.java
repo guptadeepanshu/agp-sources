@@ -55,7 +55,7 @@ public class SystemImage implements ISystemImage {
     private final List<String> mTranslatedAbis;
 
     /** Skins contained in this system image, or in the platform/addon it's based on. */
-    private final Path[] mSkins;
+    private final ImmutableList<Path> mSkins;
 
     /**
      * Android API level of this system image.
@@ -73,7 +73,7 @@ public class SystemImage implements ISystemImage {
             @Nullable IdDisplay vendor,
             @NonNull List<String> abis,
             @NonNull List<String> translatedAbis,
-            @NonNull Path[] skins,
+            @NonNull List<Path> skins,
             @NonNull RepoPackage pkg) {
         Preconditions.checkArgument(!abis.isEmpty());
         mLocation = location;
@@ -81,7 +81,7 @@ public class SystemImage implements ISystemImage {
         mVendor = vendor;
         mAbis = ImmutableList.copyOf(abis);
         mTranslatedAbis = ImmutableList.copyOf(translatedAbis);
-        mSkins = skins;
+        mSkins = ImmutableList.copyOf(skins);
         mPackage = pkg;
         TypeDetails details = pkg.getTypeDetails();
         assert details instanceof DetailsTypes.ApiDetailsType;
@@ -94,7 +94,7 @@ public class SystemImage implements ISystemImage {
             @Nullable IdDisplay vendor,
             @NonNull List<String> abi,
             @NonNull List<String> translatedAbi,
-            @NonNull Path[] skins,
+            @NonNull List<Path> skins,
             @NonNull RepoPackage pkg) {
         this(location, ImmutableList.of(tag), vendor, abi, translatedAbi, skins, pkg);
     }
@@ -137,7 +137,7 @@ public class SystemImage implements ISystemImage {
 
     @NonNull
     @Override
-    public Path[] getSkins() {
+    public List<Path> getSkins() {
         return mSkins;
     }
 
@@ -160,32 +160,20 @@ public class SystemImage implements ISystemImage {
 
     @Override
     public int compareTo(@NonNull ISystemImage o) {
-        int res =
-                Comparator.comparing(ISystemImage::getTag)
-                        .thenComparing(
-                                ISystemImage::getAbiTypes,
-                                Comparators.lexicographical(Comparator.<String>naturalOrder()))
-                        .thenComparing(
-                                ISystemImage::getTranslatedAbiTypes,
-                                Comparators.lexicographical(Comparator.<String>naturalOrder()))
-                        .thenComparing(
-                                ISystemImage::getAddonVendor,
-                                Comparator.nullsFirst(IdDisplay::compareTo))
-                        .thenComparing(ISystemImage::getLocation)
-                        .compare(this, o);
-
-        if (res != 0) {
-            return res;
-        }
-        Path[] skins = getSkins();
-        Path[] otherSkins = o.getSkins();
-        for (int i = 0; i < skins.length && i < otherSkins.length; i++) {
-            res = skins[i].compareTo(otherSkins[i]);
-            if (res != 0) {
-                return res;
-            }
-        }
-        return skins.length - otherSkins.length;
+        return Comparator.comparing(ISystemImage::getTag)
+                .thenComparing(
+                        ISystemImage::getAbiTypes,
+                        Comparators.lexicographical(Comparator.<String>naturalOrder()))
+                .thenComparing(
+                        ISystemImage::getTranslatedAbiTypes,
+                        Comparators.lexicographical(Comparator.<String>naturalOrder()))
+                .thenComparing(
+                        ISystemImage::getAddonVendor, Comparator.nullsFirst(IdDisplay::compareTo))
+                .thenComparing(ISystemImage::getLocation)
+                .thenComparing(
+                        ISystemImage::getSkins,
+                        Comparators.lexicographical(Comparator.<Path>naturalOrder()))
+                .compare(this, o);
     }
 
     @Override
@@ -197,18 +185,13 @@ public class SystemImage implements ISystemImage {
     }
 
     public int hashCode() {
-        int hashCode =
-                Objects.hashCode(
-                        getTag(),
-                        getAbiTypes(),
-                        getTranslatedAbiTypes(),
-                        getAddonVendor(),
-                        getLocation());
-        for (Path f : getSkins()) {
-            hashCode *= 37;
-            hashCode += f.hashCode();
-        }
-        return hashCode;
+        return Objects.hashCode(
+                getTag(),
+                getAbiTypes(),
+                getTranslatedAbiTypes(),
+                getAddonVendor(),
+                getLocation(),
+                getSkins());
     }
 
     @NonNull

@@ -116,7 +116,7 @@ public interface ISystemImage extends Comparable<ISystemImage> {
      * @return A non-null skin list, possibly empty.
      */
     @NonNull
-    Path[] getSkins();
+    List<Path> getSkins();
 
     /**
      * Returns the revision of this system image.

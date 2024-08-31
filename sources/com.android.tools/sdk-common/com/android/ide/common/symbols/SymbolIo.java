@@ -51,6 +51,7 @@ import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import javax.xml.parsers.ParserConfigurationException;
+
 import org.xml.sax.SAXException;
 
 /**
@@ -106,6 +107,7 @@ import org.xml.sax.SAXException;
 public final class SymbolIo {
 
     public static final String ANDROID_ATTR_PREFIX = "android_";
+    public static final String ANDROID_DOT_PREFIX = "android.";
 
     private final Interner<Symbol> symbolInterner;
 
@@ -725,13 +727,14 @@ public final class SymbolIo {
             String name = line.substring(startPos + 1, endPos);
             startPos = endPos + 1;
             ImmutableList.Builder<String> children = ImmutableList.builder();
-            while (true) {
+            while (endPos < line.length()) {
                 endPos = line.indexOf(' ', startPos);
                 if (endPos == -1) {
-                    children.add(line.substring(startPos));
-                    break;
+                    endPos = line.length();
                 }
-                children.add(line.substring(startPos, endPos));
+                String childStyleableAttr = line.substring(startPos, endPos);
+                childStyleableAttr = normalizeAndroidStyleablePrefix(childStyleableAttr);
+                children.add(childStyleableAttr);
                 startPos = endPos + 1;
             }
             return new SymbolData(name, children.build());
@@ -743,6 +746,16 @@ public final class SymbolIo {
                 return new SymbolData(resourceType, name);
             }
         }
+    }
+
+    private static String normalizeAndroidStyleablePrefix(String childStyleableName) {
+        if (childStyleableName.startsWith(SdkConstants.ANDROID_NS_NAME_PREFIX) ||
+            childStyleableName.startsWith(ANDROID_DOT_PREFIX)) {
+            childStyleableName = ANDROID_ATTR_PREFIX
+                                 + childStyleableName.substring(
+                                         SdkConstants.ANDROID_NS_NAME_PREFIX_LEN);
+        }
+        return childStyleableName;
     }
 
     private static String computeItemName(@NonNull String prefix, @NonNull String name) {

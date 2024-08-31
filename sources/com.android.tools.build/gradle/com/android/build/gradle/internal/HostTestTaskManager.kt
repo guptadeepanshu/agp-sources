@@ -161,7 +161,7 @@ open class HostTestTaskManager(
             // so just re-export the artifacts here.
             hostTestCreationConfig
                 .artifacts
-                .copy(InternalArtifactType.PROCESSED_RES, testedVariant.artifacts)
+                .copy(InternalArtifactType.LINKED_RESOURCES_BINARY_FORMAT, testedVariant.artifacts)
             hostTestCreationConfig
                 .artifacts
                 .copy(SingleArtifact.ASSETS, testedVariant.artifacts)
@@ -203,7 +203,6 @@ open class HostTestTaskManager(
             taskInputs
                 .files(testConfigInputs.resourceApk)
                 .withPropertyName("resourceApk")
-                .optional()
                 .withPathSensitivity(PathSensitivity.RELATIVE)
             taskInputs
                 .files(testConfigInputs.mergedAssets)

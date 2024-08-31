@@ -151,8 +151,7 @@ open class TestVariantImpl @Inject constructor(
         }
     }
 
-    override val privacySandboxEnabled: Boolean
-        get() = dslInfo.privacySandboxDsl.enable
+    override val privacySandboxEnabled: Boolean = dslInfo.privacySandboxDsl.enable
 
     override val dexing: DexingCreationConfig by lazy(LazyThreadSafetyMode.NONE) {
         DexingImpl(
@@ -193,8 +192,7 @@ open class TestVariantImpl @Inject constructor(
             dslInfo.instrumentationRunnerArguments
         )
 
-    override val debuggable: Boolean
-        get() = dslInfo.isDebuggable
+    override val debuggable: Boolean = dslInfo.isDebuggable
 
     override val shouldPackageProfilerDependencies: Boolean = false
     override val advancedProfilingTransforms: List<String> = emptyList()
@@ -210,7 +208,7 @@ open class TestVariantImpl @Inject constructor(
         }
     }
 
-    override val useJacocoTransformInstrumentation: Boolean
+    override val codeCoverageEnabled: Boolean
         get() = false
     override val packageJacocoRuntime: Boolean
         get() = false

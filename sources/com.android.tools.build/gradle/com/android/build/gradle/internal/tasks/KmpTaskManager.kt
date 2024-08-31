@@ -168,7 +168,7 @@ class KmpTaskManager(
             project.tasks.registerTask(ExportConsumerProguardFilesTask.CreationAction(variant))
         }
 
-        if (variant.codeCoverageEnabled) {
+        if (variant.requiresJacocoTransformation) {
             val jacocoTask = project.tasks.registerTask(
                 JacocoTask.CreationAction(variant)
             )

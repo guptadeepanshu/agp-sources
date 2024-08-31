@@ -17,6 +17,7 @@
 package com.android.sdklib.repository.legacy.remote.internal;
 
 import com.android.SdkConstants;
+import com.android.Version;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.prefs.AndroidLocationsSingleton;
@@ -241,6 +242,14 @@ public class DownloadCache {
             for (Header header : headers) {
                 connection.setRequestProperty(header.getName(), header.getValue());
             }
+        }
+        if (connection.getRequestProperty("User-Agent") == null) {
+            connection.setRequestProperty(
+                    "User-Agent",
+                    "sdkmanager/"
+                            + Version.TOOLS_VERSION
+                            + " AGP/"
+                            + Version.ANDROID_GRADLE_PLUGIN_VERSION);
         }
         connection.connect();
         InputStream is = connection.getInputStream();

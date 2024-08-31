@@ -37,7 +37,8 @@ data class VariantImpl(
     override val testedTargetVariant: TestedTargetVariant?,
     override val runTestInSeparateProcess: Boolean,
     override val isInstantAppCompatible: Boolean,
-    override val desugaredMethods: List<File>
+    override val desugaredMethods: List<File>,
+    override val experimentalProperties: Map<String, String>
 ) : Variant, Serializable {
     override val androidTestArtifact: AndroidArtifact?
         get() = deviceTestArtifacts[ComponentTypeImpl.ANDROID_TEST.artifactName]

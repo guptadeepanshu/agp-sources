@@ -41,7 +41,7 @@ import org.gradle.workers.WorkParameters
 @DisableCachingByDefault(because = "The Setup Task is expected to get values external to " +
         "the Gradle Project. As such, it can never be considered up-to-date.")
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.TEST)
-abstract class ManagedDeviceSetupTask : UnsafeOutputsTask(
+abstract class ManagedDeviceSetupTask : UnsafeOutputsGlobalTask(
     "The Setup Task is expected to get values external to the Gradle Project. " +
             "As such, it can never be considered up-to-date.") {
 
@@ -99,7 +99,6 @@ abstract class ManagedDeviceSetupTask : UnsafeOutputsTask(
         override fun configure(task: ManagedDeviceSetupTask) {
             super.configure(task)
 
-            task.variantName = ""
             task.deviceInput.setDisallowChanges(
                 task.objectFactory.newInstance(setupConfigAction).configureTaskInput(dslDevice))
             task.setupAction.setDisallowChanges(setupTaskAction)

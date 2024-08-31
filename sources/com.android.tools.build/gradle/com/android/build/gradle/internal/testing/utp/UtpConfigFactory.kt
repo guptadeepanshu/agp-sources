@@ -801,12 +801,6 @@ class UtpConfigFactory {
                         this.forceCompilation = getForceCompilationEnum(forceCompilation)
                     }.build()
                     uninstallAfterTest = uninstallApksAfterTest
-                    addAllApksPackageName(
-                        listOf(
-                            testData.testedApplicationId,
-                            testData.applicationId
-                        )
-                    )
                     forceReinstallBeforeTest = reinstallIncompatibleApksBeforeTest
                 }.build()
             }

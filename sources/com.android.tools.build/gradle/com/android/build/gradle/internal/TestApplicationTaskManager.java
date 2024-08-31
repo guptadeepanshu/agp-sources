@@ -95,7 +95,7 @@ public class TestApplicationTaskManager
                                         AndroidArtifacts.ConsumedConfigType.PROVIDED_CLASSPATH,
                                         AndroidArtifacts.ArtifactScope.ALL,
                                         AndroidArtifacts.ArtifactType
-                                                .ANDROID_PRIVACY_SANDBOX_EXTRACTED_SDK_APKS)
+                                                .ANDROID_PRIVACY_SANDBOX_SDK_APKS)
                         : null;
 
         Provider<Directory> privacySandboxCompatSdkApks =

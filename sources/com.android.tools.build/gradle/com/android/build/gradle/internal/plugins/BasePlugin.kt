@@ -762,7 +762,7 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
                     // Registering Jacoco transforms causes the jacoco configuration to be created.
                     // Ensure there is at least one variant with enableAndroidTestCoverage
                     // enabled before registering the transforms.
-                    if (variants.any { it.variant.codeCoverageEnabled }) {
+                    if (variants.any { it.variant.requiresJacocoTransformation }) {
                         configureJacocoTransforms()
                     }
                 }
@@ -798,6 +798,9 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
 
         // Make sure no SourceSets were added through the DSL without being properly configured
         variantInputModel.sourceSetManager.checkForUnconfiguredSourceSets()
+
+        // Check for usage of deprecated configuration - wearApp
+        variantInputModel.sourceSetManager.checkForWearAppConfigurationUsage()
 
         // configure compose related tasks.
         taskManager.createPostApiTasks()

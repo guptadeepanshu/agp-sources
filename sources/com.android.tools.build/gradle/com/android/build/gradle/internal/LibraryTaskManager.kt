@@ -193,10 +193,8 @@ class LibraryTaskManager(
             taskFactory.register(ExtractAnnotations.CreationAction(libraryVariant))
         }
 
-        val instrumented = libraryVariant.codeCoverageEnabled
-
         maybeCreateTransformClassesWithAsmTask(libraryVariant)
-        if (instrumented) {
+        if (libraryVariant.requiresJacocoTransformation) {
             createJacocoTask(libraryVariant)
         }
 

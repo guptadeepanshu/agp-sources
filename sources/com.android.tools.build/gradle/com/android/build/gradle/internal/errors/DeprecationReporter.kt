@@ -101,8 +101,9 @@ interface DeprecationReporter {
 
         BUILD_CONFIG_GLOBAL_PROPERTY(
             Version.VERSION_9_0,
-            "You can resolve this warning in Android Studio via `Refactor` > `Migrate " +
-                    "BuildConfig to Gradle Build Files`"
+            "To keep using this feature, add the following to your module-level build.gradle files:\n"+
+                    "    android.buildFeatures.buildConfig = true\n" +
+                    "or from Android Studio, click: `Refactor` > `Migrate BuildConfig to Gradle Build Files`."
         )
         ;
 

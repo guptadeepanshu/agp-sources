@@ -148,8 +148,7 @@ open class LibraryVariantImpl @Inject constructor(
             }
         )
 
-    override val debuggable: Boolean
-        get() = dslInfo.isDebuggable
+    override val debuggable: Boolean = dslInfo.isDebuggable
 
     override fun <T : Component> createUserVisibleVariantObject(
         stats: GradleBuildVariant.Builder?
@@ -164,8 +163,7 @@ open class LibraryVariantImpl @Inject constructor(
             ) as T
         }
 
-    override val publishInfo: VariantPublishingInfo?
-        get() = dslInfo.publishInfo
+    override val publishInfo: VariantPublishingInfo? = dslInfo.publishInfo
 
     override fun addTestComponent(testTypeName: String, testComponent: HostTestCreationConfig) {
         internalHostTests[testTypeName] = testComponent

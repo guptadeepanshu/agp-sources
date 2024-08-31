@@ -27,13 +27,11 @@ import org.gradle.api.file.RegularFile
 import org.gradle.api.plugins.BasePluginExtension
 import org.gradle.api.provider.Provider
 import org.gradle.api.resources.TextResource
-import org.gradle.internal.component.external.model.ImmutableCapability
+import org.gradle.internal.component.external.model.DefaultImmutableCapability
 import java.io.File
 
 /**
  * A class that provides data about the Gradle project object without exposing the Project itself
- *
- * FIXME remove getProject() and old File-based APIs.
  */
 class ProjectInfo(private val project: Project) {
 
@@ -58,7 +56,7 @@ class ProjectInfo(private val project: Project) {
         get() = project.version.toString()
 
     val defaultProjectCapability: Capability
-        get() = ImmutableCapability(project.group.toString(), project.name, "unspecified")
+        get() = DefaultImmutableCapability(project.group.toString(), project.name, "unspecified")
 
     val projectDirectory: Directory
         get() = project.layout.projectDirectory
@@ -72,10 +70,6 @@ class ProjectInfo(private val project: Project) {
     val rootDir: File
         get() = project.rootDir
 
-    @Deprecated("Use rootBuildDirectory")
-    val rootBuildDir: File
-        get() = project.rootProject.buildDir
-
     val rootBuildDirectory: DirectoryProperty
         get() = project.rootProject.layout.buildDirectory
 
@@ -83,15 +77,15 @@ class ProjectInfo(private val project: Project) {
             get() = project.gradle.gradleUserHomeDir
 
     val intermediatesDirectory: Provider<Directory>
-        get() = project.layout.buildDirectory.dir(SdkConstants.FD_INTERMEDIATES)
+        get() = buildDirectory.dir(SdkConstants.FD_INTERMEDIATES)
 
     fun intermediatesDirectory(path: String): Provider<Directory> =
-        project.layout.buildDirectory.dir(SdkConstants.FD_INTERMEDIATES).map {
+        buildDirectory.dir(SdkConstants.FD_INTERMEDIATES).map {
             it.dir(path)
         }
 
     fun intermediatesFile(path: String): Provider<RegularFile> =
-        project.layout.buildDirectory.dir(SdkConstants.FD_INTERMEDIATES).map {
+        buildDirectory.dir(SdkConstants.FD_INTERMEDIATES).map {
             it.file(path)
         }
 
@@ -106,41 +100,19 @@ class ProjectInfo(private val project: Project) {
     fun <T : Plugin<*>> findPlugin(pluginClass: Class<T>): T? =
         project.plugins.findPlugin(pluginClass)
 
-    @Deprecated("Use buildDirectory instead")
-    fun getBuildDir(): File {
-        return project.buildDir
+    fun getTestResultsFolder(): Provider<Directory> {
+        return buildDirectory.dir("test-results")
     }
 
-    fun getTestResultsFolder(): File? {
-        return File(getBuildDir(), "test-results")
+    fun getReportsDir(): Provider<Directory> {
+        return buildDirectory.dir(BuilderConstants.FD_REPORTS)
     }
 
-    fun getReportsDir(): File {
-        return File(getBuildDir(), BuilderConstants.FD_REPORTS)
+    fun getTestReportFolder(): Provider<Directory> {
+        return buildDirectory.dir("reports/tests")
     }
 
-    fun getTestReportFolder(): File? {
-        return File(getBuildDir(), "reports/tests")
-    }
-
-    @Deprecated("Use the version that returns a provider")
-    fun getIntermediatesDir(): File {
-        return File(getBuildDir(), SdkConstants.FD_INTERMEDIATES)
-    }
-
-    fun getTmpFolder(): File {
-        return File(getIntermediatesDir(), "tmp")
-    }
-
-    fun getOutputsDir(): File {
-        return File(getBuildDir(), SdkConstants.FD_OUTPUTS)
-    }
-
-    fun getJacocoAgentOutputDirectory(): File {
-        return File(getIntermediatesDir(), "jacoco")
-    }
-
-    fun getJacocoAgent(): File {
-        return File(getJacocoAgentOutputDirectory(), "jacocoagent.jar")
+    fun getOutputsDir(): Provider<Directory> {
+        return buildDirectory.dir(SdkConstants.FD_OUTPUTS)
     }
 }

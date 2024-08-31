@@ -19,10 +19,9 @@ package com.android.build.gradle.tasks
 import com.android.SdkConstants.FN_ANDROID_MANIFEST_XML
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInternalArtifactType
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
+import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
-import com.android.build.gradle.internal.tasks.configureVariantProperties
-import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.buildanalyzer.common.TaskCategory
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.OutputFile
@@ -50,7 +49,7 @@ abstract class PrivacySandboxSdkManifestGeneratorTask: NonIncrementalTask() {
     }
 
     class CreationAction(val creationConfig: PrivacySandboxSdkVariantScope) :
-        TaskCreationAction<PrivacySandboxSdkManifestGeneratorTask>() {
+        AndroidVariantTaskCreationAction<PrivacySandboxSdkManifestGeneratorTask>() {
 
         override val name: String
             get() = "mainManifestGenerator"
@@ -65,10 +64,6 @@ abstract class PrivacySandboxSdkManifestGeneratorTask: NonIncrementalTask() {
             )
                 .withName(FN_ANDROID_MANIFEST_XML)
                 .on(PrivacySandboxSdkInternalArtifactType.SANDBOX_MANIFEST)
-        }
-
-        override fun configure(task: PrivacySandboxSdkManifestGeneratorTask) {
-            task.configureVariantProperties("", task.project.gradle.sharedServices)
         }
     }
 }

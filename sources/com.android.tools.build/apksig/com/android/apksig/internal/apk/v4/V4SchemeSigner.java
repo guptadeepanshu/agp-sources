@@ -285,7 +285,7 @@ public abstract class V4SchemeSigner {
             v2Exception = e;
         }
 
-        if (!sigSchemeToDigest.isEmpty()) {
+        if (sigSchemeToDigest.size() > 0) {
             return sigSchemeToDigest;
         }
 

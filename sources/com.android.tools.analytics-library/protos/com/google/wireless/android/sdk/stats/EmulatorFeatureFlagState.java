@@ -502,13 +502,17 @@ private static final long serialVersionUID = 0L;
      */
     DEVICE_KEYBOARD_QT_RAW_INPUT(108),
     /**
-     * <pre>
-     * Next tag: 110
-     * </pre>
-     *
      * <code>UWB = 109;</code>
      */
     UWB(109),
+    /**
+     * <pre>
+     * Next tag: 111
+     * </pre>
+     *
+     * <code>UX_TEST_2024 = 110;</code>
+     */
+    UX_TEST_2024(110),
     ;
 
     /**
@@ -952,13 +956,17 @@ private static final long serialVersionUID = 0L;
      */
     public static final int DEVICE_KEYBOARD_QT_RAW_INPUT_VALUE = 108;
     /**
-     * <pre>
-     * Next tag: 110
-     * </pre>
-     *
      * <code>UWB = 109;</code>
      */
     public static final int UWB_VALUE = 109;
+    /**
+     * <pre>
+     * Next tag: 111
+     * </pre>
+     *
+     * <code>UX_TEST_2024 = 110;</code>
+     */
+    public static final int UX_TEST_2024_VALUE = 110;
 
 
     public final int getNumber() {
@@ -1091,6 +1099,7 @@ private static final long serialVersionUID = 0L;
         case 107: return VULKAN_ALLOCATE_HOST_MEMORY;
         case 108: return DEVICE_KEYBOARD_QT_RAW_INPUT;
         case 109: return UWB;
+        case 110: return UX_TEST_2024;
         default: return null;
       }
     }

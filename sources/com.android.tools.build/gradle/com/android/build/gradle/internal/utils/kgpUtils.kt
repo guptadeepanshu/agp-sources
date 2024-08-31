@@ -190,11 +190,12 @@ fun recordKotlinCompilePropertiesForAnalytics(
 }
 
 /**
- * Returns `KotlinCompile.kotlinOptions.languageVersion`. If we fail to access the property (e.g.,
- * because the compile and runtime versions of KGP differ), this method will return `null`.
+ * Attempts to return the language version of [kotlinCompile]. If we fail to access the property
+ * (e.g., because the compile and runtime versions of KGP differ), this method will return `null`.
  */
 private fun getLanguageVersionUnsafe(kotlinCompile: KotlinCompile): String? {
     return runCatching { kotlinCompile.kotlinOptions.languageVersion }.getOrNull()
+        ?: runCatching { org.jetbrains.kotlin.gradle.dsl.KotlinVersion.DEFAULT.version }.getOrNull()
 }
 
 /** Add compose compiler extension args to Kotlin compile task. */
@@ -385,6 +386,6 @@ Kotlin standard library is missing from ${this.name}. Please add a dependency on
 }
 
 private const val KOTLIN_GROUP = "org.jetbrains.kotlin"
-// The minimum version of KGP required to be on the buildscript classpath for integrated kotlin
+// The minimum version of KGP required to be on the buildscript classpath for built-in kotlin
 // support in AGP
-const val MINIMUM_INTEGRATED_KOTLIN_VERSION = "1.9.20"
+const val MINIMUM_BUILT_IN_KOTLIN_VERSION = "1.9.20"

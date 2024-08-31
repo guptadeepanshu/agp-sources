@@ -19,14 +19,13 @@ package com.android.build.gradle.tasks
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInternalArtifactType
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
+import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.DEFAULT_NUM_BUCKETS
 import com.android.build.gradle.internal.tasks.DexArchiveBuilderTask
 import com.android.build.gradle.internal.tasks.DexArchiveBuilderTaskDelegate
 import com.android.build.gradle.internal.tasks.DexParameterInputs
 import com.android.build.gradle.internal.tasks.NewIncrementalTask
-import com.android.build.gradle.internal.tasks.configureVariantProperties
-import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.SyncOptions
@@ -109,7 +108,7 @@ abstract class PrivacySandboxSdkDexTask: NewIncrementalTask() {
     }
 
     class CreationAction(val creationConfig: PrivacySandboxSdkVariantScope)
-        : TaskCreationAction<PrivacySandboxSdkDexTask>() {
+        : AndroidVariantTaskCreationAction<PrivacySandboxSdkDexTask>() {
 
         override val name: String
             get() = "dexClasses"
@@ -140,7 +139,8 @@ abstract class PrivacySandboxSdkDexTask: NewIncrementalTask() {
         }
 
         override fun configure(task: PrivacySandboxSdkDexTask) {
-            task.configureVariantProperties("", task.project.gradle.sharedServices)
+            super.configure(task)
+
             task.classes.fromDisallowChanges(
                 creationConfig.artifacts.get(FusedLibraryInternalArtifactType.MERGED_CLASSES)
             )

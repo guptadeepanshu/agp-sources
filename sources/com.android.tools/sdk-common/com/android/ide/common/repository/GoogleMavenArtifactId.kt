@@ -119,6 +119,9 @@ enum class GoogleMavenArtifactId(val mavenGroupId: String, val mavenArtifactId: 
   // Kotlin
   KOTLIN_STDLIB("org.jetbrains.kotlin", "kotlin-stdlib", false),
   KOTLIN_REFLECT("org.jetbrains.kotlin", "kotlin-reflect", false),
+
+  // Wear Tiles
+  WEAR_TILES_TOOLING("androidx.wear.tiles", "tiles-tooling", false),
   ;
 
   fun getCoordinate(revision: String): GradleCoordinate =

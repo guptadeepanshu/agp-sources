@@ -22,7 +22,7 @@ import java.util.Locale;
 /**
  * A list of supported Android image camera types.
  */
-public enum AvdCamera {
+public enum AvdCamera implements ConfigEnum {
   NONE("None"),
   VIRTUAL_SCENE("VirtualScene"),
   EMULATED("Emulated"),
@@ -46,6 +46,7 @@ public enum AvdCamera {
   /**
    * The value needs to be converted before sent off to the emulator as a valid parameter
    */
+  @Override
   @NonNull
   public String getAsParameter() {
     return myName.toLowerCase(Locale.US);

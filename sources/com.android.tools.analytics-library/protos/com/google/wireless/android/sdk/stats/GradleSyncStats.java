@@ -29,6 +29,7 @@ private static final long serialVersionUID = 0L;
     userRequestedSyncType_ = 0;
     studioRequestedSyncType_ = 0;
     versionCatalogDetectorState_ = 0;
+    gradleSyncPhasesData_ = java.util.Collections.emptyList();
   }
 
   @java.lang.Override
@@ -444,6 +445,14 @@ private static final long serialVersionUID = 0L;
      * <code>TRIGGER_QF_MIN_COMPILE_SDK_UPDATED = 430;</code>
      */
     TRIGGER_QF_MIN_COMPILE_SDK_UPDATED(430),
+    /**
+     * <pre>
+     * Compose Compiler Gradle plugin is added using a quickfix
+     * </pre>
+     *
+     * <code>TRIGGER_QF_ADD_COMPOSE_COMPILER_GRADLE_PLUGIN = 431;</code>
+     */
+    TRIGGER_QF_ADD_COMPOSE_COMPILER_GRADLE_PLUGIN(431),
     /**
      * <pre>
      * Last marker for syncs caused by quickfixes
@@ -1387,6 +1396,14 @@ private static final long serialVersionUID = 0L;
     public static final int TRIGGER_QF_MIN_COMPILE_SDK_UPDATED_VALUE = 430;
     /**
      * <pre>
+     * Compose Compiler Gradle plugin is added using a quickfix
+     * </pre>
+     *
+     * <code>TRIGGER_QF_ADD_COMPOSE_COMPILER_GRADLE_PLUGIN = 431;</code>
+     */
+    public static final int TRIGGER_QF_ADD_COMPOSE_COMPILER_GRADLE_PLUGIN_VALUE = 431;
+    /**
+     * <pre>
      * Last marker for syncs caused by quickfixes
      * </pre>
      *
@@ -2014,6 +2031,7 @@ private static final long serialVersionUID = 0L;
         case 428: return TRIGGER_QF_SIGNING_CONFIG_SELECTED;
         case 429: return TRIGGER_QF_REMOVE_UNSUPPORTED_MODULES;
         case 430: return TRIGGER_QF_MIN_COMPILE_SDK_UPDATED;
+        case 431: return TRIGGER_QF_ADD_COMPOSE_COMPILER_GRADLE_PLUGIN;
         case 999: return TRIGGER_QF_LAST_MARKER;
         case 1200: return TRIGGER_REFACTOR_FIRST_MARKER;
         case 1201: return TRIGGER_REFACTOR_MIGRATE_TO_ANDROIDX;
@@ -2676,6 +2694,1271 @@ private static final long serialVersionUID = 0L;
     // @@protoc_insertion_point(enum_scope:android_studio.GradleSyncStats.StudioRequestedExecution)
   }
 
+  public interface GradleSyncPhaseDataOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:android_studio.GradleSyncStats.GradleSyncPhaseData)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * List of nested phase names defining this phase.
+     * The most inner phase goes last.
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData.SyncPhase phase_stack = 1 [packed = true];</code>
+     * @return A list containing the phaseStack.
+     */
+    java.util.List<com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase> getPhaseStackList();
+    /**
+     * <pre>
+     * List of nested phase names defining this phase.
+     * The most inner phase goes last.
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData.SyncPhase phase_stack = 1 [packed = true];</code>
+     * @return The count of phaseStack.
+     */
+    int getPhaseStackCount();
+    /**
+     * <pre>
+     * List of nested phase names defining this phase.
+     * The most inner phase goes last.
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData.SyncPhase phase_stack = 1 [packed = true];</code>
+     * @param index The index of the element to return.
+     * @return The phaseStack at the given index.
+     */
+    com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase getPhaseStack(int index);
+
+    /**
+     * <code>optional int64 phase_start_timestamp_ms = 2;</code>
+     * @return Whether the phaseStartTimestampMs field is set.
+     */
+    boolean hasPhaseStartTimestampMs();
+    /**
+     * <code>optional int64 phase_start_timestamp_ms = 2;</code>
+     * @return The phaseStartTimestampMs.
+     */
+    long getPhaseStartTimestampMs();
+
+    /**
+     * <code>optional int64 phase_end_timestamp_ms = 3;</code>
+     * @return Whether the phaseEndTimestampMs field is set.
+     */
+    boolean hasPhaseEndTimestampMs();
+    /**
+     * <code>optional int64 phase_end_timestamp_ms = 3;</code>
+     * @return The phaseEndTimestampMs.
+     */
+    long getPhaseEndTimestampMs();
+
+    /**
+     * <code>optional .android_studio.GradleSyncStats.GradleSyncPhaseData.PhaseResult phase_result = 4;</code>
+     * @return Whether the phaseResult field is set.
+     */
+    boolean hasPhaseResult();
+    /**
+     * <code>optional .android_studio.GradleSyncStats.GradleSyncPhaseData.PhaseResult phase_result = 4;</code>
+     * @return The phaseResult.
+     */
+    com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.PhaseResult getPhaseResult();
+  }
+  /**
+   * Protobuf type {@code android_studio.GradleSyncStats.GradleSyncPhaseData}
+   */
+  public static final class GradleSyncPhaseData extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:android_studio.GradleSyncStats.GradleSyncPhaseData)
+      GradleSyncPhaseDataOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use GradleSyncPhaseData.newBuilder() to construct.
+    private GradleSyncPhaseData(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private GradleSyncPhaseData() {
+      phaseStack_ = java.util.Collections.emptyList();
+      phaseResult_ = 0;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new GradleSyncPhaseData();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleSyncStats_GradleSyncPhaseData_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleSyncStats_GradleSyncPhaseData_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.class, com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.Builder.class);
+    }
+
+    /**
+     * <pre>
+     * Sync phase names. As phases can be nested, a list of them defines any
+     * particular phase. SYNC_TOTAL corresponds to the whole sync process and
+     * includes all phases. GRADLE_* are the phases inside gradle invocation.
+     * </pre>
+     *
+     * Protobuf enum {@code android_studio.GradleSyncStats.GradleSyncPhaseData.SyncPhase}
+     */
+    public enum SyncPhase
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>UNKNOWN_PHASE = 0;</code>
+       */
+      UNKNOWN_PHASE(0),
+      /**
+       * <code>UNKNOWN_GRADLE_PHASE = 1;</code>
+       */
+      UNKNOWN_GRADLE_PHASE(1),
+      /**
+       * <code>GRADLE_CONFIGURE_ROOT_BUILD = 2;</code>
+       */
+      GRADLE_CONFIGURE_ROOT_BUILD(2),
+      /**
+       * <code>GRADLE_CONFIGURE_BUILD = 3;</code>
+       */
+      GRADLE_CONFIGURE_BUILD(3),
+      /**
+       * <code>GRADLE_RUN_MAIN_TASKS = 4;</code>
+       */
+      GRADLE_RUN_MAIN_TASKS(4),
+      /**
+       * <code>GRADLE_RUN_WORK = 5;</code>
+       */
+      GRADLE_RUN_WORK(5),
+      /**
+       * <code>PROJECT_SETUP = 6;</code>
+       */
+      PROJECT_SETUP(6),
+      /**
+       * <code>SYNC_TOTAL = 7;</code>
+       */
+      SYNC_TOTAL(7),
+      ;
+
+      /**
+       * <code>UNKNOWN_PHASE = 0;</code>
+       */
+      public static final int UNKNOWN_PHASE_VALUE = 0;
+      /**
+       * <code>UNKNOWN_GRADLE_PHASE = 1;</code>
+       */
+      public static final int UNKNOWN_GRADLE_PHASE_VALUE = 1;
+      /**
+       * <code>GRADLE_CONFIGURE_ROOT_BUILD = 2;</code>
+       */
+      public static final int GRADLE_CONFIGURE_ROOT_BUILD_VALUE = 2;
+      /**
+       * <code>GRADLE_CONFIGURE_BUILD = 3;</code>
+       */
+      public static final int GRADLE_CONFIGURE_BUILD_VALUE = 3;
+      /**
+       * <code>GRADLE_RUN_MAIN_TASKS = 4;</code>
+       */
+      public static final int GRADLE_RUN_MAIN_TASKS_VALUE = 4;
+      /**
+       * <code>GRADLE_RUN_WORK = 5;</code>
+       */
+      public static final int GRADLE_RUN_WORK_VALUE = 5;
+      /**
+       * <code>PROJECT_SETUP = 6;</code>
+       */
+      public static final int PROJECT_SETUP_VALUE = 6;
+      /**
+       * <code>SYNC_TOTAL = 7;</code>
+       */
+      public static final int SYNC_TOTAL_VALUE = 7;
+
+
+      public final int getNumber() {
+        return value;
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static SyncPhase valueOf(int value) {
+        return forNumber(value);
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       */
+      public static SyncPhase forNumber(int value) {
+        switch (value) {
+          case 0: return UNKNOWN_PHASE;
+          case 1: return UNKNOWN_GRADLE_PHASE;
+          case 2: return GRADLE_CONFIGURE_ROOT_BUILD;
+          case 3: return GRADLE_CONFIGURE_BUILD;
+          case 4: return GRADLE_RUN_MAIN_TASKS;
+          case 5: return GRADLE_RUN_WORK;
+          case 6: return PROJECT_SETUP;
+          case 7: return SYNC_TOTAL;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<SyncPhase>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          SyncPhase> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<SyncPhase>() {
+              public SyncPhase findValueByNumber(int number) {
+                return SyncPhase.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final SyncPhase[] VALUES = values();
+
+      public static SyncPhase valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private SyncPhase(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:android_studio.GradleSyncStats.GradleSyncPhaseData.SyncPhase)
+    }
+
+    /**
+     * Protobuf enum {@code android_studio.GradleSyncStats.GradleSyncPhaseData.PhaseResult}
+     */
+    public enum PhaseResult
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>UNKNOWN_RESULT = 0;</code>
+       */
+      UNKNOWN_RESULT(0),
+      /**
+       * <code>SUCCESS = 1;</code>
+       */
+      SUCCESS(1),
+      /**
+       * <code>FAILURE = 2;</code>
+       */
+      FAILURE(2),
+      /**
+       * <code>CANCELLED = 3;</code>
+       */
+      CANCELLED(3),
+      ;
+
+      /**
+       * <code>UNKNOWN_RESULT = 0;</code>
+       */
+      public static final int UNKNOWN_RESULT_VALUE = 0;
+      /**
+       * <code>SUCCESS = 1;</code>
+       */
+      public static final int SUCCESS_VALUE = 1;
+      /**
+       * <code>FAILURE = 2;</code>
+       */
+      public static final int FAILURE_VALUE = 2;
+      /**
+       * <code>CANCELLED = 3;</code>
+       */
+      public static final int CANCELLED_VALUE = 3;
+
+
+      public final int getNumber() {
+        return value;
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static PhaseResult valueOf(int value) {
+        return forNumber(value);
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       */
+      public static PhaseResult forNumber(int value) {
+        switch (value) {
+          case 0: return UNKNOWN_RESULT;
+          case 1: return SUCCESS;
+          case 2: return FAILURE;
+          case 3: return CANCELLED;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<PhaseResult>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          PhaseResult> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<PhaseResult>() {
+              public PhaseResult findValueByNumber(int number) {
+                return PhaseResult.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.getDescriptor().getEnumTypes().get(1);
+      }
+
+      private static final PhaseResult[] VALUES = values();
+
+      public static PhaseResult valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private PhaseResult(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:android_studio.GradleSyncStats.GradleSyncPhaseData.PhaseResult)
+    }
+
+    private int bitField0_;
+    public static final int PHASE_STACK_FIELD_NUMBER = 1;
+    private java.util.List<java.lang.Integer> phaseStack_;
+    private static final com.google.protobuf.Internal.ListAdapter.Converter<
+        java.lang.Integer, com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase> phaseStack_converter_ =
+            new com.google.protobuf.Internal.ListAdapter.Converter<
+                java.lang.Integer, com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase>() {
+              public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase convert(java.lang.Integer from) {
+                @SuppressWarnings("deprecation")
+                com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase result = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase.valueOf(from);
+                return result == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase.UNKNOWN_PHASE : result;
+              }
+            };
+    /**
+     * <pre>
+     * List of nested phase names defining this phase.
+     * The most inner phase goes last.
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData.SyncPhase phase_stack = 1 [packed = true];</code>
+     * @return A list containing the phaseStack.
+     */
+    @java.lang.Override
+    public java.util.List<com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase> getPhaseStackList() {
+      return new com.google.protobuf.Internal.ListAdapter<
+          java.lang.Integer, com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase>(phaseStack_, phaseStack_converter_);
+    }
+    /**
+     * <pre>
+     * List of nested phase names defining this phase.
+     * The most inner phase goes last.
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData.SyncPhase phase_stack = 1 [packed = true];</code>
+     * @return The count of phaseStack.
+     */
+    @java.lang.Override
+    public int getPhaseStackCount() {
+      return phaseStack_.size();
+    }
+    /**
+     * <pre>
+     * List of nested phase names defining this phase.
+     * The most inner phase goes last.
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData.SyncPhase phase_stack = 1 [packed = true];</code>
+     * @param index The index of the element to return.
+     * @return The phaseStack at the given index.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase getPhaseStack(int index) {
+      return phaseStack_converter_.convert(phaseStack_.get(index));
+    }
+    private int phaseStackMemoizedSerializedSize;
+
+    public static final int PHASE_START_TIMESTAMP_MS_FIELD_NUMBER = 2;
+    private long phaseStartTimestampMs_;
+    /**
+     * <code>optional int64 phase_start_timestamp_ms = 2;</code>
+     * @return Whether the phaseStartTimestampMs field is set.
+     */
+    @java.lang.Override
+    public boolean hasPhaseStartTimestampMs() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <code>optional int64 phase_start_timestamp_ms = 2;</code>
+     * @return The phaseStartTimestampMs.
+     */
+    @java.lang.Override
+    public long getPhaseStartTimestampMs() {
+      return phaseStartTimestampMs_;
+    }
+
+    public static final int PHASE_END_TIMESTAMP_MS_FIELD_NUMBER = 3;
+    private long phaseEndTimestampMs_;
+    /**
+     * <code>optional int64 phase_end_timestamp_ms = 3;</code>
+     * @return Whether the phaseEndTimestampMs field is set.
+     */
+    @java.lang.Override
+    public boolean hasPhaseEndTimestampMs() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <code>optional int64 phase_end_timestamp_ms = 3;</code>
+     * @return The phaseEndTimestampMs.
+     */
+    @java.lang.Override
+    public long getPhaseEndTimestampMs() {
+      return phaseEndTimestampMs_;
+    }
+
+    public static final int PHASE_RESULT_FIELD_NUMBER = 4;
+    private int phaseResult_;
+    /**
+     * <code>optional .android_studio.GradleSyncStats.GradleSyncPhaseData.PhaseResult phase_result = 4;</code>
+     * @return Whether the phaseResult field is set.
+     */
+    @java.lang.Override public boolean hasPhaseResult() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <code>optional .android_studio.GradleSyncStats.GradleSyncPhaseData.PhaseResult phase_result = 4;</code>
+     * @return The phaseResult.
+     */
+    @java.lang.Override public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.PhaseResult getPhaseResult() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.PhaseResult result = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.PhaseResult.valueOf(phaseResult_);
+      return result == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.PhaseResult.UNKNOWN_RESULT : result;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (getPhaseStackList().size() > 0) {
+        output.writeUInt32NoTag(10);
+        output.writeUInt32NoTag(phaseStackMemoizedSerializedSize);
+      }
+      for (int i = 0; i < phaseStack_.size(); i++) {
+        output.writeEnumNoTag(phaseStack_.get(i));
+      }
+      if (((bitField0_ & 0x00000001) != 0)) {
+        output.writeInt64(2, phaseStartTimestampMs_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        output.writeInt64(3, phaseEndTimestampMs_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        output.writeEnum(4, phaseResult_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      {
+        int dataSize = 0;
+        for (int i = 0; i < phaseStack_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeEnumSizeNoTag(phaseStack_.get(i));
+        }
+        size += dataSize;
+        if (!getPhaseStackList().isEmpty()) {  size += 1;
+          size += com.google.protobuf.CodedOutputStream
+            .computeUInt32SizeNoTag(dataSize);
+        }phaseStackMemoizedSerializedSize = dataSize;
+      }
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(2, phaseStartTimestampMs_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(3, phaseEndTimestampMs_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(4, phaseResult_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData)) {
+        return super.equals(obj);
+      }
+      com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData other = (com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData) obj;
+
+      if (!phaseStack_.equals(other.phaseStack_)) return false;
+      if (hasPhaseStartTimestampMs() != other.hasPhaseStartTimestampMs()) return false;
+      if (hasPhaseStartTimestampMs()) {
+        if (getPhaseStartTimestampMs()
+            != other.getPhaseStartTimestampMs()) return false;
+      }
+      if (hasPhaseEndTimestampMs() != other.hasPhaseEndTimestampMs()) return false;
+      if (hasPhaseEndTimestampMs()) {
+        if (getPhaseEndTimestampMs()
+            != other.getPhaseEndTimestampMs()) return false;
+      }
+      if (hasPhaseResult() != other.hasPhaseResult()) return false;
+      if (hasPhaseResult()) {
+        if (phaseResult_ != other.phaseResult_) return false;
+      }
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (getPhaseStackCount() > 0) {
+        hash = (37 * hash) + PHASE_STACK_FIELD_NUMBER;
+        hash = (53 * hash) + phaseStack_.hashCode();
+      }
+      if (hasPhaseStartTimestampMs()) {
+        hash = (37 * hash) + PHASE_START_TIMESTAMP_MS_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getPhaseStartTimestampMs());
+      }
+      if (hasPhaseEndTimestampMs()) {
+        hash = (37 * hash) + PHASE_END_TIMESTAMP_MS_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getPhaseEndTimestampMs());
+      }
+      if (hasPhaseResult()) {
+        hash = (37 * hash) + PHASE_RESULT_FIELD_NUMBER;
+        hash = (53 * hash) + phaseResult_;
+      }
+      hash = (29 * hash) + getUnknownFields().hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code android_studio.GradleSyncStats.GradleSyncPhaseData}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:android_studio.GradleSyncStats.GradleSyncPhaseData)
+        com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseDataOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleSyncStats_GradleSyncPhaseData_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleSyncStats_GradleSyncPhaseData_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.class, com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.Builder.class);
+      }
+
+      // Construct using com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.newBuilder()
+      private Builder() {
+
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        phaseStack_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000001);
+        phaseStartTimestampMs_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        phaseEndTimestampMs_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        phaseResult_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleSyncStats_GradleSyncPhaseData_descriptor;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData getDefaultInstanceForType() {
+        return com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData build() {
+        com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData buildPartial() {
+        com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData result = new com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((bitField0_ & 0x00000001) != 0)) {
+          phaseStack_ = java.util.Collections.unmodifiableList(phaseStack_);
+          bitField0_ = (bitField0_ & ~0x00000001);
+        }
+        result.phaseStack_ = phaseStack_;
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.phaseStartTimestampMs_ = phaseStartTimestampMs_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.phaseEndTimestampMs_ = phaseEndTimestampMs_;
+          to_bitField0_ |= 0x00000002;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.phaseResult_ = phaseResult_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData) {
+          return mergeFrom((com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData other) {
+        if (other == com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.getDefaultInstance()) return this;
+        if (!other.phaseStack_.isEmpty()) {
+          if (phaseStack_.isEmpty()) {
+            phaseStack_ = other.phaseStack_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            ensurePhaseStackIsMutable();
+            phaseStack_.addAll(other.phaseStack_);
+          }
+          onChanged();
+        }
+        if (other.hasPhaseStartTimestampMs()) {
+          setPhaseStartTimestampMs(other.getPhaseStartTimestampMs());
+        }
+        if (other.hasPhaseEndTimestampMs()) {
+          setPhaseEndTimestampMs(other.getPhaseEndTimestampMs());
+        }
+        if (other.hasPhaseResult()) {
+          setPhaseResult(other.getPhaseResult());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 8: {
+                int tmpRaw = input.readEnum();
+                com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase tmpValue =
+                    com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase.forNumber(tmpRaw);
+                if (tmpValue == null) {
+                  mergeUnknownVarintField(1, tmpRaw);
+                } else {
+                  ensurePhaseStackIsMutable();
+                  phaseStack_.add(tmpRaw);
+                }
+                break;
+              } // case 8
+              case 10: {
+                int length = input.readRawVarint32();
+                int oldLimit = input.pushLimit(length);
+                while(input.getBytesUntilLimit() > 0) {
+                  int tmpRaw = input.readEnum();
+                  com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase tmpValue =
+                      com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase.forNumber(tmpRaw);
+                  if (tmpValue == null) {
+                    mergeUnknownVarintField(1, tmpRaw);
+                  } else {
+                    ensurePhaseStackIsMutable();
+                    phaseStack_.add(tmpRaw);
+                  }
+                }
+                input.popLimit(oldLimit);
+                break;
+              } // case 10
+              case 16: {
+                phaseStartTimestampMs_ = input.readInt64();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 16
+              case 24: {
+                phaseEndTimestampMs_ = input.readInt64();
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 24
+              case 32: {
+                int tmpRaw = input.readEnum();
+                com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.PhaseResult tmpValue =
+                    com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.PhaseResult.forNumber(tmpRaw);
+                if (tmpValue == null) {
+                  mergeUnknownVarintField(4, tmpRaw);
+                } else {
+                  phaseResult_ = tmpRaw;
+                  bitField0_ |= 0x00000008;
+                }
+                break;
+              } // case 32
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.unwrapIOException();
+        } finally {
+          onChanged();
+        } // finally
+        return this;
+      }
+      private int bitField0_;
+
+      private java.util.List<java.lang.Integer> phaseStack_ =
+        java.util.Collections.emptyList();
+      private void ensurePhaseStackIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          phaseStack_ = new java.util.ArrayList<java.lang.Integer>(phaseStack_);
+          bitField0_ |= 0x00000001;
+        }
+      }
+      /**
+       * <pre>
+       * List of nested phase names defining this phase.
+       * The most inner phase goes last.
+       * </pre>
+       *
+       * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData.SyncPhase phase_stack = 1 [packed = true];</code>
+       * @return A list containing the phaseStack.
+       */
+      public java.util.List<com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase> getPhaseStackList() {
+        return new com.google.protobuf.Internal.ListAdapter<
+            java.lang.Integer, com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase>(phaseStack_, phaseStack_converter_);
+      }
+      /**
+       * <pre>
+       * List of nested phase names defining this phase.
+       * The most inner phase goes last.
+       * </pre>
+       *
+       * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData.SyncPhase phase_stack = 1 [packed = true];</code>
+       * @return The count of phaseStack.
+       */
+      public int getPhaseStackCount() {
+        return phaseStack_.size();
+      }
+      /**
+       * <pre>
+       * List of nested phase names defining this phase.
+       * The most inner phase goes last.
+       * </pre>
+       *
+       * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData.SyncPhase phase_stack = 1 [packed = true];</code>
+       * @param index The index of the element to return.
+       * @return The phaseStack at the given index.
+       */
+      public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase getPhaseStack(int index) {
+        return phaseStack_converter_.convert(phaseStack_.get(index));
+      }
+      /**
+       * <pre>
+       * List of nested phase names defining this phase.
+       * The most inner phase goes last.
+       * </pre>
+       *
+       * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData.SyncPhase phase_stack = 1 [packed = true];</code>
+       * @param index The index to set the value at.
+       * @param value The phaseStack to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPhaseStack(
+          int index, com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensurePhaseStackIsMutable();
+        phaseStack_.set(index, value.getNumber());
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * List of nested phase names defining this phase.
+       * The most inner phase goes last.
+       * </pre>
+       *
+       * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData.SyncPhase phase_stack = 1 [packed = true];</code>
+       * @param value The phaseStack to add.
+       * @return This builder for chaining.
+       */
+      public Builder addPhaseStack(com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensurePhaseStackIsMutable();
+        phaseStack_.add(value.getNumber());
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * List of nested phase names defining this phase.
+       * The most inner phase goes last.
+       * </pre>
+       *
+       * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData.SyncPhase phase_stack = 1 [packed = true];</code>
+       * @param values The phaseStack to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllPhaseStack(
+          java.lang.Iterable<? extends com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase> values) {
+        ensurePhaseStackIsMutable();
+        for (com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase value : values) {
+          phaseStack_.add(value.getNumber());
+        }
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * List of nested phase names defining this phase.
+       * The most inner phase goes last.
+       * </pre>
+       *
+       * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData.SyncPhase phase_stack = 1 [packed = true];</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPhaseStack() {
+        phaseStack_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000001);
+        onChanged();
+        return this;
+      }
+
+      private long phaseStartTimestampMs_ ;
+      /**
+       * <code>optional int64 phase_start_timestamp_ms = 2;</code>
+       * @return Whether the phaseStartTimestampMs field is set.
+       */
+      @java.lang.Override
+      public boolean hasPhaseStartTimestampMs() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <code>optional int64 phase_start_timestamp_ms = 2;</code>
+       * @return The phaseStartTimestampMs.
+       */
+      @java.lang.Override
+      public long getPhaseStartTimestampMs() {
+        return phaseStartTimestampMs_;
+      }
+      /**
+       * <code>optional int64 phase_start_timestamp_ms = 2;</code>
+       * @param value The phaseStartTimestampMs to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPhaseStartTimestampMs(long value) {
+        bitField0_ |= 0x00000002;
+        phaseStartTimestampMs_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int64 phase_start_timestamp_ms = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPhaseStartTimestampMs() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        phaseStartTimestampMs_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long phaseEndTimestampMs_ ;
+      /**
+       * <code>optional int64 phase_end_timestamp_ms = 3;</code>
+       * @return Whether the phaseEndTimestampMs field is set.
+       */
+      @java.lang.Override
+      public boolean hasPhaseEndTimestampMs() {
+        return ((bitField0_ & 0x00000004) != 0);
+      }
+      /**
+       * <code>optional int64 phase_end_timestamp_ms = 3;</code>
+       * @return The phaseEndTimestampMs.
+       */
+      @java.lang.Override
+      public long getPhaseEndTimestampMs() {
+        return phaseEndTimestampMs_;
+      }
+      /**
+       * <code>optional int64 phase_end_timestamp_ms = 3;</code>
+       * @param value The phaseEndTimestampMs to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPhaseEndTimestampMs(long value) {
+        bitField0_ |= 0x00000004;
+        phaseEndTimestampMs_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int64 phase_end_timestamp_ms = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPhaseEndTimestampMs() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        phaseEndTimestampMs_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int phaseResult_ = 0;
+      /**
+       * <code>optional .android_studio.GradleSyncStats.GradleSyncPhaseData.PhaseResult phase_result = 4;</code>
+       * @return Whether the phaseResult field is set.
+       */
+      @java.lang.Override public boolean hasPhaseResult() {
+        return ((bitField0_ & 0x00000008) != 0);
+      }
+      /**
+       * <code>optional .android_studio.GradleSyncStats.GradleSyncPhaseData.PhaseResult phase_result = 4;</code>
+       * @return The phaseResult.
+       */
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.PhaseResult getPhaseResult() {
+        @SuppressWarnings("deprecation")
+        com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.PhaseResult result = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.PhaseResult.valueOf(phaseResult_);
+        return result == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.PhaseResult.UNKNOWN_RESULT : result;
+      }
+      /**
+       * <code>optional .android_studio.GradleSyncStats.GradleSyncPhaseData.PhaseResult phase_result = 4;</code>
+       * @param value The phaseResult to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPhaseResult(com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.PhaseResult value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000008;
+        phaseResult_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .android_studio.GradleSyncStats.GradleSyncPhaseData.PhaseResult phase_result = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPhaseResult() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        phaseResult_ = 0;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:android_studio.GradleSyncStats.GradleSyncPhaseData)
+    }
+
+    // @@protoc_insertion_point(class_scope:android_studio.GradleSyncStats.GradleSyncPhaseData)
+    private static final com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData();
+    }
+
+    public static com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<GradleSyncPhaseData>
+        PARSER = new com.google.protobuf.AbstractParser<GradleSyncPhaseData>() {
+      @java.lang.Override
+      public GradleSyncPhaseData parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
+      }
+    };
+
+    public static com.google.protobuf.Parser<GradleSyncPhaseData> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GradleSyncPhaseData> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private int bitField0_;
   public static final int TRIGGER_FIELD_NUMBER = 1;
   private int trigger_;
@@ -3201,6 +4484,76 @@ private static final long serialVersionUID = 0L;
     return result == null ? com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State.UNKNOWN_GRADLE_VERSION_CATALOG_DETECTOR_STATE : result;
   }
 
+  public static final int GRADLE_SYNC_PHASES_DATA_FIELD_NUMBER = 17;
+  private java.util.List<com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData> gradleSyncPhasesData_;
+  /**
+   * <pre>
+   * Data on phases executed during sync.
+   * Set only for sync finish events, when kind = GRADLE_SYNC_ENDED,
+   * GRADLE_SYNC_CANCELLED, GRADLE_SYNC_FAILURE or GRADLE_SYNC_FAILURE_DETAILS
+   * </pre>
+   *
+   * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData gradle_sync_phases_data = 17;</code>
+   */
+  @java.lang.Override
+  public java.util.List<com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData> getGradleSyncPhasesDataList() {
+    return gradleSyncPhasesData_;
+  }
+  /**
+   * <pre>
+   * Data on phases executed during sync.
+   * Set only for sync finish events, when kind = GRADLE_SYNC_ENDED,
+   * GRADLE_SYNC_CANCELLED, GRADLE_SYNC_FAILURE or GRADLE_SYNC_FAILURE_DETAILS
+   * </pre>
+   *
+   * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData gradle_sync_phases_data = 17;</code>
+   */
+  @java.lang.Override
+  public java.util.List<? extends com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseDataOrBuilder> 
+      getGradleSyncPhasesDataOrBuilderList() {
+    return gradleSyncPhasesData_;
+  }
+  /**
+   * <pre>
+   * Data on phases executed during sync.
+   * Set only for sync finish events, when kind = GRADLE_SYNC_ENDED,
+   * GRADLE_SYNC_CANCELLED, GRADLE_SYNC_FAILURE or GRADLE_SYNC_FAILURE_DETAILS
+   * </pre>
+   *
+   * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData gradle_sync_phases_data = 17;</code>
+   */
+  @java.lang.Override
+  public int getGradleSyncPhasesDataCount() {
+    return gradleSyncPhasesData_.size();
+  }
+  /**
+   * <pre>
+   * Data on phases executed during sync.
+   * Set only for sync finish events, when kind = GRADLE_SYNC_ENDED,
+   * GRADLE_SYNC_CANCELLED, GRADLE_SYNC_FAILURE or GRADLE_SYNC_FAILURE_DETAILS
+   * </pre>
+   *
+   * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData gradle_sync_phases_data = 17;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData getGradleSyncPhasesData(int index) {
+    return gradleSyncPhasesData_.get(index);
+  }
+  /**
+   * <pre>
+   * Data on phases executed during sync.
+   * Set only for sync finish events, when kind = GRADLE_SYNC_ENDED,
+   * GRADLE_SYNC_CANCELLED, GRADLE_SYNC_FAILURE or GRADLE_SYNC_FAILURE_DETAILS
+   * </pre>
+   *
+   * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData gradle_sync_phases_data = 17;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseDataOrBuilder getGradleSyncPhasesDataOrBuilder(
+      int index) {
+    return gradleSyncPhasesData_.get(index);
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -3262,6 +4615,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00008000) != 0)) {
       output.writeEnum(16, versionCatalogDetectorState_);
+    }
+    for (int i = 0; i < gradleSyncPhasesData_.size(); i++) {
+      output.writeMessage(17, gradleSyncPhasesData_.get(i));
     }
     getUnknownFields().writeTo(output);
   }
@@ -3333,6 +4689,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00008000) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(16, versionCatalogDetectorState_);
+    }
+    for (int i = 0; i < gradleSyncPhasesData_.size(); i++) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(17, gradleSyncPhasesData_.get(i));
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -3422,6 +4782,8 @@ private static final long serialVersionUID = 0L;
     if (hasVersionCatalogDetectorState()) {
       if (versionCatalogDetectorState_ != other.versionCatalogDetectorState_) return false;
     }
+    if (!getGradleSyncPhasesDataList()
+        .equals(other.getGradleSyncPhasesDataList())) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -3502,6 +4864,10 @@ private static final long serialVersionUID = 0L;
     if (hasVersionCatalogDetectorState()) {
       hash = (37 * hash) + VERSION_CATALOG_DETECTOR_STATE_FIELD_NUMBER;
       hash = (53 * hash) + versionCatalogDetectorState_;
+    }
+    if (getGradleSyncPhasesDataCount() > 0) {
+      hash = (37 * hash) + GRADLE_SYNC_PHASES_DATA_FIELD_NUMBER;
+      hash = (53 * hash) + getGradleSyncPhasesDataList().hashCode();
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -3636,6 +5002,7 @@ private static final long serialVersionUID = 0L;
       if (com.google.protobuf.GeneratedMessageV3
               .alwaysUseFieldBuilders) {
         getDownloadsDataFieldBuilder();
+        getGradleSyncPhasesDataFieldBuilder();
       }
     }
     @java.lang.Override
@@ -3677,6 +5044,13 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00004000);
       versionCatalogDetectorState_ = 0;
       bitField0_ = (bitField0_ & ~0x00008000);
+      if (gradleSyncPhasesDataBuilder_ == null) {
+        gradleSyncPhasesData_ = java.util.Collections.emptyList();
+      } else {
+        gradleSyncPhasesData_ = null;
+        gradleSyncPhasesDataBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00010000);
       return this;
     }
 
@@ -3773,6 +5147,15 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00008000;
       }
       result.versionCatalogDetectorState_ = versionCatalogDetectorState_;
+      if (gradleSyncPhasesDataBuilder_ == null) {
+        if (((bitField0_ & 0x00010000) != 0)) {
+          gradleSyncPhasesData_ = java.util.Collections.unmodifiableList(gradleSyncPhasesData_);
+          bitField0_ = (bitField0_ & ~0x00010000);
+        }
+        result.gradleSyncPhasesData_ = gradleSyncPhasesData_;
+      } else {
+        result.gradleSyncPhasesData_ = gradleSyncPhasesDataBuilder_.build();
+      }
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -3873,6 +5256,32 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasVersionCatalogDetectorState()) {
         setVersionCatalogDetectorState(other.getVersionCatalogDetectorState());
+      }
+      if (gradleSyncPhasesDataBuilder_ == null) {
+        if (!other.gradleSyncPhasesData_.isEmpty()) {
+          if (gradleSyncPhasesData_.isEmpty()) {
+            gradleSyncPhasesData_ = other.gradleSyncPhasesData_;
+            bitField0_ = (bitField0_ & ~0x00010000);
+          } else {
+            ensureGradleSyncPhasesDataIsMutable();
+            gradleSyncPhasesData_.addAll(other.gradleSyncPhasesData_);
+          }
+          onChanged();
+        }
+      } else {
+        if (!other.gradleSyncPhasesData_.isEmpty()) {
+          if (gradleSyncPhasesDataBuilder_.isEmpty()) {
+            gradleSyncPhasesDataBuilder_.dispose();
+            gradleSyncPhasesDataBuilder_ = null;
+            gradleSyncPhasesData_ = other.gradleSyncPhasesData_;
+            bitField0_ = (bitField0_ & ~0x00010000);
+            gradleSyncPhasesDataBuilder_ = 
+              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                 getGradleSyncPhasesDataFieldBuilder() : null;
+          } else {
+            gradleSyncPhasesDataBuilder_.addAllMessages(other.gradleSyncPhasesData_);
+          }
+        }
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -4031,6 +5440,19 @@ private static final long serialVersionUID = 0L;
               }
               break;
             } // case 128
+            case 138: {
+              com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData m =
+                  input.readMessage(
+                      com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.PARSER,
+                      extensionRegistry);
+              if (gradleSyncPhasesDataBuilder_ == null) {
+                ensureGradleSyncPhasesDataIsMutable();
+                gradleSyncPhasesData_.add(m);
+              } else {
+                gradleSyncPhasesDataBuilder_.addMessage(m);
+              }
+              break;
+            } // case 138
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -5191,6 +6613,354 @@ private static final long serialVersionUID = 0L;
       versionCatalogDetectorState_ = 0;
       onChanged();
       return this;
+    }
+
+    private java.util.List<com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData> gradleSyncPhasesData_ =
+      java.util.Collections.emptyList();
+    private void ensureGradleSyncPhasesDataIsMutable() {
+      if (!((bitField0_ & 0x00010000) != 0)) {
+        gradleSyncPhasesData_ = new java.util.ArrayList<com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData>(gradleSyncPhasesData_);
+        bitField0_ |= 0x00010000;
+       }
+    }
+
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData, com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.Builder, com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseDataOrBuilder> gradleSyncPhasesDataBuilder_;
+
+    /**
+     * <pre>
+     * Data on phases executed during sync.
+     * Set only for sync finish events, when kind = GRADLE_SYNC_ENDED,
+     * GRADLE_SYNC_CANCELLED, GRADLE_SYNC_FAILURE or GRADLE_SYNC_FAILURE_DETAILS
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData gradle_sync_phases_data = 17;</code>
+     */
+    public java.util.List<com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData> getGradleSyncPhasesDataList() {
+      if (gradleSyncPhasesDataBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(gradleSyncPhasesData_);
+      } else {
+        return gradleSyncPhasesDataBuilder_.getMessageList();
+      }
+    }
+    /**
+     * <pre>
+     * Data on phases executed during sync.
+     * Set only for sync finish events, when kind = GRADLE_SYNC_ENDED,
+     * GRADLE_SYNC_CANCELLED, GRADLE_SYNC_FAILURE or GRADLE_SYNC_FAILURE_DETAILS
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData gradle_sync_phases_data = 17;</code>
+     */
+    public int getGradleSyncPhasesDataCount() {
+      if (gradleSyncPhasesDataBuilder_ == null) {
+        return gradleSyncPhasesData_.size();
+      } else {
+        return gradleSyncPhasesDataBuilder_.getCount();
+      }
+    }
+    /**
+     * <pre>
+     * Data on phases executed during sync.
+     * Set only for sync finish events, when kind = GRADLE_SYNC_ENDED,
+     * GRADLE_SYNC_CANCELLED, GRADLE_SYNC_FAILURE or GRADLE_SYNC_FAILURE_DETAILS
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData gradle_sync_phases_data = 17;</code>
+     */
+    public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData getGradleSyncPhasesData(int index) {
+      if (gradleSyncPhasesDataBuilder_ == null) {
+        return gradleSyncPhasesData_.get(index);
+      } else {
+        return gradleSyncPhasesDataBuilder_.getMessage(index);
+      }
+    }
+    /**
+     * <pre>
+     * Data on phases executed during sync.
+     * Set only for sync finish events, when kind = GRADLE_SYNC_ENDED,
+     * GRADLE_SYNC_CANCELLED, GRADLE_SYNC_FAILURE or GRADLE_SYNC_FAILURE_DETAILS
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData gradle_sync_phases_data = 17;</code>
+     */
+    public Builder setGradleSyncPhasesData(
+        int index, com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData value) {
+      if (gradleSyncPhasesDataBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureGradleSyncPhasesDataIsMutable();
+        gradleSyncPhasesData_.set(index, value);
+        onChanged();
+      } else {
+        gradleSyncPhasesDataBuilder_.setMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Data on phases executed during sync.
+     * Set only for sync finish events, when kind = GRADLE_SYNC_ENDED,
+     * GRADLE_SYNC_CANCELLED, GRADLE_SYNC_FAILURE or GRADLE_SYNC_FAILURE_DETAILS
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData gradle_sync_phases_data = 17;</code>
+     */
+    public Builder setGradleSyncPhasesData(
+        int index, com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.Builder builderForValue) {
+      if (gradleSyncPhasesDataBuilder_ == null) {
+        ensureGradleSyncPhasesDataIsMutable();
+        gradleSyncPhasesData_.set(index, builderForValue.build());
+        onChanged();
+      } else {
+        gradleSyncPhasesDataBuilder_.setMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Data on phases executed during sync.
+     * Set only for sync finish events, when kind = GRADLE_SYNC_ENDED,
+     * GRADLE_SYNC_CANCELLED, GRADLE_SYNC_FAILURE or GRADLE_SYNC_FAILURE_DETAILS
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData gradle_sync_phases_data = 17;</code>
+     */
+    public Builder addGradleSyncPhasesData(com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData value) {
+      if (gradleSyncPhasesDataBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureGradleSyncPhasesDataIsMutable();
+        gradleSyncPhasesData_.add(value);
+        onChanged();
+      } else {
+        gradleSyncPhasesDataBuilder_.addMessage(value);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Data on phases executed during sync.
+     * Set only for sync finish events, when kind = GRADLE_SYNC_ENDED,
+     * GRADLE_SYNC_CANCELLED, GRADLE_SYNC_FAILURE or GRADLE_SYNC_FAILURE_DETAILS
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData gradle_sync_phases_data = 17;</code>
+     */
+    public Builder addGradleSyncPhasesData(
+        int index, com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData value) {
+      if (gradleSyncPhasesDataBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureGradleSyncPhasesDataIsMutable();
+        gradleSyncPhasesData_.add(index, value);
+        onChanged();
+      } else {
+        gradleSyncPhasesDataBuilder_.addMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Data on phases executed during sync.
+     * Set only for sync finish events, when kind = GRADLE_SYNC_ENDED,
+     * GRADLE_SYNC_CANCELLED, GRADLE_SYNC_FAILURE or GRADLE_SYNC_FAILURE_DETAILS
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData gradle_sync_phases_data = 17;</code>
+     */
+    public Builder addGradleSyncPhasesData(
+        com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.Builder builderForValue) {
+      if (gradleSyncPhasesDataBuilder_ == null) {
+        ensureGradleSyncPhasesDataIsMutable();
+        gradleSyncPhasesData_.add(builderForValue.build());
+        onChanged();
+      } else {
+        gradleSyncPhasesDataBuilder_.addMessage(builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Data on phases executed during sync.
+     * Set only for sync finish events, when kind = GRADLE_SYNC_ENDED,
+     * GRADLE_SYNC_CANCELLED, GRADLE_SYNC_FAILURE or GRADLE_SYNC_FAILURE_DETAILS
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData gradle_sync_phases_data = 17;</code>
+     */
+    public Builder addGradleSyncPhasesData(
+        int index, com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.Builder builderForValue) {
+      if (gradleSyncPhasesDataBuilder_ == null) {
+        ensureGradleSyncPhasesDataIsMutable();
+        gradleSyncPhasesData_.add(index, builderForValue.build());
+        onChanged();
+      } else {
+        gradleSyncPhasesDataBuilder_.addMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Data on phases executed during sync.
+     * Set only for sync finish events, when kind = GRADLE_SYNC_ENDED,
+     * GRADLE_SYNC_CANCELLED, GRADLE_SYNC_FAILURE or GRADLE_SYNC_FAILURE_DETAILS
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData gradle_sync_phases_data = 17;</code>
+     */
+    public Builder addAllGradleSyncPhasesData(
+        java.lang.Iterable<? extends com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData> values) {
+      if (gradleSyncPhasesDataBuilder_ == null) {
+        ensureGradleSyncPhasesDataIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, gradleSyncPhasesData_);
+        onChanged();
+      } else {
+        gradleSyncPhasesDataBuilder_.addAllMessages(values);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Data on phases executed during sync.
+     * Set only for sync finish events, when kind = GRADLE_SYNC_ENDED,
+     * GRADLE_SYNC_CANCELLED, GRADLE_SYNC_FAILURE or GRADLE_SYNC_FAILURE_DETAILS
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData gradle_sync_phases_data = 17;</code>
+     */
+    public Builder clearGradleSyncPhasesData() {
+      if (gradleSyncPhasesDataBuilder_ == null) {
+        gradleSyncPhasesData_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00010000);
+        onChanged();
+      } else {
+        gradleSyncPhasesDataBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Data on phases executed during sync.
+     * Set only for sync finish events, when kind = GRADLE_SYNC_ENDED,
+     * GRADLE_SYNC_CANCELLED, GRADLE_SYNC_FAILURE or GRADLE_SYNC_FAILURE_DETAILS
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData gradle_sync_phases_data = 17;</code>
+     */
+    public Builder removeGradleSyncPhasesData(int index) {
+      if (gradleSyncPhasesDataBuilder_ == null) {
+        ensureGradleSyncPhasesDataIsMutable();
+        gradleSyncPhasesData_.remove(index);
+        onChanged();
+      } else {
+        gradleSyncPhasesDataBuilder_.remove(index);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Data on phases executed during sync.
+     * Set only for sync finish events, when kind = GRADLE_SYNC_ENDED,
+     * GRADLE_SYNC_CANCELLED, GRADLE_SYNC_FAILURE or GRADLE_SYNC_FAILURE_DETAILS
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData gradle_sync_phases_data = 17;</code>
+     */
+    public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.Builder getGradleSyncPhasesDataBuilder(
+        int index) {
+      return getGradleSyncPhasesDataFieldBuilder().getBuilder(index);
+    }
+    /**
+     * <pre>
+     * Data on phases executed during sync.
+     * Set only for sync finish events, when kind = GRADLE_SYNC_ENDED,
+     * GRADLE_SYNC_CANCELLED, GRADLE_SYNC_FAILURE or GRADLE_SYNC_FAILURE_DETAILS
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData gradle_sync_phases_data = 17;</code>
+     */
+    public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseDataOrBuilder getGradleSyncPhasesDataOrBuilder(
+        int index) {
+      if (gradleSyncPhasesDataBuilder_ == null) {
+        return gradleSyncPhasesData_.get(index);  } else {
+        return gradleSyncPhasesDataBuilder_.getMessageOrBuilder(index);
+      }
+    }
+    /**
+     * <pre>
+     * Data on phases executed during sync.
+     * Set only for sync finish events, when kind = GRADLE_SYNC_ENDED,
+     * GRADLE_SYNC_CANCELLED, GRADLE_SYNC_FAILURE or GRADLE_SYNC_FAILURE_DETAILS
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData gradle_sync_phases_data = 17;</code>
+     */
+    public java.util.List<? extends com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseDataOrBuilder> 
+         getGradleSyncPhasesDataOrBuilderList() {
+      if (gradleSyncPhasesDataBuilder_ != null) {
+        return gradleSyncPhasesDataBuilder_.getMessageOrBuilderList();
+      } else {
+        return java.util.Collections.unmodifiableList(gradleSyncPhasesData_);
+      }
+    }
+    /**
+     * <pre>
+     * Data on phases executed during sync.
+     * Set only for sync finish events, when kind = GRADLE_SYNC_ENDED,
+     * GRADLE_SYNC_CANCELLED, GRADLE_SYNC_FAILURE or GRADLE_SYNC_FAILURE_DETAILS
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData gradle_sync_phases_data = 17;</code>
+     */
+    public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.Builder addGradleSyncPhasesDataBuilder() {
+      return getGradleSyncPhasesDataFieldBuilder().addBuilder(
+          com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.getDefaultInstance());
+    }
+    /**
+     * <pre>
+     * Data on phases executed during sync.
+     * Set only for sync finish events, when kind = GRADLE_SYNC_ENDED,
+     * GRADLE_SYNC_CANCELLED, GRADLE_SYNC_FAILURE or GRADLE_SYNC_FAILURE_DETAILS
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData gradle_sync_phases_data = 17;</code>
+     */
+    public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.Builder addGradleSyncPhasesDataBuilder(
+        int index) {
+      return getGradleSyncPhasesDataFieldBuilder().addBuilder(
+          index, com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.getDefaultInstance());
+    }
+    /**
+     * <pre>
+     * Data on phases executed during sync.
+     * Set only for sync finish events, when kind = GRADLE_SYNC_ENDED,
+     * GRADLE_SYNC_CANCELLED, GRADLE_SYNC_FAILURE or GRADLE_SYNC_FAILURE_DETAILS
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData gradle_sync_phases_data = 17;</code>
+     */
+    public java.util.List<com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.Builder> 
+         getGradleSyncPhasesDataBuilderList() {
+      return getGradleSyncPhasesDataFieldBuilder().getBuilderList();
+    }
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData, com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.Builder, com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseDataOrBuilder> 
+        getGradleSyncPhasesDataFieldBuilder() {
+      if (gradleSyncPhasesDataBuilder_ == null) {
+        gradleSyncPhasesDataBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData, com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.Builder, com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseDataOrBuilder>(
+                gradleSyncPhasesData_,
+                ((bitField0_ & 0x00010000) != 0),
+                getParentForChildren(),
+                isClean());
+        gradleSyncPhasesData_ = null;
+      }
+      return gradleSyncPhasesDataBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

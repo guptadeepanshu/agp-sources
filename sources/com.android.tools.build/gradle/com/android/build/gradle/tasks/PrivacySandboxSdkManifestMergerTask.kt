@@ -24,15 +24,13 @@ import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInter
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
+import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
-import com.android.build.gradle.internal.tasks.configureVariantProperties
-import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.tasks.manifest.ManifestProviderImpl
 import com.android.build.gradle.internal.tasks.manifest.mergeManifests
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.manifmerger.ManifestMerger2
-import com.android.utils.FileUtils
 import org.gradle.api.attributes.Usage
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.MapProperty
@@ -117,7 +115,7 @@ abstract class PrivacySandboxSdkManifestMergerTask: FusedLibraryManifestMergerTa
     }
 
     class CreationAction(private val creationConfig: PrivacySandboxSdkVariantScope):
-        TaskCreationAction<PrivacySandboxSdkManifestMergerTask>() {
+        AndroidVariantTaskCreationAction<PrivacySandboxSdkManifestMergerTask>() {
 
         override val name: String
             get() = "mergeManifest"
@@ -144,7 +142,8 @@ abstract class PrivacySandboxSdkManifestMergerTask: FusedLibraryManifestMergerTa
         }
 
         override fun configure(task: PrivacySandboxSdkManifestMergerTask) {
-            task.configureVariantProperties("", task.project.gradle.sharedServices)
+            super.configure(task)
+
             val libraryManifests = creationConfig.dependencies.getArtifactCollection(
                     Usage.JAVA_RUNTIME,
                     creationConfig.mergeSpec,

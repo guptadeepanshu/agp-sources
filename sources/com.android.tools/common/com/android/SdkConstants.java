@@ -75,7 +75,7 @@ public final class SdkConstants {
      * safely recommend during its development cycle.
      */
     public static final AndroidVersion MAX_SUPPORTED_ANDROID_PLATFORM_VERSION =
-            new AndroidVersion(34);
+            new AndroidVersion(35);
 
     /** Property in local.properties file that specifies the path of the Android NDK. */
     public static final String NDK_DIR_PROPERTY = "ndk.dir";
@@ -917,6 +917,9 @@ public final class SdkConstants {
     public static final String CLASS_COMPOSE_VIEW_ADAPTER =
             "androidx.compose.ui.tooling.ComposeViewAdapter";
 
+    public static final String CLASS_TILE_SERVICE_VIEW_ADAPTER =
+            "androidx.wear.tiles.tooling.TileServiceViewAdapter";
+
     public static final String ATTR_COMPOSABLE_NAME = "composableName";
 
     public static final String PACKAGE_COMPOSE_ANIMATION = "androidx.compose.animation.core";
@@ -1026,7 +1029,7 @@ public final class SdkConstants {
     public static final String ANDROID_NS_NAME = "android";
     /** The default prefix used for the {@link #ANDROID_URI} name space including the colon */
     public static final String ANDROID_NS_NAME_PREFIX = "android:";
-
+    /** The string length of {@link #ANDROID_NS_NAME_PREFIX} */
     public static final int ANDROID_NS_NAME_PREFIX_LEN = ANDROID_NS_NAME_PREFIX.length();
     /** The default prefix used for the {@link #TOOLS_URI} name space */
     public static final String TOOLS_NS_NAME = "tools";

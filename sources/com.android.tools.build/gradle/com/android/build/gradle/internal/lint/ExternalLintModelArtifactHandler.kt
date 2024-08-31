@@ -101,13 +101,15 @@ class ExternalLintModelArtifactHandler private constructor(
         identitySupplier: () -> String
     ): LintModelLibrary {
         val sourceSetKey = ProjectSourceSetKey(
-            buildTreePath = (buildId + projectPath).replace("::", ":"), // TODO (b/298662354)
+            buildId = buildId,
+            projectPath = projectPath,
             variantName = variantName,
             isTestFixtures = isTestFixtures
         )
         val mainKey = ProjectKey(
-                buildTreePath = (buildId + projectPath).replace("::", ":"), // TODO (b/298662354)
-                variantName = variantName
+            buildId = buildId,
+            projectPath = projectPath,
+            variantName = variantName
         )
         if (mainKey in baseModuleModelFileMap || (sourceSetKey !in projectExplodedAarsMap && sourceSetKey in projectJarsMap)) {
             return DefaultLintModelModuleLibrary(
@@ -178,15 +180,8 @@ class ExternalLintModelArtifactHandler private constructor(
         isTestFixtures: Boolean,
         identitySupplier: () -> String
     ): LintModelLibrary {
-        val sourceSetKey = ProjectSourceSetKey(
-            (buildId + projectPath).replace("::", ":"), // TODO (b/298662354)
-            variantName,
-            isTestFixtures
-        )
-        val mainKey = ProjectKey(
-            (buildId + projectPath).replace("::", ":"), // TODO (b/298662354)
-            variantName
-        )
+        val sourceSetKey = ProjectSourceSetKey(buildId, projectPath, variantName, isTestFixtures)
+        val mainKey = ProjectKey(buildId, projectPath, variantName)
         if (mainKey in baseModuleModelFileMap) {
             return DefaultLintModelModuleLibrary(
                     identifier = identitySupplier(),

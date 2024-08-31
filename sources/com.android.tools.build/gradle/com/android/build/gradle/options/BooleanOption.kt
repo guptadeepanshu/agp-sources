@@ -133,6 +133,8 @@ enum class BooleanOption(
         ApiStage.Stable
     ),
 
+    EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS("android.dependency.excludeLibraryComponentsFromConstraints", false, ApiStage.Stable),
+
     /* ------------------
      * SUPPORTED FEATURES
      */
@@ -224,7 +226,6 @@ enum class BooleanOption(
     ENABLE_CMAKE_BUILD_COHABITATION("android.enableCmakeBuildCohabitation", false, FeatureStage.Experimental),
     ENABLE_PROGUARD_RULES_EXTRACTION("android.proguard.enableRulesExtraction", true, FeatureStage.Experimental),
     USE_DEPENDENCY_CONSTRAINTS("android.dependency.useConstraints", true, FeatureStage.Experimental),
-    EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS("android.experimental.dependency.excludeLibraryComponentsFromConstraints", false, FeatureStage.Experimental),
     ENABLE_DUPLICATE_CLASSES_CHECK("android.enableDuplicateClassesCheck", true, FeatureStage.Experimental),
     MINIMAL_KEEP_RULES("android.useMinimalKeepRules", true, FeatureStage.Experimental),
     EXCLUDE_RES_SOURCES_FOR_RELEASE_BUNDLES("android.bundle.excludeResSourcesForRelease", true, FeatureStage.Experimental),
@@ -284,15 +285,6 @@ enum class BooleanOption(
         FeatureStage.Experimental
     ),
 
-    /**
-     * Whether to use K2 UAST when running lint
-     */
-    LINT_USE_K2_UAST(
-        "android.lint.useK2Uast",
-        false,
-        FeatureStage.Experimental
-    ),
-
     ENABLE_NEW_TEST_DSL(
         "android.experimental.enableNewTestDsl",
         false,
@@ -311,6 +303,16 @@ enum class BooleanOption(
      */
     ENABLE_TEST_FIXTURES_KOTLIN_SUPPORT(
         "android.experimental.enableTestFixturesKotlinSupport",
+        false,
+        FeatureStage.Experimental
+    ),
+
+    /**
+     * Suppresses the warning shown when package attribute is present in the main manifest, and is
+     * equal to the component's namespace.
+     */
+    SUPPRESS_MANIFEST_PACKAGE_WARNING(
+        "android.experimental.suppressManifestPackageWarning",
         false,
         FeatureStage.Experimental
     ),

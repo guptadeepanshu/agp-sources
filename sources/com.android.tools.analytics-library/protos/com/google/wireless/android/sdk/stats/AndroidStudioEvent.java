@@ -3002,6 +3002,30 @@ private static final long serialVersionUID = 0L;
      * <code>SCREENSHOT_TEST_COMPOSE_PREVIEW = 309;</code>
      */
     SCREENSHOT_TEST_COMPOSE_PREVIEW(309),
+    /**
+     * <pre>
+     * Event related to test scenario generation.
+     * </pre>
+     *
+     * <code>TEST_SCENARIO_EVENT = 310;</code>
+     */
+    TEST_SCENARIO_EVENT(310),
+    /**
+     * <pre>
+     * ADB server state event
+     * </pre>
+     *
+     * <code>ADB_SERVER_STATE = 311;</code>
+     */
+    ADB_SERVER_STATE(311),
+    /**
+     * <pre>
+     * Firebase management event
+     * </pre>
+     *
+     * <code>FIREBASE_MANAGEMENT_EVENT = 312;</code>
+     */
+    FIREBASE_MANAGEMENT_EVENT(312),
     ;
 
     /**
@@ -5310,6 +5334,30 @@ private static final long serialVersionUID = 0L;
      * <code>SCREENSHOT_TEST_COMPOSE_PREVIEW = 309;</code>
      */
     public static final int SCREENSHOT_TEST_COMPOSE_PREVIEW_VALUE = 309;
+    /**
+     * <pre>
+     * Event related to test scenario generation.
+     * </pre>
+     *
+     * <code>TEST_SCENARIO_EVENT = 310;</code>
+     */
+    public static final int TEST_SCENARIO_EVENT_VALUE = 310;
+    /**
+     * <pre>
+     * ADB server state event
+     * </pre>
+     *
+     * <code>ADB_SERVER_STATE = 311;</code>
+     */
+    public static final int ADB_SERVER_STATE_VALUE = 311;
+    /**
+     * <pre>
+     * Firebase management event
+     * </pre>
+     *
+     * <code>FIREBASE_MANAGEMENT_EVENT = 312;</code>
+     */
+    public static final int FIREBASE_MANAGEMENT_EVENT_VALUE = 312;
 
 
     public final int getNumber() {
@@ -5637,6 +5685,9 @@ private static final long serialVersionUID = 0L;
         case 307: return SML_COMPLETION_REQUEST_ERROR;
         case 308: return ADB_DEVICE_CONNECTED;
         case 309: return SCREENSHOT_TEST_COMPOSE_PREVIEW;
+        case 310: return TEST_SCENARIO_EVENT;
+        case 311: return ADB_SERVER_STATE;
+        case 312: return FIREBASE_MANAGEMENT_EVENT;
         default: return null;
       }
     }
@@ -6730,6 +6781,10 @@ private static final long serialVersionUID = 0L;
      * <code>EXPERIMENTAL_ACTIVITY = 69;</code>
      */
     EXPERIMENTAL_ACTIVITY(69),
+    /**
+     * <code>KOTLIN_MULTIPLATFORM_LIBRARY_MODULE = 70;</code>
+     */
+    KOTLIN_MULTIPLATFORM_LIBRARY_MODULE(70),
     ;
 
     /**
@@ -7016,6 +7071,10 @@ private static final long serialVersionUID = 0L;
      * <code>EXPERIMENTAL_ACTIVITY = 69;</code>
      */
     public static final int EXPERIMENTAL_ACTIVITY_VALUE = 69;
+    /**
+     * <code>KOTLIN_MULTIPLATFORM_LIBRARY_MODULE = 70;</code>
+     */
+    public static final int KOTLIN_MULTIPLATFORM_LIBRARY_MODULE_VALUE = 70;
 
 
     public final int getNumber() {
@@ -7108,6 +7167,7 @@ private static final long serialVersionUID = 0L;
         case 67: return GOOGLE_WALLET_ACTIVITY;
         case 68: return BASELINE_PROFILES_MODULE;
         case 69: return EXPERIMENTAL_ACTIVITY;
+        case 70: return KOTLIN_MULTIPLATFORM_LIBRARY_MODULE;
         default: return null;
       }
     }
@@ -8391,6 +8451,15 @@ private static final long serialVersionUID = 0L;
      * <code>TYPE_INCONSISTENT_BUILD_FEATURE_SETTING = 65;</code>
      */
     TYPE_INCONSISTENT_BUILD_FEATURE_SETTING(65),
+    /**
+     * <pre>
+     * Missing Compose Compiler Gradle plugin when compose is enabled and Kotlin version is 2.0
+     * or higher.
+     * </pre>
+     *
+     * <code>TYPE_MISSING_COMPOSE_COMPILER_GRADLE_PLUGIN = 66;</code>
+     */
+    TYPE_MISSING_COMPOSE_COMPILER_GRADLE_PLUGIN(66),
     ;
 
     /**
@@ -8863,6 +8932,15 @@ private static final long serialVersionUID = 0L;
      * <code>TYPE_INCONSISTENT_BUILD_FEATURE_SETTING = 65;</code>
      */
     public static final int TYPE_INCONSISTENT_BUILD_FEATURE_SETTING_VALUE = 65;
+    /**
+     * <pre>
+     * Missing Compose Compiler Gradle plugin when compose is enabled and Kotlin version is 2.0
+     * or higher.
+     * </pre>
+     *
+     * <code>TYPE_MISSING_COMPOSE_COMPILER_GRADLE_PLUGIN = 66;</code>
+     */
+    public static final int TYPE_MISSING_COMPOSE_COMPILER_GRADLE_PLUGIN_VALUE = 66;
 
 
     public final int getNumber() {
@@ -8951,6 +9029,7 @@ private static final long serialVersionUID = 0L;
         case 63: return TYPE_EXCEPTION;
         case 64: return TYPE_NAMESPACE_NOT_SET;
         case 65: return TYPE_INCONSISTENT_BUILD_FEATURE_SETTING;
+        case 66: return TYPE_MISSING_COMPOSE_COMPILER_GRADLE_PLUGIN;
         default: return null;
       }
     }
@@ -9217,6 +9296,10 @@ private static final long serialVersionUID = 0L;
      * <code>SUPPRESS_UNSUPPORTED_SDK_HYPERLINK = 51;</code>
      */
     SUPPRESS_UNSUPPORTED_SDK_HYPERLINK(51),
+    /**
+     * <code>ADD_COMPOSE_COMPILER_GRADLE_PLUGIN_HYPERLINK = 52;</code>
+     */
+    ADD_COMPOSE_COMPILER_GRADLE_PLUGIN_HYPERLINK(52),
     ;
 
     /**
@@ -9427,6 +9510,10 @@ private static final long serialVersionUID = 0L;
      * <code>SUPPRESS_UNSUPPORTED_SDK_HYPERLINK = 51;</code>
      */
     public static final int SUPPRESS_UNSUPPORTED_SDK_HYPERLINK_VALUE = 51;
+    /**
+     * <code>ADD_COMPOSE_COMPILER_GRADLE_PLUGIN_HYPERLINK = 52;</code>
+     */
+    public static final int ADD_COMPOSE_COMPILER_GRADLE_PLUGIN_HYPERLINK_VALUE = 52;
 
 
     public final int getNumber() {
@@ -9501,6 +9588,7 @@ private static final long serialVersionUID = 0L;
         case 49: return REMOVE_JCENTER_HYPERLINK;
         case 50: return OPEN_UPGRADE_ASSISTANT_HYPERLINK;
         case 51: return SUPPRESS_UNSUPPORTED_SDK_HYPERLINK;
+        case 52: return ADD_COMPOSE_COMPILER_GRADLE_PLUGIN_HYPERLINK;
         default: return null;
       }
     }
@@ -11408,6 +11496,10 @@ private static final long serialVersionUID = 0L;
          * <code>BASELINE_PROFILES = 15;</code>
          */
         BASELINE_PROFILES(15),
+        /**
+         * <code>KOTLIN_MULTIPLATFORM_LIBRARY = 16;</code>
+         */
+        KOTLIN_MULTIPLATFORM_LIBRARY(16),
         ;
 
         /**
@@ -11474,6 +11566,10 @@ private static final long serialVersionUID = 0L;
          * <code>BASELINE_PROFILES = 15;</code>
          */
         public static final int BASELINE_PROFILES_VALUE = 15;
+        /**
+         * <code>KOTLIN_MULTIPLATFORM_LIBRARY = 16;</code>
+         */
+        public static final int KOTLIN_MULTIPLATFORM_LIBRARY_VALUE = 16;
 
 
         public final int getNumber() {
@@ -11512,6 +11608,7 @@ private static final long serialVersionUID = 0L;
             case 13: return JAVA_OR_KOTLIN_LIBRARY;
             case 14: return BENCHMARK_LIBRARY;
             case 15: return BASELINE_PROFILES;
+            case 16: return KOTLIN_MULTIPLATFORM_LIBRARY;
             default: return null;
           }
         }
@@ -16392,8 +16489,9 @@ private static final long serialVersionUID = 0L;
   private com.google.wireless.android.sdk.stats.GradleSyncStats gradleSyncStats_;
   /**
    * <pre>
-   * set when kind = GRADLE_SYNC_ENDED, GRADLE_SYNC_FAILURE or
-   * GRADLE_SYNC_SETUP_STARTED
+   * set when kind = GRADLE_SYNC_STARTED, GRADLE_SYNC_SETUP_STARTED,
+   * GRADLE_SYNC_ENDED, GRADLE_SYNC_FAILURE, GRADLE_SYNC_CANCELLED,
+   * GRADLE_SYNC_SKIPPED, GRADLE_SYNC_FAILURE_DETAILS, GRADLE_SYNC_ISSUES
    * </pre>
    *
    * <code>optional .android_studio.GradleSyncStats gradle_sync_stats = 50;</code>
@@ -16405,8 +16503,9 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * set when kind = GRADLE_SYNC_ENDED, GRADLE_SYNC_FAILURE or
-   * GRADLE_SYNC_SETUP_STARTED
+   * set when kind = GRADLE_SYNC_STARTED, GRADLE_SYNC_SETUP_STARTED,
+   * GRADLE_SYNC_ENDED, GRADLE_SYNC_FAILURE, GRADLE_SYNC_CANCELLED,
+   * GRADLE_SYNC_SKIPPED, GRADLE_SYNC_FAILURE_DETAILS, GRADLE_SYNC_ISSUES
    * </pre>
    *
    * <code>optional .android_studio.GradleSyncStats gradle_sync_stats = 50;</code>
@@ -16418,8 +16517,9 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * set when kind = GRADLE_SYNC_ENDED, GRADLE_SYNC_FAILURE or
-   * GRADLE_SYNC_SETUP_STARTED
+   * set when kind = GRADLE_SYNC_STARTED, GRADLE_SYNC_SETUP_STARTED,
+   * GRADLE_SYNC_ENDED, GRADLE_SYNC_FAILURE, GRADLE_SYNC_CANCELLED,
+   * GRADLE_SYNC_SKIPPED, GRADLE_SYNC_FAILURE_DETAILS, GRADLE_SYNC_ISSUES
    * </pre>
    *
    * <code>optional .android_studio.GradleSyncStats gradle_sync_stats = 50;</code>
@@ -22001,6 +22101,120 @@ private static final long serialVersionUID = 0L;
     return screenshotTestComposePreviewEvent_ == null ? com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.getDefaultInstance() : screenshotTestComposePreviewEvent_;
   }
 
+  public static final int TEST_SCENARIO_EVENT_FIELD_NUMBER = 193;
+  private com.google.wireless.android.sdk.stats.TestScenarioEvent testScenarioEvent_;
+  /**
+   * <pre>
+   * set when kind = TEST_SCENARIO_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.TestScenarioEvent test_scenario_event = 193;</code>
+   * @return Whether the testScenarioEvent field is set.
+   */
+  @java.lang.Override
+  public boolean hasTestScenarioEvent() {
+    return ((bitField5_ & 0x04000000) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = TEST_SCENARIO_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.TestScenarioEvent test_scenario_event = 193;</code>
+   * @return The testScenarioEvent.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.TestScenarioEvent getTestScenarioEvent() {
+    return testScenarioEvent_ == null ? com.google.wireless.android.sdk.stats.TestScenarioEvent.getDefaultInstance() : testScenarioEvent_;
+  }
+  /**
+   * <pre>
+   * set when kind = TEST_SCENARIO_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.TestScenarioEvent test_scenario_event = 193;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.TestScenarioEventOrBuilder getTestScenarioEventOrBuilder() {
+    return testScenarioEvent_ == null ? com.google.wireless.android.sdk.stats.TestScenarioEvent.getDefaultInstance() : testScenarioEvent_;
+  }
+
+  public static final int ADB_SERVER_STATE_FIELD_NUMBER = 194;
+  private com.google.wireless.android.sdk.stats.AdbServerState adbServerState_;
+  /**
+   * <pre>
+   * set when kind = ADB_SERVER_STATE
+   * </pre>
+   *
+   * <code>optional .android_studio.AdbServerState adb_server_state = 194;</code>
+   * @return Whether the adbServerState field is set.
+   */
+  @java.lang.Override
+  public boolean hasAdbServerState() {
+    return ((bitField5_ & 0x08000000) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = ADB_SERVER_STATE
+   * </pre>
+   *
+   * <code>optional .android_studio.AdbServerState adb_server_state = 194;</code>
+   * @return The adbServerState.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.AdbServerState getAdbServerState() {
+    return adbServerState_ == null ? com.google.wireless.android.sdk.stats.AdbServerState.getDefaultInstance() : adbServerState_;
+  }
+  /**
+   * <pre>
+   * set when kind = ADB_SERVER_STATE
+   * </pre>
+   *
+   * <code>optional .android_studio.AdbServerState adb_server_state = 194;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.AdbServerStateOrBuilder getAdbServerStateOrBuilder() {
+    return adbServerState_ == null ? com.google.wireless.android.sdk.stats.AdbServerState.getDefaultInstance() : adbServerState_;
+  }
+
+  public static final int FIREBASE_MANAGEMENT_EVENT_FIELD_NUMBER = 195;
+  private com.google.wireless.android.sdk.stats.FirebaseManagementEvent firebaseManagementEvent_;
+  /**
+   * <pre>
+   * set when kind = FIREBASE_MANAGEMENT_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.FirebaseManagementEvent firebase_management_event = 195;</code>
+   * @return Whether the firebaseManagementEvent field is set.
+   */
+  @java.lang.Override
+  public boolean hasFirebaseManagementEvent() {
+    return ((bitField5_ & 0x10000000) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = FIREBASE_MANAGEMENT_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.FirebaseManagementEvent firebase_management_event = 195;</code>
+   * @return The firebaseManagementEvent.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.FirebaseManagementEvent getFirebaseManagementEvent() {
+    return firebaseManagementEvent_ == null ? com.google.wireless.android.sdk.stats.FirebaseManagementEvent.getDefaultInstance() : firebaseManagementEvent_;
+  }
+  /**
+   * <pre>
+   * set when kind = FIREBASE_MANAGEMENT_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.FirebaseManagementEvent firebase_management_event = 195;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.FirebaseManagementEventOrBuilder getFirebaseManagementEventOrBuilder() {
+    return firebaseManagementEvent_ == null ? com.google.wireless.android.sdk.stats.FirebaseManagementEvent.getDefaultInstance() : firebaseManagementEvent_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -22590,6 +22804,15 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField5_ & 0x02000000) != 0)) {
       output.writeMessage(192, getScreenshotTestComposePreviewEvent());
+    }
+    if (((bitField5_ & 0x04000000) != 0)) {
+      output.writeMessage(193, getTestScenarioEvent());
+    }
+    if (((bitField5_ & 0x08000000) != 0)) {
+      output.writeMessage(194, getAdbServerState());
+    }
+    if (((bitField5_ & 0x10000000) != 0)) {
+      output.writeMessage(195, getFirebaseManagementEvent());
     }
     getUnknownFields().writeTo(output);
   }
@@ -23373,6 +23596,18 @@ private static final long serialVersionUID = 0L;
     if (((bitField5_ & 0x02000000) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(192, getScreenshotTestComposePreviewEvent());
+    }
+    if (((bitField5_ & 0x04000000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(193, getTestScenarioEvent());
+    }
+    if (((bitField5_ & 0x08000000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(194, getAdbServerState());
+    }
+    if (((bitField5_ & 0x10000000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(195, getFirebaseManagementEvent());
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -24320,6 +24555,21 @@ private static final long serialVersionUID = 0L;
       if (!getScreenshotTestComposePreviewEvent()
           .equals(other.getScreenshotTestComposePreviewEvent())) return false;
     }
+    if (hasTestScenarioEvent() != other.hasTestScenarioEvent()) return false;
+    if (hasTestScenarioEvent()) {
+      if (!getTestScenarioEvent()
+          .equals(other.getTestScenarioEvent())) return false;
+    }
+    if (hasAdbServerState() != other.hasAdbServerState()) return false;
+    if (hasAdbServerState()) {
+      if (!getAdbServerState()
+          .equals(other.getAdbServerState())) return false;
+    }
+    if (hasFirebaseManagementEvent() != other.hasFirebaseManagementEvent()) return false;
+    if (hasFirebaseManagementEvent()) {
+      if (!getFirebaseManagementEvent()
+          .equals(other.getFirebaseManagementEvent())) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -25101,6 +25351,18 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + SCREENSHOT_TEST_COMPOSE_PREVIEW_EVENT_FIELD_NUMBER;
       hash = (53 * hash) + getScreenshotTestComposePreviewEvent().hashCode();
     }
+    if (hasTestScenarioEvent()) {
+      hash = (37 * hash) + TEST_SCENARIO_EVENT_FIELD_NUMBER;
+      hash = (53 * hash) + getTestScenarioEvent().hashCode();
+    }
+    if (hasAdbServerState()) {
+      hash = (37 * hash) + ADB_SERVER_STATE_FIELD_NUMBER;
+      hash = (53 * hash) + getAdbServerState().hashCode();
+    }
+    if (hasFirebaseManagementEvent()) {
+      hash = (37 * hash) + FIREBASE_MANAGEMENT_EVENT_FIELD_NUMBER;
+      hash = (53 * hash) + getFirebaseManagementEvent().hashCode();
+    }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -25398,6 +25660,9 @@ private static final long serialVersionUID = 0L;
         getSmlCompletionRequestErrorFieldBuilder();
         getDeviceConnectedFieldBuilder();
         getScreenshotTestComposePreviewEventFieldBuilder();
+        getTestScenarioEventFieldBuilder();
+        getAdbServerStateFieldBuilder();
+        getFirebaseManagementEventFieldBuilder();
       }
     }
     @java.lang.Override
@@ -26466,6 +26731,24 @@ private static final long serialVersionUID = 0L;
         screenshotTestComposePreviewEventBuilder_.clear();
       }
       bitField5_ = (bitField5_ & ~0x80000000);
+      if (testScenarioEventBuilder_ == null) {
+        testScenarioEvent_ = null;
+      } else {
+        testScenarioEventBuilder_.clear();
+      }
+      bitField6_ = (bitField6_ & ~0x00000001);
+      if (adbServerStateBuilder_ == null) {
+        adbServerState_ = null;
+      } else {
+        adbServerStateBuilder_.clear();
+      }
+      bitField6_ = (bitField6_ & ~0x00000002);
+      if (firebaseManagementEventBuilder_ == null) {
+        firebaseManagementEvent_ = null;
+      } else {
+        firebaseManagementEventBuilder_.clear();
+      }
+      bitField6_ = (bitField6_ & ~0x00000004);
       return this;
     }
 
@@ -26498,6 +26781,7 @@ private static final long serialVersionUID = 0L;
       int from_bitField3_ = bitField3_;
       int from_bitField4_ = bitField4_;
       int from_bitField5_ = bitField5_;
+      int from_bitField6_ = bitField6_;
       int to_bitField0_ = 0;
       int to_bitField1_ = 0;
       int to_bitField2_ = 0;
@@ -27954,6 +28238,30 @@ private static final long serialVersionUID = 0L;
         }
         to_bitField5_ |= 0x02000000;
       }
+      if (((from_bitField6_ & 0x00000001) != 0)) {
+        if (testScenarioEventBuilder_ == null) {
+          result.testScenarioEvent_ = testScenarioEvent_;
+        } else {
+          result.testScenarioEvent_ = testScenarioEventBuilder_.build();
+        }
+        to_bitField5_ |= 0x04000000;
+      }
+      if (((from_bitField6_ & 0x00000002) != 0)) {
+        if (adbServerStateBuilder_ == null) {
+          result.adbServerState_ = adbServerState_;
+        } else {
+          result.adbServerState_ = adbServerStateBuilder_.build();
+        }
+        to_bitField5_ |= 0x08000000;
+      }
+      if (((from_bitField6_ & 0x00000004) != 0)) {
+        if (firebaseManagementEventBuilder_ == null) {
+          result.firebaseManagementEvent_ = firebaseManagementEvent_;
+        } else {
+          result.firebaseManagementEvent_ = firebaseManagementEventBuilder_.build();
+        }
+        to_bitField5_ |= 0x10000000;
+      }
       result.bitField0_ = to_bitField0_;
       result.bitField1_ = to_bitField1_;
       result.bitField2_ = to_bitField2_;
@@ -28687,6 +28995,15 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasScreenshotTestComposePreviewEvent()) {
         mergeScreenshotTestComposePreviewEvent(other.getScreenshotTestComposePreviewEvent());
+      }
+      if (other.hasTestScenarioEvent()) {
+        mergeTestScenarioEvent(other.getTestScenarioEvent());
+      }
+      if (other.hasAdbServerState()) {
+        mergeAdbServerState(other.getAdbServerState());
+      }
+      if (other.hasFirebaseManagementEvent()) {
+        mergeFirebaseManagementEvent(other.getFirebaseManagementEvent());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -30126,6 +30443,27 @@ private static final long serialVersionUID = 0L;
               bitField5_ |= 0x80000000;
               break;
             } // case 1538
+            case 1546: {
+              input.readMessage(
+                  getTestScenarioEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField6_ |= 0x00000001;
+              break;
+            } // case 1546
+            case 1554: {
+              input.readMessage(
+                  getAdbServerStateFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField6_ |= 0x00000002;
+              break;
+            } // case 1554
+            case 1562: {
+              input.readMessage(
+                  getFirebaseManagementEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField6_ |= 0x00000004;
+              break;
+            } // case 1562
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -30147,6 +30485,7 @@ private static final long serialVersionUID = 0L;
     private int bitField3_;
     private int bitField4_;
     private int bitField5_;
+    private int bitField6_;
 
     private int category_ = 0;
     /**
@@ -36739,8 +37078,9 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.GradleSyncStats, com.google.wireless.android.sdk.stats.GradleSyncStats.Builder, com.google.wireless.android.sdk.stats.GradleSyncStatsOrBuilder> gradleSyncStatsBuilder_;
     /**
      * <pre>
-     * set when kind = GRADLE_SYNC_ENDED, GRADLE_SYNC_FAILURE or
-     * GRADLE_SYNC_SETUP_STARTED
+     * set when kind = GRADLE_SYNC_STARTED, GRADLE_SYNC_SETUP_STARTED,
+     * GRADLE_SYNC_ENDED, GRADLE_SYNC_FAILURE, GRADLE_SYNC_CANCELLED,
+     * GRADLE_SYNC_SKIPPED, GRADLE_SYNC_FAILURE_DETAILS, GRADLE_SYNC_ISSUES
      * </pre>
      *
      * <code>optional .android_studio.GradleSyncStats gradle_sync_stats = 50;</code>
@@ -36751,8 +37091,9 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * set when kind = GRADLE_SYNC_ENDED, GRADLE_SYNC_FAILURE or
-     * GRADLE_SYNC_SETUP_STARTED
+     * set when kind = GRADLE_SYNC_STARTED, GRADLE_SYNC_SETUP_STARTED,
+     * GRADLE_SYNC_ENDED, GRADLE_SYNC_FAILURE, GRADLE_SYNC_CANCELLED,
+     * GRADLE_SYNC_SKIPPED, GRADLE_SYNC_FAILURE_DETAILS, GRADLE_SYNC_ISSUES
      * </pre>
      *
      * <code>optional .android_studio.GradleSyncStats gradle_sync_stats = 50;</code>
@@ -36767,8 +37108,9 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * set when kind = GRADLE_SYNC_ENDED, GRADLE_SYNC_FAILURE or
-     * GRADLE_SYNC_SETUP_STARTED
+     * set when kind = GRADLE_SYNC_STARTED, GRADLE_SYNC_SETUP_STARTED,
+     * GRADLE_SYNC_ENDED, GRADLE_SYNC_FAILURE, GRADLE_SYNC_CANCELLED,
+     * GRADLE_SYNC_SKIPPED, GRADLE_SYNC_FAILURE_DETAILS, GRADLE_SYNC_ISSUES
      * </pre>
      *
      * <code>optional .android_studio.GradleSyncStats gradle_sync_stats = 50;</code>
@@ -36788,8 +37130,9 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * set when kind = GRADLE_SYNC_ENDED, GRADLE_SYNC_FAILURE or
-     * GRADLE_SYNC_SETUP_STARTED
+     * set when kind = GRADLE_SYNC_STARTED, GRADLE_SYNC_SETUP_STARTED,
+     * GRADLE_SYNC_ENDED, GRADLE_SYNC_FAILURE, GRADLE_SYNC_CANCELLED,
+     * GRADLE_SYNC_SKIPPED, GRADLE_SYNC_FAILURE_DETAILS, GRADLE_SYNC_ISSUES
      * </pre>
      *
      * <code>optional .android_studio.GradleSyncStats gradle_sync_stats = 50;</code>
@@ -36807,8 +37150,9 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * set when kind = GRADLE_SYNC_ENDED, GRADLE_SYNC_FAILURE or
-     * GRADLE_SYNC_SETUP_STARTED
+     * set when kind = GRADLE_SYNC_STARTED, GRADLE_SYNC_SETUP_STARTED,
+     * GRADLE_SYNC_ENDED, GRADLE_SYNC_FAILURE, GRADLE_SYNC_CANCELLED,
+     * GRADLE_SYNC_SKIPPED, GRADLE_SYNC_FAILURE_DETAILS, GRADLE_SYNC_ISSUES
      * </pre>
      *
      * <code>optional .android_studio.GradleSyncStats gradle_sync_stats = 50;</code>
@@ -36832,8 +37176,9 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * set when kind = GRADLE_SYNC_ENDED, GRADLE_SYNC_FAILURE or
-     * GRADLE_SYNC_SETUP_STARTED
+     * set when kind = GRADLE_SYNC_STARTED, GRADLE_SYNC_SETUP_STARTED,
+     * GRADLE_SYNC_ENDED, GRADLE_SYNC_FAILURE, GRADLE_SYNC_CANCELLED,
+     * GRADLE_SYNC_SKIPPED, GRADLE_SYNC_FAILURE_DETAILS, GRADLE_SYNC_ISSUES
      * </pre>
      *
      * <code>optional .android_studio.GradleSyncStats gradle_sync_stats = 50;</code>
@@ -36850,8 +37195,9 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * set when kind = GRADLE_SYNC_ENDED, GRADLE_SYNC_FAILURE or
-     * GRADLE_SYNC_SETUP_STARTED
+     * set when kind = GRADLE_SYNC_STARTED, GRADLE_SYNC_SETUP_STARTED,
+     * GRADLE_SYNC_ENDED, GRADLE_SYNC_FAILURE, GRADLE_SYNC_CANCELLED,
+     * GRADLE_SYNC_SKIPPED, GRADLE_SYNC_FAILURE_DETAILS, GRADLE_SYNC_ISSUES
      * </pre>
      *
      * <code>optional .android_studio.GradleSyncStats gradle_sync_stats = 50;</code>
@@ -36863,8 +37209,9 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * set when kind = GRADLE_SYNC_ENDED, GRADLE_SYNC_FAILURE or
-     * GRADLE_SYNC_SETUP_STARTED
+     * set when kind = GRADLE_SYNC_STARTED, GRADLE_SYNC_SETUP_STARTED,
+     * GRADLE_SYNC_ENDED, GRADLE_SYNC_FAILURE, GRADLE_SYNC_CANCELLED,
+     * GRADLE_SYNC_SKIPPED, GRADLE_SYNC_FAILURE_DETAILS, GRADLE_SYNC_ISSUES
      * </pre>
      *
      * <code>optional .android_studio.GradleSyncStats gradle_sync_stats = 50;</code>
@@ -36879,8 +37226,9 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * set when kind = GRADLE_SYNC_ENDED, GRADLE_SYNC_FAILURE or
-     * GRADLE_SYNC_SETUP_STARTED
+     * set when kind = GRADLE_SYNC_STARTED, GRADLE_SYNC_SETUP_STARTED,
+     * GRADLE_SYNC_ENDED, GRADLE_SYNC_FAILURE, GRADLE_SYNC_CANCELLED,
+     * GRADLE_SYNC_SKIPPED, GRADLE_SYNC_FAILURE_DETAILS, GRADLE_SYNC_ISSUES
      * </pre>
      *
      * <code>optional .android_studio.GradleSyncStats gradle_sync_stats = 50;</code>
@@ -59379,6 +59727,474 @@ private static final long serialVersionUID = 0L;
         screenshotTestComposePreviewEvent_ = null;
       }
       return screenshotTestComposePreviewEventBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.TestScenarioEvent testScenarioEvent_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.TestScenarioEvent, com.google.wireless.android.sdk.stats.TestScenarioEvent.Builder, com.google.wireless.android.sdk.stats.TestScenarioEventOrBuilder> testScenarioEventBuilder_;
+    /**
+     * <pre>
+     * set when kind = TEST_SCENARIO_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.TestScenarioEvent test_scenario_event = 193;</code>
+     * @return Whether the testScenarioEvent field is set.
+     */
+    public boolean hasTestScenarioEvent() {
+      return ((bitField6_ & 0x00000001) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = TEST_SCENARIO_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.TestScenarioEvent test_scenario_event = 193;</code>
+     * @return The testScenarioEvent.
+     */
+    public com.google.wireless.android.sdk.stats.TestScenarioEvent getTestScenarioEvent() {
+      if (testScenarioEventBuilder_ == null) {
+        return testScenarioEvent_ == null ? com.google.wireless.android.sdk.stats.TestScenarioEvent.getDefaultInstance() : testScenarioEvent_;
+      } else {
+        return testScenarioEventBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = TEST_SCENARIO_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.TestScenarioEvent test_scenario_event = 193;</code>
+     */
+    public Builder setTestScenarioEvent(com.google.wireless.android.sdk.stats.TestScenarioEvent value) {
+      if (testScenarioEventBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        testScenarioEvent_ = value;
+        onChanged();
+      } else {
+        testScenarioEventBuilder_.setMessage(value);
+      }
+      bitField6_ |= 0x00000001;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = TEST_SCENARIO_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.TestScenarioEvent test_scenario_event = 193;</code>
+     */
+    public Builder setTestScenarioEvent(
+        com.google.wireless.android.sdk.stats.TestScenarioEvent.Builder builderForValue) {
+      if (testScenarioEventBuilder_ == null) {
+        testScenarioEvent_ = builderForValue.build();
+        onChanged();
+      } else {
+        testScenarioEventBuilder_.setMessage(builderForValue.build());
+      }
+      bitField6_ |= 0x00000001;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = TEST_SCENARIO_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.TestScenarioEvent test_scenario_event = 193;</code>
+     */
+    public Builder mergeTestScenarioEvent(com.google.wireless.android.sdk.stats.TestScenarioEvent value) {
+      if (testScenarioEventBuilder_ == null) {
+        if (((bitField6_ & 0x00000001) != 0) &&
+            testScenarioEvent_ != null &&
+            testScenarioEvent_ != com.google.wireless.android.sdk.stats.TestScenarioEvent.getDefaultInstance()) {
+          testScenarioEvent_ =
+            com.google.wireless.android.sdk.stats.TestScenarioEvent.newBuilder(testScenarioEvent_).mergeFrom(value).buildPartial();
+        } else {
+          testScenarioEvent_ = value;
+        }
+        onChanged();
+      } else {
+        testScenarioEventBuilder_.mergeFrom(value);
+      }
+      bitField6_ |= 0x00000001;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = TEST_SCENARIO_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.TestScenarioEvent test_scenario_event = 193;</code>
+     */
+    public Builder clearTestScenarioEvent() {
+      if (testScenarioEventBuilder_ == null) {
+        testScenarioEvent_ = null;
+        onChanged();
+      } else {
+        testScenarioEventBuilder_.clear();
+      }
+      bitField6_ = (bitField6_ & ~0x00000001);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = TEST_SCENARIO_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.TestScenarioEvent test_scenario_event = 193;</code>
+     */
+    public com.google.wireless.android.sdk.stats.TestScenarioEvent.Builder getTestScenarioEventBuilder() {
+      bitField6_ |= 0x00000001;
+      onChanged();
+      return getTestScenarioEventFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = TEST_SCENARIO_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.TestScenarioEvent test_scenario_event = 193;</code>
+     */
+    public com.google.wireless.android.sdk.stats.TestScenarioEventOrBuilder getTestScenarioEventOrBuilder() {
+      if (testScenarioEventBuilder_ != null) {
+        return testScenarioEventBuilder_.getMessageOrBuilder();
+      } else {
+        return testScenarioEvent_ == null ?
+            com.google.wireless.android.sdk.stats.TestScenarioEvent.getDefaultInstance() : testScenarioEvent_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = TEST_SCENARIO_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.TestScenarioEvent test_scenario_event = 193;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.TestScenarioEvent, com.google.wireless.android.sdk.stats.TestScenarioEvent.Builder, com.google.wireless.android.sdk.stats.TestScenarioEventOrBuilder> 
+        getTestScenarioEventFieldBuilder() {
+      if (testScenarioEventBuilder_ == null) {
+        testScenarioEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.TestScenarioEvent, com.google.wireless.android.sdk.stats.TestScenarioEvent.Builder, com.google.wireless.android.sdk.stats.TestScenarioEventOrBuilder>(
+                getTestScenarioEvent(),
+                getParentForChildren(),
+                isClean());
+        testScenarioEvent_ = null;
+      }
+      return testScenarioEventBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.AdbServerState adbServerState_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.AdbServerState, com.google.wireless.android.sdk.stats.AdbServerState.Builder, com.google.wireless.android.sdk.stats.AdbServerStateOrBuilder> adbServerStateBuilder_;
+    /**
+     * <pre>
+     * set when kind = ADB_SERVER_STATE
+     * </pre>
+     *
+     * <code>optional .android_studio.AdbServerState adb_server_state = 194;</code>
+     * @return Whether the adbServerState field is set.
+     */
+    public boolean hasAdbServerState() {
+      return ((bitField6_ & 0x00000002) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = ADB_SERVER_STATE
+     * </pre>
+     *
+     * <code>optional .android_studio.AdbServerState adb_server_state = 194;</code>
+     * @return The adbServerState.
+     */
+    public com.google.wireless.android.sdk.stats.AdbServerState getAdbServerState() {
+      if (adbServerStateBuilder_ == null) {
+        return adbServerState_ == null ? com.google.wireless.android.sdk.stats.AdbServerState.getDefaultInstance() : adbServerState_;
+      } else {
+        return adbServerStateBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = ADB_SERVER_STATE
+     * </pre>
+     *
+     * <code>optional .android_studio.AdbServerState adb_server_state = 194;</code>
+     */
+    public Builder setAdbServerState(com.google.wireless.android.sdk.stats.AdbServerState value) {
+      if (adbServerStateBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        adbServerState_ = value;
+        onChanged();
+      } else {
+        adbServerStateBuilder_.setMessage(value);
+      }
+      bitField6_ |= 0x00000002;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = ADB_SERVER_STATE
+     * </pre>
+     *
+     * <code>optional .android_studio.AdbServerState adb_server_state = 194;</code>
+     */
+    public Builder setAdbServerState(
+        com.google.wireless.android.sdk.stats.AdbServerState.Builder builderForValue) {
+      if (adbServerStateBuilder_ == null) {
+        adbServerState_ = builderForValue.build();
+        onChanged();
+      } else {
+        adbServerStateBuilder_.setMessage(builderForValue.build());
+      }
+      bitField6_ |= 0x00000002;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = ADB_SERVER_STATE
+     * </pre>
+     *
+     * <code>optional .android_studio.AdbServerState adb_server_state = 194;</code>
+     */
+    public Builder mergeAdbServerState(com.google.wireless.android.sdk.stats.AdbServerState value) {
+      if (adbServerStateBuilder_ == null) {
+        if (((bitField6_ & 0x00000002) != 0) &&
+            adbServerState_ != null &&
+            adbServerState_ != com.google.wireless.android.sdk.stats.AdbServerState.getDefaultInstance()) {
+          adbServerState_ =
+            com.google.wireless.android.sdk.stats.AdbServerState.newBuilder(adbServerState_).mergeFrom(value).buildPartial();
+        } else {
+          adbServerState_ = value;
+        }
+        onChanged();
+      } else {
+        adbServerStateBuilder_.mergeFrom(value);
+      }
+      bitField6_ |= 0x00000002;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = ADB_SERVER_STATE
+     * </pre>
+     *
+     * <code>optional .android_studio.AdbServerState adb_server_state = 194;</code>
+     */
+    public Builder clearAdbServerState() {
+      if (adbServerStateBuilder_ == null) {
+        adbServerState_ = null;
+        onChanged();
+      } else {
+        adbServerStateBuilder_.clear();
+      }
+      bitField6_ = (bitField6_ & ~0x00000002);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = ADB_SERVER_STATE
+     * </pre>
+     *
+     * <code>optional .android_studio.AdbServerState adb_server_state = 194;</code>
+     */
+    public com.google.wireless.android.sdk.stats.AdbServerState.Builder getAdbServerStateBuilder() {
+      bitField6_ |= 0x00000002;
+      onChanged();
+      return getAdbServerStateFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = ADB_SERVER_STATE
+     * </pre>
+     *
+     * <code>optional .android_studio.AdbServerState adb_server_state = 194;</code>
+     */
+    public com.google.wireless.android.sdk.stats.AdbServerStateOrBuilder getAdbServerStateOrBuilder() {
+      if (adbServerStateBuilder_ != null) {
+        return adbServerStateBuilder_.getMessageOrBuilder();
+      } else {
+        return adbServerState_ == null ?
+            com.google.wireless.android.sdk.stats.AdbServerState.getDefaultInstance() : adbServerState_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = ADB_SERVER_STATE
+     * </pre>
+     *
+     * <code>optional .android_studio.AdbServerState adb_server_state = 194;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.AdbServerState, com.google.wireless.android.sdk.stats.AdbServerState.Builder, com.google.wireless.android.sdk.stats.AdbServerStateOrBuilder> 
+        getAdbServerStateFieldBuilder() {
+      if (adbServerStateBuilder_ == null) {
+        adbServerStateBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.AdbServerState, com.google.wireless.android.sdk.stats.AdbServerState.Builder, com.google.wireless.android.sdk.stats.AdbServerStateOrBuilder>(
+                getAdbServerState(),
+                getParentForChildren(),
+                isClean());
+        adbServerState_ = null;
+      }
+      return adbServerStateBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.FirebaseManagementEvent firebaseManagementEvent_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.FirebaseManagementEvent, com.google.wireless.android.sdk.stats.FirebaseManagementEvent.Builder, com.google.wireless.android.sdk.stats.FirebaseManagementEventOrBuilder> firebaseManagementEventBuilder_;
+    /**
+     * <pre>
+     * set when kind = FIREBASE_MANAGEMENT_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.FirebaseManagementEvent firebase_management_event = 195;</code>
+     * @return Whether the firebaseManagementEvent field is set.
+     */
+    public boolean hasFirebaseManagementEvent() {
+      return ((bitField6_ & 0x00000004) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = FIREBASE_MANAGEMENT_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.FirebaseManagementEvent firebase_management_event = 195;</code>
+     * @return The firebaseManagementEvent.
+     */
+    public com.google.wireless.android.sdk.stats.FirebaseManagementEvent getFirebaseManagementEvent() {
+      if (firebaseManagementEventBuilder_ == null) {
+        return firebaseManagementEvent_ == null ? com.google.wireless.android.sdk.stats.FirebaseManagementEvent.getDefaultInstance() : firebaseManagementEvent_;
+      } else {
+        return firebaseManagementEventBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = FIREBASE_MANAGEMENT_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.FirebaseManagementEvent firebase_management_event = 195;</code>
+     */
+    public Builder setFirebaseManagementEvent(com.google.wireless.android.sdk.stats.FirebaseManagementEvent value) {
+      if (firebaseManagementEventBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        firebaseManagementEvent_ = value;
+        onChanged();
+      } else {
+        firebaseManagementEventBuilder_.setMessage(value);
+      }
+      bitField6_ |= 0x00000004;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = FIREBASE_MANAGEMENT_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.FirebaseManagementEvent firebase_management_event = 195;</code>
+     */
+    public Builder setFirebaseManagementEvent(
+        com.google.wireless.android.sdk.stats.FirebaseManagementEvent.Builder builderForValue) {
+      if (firebaseManagementEventBuilder_ == null) {
+        firebaseManagementEvent_ = builderForValue.build();
+        onChanged();
+      } else {
+        firebaseManagementEventBuilder_.setMessage(builderForValue.build());
+      }
+      bitField6_ |= 0x00000004;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = FIREBASE_MANAGEMENT_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.FirebaseManagementEvent firebase_management_event = 195;</code>
+     */
+    public Builder mergeFirebaseManagementEvent(com.google.wireless.android.sdk.stats.FirebaseManagementEvent value) {
+      if (firebaseManagementEventBuilder_ == null) {
+        if (((bitField6_ & 0x00000004) != 0) &&
+            firebaseManagementEvent_ != null &&
+            firebaseManagementEvent_ != com.google.wireless.android.sdk.stats.FirebaseManagementEvent.getDefaultInstance()) {
+          firebaseManagementEvent_ =
+            com.google.wireless.android.sdk.stats.FirebaseManagementEvent.newBuilder(firebaseManagementEvent_).mergeFrom(value).buildPartial();
+        } else {
+          firebaseManagementEvent_ = value;
+        }
+        onChanged();
+      } else {
+        firebaseManagementEventBuilder_.mergeFrom(value);
+      }
+      bitField6_ |= 0x00000004;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = FIREBASE_MANAGEMENT_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.FirebaseManagementEvent firebase_management_event = 195;</code>
+     */
+    public Builder clearFirebaseManagementEvent() {
+      if (firebaseManagementEventBuilder_ == null) {
+        firebaseManagementEvent_ = null;
+        onChanged();
+      } else {
+        firebaseManagementEventBuilder_.clear();
+      }
+      bitField6_ = (bitField6_ & ~0x00000004);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = FIREBASE_MANAGEMENT_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.FirebaseManagementEvent firebase_management_event = 195;</code>
+     */
+    public com.google.wireless.android.sdk.stats.FirebaseManagementEvent.Builder getFirebaseManagementEventBuilder() {
+      bitField6_ |= 0x00000004;
+      onChanged();
+      return getFirebaseManagementEventFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = FIREBASE_MANAGEMENT_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.FirebaseManagementEvent firebase_management_event = 195;</code>
+     */
+    public com.google.wireless.android.sdk.stats.FirebaseManagementEventOrBuilder getFirebaseManagementEventOrBuilder() {
+      if (firebaseManagementEventBuilder_ != null) {
+        return firebaseManagementEventBuilder_.getMessageOrBuilder();
+      } else {
+        return firebaseManagementEvent_ == null ?
+            com.google.wireless.android.sdk.stats.FirebaseManagementEvent.getDefaultInstance() : firebaseManagementEvent_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = FIREBASE_MANAGEMENT_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.FirebaseManagementEvent firebase_management_event = 195;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.FirebaseManagementEvent, com.google.wireless.android.sdk.stats.FirebaseManagementEvent.Builder, com.google.wireless.android.sdk.stats.FirebaseManagementEventOrBuilder> 
+        getFirebaseManagementEventFieldBuilder() {
+      if (firebaseManagementEventBuilder_ == null) {
+        firebaseManagementEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.FirebaseManagementEvent, com.google.wireless.android.sdk.stats.FirebaseManagementEvent.Builder, com.google.wireless.android.sdk.stats.FirebaseManagementEventOrBuilder>(
+                getFirebaseManagementEvent(),
+                getParentForChildren(),
+                isClean());
+        firebaseManagementEvent_ = null;
+      }
+      return firebaseManagementEventBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

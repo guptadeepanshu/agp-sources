@@ -33,7 +33,6 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactSco
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.JAR
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.ANNOTATION_PROCESSOR
 import com.android.build.gradle.internal.services.getBuildService
-import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.options.BooleanOption
 import com.android.builder.errors.DefaultIssueReporter
 import com.android.builder.errors.IssueReporter
@@ -100,17 +99,13 @@ fun JavaCompile.configureProperties(creationConfig: ComponentCreationConfig) {
             // through classpath
             creationConfig.global.bootClasspath,
             creationConfig.compileClasspath,
-            creationConfig.artifacts
-                .get(InternalArtifactType.KOTLINC)
-                .takeIf { creationConfig.useBuiltInKotlinSupport },
+            creationConfig.getBuiltInKotlincOutput(),
         )
     } else {
         this.options.bootstrapClasspath = this.project.files(creationConfig.global.bootClasspath)
         this.classpath = project.files(
             creationConfig.compileClasspath,
-            creationConfig.artifacts
-                .get(InternalArtifactType.KOTLINC)
-                .takeIf { creationConfig.useBuiltInKotlinSupport },
+            creationConfig.getBuiltInKotlincOutput()
         )
     }
 
@@ -462,7 +457,7 @@ private fun checkDeprecatedSourceAndTarget(
             2. Set a higher source/target version
             3. Use a lower version of the JDK running the build (if you're not using Java toolchain)
         For more details on how to configure these settings, see https://developer.android.com/build/jdks.
-        """.trimIndent() + suppressWarningMessage?.let { "\n" + it }
+        """.trimIndent() + (suppressWarningMessage?.let { "\n" + it } ?: "")
 
     val data = "javacVersion=$javacVersion,sourceCompatibility=$sourceCompatibility,targetCompatibility=$targetCompatibility"
 

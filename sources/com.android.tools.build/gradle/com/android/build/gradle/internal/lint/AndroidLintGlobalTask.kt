@@ -16,8 +16,8 @@
 
 package com.android.build.gradle.internal.lint
 
-import com.android.build.gradle.internal.tasks.BaseTask
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
+import com.android.build.gradle.internal.tasks.AndroidGlobalTask
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.buildanalyzer.common.TaskCategory
@@ -31,7 +31,7 @@ import org.gradle.work.DisableCachingByDefault
  */
 @DisableCachingByDefault
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.LINT)
-abstract class AndroidLintGlobalTask: BaseTask() {
+abstract class AndroidLintGlobalTask: AndroidGlobalTask() {
 
     class GlobalCreationAction(creationConfig: GlobalTaskCreationConfig) : BaseGlobalCreationAction(
         creationConfig

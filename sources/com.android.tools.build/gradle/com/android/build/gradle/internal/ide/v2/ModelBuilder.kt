@@ -32,9 +32,10 @@ import com.android.build.api.dsl.TestExtension
 import com.android.build.api.variant.ScopedArtifacts.Scope.ALL
 import com.android.build.api.variant.ScopedArtifacts.Scope.PROJECT
 import com.android.build.api.variant.impl.BuiltArtifactsImpl
+import com.android.build.api.variant.impl.HasHostTestsCreationConfig
 import com.android.build.api.variant.impl.HasTestFixtures
 import com.android.build.api.variant.impl.HasDeviceTestsCreationConfig
-import com.android.build.api.variant.impl.HasHostTestsCreationConfig
+import com.android.build.api.variant.impl.ManifestFilesImpl
 import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
@@ -75,7 +76,6 @@ import com.android.build.gradle.internal.utils.getDesugaredMethods
 import com.android.build.gradle.internal.utils.toImmutableSet
 import com.android.build.gradle.internal.variant.VariantModel
 import com.android.build.gradle.options.BooleanOption
-import com.android.build.gradle.options.ProjectOptionService
 import com.android.build.gradle.options.ProjectOptions
 import com.android.build.gradle.tasks.BuildPrivacySandboxSdkApks
 import com.android.builder.core.ComponentTypeImpl
@@ -739,6 +739,9 @@ class ModelBuilder<
                 variant.minSdk,
                 variant.global
             ).files.toList(),
+            experimentalProperties = if (variant.experimentalProperties.isPresent) {
+                variant.experimentalProperties.get().mapValues { it.value.toString() }
+            } else emptyMap()
         )
     }
 
@@ -785,11 +788,7 @@ class ModelBuilder<
         component.androidResourcesCreationConfig?.compiledRClassArtifact?.get()?.asFile?.let {
             classesFolders.add(it)
         }
-        if (component.useBuiltInKotlinSupport) {
-            classesFolders.add(
-                component.artifacts.get(InternalArtifactType.KOTLINC).get().asFile
-            )
-        }
+        component.getBuiltInKotlincOutput()?.orNull?.asFile?.let { classesFolders.add(it) }
 
         val generatedClassPaths = addGeneratedClassPaths(component, classesFolders)
 
@@ -902,7 +901,7 @@ class ModelBuilder<
     }
 
     private fun getBytecodeTransformations(component: ComponentCreationConfig): List<BytecodeTransformation> {
-        val jacoco = (component as? ApkCreationConfig)?.useJacocoTransformInstrumentation == true
+        val jacoco = (component as? ApkCreationConfig)?.requiresJacocoTransformation == true
         val classesProject = component.artifacts.forScope(PROJECT).getScopedArtifactsContainer(
             ScopedArtifact.CLASSES
         ).artifactsAltered.get()
@@ -935,9 +934,7 @@ class ModelBuilder<
             classesFolders.addAll(it.variantData.allPreJavacGeneratedBytecode.files)
             classesFolders.addAll(it.variantData.allPostJavacGeneratedBytecode.files)
         }
-        if (component.useBuiltInKotlinSupport) {
-            classesFolders.add(component.artifacts.get(InternalArtifactType.KOTLINC).get().asFile)
-        }
+        component.getBuiltInKotlincOutput()?.orNull?.asFile?.let { classesFolders.add(it) }
         // The separately compile R class, if applicable.
         if (extension.testOptions.unitTests.isIncludeAndroidResources ||
             component.componentType.isForScreenshotPreview) {
@@ -991,31 +988,15 @@ class ModelBuilder<
         component: ComponentCreationConfig,
         libraryService: LibraryService,
         graphEdgeCache: GraphEdgeCache? = null,
-    ): FullDependencyGraphBuilder {
-        if (dontBuildRuntimeClasspath && component.variantDependencies.isLibraryConstraintsApplied) {
-            variantModel.syncIssueReporter.reportWarning(
-                IssueReporter.Type.GENERIC, """
-                    You have experimental IDE flag gradle.ide.gradle.skip.runtime.classpath.for.libraries enabled,
-                    but AGP boolean option ${BooleanOption.EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS.propertyName} is not used.
-
-                    Please set below in gradle.properties:
-
-                    ${BooleanOption.EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS.propertyName}=true
-
-                """.trimIndent()
-            )
-        }
-
-        return FullDependencyGraphBuilder(
-            { configType, root ->  getArtifactsForModelBuilder(component, configType, root) },
-            project.path,
-            component.variantDependencies,
-            libraryService,
-            graphEdgeCache,
-            component.services.projectOptions.get(BooleanOption.ADDITIONAL_ARTIFACTS_IN_MODEL),
-            dontBuildRuntimeClasspath
-        )
-    }
+    ) = FullDependencyGraphBuilder(
+        { configType, root ->  getArtifactsForModelBuilder(component, configType, root) },
+        project.path,
+        component.variantDependencies,
+        libraryService,
+        graphEdgeCache,
+        component.services.projectOptions.get(BooleanOption.ADDITIONAL_ARTIFACTS_IN_MODEL),
+        dontBuildRuntimeClasspath
+    )
 
     private fun getBundleInfo(
         component: ComponentCreationConfig
@@ -1052,7 +1033,19 @@ class ModelBuilder<
 
         // get the manifest in descending order of priority. First one to return
         val manifests = mutableListOf<File>()
-        manifests.addAll(component.sources.manifestOverlayFiles.get().filter { it.isFile })
+        // add the static overlays, we cannot at this time process the generated ones since they
+        // depends on tasks execution. This means that if the user is setting the instant app
+        // flag in the generated manifest only, then we will not see it.
+        // The solution to this problem (and cleaning up this rather ugly code is to introduce
+        // a specific dsl flag instead of poking the manifests at model building, see  b/160970116
+        val manifestSources = component.sources.manifests as ManifestFilesImpl
+        manifests.addAll(manifestSources.allStatic.map {
+            // `allStatic` is ordered from most prioritized to less prioritizes (main manifest)
+            // need to remove main manifest and reverse order from less to the most prioritized
+            files -> files.dropLast(1).reversed().map { it.asFile }
+        }.get().filter { it.isFile }
+        )
+
         val mainManifest = component.sources.manifestFile.get()
         if (mainManifest.isFile) {
             manifests.add(mainManifest)
@@ -1215,6 +1208,10 @@ class ModelBuilder<
             flags.put(
                 BooleanFlag.BUILD_FEATURE_ANDROID_RESOURCES,
                 variants.any { it.buildFeatures.androidResources }
+            )
+            flags.put(
+                BooleanFlag.EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS,
+                projectOptions[BooleanOption.EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS]
             )
 
             return AndroidGradlePluginProjectFlagsImpl(flags.build())

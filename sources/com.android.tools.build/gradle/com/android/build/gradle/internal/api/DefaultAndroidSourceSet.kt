@@ -161,6 +161,7 @@ open class DefaultAndroidSourceSet @Inject constructor(
     @Suppress("OverridingDeprecatedMember")
     override val providedConfigurationName = sourceSetName.providedConfigurationName
 
+    @Deprecated("Deprecated configuration - to be removed in AGP 9.0")
     override val wearAppConfigurationName = sourceSetName.wearAppConfigurationName
 
     override val annotationProcessorConfigurationName =

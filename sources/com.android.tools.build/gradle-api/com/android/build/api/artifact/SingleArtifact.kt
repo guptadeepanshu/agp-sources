@@ -143,8 +143,7 @@ sealed class SingleArtifact<T : FileSystemLocation>(
      */
     @Incubating
     object APK_FROM_BUNDLE:
-        SingleArtifact<RegularFile>(FILE, Category.OUTPUTS),
-        Transformable
+        SingleArtifact<RegularFile>(FILE, Category.OUTPUTS)
 
     /**
      * The directory containing all the native library (.so) files that will be packaged in the APK,

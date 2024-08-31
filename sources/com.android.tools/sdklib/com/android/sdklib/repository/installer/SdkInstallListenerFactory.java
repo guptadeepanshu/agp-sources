@@ -41,9 +41,6 @@ public class SdkInstallListenerFactory implements InstallerFactory.StatusChangeL
     @Override
     public List<PackageOperation.StatusChangeListener> createListeners(@NonNull RepoPackage p) {
         List<PackageOperation.StatusChangeListener> result = Lists.newArrayList();
-        if (p.getTypeDetails() instanceof DetailsTypes.MavenType) {
-            result.add(new MavenInstallListener());
-        }
         if (p.getTypeDetails() instanceof DetailsTypes.SourceDetailsType) {
             result.add(new SourceInstallListener(mSdkHandler));
         }

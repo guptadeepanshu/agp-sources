@@ -92,6 +92,8 @@ internal fun com.android.builder.model.v2.ide.AndroidGradlePluginProjectFlags.Bo
             AndroidGradlePluginProjectFlags.BooleanFlag.ENABLE_VCS_INFO
         com.android.builder.model.v2.ide.AndroidGradlePluginProjectFlags.BooleanFlag.BUILD_FEATURE_ANDROID_RESOURCES ->
             AndroidGradlePluginProjectFlags.BooleanFlag.BUILD_FEATURE_ANDROID_RESOURCES
+        com.android.builder.model.v2.ide.AndroidGradlePluginProjectFlags.BooleanFlag.EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS ->
+            AndroidGradlePluginProjectFlags.BooleanFlag.EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS
     }
 
 internal fun com.android.builder.model.v2.ide.AndroidGradlePluginProjectFlags.convert() =

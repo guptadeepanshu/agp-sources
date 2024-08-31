@@ -98,47 +98,6 @@ public final class AndroidApkInstallerConfigProto {
 
     /**
      * <pre>
-     * Package name of APKs installed during test
-     * </pre>
-     *
-     * <code>repeated string apks_package_name = 4;</code>
-     * @return A list containing the apksPackageName.
-     */
-    java.util.List<java.lang.String>
-        getApksPackageNameList();
-    /**
-     * <pre>
-     * Package name of APKs installed during test
-     * </pre>
-     *
-     * <code>repeated string apks_package_name = 4;</code>
-     * @return The count of apksPackageName.
-     */
-    int getApksPackageNameCount();
-    /**
-     * <pre>
-     * Package name of APKs installed during test
-     * </pre>
-     *
-     * <code>repeated string apks_package_name = 4;</code>
-     * @param index The index of the element to return.
-     * @return The apksPackageName at the given index.
-     */
-    java.lang.String getApksPackageName(int index);
-    /**
-     * <pre>
-     * Package name of APKs installed during test
-     * </pre>
-     *
-     * <code>repeated string apks_package_name = 4;</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the apksPackageName at the given index.
-     */
-    com.google.protobuf.ByteString
-        getApksPackageNameBytes(int index);
-
-    /**
-     * <pre>
      * If true, the incompatible APKs will be reinstalled before installing test APKs
      * </pre>
      *
@@ -165,7 +124,6 @@ public final class AndroidApkInstallerConfigProto {
     }
     private InstallableApk() {
       apkPaths_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      apksPackageName_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     }
 
     @java.lang.Override
@@ -1575,57 +1533,6 @@ public final class AndroidApkInstallerConfigProto {
       return uninstallAfterTest_;
     }
 
-    public static final int APKS_PACKAGE_NAME_FIELD_NUMBER = 4;
-    private com.google.protobuf.LazyStringList apksPackageName_;
-    /**
-     * <pre>
-     * Package name of APKs installed during test
-     * </pre>
-     *
-     * <code>repeated string apks_package_name = 4;</code>
-     * @return A list containing the apksPackageName.
-     */
-    public com.google.protobuf.ProtocolStringList
-        getApksPackageNameList() {
-      return apksPackageName_;
-    }
-    /**
-     * <pre>
-     * Package name of APKs installed during test
-     * </pre>
-     *
-     * <code>repeated string apks_package_name = 4;</code>
-     * @return The count of apksPackageName.
-     */
-    public int getApksPackageNameCount() {
-      return apksPackageName_.size();
-    }
-    /**
-     * <pre>
-     * Package name of APKs installed during test
-     * </pre>
-     *
-     * <code>repeated string apks_package_name = 4;</code>
-     * @param index The index of the element to return.
-     * @return The apksPackageName at the given index.
-     */
-    public java.lang.String getApksPackageName(int index) {
-      return apksPackageName_.get(index);
-    }
-    /**
-     * <pre>
-     * Package name of APKs installed during test
-     * </pre>
-     *
-     * <code>repeated string apks_package_name = 4;</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the apksPackageName at the given index.
-     */
-    public com.google.protobuf.ByteString
-        getApksPackageNameBytes(int index) {
-      return apksPackageName_.getByteString(index);
-    }
-
     public static final int FORCE_REINSTALL_BEFORE_TEST_FIELD_NUMBER = 5;
     private boolean forceReinstallBeforeTest_;
     /**
@@ -1664,9 +1571,6 @@ public final class AndroidApkInstallerConfigProto {
       if (uninstallAfterTest_ != false) {
         output.writeBool(3, uninstallAfterTest_);
       }
-      for (int i = 0; i < apksPackageName_.size(); i++) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, apksPackageName_.getRaw(i));
-      }
       if (forceReinstallBeforeTest_ != false) {
         output.writeBool(5, forceReinstallBeforeTest_);
       }
@@ -1694,14 +1598,6 @@ public final class AndroidApkInstallerConfigProto {
       if (uninstallAfterTest_ != false) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(3, uninstallAfterTest_);
-      }
-      {
-        int dataSize = 0;
-        for (int i = 0; i < apksPackageName_.size(); i++) {
-          dataSize += computeStringSizeNoTag(apksPackageName_.getRaw(i));
-        }
-        size += dataSize;
-        size += 1 * getApksPackageNameList().size();
       }
       if (forceReinstallBeforeTest_ != false) {
         size += com.google.protobuf.CodedOutputStream
@@ -1731,8 +1627,6 @@ public final class AndroidApkInstallerConfigProto {
       }
       if (getUninstallAfterTest()
           != other.getUninstallAfterTest()) return false;
-      if (!getApksPackageNameList()
-          .equals(other.getApksPackageNameList())) return false;
       if (getForceReinstallBeforeTest()
           != other.getForceReinstallBeforeTest()) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
@@ -1757,10 +1651,6 @@ public final class AndroidApkInstallerConfigProto {
       hash = (37 * hash) + UNINSTALL_AFTER_TEST_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getUninstallAfterTest());
-      if (getApksPackageNameCount() > 0) {
-        hash = (37 * hash) + APKS_PACKAGE_NAME_FIELD_NUMBER;
-        hash = (53 * hash) + getApksPackageNameList().hashCode();
-      }
       hash = (37 * hash) + FORCE_REINSTALL_BEFORE_TEST_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getForceReinstallBeforeTest());
@@ -1906,8 +1796,6 @@ public final class AndroidApkInstallerConfigProto {
         }
         uninstallAfterTest_ = false;
 
-        apksPackageName_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000002);
         forceReinstallBeforeTest_ = false;
 
         return this;
@@ -1948,11 +1836,6 @@ public final class AndroidApkInstallerConfigProto {
           result.installOptions_ = installOptionsBuilder_.build();
         }
         result.uninstallAfterTest_ = uninstallAfterTest_;
-        if (((bitField0_ & 0x00000002) != 0)) {
-          apksPackageName_ = apksPackageName_.getUnmodifiableView();
-          bitField0_ = (bitField0_ & ~0x00000002);
-        }
-        result.apksPackageName_ = apksPackageName_;
         result.forceReinstallBeforeTest_ = forceReinstallBeforeTest_;
         onBuilt();
         return result;
@@ -2018,16 +1901,6 @@ public final class AndroidApkInstallerConfigProto {
         if (other.getUninstallAfterTest() != false) {
           setUninstallAfterTest(other.getUninstallAfterTest());
         }
-        if (!other.apksPackageName_.isEmpty()) {
-          if (apksPackageName_.isEmpty()) {
-            apksPackageName_ = other.apksPackageName_;
-            bitField0_ = (bitField0_ & ~0x00000002);
-          } else {
-            ensureApksPackageNameIsMutable();
-            apksPackageName_.addAll(other.apksPackageName_);
-          }
-          onChanged();
-        }
         if (other.getForceReinstallBeforeTest() != false) {
           setForceReinstallBeforeTest(other.getForceReinstallBeforeTest());
         }
@@ -2075,12 +1948,6 @@ public final class AndroidApkInstallerConfigProto {
 
                 break;
               } // case 24
-              case 34: {
-                java.lang.String s = input.readStringRequireUtf8();
-                ensureApksPackageNameIsMutable();
-                apksPackageName_.add(s);
-                break;
-              } // case 34
               case 40: {
                 forceReinstallBeforeTest_ = input.readBool();
 
@@ -2443,152 +2310,6 @@ public final class AndroidApkInstallerConfigProto {
       public Builder clearUninstallAfterTest() {
         
         uninstallAfterTest_ = false;
-        onChanged();
-        return this;
-      }
-
-      private com.google.protobuf.LazyStringList apksPackageName_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      private void ensureApksPackageNameIsMutable() {
-        if (!((bitField0_ & 0x00000002) != 0)) {
-          apksPackageName_ = new com.google.protobuf.LazyStringArrayList(apksPackageName_);
-          bitField0_ |= 0x00000002;
-         }
-      }
-      /**
-       * <pre>
-       * Package name of APKs installed during test
-       * </pre>
-       *
-       * <code>repeated string apks_package_name = 4;</code>
-       * @return A list containing the apksPackageName.
-       */
-      public com.google.protobuf.ProtocolStringList
-          getApksPackageNameList() {
-        return apksPackageName_.getUnmodifiableView();
-      }
-      /**
-       * <pre>
-       * Package name of APKs installed during test
-       * </pre>
-       *
-       * <code>repeated string apks_package_name = 4;</code>
-       * @return The count of apksPackageName.
-       */
-      public int getApksPackageNameCount() {
-        return apksPackageName_.size();
-      }
-      /**
-       * <pre>
-       * Package name of APKs installed during test
-       * </pre>
-       *
-       * <code>repeated string apks_package_name = 4;</code>
-       * @param index The index of the element to return.
-       * @return The apksPackageName at the given index.
-       */
-      public java.lang.String getApksPackageName(int index) {
-        return apksPackageName_.get(index);
-      }
-      /**
-       * <pre>
-       * Package name of APKs installed during test
-       * </pre>
-       *
-       * <code>repeated string apks_package_name = 4;</code>
-       * @param index The index of the value to return.
-       * @return The bytes of the apksPackageName at the given index.
-       */
-      public com.google.protobuf.ByteString
-          getApksPackageNameBytes(int index) {
-        return apksPackageName_.getByteString(index);
-      }
-      /**
-       * <pre>
-       * Package name of APKs installed during test
-       * </pre>
-       *
-       * <code>repeated string apks_package_name = 4;</code>
-       * @param index The index to set the value at.
-       * @param value The apksPackageName to set.
-       * @return This builder for chaining.
-       */
-      public Builder setApksPackageName(
-          int index, java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureApksPackageNameIsMutable();
-        apksPackageName_.set(index, value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * Package name of APKs installed during test
-       * </pre>
-       *
-       * <code>repeated string apks_package_name = 4;</code>
-       * @param value The apksPackageName to add.
-       * @return This builder for chaining.
-       */
-      public Builder addApksPackageName(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureApksPackageNameIsMutable();
-        apksPackageName_.add(value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * Package name of APKs installed during test
-       * </pre>
-       *
-       * <code>repeated string apks_package_name = 4;</code>
-       * @param values The apksPackageName to add.
-       * @return This builder for chaining.
-       */
-      public Builder addAllApksPackageName(
-          java.lang.Iterable<java.lang.String> values) {
-        ensureApksPackageNameIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, apksPackageName_);
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * Package name of APKs installed during test
-       * </pre>
-       *
-       * <code>repeated string apks_package_name = 4;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearApksPackageName() {
-        apksPackageName_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * Package name of APKs installed during test
-       * </pre>
-       *
-       * <code>repeated string apks_package_name = 4;</code>
-       * @param value The bytes of the apksPackageName to add.
-       * @return This builder for chaining.
-       */
-      public Builder addApksPackageNameBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        ensureApksPackageNameIsMutable();
-        apksPackageName_.add(value);
         onChanged();
         return this;
       }
@@ -3500,28 +3221,27 @@ public final class AndroidApkInstallerConfigProto {
     java.lang.String[] descriptorData = {
       "\n1src/main/proto/android_apk_installer_c" +
       "onfig.proto\0225com.android.tools.utp.plugi" +
-      "ns.host.apkinstaller.proto\"\341\004\n\016Installab" +
+      "ns.host.apkinstaller.proto\"\314\004\n\016Installab" +
       "leApk\022\021\n\tapk_paths\030\001 \003(\t\022l\n\017install_opti" +
       "ons\030\002 \001(\0132S.com.android.tools.utp.plugin" +
       "s.host.apkinstaller.proto.InstallableApk" +
       ".InstallOption\022\034\n\024uninstall_after_test\030\003" +
-      " \001(\010\022\031\n\021apks_package_name\030\004 \003(\t\022#\n\033force" +
-      "_reinstall_before_test\030\005 \001(\010\032\357\002\n\rInstall" +
-      "Option\022\036\n\026command_line_parameter\030\001 \003(\t\022\034" +
-      "\n\024install_as_split_apk\030\002 \001(\010\022\033\n\023install_" +
-      "apk_timeout\030\003 \001(\005\022\037\n\027install_as_test_ser" +
-      "vice\030\004 \001(\010\022\177\n\021force_compilation\030\005 \001(\0162d." +
-      "com.android.tools.utp.plugins.host.apkin" +
-      "staller.proto.InstallableApk.InstallOpti" +
-      "on.ForceCompilation\"a\n\020ForceCompilation\022" +
-      "\030\n\024NO_FORCE_COMPILATION\020\000\022\035\n\031PROFILE_BAS" +
-      "ED_COMPILATION\020\001\022\024\n\020FULL_COMPILATION\020\002\"{" +
-      "\n\031AndroidApkInstallerConfig\022^\n\017apks_to_i" +
-      "nstall\030\001 \003(\0132E.com.android.tools.utp.plu" +
-      "gins.host.apkinstaller.proto.Installable" +
-      "ApkBW\n5com.android.tools.utp.plugins.hos" +
-      "t.apkinstaller.protoB\036AndroidApkInstalle" +
-      "rConfigProtob\006proto3"
+      " \001(\010\022#\n\033force_reinstall_before_test\030\005 \001(" +
+      "\010\032\357\002\n\rInstallOption\022\036\n\026command_line_para" +
+      "meter\030\001 \003(\t\022\034\n\024install_as_split_apk\030\002 \001(" +
+      "\010\022\033\n\023install_apk_timeout\030\003 \001(\005\022\037\n\027instal" +
+      "l_as_test_service\030\004 \001(\010\022\177\n\021force_compila" +
+      "tion\030\005 \001(\0162d.com.android.tools.utp.plugi" +
+      "ns.host.apkinstaller.proto.InstallableAp" +
+      "k.InstallOption.ForceCompilation\"a\n\020Forc" +
+      "eCompilation\022\030\n\024NO_FORCE_COMPILATION\020\000\022\035" +
+      "\n\031PROFILE_BASED_COMPILATION\020\001\022\024\n\020FULL_CO" +
+      "MPILATION\020\002J\004\010\004\020\005\"{\n\031AndroidApkInstaller" +
+      "Config\022^\n\017apks_to_install\030\001 \003(\0132E.com.an" +
+      "droid.tools.utp.plugins.host.apkinstalle" +
+      "r.proto.InstallableApkBW\n5com.android.to" +
+      "ols.utp.plugins.host.apkinstaller.protoB" +
+      "\036AndroidApkInstallerConfigProtob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -3532,7 +3252,7 @@ public final class AndroidApkInstallerConfigProto {
     internal_static_com_android_tools_utp_plugins_host_apkinstaller_proto_InstallableApk_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_android_tools_utp_plugins_host_apkinstaller_proto_InstallableApk_descriptor,
-        new java.lang.String[] { "ApkPaths", "InstallOptions", "UninstallAfterTest", "ApksPackageName", "ForceReinstallBeforeTest", });
+        new java.lang.String[] { "ApkPaths", "InstallOptions", "UninstallAfterTest", "ForceReinstallBeforeTest", });
     internal_static_com_android_tools_utp_plugins_host_apkinstaller_proto_InstallableApk_InstallOption_descriptor =
       internal_static_com_android_tools_utp_plugins_host_apkinstaller_proto_InstallableApk_descriptor.getNestedTypes().get(0);
     internal_static_com_android_tools_utp_plugins_host_apkinstaller_proto_InstallableApk_InstallOption_fieldAccessorTable = new

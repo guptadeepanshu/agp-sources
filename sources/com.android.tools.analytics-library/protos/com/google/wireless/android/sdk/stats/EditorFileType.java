@@ -136,6 +136,10 @@ public enum EditorFileType
    * <code>TOML = 25;</code>
    */
   TOML(25),
+  /**
+   * <code>CMAKE = 26;</code>
+   */
+  CMAKE(26),
   ;
 
   /**
@@ -266,6 +270,10 @@ public enum EditorFileType
    * <code>TOML = 25;</code>
    */
   public static final int TOML_VALUE = 25;
+  /**
+   * <code>CMAKE = 26;</code>
+   */
+  public static final int CMAKE_VALUE = 26;
 
 
   public final int getNumber() {
@@ -314,6 +322,7 @@ public enum EditorFileType
       case 23: return XML_RES_XML;
       case 24: return KOTLIN_COMPOSE;
       case 25: return TOML;
+      case 26: return CMAKE;
       default: return null;
     }
   }

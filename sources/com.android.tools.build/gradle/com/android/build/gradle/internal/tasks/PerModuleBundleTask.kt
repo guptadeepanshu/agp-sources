@@ -33,7 +33,7 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts.MODULE_PATH
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.STRIPPED_NATIVE_LIBS
 import com.android.build.gradle.internal.scope.InternalMultipleArtifactType
-import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
@@ -253,7 +253,7 @@ abstract class PerModuleBundleTask: NonIncrementalTask() {
 
     class PrivacySandboxSdkCreationAction(
         private val creationConfig: PrivacySandboxSdkVariantScope
-    ): TaskCreationAction<PerModuleBundleTask>() {
+    ): AndroidVariantTaskCreationAction<PerModuleBundleTask>() {
 
         override val name: String = "buildModuleForBundle"
         override val type: Class<PerModuleBundleTask> = PerModuleBundleTask::class.java
@@ -267,7 +267,8 @@ abstract class PerModuleBundleTask: NonIncrementalTask() {
         }
 
         override fun configure(task: PerModuleBundleTask) {
-            task.configureVariantProperties("", task.project.gradle.sharedServices)
+            super.configure(task)
+
             task.dexFiles.fromDisallowChanges(
                 creationConfig.artifacts.get(
                     PrivacySandboxSdkInternalArtifactType.DEX
@@ -331,7 +332,7 @@ abstract class PerModuleBundleTask: NonIncrementalTask() {
                 creationConfig.artifacts.get(SingleArtifact.ASSETS)
             )
 
-            task.resFiles.set(artifacts.get(InternalArtifactType.LINKED_RES_FOR_BUNDLE))
+            task.resFiles.set(artifacts.get(InternalArtifactType.LINKED_RESOURCES_FOR_BUNDLE_PROTO_FORMAT))
             task.resFiles.disallowChanges()
 
             task.dexFiles.from(

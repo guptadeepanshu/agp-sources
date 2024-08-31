@@ -19,7 +19,9 @@ package com.android.build.gradle.internal.tasks
 import com.android.buildanalyzer.common.TaskCategory
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
+import org.gradle.api.file.Directory
 import org.gradle.api.provider.MapProperty
+import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.work.DisableCachingByDefault
@@ -47,7 +49,7 @@ abstract class ClasspathComparisonTask : NonIncrementalTask() {
 
     // fake output dir so that the task doesn't run unless an input has changed.
     @get:OutputDirectory
-    var fakeOutputDirectory: File? = null
+    var fakeOutputDirectory: Provider<Directory>? = null
         protected set
 
     protected abstract fun onDifferentVersionsFound(

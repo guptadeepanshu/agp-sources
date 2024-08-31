@@ -19,7 +19,7 @@ package com.android.build.gradle.internal.tasks
 import com.android.build.api.artifact.Artifact
 import com.android.ide.common.build.ListingFileRedirect
 import com.android.build.gradle.internal.component.ComponentCreationConfig
-import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import org.gradle.api.file.RegularFile
@@ -67,7 +67,7 @@ abstract class ListingFileRedirectTask: NonIncrementalTask() {
         taskSuffix: String,
         private val inputArtifactType: Artifact.Single<RegularFile>,
         private val outputArtifactType: Artifact.Single<RegularFile>,
-    ) : TaskCreationAction<ListingFileRedirectTask>() {
+    ) : AndroidVariantTaskCreationAction<ListingFileRedirectTask>() {
 
         override val type = ListingFileRedirectTask::class.java
         override val name = creationConfig.computeTaskNameInternal(
@@ -82,7 +82,7 @@ abstract class ListingFileRedirectTask: NonIncrementalTask() {
         }
 
         override fun configure(task: ListingFileRedirectTask) {
-            task.configureVariantProperties(variantName = "", creationConfig.services.buildServiceRegistry)
+            super.configure(task)
             task.listingFile.setDisallowChanges(
                 creationConfig.artifacts.get(inputArtifactType)
             )

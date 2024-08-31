@@ -21,7 +21,7 @@ import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.gradle.internal.DependencyConfigurator
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.dependency.FilterShrinkerRulesTransform
-import com.android.build.gradle.internal.dependency.VersionedCodeShrinker
+import com.android.build.gradle.internal.dependency.ShrinkerVersion
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.getAarOrJarTypeToConsume
 import com.android.build.gradle.internal.services.DslServices
@@ -81,7 +81,7 @@ internal fun configureTransformsForFusedLibrary(
                     AndroidArtifacts.ArtifactType.FILTERED_PROGUARD_RULES.type
                 )
             reg.parameters { params: FilterShrinkerRulesTransform.Parameters ->
-                params.shrinker.set(VersionedCodeShrinker.create())
+                params.shrinker.set(ShrinkerVersion.R8)
                 params.projectName.set(project.name)
             }
         }

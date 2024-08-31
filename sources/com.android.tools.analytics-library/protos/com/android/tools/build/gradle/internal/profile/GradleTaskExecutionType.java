@@ -1375,6 +1375,10 @@ public enum GradleTaskExecutionType
    * <code>PRIVACY_SANDBOX_VALIDATE_CONFIGURATION = 339;</code>
    */
   PRIVACY_SANDBOX_VALIDATE_CONFIGURATION(339),
+  /**
+   * <code>CONVERT_PROTO_RESOURCES = 340;</code>
+   */
+  CONVERT_PROTO_RESOURCES(340),
   UNRECOGNIZED(-1),
   ;
 
@@ -2738,6 +2742,10 @@ public enum GradleTaskExecutionType
    * <code>PRIVACY_SANDBOX_VALIDATE_CONFIGURATION = 339;</code>
    */
   public static final int PRIVACY_SANDBOX_VALIDATE_CONFIGURATION_VALUE = 339;
+  /**
+   * <code>CONVERT_PROTO_RESOURCES = 340;</code>
+   */
+  public static final int CONVERT_PROTO_RESOURCES_VALUE = 340;
 
 
   public final int getNumber() {
@@ -3104,6 +3112,7 @@ public enum GradleTaskExecutionType
       case 337: return MERGE_STARTUP_PROFILE;
       case 338: return GENERATE_PRIVACY_SANDBOX_PROGUARD_RULES;
       case 339: return PRIVACY_SANDBOX_VALIDATE_CONFIGURATION;
+      case 340: return CONVERT_PROTO_RESOURCES;
       default: return null;
     }
   }

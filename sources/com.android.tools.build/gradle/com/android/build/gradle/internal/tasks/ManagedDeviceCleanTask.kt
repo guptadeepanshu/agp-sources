@@ -74,6 +74,7 @@ abstract class ManagedDeviceCleanTask: NonIncrementalGlobalTask() {
             Logging.getLogger(ManagedDeviceCleanTask::class.java)
                 .lifecycle("Successfully deleted ${avdsRemoved.size} managed devices.")
             parameters.avdService.get().deleteLegacyGradleManagedDeviceAvdDirectory()
+            parameters.avdService.get().deleteManagedDeviceTrackingFile()
         }
     }
 

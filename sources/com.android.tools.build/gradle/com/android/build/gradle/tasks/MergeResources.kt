@@ -76,10 +76,12 @@ import com.google.common.base.Preconditions
 import com.google.common.collect.Iterables
 import com.google.wireless.android.sdk.stats.GradleBuildProfileSpan
 import org.gradle.api.GradleException
+import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.provider.Provider
 import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
@@ -134,7 +136,7 @@ abstract class MergeResources : NewIncrementalTask() {
     @get:Input
     var generatedDensities: Collection<String>? = null
         private set
-    private var mergedNotCompiledResourcesOutputDirectory: File? = null
+    private var mergedNotCompiledResourcesOutputDirectory: Provider<Directory>? = null
     private var precompileDependenciesResources = false
     private var flags: Set<Flag>? = null
 
@@ -255,7 +257,7 @@ abstract class MergeResources : NewIncrementalTask() {
                             resourceCompilationService = resourceCompiler,
                             temporaryDirectory = incrementalFolder,
                             dataBindingExpressionRemover = dataBindingLayoutProcessor,
-                            notCompiledOutputDirectory = mergedNotCompiledResourcesOutputDirectory,
+                            notCompiledOutputDirectory = mergedNotCompiledResourcesOutputDirectory?.get()?.asFile,
                             pseudoLocalesEnabled = pseudoLocalesEnabled.get(),
                             crunchPng = crunchPng,
                             moduleSourceSets = sourceSetPaths
@@ -415,7 +417,7 @@ abstract class MergeResources : NewIncrementalTask() {
                             resourceCompiler,
                             incrementalFolder,
                             dataBindingLayoutProcessor,
-                            mergedNotCompiledResourcesOutputDirectory,
+                            mergedNotCompiledResourcesOutputDirectory?.get()?.asFile,
                             pseudoLocalesEnabled.get(),
                             crunchPng,
                             sourceSetPaths
@@ -493,7 +495,7 @@ abstract class MergeResources : NewIncrementalTask() {
         if (generatedPngsOutputDir.isPresent) {
             sourceSets.add(generatedPngsOutputDir.get().asFile)
         }
-        mergedNotCompiledResourcesOutputDirectory?.let {
+        mergedNotCompiledResourcesOutputDirectory?.get()?.asFile?.let {
             if (it.exists()) { sourceSets.add(it) }
         }
         sourceSets.add(destinationDir)
@@ -772,7 +774,7 @@ abstract class MergeResources : NewIncrementalTask() {
     class CreationAction(
         creationConfig: ComponentCreationConfig,
         private val mergeType: TaskManager.MergeType,
-        private val mergedNotCompiledOutputDirectory: File?,
+        private val mergedNotCompiledOutputDirectory: Provider<Directory>?,
         private val includeDependencies: Boolean,
         private val processResources: Boolean,
         flags: Set<Flag>,
@@ -811,7 +813,7 @@ abstract class MergeResources : NewIncrementalTask() {
                 .on(mergeType.outputType)
             if (mergedNotCompiledOutputDirectory != null) {
                 artifacts.setInitialProvider(taskProvider) { obj: MergeResources -> obj.getMergedNotCompiledResourcesOutputDirectory()!! }
-                    .atLocation(mergedNotCompiledOutputDirectory.path)
+                    .atLocation(mergedNotCompiledOutputDirectory)
                     .on(MERGED_NOT_COMPILED_RES)
             }
             artifacts.setInitialProvider(taskProvider) { obj: MergeResources -> obj.dataBindingLayoutInfoOutFolder }

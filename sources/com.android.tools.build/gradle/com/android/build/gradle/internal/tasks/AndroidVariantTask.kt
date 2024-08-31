@@ -28,7 +28,7 @@ import org.gradle.work.DisableCachingByDefault
  *
  */
 @DisableCachingByDefault
-abstract class AndroidVariantTask : BaseTask(), VariantAwareTask {
+abstract class AndroidVariantTask : BaseTask(), VariantTask {
 
     @Internal("No influence on output, this is for our build stats reporting mechanism")
     override lateinit var variantName: String

@@ -353,4 +353,58 @@ public interface GradleSyncStatsOrBuilder extends
    * @return The versionCatalogDetectorState.
    */
   com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State getVersionCatalogDetectorState();
+
+  /**
+   * <pre>
+   * Data on phases executed during sync.
+   * Set only for sync finish events, when kind = GRADLE_SYNC_ENDED,
+   * GRADLE_SYNC_CANCELLED, GRADLE_SYNC_FAILURE or GRADLE_SYNC_FAILURE_DETAILS
+   * </pre>
+   *
+   * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData gradle_sync_phases_data = 17;</code>
+   */
+  java.util.List<com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData> 
+      getGradleSyncPhasesDataList();
+  /**
+   * <pre>
+   * Data on phases executed during sync.
+   * Set only for sync finish events, when kind = GRADLE_SYNC_ENDED,
+   * GRADLE_SYNC_CANCELLED, GRADLE_SYNC_FAILURE or GRADLE_SYNC_FAILURE_DETAILS
+   * </pre>
+   *
+   * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData gradle_sync_phases_data = 17;</code>
+   */
+  com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData getGradleSyncPhasesData(int index);
+  /**
+   * <pre>
+   * Data on phases executed during sync.
+   * Set only for sync finish events, when kind = GRADLE_SYNC_ENDED,
+   * GRADLE_SYNC_CANCELLED, GRADLE_SYNC_FAILURE or GRADLE_SYNC_FAILURE_DETAILS
+   * </pre>
+   *
+   * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData gradle_sync_phases_data = 17;</code>
+   */
+  int getGradleSyncPhasesDataCount();
+  /**
+   * <pre>
+   * Data on phases executed during sync.
+   * Set only for sync finish events, when kind = GRADLE_SYNC_ENDED,
+   * GRADLE_SYNC_CANCELLED, GRADLE_SYNC_FAILURE or GRADLE_SYNC_FAILURE_DETAILS
+   * </pre>
+   *
+   * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData gradle_sync_phases_data = 17;</code>
+   */
+  java.util.List<? extends com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseDataOrBuilder> 
+      getGradleSyncPhasesDataOrBuilderList();
+  /**
+   * <pre>
+   * Data on phases executed during sync.
+   * Set only for sync finish events, when kind = GRADLE_SYNC_ENDED,
+   * GRADLE_SYNC_CANCELLED, GRADLE_SYNC_FAILURE or GRADLE_SYNC_FAILURE_DETAILS
+   * </pre>
+   *
+   * <code>repeated .android_studio.GradleSyncStats.GradleSyncPhaseData gradle_sync_phases_data = 17;</code>
+   */
+  com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseDataOrBuilder getGradleSyncPhasesDataOrBuilder(
+      int index);
 }

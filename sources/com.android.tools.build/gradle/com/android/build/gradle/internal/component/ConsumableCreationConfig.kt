@@ -31,7 +31,11 @@ interface ConsumableCreationConfig: ComponentCreationConfig {
 
     val optimizationCreationConfig: OptimizationCreationConfig
 
-    val codeCoverageEnabled: Boolean
+    /**
+     * Returns true if the [com.android.build.gradle.internal.tasks.JacocoTask] should be created
+     * for this component.
+     */
+    val requiresJacocoTransformation: Boolean
 
     /**
      * Used by lint to run checks related to core library desugaring.

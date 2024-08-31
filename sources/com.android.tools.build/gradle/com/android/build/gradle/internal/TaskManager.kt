@@ -53,6 +53,7 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactSco
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType
 import com.android.build.gradle.internal.publishing.PublishedConfigSpec
+import com.android.build.gradle.internal.res.ConvertProtoResourcesTask
 import com.android.build.gradle.internal.res.GenerateLibraryRFileTask
 import com.android.build.gradle.internal.res.LinkAndroidResForBundleTask
 import com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask
@@ -65,7 +66,7 @@ import com.android.build.gradle.internal.scope.InternalArtifactType.FEATURE_RESO
 import com.android.build.gradle.internal.scope.InternalArtifactType.JAVAC
 import com.android.build.gradle.internal.scope.InternalArtifactType.MERGED_RES
 import com.android.build.gradle.internal.scope.InternalArtifactType.PACKAGED_RES
-import com.android.build.gradle.internal.scope.InternalArtifactType.PROCESSED_RES
+import com.android.build.gradle.internal.scope.InternalArtifactType.LINKED_RESOURCES_BINARY_FORMAT
 import com.android.build.gradle.internal.scope.InternalArtifactType.RUNTIME_R_CLASS_CLASSES
 import com.android.build.gradle.internal.scope.InternalMultipleArtifactType
 import com.android.build.gradle.internal.scope.Java8LangSupport
@@ -114,12 +115,11 @@ import com.android.build.gradle.internal.tasks.UninstallTask
 import com.android.build.gradle.internal.tasks.ValidateResourcesTask
 import com.android.build.gradle.internal.tasks.ValidateSigningTask
 import com.android.build.gradle.internal.tasks.VerifyLibraryClassesTask
+import com.android.build.gradle.internal.tasks.checkIfR8VersionMatches
 import com.android.build.gradle.internal.tasks.databinding.DataBindingCompilerArguments.Companion.createArguments
 import com.android.build.gradle.internal.tasks.databinding.DataBindingGenBaseClassesTask
 import com.android.build.gradle.internal.tasks.databinding.DataBindingMergeDependencyArtifactsTask
 import com.android.build.gradle.internal.tasks.databinding.DataBindingTriggerTask
-import com.android.build.gradle.internal.tasks.databinding.KAPT_FIX_KOTLIN_VERSION
-import com.android.build.gradle.internal.tasks.databinding.MergeRFilesForDataBindingTask
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.tasks.factory.TaskConfigAction
 import com.android.build.gradle.internal.tasks.factory.TaskFactory
@@ -134,7 +134,6 @@ import com.android.build.gradle.internal.testing.utp.TEST_RESULT_PB_FILE_NAME
 import com.android.build.gradle.internal.transforms.ShrinkAppBundleResourcesTask
 import com.android.build.gradle.internal.transforms.ShrinkResourcesNewShrinkerTask
 import com.android.build.gradle.internal.utils.checkKotlinStdLibIsInDependencies
-import com.android.build.gradle.internal.utils.getProjectKotlinPluginKotlinVersion
 import com.android.build.gradle.internal.utils.isKotlinKaptPluginApplied
 import com.android.build.gradle.internal.utils.isKspPluginApplied
 import com.android.build.gradle.internal.variant.ApkVariantData
@@ -513,10 +512,9 @@ abstract class TaskManager(
             flags: Set<MergeResources.Flag>,
             taskProviderCallback: TaskProviderCallback<MergeResources>?
     ): TaskProvider<MergeResources> {
-        val mergedNotCompiledDir = if (alsoOutputNotCompiledResources) File(
-                creationConfig.services.projectInfo.getIntermediatesDir()
-                        .toString() + "/merged-not-compiled-resources/"
-                        + creationConfig.dirName) else null
+        val mergedNotCompiledDir = if (alsoOutputNotCompiledResources)
+                creationConfig.services.projectInfo.intermediatesDirectory.map { it.dir("merged-not-compiled-resources").dir(creationConfig.dirName) }
+            else null
         val mergeResourcesTask: TaskProvider<MergeResources> = taskFactory.register(
                 MergeResources.CreationAction(
                         creationConfig,
@@ -745,7 +743,7 @@ abstract class TaskManager(
                         )
                 )
                 if (packageOutputType != null) {
-                    creationConfig.artifacts.republish(PROCESSED_RES, packageOutputType)
+                    creationConfig.artifacts.republish(LINKED_RESOURCES_BINARY_FORMAT, packageOutputType)
                 }
 
                 // TODO: also support stable IDs for the bundle (does it matter?)
@@ -1143,7 +1141,7 @@ abstract class TaskManager(
         initializeAllScope(creationConfig.artifacts)
 
         // New gradle-transform jacoco instrumentation support.
-        if (creationConfig.codeCoverageEnabled &&
+        if (creationConfig.requiresJacocoTransformation &&
             !creationConfig.componentType.isForTesting) {
             createJacocoTask(creationConfig)
         } else {
@@ -1193,6 +1191,7 @@ abstract class TaskManager(
         if (creationConfig.componentType.isDynamicFeature) {
             taskFactory.register(FeatureDexMergeTask.CreationAction(creationConfig))
         }
+        checkIfR8VersionMatches(creationConfig.services.issueReporter)
         createDexTasks(creationConfig, creationConfig.dexing.dexingType)
     }
 
@@ -1507,17 +1506,6 @@ abstract class TaskManager(
 
         // DATA_BINDING_TRIGGER artifact is created for data binding only (not view binding)
         if (dataBindingEnabled) {
-            if (creationConfig.services.projectOptions.get(BooleanOption.NON_TRANSITIVE_R_CLASS)
-                    && isKotlinKaptPluginApplied(project)) {
-                val kotlinVersion = getProjectKotlinPluginKotlinVersion(project)
-                if (kotlinVersion != null && kotlinVersion < KAPT_FIX_KOTLIN_VERSION) {
-                    // Before Kotlin version 1.5.20 there was an issue with KAPT resolving files
-                    // at configuration time. We only need this task as a workaround for it, if the
-                    // version is newer than 1.5.20 or KAPT isn't applied, we can skip it.
-                    taskFactory.register(
-                            MergeRFilesForDataBindingTask.CreationAction(creationConfig))
-                }
-            }
             taskFactory.register(DataBindingTriggerTask.CreationAction(creationConfig))
             creationConfig.sources.java {
                 it.addSource(
@@ -1540,9 +1528,7 @@ abstract class TaskManager(
         val dataBindingArgs = createArguments(
                 creationConfig,
                 logger.isDebugEnabled,
-                DataBindingBuilder.getPrintMachineReadableOutput(),
-                isKotlinKaptPluginApplied(project),
-                getProjectKotlinPluginKotlinVersion(project))
+                DataBindingBuilder.getPrintMachineReadableOutput())
 
         // add it the Variant API objects, this is what our tasks use
         processorOptions.argumentProviders.add(dataBindingArgs)
@@ -1797,6 +1783,7 @@ abstract class TaskManager(
         // Shrink resources in APK with a new resource shrinker and produce stripped res
         // package.
         taskFactory.register(ShrinkResourcesNewShrinkerTask.CreationAction(creationConfig))
+        taskFactory.register(ConvertProtoResourcesTask.CreationAction(creationConfig))
         // Shrink resources in bundles with new resource shrinker.
         taskFactory.register(ShrinkAppBundleResourcesTask.CreationAction(creationConfig))
     }
@@ -1840,7 +1827,7 @@ abstract class TaskManager(
                 .assetGenTask =
                 taskFactory.register(creationConfig.computeTaskNameInternal("generate", "Assets"))
         // Create anchor task for creating instrumentation test coverage reports
-        if (creationConfig is VariantCreationConfig && creationConfig.codeCoverageEnabled) {
+        if (creationConfig is VariantCreationConfig && creationConfig.requiresJacocoTransformation) {
             creationConfig
                     .taskContainer
                     .coverageReportTask = taskFactory.register(

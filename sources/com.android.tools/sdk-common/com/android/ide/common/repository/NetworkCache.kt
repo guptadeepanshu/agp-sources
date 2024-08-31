@@ -15,14 +15,17 @@
  */
 package com.android.ide.common.repository
 
+import com.android.SdkConstants
 import com.android.annotations.concurrency.Slow
 import com.android.io.CancellableFileIo
 import java.io.ByteArrayInputStream
 import java.io.InputStream
+import java.net.URLEncoder
 import java.nio.file.Files
 import java.nio.file.NoSuchFileException
 import java.nio.file.Path
 import java.nio.file.attribute.FileTime
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 /**
@@ -51,6 +54,8 @@ abstract class NetworkCache constructor(
      * */
     private val networkEnabled: Boolean = true
 ) {
+    private val RESERVED_WINDOWS_FILE_NAMES = setOf("CON", "PRN", "AUX", "NUL", "COM0", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "COM¹", "COM²", "COM³", "LPT0", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9", "LPT¹", "LPT²", "LPT³")
+
     protected var lastReadSourceType: DataSourceType = DataSourceType.UNKNOWN_SOURCE
 
     @Suppress("ArrayInDataClass")
@@ -74,13 +79,32 @@ abstract class NetworkCache constructor(
     /** Reports an error found during I/O. */
     protected abstract fun error(throwable: Throwable, message: String?)
 
-    /** Reads the given data relative to the base URL. */
+    /** Reads the given data relative to the base URL.
+     *
+     * @param relative The relative
+     * @param treatAsDirectory store the cache content in a directory, i.e. as if the URL ended in /
+     *                         This is useful if a queried URL will be a prefix of another queried
+     *                         URL, which can't be represented directly on the filesystem.
+     */
     @Slow
-    protected open fun findData(relative: String): InputStream? {
+    protected open fun findData(relative: String, treatAsDirectory: Boolean = false): InputStream? {
         if (cacheDir != null) {
             var lastModified = 0L
             synchronized(cacheDir) {
-                val file = cacheDir.resolve(relative.ifEmpty { cacheKey })
+                val relativePath = buildString(relative.length + 8) {
+                    append(relative.split('/').joinToString("/") { encode(it) })
+                    if (treatAsDirectory && isNotEmpty() && !endsWith('/')) {
+                        // If treat as directory is true, the cache location is the same as if
+                        // the relative path had ended in a forward-slash.
+                        append('/')
+                    }
+                    if (isEmpty() || endsWith('/')) {
+                        // Cache directory entries as path/to/entry/(index), which cannot conflict
+                        // with another entry as the brackets would have been url encoded.
+                        append("(index)")
+                    }
+                }
+                val file = cacheDir.resolve(relativePath)
                 try {
                     lastModified = CancellableFileIo.getLastModifiedTime(file).toMillis()
                     val now = System.currentTimeMillis()
@@ -145,6 +169,11 @@ abstract class NetworkCache constructor(
         // Assign after reading, so it can be used inside readDefaultData for logging purposes
         lastReadSourceType = DataSourceType.DEFAULT_DATA
         return result
+    }
+
+    private fun encode(it: String): String {
+        val encoded = URLEncoder.encode(it, Charsets.UTF_8.name())
+        return if (SdkConstants.CURRENT_PLATFORM == SdkConstants.PLATFORM_WINDOWS && RESERVED_WINDOWS_FILE_NAMES.contains(encoded.substringBefore(".").uppercase(Locale.US))) "($encoded)" else encoded
     }
 
     enum class DataSourceType {

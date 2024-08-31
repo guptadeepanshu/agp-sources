@@ -18,6 +18,7 @@ package com.android.build.gradle.internal.fusedlibrary
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.dsl.FusedLibraryExtension
+import com.android.build.gradle.internal.dsl.AarMetadataImpl
 import org.gradle.api.Project
 import org.gradle.api.artifacts.component.ComponentIdentifier
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
@@ -28,6 +29,9 @@ open class FusedLibraryVariantScopeImpl(
     project: Project,
     extensionProvider: () -> FusedLibraryExtension
 ) : FusedLibraryVariantScope {
+
+    override val aarMetadata: AarMetadataImpl
+        get() = extension.aarMetadata as AarMetadataImpl
     override val layout: ProjectLayout = project.layout
     override val artifacts= ArtifactsImpl(project, "single")
     override val incomingConfigurations = FusedLibraryConfigurations()

@@ -44,6 +44,13 @@ enum class OptionalBooleanOption(
 
     ENABLE_API_MODELING_AND_GLOBAL_SYNTHETICS("android.enableApiModelingAndGlobalSynthetics", ApiStage.Experimental),
 
+    /**
+     * Whether to use K2 UAST when running lint.
+     *
+     * If not set, lint will use K2 UAST when the kotlin language version is >= 2.0.
+     */
+    LINT_USE_K2_UAST("android.lint.useK2Uast", FeatureStage.Experimental),
+
     /* ----------------
     * SOFTLY ENFORCED FEATURES
     */

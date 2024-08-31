@@ -35,7 +35,7 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts;
 import com.android.build.gradle.internal.scope.BootClasspathBuilder;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
 import com.android.build.gradle.internal.tasks.BuildAnalyzer;
-import com.android.build.gradle.internal.tasks.VariantAwareTask;
+import com.android.build.gradle.internal.tasks.VariantTask;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
 import com.android.build.gradle.internal.utils.HasConfigurableValuesKt;
 import com.android.build.gradle.options.BooleanOption;
@@ -44,12 +44,11 @@ import com.android.build.gradle.tasks.AndroidAnalyticsTestListener;
 import com.android.build.gradle.tasks.GenerateTestConfig;
 import com.android.buildanalyzer.common.TaskCategory;
 import com.android.builder.core.ComponentType;
+
 import com.google.common.collect.ImmutableList;
-import java.io.File;
-import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.Callable;
+
 import kotlin.Unit;
+
 import org.gradle.api.artifacts.ArtifactCollection;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.Directory;
@@ -57,8 +56,10 @@ import org.gradle.api.file.RegularFile;
 import org.gradle.api.file.RegularFileProperty;
 import org.gradle.api.plugins.JavaBasePlugin;
 import org.gradle.api.provider.ListProperty;
+import org.gradle.api.provider.Property;
 import org.gradle.api.reporting.DirectoryReport;
 import org.gradle.api.tasks.CacheableTask;
+import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.InputFiles;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Nested;
@@ -76,11 +77,16 @@ import org.gradle.testing.jacoco.plugins.JacocoPluginExtension;
 import org.gradle.testing.jacoco.plugins.JacocoTaskExtension;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.Callable;
+
 /** Patched version of {@link Test} that we need to use for local host tests support. */
 // TODO(b/330843002): This class should be renamed after the bug is fixed.
 @CacheableTask
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.TEST)
-public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
+public abstract class AndroidUnitTest extends Test implements VariantTask {
 
     private String variantName;
 
@@ -117,15 +123,16 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
     @PathSensitive(PathSensitivity.RELATIVE)
     public abstract ListProperty<Collection<Directory>> getTestJniLibs();
 
+    @Input
+    public abstract Property<Boolean> getJacocoExtensionEnabled();
+
     @Override
     @TaskAction
     public void executeTests() {
-        // Get the Jacoco extension to determine later if we have code coverage enabled.
-        JacocoTaskExtension jcoExtension = getExtensions().findByType(JacocoTaskExtension.class);
         AndroidAnalyticsTestListener testListener =
                 new AndroidAnalyticsTestListener(
                         dependencies,
-                        jcoExtension != null && jcoExtension.isEnabled(),
+                        getJacocoExtensionEnabled().get(),
                         getAnalyticsService().get(),
                         this.getFilter(),
                         isIdeInvoked);
@@ -217,6 +224,17 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
                 pluginExtension.setToolVersion(jacocoVersion);
             }
 
+            JacocoTaskExtension jacocoTaskExtension =
+                    task.getExtensions().findByType(JacocoTaskExtension.class);
+            HasConfigurableValuesKt.setDisallowChanges(
+                    task.getJacocoExtensionEnabled(),
+                    hostTestCreationConfig
+                            .getServices()
+                            .provider(
+                                    () ->
+                                            jacocoTaskExtension != null
+                                                    && jacocoTaskExtension.isEnabled()));
+
             hostTestCreationConfig.onTestedVariant(
                     testedConfig -> {
                         if (hostTestCreationConfig.getCodeCoverageEnabled()) {
@@ -225,10 +243,6 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
                                     .withType(
                                             JacocoPlugin.class,
                                             plugin -> {
-                                                JacocoTaskExtension jacocoTaskExtension =
-                                                        task.getExtensions()
-                                                                .findByType(
-                                                                        JacocoTaskExtension.class);
                                                 jacocoTaskExtension.setDestinationFile(
                                                         task.getJacocoCoverageOutputFile()
                                                                 .getAsFile());
@@ -298,26 +312,28 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
             JUnitXmlReport xmlReport = testTaskReports.getJunitXml();
             xmlReport
                     .getOutputLocation()
-                    .set(
-                            new File(
-                                    creationConfig
-                                            .getServices()
-                                            .getProjectInfo()
-                                            .getTestResultsFolder(),
-                                    task.getName()));
+                    .fileProvider(
+                            creationConfig
+                                    .getServices()
+                                    .getProjectInfo()
+                                    .getTestResultsFolder()
+                                    .map(it -> it.dir(task.getName()).getAsFile()));
 
             DirectoryReport htmlReport = testTaskReports.getHtml();
             htmlReport
                     .getOutputLocation()
-                    .set(
-                            new File(
-                                    creationConfig
-                                            .getServices()
-                                            .getProjectInfo()
-                                            .getTestReportFolder(),
-                                    task.getName()));
+                    .fileProvider(
+                            creationConfig
+                                    .getServices()
+                                    .getProjectInfo()
+                                    .getTestReportFolder()
+                                    .map(it -> it.dir(task.getName()).getAsFile()));
 
             testOptions.applyConfiguration(task);
+
+            // Robolectric specific: add JVM flag to allow unit tests to run when using Java 17+.
+            // Ref b/248929512.
+            task.jvmArgs((ImmutableList.of("--add-opens=java.base/java.io=ALL-UNNAMED")));
 
             task.dependencies =
                     creationConfig

@@ -180,9 +180,7 @@ abstract class BundleAllClasses : NonIncrementalTask() {
             } else {
                 task.inputDirs.from(
                     listOfNotNull(
-                        creationConfig.artifacts
-                            .get(InternalArtifactType.KOTLINC)
-                            .takeIf { creationConfig.useBuiltInKotlinSupport },
+                        creationConfig.getBuiltInKotlincOutput(),
                         creationConfig.artifacts.get(InternalArtifactType.JAVAC),
                         creationConfig.oldVariantApiLegacySupport?.variantData?.allPreJavacGeneratedBytecode,
                         creationConfig.oldVariantApiLegacySupport?.variantData?.allPostJavacGeneratedBytecode

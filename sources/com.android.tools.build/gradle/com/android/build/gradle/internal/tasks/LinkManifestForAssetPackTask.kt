@@ -26,7 +26,7 @@ import com.android.build.gradle.internal.services.Aapt2Input
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.services.registerAaptService
-import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.SyncOptions
@@ -102,7 +102,7 @@ abstract class LinkManifestForAssetPackTask : NonIncrementalTask() {
         private val artifacts: ArtifactsImpl,
         private val projectServices: ProjectServices,
         private val compileSdk: Int
-    ) : TaskCreationAction<LinkManifestForAssetPackTask>() {
+    ) : AndroidVariantTaskCreationAction<LinkManifestForAssetPackTask>() {
 
         override val type = LinkManifestForAssetPackTask::class.java
         override val name = "linkManifestForAssetPacks"
@@ -116,7 +116,8 @@ abstract class LinkManifestForAssetPackTask : NonIncrementalTask() {
         }
 
         override fun configure(task: LinkManifestForAssetPackTask) {
-            task.configureVariantProperties(variantName = "", projectServices.buildServiceRegistry)
+            super.configure(task)
+
             artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.ASSET_PACK_MANIFESTS, task.manifestsDirectory
             )

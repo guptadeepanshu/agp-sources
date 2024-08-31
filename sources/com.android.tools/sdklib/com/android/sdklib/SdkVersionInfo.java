@@ -17,7 +17,9 @@ package com.android.sdklib;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+
 import com.google.common.base.Strings;
+
 import java.util.Locale;
 
 /** Information about available SDK Versions */
@@ -74,7 +76,7 @@ public class SdkVersionInfo {
      * The highest known API level for Wearables. Note the tools at the downloadable system images
      * for wearables to see if there are more recent versions.
      */
-    public static final int HIGHEST_KNOWN_API_WEAR = 33;
+    public static final int HIGHEST_KNOWN_API_WEAR = 34;
 
     /**
      * The lowest active api for wearables. This number will change over time as the distribution of

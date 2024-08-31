@@ -19,14 +19,12 @@ package com.android.build.gradle.tasks
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInternalArtifactType
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
+import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
-import com.android.build.gradle.internal.tasks.configureVariantProperties
-import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.errors.IssueReporter
-import com.android.utils.TraceUtils.simpleId
 import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.artifacts.result.DependencyResult
 import org.gradle.api.artifacts.result.ResolvedComponentResult
@@ -103,7 +101,7 @@ abstract class PrivacySandboxValidateConfigurationTask : NonIncrementalTask() {
     }
 
     class CreationAction(val creationConfig: PrivacySandboxSdkVariantScope)
-        : TaskCreationAction<PrivacySandboxValidateConfigurationTask>() {
+        : AndroidVariantTaskCreationAction<PrivacySandboxValidateConfigurationTask>() {
 
         override val name: String
             get() = "validatePrivacySandboxSdkConfiguration"
@@ -121,7 +119,7 @@ abstract class PrivacySandboxValidateConfigurationTask : NonIncrementalTask() {
         }
 
         override fun configure(task: PrivacySandboxValidateConfigurationTask) {
-            task.configureVariantProperties("", task.project.gradle.sharedServices)
+            super.configure(task)
 
             val includeConfiguration = task.project.configurations.getByName("include")
             val requiredConfiguration = task.project.configurations.getByName("requiredSdk")

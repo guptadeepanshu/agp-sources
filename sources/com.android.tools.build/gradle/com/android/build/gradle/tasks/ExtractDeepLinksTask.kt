@@ -25,9 +25,9 @@ import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationActionImpl
-import com.android.ide.common.blame.SourceFilePosition
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
+import com.android.ide.common.blame.SourceFilePosition
 import com.android.manifmerger.NavigationXmlDocumentData
 import com.android.manifmerger.NavigationXmlLoader
 import com.android.utils.FileUtils
@@ -84,14 +84,16 @@ abstract class ExtractDeepLinksTask: NonIncrementalTask() {
             val folder = directory.asFile
             if (folder.exists()) {
                 folder.listFiles().map { navigationFile ->
-                    val navigationId = navigationFile.name.replace(DOT_XML_EXT, "")
-                    if (navigationIds.add(navigationId)) {
-                        navigationFile.inputStream().use { inputStream ->
-                            navDatas.add(
-                                NavigationXmlLoader
-                                    .load(navigationId, navigationFile, inputStream)
-                                    .convertToData(manifestPlaceholders.get().toMap(), forAar.get())
-                            )
+                    if (navigationFile.extension == "xml") {
+                        val navigationId = navigationFile.name.replace(DOT_XML_EXT, "")
+                        if (navigationIds.add(navigationId)) {
+                            navigationFile.inputStream().use { inputStream ->
+                                navDatas.add(
+                                    NavigationXmlLoader
+                                        .load(navigationId, navigationFile, inputStream)
+                                        .convertToData(manifestPlaceholders.get().toMap(), forAar.get())
+                                )
+                            }
                         }
                     }
                 }

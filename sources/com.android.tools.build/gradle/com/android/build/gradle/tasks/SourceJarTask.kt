@@ -21,7 +21,7 @@ import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.getOutputPath
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
-import com.android.build.gradle.internal.tasks.VariantAwareTask
+import com.android.build.gradle.internal.tasks.VariantTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.buildanalyzer.common.TaskCategory
 import org.gradle.api.attributes.DocsType
@@ -34,7 +34,7 @@ import org.gradle.work.DisableCachingByDefault
 
 @DisableCachingByDefault
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.COMPILED_CLASSES, secondaryTaskCategories = [TaskCategory.ZIPPING])
-abstract class SourceJarTask : Jar(), VariantAwareTask {
+abstract class SourceJarTask : Jar(), VariantTask {
 
     @Internal
     override lateinit var variantName: String
@@ -55,13 +55,11 @@ abstract class SourceJarTask : Jar(), VariantAwareTask {
             taskProvider: TaskProvider<SourceJarTask>
         ) {
             super.handleProvider(taskProvider)
-
-            val propertyProvider = { task: SourceJarTask ->
-                val property = task.project.objects.fileProperty()
-                property.set(task.archiveFile)
-                property
-            }
-            creationConfig.artifacts.setInitialProvider(taskProvider, propertyProvider)
+            creationConfig.artifacts.setInitialProvider(taskProvider,
+                // since the path to the file is set in the configure below, pass an empty property.
+                { it.project.objects.fileProperty() },
+                SourceJarTask::getArchiveFile
+            )
                 .on(InternalArtifactType.SOURCE_JAR)
         }
 

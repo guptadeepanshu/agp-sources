@@ -71,6 +71,12 @@ public final class Storage {
      */
     @Nullable
     public static Storage getStorageFromString(@Nullable String storageString) {
+        return getStorageFromString(storageString, Unit.MiB);
+    }
+
+    @Nullable
+    public static Storage getStorageFromString(
+            @Nullable String storageString, @NonNull Unit defaultUnit) {
     if (storageString == null || storageString.isEmpty()) {
       return null;
     }
@@ -96,8 +102,8 @@ public final class Storage {
       if (unitPart == null) return null; // Should not happen
     }
     else if (matcher.group(4).isEmpty()) {
-      // No unit specified at all. Use MiB.
-      unitPart = Unit.MiB;
+      // No unit specified at all. Use the default.
+      unitPart = defaultUnit;
     }
     else {
       // Just "B"--use bytes

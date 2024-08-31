@@ -16,17 +16,17 @@
 
 package com.android.build.gradle.internal
 
+import com.android.build.gradle.internal.testing.getEmulatorMetadata
 import com.android.build.gradle.internal.testing.AdbHelper
+import com.android.build.gradle.internal.testing.EmulatorVersionMetadata
 import com.android.sdklib.internal.avd.AvdManager
 import com.android.testing.utils.createSetupDeviceId
 import com.android.utils.FileUtils
 import com.android.utils.GrabProcessOutput
 import com.android.utils.ILogger
 import java.io.File
-import java.nio.file.Files.readAllLines
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
-import java.util.regex.Pattern
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
@@ -43,10 +43,6 @@ private const val TARGET_SNAPSHOT_NAME = "default_boot"
 // for stability.
 private const val WAIT_AFTER_BOOT_MS = 5000L
 
-private const val MINIMUM_MAJOR_VERSION = 30
-private const val MINIMUM_MINOR_VERSION = 6
-private const val MINIMUM_MICRO_VERSION = 4
-
 /**
  * @param deviceBootAndSnapshotCheckTimeoutSec a timeout duration in minute for AVD device to boot
  * and for snapshot to be created. If null, the default value (10 minutes) is used. If zero or
@@ -56,9 +52,18 @@ class AvdSnapshotHandler(
     private val showEmulatorKernelLogging: Boolean,
     private val deviceBootAndSnapshotCheckTimeoutSec: Long?,
     private val adbHelper: AdbHelper,
+    private val emulatorDir: Provider<Directory>,
     private val extraWaitAfterBootCompleteMs: Long = WAIT_AFTER_BOOT_MS,
     private val executor: Executor = Executors.newSingleThreadExecutor(),
+    private val metadataFactory: (File) -> EmulatorVersionMetadata = ::getEmulatorMetadata,
     private val processFactory: (List<String>) -> ProcessBuilder = { ProcessBuilder(it) }) {
+
+    private val emulatorMetadata: EmulatorVersionMetadata by lazy {
+        val emulatorDirectory =
+            emulatorDir.orNull?.asFile ?: error("Emulator dir does not exist")
+        metadataFactory(emulatorDirectory)
+    }
+
     /**
      * Checks whether the emulator directory contains a valid emulator executable, and returns it.
      *
@@ -67,16 +72,15 @@ class AvdSnapshotHandler(
      *
      * @return the emulator executable from the given directory.
      */
-    fun getEmulatorExecutable(emulatorDirectoryProvider: Provider<Directory>): File {
-        val emulatorDir =
-            emulatorDirectoryProvider.orNull?.asFile ?: error("Emulator dir does not exist")
-        ensureEmulatorVersionRequirement(emulatorDir)
-        return emulatorDir.resolve(EMULATOR_EXECUTABLE)
+    val emulatorExecutable: File by lazy {
+        emulatorMetadata // force evalutation of emulator metadata
+        val emulatorDirectory =
+            emulatorDir.orNull?.asFile ?: error("Emulator dir does not exist")
+        emulatorDirectory.resolve(EMULATOR_EXECUTABLE)
     }
 
     private fun getEmulatorCommand(
         avdName: String,
-        emulatorExecutable: File,
         emulatorGpuFlag: String,
         additionalParams: List<String>,
     ): List<String> {
@@ -112,7 +116,6 @@ class AvdSnapshotHandler(
      */
     fun checkSnapshotLoadable(
         avdName: String,
-        emulatorExecutable: File,
         avdLocation: File,
         emulatorGpuFlag: String,
         logger: ILogger,
@@ -122,7 +125,6 @@ class AvdSnapshotHandler(
         val processBuilder = processFactory(
             getEmulatorCommand(
                 avdName,
-                emulatorExecutable,
                 emulatorGpuFlag,
                 listOf(
                     "-read-only",
@@ -204,7 +206,6 @@ class AvdSnapshotHandler(
      */
     fun generateSnapshot(
         avdName: String,
-        emulatorExecutable: File,
         avdLocation: File,
         emulatorGpuFlag: String,
         avdManager: AvdManager,
@@ -225,14 +226,12 @@ class AvdSnapshotHandler(
                 startEmulatorThenStop(
                         createSnapshot = true,
                         avdName,
-                        emulatorExecutable,
                         avdLocation,
                         emulatorGpuFlag,
                         logger)
 
                 if (!checkSnapshotLoadable(
                         avdName,
-                        emulatorExecutable,
                         avdLocation,
                         emulatorGpuFlag,
                         logger)) {
@@ -254,7 +253,6 @@ class AvdSnapshotHandler(
                 startEmulatorThenStop(
                         createSnapshot = false,
                         avdName,
-                        emulatorExecutable,
                         avdLocation,
                         emulatorGpuFlag,
                         logger)
@@ -300,7 +298,6 @@ class AvdSnapshotHandler(
     private fun startEmulatorThenStop(
         createSnapshot: Boolean,
         avdName: String,
-        emulatorExecutable: File,
         avdLocation: File,
         emulatorGpuFlag: String,
         logger: ILogger
@@ -310,10 +307,11 @@ class AvdSnapshotHandler(
         val processBuilder = processFactory(
             getEmulatorCommand(
                 avdName,
-                emulatorExecutable,
                 emulatorGpuFlag,
                 listOfNotNull(
                     "-no-snapshot-load".takeIf { createSnapshot },
+                    "-force-snapshot-load".takeIf {
+                        !createSnapshot && emulatorMetadata.canUseForceSnapshotLoad },
                     "-read-only".takeIf { !createSnapshot },
                     "-no-snapshot-save".takeIf { !createSnapshot },
                     "-id", deviceId)
@@ -416,44 +414,5 @@ class AvdSnapshotHandler(
         } finally {
             emulatorProcess.destroy()
         }
-    }
-
-    /**
-     * Ensures that all required features of the emulator are present.
-     *
-     * Checks the emulator version to ensure the emulator executable supports the
-     * "--check-snapshot-loadable" flag. Errors on failure.
-     */
-    private fun ensureEmulatorVersionRequirement(emulatorDir: File) {
-        val packageFile = emulatorDir.resolve("package.xml")
-        val versionPattern =
-            Pattern.compile("<major>(\\d+)</major><minor>(\\d+)</minor><micro>(\\d+)</micro>")
-        for (line in readAllLines(packageFile.toPath())) {
-            val matcher = versionPattern.matcher(line)
-            if (matcher.find()) {
-                val majorVersion = matcher.group(1).toInt()
-                val minorVersion = matcher.group(2).toInt()
-                val microVersion = matcher.group(3).toInt()
-                when {
-                    majorVersion > MINIMUM_MAJOR_VERSION -> return
-                    majorVersion == MINIMUM_MAJOR_VERSION &&
-                            minorVersion > MINIMUM_MINOR_VERSION -> return
-                    majorVersion == MINIMUM_MAJOR_VERSION &&
-                            minorVersion == MINIMUM_MINOR_VERSION &&
-                            microVersion >= MINIMUM_MICRO_VERSION -> return
-                    else ->
-                        error(
-                            "Emulator needs to be updated in order to use managed devices. Minimum " +
-                                    "version required: $MINIMUM_MAJOR_VERSION.$MINIMUM_MINOR_VERSION" +
-                                    ".$MINIMUM_MICRO_VERSION. Version found: $majorVersion.$minorVersion" +
-                                    ".$microVersion."
-                        )
-                }
-            }
-        }
-        error(
-            "Could not determine version of Emulator in ${emulatorDir.absolutePath}. Update " +
-                    "emulator in order to use Managed Devices."
-        )
     }
 }

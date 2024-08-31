@@ -192,7 +192,7 @@ abstract class DexFileDependenciesTask: NonIncrementalTask() {
 
             val classesAreInstrumentedWithAsm =
                 creationConfig.instrumentationCreationConfig?.dependenciesClassesAreInstrumented == true
-            val classesAreInstrumentedWithJacoco = creationConfig.useJacocoTransformInstrumentation
+            val classesAreInstrumentedWithJacoco = creationConfig.requiresJacocoTransformation
             val inputClassesArtifact = when {
                 classesAreInstrumentedWithJacoco && classesAreInstrumentedWithAsm ->
                     AndroidArtifacts.ArtifactType.JACOCO_ASM_INSTRUMENTED_JARS

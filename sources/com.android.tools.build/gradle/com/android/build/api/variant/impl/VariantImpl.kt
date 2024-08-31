@@ -276,7 +276,7 @@ abstract class VariantImpl<DslInfoT: VariantDslInfo>(
                 dslInfo.manifestPlaceholdersDslInfo?.placeholders)
     }
 
-    override val codeCoverageEnabled: Boolean
+    override val requiresJacocoTransformation: Boolean
         get() = (this as? HasDeviceTests)?.deviceTests?.any { it.codeCoverageEnabled } ?: false
 
     override val isCoreLibraryDesugaringEnabledLintCheck: Boolean

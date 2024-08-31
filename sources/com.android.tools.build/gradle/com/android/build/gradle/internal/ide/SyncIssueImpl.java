@@ -22,8 +22,10 @@ import com.android.annotations.concurrency.Immutable;
 import com.android.builder.errors.EvalIssueException;
 import com.android.builder.errors.IssueReporter;
 import com.android.builder.model.SyncIssue;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -51,7 +53,7 @@ public final class SyncIssueImpl implements SyncIssue, Serializable {
                 severity,
                 exception.getData(),
                 exception.getMessage(),
-                exception.getMultlineMessage());
+                exception.getMultilineMessage());
     }
 
     public SyncIssueImpl(

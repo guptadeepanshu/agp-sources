@@ -17,7 +17,7 @@
 package com.android.build.gradle.internal.profile
 
 import com.android.build.gradle.internal.services.getBuildService
-import com.android.build.gradle.internal.tasks.VariantAwareTask
+import com.android.build.gradle.internal.tasks.VariantTask
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.ProjectOptionService
 import com.android.build.gradle.options.ProjectOptions
@@ -328,7 +328,7 @@ class AnalyticsResourceManager constructor(
     fun collectTaskMetadata(graph: TaskExecutionGraph) {
         for (task in graph.allTasks) {
             val variantName =
-                if (task is VariantAwareTask) task.variantName
+                if (task is VariantTask) task.variantName
                 else task.extensions.findByName(PROPERTY_VARIANT_NAME_KEY) as String?
 
             taskMetadata[task.path] = TaskMetadata(

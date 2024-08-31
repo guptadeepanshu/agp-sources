@@ -200,7 +200,13 @@ fun HumanReadableProfile(
     for (rule in rules) {
         when {
             rule.isExact && rule.isType -> exactTypes.add(rule.prefix)
-            rule.isExact && !rule.isType -> exactMethods[rule.toDexMethod()] = rule.flags
+            rule.isExact && !rule.isType -> {
+                val dexMethod = rule.toDexMethod()
+                val currentFlag = exactMethods[dexMethod] ?: 0
+                // Merge flags for rules that are exact but are duplicated
+                exactMethods[dexMethod] = rule.flags or currentFlag
+            }
+
             !rule.isExact && rule.isType -> fuzzyTypes.put(rule.prefix, rule)
             !rule.isExact && !rule.isType -> fuzzyMethods.put(rule.prefix, rule)
         }

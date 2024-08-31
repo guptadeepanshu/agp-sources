@@ -228,9 +228,10 @@ private fun generateResourceTypeClass(
                                 "I")
                         clinit.arrayStore(INT_TYPE)
                     } else {
+                        val isSdkPackage = value shr 24 == 0x7f
                         clinit.dup()
                         clinit.push(i)
-                        if (rPackage != null) {
+                        if (rPackage != null && isSdkPackage) {
                             clinit.push(value - 0x7f000000)
                             clinit.loadLocal(1)
                             clinit.visitInsn(Opcodes.IADD)

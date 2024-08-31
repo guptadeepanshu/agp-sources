@@ -18,7 +18,7 @@ package com.android.build.gradle.internal.ide.kmp.resolvers
 
 import com.android.build.api.attributes.AgpVersionAttr
 import com.android.build.gradle.internal.component.KmpComponentCreationConfig
-import com.android.build.gradle.internal.ide.dependencies.getBuildTreePath
+import com.android.build.gradle.internal.ide.dependencies.getProjectBuildTreePath
 import com.android.build.gradle.internal.ide.kmp.LibraryResolver
 import com.android.build.gradle.internal.ide.proto.convert
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
@@ -60,14 +60,14 @@ internal class ProjectDependencyResolver(
             it is ProjectComponentIdentifier
         }
 
+        val projectBuildTreePath = getProjectBuildTreePath(component.variantDependencies).get()
         return artifacts.mapNotNull { artifact ->
             val componentId = artifact.id.componentIdentifier as ProjectComponentIdentifier
 
             // This is a dependency on the same module, usually from unitTest/instrumentationTest on
             // the main module. This should be handled as a friend dependency which will allow the
             // test components to view the internals of the main. So we just ignore this case here.
-            val buildTreePath = getBuildTreePath(component.variantDependencies).get()
-            if (buildTreePath == componentId.buildTreePath) {
+            if (projectBuildTreePath == componentId.buildTreePath) {
                 return@mapNotNull null
             }
 

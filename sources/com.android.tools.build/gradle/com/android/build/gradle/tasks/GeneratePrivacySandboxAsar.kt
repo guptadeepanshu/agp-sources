@@ -25,9 +25,8 @@ import com.android.build.gradle.internal.services.AndroidLocationsBuildService
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.signing.SigningConfigData
 import com.android.build.gradle.internal.signing.SigningConfigDataProvider
+import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
-import com.android.build.gradle.internal.tasks.configureVariantProperties
-import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.ide.common.signing.KeystoreHelper
 import com.android.tools.build.bundletool.commands.BuildSdkAsarCommand
@@ -111,7 +110,7 @@ abstract class GeneratePrivacySandboxAsar : NonIncrementalTask() {
 
     class CreationAction(
             private val creationConfig: PrivacySandboxSdkVariantScope
-    ) : TaskCreationAction<GeneratePrivacySandboxAsar>() {
+    ) : AndroidVariantTaskCreationAction<GeneratePrivacySandboxAsar>() {
 
         override val name: String = "generatePrivacySandboxSdkArchive"
         override val type: Class<GeneratePrivacySandboxAsar> =
@@ -129,7 +128,7 @@ abstract class GeneratePrivacySandboxAsar : NonIncrementalTask() {
         }
 
         override fun configure(task: GeneratePrivacySandboxAsar) {
-            task.configureVariantProperties("", task.project.gradle.sharedServices)
+            super.configure(task)
 
             creationConfig.artifacts.setTaskInputToFinalProduct(
                     PrivacySandboxSdkInternalArtifactType.ASB, task.asb

@@ -22,10 +22,9 @@ import com.android.build.gradle.internal.fusedlibrary.FusedLibraryVariantScope
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.res.namespaced.NamespaceRewriter
 import com.android.build.gradle.internal.services.SymbolTableBuildService
+import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
-import com.android.build.gradle.internal.tasks.configureVariantProperties
-import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.internal.utils.toImmutableList
 import com.android.buildanalyzer.common.TaskCategory
@@ -125,7 +124,7 @@ abstract class FusedLibraryClassesRewriteTask : NonIncrementalTask() {
     }
 
     class CreationAction(val creationConfig: FusedLibraryVariantScope) :
-        TaskCreationAction<FusedLibraryClassesRewriteTask>() {
+        AndroidVariantTaskCreationAction<FusedLibraryClassesRewriteTask>() {
 
         override val name: String
             get() = "rewriteClasses"
@@ -146,7 +145,8 @@ abstract class FusedLibraryClassesRewriteTask : NonIncrementalTask() {
         }
 
         override fun configure(task: FusedLibraryClassesRewriteTask) {
-            task.configureVariantProperties("", task.project.gradle.sharedServices)
+            super.configure(task)
+
             task.fusedLibraryNamespace.setDisallowChanges(
                 creationConfig.extension.namespace
             )

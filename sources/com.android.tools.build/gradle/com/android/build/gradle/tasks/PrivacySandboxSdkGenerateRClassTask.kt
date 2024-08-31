@@ -22,10 +22,9 @@ import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.services.SymbolTableBuildService
 import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
-import com.android.build.gradle.internal.tasks.configureVariantProperties
-import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.symbols.exportToCompiledJava
@@ -109,7 +108,7 @@ abstract class PrivacySandboxSdkGenerateRClassTask : NonIncrementalTask() {
     }
 
     class CreationAction(private val creationConfig: PrivacySandboxSdkVariantScope) :
-        TaskCreationAction<PrivacySandboxSdkGenerateRClassTask>() {
+        AndroidVariantTaskCreationAction<PrivacySandboxSdkGenerateRClassTask>() {
 
         override val name = "generateRClass"
         override val type = PrivacySandboxSdkGenerateRClassTask::class.java
@@ -123,7 +122,8 @@ abstract class PrivacySandboxSdkGenerateRClassTask : NonIncrementalTask() {
         }
 
         override fun configure(task: PrivacySandboxSdkGenerateRClassTask) {
-            task.configureVariantProperties("", task.project.gradle.sharedServices)
+            super.configure(task)
+
             task.applicationId.setDisallowChanges(creationConfig.bundle.applicationId)
             creationConfig.artifacts.setTaskInputToFinalProduct(
                     PrivacySandboxSdkInternalArtifactType.RUNTIME_SYMBOL_LIST,

@@ -17,6 +17,7 @@
 package com.android.build.gradle.internal.dsl
 
 import com.android.build.gradle.options.BooleanOption
+import com.android.build.gradle.options.OptionalBooleanOption
 import com.android.build.gradle.options.StringOption
 import com.android.build.gradle.options.parseBoolean
 import org.gradle.api.artifacts.Dependency
@@ -40,7 +41,13 @@ sealed interface ModulePropertyKey<OutputT> {
          * A [Dependency] providing apipackager artifact.
          */
         ANDROID_PRIVACY_SANDBOX_SDK_API_PACKAGER(
-                StringOption.ANDROID_PRIVACY_SANDBOX_SDK_API_PACKAGER.propertyName)
+                StringOption.ANDROID_PRIVACY_SANDBOX_SDK_API_PACKAGER.propertyName),
+
+        /**
+         * A [Dependency] providing kotlin compiler embeddable artifact (used for compling sources
+         * produced by the Privacy Sandbox apigenerator.
+         */
+        ANDROID_PRIVACY_SANDBOX_SDK_KOTLIN_COMPILER_EMBEDDABLE(StringOption.ANDROID_PRIVACY_SANDBOX_SDK_KOTLIN_COMPILER_EMBEDDABLE.propertyName),
         ;
 
         override fun getValue(properties: Map<String, Any>): List<Dependency>? {
@@ -63,9 +70,9 @@ sealed interface ModulePropertyKey<OutputT> {
 
         /**
          * Whether to use K2 UAST when running lint. The corresponding global property is
-         * [BooleanOption.LINT_USE_K2_UAST].
+         * [OptionalBooleanOption.LINT_USE_K2_UAST].
          */
-        LINT_USE_K2_UAST(BooleanOption.LINT_USE_K2_UAST.propertyName),
+        LINT_USE_K2_UAST(OptionalBooleanOption.LINT_USE_K2_UAST.propertyName),
 
         /**
          * Whether to enable various R8 optimization on the code

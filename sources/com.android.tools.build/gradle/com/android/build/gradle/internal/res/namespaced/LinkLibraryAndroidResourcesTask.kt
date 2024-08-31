@@ -33,10 +33,10 @@ import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.core.ComponentTypeImpl
 import com.android.builder.internal.aapt.AaptOptions
 import com.android.builder.internal.aapt.AaptPackageConfig
-import com.android.utils.FileUtils
 import com.google.common.collect.ImmutableList
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
@@ -86,8 +86,11 @@ abstract class LinkLibraryAndroidResourcesTask : NonIncrementalTask() {
     @get:Input
     abstract val mergeOnly: Property<Boolean>
 
-    @get:OutputDirectory lateinit var aaptIntermediateDir: File private set
-    @get:OutputFile abstract val staticLibApk: RegularFileProperty
+    @get:OutputDirectory
+    abstract val aaptIntermediateDir: DirectoryProperty
+
+    @get:OutputFile
+    abstract val staticLibApk: RegularFileProperty
 
     @get:Nested
     abstract val androidJarInput: AndroidJarInput
@@ -115,7 +118,7 @@ abstract class LinkLibraryAndroidResourcesTask : NonIncrementalTask() {
                 resourceOutputApk = staticLibApk.get().asFile,
                 componentType = ComponentTypeImpl.LIBRARY,
                 customPackageForR = namespace.get(),
-                intermediateDir = aaptIntermediateDir,
+                intermediateDir = aaptIntermediateDir.get().asFile,
                 mergeOnly = mergeOnly.get())
 
         val aapt2ServiceKey = aapt2.registerAaptService()
@@ -183,9 +186,10 @@ abstract class LinkLibraryAndroidResourcesTask : NonIncrementalTask() {
                 )
             }
 
-            task.aaptIntermediateDir =
-                    FileUtils.join(
-                            creationConfig.services.projectInfo.getIntermediatesDir(), "res-link-intermediate", creationConfig.dirName)
+            task.aaptIntermediateDir.setDisallowChanges(
+                creationConfig.services.projectInfo.intermediatesDirectory
+                    .map { it.dir("res-link-intermediate").dir(creationConfig.dirName) }
+            )
 
             task.namespace.setDisallowChanges(creationConfig.namespace)
 

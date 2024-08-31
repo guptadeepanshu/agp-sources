@@ -18,10 +18,8 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.utils.FileUtils
 import org.gradle.api.Task
-import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
 import org.gradle.work.DisableCachingByDefault
-import java.lang.RuntimeException
 
 /**
  * Base variant-aware non-incremental task
@@ -41,27 +39,10 @@ abstract class NonIncrementalTask : AndroidVariantTask() {
     }
 }
 
-/**
- * Base non variant-aware non-incremental task
- *
- * This currently needs to implement [VariantAwareTask] because our analytics
- * require [variantName] to be present so that we can ensure that it's always
- * set for variant aware tasks. For global task it's meant to be empty.
- *
- * TODO figure out a better mechanism that does not require global tasks to have a variant name
- */
+/** [AndroidGlobalTask] that is non-incremental. */
 @DisableCachingByDefault
-abstract class NonIncrementalGlobalTask : BaseTask(), VariantAwareTask {
+abstract class NonIncrementalGlobalTask : AndroidGlobalTask() {
 
-    // FIXME should be final once LintPerVariantTask is changed to not inherit from this.
-    @get:Internal
-    override var variantName: String
-        get() = ""
-        set(value) {
-            throw RuntimeException("Do not set variant name on NonIncrementalGlobalTask")
-        }
-
-    @Throws(Exception::class)
     protected abstract fun doTaskAction()
 
     @TaskAction

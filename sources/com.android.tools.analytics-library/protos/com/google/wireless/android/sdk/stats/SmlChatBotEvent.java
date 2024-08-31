@@ -278,6 +278,14 @@ private static final long serialVersionUID = 0L;
      * <code>INSERT_NAME_SUGGESTIONS = 11;</code>
      */
     INSERT_NAME_SUGGESTIONS(11),
+    /**
+     * <code>COPY_BUTTON = 12;</code>
+     */
+    COPY_BUTTON(12),
+    /**
+     * <code>COPY_MANUAL = 13;</code>
+     */
+    COPY_MANUAL(13),
     ;
 
     /**
@@ -324,6 +332,14 @@ private static final long serialVersionUID = 0L;
      * <code>INSERT_NAME_SUGGESTIONS = 11;</code>
      */
     public static final int INSERT_NAME_SUGGESTIONS_VALUE = 11;
+    /**
+     * <code>COPY_BUTTON = 12;</code>
+     */
+    public static final int COPY_BUTTON_VALUE = 12;
+    /**
+     * <code>COPY_MANUAL = 13;</code>
+     */
+    public static final int COPY_MANUAL_VALUE = 13;
 
 
     public final int getNumber() {
@@ -357,6 +373,8 @@ private static final long serialVersionUID = 0L;
         case 9: return MERGE_SUGGESTION;
         case 10: return INSERT_RESOURCES;
         case 11: return INSERT_NAME_SUGGESTIONS;
+        case 12: return COPY_BUTTON;
+        case 13: return COPY_MANUAL;
         default: return null;
       }
     }
@@ -6438,6 +6456,17 @@ private static final long serialVersionUID = 0L;
      * @return The hasError.
      */
     boolean getHasError();
+
+    /**
+     * <code>optional bool did_timeout = 5;</code>
+     * @return Whether the didTimeout field is set.
+     */
+    boolean hasDidTimeout();
+    /**
+     * <code>optional bool did_timeout = 5;</code>
+     * @return The didTimeout.
+     */
+    boolean getDidTimeout();
   }
   /**
    * Protobuf type {@code android_studio.SmlChatBotEvent.ParseResult}
@@ -6586,6 +6615,25 @@ private static final long serialVersionUID = 0L;
       return hasError_;
     }
 
+    public static final int DID_TIMEOUT_FIELD_NUMBER = 5;
+    private boolean didTimeout_;
+    /**
+     * <code>optional bool did_timeout = 5;</code>
+     * @return Whether the didTimeout field is set.
+     */
+    @java.lang.Override
+    public boolean hasDidTimeout() {
+      return ((bitField0_ & 0x00000010) != 0);
+    }
+    /**
+     * <code>optional bool did_timeout = 5;</code>
+     * @return The didTimeout.
+     */
+    @java.lang.Override
+    public boolean getDidTimeout() {
+      return didTimeout_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -6612,6 +6660,9 @@ private static final long serialVersionUID = 0L;
       if (((bitField0_ & 0x00000008) != 0)) {
         output.writeBool(4, hasError_);
       }
+      if (((bitField0_ & 0x00000010) != 0)) {
+        output.writeBool(5, didTimeout_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -6636,6 +6687,10 @@ private static final long serialVersionUID = 0L;
       if (((bitField0_ & 0x00000008) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(4, hasError_);
+      }
+      if (((bitField0_ & 0x00000010) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(5, didTimeout_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -6671,6 +6726,11 @@ private static final long serialVersionUID = 0L;
         if (getHasError()
             != other.getHasError()) return false;
       }
+      if (hasDidTimeout() != other.hasDidTimeout()) return false;
+      if (hasDidTimeout()) {
+        if (getDidTimeout()
+            != other.getDidTimeout()) return false;
+      }
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -6699,6 +6759,11 @@ private static final long serialVersionUID = 0L;
         hash = (37 * hash) + HAS_ERROR_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
             getHasError());
+      }
+      if (hasDidTimeout()) {
+        hash = (37 * hash) + DID_TIMEOUT_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+            getDidTimeout());
       }
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
@@ -6846,6 +6911,8 @@ private static final long serialVersionUID = 0L;
         bitField0_ = (bitField0_ & ~0x00000004);
         hasError_ = false;
         bitField0_ = (bitField0_ & ~0x00000008);
+        didTimeout_ = false;
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -6893,6 +6960,10 @@ private static final long serialVersionUID = 0L;
         if (((from_bitField0_ & 0x00000008) != 0)) {
           result.hasError_ = hasError_;
           to_bitField0_ |= 0x00000008;
+        }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.didTimeout_ = didTimeout_;
+          to_bitField0_ |= 0x00000010;
         }
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -6955,6 +7026,9 @@ private static final long serialVersionUID = 0L;
         if (other.hasHasError()) {
           setHasError(other.getHasError());
         }
+        if (other.hasDidTimeout()) {
+          setDidTimeout(other.getDidTimeout());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
@@ -7010,6 +7084,11 @@ private static final long serialVersionUID = 0L;
                 bitField0_ |= 0x00000008;
                 break;
               } // case 32
+              case 40: {
+                didTimeout_ = input.readBool();
+                bitField0_ |= 0x00000010;
+                break;
+              } // case 40
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -7311,6 +7390,45 @@ private static final long serialVersionUID = 0L;
         onChanged();
         return this;
       }
+
+      private boolean didTimeout_ ;
+      /**
+       * <code>optional bool did_timeout = 5;</code>
+       * @return Whether the didTimeout field is set.
+       */
+      @java.lang.Override
+      public boolean hasDidTimeout() {
+        return ((bitField0_ & 0x00000010) != 0);
+      }
+      /**
+       * <code>optional bool did_timeout = 5;</code>
+       * @return The didTimeout.
+       */
+      @java.lang.Override
+      public boolean getDidTimeout() {
+        return didTimeout_;
+      }
+      /**
+       * <code>optional bool did_timeout = 5;</code>
+       * @param value The didTimeout to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDidTimeout(boolean value) {
+        bitField0_ |= 0x00000010;
+        didTimeout_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool did_timeout = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDidTimeout() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        didTimeout_ = false;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -7473,6 +7591,17 @@ private static final long serialVersionUID = 0L;
      * @return The hallucinationTypes at the given index.
      */
     com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationType getHallucinationTypes(int index);
+
+    /**
+     * <code>optional bool did_timeout = 6;</code>
+     * @return Whether the didTimeout field is set.
+     */
+    boolean hasDidTimeout();
+    /**
+     * <code>optional bool did_timeout = 6;</code>
+     * @return The didTimeout.
+     */
+    boolean getDidTimeout();
   }
   /**
    * Protobuf type {@code android_studio.SmlChatBotEvent.HallucinationDetectorResult}
@@ -7686,6 +7815,25 @@ private static final long serialVersionUID = 0L;
     }
     private int hallucinationTypesMemoizedSerializedSize;
 
+    public static final int DID_TIMEOUT_FIELD_NUMBER = 6;
+    private boolean didTimeout_;
+    /**
+     * <code>optional bool did_timeout = 6;</code>
+     * @return Whether the didTimeout field is set.
+     */
+    @java.lang.Override
+    public boolean hasDidTimeout() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <code>optional bool did_timeout = 6;</code>
+     * @return The didTimeout.
+     */
+    @java.lang.Override
+    public boolean getDidTimeout() {
+      return didTimeout_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -7723,6 +7871,9 @@ private static final long serialVersionUID = 0L;
       }
       for (int i = 0; i < hallucinationTypes_.size(); i++) {
         output.writeEnumNoTag(hallucinationTypes_.get(i));
+      }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        output.writeBool(6, didTimeout_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -7769,6 +7920,10 @@ private static final long serialVersionUID = 0L;
             .computeUInt32SizeNoTag(dataSize);
         }hallucinationTypesMemoizedSerializedSize = dataSize;
       }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(6, didTimeout_);
+      }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
@@ -7800,6 +7955,11 @@ private static final long serialVersionUID = 0L;
       }
       if (!codeDomains_.equals(other.codeDomains_)) return false;
       if (!hallucinationTypes_.equals(other.hallucinationTypes_)) return false;
+      if (hasDidTimeout() != other.hasDidTimeout()) return false;
+      if (hasDidTimeout()) {
+        if (getDidTimeout()
+            != other.getDidTimeout()) return false;
+      }
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -7831,6 +7991,11 @@ private static final long serialVersionUID = 0L;
       if (getHallucinationTypesCount() > 0) {
         hash = (37 * hash) + HALLUCINATION_TYPES_FIELD_NUMBER;
         hash = (53 * hash) + hallucinationTypes_.hashCode();
+      }
+      if (hasDidTimeout()) {
+        hash = (37 * hash) + DID_TIMEOUT_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+            getDidTimeout());
       }
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
@@ -7980,6 +8145,8 @@ private static final long serialVersionUID = 0L;
         bitField0_ = (bitField0_ & ~0x00000008);
         hallucinationTypes_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000010);
+        didTimeout_ = false;
+        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
 
@@ -8034,6 +8201,10 @@ private static final long serialVersionUID = 0L;
           bitField0_ = (bitField0_ & ~0x00000010);
         }
         result.hallucinationTypes_ = hallucinationTypes_;
+        if (((from_bitField0_ & 0x00000020) != 0)) {
+          result.didTimeout_ = didTimeout_;
+          to_bitField0_ |= 0x00000008;
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -8111,6 +8282,9 @@ private static final long serialVersionUID = 0L;
             hallucinationTypes_.addAll(other.hallucinationTypes_);
           }
           onChanged();
+        }
+        if (other.hasDidTimeout()) {
+          setDidTimeout(other.getDidTimeout());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
@@ -8220,6 +8394,11 @@ private static final long serialVersionUID = 0L;
                 input.popLimit(oldLimit);
                 break;
               } // case 42
+              case 48: {
+                didTimeout_ = input.readBool();
+                bitField0_ |= 0x00000020;
+                break;
+              } // case 48
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -8663,6 +8842,45 @@ private static final long serialVersionUID = 0L;
       public Builder clearHallucinationTypes() {
         hallucinationTypes_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000010);
+        onChanged();
+        return this;
+      }
+
+      private boolean didTimeout_ ;
+      /**
+       * <code>optional bool did_timeout = 6;</code>
+       * @return Whether the didTimeout field is set.
+       */
+      @java.lang.Override
+      public boolean hasDidTimeout() {
+        return ((bitField0_ & 0x00000020) != 0);
+      }
+      /**
+       * <code>optional bool did_timeout = 6;</code>
+       * @return The didTimeout.
+       */
+      @java.lang.Override
+      public boolean getDidTimeout() {
+        return didTimeout_;
+      }
+      /**
+       * <code>optional bool did_timeout = 6;</code>
+       * @param value The didTimeout to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDidTimeout(boolean value) {
+        bitField0_ |= 0x00000020;
+        didTimeout_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool did_timeout = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDidTimeout() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        didTimeout_ = false;
         onChanged();
         return this;
       }

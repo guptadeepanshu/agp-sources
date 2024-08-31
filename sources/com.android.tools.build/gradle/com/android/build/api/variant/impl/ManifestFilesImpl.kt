@@ -85,15 +85,32 @@ class ManifestFilesImpl(private val variantServices: VariantServices) : Manifest
             type = RegularFile::class.java,
     )
 
+    // this will contain all static files that will be parsed during model building
+    // see  b/160970116 and ModelBuilder.inspectManifestForInstantTag
+    private val staticFiles = variantServices.newListPropertyForInternalUse(
+        type = RegularFile::class.java,
+    )
+
     override val all: Provider<out List<RegularFile>> = files.map { it.reversed() }
 
+    /**
+     * Same as [all] for manifest files that are not generated.
+     *
+     * This should be removed once b/160970116 has been fixed.
+     */
+    val allStatic: Provider<out List<RegularFile>> = staticFiles.map { it.reversed() }
+
     fun addSource(fileEntry: FileEntry) {
-        files.add(
-                fileEntry.asFile(
-                        variantServices.provider {
-                            variantServices.projectInfo.projectDirectory
-                        }
-                )
-        )
+        fileEntry.asFile(
+            variantServices.provider {
+                variantServices.projectInfo.projectDirectory
+            }
+        ).let {
+            files.add(it)
+            // optionally add to the static files list if it is not a generated manifest.
+            if (!fileEntry.isGenerated) {
+                staticFiles.add(it)
+            }
+        }
     }
 }

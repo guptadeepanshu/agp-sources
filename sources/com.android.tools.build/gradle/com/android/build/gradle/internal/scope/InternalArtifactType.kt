@@ -199,8 +199,6 @@ InternalArtifactType<T : FileSystemLocation>(
     object MERGED_NOT_COMPILED_RES: InternalArtifactType<Directory>(DIRECTORY), Replaceable
     // Directory containing config file for unit testing with resources
     object UNIT_TEST_CONFIG_DIRECTORY: InternalArtifactType<Directory>(DIRECTORY), Replaceable
-    // compiled resources (output of aapt)
-    object PROCESSED_RES: InternalArtifactType<Directory>(DIRECTORY), Replaceable, ContainsMany
     // Processed res after an AAPT2 optimize operation
     object OPTIMIZED_PROCESSED_RES: InternalArtifactType<Directory>(DIRECTORY), Replaceable, ContainsMany
     // package resources for aar publishing.
@@ -217,10 +215,19 @@ InternalArtifactType<T : FileSystemLocation>(
     object LOCAL_ONLY_PARTIAL_SYMBOL_DIRECTORY: InternalArtifactType<Directory>(DIRECTORY), Replaceable
     // public.txt output This file might not exist if the project does not declare any public resources.
     object PUBLIC_RES: InternalArtifactType<RegularFile>(FILE), Replaceable
-    object SHRUNK_PROCESSED_RES: InternalArtifactType<Directory>(DIRECTORY), Replaceable, ContainsMany
-    // linked res for the unified bundle
-    object LINKED_RES_FOR_BUNDLE: InternalArtifactType<RegularFile>(FILE), Replaceable
-    object LEGACY_SHRUNK_LINKED_RES_FOR_BUNDLE: InternalArtifactType<RegularFile>(FILE), Replaceable
+
+    /** Linked resources (output of `aapt2 link`) in binary format. */
+    object LINKED_RESOURCES_BINARY_FORMAT: InternalArtifactType<Directory>(DIRECTORY), ContainsMany
+
+    /** Linked resources (output of `aapt2 link`) in proto format, used when building a bundle. */
+    object LINKED_RESOURCES_FOR_BUNDLE_PROTO_FORMAT: InternalArtifactType<RegularFile>(FILE)
+
+    /** Shrunk resources in proto format. */
+    object SHRUNK_RESOURCES_PROTO_FORMAT: InternalArtifactType<Directory>(DIRECTORY), ContainsMany
+
+    /** Shrunk resources in binary format. */
+    object SHRUNK_RESOURCES_BINARY_FORMAT: InternalArtifactType<Directory>(DIRECTORY), ContainsMany
+
     object COMPILED_LOCAL_RESOURCES: InternalArtifactType<Directory>(DIRECTORY), Replaceable
     object STABLE_RESOURCE_IDS_FILE: InternalArtifactType<RegularFile>(FILE)
 

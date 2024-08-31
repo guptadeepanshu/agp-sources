@@ -162,6 +162,16 @@ class ManagedVirtualDeviceLockManager(
         }
     }
 
+
+    /**
+     * Deletes the lock file
+     *
+     * Should be used if the lock file contains stale locks.
+     */
+    fun deleteLockFile() {
+        trackingFile.write(File::delete)
+    }
+
     private fun createDefaultLockFile(file: File) {
         logger.info("Creating default GMD lock tracking file at ${file.absolutePath}")
         // Since the nature of synchronized files are supposed to work across versions,
@@ -171,18 +181,22 @@ class ManagedVirtualDeviceLockManager(
     }
 
     private fun getCurrentLockCount(file: File): Int {
-        for (line in file.readLines()) {
-            if (line.startsWith(LOCK_COUNT_PREFIX)) {
-                return line.substring(LOCK_COUNT_PREFIX.length).trim().toInt()
+        if (file.exists()) {
+            for (line in file.readLines()) {
+                if (line.startsWith(LOCK_COUNT_PREFIX)) {
+                    return line.substring(LOCK_COUNT_PREFIX.length).trim().toInt()
+                }
             }
+            logger.error(
+                " Failed to find $LOCK_COUNT_PREFIX in gmd lock file. File Contents:\n " +
+                        "${file.readLines()}"
+            )
+            // Reset the GMD lock here.
+            writeLockCount(file, 0)
+            error("Failed to find the number of active Gradle Managed Devices.")
+        } else {
+            return 0
         }
-        logger.error(
-            " Failed to find $LOCK_COUNT_PREFIX in gmd lock file. File Contents:\n " +
-                    "${file.readLines()}"
-        )
-        // Reset the GMD lock here.
-        writeLockCount(file, 0)
-        error("Failed to find the number of active Gradle Managed Devices.")
     }
 
     private fun writeLockCount(file: File, newLockCount: Int) {

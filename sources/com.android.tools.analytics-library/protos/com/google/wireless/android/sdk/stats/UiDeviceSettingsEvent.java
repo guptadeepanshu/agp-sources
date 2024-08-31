@@ -125,6 +125,14 @@ private static final long serialVersionUID = 0L;
      * <code>GESTURE_NAVIGATION = 8;</code>
      */
     GESTURE_NAVIGATION(8),
+    /**
+     * <pre>
+     * Debug Layout was changed
+     * </pre>
+     *
+     * <code>DEBUG_LAYOUT = 9;</code>
+     */
+    DEBUG_LAYOUT(9),
     ;
 
     /**
@@ -199,6 +207,14 @@ private static final long serialVersionUID = 0L;
      * <code>GESTURE_NAVIGATION = 8;</code>
      */
     public static final int GESTURE_NAVIGATION_VALUE = 8;
+    /**
+     * <pre>
+     * Debug Layout was changed
+     * </pre>
+     *
+     * <code>DEBUG_LAYOUT = 9;</code>
+     */
+    public static final int DEBUG_LAYOUT_VALUE = 9;
 
 
     public final int getNumber() {
@@ -230,6 +246,7 @@ private static final long serialVersionUID = 0L;
         case 6: return SCREEN_DENSITY;
         case 7: return RESET;
         case 8: return GESTURE_NAVIGATION;
+        case 9: return DEBUG_LAYOUT;
         default: return null;
       }
     }

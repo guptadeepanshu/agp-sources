@@ -20,8 +20,10 @@ import com.android.repository.api.RepoPackage;
 import com.android.repository.impl.meta.TypeDetails;
 import com.android.sdklib.repository.IdDisplay;
 import com.android.sdklib.repository.meta.DetailsTypes;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -143,6 +145,10 @@ public class SystemImageTags {
 
     public static boolean isTvImage(Collection<IdDisplay> tags) {
         return tags.stream().anyMatch(TV_TAGS::contains);
+    }
+
+    public static boolean isDesktopImage(Collection<IdDisplay> tags) {
+        return tags.contains(DESKTOP_TAG);
     }
 
     public static boolean isAutomotiveImage(Collection<IdDisplay> tags) {

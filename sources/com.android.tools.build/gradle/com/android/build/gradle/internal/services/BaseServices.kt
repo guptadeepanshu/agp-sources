@@ -19,7 +19,7 @@ package com.android.build.gradle.internal.services
 import com.android.build.gradle.internal.errors.DeprecationReporter
 import com.android.build.gradle.internal.scope.ProjectInfo
 import com.android.build.gradle.internal.utils.GradleEnvironmentProvider
-import com.android.build.gradle.internal.utils.MINIMUM_INTEGRATED_KOTLIN_VERSION
+import com.android.build.gradle.internal.utils.MINIMUM_BUILT_IN_KOTLIN_VERSION
 import com.android.build.gradle.internal.utils.getKotlinPluginVersionFromPlugin
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.ProjectOptions
@@ -58,14 +58,14 @@ interface KotlinServices {
         fun createFromPlugin(plugin: KotlinBaseApiPlugin?): KotlinServices? {
             plugin ?: return null
             getKotlinPluginVersionFromPlugin(plugin)?.let {
-                if (Version.parse(it) < Version.parse(MINIMUM_INTEGRATED_KOTLIN_VERSION)) {
+                if (Version.parse(it) < Version.parse(MINIMUM_BUILT_IN_KOTLIN_VERSION)) {
                     val message =
                         """
                             The current Kotlin Gradle plugin version ($it) is below the required
-                            minimum version ($MINIMUM_INTEGRATED_KOTLIN_VERSION).
+                            minimum version ($MINIMUM_BUILT_IN_KOTLIN_VERSION).
 
                             The following Gradle properties require the Kotlin Gradle plugin version
-                            to be at least $MINIMUM_INTEGRATED_KOTLIN_VERSION:
+                            to be at least $MINIMUM_BUILT_IN_KOTLIN_VERSION:
 
                             ${BooleanOption.ENABLE_SCREENSHOT_TEST.propertyName},
                             ${BooleanOption.ENABLE_TEST_FIXTURES_KOTLIN_SUPPORT.propertyName}

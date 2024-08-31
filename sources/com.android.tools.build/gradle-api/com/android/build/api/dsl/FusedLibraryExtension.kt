@@ -36,4 +36,12 @@ interface FusedLibraryExtension {
     @get: Incubating
     @set: Incubating
     var minSdk: Int?
+
+    @get: Incubating
+    /** Options for configuring AAR metadata. */
+    val aarMetadata: AarMetadata
+
+    @Incubating
+    /** Options for configuring AAR metadata. */
+    fun aarMetadata(action: AarMetadata.() -> Unit)
 }

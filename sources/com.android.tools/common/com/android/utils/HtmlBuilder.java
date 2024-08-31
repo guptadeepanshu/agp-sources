@@ -17,6 +17,7 @@ package com.android.utils;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+
 import java.awt.Color;
 import java.net.URL;
 
@@ -329,41 +330,19 @@ public class HtmlBuilder {
         return this;
     }
 
-    /**
-     * The JEditorPane HTML renderer creates really ugly bulleted lists; the
-     * size is hardcoded to use a giant heavy bullet. So, use a definition
-     * list instead.
-     */
-    private static final boolean USE_DD_LISTS = true;
-
     public HtmlBuilder beginList() {
-        if (USE_DD_LISTS) {
-            mStringBuilder.append("<DL>");
-        } else {
-            mStringBuilder.append("<UL>");
-        }
-
+        mStringBuilder.append("<DL>");
         return this;
     }
 
     public HtmlBuilder endList() {
-        if (USE_DD_LISTS) {
-            mStringBuilder.append("</DL>");
-        } else {
-            mStringBuilder.append("</UL>");
-        }
-
+        mStringBuilder.append("</DL>");
         return this;
     }
 
     public HtmlBuilder listItem() {
-        if (USE_DD_LISTS) {
-            mStringBuilder.append("<DD>");
-            mStringBuilder.append("-&NBSP;");
-        } else {
-            mStringBuilder.append("<LI>");
-        }
-
+        mStringBuilder.append("<DD>");
+        mStringBuilder.append("-&nbsp;");
         return this;
     }
 
@@ -389,14 +368,22 @@ public class HtmlBuilder {
         return this;
     }
 
-    public HtmlBuilder beginTable(@Nullable String tdExtra) {
-        mStringBuilder.append("<table>");
+    public HtmlBuilder beginTable(@Nullable String tdExtra, @Nullable String style) {
+        mStringBuilder.append("<table");
+        if (style != null) {
+            mStringBuilder.append(" style=\"").append(style).append("\"");
+        }
+        mStringBuilder.append(">");
         mTableDataExtra = tdExtra;
         return this;
     }
 
+    public HtmlBuilder beginTable(@Nullable String tdExtra) {
+        return beginTable(tdExtra, null);
+    }
+
     public HtmlBuilder beginTable() {
-        return beginTable(null);
+        return beginTable(null, null);
     }
 
     public HtmlBuilder endTable() {

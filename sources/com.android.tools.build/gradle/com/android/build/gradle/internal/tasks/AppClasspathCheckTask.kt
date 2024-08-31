@@ -97,11 +97,7 @@ dependencies {
                     compileClasspath.toVersionMap()
                 }
             )
-            task.fakeOutputDirectory = FileUtils.join(
-                creationConfig.services.projectInfo.getIntermediatesDir(),
-                name,
-                creationConfig.dirName
-            )
+            task.fakeOutputDirectory = creationConfig.services.projectInfo.intermediatesDirectory.map { it.dir(name).dir(creationConfig.dirName) }
             task.projectBuildFile.set(task.project.buildFile)
             task.projectBuildFile.disallowChanges()
         }
